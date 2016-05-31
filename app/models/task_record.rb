@@ -6,7 +6,7 @@ class TaskRecord < ActiveRecord::Base
   validates_inclusion_of :status, in: %w(active pending)
 
   scope :active, -> {where(:status => 'active')}
-  scope :complete_info,  -> {where(:task_type => RewardTask::InviteFriend)}
+  scope :complete_info,  -> {where(:task_type => RewardTask::CompleteInfo)}
   scope :favorable_comment,  ->{where(:task_type => RewardTask::FavorableComment)}
   scope :check_in,   -> {where(:task_type => RewardTask::CheckIn)}
   scope :invite_friend,   -> {where(:task_type => RewardTask::InviteFriend)}

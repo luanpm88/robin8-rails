@@ -6,4 +6,6 @@ class RewardTask < ActiveRecord::Base
   InviteFriend = 'invite_friend'
   FavorableComment = 'favorable_comment'
 
+  scope :invite_friend, -> {where(:task_type => InviteFriend).first}
+
 end

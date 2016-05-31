@@ -81,8 +81,9 @@ module Concerns
         if !Rails.env.production?
           u = User.find 79
           campaign_attrs = TestCampaigns[rand(12)]
-          campaign = Campaign.create!(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :recruit_start_time => Time.now + 2.seconds, :recruit_end_time => Time.now + 15.minutes, :start_time =>  Time.now + 20.minutes, :deadline => Time.now + (long ? 24.hours : 5.minutes),
-                                     :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => 'recruit', :address => '上海市 静安区 xxx路', :task_description => '先去现场，然后拍照转发到朋友圈')
+          campaign = Campaign.new(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :recruit_start_time => Time.now + 2.seconds, :recruit_end_time => Time.now + 15.minutes, :start_time =>  Time.now + 20.minutes, :deadline => Time.now + (long ? 24.hours : 5.minutes),
+                                  :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => 'recruit', :address => '上海市 静安区 xxx路', :task_description => '先去现场，然后拍照转发到朋友圈')
+          campaign.save
           puts campaign.id
           CampaignTarget.create(:target_type => 'region', :target_content => region, :campaign_id => campaign.id)
           CampaignTarget.create(:target_type => 'influence_score', :target_content => influence_score, :campaign_id => campaign.id)

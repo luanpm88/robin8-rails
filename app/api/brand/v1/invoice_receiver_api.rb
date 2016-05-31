@@ -10,7 +10,7 @@ module Brand
         if @invoice_receiver
           present @invoice_receiver
         else
-          {'no_invoice_receiver': true}
+          { no_invoice_receiver: true }
         end
       end
 

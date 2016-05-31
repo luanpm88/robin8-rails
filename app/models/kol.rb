@@ -29,10 +29,6 @@ class Kol < ActiveRecord::Base
   has_many :tags, :through => :kol_tags
   has_many :campaign_actions
   has_many :campaign_shows
-  # has_many :like_campaigns, ->{where(:action => 'like')}, :class => CampaignAction
-  # has_many :hide_campaigns, ->{where(:action => 'hide')}, :class => CampaignAction
-  # has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
-  # has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
   has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
@@ -47,7 +43,13 @@ class Kol < ActiveRecord::Base
 
   has_many :withdraws
   has_many :article_actions
+  has_many :analysis_identities
+  has_many :kol_identity_prices
 
+  has_one  :address, as: :addressable
+
+  has_many :lottery_activity_orders
+  has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
 
   def email_required?
@@ -421,4 +423,8 @@ class Kol < ActiveRecord::Base
     self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
   end
 
+  def address!
+    return self.address if self.address
+    Address.create.tap { |a| self.update(address: a) }
+  end
 end

@@ -44,7 +44,7 @@ export default class RechargeModal extends Component {
       )
     } else {
       return (
-        <div>
+        <div className="no-invoice-content">
           <div className="amount-info">
             <span className='recharge-amount'>充值金额: </span>
             <span className='price'>{credits}元</span>

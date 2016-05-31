@@ -1,29 +1,23 @@
 require 'rubygems'
 require 'typhoeus'
 
-module Weixin
+module IdentityAnalysis
   class PublicLogin
     UserAgent =  "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5"
     BaseUrl = "https://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN"
 
-
-    def  self.login(username = 'wangtuo314@163.com' , password = 'wangtuo19910314', code = nil)
+    def  self.login(kol_id, username = 'wangtuo314@163.com' , password = 'wangtuo19910314', code = nil)
       res, cookies, redirect_url, token = login_with_account(username, password, code)
       return res if res[0] == 'error'
       if token
-        PublicWechatLogin.generate_account_login(username, password, cookies, token)
-        return ['login_success']
+        wechat_login = PublicWechatLogin.generate_account_login(kol_id,username, password, cookies, token)
+        return ['login_success', wechat_login.id]
       end
       res, ticket, operation_seq = get_ticket(cookies, redirect_url)
       return res if res[0] == 'error'
       appid = get_appid(cookies,redirect_url)
       uuid = get_uuid(cookies, redirect_url, appid, ticket)
-      $cookies = cookies
-      $redirect_url = redirect_url
-      $ticket = ticket
-      $operation_seq = operation_seq
-      $uuid = uuid
-      wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq, redirect_url)
+      wechat_login = PublicWechatLogin.generate_qrcode_login(kol_id, username, password, cookies, ticket, appid, uuid, operation_seq, redirect_url)
       qrcode_url = get_qrcode_url(ticket, uuid, operation_seq)
       return ['qrcode_success', wechat_login.id, qrcode_url]
     end
@@ -41,9 +35,9 @@ module Weixin
                  )
       response = JSON.parse request.response_body   rescue {}
       cookies = ""
-      if response["base_resp"] || response["base_resp"]["ret"] == 0
+      if response["base_resp"].present? || response["base_resp"]["ret"] == 0
         cookies = append_cookies(cookies, request)
-        redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
+        redirect_url = "https://mp.weixin.qq.com/#{response['redirect_url']}"
         if redirect_url.include?("token=")
           token = redirect_url.split("token=").last
           return ['login_success', cookies , redirect_url, token]
@@ -134,10 +128,10 @@ module Weixin
       response = JSON.parse safeuuid_req.response_body  rescue {}
       if response['errcode'] == 405
         token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
-        login.update_columns(visitor_cookies: cookies, token:token)
-        return [response['errcode']]
+        login.success_qrcode_login(cookies, token)
+        return response['errcode']
       else
-        return [response['errcode']]
+        return response['errcode']
       end
     end
 
@@ -187,12 +181,3 @@ module Weixin
 
   end
 end
-
-
-# qrcode_url = Weixin::PublicLogin.get_qrcode
-# puts "----qrcode_url:#{qrcode_url}"
-# while true
-#   res = Weixin::PublicLogin.check_login_status($redirect_url, $cookies, $uuid, $username, $operation_seq)
-#   puts "=========res#{res}"
-#   sleep 1.5
-# end
