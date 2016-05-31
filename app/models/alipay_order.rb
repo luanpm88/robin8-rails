@@ -50,7 +50,7 @@ class AlipayOrder < ActiveRecord::Base
   def increase_user_appliable_credits
     Rails.logger.alipay.info "-------- 进入increase_user_appliable_credits方法 增加用户可提现金额  ---alipay_id:#{self.id}  --------------"
     @transaction = self.get_transaction
-    Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 获取不到对应transaction  --------------"
+    Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 成功获取到对应transaction  --------------"
     @transaction.account.increment!(:appliable_credits, (tax + credits))
     Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 添加可提现金额成功  --------------"
   end
