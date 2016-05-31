@@ -5,6 +5,7 @@ module ExceptionNotifier
     end
 
     def call(exception, options = {})
+      return
       title = "#{@options[:email_prefix]} #{exception.message}"
       messages = []
       messages << exception.inspect
