@@ -20,6 +20,7 @@ if $*.include? "new_qa"
   set :server_name, '139.196.44.225'
 else
   server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
+  server '139.196.169.53', user: 'deployer', roles: %w{app slave}
   set :branch, 'QA'
   set :server_name, 'robin8-staging.cn'
 end
@@ -37,7 +38,8 @@ namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :pull_manifest_from_master do
     on roles(:slave) do
-      execute "scp deployer@139.196.14.144:/home/deployer/robin8_assets/assets/manifest.json #{Dir.pwd}/public/assets/manifest.json"
+      execute "mkdir -p #{release_path}/public/assets/"
+      execute "scp deployer@139.196.36.27:/home/deployer/robin8_assets/assets/manifest.json #{release_path}/public/assets/manifest.json"
     end
   end
 end

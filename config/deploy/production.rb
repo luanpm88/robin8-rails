@@ -33,7 +33,8 @@ namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :pull_manifest_from_master do
     on roles(:slave) do
-      execute "scp deployer@139.196.14.144:/home/deployer/robin8_assets/assets/manifest.json #{Dir.pwd}/public/assets/manifest.json"
+      execute "mkdir -p #{release_path}/public/assets/"
+      execute "scp deployer@139.196.14.144:/home/deployer/robin8_assets/assets/manifest.json #{release_path}/public/assets/manifest.json"
     end
   end
 end
