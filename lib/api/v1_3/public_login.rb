@@ -10,9 +10,10 @@ module API
           requires :username, type: String
           optional :password, type: String
           optional :imgcode, type: String
+          optional :cookies, type: String
         end
         post 'login_with_account' do
-          res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode])
+          res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode], params[:cookies])
           if res[0] == 'error'
             present :error, 1
             present :login_status, res[1]

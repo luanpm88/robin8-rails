@@ -16,7 +16,7 @@
 # used to set extended properties on the server.
 
 if ENV['china_instance'] == 'Y'
-  server '139.196.14.144', user: 'deployer', roles: %w{web app db}
+  server '139.196.14.144', user: 'deployer', roles: %w{web app db master}
   set :branch, 'master_cn'
 else
 
