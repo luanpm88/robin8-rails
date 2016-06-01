@@ -4,10 +4,10 @@ require 'typhoeus'
 module IdentityAnalysis
   class PublicLogin
     UserAgent =  "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5"
-    BaseUrl = "https://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN"
+    BaseUrl = "https://mp.weixin.qq.com/cgi-bin/login"
 
-    def  self.login(kol_id, username = 'wangtuo314@163.com' , password = 'wangtuo19910314', code = nil)
-      res, cookies, redirect_url, token = login_with_account(username, password, code)
+    def  self.login(kol_id, username = 'wangtuo314@163.com' , password = 'wan', imgcode = nil, cookies = nil)
+      res, cookies, redirect_url, token = login_with_account(username, password, imgcode, cookies)
       return res if res[0] == 'error'
       if token
         wechat_login = PublicWechatLogin.generate_account_login(kol_id,username, password, cookies, token)
@@ -23,19 +23,20 @@ module IdentityAnalysis
     end
 
 
-    def self.login_with_account(username, password, code = nil)
-      params = {:username => username, :pwd =>  Digest::MD5.hexdigest(password)}
-      params.merge({:imgcode => code})    if code.nil?
+    def self.login_with_account(username, password, imgcode = nil, cookie)
+      params = {:username => username, :pwd =>  Digest::MD5.hexdigest(password), :f => "json"}
+      params.merge!({:imgcode => imgcode})    if imgcode.present?
       request = Typhoeus.post(BaseUrl, followlocation: true, verbose: true,
                                :headers => {:user_agent => UserAgent,
-                                            :referer => "https://mp.weixin.qq.com/",
-                                            "Upgrade-Insecure-Requests" => 1
+                                            'X-Requested-With' => 'XMLHttpRequest',
+                                            :Referer => "https://mp.weixin.qq.com/",
+                                            :Cookie => cookie
                                },
                                :params =>  params
                  )
       response = JSON.parse request.response_body   rescue {}
       cookies = ""
-      if response["base_resp"].present? || response["base_resp"]["ret"] == 0
+      if response["base_resp"].present? && response["base_resp"]["ret"] == 0
         cookies = append_cookies(cookies, request)
         redirect_url = "https://mp.weixin.qq.com/#{response['redirect_url']}"
         if redirect_url.include?("token=")
@@ -44,14 +45,14 @@ module IdentityAnalysis
         else
           return ['account_success', cookies , redirect_url]
         end
-      elsif response["base_resp"].present? || response["base_resp"]["ret"] == '200027'
+      elsif response["base_resp"].present? && (response["base_resp"]["ret"].to_s == '200027' || response["base_resp"]["ret"].to_s == '200008')
         return [['error', 'verify_code']]
       else
         return [['error', 'account_wrong']]
       end
     end
 
-    def verify_code_url(username)
+    def self.verify_code_url(username)
       "https://mp.weixin.qq.com/cgi-bin/verifycode?username=#{username}&r=#{Time.now.to_i}"
     end
 
