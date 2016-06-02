@@ -1,3 +1,7 @@
+// 此文件暂未用到
+// 把所有子reducer引入到这个文件并combineReducers最好，但暂未尝试成功。
+
+
 import { combineReducers } from 'redux'
 import Immutable from 'immutable';
 
