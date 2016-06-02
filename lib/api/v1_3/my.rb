@@ -14,7 +14,7 @@ module API
           if kol_value.present?
             item_rate = kol_value.get_item_scores
             present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
-            present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+            present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           else
             present :item_rate, KolInfluenceValue.new, with: API::V2::Entities::KolInfluenceValueEntities::History
             present :kol_value, KolInfluenceValue.new, with: API::V2::Entities::KolInfluenceValueEntities::Summary
