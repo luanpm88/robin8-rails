@@ -4,7 +4,7 @@ module API
       module KolInfluenceValueEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :kol_uuid, :influence_level,
+          expose :kol_uuid, :influence_level
           expose :name do |kol_value, options|
             if options[:kol] &&  options[:kol].name
               options[:kol].name
