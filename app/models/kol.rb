@@ -430,6 +430,7 @@ class Kol < ActiveRecord::Base
 
   #override devise  request.remote_ip is null
   def update_tracked_fields(request)
+    return if self.current_sign_in_at.present? && Date.today == self.current_sign_in_at.to_date
     old_current, new_current = self.current_sign_in_at, Time.now.utc
     self.last_sign_in_at     = old_current || new_current
     self.current_sign_in_at  = new_current
@@ -442,6 +443,7 @@ class Kol < ActiveRecord::Base
 
     self.sign_in_count ||= 0
     self.sign_in_count += 1
+    self.save
   end
 
 end

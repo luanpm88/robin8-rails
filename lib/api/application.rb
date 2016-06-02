@@ -32,7 +32,7 @@ module API
       @log_start_t = Time.now
       logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip}"
       logger.info "  Parameters: #{params.to_hash.except("route_info", :password, :password_confirmation)}"
-      current_kol.update_tracked_fields request     rescue nil
+      current_kol.update_tracked_fields request
     end
 
     after do
