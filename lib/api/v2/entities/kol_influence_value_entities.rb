@@ -4,7 +4,21 @@ module API
       module KolInfluenceValueEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :kol_uuid, :influence_level, :name, :avatar_url
+          expose :kol_uuid, :influence_level,
+          expose :name do |kol_value, options|
+            if options[:kol] &&  options[:kol].name
+              options[:kol].name
+            else
+              kol_value.name
+            end
+          end
+          expose :avatar_url do |kol_value, options|
+            if options[:kol] && options[:kol].avatar_url
+              options[:kol].avatar_url
+            else
+              kol_value.avatar_url
+            end
+          end
           expose :influence_score do |kol_value|
             kol_value.influence_score.to_i rescue 500
           end
