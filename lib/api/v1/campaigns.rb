@@ -97,6 +97,8 @@ module API
           requires :weixin_no, type: String
           requires :weixin_friend_count, type: Integer
           requires :expect_price, type: String
+          optional :remark, type: String
+          optional :image_ids, type: String
         end
         put 'apply' do
           campaign = Campaign.find(params[:id]) rescue nil

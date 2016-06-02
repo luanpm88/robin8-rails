@@ -10,9 +10,10 @@ module API
           requires :username, type: String
           optional :password, type: String
           optional :imgcode, type: String
+          optional :cookies, type: String
         end
         post 'login_with_account' do
-          res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode])
+          res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode], params[:cookies])
           if res[0] == 'error'
             present :error, 1
             present :login_status, res[1]
@@ -20,7 +21,7 @@ module API
               present :detail, '账户错误'
             elsif res[1] == 'verify_code'
               present :detail, '验证码错误'
-              present :imgcode_url, Analysis::PublicLogin.verify_code_url(params[:username])
+              present :imgcode_url, IdentityAnalysis::PublicLogin.verify_code_url(params[:username])
             end
           else
             present :error, 0

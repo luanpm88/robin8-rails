@@ -15,6 +15,7 @@ module API
       mount API::V1_3::WeiboReport
       mount API::V1_3::KolIdentityPrices
       mount API::V1_3::LotteryActivities
+      mount API::V1_3::Images
     end
   end
 end

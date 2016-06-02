@@ -2,6 +2,7 @@ class CampaignApply < ActiveRecord::Base
   belongs_to :campaign
   belongs_to :kol
   has_one :campaign_invite
+  has_many :images, :as => :referable
 
   scope :applying, -> {where(:status => 'applying')}
   scope :platform_passed, -> {where(:status => 'platform_passed')}
