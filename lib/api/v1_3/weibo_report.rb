@@ -100,11 +100,12 @@ module API
             return {:error => 3, :detail => '授权过期，请重新授权'}                             if !identity.valid_authorize?
             res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, params[:duration])  rescue {}
           end
+          puts res
           if res['status']
             sorted_friends = AnalysisIdentity.complete_sorted_friends(res['data']['sorted_friends'], params[:duration])
             present :error, 0
             present :friend_verified, sorted_friends, with: API::V1_3::Entities::WeiboReportEntities::FriendVerified
-            present :bilateral, (res['data']['bilateral_friendships'].first rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Bilateral
+            present :bilateral, (res['data']['bilateral_friendships'].first || {} rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Bilateral
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -127,7 +128,7 @@ module API
           if res && res['status']
             present :error, 0
             present :regions, (res['data']['regional_followers'].first['regions'] rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Region
-            present :genders, (res['data']['sexual_followers'].first rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Gender
+            present :genders, (res['data']['sexual_followers'].first || {} rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Gender
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
