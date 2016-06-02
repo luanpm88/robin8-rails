@@ -120,7 +120,7 @@ module API
           end
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
-          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary kol: current_kol
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
 
