@@ -62,7 +62,7 @@ set :sidekiq_role, %w{ master }
 
 namespace :deploy do
   task :upload_localization do
-    on roles(:app)  do
+    on roles(:db)  do
       within "#{current_path}" do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'localization:upload'
@@ -93,7 +93,7 @@ namespace :deploy do
 
   desc "Update the crontab file"
   task :update_crontab do
-    on roles :app do
+    on roles :master do
       within current_path do
         execute :bundle, :exec, "whenever --update-crontab #{fetch(:application)} --set environment=#{fetch(:rails_env)}"
       end

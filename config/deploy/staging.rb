@@ -14,32 +14,33 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
+
 if $*.include? "new_qa"
   server '139.196.44.225', user: 'deployer', roles: %w{web app db master}
-  set :branch, 'alipay_master_cn'
+  server '139.196.169.53', user: 'deployer', roles: %w{app slave}
+  set :branch, 'master_cn'
   set :server_name, '139.196.44.225'
 else
   server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-  server '139.196.169.53', user: 'deployer', roles: %w{app slave}
   set :branch, 'QA'
   set :server_name, 'robin8-staging.cn'
 end
 
+set :stage, "staging"
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
-
-set :stage, "staging"
-
 set :rails_env, "staging"
-
 set :rbenv_ruby, '2.2.0'
 
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :pull_manifest_from_master do
+    master = roles(:app).find { |h| h.roles.include?(:master) }
+    master_hostname = "#{master.user || 'root'}@#{master.hostname}"
+
     on roles(:slave) do
       execute "mkdir -p #{release_path}/public/assets/"
-      execute "scp deployer@139.196.36.27:/home/deployer/robin8_assets/assets/manifest.json #{release_path}/public/assets/manifest.json"
+      execute "scp #{master_hostname}:/home/deployer/robin8_assets/assets/manifest.json #{release_path}/public/assets/manifest.json"
     end
   end
 end
