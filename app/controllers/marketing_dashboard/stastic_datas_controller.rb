@@ -26,10 +26,11 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   #只有在数据连续的时候  才可以，不然index值对应不正确
   def new_kol
     day_count = 5
-    @total = Kol.where("mobile_number is not null").where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(*) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @wechat = Identity.where(:provider => 'wechat').where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @weibo = Identity.where(:provider => 'weibo').where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @qq = Identity.where(:provider => 'qq').where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    _start = (day_count + 1).days.ago
+    @total = Kol.where("mobile_number is not null").where("created_at > '#{_start}'").select("DATE(created_at) as created, count(*) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @wechat = Identity.where(:provider => 'wechat').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @weibo = Identity.where(:provider => 'weibo').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @qq = Identity.where(:provider => 'qq').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
     @collect =  []
     today = Date.today
     day_count.times.each do |index|
@@ -41,9 +42,10 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   #只有在数据连续的时候  才可以，不然index值对应不正确
   def day_statics
     day_count = 5
-    @value = KolInfluenceValue.where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @article = ArticleAction.where(:forward => true).where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @campaign = CampaignInvite.where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    _start = (day_count + 1).days.ago
+    @value = KolInfluenceValue.where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @article = ArticleAction.where(:forward => true).where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @campaign = CampaignInvite.where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
     @collect =  []
     today = Date.today
     day_count.times.each do |index|
