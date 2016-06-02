@@ -53,7 +53,8 @@ module AuthToken
 
 
   def AuthToken.valid_time?(decoded_data)
-    return decoded_data['time'].to_i > (Time.now - Expired).to_i && (decoded_data['time'].to_i <= (Time.now + 24.hours).to_i)
+    return true
+    # return decoded_data['time'].to_i > (Time.now - Expired).to_i && (decoded_data['time'].to_i <= (Time.now + 24.hours).to_i)
   end
 
   def AuthToken.test_issue_token(mobile_number = '13817164642')
