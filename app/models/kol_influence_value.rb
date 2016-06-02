@@ -73,6 +73,7 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.schedule_cal_influence
+    return if Date.today.wday !=  Rails.application.secrets[:cal_influence][:wday]
     if Rails.env.development?
       CalInfluenceWorker.new.perform
     else
