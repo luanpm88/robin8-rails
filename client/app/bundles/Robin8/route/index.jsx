@@ -7,6 +7,12 @@ export default (
   <Route path="/brand" component={BrandHomeContainer}>
     <IndexRoute component={BrandHomePartial} />
 
+    <Route path="campaigns/select" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/SelectCampaignPartial').default);
+      }, "selectCampaign");
+    }}/>
+
     <Route path="campaigns/new" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/CreateCampaignPartial').default);

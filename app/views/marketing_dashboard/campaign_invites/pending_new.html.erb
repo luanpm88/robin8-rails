@@ -227,7 +227,7 @@ $(function(){
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: { "status": "reject", "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason_one": $('.common_reject_reason-one').val()}
+      data: { "status": "reject", "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason": $('.common_reject_reason-one').val()}
     })
       .done(function(data) {
         if(data['result'] == 'reject'){
