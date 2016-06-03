@@ -44,7 +44,7 @@ class Message < ActiveRecord::Base
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     elsif unmatch_kol_id.size > 0
-      kol_ids = Kol.where("device_token is not null").where.not(:id => unmatch_kol_id).collect{|t| t.id }
+      kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save
@@ -114,7 +114,7 @@ class Message < ActiveRecord::Base
 
   def self.generate_push_message(message)
     puts "----generate_push_message"
-    if Rails.env == "staging" or Rails.env == "development" 
+    if Rails.env == "staging" or Rails.env == "development"
       return
     end
     PushMessage.create_message_push(message)

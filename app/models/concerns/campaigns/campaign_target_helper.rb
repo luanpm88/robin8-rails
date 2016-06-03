@@ -22,8 +22,9 @@ module Campaigns
       get_ids_from_target_content self.remove_kol_targets.map(&:target_content)
     end
 
+
     def get_black_list_kols
-      Kol.where("forbid_campaign_time > '#{Time.now}'").map(&:id)
+      self.class.get_black_list_kols
     end
 
     def add_kols_by_targets
@@ -36,7 +37,7 @@ module Campaigns
     end
 
     def today_receive_three_times_kol_ids
-      CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
+      self.class.today_receive_three_times_kol_ids
     end
 
     # 获取指定kols
@@ -48,14 +49,13 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      return nil if self.campaign_targets.size == 0
       kols = nil
       self.campaign_targets.each do |target|
-        if target.target_type == 'region'  && target.target_content != '全部'
+        if target.target_type == 'region'  && target.target_content != '全部' && target.target_content != '全部 全部'
           if self.is_recruit_type?
-            kols = Kol.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
+            kols = Kol.active.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
           else
-            kols = Kol.where(:app_city => target.get_citys)
+            kols = Kol.active.where(:app_city => target.get_citys)
           end
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
@@ -63,12 +63,24 @@ module Campaigns
         #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue nil
+      kols ||= Kol.active
+      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue []
     end
 
     def get_kol_ids
       get_specified_kol_ids ||  get_matching_kol_ids
     end
+
+    class_methods do
+      def get_black_list_kols
+        Kol.where("forbid_campaign_time > '#{Time.now}'").map(&:id)
+      end
+
+      def today_receive_three_times_kol_ids
+        CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
+      end
+    end
+
 
     private
     def get_ids_from_target_content contents
