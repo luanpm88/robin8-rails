@@ -12,7 +12,7 @@ module API
           optional :login_id, type: Integer
         end
         get 'primary' do
-          if params[:identity_id] > 10000000
+          if params[:identity_id].present? && params[:identity_id] > 10000000
             res = IdentityAnalysis::FakeWeixinReport.primary_data
           else
             if params[:login_id]
@@ -39,7 +39,7 @@ module API
           at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'messages' do
-          if params[:identity_id] > 10000000
+          if params[:identity_id].present? && params[:identity_id] > 10000000
             res = IdentityAnalysis::FakeWeixinReport.messages_data
           else
             if params[:login_id]
@@ -68,7 +68,7 @@ module API
           at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'articles' do
-          if params[:identity_id] > 10000000
+          if params[:identity_id].present? && params[:identity_id] > 10000000
             res = IdentityAnalysis::FakeWeixinReport.articles_data
           else
             if params[:login_id]
@@ -97,7 +97,7 @@ module API
           at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'user_analysises' do
-          if params[:identity_id] > 10000000
+          if params[:identity_id].present? && params[:identity_id] > 10000000
             res = IdentityAnalysis::FakeWeixinReport.user_analysises_data
           else
             if params[:login_id]

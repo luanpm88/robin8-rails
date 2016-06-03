@@ -120,7 +120,7 @@ module API
           end
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
-          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
 
@@ -144,7 +144,7 @@ module API
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
           present :last_influence_score, (KolInfluenceValue.last_auto_value(params[:kol_uuid], current_kol.try(:id)).influence_score  rescue nil)
-          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
@@ -170,7 +170,7 @@ module API
           rank_index = KolContact.joined.where(:kol_id => current_kol.id).where("influence_score > '#{kol_value.influence_score}'").count   + 1
           present :error, 0
           present :upgrade_notices, KolInfluenceValue::UpgradeNotices
-          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :rank_index, rank_index
           present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
         end

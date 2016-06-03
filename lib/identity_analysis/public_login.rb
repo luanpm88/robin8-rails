@@ -35,9 +35,9 @@ module IdentityAnalysis
                                :params =>  params
                  )
       response = JSON.parse request.response_body   rescue {}
-      logger.info "=======login_with_account======="
-      logger.info cookie
-      logger.info  response.inspect
+      Rails.logger.info "=======login_with_account======="
+      Rails.logger.info cookie
+      Rails.logger.info  response.inspect
       cookies = ""
       if response["base_resp"].present? && response["base_resp"]["ret"] == 0
         cookies = append_cookies(cookies, request)

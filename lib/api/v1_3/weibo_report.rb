@@ -21,7 +21,7 @@ module API
           end
           if res && res['status']
             present :error, 0
-            present :primary, res['data']['overview'], with: API::V1_3::Entities::WeiboReportEntities::Primary
+            present :primary, (res['data']['overview'] rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Primary
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -80,7 +80,7 @@ module API
           end
           if res && res['status']
             present :error, 0
-            present :follower_verified, res['data']['sorted_followers'].first, with: API::V1_3::Entities::WeiboReportEntities::FollowerVerified
+            present :follower_verified, (res['data']['sorted_followers'].first rescue {}), with: API::V1_3::Entities::WeiboReportEntities::FollowerVerified
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -100,11 +100,12 @@ module API
             return {:error => 3, :detail => '授权过期，请重新授权'}                             if !identity.valid_authorize?
             res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, params[:duration])  rescue {}
           end
+          puts res
           if res['status']
             sorted_friends = AnalysisIdentity.complete_sorted_friends(res['data']['sorted_friends'], params[:duration])
             present :error, 0
             present :friend_verified, sorted_friends, with: API::V1_3::Entities::WeiboReportEntities::FriendVerified
-            present :bilateral, res['data']['bilateral_friendships'].first, with: API::V1_3::Entities::WeiboReportEntities::Bilateral
+            present :bilateral, (res['data']['bilateral_friendships'].first || {} rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Bilateral
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -126,8 +127,8 @@ module API
           puts res
           if res && res['status']
             present :error, 0
-            present :regions, (res['data']['regional_followers'].first['regions'] rescue nil), with: API::V1_3::Entities::WeiboReportEntities::Region
-            present :genders, (res['data']['sexual_followers'].first rescue nil), with: API::V1_3::Entities::WeiboReportEntities::Gender
+            present :regions, (res['data']['regional_followers'].first['regions'] rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Region
+            present :genders, (res['data']['sexual_followers'].first || {} rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Gender
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -149,7 +150,7 @@ module API
           puts res
           if res && res['status']
             present :error, 0
-            present :statuses, res['data']['statuses'], with: API::V1_3::Entities::WeiboReportEntities::Status
+            present :statuses, (res['data']['statuses'] rescue {}), with: API::V1_3::Entities::WeiboReportEntities::Status
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
