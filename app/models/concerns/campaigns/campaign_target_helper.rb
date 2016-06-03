@@ -22,8 +22,9 @@ module Campaigns
       get_ids_from_target_content self.remove_kol_targets.map(&:target_content)
     end
 
+
     def get_black_list_kols
-      Kol.where("forbid_campaign_time > '#{Time.now}'").map(&:id)
+      self.class.get_black_list_kols
     end
 
     def add_kols_by_targets
@@ -36,7 +37,7 @@ module Campaigns
     end
 
     def today_receive_three_times_kol_ids
-      CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
+      self.class.today_receive_three_times_kol_ids
     end
 
     # 获取指定kols
@@ -69,6 +70,17 @@ module Campaigns
     def get_kol_ids
       get_specified_kol_ids ||  get_matching_kol_ids
     end
+
+    class_methods do
+      def get_black_list_kols
+        Kol.where("forbid_campaign_time > '#{Time.now}'").map(&:id)
+      end
+
+      def today_receive_three_times_kol_ids
+        CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
+      end
+    end
+
 
     private
     def get_ids_from_target_content contents
