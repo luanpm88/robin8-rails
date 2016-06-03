@@ -427,4 +427,21 @@ class Kol < ActiveRecord::Base
     return self.address if self.address
     Address.create.tap { |a| self.update(address: a) }
   end
+
+  #override devise  request.remote_ip is null
+  def update_tracked_fields(request)
+    old_current, new_current = self.current_sign_in_at, Time.now.utc
+    self.last_sign_in_at     = old_current || new_current
+    self.current_sign_in_at  = new_current
+
+
+    ip = (request.remote_ip rescue nil) || request.ip
+    old_current, new_current = self.current_sign_in_ip, ip
+    self.last_sign_in_ip     = old_current || new_current
+    self.current_sign_in_ip  = new_current
+
+    self.sign_in_count ||= 0
+    self.sign_in_count += 1
+  end
+
 end

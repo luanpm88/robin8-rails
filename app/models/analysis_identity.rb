@@ -21,7 +21,7 @@ class AnalysisIdentity < ActiveRecord::Base
     params.merge!(info_type)
     if duration
       params['end_date'] = Date.today
-      params['start_date'] = Date.today - duration.days  + 1.days  # 含end_date start_date
+      params['start_date'] = Date.today - duration.days
     end
     return RestClient.get("#{ServerIp}/weibo/report", {:params => params})
   end

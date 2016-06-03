@@ -15,7 +15,7 @@ module API
         params do
           requires :provider, type: String, values: ['public_wechat', 'wechat', 'weibo']
           optional :name, type: String
-          optional :follower_count, type: Integer
+          optional :follower_count, type: String
           optional :belong_field, type: String
           # optional :headline_price, type: Float
           # optional :second_price, type: Float

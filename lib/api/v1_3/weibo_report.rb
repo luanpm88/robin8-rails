@@ -126,8 +126,8 @@ module API
           puts res
           if res && res['status']
             present :error, 0
-            present :regions, res['data']['regional_followers'].first['regions'], with: API::V1_3::Entities::WeiboReportEntities::Region
-            present :genders, res['data']['sexual_followers'].first, with: API::V1_3::Entities::WeiboReportEntities::Gender
+            present :regions, (res['data']['regional_followers'].first['regions'] rescue nil), with: API::V1_3::Entities::WeiboReportEntities::Region
+            present :genders, (res['data']['sexual_followers'].first rescue nil), with: API::V1_3::Entities::WeiboReportEntities::Gender
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'

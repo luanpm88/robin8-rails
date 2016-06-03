@@ -12,6 +12,7 @@
     <tr>
       <th>ID</th>
       <th>用户ID</th>
+      <th>品牌主名称</th>
       <th>创建时间</th>
       <th>发票类型</th>
       <th>发票金额</th>
@@ -30,6 +31,7 @@
           <td> <%= multi_send i, v %> </td>
         <% end %>
         <td> <%= link_to i.user_id, marketing_dashboard_user_path(:id => i.user_id), :target => "_blank" %></td>
+        <td> <%= i.user.name %></td>
         <td><%= i.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <td>
           <% if i.invoice_type == 'common' %>
