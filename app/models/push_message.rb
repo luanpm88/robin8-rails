@@ -78,12 +78,18 @@ class PushMessage < ActiveRecord::Base
 
   Robin8Logo = "http://7xozqe.com2.z0.glb.qiniucdn.com/robin8_log-2016-3-30.jpg"
   def self.push_campaign_message
-    campaign_size = Campaign.where(:status => 'executing').size
-    return if  campaign_size == 0
+    executing_campaigns = Campaign.where(:status => 'executing', :end_apply_check => false)
+    return if  executing_campaigns.size == 0
+    should_push_kol_ids = []
+    executing_campaigns.each {|t| should_push_kol_ids += t.get_kol_ids }
+    all_receive_kol_ids =  CampaignInvite.where(:campaign_id => executing_campaigns.collect{|t| t.id}).select("kol_id")
+                             .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
+    push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
+    device_tokens = Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}
     title =  '你有新的特邀转发活动'
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
     push_message = self.new(:template_type => 'transmission', :template_content => template_content, :title => title,
-                            :receiver_type => 'App', :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
+                            :receiver_type => 'List', :receiver_ids => push_kol_ids, :receiver_cids => device_tokens )
     push_message.save
   end
 
