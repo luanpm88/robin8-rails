@@ -1,11 +1,20 @@
 import React, { PropTypes } from "react";
 import { Link } from "react-router";
+import KolDetailModal from '../modals/KolDetail';
+
 import isSuperVistor from "../../shared/VisitAsAdmin";
 import SwitchBox from "../../shared/SwitchBox";
 
 export default class InviteKol extends React.Component {
   constructor(props, context){
     super(props, context);
+    this.state = {
+      showKolDetailModal: false
+    };
+  }
+
+  closeshowKolDetailModal() {
+    this.setState({showKolDetailModal: false});
   }
 
   updateKolStatus(status) {
@@ -67,6 +76,17 @@ export default class InviteKol extends React.Component {
     }
   }
 
+  handle_click() {
+    this.setState({showKolDetailModal: true})
+  }
+
+  render_remark_and_pictures() {
+    const { campaign_invite } = this.props;
+    return (
+      <td className="detail-info"><a onClick={this.handle_click.bind(this)}>详细信息</a></td>
+    )
+  }
+
   render(){
     const { campaign_invite } = this.props;
 
@@ -81,8 +101,9 @@ export default class InviteKol extends React.Component {
         </td>
         <td>{campaign_invite.get("kol").get("influence_score") || "-"}</td>
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
-        <td>{campaign_invite.get("agree_reason") || "-"}</td>
+        {this.render_remark_and_pictures()}
         {this.render_screenshot_or_switchbox()}
+        <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeshowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
       </tr>
     )
   }

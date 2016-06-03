@@ -8,7 +8,6 @@ export default class KolList extends React.Component {
   constructor(props, context){
     super(props, context);
   }
-
   componentDidMount(){
     const { fetchAppliesOfRecruit } = this.props.actions;
     if(this.props.campaign_id){
@@ -89,7 +88,7 @@ export default class KolList extends React.Component {
         <th className="fans">微博/微信粉丝量</th>
         <th className="influence">影响力分数</th>
         <th className="location">地区</th>
-        <th className="reason">推荐原因</th>
+        <th className="reason">详情</th>
         { this.render_status_header() }
       </tr>
     )
