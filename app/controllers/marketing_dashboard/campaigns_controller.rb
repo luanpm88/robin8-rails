@@ -40,11 +40,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
     unmatched_kol_ids = @campaign.get_unmatched_kol_ids
 
-    if @campaign.per_budget_type != 'recruit'
-      @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
-    else
-      @kols = Kol.where.not(:id => unmatched_kol_ids).where(:id => @campaign.get_matching_kol_ids).paginate(paginate_params)
-    end
+    @kols = Kol.where(:id => @campaign.get_kol_ids).paginate(paginate_params)
     @unmatched_kols = Kol.where(:id => unmatched_kol_ids)
 
     @remove_kol_ids = @campaign.get_remove_kol_ids_by_target

@@ -48,14 +48,13 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      return nil if self.campaign_targets.size == 0
       kols = nil
       self.campaign_targets.each do |target|
         if target.target_type == 'region'  && target.target_content != '全部'
           if self.is_recruit_type?
-            kols = Kol.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
+            kols = Kol.active.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
           else
-            kols = Kol.where(:app_city => target.get_citys)
+            kols = Kol.active.where(:app_city => target.get_citys)
           end
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
@@ -63,7 +62,8 @@ module Campaigns
         #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue nil
+      kols ||= Kol.active
+      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue []
     end
 
     def get_kol_ids

@@ -22,22 +22,9 @@ module Campaigns
       self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
       Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
       campaign_id = self.id
-      kol_ids = get_kol_ids
-      if kol_ids.present?
-        Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id campaign_id
-        end
-      else
-        #TODO multi-thread deal
-        Kol.find_each do |kol|
-          kol.add_campaign_id(campaign_id,false)
-        end
-        unmatched_kol_ids = get_unmatched_kol_ids
-        Kol.where(:id => unmatched_kol_ids).each do |kol|
-          kol.delete_campaign_id campaign_id
-        end
+      Kol.where(:id => get_kol_ids).each do |kol|
+        kol.add_campaign_id campaign_id
       end
-      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
       # make sure those execute late (after invite create)
       #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
       if  is_recruit_type?
@@ -57,7 +44,7 @@ module Campaigns
       ActiveRecord::Base.transaction do
         self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
         self.update_column(:status, 'executing')
-        Message.new_campaign(self, get_kol_ids, get_unmatched_kol_ids)
+        Message.new_campaign(self, get_kol_ids)
       end
     end
 
