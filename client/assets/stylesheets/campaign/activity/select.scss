@@ -1,0 +1,134 @@
+.page-activity-select {
+
+  .at-s-top {
+    h2 {
+      font-size: 21px;
+      color: #181616;
+      text-align: center;
+      padding: 0 30px;
+      margin: 0;
+    }
+  }
+
+  .at-s-ls {
+    width: 100%;
+    max-width: 910px;
+    margin: 60px auto 30px auto;
+
+    &:after {
+      clear: both;
+      display: block;
+      content: "";
+    }
+  }
+
+  .at-s-box {
+    position: relative;
+    display: block;
+    float: left;
+    width: 430px;
+    height: 290px;
+    background-color: #fff;
+    padding: 30px 25px;
+    transition: box-shadow .2s;
+    -webkit-transition: -webkit-box-shadow .2s;
+
+    &:nth-child(2) {
+      margin-left: 50px;
+    }
+
+    &:hover {
+      box-shadow: 10px 10px 18px rgba(0, 0, 0, 0.1);
+      -webkit-box-shadow: 10px 10px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .at-box-mk {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 80px;
+      height: 80px;
+
+      i {
+        position: absolute;
+        z-index: 2;
+        top: 23%;
+        left: 8px;
+        font-style: normal;
+        width: 100%;
+        max-width: 60px;
+        font-size: 13px;
+      }
+
+      &.mk-new {
+        color: #fff;
+        .mk-bg {
+          border-left: 80px solid #f26d45;
+        }
+      }
+
+      .mk-bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-bottom: 80px solid transparent;
+        border-left: 80px solid #ccc;
+      }
+    }
+
+    .at-box-hd {
+      width: 100%;
+      clear: both;
+
+      h3 {
+        text-align: center;
+        font-size: 21px;
+        color: #181616;
+        margin: 20px 0 15px 0;
+        padding: 0 10px;
+      }
+    }
+
+    .at-box-pic {
+      width: 47px;
+      height: 47px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .at-box-ct {
+      text-align: center;
+      line-height: 24px;
+      font-size: 14px;
+      color: #696463;
+      p {
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    .at-box-bt {
+      padding: 20px 0;
+      text-align: center;
+
+      .btn {
+        width: 90px;
+        height: 36px;
+        font-size: 14px;
+        color: #181616;
+        border: 1px solid #181616;
+        transition: all .2s;
+        -webkit-transition: all .2s;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+
+        &:hover {
+          color: #36cdd3;
+          border: 1px solid #36cdd3;
+        }
+      }
+    }
+  }
+}
