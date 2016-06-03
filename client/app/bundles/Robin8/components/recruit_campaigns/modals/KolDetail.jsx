@@ -25,6 +25,24 @@ export default class KolDetailModal extends Component {
     return(<img src={require("default_pic.png")} className="blurUserAvatar"></img>)
   }
 
+  render_screenshots() {
+    const campaign_invite = this.props.campaignInvite;
+    if (campaign_invite.get("images").size) {
+      return <Carousel prevIcon={this.state.prevIcon} nextIcon={this.state.nextIcon}>
+        { do
+          {
+            campaign_invite.get("images").toArray().map(function(img, index){
+              return (
+                <Carousel.Item key={index}>
+                  <img className="screenshot-img" alt="211x375" src={img}/>
+                </Carousel.Item>
+              )
+            })
+          }
+        }
+      </Carousel>
+    }
+  }
 
   render() {
     const campaign_invite = this.props.campaignInvite;
@@ -32,7 +50,7 @@ export default class KolDetailModal extends Component {
       <Modal {...this.props} className="kol-detail-modal" closeButton>
         <Modal.Header closeButton>
           <div className="avatar">
-            {this.render_avatar()}
+            { this.render_avatar() }
             <span className="brand-name">{campaign_invite.get('kol').get('name')}</span>
           </div>
           <ul className="list-inline info">
@@ -57,20 +75,8 @@ export default class KolDetailModal extends Component {
         <Modal.Body>
           <div className="recommand-detail">
             <p className='agree-reason'>推荐原因: {campaign_invite.get("agree_reason")}</p>
-            <p className='remark'>用户备注: {campaign_invite.get("remark")}</p>
-            <Carousel prevIcon={this.state.prevIcon} nextIcon={this.state.nextIcon}>
-              { do
-                {
-                  campaign_invite.get("images").toArray().map(function(img, index){
-                    return (
-                      <Carousel.Item key={index}>
-                        <img className="screenshot-img" alt="211x375" src={img}/>
-                      </Carousel.Item>
-                    )
-                  })
-                }
-              }
-            </Carousel>
+            <p className='remark'>用户备注: {campaign_invite.get("remark") || "无备注" }</p>
+            { this.render_screenshots() }
           </div>
         </Modal.Body>
       </Modal>
