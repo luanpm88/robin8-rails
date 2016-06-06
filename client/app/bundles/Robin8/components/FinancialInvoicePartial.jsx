@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import validator from 'validator';
 
 import BreadCrumb     from './shared/BreadCrumb';
@@ -9,6 +10,16 @@ import InvoiceHistory from './financial/InvoiceHistory';
 import getUrlQueryParams    from '../helpers/GetUrlQueryParams';
 
 import 'recharge/invoice.scss'
+
+function select(state) {
+  return {
+    invoice: state.financialReducer.get('invoice'),
+    invoiceReceiver: state.financialReducer.get('invoiceReceiver'),
+    invoiceHistories: state.financialReducer.get('invoiceHistories'),
+    appliableCredits: state.financialReducer.get('appliableCredits'),
+    paginate: state.financialReducer.get("paginate")
+  }
+}
 
 class FinancialInvoicePartial extends React.Component {
 
@@ -26,7 +37,7 @@ class FinancialInvoicePartial extends React.Component {
   }
 
   hide_or_show_paginator() {
-    if (!(this.props.data.get("invoiceHistories").size)) {
+    if (!(this.props.invoiceHistories.size)) {
       $("#invoice-paginator").hide();
     } else {
       $("#invoice-paginator").show();
@@ -35,10 +46,10 @@ class FinancialInvoicePartial extends React.Component {
 
   displayPaginator(props) {
     const { fetchInvoiceHistories } = this.props.actions;
-    if (this.props.data.get("paginate").get("X-Page")) {
+    if (this.props.paginate.get("X-Page")) {
       const pagination_options = {
-        currentPage: this.props.data.get("paginate").get("X-Page"),
-        totalPages: this.props.data.get("paginate").get("X-Total-Pages"),
+        currentPage: this.props.paginate.get("X-Page"),
+        totalPages: this.props.paginate.get("X-Total-Pages"),
         shouldShowPage: function(type, page, current) {
           switch (type) {
             default:
@@ -56,7 +67,7 @@ class FinancialInvoicePartial extends React.Component {
   check_credits() {
     const { fetchAppliableCredits } = this.props.actions;
     fetchAppliableCredits();
-    const appliableCredits = this.props.data.get('appliableCredits').get("appliable_credits")
+    const appliableCredits = this.props.appliableCredits.get("appliable_credits")
     const credits = this.refs.creditsInput.value.trim();
     if (validator.isNull(credits)) {
       $(".error-tips p").hide();
@@ -77,7 +88,7 @@ class FinancialInvoicePartial extends React.Component {
 
 
   handleClick() {
-    const appliableCredits = this.props.data.get('appliableCredits').get("appliable_credits")
+    const appliableCredits = this.props.appliableCredits.get("appliable_credits")
     const { fetchAppliableCredits, saveInvoiceHistory} = this.props.actions;
 
     const credits = this.refs.creditsInput.value.trim();
@@ -95,7 +106,7 @@ class FinancialInvoicePartial extends React.Component {
   }
 
   render_invoice_histories_table() {
-    const invoiceHistories = this.props.data.get("invoiceHistories");
+    const invoiceHistories = this.props.invoiceHistories;
     if (invoiceHistories && invoiceHistories.size) {
       return (
         <tbody>
@@ -121,7 +132,7 @@ class FinancialInvoicePartial extends React.Component {
           </tr>
           { do
             {
-              this.props.data.get("invoiceHistories").map(function(invoiceHistory, index){
+              this.props.invoiceHistories.map(function(invoiceHistory, index){
                 return <InvoiceHistory invoiceHistory={invoiceHistory} key={index} />
               })
             }
@@ -132,10 +143,10 @@ class FinancialInvoicePartial extends React.Component {
   }
 
   render_appliable_credits() {
-    if (this.props.data.get('appliableCredits').size && (this.props.data.get('appliableCredits').get('appliable_credits') > 0)) {
+    if (this.props.appliableCredits.size && (this.props.appliableCredits.get('appliable_credits') > 0)) {
       return (
         <div>
-          <p className="avail-invoice-amount">可申请额度: &nbsp;&nbsp;&nbsp;{this.props.data.get('appliableCredits').get('appliable_credits')}元</p>
+          <p className="avail-invoice-amount">可申请额度: &nbsp;&nbsp;&nbsp;{this.props.appliableCredits.get('appliable_credits')}元</p>
           <ul className="list-inline">
             <li>
               申请金额
@@ -164,7 +175,7 @@ class FinancialInvoicePartial extends React.Component {
           <div className="page-invoice">
             <FinancialMenu />
           <div className="main-content">
-            <InvoiceInfo invoice={this.props.data.get('invoice')} invoiceReceiver={this.props.data.get('invoiceReceiver')} actions={this.props.actions} />
+            <InvoiceInfo invoice={this.props.invoice} invoiceReceiver={this.props.invoiceReceiver} actions={this.props.actions} />
             <div className='apply-invoice'>
               { this.render_appliable_credits() }
 
@@ -190,4 +201,4 @@ class FinancialInvoicePartial extends React.Component {
   }
 }
 
-export default FinancialInvoicePartial;
+export default connect(select)(FinancialInvoicePartial);

@@ -1,9 +1,16 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+
 import Campaign from './Campaign';
 import getUrlQueryParams from '../../helpers/GetUrlQueryParams';
 
-export default class CampaignList extends React.Component {
+
+function select(state) {
+  return { CampaignData: state.campaignReducer };
+}
+
+class CampaignList extends React.Component {
 
   constructor(props, context) {
     super(props, context)
@@ -25,13 +32,11 @@ export default class CampaignList extends React.Component {
 
   displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
-    if (this.props.data.get("paginate").get("X-Page")) {
-      let totalPage = this.props.data.get("paginate").get("X-Total-Pages")
-      if (totalPage < this.props.data.get("paginate").get("X-Page")){
-        totalPage = this.props.data.get("paginate").get("X-Page")
-      }
+    if (this.props.CampaignData.get("paginate").get("X-Page")) {
+      let totalPage = this.props.CampaignData.get("paginate").get("X-Total-Pages")
+
       const pagination_options = {
-        currentPage: this.props.data.get("paginate").get("X-Page"),
+        currentPage: this.props.CampaignData.get("paginate").get("X-Page"),
         totalPages: totalPage,
         shouldShowPage: function(type, page, current) {
           switch (type) {
@@ -59,9 +64,9 @@ export default class CampaignList extends React.Component {
 
   render() {
     const actions = this.props.actions;
-    const campaignList = this.props.data.get('campaignList');
-    const campaignCount = this.props.data.get("paginate").get('X-Total')
-    const avail_amount = this.props.data.get("brand").get("avail_amount")
+    const campaignList = this.props.CampaignData.get('campaignList');
+    const campaignCount = this.props.CampaignData.get("paginate").get('X-Total')
+    const avail_amount = this.props.profileData.get("brand").get("avail_amount")
     return (
       <div className="wrapper">
         <div className="container">
@@ -117,3 +122,5 @@ export default class CampaignList extends React.Component {
     )
   }
 }
+
+export default connect(select)(CampaignList)

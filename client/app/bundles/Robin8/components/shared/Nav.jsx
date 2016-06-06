@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export default class BrandNav extends React.Component {
   static propTypes = {
-    data: PropTypes.object.isRequired
+    profileData: PropTypes.object.isRequired
   }
 
   constructor(props, context) {
@@ -18,8 +18,8 @@ export default class BrandNav extends React.Component {
 
   render() {
 
-    const { actions, data } = this.props;
-    const brand = data.get('brand');
+    const { actions, profileData } = this.props;
+    const brand = profileData.get('brand');
 
     return (
       <header className="navbar r-global-header">

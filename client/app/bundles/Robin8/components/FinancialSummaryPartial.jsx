@@ -1,11 +1,20 @@
 import React                from 'react';
 import { Link }             from 'react-router';
+import { connect } from 'react-redux'
+
 import BreadCrumb           from './shared/BreadCrumb';
 import FinancialMenu        from './shared/FinancialMenu';
 import Transaction          from './financial/Transaction';
 import getUrlQueryParams    from '../helpers/GetUrlQueryParams';
 
 import 'recharge/summary.scss'
+
+function select(state) {
+  return {
+    transactions: state.financialReducer.get('transactions'),
+    paginate: state.financialReducer.get("paginate")
+  }
+}
 
 class FinancialSummaryPartial extends React.Component {
 
@@ -22,7 +31,7 @@ class FinancialSummaryPartial extends React.Component {
   }
 
   hide_or_show_paginator() {
-    if (!this.props.data.get('transactions').size) {
+    if (!this.props.transactions.size) {
       $("#transactions-paginator").hide();
     } else {
       $("#transactions-paginator").show();
@@ -31,13 +40,13 @@ class FinancialSummaryPartial extends React.Component {
 
   displayPaginator(props) {
     const { fetchTransactions } = this.props.actions;
-    if (this.props.data.get("paginate").get("X-Page")) {
-      let totalPage = this.props.data.get("paginate").get("X-Total-Pages")
-      if (totalPage < this.props.data.get("paginate").get("X-Page")){
-        totalPage = this.props.data.get("paginate").get("X-Page")
+    if (this.props.paginate.get("X-Page")) {
+      let totalPage = this.props.paginate.get("X-Total-Pages")
+      if (totalPage < this.props.paginate.get("X-Page")){
+        totalPage = this.props.paginate.get("X-Page")
       }
       const pagination_options = {
-        currentPage: this.props.data.get("paginate").get("X-Page"),
+        currentPage: this.props.paginate.get("X-Page"),
         totalPages: totalPage,
         shouldShowPage: function(type, page, current) {
           switch (type) {
@@ -54,7 +63,7 @@ class FinancialSummaryPartial extends React.Component {
   }
 
   render_transactions_table() {
-    const transactions = this.props.data.get('transactions');
+    const transactions = this.props.transactions;
     if (transactions.size) {
       return (
         <table className="table fixed table-bordered">
@@ -123,4 +132,4 @@ class FinancialSummaryPartial extends React.Component {
   }
 }
 
-export default FinancialSummaryPartial;
+export default connect(select)(FinancialSummaryPartial);

@@ -4,18 +4,19 @@ import thunkMiddleware from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form'
 import loggerMiddleware from 'lib/middlewares/loggerMiddleware'
 import promiseMiddleware from 'lib/middlewares/promiseMiddleware'
-import reducers from '../reducers'
-import { initialStates } from '../reducers'
 
+import campaignReducer from '../reducers/campaignReducer';
+import financialReducer from '../reducers/financialReducer';
+import profileReducer from '../reducers/profileReducer';
 
 export default props => {
 
   const { brand } = props;
-  const { $$brandState } = initialStates;
-  const initialState = { $$brandStore: $$brandState };
 
   const reducer = combineReducers({
-    ...reducers,
+    campaignReducer,
+    financialReducer,
+    profileReducer,
     routing: routerReducer,
     form: formReducer
   })
@@ -26,7 +27,7 @@ export default props => {
 
   const storeCreator = composeStore(createStore);
 
-  const store = storeCreator(reducer, initialState);
+  const store = storeCreator(reducer);
 
   return store;
 
