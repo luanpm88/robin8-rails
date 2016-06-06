@@ -36,9 +36,13 @@ class AnalysisIdentity < ActiveRecord::Base
   def self.complete_follower_data(data = [],len)
     data_len = data.size
     if data_len < len
-      today = Date.today
-      (data_len..len).to_a.each do |i|
-        data.insert(0,{"r_date" => today - i.days, 'number' => 0 })
+      if data && data.size > 0
+        _start = data[0]["r_date"].to_date
+      else
+        _start = Date.today
+      end
+      (1..(len - data_len)).to_a.each do |i|
+        data.insert(0,{"r_date" => _start - i.days, 'number' => 0 })
       end
     end
     data
@@ -48,9 +52,13 @@ class AnalysisIdentity < ActiveRecord::Base
   def self.complete_sorted_friends(data = [],len)
     data_len = data.size
     if data_len < len
-      today = Date.today
-      (data_len..len).to_a.each do |i|
-        data.insert(0,{"r_date" => today - i.days, 'total_number' => 0, 'verified_number' => 0, 'unverified_number' => 0 })
+      if data && data.size > 0
+        _start = data[0]["r_date"].to_date
+      else
+        _start = Date.today
+      end
+      (1..(len - data_len)).to_a.each do |i|
+        data.insert(0,{"r_date" => _start - i.days, 'total_number' => 0, 'verified_number' => 0, 'unverified_number' => 0 })
       end
     end
     data
