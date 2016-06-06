@@ -14,10 +14,11 @@ import Influnce       from './campaigns/show/Influnce';
 
 function select(state){
   return {
-    campaign_invites: state.$$brandStore.get("campaign_invites"),
-    hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
-    paginate: state.$$brandStore.get("paginate"),
-    campaign_statistics: state.$$brandStore.get("campaign_statistics")
+    campaign: state.campaignReducer.get('campaign'),
+    campaign_invites: state.campaignReducer.get("campaign_invites"),
+    hasfetchedInvite: state.campaignReducer.get("hasfetchedInvite"),
+    paginate: state.campaignReducer.get("paginate"),
+    campaign_statistics: state.campaignReducer.get("campaign_statistics")
   };
 }
 
@@ -50,8 +51,7 @@ class ShowCampaignPartial extends Component {
   }
 
   render() {
-    const campaign = this.props.data.get('campaign');
-    const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
+    const {campaign, actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
     const campaign_id = this.props.params.id
     return (
       <div className="page page-activity page-activity-show">

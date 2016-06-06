@@ -12,6 +12,10 @@ module Brand
           object.campaign_invite.screenshot
         end
         expose :name
+        expose :remark
+        expose :images do |object|
+          object.images.map(&:avatar_url)
+        end
         expose :weixin_friend_count
         expose :weibo_friend_count do |object, opts|
           object.kol.identities.where(provider: 'weibo').maximum("followers_count")
