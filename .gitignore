@@ -62,3 +62,4 @@ config/selector_city.txt
 config/new_selector_city.txt
 =======
 >>>>>>> parent of 45ea677... 修改landing page 背景图
+db/schema.rb

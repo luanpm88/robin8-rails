@@ -51,6 +51,8 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activity_orders
   has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
+  scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+
 
   def email_required?
     false if self.provider != "signup"
