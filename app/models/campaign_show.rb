@@ -1,9 +1,10 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 30.minutes : 20.seconds
-  OpenidTimeout = Rails.env.production? ? 30.minutes : 20.seconds
-  OpenidMaxCount = 3
-  IpTimeout = Rails.env.production? ? 30.seconds : 10.seconds
+  CookieTimeout = Rails.env.production? ? 45.minutes : 20.seconds
+  OpenidTimeout = Rails.env.production? ? 45.minutes : 20.seconds
+  OpenidMaxCount = 2
+  IpTimeout = Rails.env.production? ? 1.seconds : 10.seconds
   IpMaxCount = Rails.env.production? ? 20 : 2
+
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
