@@ -1,16 +1,116 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
-  <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.3.min.js"></script>-->
-  <title>Robin8-Invites</title>
-</head>
-<body bgcolor="#000000">
-  <div align="center">
-    <a href="/download_invitation?inviter_id=<%= params[:inviter_id] %>&redirect_url=http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
-      <img src="http://7xozqe.com2.z0.glb.qiniucdn.com/invite.jpg" width="100%"/>
-    </a>
-  </div>
-</body
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+    <meta charset="utf-8">
+    <title>Robin8-Invites</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+      }
+      .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
+      .container {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        position: absolute;
+      }
+      .container:after {
+        content: "";
+        clear: both;
+        display: block;
+      }
+      .logo {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        margin: -35px 0 0 -100px;
+        width: 200px;
+        height: 70px;
+      }
+      .logo img {
+        width: 100%;
+      }
+      .ft-wrapper {
+        position: fixed;
+        width: 100%;
+        max-width: 430px;
+        height: 240px;
+        bottom: 30px;
+        left: 50%;
+        padding: 15px;
+        transform: translateX(-50%);
+        -webkit-transform: -webkit-translateX(-50%);
+      }
+      .feature {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(left top, #252121, #131111);
+        background: -webkit-linear-gradient(left top, #252121, #131111);
+        padding: 25px;
+      }
+      .feature h3 {
+        font-size: 1.5em;
+        color: #fff;
+        text-align: center;
+        padding: 0;
+        margin: 5px 0 0;
+      }
+      .feature p {
+        font-size: 1.2em;
+        color: #939393;
+        text-align: center;
+        margin: 10px 0 35px 0;
+      }
+      .feature .btn {
+        display: block;
+        width: 100%;
+        height: 55px;
+        color: #fff;
+        font-size: 1em;
+        font-weight: 600;
+        line-height: 60px;
+        background-color: #2dcad0;
+        text-align: center;
+        text-decoration: none;
+      }
+      .feature .btn:hover {
+        background-color: #10777b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg" style="background-image: url(<%= asset_url("invite-bg.jpg") %>)"></div>
+    <div class="container">
+      <div class="logo">
+        <%= image_tag "logo-sd.png" %>
+      </div>
+      <div class="ft-wrapper">
+        <div class="feature">
+          <h3>你，比想象中更有价值</h3>
+          <p>用您的社交账号赚钱</p>
+          <a class="btn" href="/download_invitation?inviter_id=<%= params[:inviter_id] %>&redirect_url=http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
+            测试您的社交价值
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
