@@ -4,7 +4,11 @@ class CampaignShow < ActiveRecord::Base
   OpenidMaxCount = 2
   IpTimeout = Rails.env.production? ? 1.seconds : 10.seconds
   IpMaxCount = Rails.env.production? ? 20 : 2
-
+  if Rails.env.production?
+    KolCreditLevels = {'A' => 100, 'B' => 10}
+  else
+    KolCreditLevels = {'A' => 10, 'B' => 1}
+  end
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
@@ -80,16 +84,27 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    # check kol's total_click_threshold
-    if kol && kol.total_click_threshold
-      store_key =  "total_click_threshold_#{campaign_invite.id}"
+    # check kol's max_click depend on kol credits level
+    if kol && kol.get_kol_level
+      store_key =  "kol_level_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-      if current_total_click >= kol.total_click_threshold
-        return [false, "exceed_total_click_threshold"]
+      if current_total_click >= KolCreditLevels["#{kol.get_kol_level}"]
+        return [false, "exceed_kol_level_threshold"]
       else
         Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
       end
     end
+
+    # # check kol's total_click_threshold
+    # if kol && kol.total_click_threshold
+    #   store_key =  "total_click_threshold_#{campaign_invite.id}"
+    #   current_total_click = Rails.cache.read(store_key)  || 0
+    #   if current_total_click >= kol.total_click_threshold
+    #     return [false, "exceed_total_click_threshold"]
+    #   else
+    #     Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
+    #   end
+    # end
 
     # check visitor ip
     # ip_score = IpScore.fetch_ip_score(visitor_ip)
