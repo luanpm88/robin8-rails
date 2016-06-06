@@ -29,6 +29,12 @@ class User < ActiveRecord::Base
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
 
+  PlatformMobile = '13088888888'
+  def self.get_platform_account
+    User.find_by :mobile_number => PlatformMobile
+  end
+
+
   validates_presence_of :name, :if => Proc.new{|user| user.new_record? or user.name_changed?}
   validates_presence_of :mobile_number, :if => Proc.new{|user| user.new_record? or user.mobile_number_changed?}
   validates_presence_of :password, :if => Proc.new { |user| user.encrypted_password_changed? }
