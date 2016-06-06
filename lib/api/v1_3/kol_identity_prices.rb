@@ -14,6 +14,14 @@ module API
 
         params do
           requires :provider, type: String, values: ['public_wechat', 'wechat', 'weibo']
+        end
+        get 'price_item' do
+          identity_price = current_kol.kol_identity_prices.find_or_create_by(:provider => params[:provider])
+          present :kol_identity_price, identity_price, with: API::V1_3::Entities::KolIdentityPriceEntities::Summary
+        end
+
+        params do
+          requires :provider, type: String, values: ['public_wechat', 'wechat', 'weibo']
           optional :name, type: String
           optional :follower_count, type: String
           optional :belong_field, type: String
