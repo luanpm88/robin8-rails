@@ -76,11 +76,11 @@ class CampaignInvite < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         self.update_attributes!(:img_status => 'passed', :status => 'settled')
         if campaign.is_click_type?  || campaign.is_cpa_type?
-          kol.income(self.avail_click * campaign.per_action_budget, 'campaign', campaign, campaign.user)
-          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.per_action_budget}---#avail_amount:#{kol.avail_amount}-"
+          kol.income(self.avail_click * campaign.actual_per_action_budget(false), 'campaign', campaign, campaign.user)
+          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.actual_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
         else
-          kol.income(campaign.per_action_budget, 'campaign', campaign, campaign.user)
-          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: - forward--cid:#{campaign.id}---fee:#{campaign.per_action_budget}---#avail_amount:#{kol.avail_amount}-"
+          kol.income(campaign.actual_per_action_budget(false), 'campaign', campaign, campaign.user)
+          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: - forward--cid:#{campaign.id}---fee:#{campaign.actual_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
         end
       end
     end
