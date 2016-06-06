@@ -218,8 +218,8 @@ class Kol < ActiveRecord::Base
   end
 
   def campaign_count_by_date(date)
-    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at > '#{date.beginning_of_day}'")
-        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
+    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at < '#{date.end_of_day}'")
+        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time > '#{date.beginning_of_day}'").count
   end
 
   def post_or_recruit_campaign_income(date)
