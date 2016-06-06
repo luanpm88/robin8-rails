@@ -13,8 +13,7 @@
       <th>Name</th>
       <th>Email</th>
       <th>MobileNumber</th>
-      <th>FirstName</th>
-      <th>LastName</th>
+      <th>来源</th>
       <th>Company</th>
       <th>Amount</th>
       <th>Avail Amount</th>
@@ -24,7 +23,7 @@
   <tbody>
     <% @users.each do |u| %>
       <tr>
-        <% %w(id name email mobile_number first_name last_name company amount avail_amount).each do |v| %>
+        <% %w(id name email mobile_number utm_source company amount avail_amount).each do |v| %>
           <td> <%= u.send v %> </td>
         <% end %>
         <td>
@@ -34,7 +33,7 @@
           <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
           </br>
           |
-          <%= link_to '以品牌主身份查看', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %> 
+          <%= link_to '以品牌主身份查看', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %>
         </td>
       </tr>
     <% end %>
