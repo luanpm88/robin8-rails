@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530081621) do
+ActiveRecord::Schema.define(version: 20160603063335) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -271,7 +271,7 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.string   "visitor_referer", limit: 3555
     t.string   "other_options",   limit: 255
     t.string   "proxy_ips",       limit: 255
-    t.string   "request_url",     limit: 255
+    t.string   "request_url",     limit: 1000
     t.string   "openid",          limit: 255
   end
 
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.string   "address",              limit: 255
     t.boolean  "hide_brand_name",      limit: 1,                       default: false
     t.boolean  "end_apply_check",      limit: 1,                       default: false
+    t.float    "tax_rate",             limit: 24
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -595,7 +596,7 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.boolean  "exist",           limit: 1,   default: false
     t.string   "city",            limit: 255
     t.float    "score",           limit: 24
-    t.string   "kol_uuid",        limit: 255
+    t.string   "kol_uuid",        limit: 50
     t.float    "influence_score", limit: 24
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
@@ -604,24 +605,25 @@ ActiveRecord::Schema.define(version: 20160530081621) do
   end
 
   add_index "kol_contacts", ["kol_id"], name: "index_kol_contacts_on_kol_id", using: :btree
+  add_index "kol_contacts", ["kol_uuid"], name: "index_kol_contacts_on_kol_uuid", using: :btree
   add_index "kol_contacts", ["mobile"], name: "index_kol_contacts_on_mobile", using: :btree
 
   create_table "kol_identity_prices", force: :cascade do |t|
     t.integer  "kol_id",         limit: 4
     t.string   "provider",       limit: 255
     t.string   "name",           limit: 255
-    t.integer  "follower_count", limit: 4
+    t.string   "follower_count", limit: 255
     t.string   "belong_field",   limit: 255
-    t.integer  "headline_price", limit: 4
-    t.integer  "second_price",   limit: 4
-    t.integer  "single_price",   limit: 4
+    t.string   "headline_price", limit: 255
+    t.string   "second_price",   limit: 255
+    t.string   "single_price",   limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
 
   create_table "kol_influence_value_histories", force: :cascade do |t|
     t.integer  "kol_id",                     limit: 4
-    t.string   "kol_uuid",                   limit: 255
+    t.string   "kol_uuid",                   limit: 50
     t.string   "name",                       limit: 255
     t.string   "avatar_url",                 limit: 255
     t.string   "influence_score",            limit: 255
@@ -646,9 +648,11 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.datetime "updated_at",                                             null: false
   end
 
+  add_index "kol_influence_value_histories", ["kol_uuid"], name: "index_kol_influence_value_histories_on_kol_uuid", using: :btree
+
   create_table "kol_influence_values", force: :cascade do |t|
     t.integer  "kol_id",                     limit: 4
-    t.string   "kol_uuid",                   limit: 255
+    t.string   "kol_uuid",                   limit: 50
     t.string   "name",                       limit: 255
     t.string   "avatar_url",                 limit: 255
     t.string   "influence_score",            limit: 255
@@ -672,6 +676,8 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.integer  "article_total_click_score",  limit: 4,   default: 0
     t.integer  "article_avg_click_score",    limit: 4,   default: 0
   end
+
+  add_index "kol_influence_values", ["kol_uuid"], name: "index_kol_influence_values_on_kol_uuid", using: :btree
 
   create_table "kol_profile_screens", force: :cascade do |t|
     t.string   "url",         limit: 255
@@ -1246,7 +1252,7 @@ ActiveRecord::Schema.define(version: 20160530081621) do
     t.string   "city",            limit: 255
     t.boolean  "exist",           limit: 1,   default: false
     t.float    "score",           limit: 24
-    t.string   "kol_uuid",        limit: 255
+    t.string   "kol_uuid",        limit: 50
     t.float    "influence_score", limit: 24
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
@@ -1255,6 +1261,7 @@ ActiveRecord::Schema.define(version: 20160530081621) do
   end
 
   add_index "tmp_kol_contacts", ["kol_id"], name: "index_tmp_kol_contacts_on_kol_id", using: :btree
+  add_index "tmp_kol_contacts", ["kol_uuid"], name: "index_tmp_kol_contacts_on_kol_uuid", using: :btree
   add_index "tmp_kol_contacts", ["mobile"], name: "index_tmp_kol_contacts_on_mobile", using: :btree
 
   create_table "tmp_kol_influence_items", force: :cascade do |t|

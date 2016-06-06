@@ -58,6 +58,7 @@ class Campaign < ActiveRecord::Base
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
   SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
   RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
+  BaseTaxRate = 0.3
   def email
     user.try :email
   end
@@ -110,28 +111,37 @@ class Campaign < ActiveRecord::Base
     self.redis_total_click.value   rescue self.total_click
   end
 
-  def get_fee_info
-    "#{self.take_budget} / #{self.budget}"
+  def actual_budget(from_brand = true)
+    from_brand ? budget :  (budget * (1 - tax_rate).round(2))
   end
 
-  def take_budget
+  def actual_per_action_budget(from_brand = true)
+    from_brand ? per_action_budget : (per_action_budget * (1 - tax_rate).round(2))
+  end
+
+  def get_fee_info(from_brand = true)
+    "#{self.take_budget(from_brand)} / #{self.actual_budget(from_brand)}"
+  end
+
+  def take_budget(from_brand = true)
+    per_budget = self.actual_per_action_budget(from_brand)
     if self.is_click_type? or self.is_cpa_type?
       if self.status == 'settled'
-        (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+        (self.settled_invites.sum(:avail_click) * per_budget).round(2)       rescue 0
       else
-        (get_avail_click * self.per_action_budget).round(2)       rescue 0
+        (get_avail_click * per_budget).round(2)       rescue 0
       end
     else
       if self.status == 'settled'
-        (self.settled_invites.count * self.per_action_budget).round(2) rescue 0
+        (self.settled_invites.count * per_budget).round(2) rescue 0
       else
-        (self.valid_invites.count * self.per_action_budget).round(2) rescue 0
+        (self.valid_invites.count * per_budget).round(2) rescue 0
       end
     end
   end
 
-  def remain_budget
-    return (self.budget - self.take_budget).round(2)
+  def remain_budget(from_brand = true)
+    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)
   end
 
   def post_count
