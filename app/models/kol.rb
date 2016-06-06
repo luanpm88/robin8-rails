@@ -448,4 +448,8 @@ class Kol < ActiveRecord::Base
     self.save
   end
 
+  def get_kol_level
+    self.kol_level || 'A'
+  end
+
 end
