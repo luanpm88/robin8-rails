@@ -6,8 +6,9 @@ module API
           authenticate!
         end
 
-        post "create" do
-          
+        post "/" do
+          brand_user = current_user.find_or_create_brand_user
+          service = CreateCampaignService.new brand_user, declared(params)
         end
       end
     end
