@@ -49,7 +49,7 @@ class PublicWechatLogin < ActiveRecord::Base
     public_wechat_identity = AnalysisIdentity.find(:kol_id => self.kol_id, :name => self.username)
     return if public_wechat_identity.blank?
     public_wechat_identity.nick_name = user_info['nick_name']
-    public_wechat_identity.logo_url = user_info['logo_url']
+    public_wechat_identity.avatar_url = user_info['logo_url']
     public_wechat_identity.user_name = user_info['user_name']
     public_wechat_identity.save
   end

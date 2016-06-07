@@ -6,7 +6,6 @@ module API
           present :error, 0
           present :enabled, Rails.application.secrets[:identify_enabled]
         end
-
       end
     end
   end
