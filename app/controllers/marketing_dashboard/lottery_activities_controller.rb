@@ -10,19 +10,19 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
     end
   end
 
-  def edit
-    @lottery_activity = LotteryActivity.find(params[:id])
-  end
+  # def edit
+  #   @lottery_activity = LotteryActivity.find(params[:id])
+  # end
 
-  def update
-    @lottery_activity = LotteryActivity.find(params[:id])
+  # def update
+  #   @lottery_activity = LotteryActivity.find(params[:id])
 
-    if @lottery_activity.update(lottery_activity_params)
-      redirect_to marketing_dashboard_lottery_activities_path
-    else
-      render 'edit'
-    end
-  end
+  #   if @lottery_activity.update(lottery_activity_params)
+  #     redirect_to marketing_dashboard_lottery_activities_path
+  #   else
+  #     render 'edit'
+  #   end
+  # end
 
   def show
     @lottery_activity = LotteryActivity.find(params[:id])

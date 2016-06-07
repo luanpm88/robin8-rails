@@ -118,6 +118,11 @@
 </div>
 <% end %>
 
+<h4>商品封面</h4>
+<div class="item">
+  <%= image_tag @lottery_activity.lottery_product.cover.url, style: 'max-width: 340px;' if @lottery_activity.lottery_product.cover %>
+</div>
+
 <hr />
 
 <h4>轮播图片</h4>

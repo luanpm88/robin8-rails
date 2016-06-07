@@ -20,15 +20,16 @@
         <td> <%= @lottery_product.price %> </td>
       </tr>
       <tr>
-        <td> 商品封面 </td>
-        <td> <%= image_tag @lottery_product.cover.url if @lottery_product.cover %> </td>
-      </tr>
-      <tr>
         <td> 创建时间 </td>
         <td> <%= @lottery_product.created_at %> </td>
       </tr>
     </table>
   </div>
+</div>
+
+<h4>商品封面</h4>
+<div class="item">
+  <%= image_tag @lottery_product.cover.url, style: 'max-width: 340px;' if @lottery_product.cover %>
 </div>
 
 <hr />
