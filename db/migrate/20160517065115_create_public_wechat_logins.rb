@@ -1,8 +1,7 @@
 class CreatePublicWechatLogins < ActiveRecord::Migration
   def change
     create_table :public_wechat_logins do |t|
-      t.integer :kol_id
-      t.string :email
+      t.string :username
       t.string :password_encrypted
       t.text :visitor_cookies
       t.text :redirect_url
