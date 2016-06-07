@@ -126,20 +126,20 @@ module Campaigns
         if is_click_type?  || is_cpa_type?
           pay_total_click = self.settled_invites.sum(:avail_click)
           User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
-          self.user.payout((pay_total_click * self.get_per_action_budget(false)) , 'campaign', self )
-          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.get_per_action_budget(false)} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+          self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
+          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
         else
           settled_invite_size = self.settled_invites.size
           User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
           self.user.payout((self.per_action_budget * settled_invite_size) , 'campaign', self )
-          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{(per_action_budget - actual_per_action_budget) * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
         end
       end
     end
 
     def cal_actual_per_action_budget
       if is_click_type?
-        actual_per_budget = (self.per_action_type * 0.7).round(2)
+        actual_per_budget = (self.per_action_budget * 0.7).round(2)
         point1, point2 = actual_per_budget.divmod(0.1)
         point2 = point2.round(2)
         if point2 >= 0.08
@@ -151,7 +151,7 @@ module Campaigns
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
       else
-        actual_per_action_budget = (self.per_action_type * 0.7).round(1)
+        actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
       end
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
