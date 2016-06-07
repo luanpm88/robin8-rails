@@ -58,7 +58,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
 
   # 统计在某时间段所有campaign
   def campaign_statics_in_time_range
-    render 'campaign_statics_in_time_range' and return if request.method.eql? 'GET'
+    render 'campaign_statics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
     start_time, end_time = params[:start_time], params[:end_time]
     @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled).order('created_at DESC').paginate(paginate_params)
     render 'campaign_statics_in_time_range', locals: {start_time: start_time, end_time: end_time}

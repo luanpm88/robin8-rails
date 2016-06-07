@@ -35,13 +35,17 @@
           <% %w(id name budget).each do |v| %>
             <td> <%= multi_send c, v %> </td>
           <% end %>
-          <td><%= (c.avail_click >= c.max_action ? c.max_action*c.per_action_budget : c.avail_click*c.per_action_budget).round(2) %></td>
+          <% if c.is_click_type?  || c.is_cpa_type? %>
+            <% spent = c.settled_invites.sum(:avail_click) * c.per_action_budget %>
+          <% else %>
+            <% spent = c.settled_invites.size * c.per_action_budget %>
+          <% end %>
+          <td><%= spent.round(2) %></td>
         </tr>
       <% end %>
     </tbody>
 
   </table>
 
-  <%= will_paginate @campaigns %>
-
+  <%= will_paginate(@campaigns, params: {start_time: params[:start_time], end_time: params[:end_time]}) %>
 <% end %>
