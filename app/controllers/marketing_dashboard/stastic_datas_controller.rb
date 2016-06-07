@@ -68,7 +68,8 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     start_time, end_time = params[:start_time], params[:end_time]
     @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled)
     respond_to do |format|
-      format.csv { send_data to_csv(@campaigns), filename: "campaign##{start_time}-#{end_time}.csv" }
+      format.csv { send_data format_to_csv(@campaigns), filename: "campaign##{start_time}-#{end_time}.csv" }
+      format.xls { headers["Content-Disposition"] = "attachment; filename=\"campaign##{start_time}-#{end_time}.xls\"" }
     end
   end
 
@@ -83,8 +84,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     params.require(:stastic_data).permit(:start_time, :end_time)
   end
 
-  def to_csv(contents)
-    Rails.logger.info '「我要开始导出数据了」'
+  def format_to_csv(contents)
     CSV.generate do |csv|
       csv << ['广告主id', '广告主名称', '活动id', '活动用户id', '活动总预算', '活动实际花费']
       contents.each do |item|
