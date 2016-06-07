@@ -111,11 +111,11 @@ class Campaign < ActiveRecord::Base
   end
 
   def actual_budget(from_brand = true)
-    from_brand ? budget :  (budget * (1 - tax_rate).round(2))
+    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)
   end
 
-  def actual_per_action_budget(from_brand = true)
-    from_brand ? per_action_budget : (per_action_budget * (1 - tax_rate).round(2))
+  def get_per_action_budget(from_brand = true)
+    from_brand ? per_action_budget : actual_per_action_budget
   end
 
   def get_fee_info(from_brand = true)
@@ -123,7 +123,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget(from_brand = true)
-    per_budget = self.actual_per_action_budget(from_brand)
+    per_budget = self.get_per_action_budget(from_brand)
     if self.is_click_type? or self.is_cpa_type?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * per_budget).round(2)       rescue 0
