@@ -6,8 +6,8 @@
       <th>ID</th>
       <th>编号</th>
       <th>活动名称</th>
-      <th>所需总人数</th>
-      <th>实际参加人数</th>
+      <th>所需总票数</th>
+      <th>实际购买数</th>
       <th>幸运号码</th>
       <th>状态</th>
       <th>Ops</th>
@@ -26,7 +26,7 @@
         <td><%= lottery_activity.status_text %></td>
         <td>
           <%= link_to '查看', marketing_dashboard_lottery_activity_path(lottery_activity) %>
-          <%= link_to '编辑', edit_marketing_dashboard_lottery_activity_path(lottery_activity) %>
+          <%#= link_to '编辑', edit_marketing_dashboard_lottery_activity_path(lottery_activity) %>
           <%= link_to '删除', marketing_dashboard_lottery_activity_path(lottery_activity), method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
