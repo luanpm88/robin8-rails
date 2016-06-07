@@ -200,11 +200,11 @@ class Kol < ActiveRecord::Base
   def verifying_income
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
-      if invite.campaign &&  invite.campaign.per_action_budget
+      if invite.campaign &&  invite.campaign.actual_per_action_budget
         if invite.campaign.is_post_type?
-          income += invite.campaign.per_action_budget
+          income += invite.campaign.actual_per_action_budget
         else
-          income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
+          income += invite.campaign.actual_per_action_budget * invite.get_avail_click  rescue 0
         end
       end
     end
@@ -227,7 +227,7 @@ class Kol < ActiveRecord::Base
   def post_or_recruit_campaign_income(date)
     income = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
+      income += invite.campaign.actual_per_action_budget if (invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
     end
     income
   end
@@ -245,7 +245,7 @@ class Kol < ActiveRecord::Base
     end
     puts today_show_hash
     self.campaign_invites.not_rejected.includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
+      income += invite.campaign.actual_per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
     end
     income
   end
