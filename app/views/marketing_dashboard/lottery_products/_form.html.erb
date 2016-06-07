@@ -34,6 +34,13 @@
     <div class="form-group">
       <label>封面</label>
       <%= f.file_field :cover, :class => "well well-sm" %>
+      <% if f.object.cover %>
+      <div class="well" style="width: 380px;">
+          <div style="position: relative; text-align: center;">
+            <%= image_tag f.object.cover.url, style: "width: 100%;" %>
+          </div>
+      </div>
+      <% end %>
     </div>
 
     <div class="form-group">
