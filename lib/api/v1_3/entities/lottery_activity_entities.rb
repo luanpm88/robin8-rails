@@ -15,8 +15,12 @@ module API
 
         class Basic < Grape::Entity
           expose :id, :name, :code, :published_at, :total_number, :actual_number, :status
+          expose :name do |activity|
+            activity.lottery_product.name
+          end
+
           expose :poster_url do |activity|
-            activity.poster.url rescue nil
+            activity.lottery_product.cover.url rescue nil
           end
         end
 
@@ -51,9 +55,14 @@ module API
         end
 
         class Show < Basic
-          expose :description, :lucky_number, :draw_at
+          expose :lucky_number, :draw_at
+
+          expose :description do |activity|
+            activity.lottery_product.description
+          end
+
           expose :pictures do |activity|
-            activity.posters.map(&:url)
+            activity.lottery_product.posters.map(&:url)
           end
 
           expose :winner_self, if: lambda { |activity, opts| opts[:kol] } do |activity, opts|

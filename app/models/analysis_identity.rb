@@ -74,7 +74,7 @@ class AnalysisIdentity < ActiveRecord::Base
 
   def self.fake_list
     fake_list = []
-    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"weibo","name":"Robin8示例数据","nick_name":nil,"avatar_url":"http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg","user_name":nil,"location":"上海 静安区","gender":"f","uid":"1340795523", "authorize_time": Time.now})
-    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000002,"provider":"public_wechat","name":"Robin8示例数据","nick_name": 'robin8china',"avatar_url":'http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg',"user_name":nil, "authorize_time": Time.now})
+    # fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"weibo","name":"Robin8示例数据","nick_name":nil,"avatar_url":"http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg","user_name":nil,"location":"上海 静安区","gender":"f","uid":"1340795523", "authorize_time": Time.now})
+    # fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000002,"provider":"public_wechat","name":"Robin8示例数据","nick_name": 'robin8china',"avatar_url":'http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg',"user_name":nil, "authorize_time": Time.now})
   end
 end
