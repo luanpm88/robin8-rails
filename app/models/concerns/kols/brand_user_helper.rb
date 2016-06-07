@@ -1,6 +1,7 @@
 module Kols
   module BrandUserHelper
     extend ActiveSupport::Concern
+    # 有些用户没有手机号 需要绕过
     def brand_user
       user = User.where(:mobile_number => self.mobile_number).first
       if user and not user.kol_id

@@ -10,7 +10,7 @@ class Campaign < ActiveRecord::Base
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
 
-  #Status : unexecute agreed rejected  executing executed
+  #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
   belongs_to :user
@@ -242,20 +242,24 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
-    if self.status_changed? && self.status == 'unexecute'
-      if self.user.avail_amount >= self.budget
-        self.user.frozen(budget, 'campaign', self)
-        Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-      else
-        Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
+    if self.status_changed? && self.status.to_s == 'unexecute'
+      if not self.has_pay
+        if self.user.avail_amount >= self.budget
+
+          self.user.frozen(budget, 'campaign', self)
+          self.update_column :has_pay, true
+          Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+        else
+          Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
+        end
       end
-    elsif (self.status_changed? && status == 'agreed')
+    elsif (self.status_changed? && status.to_s == 'agreed')
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else
         CampaignWorker.perform_async(self.id, 'send_invites')
       end
-    elsif (self.status_changed? && status == 'rejected')
+    elsif (self.status_changed? && status.to_s == 'rejected')
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
       self.user.unfrozen(budget, 'campaign', self)
     end

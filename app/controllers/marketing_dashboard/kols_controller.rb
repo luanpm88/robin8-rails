@@ -65,6 +65,9 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def update
     @kol = Kol.find params[:id]
+    if params[:kol][:mobile_number].blank?
+      params[:kol][:mobile_number] = nil
+    end
     @kol.update_attributes(params.require(:kol).permit(:mobile_number, :name, :forbid_campaign_time, :kol_level))
     flash[:notice] = "保存成功"
     redirect_to marketing_dashboard_kols_path
