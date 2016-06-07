@@ -23,9 +23,9 @@ module API
               login = @identity.newest_login
             end
             res = JSON.parse login.get_info     rescue {}
+            login.sync_info_to_identity(res['data']['user'])
           end
           if res && res['status']
-            @identity.sync_info_to_identity(res['data']['user'])   rescue nil
             present :error, 0
             present :primary, res['data']['user'], with: API::V1_3::Entities::WeixinReportEntities::Primary
           else
