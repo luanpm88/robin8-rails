@@ -23,6 +23,7 @@ module API
               login = @identity.newest_login
             end
             res = JSON.parse login.get_info     rescue {}
+            login.sync_info_to_identity(res['data']['user'])
           end
           if res && res['status']
             present :error, 0

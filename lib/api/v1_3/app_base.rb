@@ -16,6 +16,7 @@ module API
       mount API::V1_3::KolIdentityPrices
       mount API::V1_3::LotteryActivities
       mount API::V1_3::Images
+      mount API::V1_3::System
     end
   end
 end
