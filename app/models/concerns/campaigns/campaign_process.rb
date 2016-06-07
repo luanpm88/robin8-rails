@@ -151,7 +151,7 @@ module Campaigns
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
       else
-        actual_per_action_budget = (self.per_action_type * 0.7).round(1)
+        actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
       end
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
