@@ -44,7 +44,7 @@ module API
 
           present :error, 0
           present :code, activity.code
-          present :pictures, activity.pictures.map(&:url)
+          present :pictures, activity.lottery_product.pictures.map(&:url)
         end
 
         desc 'get order list if (:code) lottery activity.'

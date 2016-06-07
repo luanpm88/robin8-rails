@@ -1,2 +1,0 @@
-class LotteryActivityPoster < Picture
-end

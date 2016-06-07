@@ -52,6 +52,7 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+  scope :unios, ->{ where("app_platform != 'IOS'") }
 
 
   def email_required?
@@ -277,6 +278,15 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     self.read_message_ids << message_id unless  self.read_message_ids.include? message_id.to_s
+  end
+
+  def read_all
+    unread_message_ids = self.unread_messages.collect{|t| t.id.to_s}
+    Message.where(:id => unread_message_ids).update_all(:read_at => Time.now, :is_read => true)
+    unread_message_ids = unread_message_ids -  self.read_message_ids.values
+    unread_message_ids.each do |message_id|
+      self.read_message_ids << message_id
+    end
   end
 
   def message_status(message)

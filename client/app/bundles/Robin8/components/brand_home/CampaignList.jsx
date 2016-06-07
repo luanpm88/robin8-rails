@@ -50,22 +50,9 @@ export default class CampaignList extends React.Component {
   renderNewCampaignButton() {
     return (
       <div className="btn-group quick-btn-group ">
-        <button type="button" className="btn btn-blue quick-btn dropdown-toggle" data-toggle="dropdown">
-          添加活动 <span className="caret"></span>
-        </button>
-        <ul className="dropdown-menu">
-          <li>
-            <Link to="/brand/campaigns/new">
-              推广活动
-            </Link>
-          </li>
-          <li role="separator" className="divider"></li>
-          <li>
-            <Link to="/brand/recruits/new">
-              招募活动
-            </Link>
-          </li>
-        </ul>
+        <Link to="/brand/campaigns/select" className="btn btn-blue quick-btn">
+          添加活动
+        </Link>
       </div>
     );
   }
