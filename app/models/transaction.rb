@@ -43,6 +43,8 @@ class Transaction < ActiveRecord::Base
         '完善资料'
       when RewardTask::FavorableComment
         '好评'
+      when 'campaign_tax'
+        "活动佣金(#{self.item.name})"
     end
 
   end
