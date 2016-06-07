@@ -25,8 +25,8 @@ class PublicWechatLogin < ActiveRecord::Base
 
 
   # 远程服务器
-  ServerIp = 'http://139.196.36.27'
-  ApiToken = 'b840fc02d524045429941cc15f59e41cb7be6c52'
+  ServerIp = Rails.application.secrets[:spider_server][:server_ip]
+  ApiToken = Rails.application.secrets[:spider_server][:api_token]
   def get_info(info_type = nil)
     params = {:api_token => ApiToken, :email => self.username, :cookie => self.visitor_cookies,
               :user_agent => IdentityAnalysis::PublicLogin::UserAgent, :token => self.token}
@@ -46,10 +46,10 @@ class PublicWechatLogin < ActiveRecord::Base
 
   #每次获取用户信息后 需要同步更新用户账户
   def sync_info_to_identity(user_info)
-    public_wechat_identity = AnalysisIdentity.find(:kol_id => self.kol_id, :name => self.username)
+    public_wechat_identity = AnalysisIdentity.find_by(:kol_id => self.kol_id, :name => self.username)
     return if public_wechat_identity.blank?
     public_wechat_identity.nick_name = user_info['nick_name']
-    public_wechat_identity.logo_url = user_info['logo_url']
+    public_wechat_identity.avatar_url = user_info['logo_url']
     public_wechat_identity.user_name = user_info['user_name']
     public_wechat_identity.save
   end

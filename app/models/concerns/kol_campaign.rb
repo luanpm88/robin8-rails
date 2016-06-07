@@ -111,7 +111,8 @@ module Concerns
     end
 
     def hide_recruit
-      self.app_version < "1.2.0"  || self.app_version == "2"
+      self.app_platform != 'IOS'
+      # self.app_version < "1.2.0"  || self.app_version == "2"
     end
   end
 end

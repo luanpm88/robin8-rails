@@ -85,12 +85,16 @@ class PushMessage < ActiveRecord::Base
     all_receive_kol_ids =  CampaignInvite.where(:campaign_id => executing_campaigns.collect{|t| t.id}).select("kol_id")
                              .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
     push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
-    device_tokens = Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}
+    # 个推限定list 最大为1000
     title =  '你有新的特邀转发活动'
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
-    push_message = self.new(:template_type => 'transmission', :template_content => template_content, :title => title,
-                            :receiver_type => 'List', :receiver_ids => push_kol_ids, :receiver_cids => device_tokens )
-    push_message.save
+    push_kol_ids.in_groups_of(1000,false){|group_kol_ids|
+      device_tokens = Kol.where(:id => group_kol_ids ).collect{|t| t.device_token}
+      push_message = self.new(:template_type => 'transmission', :template_content => template_content, :title => title,
+                              :receiver_type => 'List', :receiver_ids => group_kol_ids, :receiver_cids => device_tokens )
+      push_message.save
+      sleep 0.5
+    }
   end
 
   def async_send_to_client

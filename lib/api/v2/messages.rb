@@ -7,10 +7,7 @@ module API
         end
 
         put 'read_all' do
-          unread_message_ids = current_kol.unread_messages.collect{|t| t.id}
-          unread_message_ids.each do |message_id|
-            current_kol.read_message(message_id)
-          end
+          current_kol.read_all
           present :error, 0
         end
       end

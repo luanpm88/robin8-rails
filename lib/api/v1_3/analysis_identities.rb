@@ -7,7 +7,7 @@ module API
         end
 
         get 'list' do
-          identities = AnalysisIdentity.fake_list  + current_kol.analysis_identities.to_a
+          identities = current_kol.analysis_identities.to_a
           present :error, 0
           present :identities, identities,  with: API::V1_3::Entities::AnalysisIdentityEntities::Summary
         end

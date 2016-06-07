@@ -52,6 +52,7 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+  scope :unios, ->{ where("app_platform != 'IOS'") }
 
 
   def email_required?
@@ -220,14 +221,14 @@ class Kol < ActiveRecord::Base
   end
 
   def campaign_count_by_date(date)
-    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at > '#{date.beginning_of_day}'")
-        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
+    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at < '#{date.end_of_day}'")
+        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time > '#{date.beginning_of_day}'").count
   end
 
   def post_or_recruit_campaign_income(date)
     income = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
+      income += invite.campaign.actual_per_action_budget if (invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
     end
     income
   end
@@ -245,7 +246,7 @@ class Kol < ActiveRecord::Base
     end
     puts today_show_hash
     self.campaign_invites.not_rejected.includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
+      income += invite.campaign.actual_per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
     end
     income
   end
@@ -277,6 +278,15 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     self.read_message_ids << message_id unless  self.read_message_ids.include? message_id.to_s
+  end
+
+  def read_all
+    unread_message_ids = self.unread_messages.collect{|t| t.id.to_s}
+    Message.where(:id => unread_message_ids).update_all(:read_at => Time.now, :is_read => true)
+    unread_message_ids = unread_message_ids -  self.read_message_ids.values
+    unread_message_ids.each do |message_id|
+      self.read_message_ids << message_id
+    end
   end
 
   def message_status(message)
@@ -446,6 +456,10 @@ class Kol < ActiveRecord::Base
     self.sign_in_count ||= 0
     self.sign_in_count += 1
     self.save
+  end
+
+  def get_kol_level
+    self.kol_level || 'A'
   end
 
 end
