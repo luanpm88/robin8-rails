@@ -43,7 +43,7 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       ActiveRecord::Base.transaction do
         self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
-        self.update_column(:tax_rate, Campaign::BaseTaxRate)
+        self.cal_actual_per_action_type
         Message.new_campaign(self, get_kol_ids)
       end
     end
@@ -101,11 +101,11 @@ module Campaigns
           kol = invite.kol
           invite.update_column(:status, 'settled')
           if is_click_type? or is_cpa_type?
-            kol.income(invite.avail_click * self.actual_per_action_budget(false), 'campaign', self, self.user)
-            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.actual_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
+            kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
+            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
           else
-            kol.income(self.actual_per_action_budget(false), 'campaign', self, self.user)
-            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.actual_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
+            kol.income(self.get_per_action_budget(false), 'campaign', self, self.user)
+            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
           end
         end
       end
@@ -126,15 +126,33 @@ module Campaigns
         if is_click_type?  || is_cpa_type?
           pay_total_click = self.settled_invites.sum(:avail_click)
           User.get_platform_account.income((pay_total_click * self.tax_rate), 'campaign_tax', self)
-          self.user.payout((pay_total_click * self.actual_per_action_budget(false)) , 'campaign', self )
+          self.user.payout((pay_total_click * self.get_per_action_budget(false)) , 'campaign', self )
           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget(false)} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
         else
           settled_invite_size = self.settled_invites.size
-          User.get_platform_account.income((self.actual_per_action_budget(false) * settled_invite_size * self.tax_rate), 'campaign_tax', self)
+          User.get_platform_account.income((self.get_per_action_budget(false) * settled_invite_size * self.tax_rate), 'campaign_tax', self)
           self.user.payout((self.per_action_budget * settled_invite_size) , 'campaign', self )
           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{self.per_action_budget(false) * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
         end
       end
+    end
+
+    def cal_actual_per_action_type
+      if is_click_type?
+        actual_per_budget = (self.per_action_type * 0.7).round(2)
+        point1, point2 = actual_per_budget.divmod(0.1)
+        point2 = point2.round(2)
+        if point2 >= 0.08
+          actual_per_action_budget = (point1 + 1) * 0.1
+        elsif point2 >= 0.03
+          actual_per_action_budget = point1 * 0.1 + 0.05
+        else
+          actual_per_action_budget = point1 * 0.1
+        end
+      else
+        actual_per_action_budget = (self.per_action_type * 0.7)
+      end
+      self.update_column(:actual_per_action_budget, actual_per_action_budget.round(2))
     end
   end
 end
