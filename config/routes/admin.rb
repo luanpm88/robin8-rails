@@ -93,11 +93,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :lottery_activities do
+    resources :lottery_products do
       member do
-        patch :execute
+        patch :pub
       end
     end
+    resources :lottery_activities
 
   end
 end

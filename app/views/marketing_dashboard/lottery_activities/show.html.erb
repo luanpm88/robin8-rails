@@ -122,21 +122,21 @@
 
 <h4>轮播图片</h4>
 
-<% @lottery_activity.posters.each do |picture| %>
+<% @lottery_activity.lottery_product.posters.each do |picture| %>
   <div class="item">
     <%= image_tag picture.name.url, style: "max-width: 340px;" %>
   </div>
-<% end %>
+<% end if @lottery_activity.lottery_product %>
 
 <hr />
 
 <h4>奖品介绍图片</h4>
 
-<% @lottery_activity.pictures.each do |picture| %>
+<% @lottery_activity.lottery_product.pictures.each do |picture| %>
   <div class="item">
     <%= image_tag picture.name.url, style: "max-width: 340px;" %>
   </div>
-<% end %>
+<% end if @lottery_activity.lottery_product %>
 
 <hr/>
 <% if @lottery_activity.status ==  "pending" %>
