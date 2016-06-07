@@ -52,6 +52,7 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+  scope :unios, ->{ where("app_platform != 'IOS'") }
 
 
   def email_required?
