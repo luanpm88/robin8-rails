@@ -1,0 +1,47 @@
+<h3>选择时间段</h3>
+<h3>查询结果为已结算的campaign</h3>
+<div class="well">
+  <%= form_tag campaign_statics_in_time_range_marketing_dashboard_stastic_datas_path do %>
+    <%= date_field_tag  :start_time, nil, class: "date" %>
+    <%= date_field_tag  :end_time, nil, class: "date" %>
+    <%= submit_tag '查询', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<% if @campaigns %>
+  <p>
+    Download:
+    <%= link_to "下载 CSV", download_campaign_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "csv", start_time: params[:start_time], end_time: params[:end_time]) %> |
+    <%= link_to "下载 Excel", download_campaign_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "xls") %>
+  </p>
+  <p class="bg-info">起始时间为 <%= params[:start_time] %> 到 <%= params[:end_time] %></p>
+  <table class='table table-bordered'>
+    <thead>
+      <tr>
+        <th>广告主ID</th>
+        <th>广告主名称</th>
+        <th>活动ID</th>
+        <th>活动名称</th>
+        <th>总预算</th>
+        <th>活动实际花费</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @campaigns.each do |c| %>
+        <tr>
+          <td><%= c.user_id %></td>
+          <td><%= c.user.name %></td>
+          <% %w(id name budget).each do |v| %>
+            <td> <%= multi_send c, v %> </td>
+          <% end %>
+          <td><%= (c.avail_click >= c.max_action ? c.max_action*c.per_action_budget : c.avail_click*c.per_action_budget).round(2) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+  <%= will_paginate @campaigns %>
+
+<% end %>

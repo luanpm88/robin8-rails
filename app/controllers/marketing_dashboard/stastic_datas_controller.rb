@@ -1,3 +1,5 @@
+require 'csv'
+
 class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseController
   def index
     @stastic_datas = StasticData.all.order('id DESC').paginate(paginate_params)
@@ -54,8 +56,42 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     end
   end
 
+  # 统计在某时间段所有campaign
+  def campaign_statics_in_time_range
+    render 'campaign_statics_in_time_range' and return if request.method.eql? 'GET'
+    start_time, end_time = params[:start_time], params[:end_time]
+    @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled).order('created_at DESC').paginate(paginate_params)
+    render 'campaign_statics_in_time_range', locals: {start_time: start_time, end_time: end_time}
+  end
+
+  def download_campaign_statics_in_time_range
+    start_time, end_time = params[:start_time], params[:end_time]
+    @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled)
+    respond_to do |format|
+      format.csv { send_data to_csv(@campaigns), filename: "campaign##{start_time}-#{end_time}.csv" }
+    end
+  end
+
+  def kol_withdraw_statics_in_time_range
+    render 'kol_withdraw_statics_in_time_range' and return if request.method.eql? 'GET'
+
+    binding.pry
+  end
+
   private
   def stastic_data_params
     params.require(:stastic_data).permit(:start_time, :end_time)
   end
+
+  def to_csv(contents)
+    Rails.logger.info '「我要开始导出数据了」'
+    CSV.generate do |csv|
+      csv << ['广告主id', '广告主名称', '活动id', '活动用户id', '活动总预算', '活动实际花费']
+      contents.each do |item|
+        spent = item.avail_click >= item.max_action ? item.max_action*item.per_action_budget : item.avail_click*item.per_action_budget
+        csv << [item.user_id, item.user.name, item.id,item.user_id, item.budget, spent.round(2)] #数据内容
+      end
+    end
+  end
+
 end

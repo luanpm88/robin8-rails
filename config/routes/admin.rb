@@ -54,6 +54,11 @@ Rails.application.routes.draw do
         get :from_source
         get :new_kol
         get :day_statics
+        get :campaign_statics_in_time_range
+        get :kol_withdraw_statics_in_time_range
+        post :campaign_statics_in_time_range
+        post :kol_withdraw_statics_in_time_range
+        get :download_campaign_statics_in_time_range
       end
     end
     resources :feedbacks, except: [:destroy, :new, :create]  do
