@@ -31,7 +31,7 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.contact_score = Influence::Contact.cal_score(kol_uuid,kol_id)
     influence_score = cal_total_score(kol_value)
     #如果当前分数没上次高 则不保存，不覆盖。但还是生成历史
-    if kol_value.influence_score > influence_score
+    if kol_value.influence_score.to_i > influence_score
       kol_value.influence_score = influence_score
       kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
       kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
@@ -84,17 +84,17 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.diff_score(kol_uuid, kol_id = nil)
-    last_auto = last_auto_value(kol_uuid, kol_id)
+    last_auto = last_cal_value(kol_uuid, kol_id)
     if last_auto
       value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
       diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
-      return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
+      return "影响力分数#{value.influence_score}分 比上次增加了#{diff}分"
     else
       return nil
     end
   end
 
-  def self.last_auto_value(kol_uuid,kol_id = nil)
+  def self.last_cal_value(kol_uuid,kol_id = nil)
     if kol_id.present?
       KolInfluenceValueHistory.where(:kol_id => kol_id).order("id desc").first   rescue nil
     else

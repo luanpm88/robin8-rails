@@ -30,6 +30,7 @@ class KolInfluenceValueHistory < ActiveRecord::Base
   #确保每周生成一次 auto=true 然后取最近6条
   HistorySize = 6
   def self.get_auto_history(kol_uuid, kol_id)
+    history_scores = []
     index = 0
     oldest_cal_date = Date.today
     if kol_id

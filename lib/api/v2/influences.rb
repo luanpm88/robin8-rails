@@ -143,7 +143,7 @@ module API
           present :error, 0
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
-          present :last_influence_score, (KolInfluenceValue.last_auto_value(params[:kol_uuid], current_kol.try(:id)).influence_score  rescue nil)
+          present :last_influence_score, (KolInfluenceValue.last_cal_value(params[:kol_uuid], current_kol.try(:id)).influence_score  rescue nil)
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
