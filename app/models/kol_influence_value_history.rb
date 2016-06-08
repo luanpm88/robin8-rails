@@ -34,9 +34,9 @@ class KolInfluenceValueHistory < ActiveRecord::Base
     index = 0
     oldest_cal_date = Date.today
     if kol_id
-      history =  KolInfluenceValueHistory.where(:kol_id => kol_id).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.select("max(influence_score) as influence_score, created_at").where(:kol_id => kol_id).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
     else
-      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.select("max(influence_score)as influence_score, created_at").where(:kol_uuid => kol_uuid).group("DATE(created_at), kol_uuid").order("id desc").limit(HistorySize)
     end
     history.each do |record|
       history_scores << {:date => record.created_at.to_date, :score => record.influence_score}
