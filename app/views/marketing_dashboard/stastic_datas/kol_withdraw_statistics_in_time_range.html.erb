@@ -1,6 +1,6 @@
 <h3>选择时间段</h3>
 <div class="well">
-  <%= form_tag kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path do %>
+  <%= form_tag kol_withdraw_statistics_in_time_range_marketing_dashboard_stastic_datas_path do %>
     <%= date_field_tag  :start_time, nil, class: "date" %>
     <%= date_field_tag  :end_time, nil, class: "date" %>
     <%= submit_tag '查询', :class => 'btn btn-primary' %>
@@ -10,8 +10,8 @@
 <% if @withdraws %>
   <p>
     Download:
-    <%= link_to "下载 CSV", download_kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "csv", start_time: params[:start_time], end_time: params[:end_time]) %> |
-    <%= link_to "下载 Excel", download_kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "xls", start_time: params[:start_time], end_time: params[:end_time]) %>
+    <%= link_to "下载 CSV", download_kol_withdraw_statistics_in_time_range_marketing_dashboard_stastic_datas_path(format: "csv", start_time: params[:start_time], end_time: params[:end_time]) %> |
+    <%= link_to "下载 Excel", download_kol_withdraw_statistics_in_time_range_marketing_dashboard_stastic_datas_path(format: "xls", start_time: params[:start_time], end_time: params[:end_time]) %>
   </p>
   <p class="bg-info">起始时间为 <%= params[:start_time] %> 到 <%= params[:end_time] %></p>
 

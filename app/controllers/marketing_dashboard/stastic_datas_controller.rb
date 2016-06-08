@@ -42,7 +42,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   end
 
   #只有在数据连续的时候  才可以，不然index值对应不正确
-  def day_statics
+  def day_statistics
     day_count = 5
     _start = (day_count + 1).days.ago
     @value = KolInfluenceValue.where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
@@ -56,15 +56,35 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     end
   end
 
-  # 统计在某时间段所有campaign
-  def campaign_statics_in_time_range
-    render 'campaign_statics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
-    start_time, end_time = params[:start_time], params[:end_time]
-    @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled).order('created_at DESC').paginate(paginate_params)
-    render 'campaign_statics_in_time_range', locals: {start_time: start_time, end_time: end_time}
+  def kol_amount_statistics
   end
 
-  def download_campaign_statics_in_time_range
+  def download_kol_amount_statistics
+    respond_to do |format|
+      format.csv {
+        send_data(CSV.generate do |csv|
+                    csv << ['kol id', '昵称', '电话', '账户总金额', '账户可用', '账户冻结金额', '已消费金额(提现/参加夺宝活动)']
+                    Kol.includes(:transactions).find_each do |kol|
+                      if !(kol.transactions.blank? && kol.amount == 0 && kol.avail_amount == 0 && kol.frozen_amount == 0)
+                        csv << [kol.id, kol.name, kol.mobile_number, kol.amount, kol.avail_amount, kol.frozen_amount, kol.transactions.where(account_type: 'Kol').where(direct: 'payout').where("item_type = ? or item_type =?",  "Withdraw", "LotteryActivityOrder").sum(:credits)]
+                      end
+                    end
+                  end,
+        filename: "kol_amount##{Time.current}.csv") }
+    end
+
+
+  end
+
+  # 统计在某时间段所有campaign
+  def campaign_statistics_in_time_range
+    render 'campaign_statistics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
+    start_time, end_time = params[:start_time], params[:end_time]
+    @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled).order('created_at DESC').paginate(paginate_params)
+    render 'campaign_statistics_in_time_range', locals: {start_time: start_time, end_time: end_time}
+  end
+
+  def download_campaign_statistics_in_time_range
     start_time, end_time = params[:start_time], params[:end_time]
     @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled)
     respond_to do |format|
@@ -73,14 +93,14 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     end
   end
 
-  def kol_withdraw_statics_in_time_range
-    render 'kol_withdraw_statics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
+  def kol_withdraw_statistics_in_time_range
+    render 'kol_withdraw_statistics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
     start_time, end_time = params[:start_time], params[:end_time]
     @withdraws = Withdraw.where(updated_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :paid).order('created_at DESC').paginate(paginate_params)
-    render 'kol_withdraw_statics_in_time_range', locals: {start_time: start_time, end_time: end_time}
+    render 'kol_withdraw_statistics_in_time_range', locals: {start_time: start_time, end_time: end_time}
   end
 
-  def download_kol_withdraw_statics_in_time_range
+  def download_kol_withdraw_statistics_in_time_range
     start_time, end_time = params[:start_time], params[:end_time]
     @withdraws = Withdraw.where(updated_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :paid)
     respond_to do |format|
