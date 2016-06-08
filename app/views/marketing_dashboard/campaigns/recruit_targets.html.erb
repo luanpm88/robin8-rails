@@ -21,9 +21,9 @@
         <td> <%= campaign_apply.weixin_no %> </td>
         <td> <%= campaign_apply.send :weixin_friend_count %> </td>
         <% if campaign_apply.kol.gender == 1 %>
-          <td> <%= 男 %> </td>
+          <td> 男 </td>
         <% elsif campaign_apply.kol.gender == 2 %>
-          <td> <%= 女 %></td>
+          <td> 女</td>
         <% else %>
           <td></td>
         <% end %>
