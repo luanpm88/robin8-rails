@@ -339,8 +339,11 @@ class Campaign < ActiveRecord::Base
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
     begin
-      if URI(self.url).host == "mp.weixin.qq.com" and not self.url.include?("#wechat_redirect")
-        self.url = self.url + "#wechat_redirect"
+      if URI(self.url).host == "mp.weixin.qq.com" 
+        self.url = self.url.gsub("#rd", "")
+        if not self.url.include?("#wechat_redirect")
+          self.url = self.url + "#wechat_redirect"
+        end
       end
     rescue Exception => e
       # 出错了 就不更新url

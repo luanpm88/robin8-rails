@@ -57,6 +57,6 @@ app/assets/webpack/
 .ruby-version
 .ruby-gemset
 npm-debug.log*
-db/schema.rb
 config/selector_city.txt
 config/new_selector_city.txt
+db/schema.rb
