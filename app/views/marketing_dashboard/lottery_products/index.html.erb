@@ -1,0 +1,32 @@
+<h3>一元夺宝 商品</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名称</th>
+      <th>价格</th>
+      <th>描述</th>
+      <th>库存</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lottery_products.each do |lottery_product| %>
+      <tr>
+        <td><%= lottery_product.id %></td>
+        <td><%= lottery_product.name %></td>
+        <td><%= lottery_product.price %></td>
+        <td><%= lottery_product.description %></td>
+        <td><%= lottery_product.quantity %></td>
+        <td>
+          <%= link_to '查看', marketing_dashboard_lottery_product_path(lottery_product) %>
+          <%= link_to '编辑', edit_marketing_dashboard_lottery_product_path(lottery_product) %>
+          <%= link_to '发布', pub_marketing_dashboard_lottery_product_path(lottery_product), method: :patch %>
+          <%# = link_to '删除', marketing_dashboard_lottery_product_path(lottery_product), method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

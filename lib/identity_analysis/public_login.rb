@@ -34,7 +34,7 @@ module IdentityAnalysis
                                },
                                :params =>  params
                  )
-      response = JSON.parse request.response_body   rescue {}
+      response = JSON.parse(request.response_body)  || {}  rescue {}
       Rails.logger.info "=======login_with_account======="
       Rails.logger.info cookie
       Rails.logger.info  response.inspect
@@ -69,7 +69,7 @@ module IdentityAnalysis
                                      },
                                     :body => "action=get_ticket&auth=ticket"
                                     )
-      response = JSON.parse assistant_req.response_body  rescue {}
+      response = JSON.parse(assistant_req.response_body) || {}   rescue {}
       if response["base_resp"] && response["base_resp"]["ret"] == 0
          return ['ticket_success', response["ticket"], response["operation_seq"]]
       else
@@ -103,7 +103,7 @@ module IdentityAnalysis
                            },
                            :body => "token=&lang=zh_CN&f=json&ajax=1&random=0.7635565#{random}&appid=#{appid}&scope=snsapi_contact&state=0&redirect_uri=https%3A%2F%2Fmp.weixin.qq.com&login_type=safe_center&type=json&ticket=#{ticket}"
       )
-      response = JSON.parse req.response_body  rescue {}
+      response = JSON.parse(req.response_body)  || {}  rescue {}
       response["uuid"]
     end
 
@@ -129,7 +129,7 @@ module IdentityAnalysis
                                        :Cookie => cookies
                                      },
                                     :body => "token=&lang=zh_CN&f=json&ajax=1&random=0.22103375891462052&uuid=#{uuid}&action=json&type=json")
-      response = JSON.parse safeuuid_req.response_body  rescue {}
+      response = JSON.parse(safeuuid_req.response_body) || {}   rescue {}
       if response['errcode'] == 405
         token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
         login.success_qrcode_login(cookies, token)
@@ -150,7 +150,7 @@ module IdentityAnalysis
                                          },
                                          :body => "token=&lang=zh_CN&f=json&ajax=1&random=0.8502100897504383&code=#{uuid}&account=#{username}&operation_seq=#{operation_seq}")
       append_cookies(cookies, securewxverify_req)
-      response = JSON.parse securewxverify_req.response_body
+      response = JSON.parse securewxverify_req.response_body  || {}
       token = response["redirect_url"].split("token=").last
       return token
     end

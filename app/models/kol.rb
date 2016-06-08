@@ -52,6 +52,7 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+  scope :unios, ->{ where("app_platform != 'IOS'") }
 
 
   def email_required?
@@ -201,7 +202,7 @@ class Kol < ActiveRecord::Base
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
       if invite.campaign &&  invite.campaign.per_action_budget
-        if invite.campaign.is_post_type?
+        if invite.campaign.is_post_type?  || invite.campaign.is_recruit_type?
           income += invite.campaign.per_action_budget
         else
           income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
@@ -212,42 +213,62 @@ class Kol < ActiveRecord::Base
   end
 
   def today_income
-    income_by_date(Date.today)
-  end
-
-  def income_by_date(date)
-    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date) + task_income(date)
-  end
-
-  def campaign_count_by_date(date)
-    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at > '#{date.beginning_of_day}'")
-        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
-  end
-
-  def post_or_recruit_campaign_income(date)
-    income = 0
-    self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
-    end
+    income, count = income_by_date(Date.today)
     income
   end
 
+  def income_by_date(date)
+    count_income, count_count = post_or_recruit_campaign_income(date)
+    sum_income, sum_count = click_or_action_campaign_income(date)
+    task_income, task_count = task_income(date)
+    income =  count_income + sum_income +  task_income
+    count = count_count + sum_count +  task_count
+    [income, count]
+  end
+
+  # def campaign_count_by_date(date)
+  #   self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at < '#{date.end_of_day}'")
+  #       .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time > '#{date.beginning_of_day}'").count
+  # end
+
+  def post_or_recruit_campaign_income(date)
+    income = 0
+    count = 0
+    self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
+      if invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )
+        income += invite.campaign.per_action_budget
+        count += 1
+      end
+    end
+    [income, count]
+  end
+
   def task_income(date)
-    self.transactions.recent(date,date).tasks.sum(:credits)
+    income = self.transactions.recent(date,date).tasks.sum(:credits)
+    count = self.transactions.recent(date,date).tasks.count
+    [income,count]
   end
 
 
   def click_or_action_campaign_income(date)
     income = 0
+    count = 0
     today_show_hash = {}
+    show_campaign_ids = []
     self.campaign_shows.by_date(date).valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
-      today_show_hash["#{show.campaign_id}"] = show.count
+      if show.count > 0
+        today_show_hash["#{show.campaign_id}"] = show.count
+        show_campaign_ids << show.campaign_id
+      end
     end
     puts today_show_hash
-    self.campaign_invites.not_rejected.includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
+    self.campaign_invites.not_rejected.where(:campaign_id => show_campaign_ids).includes(:campaign).each do |invite|
+      if invite.campaign.is_click_type? || invite.campaign.is_cpa_type?
+        income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0
+        count += 1
+      end
     end
-    income
+    [income, count]
   end
 
 
@@ -258,7 +279,8 @@ class Kol < ActiveRecord::Base
     _recent_income = []
 
     (_start.._end).to_a.each do |date|
-      stats= {:date => date, :total_amount => income_by_date(date), :count => campaign_count_by_date(date)  }
+      income, count = income_by_date(date)
+      stats= {:date => date, :total_amount => income, :count => count  }
       _recent_income <<  stats
     end
     _recent_income
@@ -277,6 +299,15 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     self.read_message_ids << message_id unless  self.read_message_ids.include? message_id.to_s
+  end
+
+  def read_all
+    unread_message_ids = self.unread_messages.collect{|t| t.id.to_s}
+    Message.where(:id => unread_message_ids).update_all(:read_at => Time.now, :is_read => true)
+    unread_message_ids = unread_message_ids -  self.read_message_ids.values
+    unread_message_ids.each do |message_id|
+      self.read_message_ids << message_id
+    end
   end
 
   def message_status(message)
@@ -446,6 +477,10 @@ class Kol < ActiveRecord::Base
     self.sign_in_count ||= 0
     self.sign_in_count += 1
     self.save
+  end
+
+  def get_kol_level
+    self.kol_level || 'A'
   end
 
 end

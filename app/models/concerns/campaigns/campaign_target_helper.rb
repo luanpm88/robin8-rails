@@ -51,11 +51,13 @@ module Campaigns
     def get_matching_kol_ids
       kols = nil
       self.campaign_targets.each do |target|
-        if target.target_type == 'region'  && target.target_content != '全部' && target.target_content != '全部 全部'
+        if target.target_type == 'region'
           if self.is_recruit_type?
-            kols = Kol.active.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
-          else
-            kols = Kol.active.where(:app_city => target.get_citys)
+            if target.target_content == '全部' || target.target_content == '全部 全部'
+              kols = Kol.active.unios.where("app_version >= '1.2.0'")
+            else
+              kols = Kol.active.unios.where(:app_city => target.get_citys).where("app_version >= '1.2.0'")
+            end
           end
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")

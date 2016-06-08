@@ -53,6 +53,8 @@ class LotteryDrawWorker
         lottery_number: number_b,
         lottery_issue: number_b_issue
       })
+
+      activity.lottery_product.pub
     end
   end
 

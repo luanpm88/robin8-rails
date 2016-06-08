@@ -1,8 +1,8 @@
 class DownloadInvitation < ActiveRecord::Base
   belongs_to :inviter, :foreign_key => 'inviter_id', :class_name => 'Kol'
   before_save :generate_os_and_model, :on => :create
-  Expired = 2.hours
-  scope :effective, -> {where("created_at > '#{Expired.ago}'" ).where(:effective => false)}
+  Expired = 1.hours
+  scope :effective, -> {where("created_at > '#{Expired.ago}'" ).where.not(:effective => true)}
 
   def self.find_invation(kol)
     if kol.app_platform == "IOS"
