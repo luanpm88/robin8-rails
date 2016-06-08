@@ -68,15 +68,25 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     start_time, end_time = params[:start_time], params[:end_time]
     @campaigns = Campaign.where(created_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :settled)
     respond_to do |format|
-      format.csv { send_data format_to_csv(@campaigns), filename: "campaign##{start_time}-#{end_time}.csv" }
+      format.csv { send_data campaign_format_to_csv(@campaigns), filename: "campaign##{start_time}-#{end_time}.csv" }
       format.xls { headers["Content-Disposition"] = "attachment; filename=\"campaign##{start_time}-#{end_time}.xls\"" }
     end
   end
 
   def kol_withdraw_statics_in_time_range
-    render 'kol_withdraw_statics_in_time_range' and return if request.method.eql? 'GET'
+    render 'kol_withdraw_statics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
+    start_time, end_time = params[:start_time], params[:end_time]
+    @withdraws = Withdraw.where(updated_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :paid).order('created_at DESC').paginate(paginate_params)
+    render 'kol_withdraw_statics_in_time_range', locals: {start_time: start_time, end_time: end_time}
+  end
 
-    binding.pry
+  def download_kol_withdraw_statics_in_time_range
+    start_time, end_time = params[:start_time], params[:end_time]
+    @withdraws = Withdraw.where(updated_at: start_time.to_time..(end_time.to_time + 1.days)).where(status: :paid)
+    respond_to do |format|
+      format.csv { send_data withdraw_format_to_csv(@withdraws), filename: "withdraw##{start_time}-#{end_time}.csv" }
+      format.xls { headers["Content-Disposition"] = "attachment; filename=\"withdraw##{start_time}-#{end_time}.xls\"" }
+    end
   end
 
   private
@@ -84,12 +94,21 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     params.require(:stastic_data).permit(:start_time, :end_time)
   end
 
-  def format_to_csv(contents)
+  def campaign_format_to_csv(items)
     CSV.generate do |csv|
       csv << ['广告主id', '广告主名称', '活动id', '活动用户id', '活动总预算', '活动实际花费']
-      contents.each do |item|
+      items.each do |item|
         spent = item.avail_click >= item.max_action ? item.max_action*item.per_action_budget : item.avail_click*item.per_action_budget
         csv << [item.user_id, item.user.name, item.id,item.user_id, item.budget, spent.round(2)] #数据内容
+      end
+    end
+  end
+
+  def withdraw_format_to_csv(items)
+    CSV.generate do |csv|
+      csv << ['id', 'kol id', '真实姓名', '提现金额', '收款渠道', '支付宝帐号', '银行名称', '银行卡号', '提现状态']
+      items.each do |item|
+        csv << [item.id, item.kol_id, item.real_name,item.credits, item.withdraw_type, item.alipay_no, item.bank_name, item.bank_no, item.status] #数据内容
       end
     end
   end

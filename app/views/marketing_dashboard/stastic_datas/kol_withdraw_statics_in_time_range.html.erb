@@ -1,0 +1,44 @@
+<h3>选择时间段</h3>
+<div class="well">
+  <%= form_tag kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path do %>
+    <%= date_field_tag  :start_time, nil, class: "date" %>
+    <%= date_field_tag  :end_time, nil, class: "date" %>
+    <%= submit_tag '查询', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<% if @withdraws %>
+  <p>
+    Download:
+    <%= link_to "下载 CSV", download_kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "csv", start_time: params[:start_time], end_time: params[:end_time]) %> |
+    <%= link_to "下载 Excel", download_kol_withdraw_statics_in_time_range_marketing_dashboard_stastic_datas_path(format: "xls", start_time: params[:start_time], end_time: params[:end_time]) %>
+  </p>
+  <p class="bg-info">起始时间为 <%= params[:start_time] %> 到 <%= params[:end_time] %></p>
+
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Kol ID</th>
+        <th>Real Name</th>
+        <th>Credits</th>
+        <th>Withdraw type</th>
+        <th>Alipay No.</th>
+        <th>Bank Name</th>
+        <th>Bank No.</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @withdraws.each do |w| %>
+        <tr>
+          <% %w(id kol_id real_name credits withdraw_type alipay_no bank_name bank_no status).each do |v| %>
+            <td> <%= multi_send w, v %> </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate(@withdraws, params: {start_time: params[:start_time], end_time: params[:end_time]}) %>
+<% end %>
