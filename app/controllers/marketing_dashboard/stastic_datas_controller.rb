@@ -60,6 +60,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   end
 
   def download_kol_amount_statistics
+    Rails.logger.download_kol_amount_statistics.info "-------- 开始统计 --------------"
     respond_to do |format|
       format.csv {
         send_data(CSV.generate do |csv|
@@ -72,8 +73,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
                   end,
         filename: "kol_amount##{Time.current}.csv") }
     end
-
-
+    Rails.logger.download_kol_amount_statistics.info "-------- 统计结束 --------------"
   end
 
   # 统计在某时间段所有campaign
