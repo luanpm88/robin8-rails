@@ -15,19 +15,11 @@ module API
         end
 
         class Order < Grape::Entity
-          expose :id, :code, :number, :credits
-
-          expose :created_at do |activity|
-            activity.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil
-          end
+          expose :id, :code, :number, :created_at, :credits
         end
 
         class Basic < Grape::Entity
-          expose :id, :name, :code, :total_number, :actual_number, :status
-
-          expose :published_at do |activity|
-            activity.published_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil
-          end
+          expose :id, :name, :code, :total_number, :actual_number, :status, :published_at
 
           expose :name do |activity|
             activity.lottery_product.name
