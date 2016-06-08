@@ -29,14 +29,16 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
     kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
     kol_value.contact_score = Influence::Contact.cal_score(kol_uuid,kol_id)
-    kol_value.influence_score = cal_total_score(kol_value)
-    kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
-    kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
-    kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
-    kol_value.save
-    if kol.present?
-      kol.update_influence_result(kol_uuid,kol_value.influence_score, kol_value.updated_at)
+    influence_score = cal_total_score(kol_value)
+    #如果当前分数没上次高 则不保存，不覆盖。但还是生成历史
+    if kol_value.influence_score.to_i > influence_score
+      kol_value.influence_score = influence_score
+      kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
+      kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
+      kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
+      kol_value.save
     end
+    kol.update_influence_result(kol_uuid,kol_value.influence_score, kol_value.updated_at)   if kol.present?
     KolInfluenceValueHistory.generate_history(kol_value, is_auto)
     kol_value
   end
@@ -82,21 +84,21 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.diff_score(kol_uuid, kol_id = nil)
-    last_auto = last_auto_value(kol_uuid, kol_id)
+    last_auto = last_cal_value(kol_uuid, kol_id)
     if last_auto
       value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
       diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
-      return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
+      return "影响力分数#{value.influence_score}分 比上次增加了#{diff}分"
     else
       return nil
     end
   end
 
-  def self.last_auto_value(kol_uuid,kol_id = nil)
+  def self.last_cal_value(kol_uuid,kol_id = nil)
     if kol_id.present?
-      KolInfluenceValueHistory.where(:kol_id => kol_id, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
+      KolInfluenceValueHistory.where(:kol_id => kol_id).order("id desc").first   rescue nil
     else
-      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
+      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).order("id desc").first   rescue nil
     end
   end
 

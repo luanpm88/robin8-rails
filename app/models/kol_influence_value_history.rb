@@ -13,43 +13,38 @@ class KolInfluenceValueHistory < ActiveRecord::Base
     history = KolInfluenceValueHistory.new(:is_auto => is_auto)
     history.attributes = attrs
     history.save
-    exist_auto_cal = KolInfluenceValueHistory.where(:kol_uuid => history.kol_uuid, :is_auto => true).count > 0 ? true : false
-    if !exist_auto_cal && (Date.today.wday > ScheduleWday || (Date.today.wday == ScheduleWday &&  (Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin)))
-      auto_history = KolInfluenceValueHistory.new
-      attrs = history.attributes
-      attrs.delete("id")
-      attrs.delete("updated_at")
-      auto_history.attributes = attrs
-      auto_history.is_auto = true
-      auto_history.created_at = Time.now - (Date.today.wday - ScheduleWday).days            #生成时间在本周 ScheduleWday
-      auto_history.save
-    end
+    #不需要生成历史了 因为现在每天的测评都会放上去
+    # exist_auto_cal = KolInfluenceValueHistory.where(:kol_uuid => history.kol_uuid, :is_auto => true).count > 0 ? true : false
+    # if !exist_auto_cal && (Date.today.wday > ScheduleWday || (Date.today.wday == ScheduleWday &&  (Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin)))
+    #   auto_history = KolInfluenceValueHistory.new
+    #   attrs = history.attributes
+    #   attrs.delete("id")
+    #   attrs.delete("updated_at")
+    #   auto_history.attributes = attrs
+    #   auto_history.is_auto = true
+    #   auto_history.created_at = Time.now - (Date.today.wday - ScheduleWday).days            #生成时间在本周 ScheduleWday
+    #   auto_history.save
+    # end
   end
 
   #确保每周生成一次 auto=true 然后取最近6条
   HistorySize = 6
   def self.get_auto_history(kol_uuid, kol_id)
     history_scores = []
-    date = nil
-    if Date.today.wday > ScheduleWday || ((Date.today.wday == ScheduleWday) &&  (Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin))
-      date = Date.today - (Date.today.wday - ScheduleWday).days
-    else
-      begin_last_week_date = Date.today.last_week
-      date = Date.today.last_week +  (ScheduleWday - begin_last_week_date.wday).days
-    end
     index = 0
+    oldest_cal_date = Date.today
     if kol_id
-      history =  KolInfluenceValueHistory.where(:kol_id => kol_id, :is_auto => true).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.where(:kol_id => kol_id).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
     else
-      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
     end
     history.each do |record|
-      history_scores << {:date => date - (7 * index).days, :score => record.influence_score}
+      history_scores << {:date => record.created_at.to_date, :score => record.influence_score}
+      oldest_cal_date = record.created_at.to_date
       index += 1
     end
-    (index..HistorySize).each do |i|
-      history_scores << {:date => date - (7 * index).days, :score => 0}
-      index += 1
+    (0..(HistorySize - index)).each do |i|
+      history_scores << {:date => oldest_cal_date - (7 * (i + 1)).days, :score => 0}
     end
     history_scores.sort_by{|t| t[:date]}
   end
