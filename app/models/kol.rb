@@ -202,7 +202,7 @@ class Kol < ActiveRecord::Base
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
       if invite.campaign &&  invite.campaign.per_action_budget
-        if invite.campaign.is_post_type?
+        if invite.campaign.is_post_type?  || invite.campaign.is_recruit_type?
           income += invite.campaign.per_action_budget
         else
           income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
