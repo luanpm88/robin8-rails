@@ -4,7 +4,7 @@ class CreateDownloadInvitations < ActiveRecord::Migration
       t.integer :inviter_id
       t.string   "visitor_cookies",  limit: 600
       t.string   "visitor_ip",      limit: 255
-      t.boolean   "effective",      dfault: false
+      t.boolean   "effective"
       t.text     "visitor_referer", limit: 3555
       t.text     "visitor_agent",   limit: 3555
       t.string   "app_platform"
