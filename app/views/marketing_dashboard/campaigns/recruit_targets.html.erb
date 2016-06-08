@@ -28,7 +28,11 @@
           <td></td>
         <% end %>
         <td> <%= campaign_apply.kol.city %> </td>
-        <td> <img src=<%= campaign_apply.kol.avatar %>></img> </td>
+        <% if campaign_apply.kol.avatar.present? %>
+          <td> <img src="<%= campaign_apply.kol.avatar %>" style="width: 40px; height: 40px;"></img> </td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
              <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>">
