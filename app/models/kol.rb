@@ -103,6 +103,11 @@ class Kol < ActiveRecord::Base
     not confirmed_at.nil?
   end
 
+  def safe_name
+    return self.name if /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/.match(self.name).blank?
+
+    self.name[0, 3] + "*" * 4 + self.name[7, 4]
+  end
 
   def categories
     iptc_categories.reload.map do |c|

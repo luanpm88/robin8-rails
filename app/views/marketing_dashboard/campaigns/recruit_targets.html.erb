@@ -1,5 +1,5 @@
 <h2><%= @title %></h2>
-<% attrs = %w(id name mobile_number 推荐理由 操作) %>
+<% attrs = %w(id kol名称 电话号码 微博粉丝数 微信号 微信粉丝数 性别 地区 头像 推荐理由 操作) %>
 <table class='table table-bordered'>
   <thead>
 
@@ -16,7 +16,23 @@
         <td class="kol_id"> <%= campaign_apply.kol.send :id %> </td>
         <td class="campaign_id" style="display: none"> <%= @campaign.id %> </td>
         <td> <%= campaign_apply.kol.send :name %> </td>
-        <td> <%= campaign_apply.kol.send :mobile_number %> </td>
+        <td> <%= campaign_apply.send :phone %> </td>
+        <td> <%= campaign_apply.kol.identities.where(provider: 'weibo').maximum("followers_count") %> </td>
+        <td> <%= campaign_apply.weixin_no %> </td>
+        <td> <%= campaign_apply.send :weixin_friend_count %> </td>
+        <% if campaign_apply.kol.gender == 1 %>
+          <td> 男 </td>
+        <% elsif campaign_apply.kol.gender == 2 %>
+          <td> 女</td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td> <%= campaign_apply.kol.city %> </td>
+        <% if campaign_apply.kol.avatar.present? %>
+          <td> <img src="<%= campaign_apply.kol.avatar %>" style="width: 40px; height: 40px;"></img> </td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
              <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>">

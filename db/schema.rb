@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607031241) do
+ActiveRecord::Schema.define(version: 20160607092147) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -386,14 +386,14 @@ ActiveRecord::Schema.define(version: 20160607031241) do
     t.integer  "inviter_id",      limit: 4
     t.string   "visitor_cookies", limit: 600
     t.string   "visitor_ip",      limit: 255
-    t.boolean  "effective",       limit: 1
+    t.boolean  "effective",       limit: 1,     default: false
     t.text     "visitor_referer", limit: 65535
     t.text     "visitor_agent",   limit: 65535
     t.string   "app_platform",    limit: 255
     t.string   "device_model",    limit: 255
     t.string   "os_version",      limit: 255
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
   end
 
   create_table "draft_pitches", force: :cascade do |t|
