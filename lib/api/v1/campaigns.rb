@@ -29,7 +29,7 @@ module API
         put ':id/approve' do
           campaign = Campaign.find(params[:id]) rescue nil
           campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
-          if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
+          if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}") || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
             return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
@@ -51,7 +51,7 @@ module API
         put ':id/receive' do
           campaign = Campaign.find(params[:id]) rescue nil
           campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
-          if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
+          if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
             return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
