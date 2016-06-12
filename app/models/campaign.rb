@@ -259,12 +259,14 @@ class Campaign < ActiveRecord::Base
         Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
       end
     elsif (self.status_changed? && status == 'agreed')
+      self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else
         CampaignWorker.perform_async(self.id, 'send_invites')
       end
     elsif (self.status_changed? && status == 'rejected')
+      self.update_column(:check_time, Time.now)
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
       self.user.unfrozen(budget, 'campaign', self)
     end

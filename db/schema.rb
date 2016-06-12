@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603063335) do
+ActiveRecord::Schema.define(version: 20160612064345) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.boolean  "like",               limit: 1,   default: false
   end
 
+  add_index "article_actions", ["kol_id"], name: "index_article_actions_on_kol_id", using: :btree
+
   create_table "article_comments", force: :cascade do |t|
     t.text     "text",         limit: 16777215
     t.string   "comment_type", limit: 191
@@ -250,6 +252,8 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.integer  "campaign_apply_id", limit: 4
     t.integer  "observer_status",   limit: 4,     default: 0
     t.text     "observer_text",     limit: 65535
+    t.datetime "upload_time"
+    t.datetime "check_time"
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -275,6 +279,8 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.string   "openid",          limit: 255
   end
 
+  add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
+
   create_table "campaign_targets", force: :cascade do |t|
     t.string   "target_type",    limit: 255
     t.string   "target_content", limit: 255
@@ -286,39 +292,42 @@ ActiveRecord::Schema.define(version: 20160603063335) do
   add_index "campaign_targets", ["campaign_id"], name: "index_campaign_targets_on_campaign_id", using: :btree
 
   create_table "campaigns", force: :cascade do |t|
-    t.string   "name",                 limit: 255
-    t.text     "description",          limit: 16777215
+    t.string   "name",                     limit: 255
+    t.text     "description",              limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                                precision: 10
-    t.integer  "user_id",              limit: 4
-    t.datetime "created_at",                                                           null: false
-    t.datetime "updated_at",                                                           null: false
-    t.integer  "release_id",           limit: 4
-    t.text     "concepts",             limit: 16777215
-    t.text     "summaries",            limit: 16777215
-    t.text     "hashtags",             limit: 16777215
-    t.string   "content_type",         limit: 255
-    t.boolean  "non_cash",             limit: 1,                       default: false
-    t.string   "short_description",    limit: 255
-    t.text     "url",                  limit: 65535
-    t.float    "per_action_budget",    limit: 53
+    t.decimal  "budget",                                    precision: 10
+    t.integer  "user_id",                  limit: 4
+    t.datetime "created_at",                                                               null: false
+    t.datetime "updated_at",                                                               null: false
+    t.integer  "release_id",               limit: 4
+    t.text     "concepts",                 limit: 16777215
+    t.text     "summaries",                limit: 16777215
+    t.text     "hashtags",                 limit: 16777215
+    t.string   "content_type",             limit: 255
+    t.boolean  "non_cash",                 limit: 1,                       default: false
+    t.string   "short_description",        limit: 255
+    t.text     "url",                      limit: 65535
+    t.float    "per_action_budget",        limit: 53
     t.datetime "start_time"
-    t.text     "message",              limit: 65535
-    t.string   "status",               limit: 255
-    t.integer  "max_action",           limit: 4
-    t.integer  "avail_click",          limit: 4,                       default: 0
-    t.integer  "total_click",          limit: 4,                       default: 0
-    t.string   "finish_remark",        limit: 255
-    t.string   "img_url",              limit: 255
+    t.text     "message",                  limit: 65535
+    t.string   "status",                   limit: 255
+    t.integer  "max_action",               limit: 4
+    t.integer  "avail_click",              limit: 4,                       default: 0
+    t.integer  "total_click",              limit: 4,                       default: 0
+    t.string   "finish_remark",            limit: 255
+    t.string   "img_url",                  limit: 255
     t.datetime "actual_deadline_time"
-    t.string   "per_budget_type",      limit: 255
-    t.text     "task_description",     limit: 65535
+    t.string   "per_budget_type",          limit: 255
+    t.text     "task_description",         limit: 65535
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
-    t.string   "address",              limit: 255
-    t.boolean  "hide_brand_name",      limit: 1,                       default: false
-    t.boolean  "end_apply_check",      limit: 1,                       default: false
-    t.float    "tax_rate",             limit: 24
+    t.string   "address",                  limit: 255
+    t.boolean  "hide_brand_name",          limit: 1,                       default: false
+    t.boolean  "end_apply_check",          limit: 1,                       default: false
+    t.float    "tax_rate",                 limit: 24
+    t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -427,12 +436,12 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.string   "app_platform", limit: 255
     t.string   "os_version",   limit: 255
     t.string   "device_model", limit: 255
-    t.string   "content",      limit: 255
+    t.string   "content",      limit: 1000
     t.integer  "kol_id",       limit: 4
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.string   "screenshot",   limit: 255
-    t.string   "status",       limit: 255, default: "pending"
+    t.string   "status",       limit: 255,  default: "pending"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -696,6 +705,9 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.datetime "updated_at",           null: false
   end
 
+  add_index "kol_tags", ["kol_id"], name: "index_kol_tags_on_kol_id", using: :btree
+  add_index "kol_tags", ["tag_id"], name: "index_kol_tags_on_tag_id", using: :btree
+
   create_table "kols", force: :cascade do |t|
     t.string   "email",                  limit: 191
     t.string   "encrypted_password",     limit: 255
@@ -795,21 +807,22 @@ ActiveRecord::Schema.define(version: 20160603063335) do
   end
 
   create_table "lottery_activities", force: :cascade do |t|
-    t.string   "name",           limit: 255
-    t.string   "description",    limit: 255
-    t.integer  "total_number",   limit: 4
-    t.integer  "actual_number",  limit: 4
-    t.string   "lucky_number",   limit: 255
-    t.string   "status",         limit: 255, default: "pending"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-    t.integer  "lucky_kol_id",   limit: 4
-    t.string   "code",           limit: 255
+    t.string   "name",               limit: 255
+    t.string   "description",        limit: 255
+    t.integer  "total_number",       limit: 4
+    t.integer  "actual_number",      limit: 4
+    t.string   "lucky_number",       limit: 255
+    t.string   "status",             limit: 255, default: "pending"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.integer  "lucky_kol_id",       limit: 4
+    t.string   "code",               limit: 255
     t.datetime "draw_at"
     t.datetime "published_at"
-    t.string   "order_sum",      limit: 255
-    t.string   "lottery_number", limit: 255
-    t.string   "lottery_issue",  limit: 255
+    t.string   "order_sum",          limit: 255
+    t.string   "lottery_number",     limit: 255
+    t.string   "lottery_issue",      limit: 255
+    t.integer  "lottery_product_id", limit: 4
   end
 
   create_table "lottery_activity_orders", force: :cascade do |t|
@@ -833,6 +846,16 @@ ActiveRecord::Schema.define(version: 20160603063335) do
 
   add_index "lottery_activity_tickets", ["code"], name: "index_lottery_activity_tickets_on_code", using: :btree
   add_index "lottery_activity_tickets", ["lottery_activity_order_id"], name: "index_lottery_activity_tickets_on_lottery_activity_order_id", using: :btree
+
+  create_table "lottery_products", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "description", limit: 255
+    t.string   "cover",       limit: 255
+    t.integer  "quantity",    limit: 4,   default: 1
+    t.integer  "price",       limit: 4,   default: 0
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
 
   create_table "mailgun_events", force: :cascade do |t|
     t.string   "event_type",      limit: 191
@@ -889,6 +912,8 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.datetime "updated_at",                                          null: false
     t.string   "sub_message_type", limit: 255
   end
+
+  add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
 
   create_table "news_rooms", force: :cascade do |t|
     t.integer  "user_id",            limit: 4
@@ -1063,9 +1088,11 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.string   "status",             limit: 255
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.integer  "kol_id",             limit: 4
     t.string   "token",              limit: 255
-    t.string   "kol_id",             limit: 255
   end
+
+  add_index "public_wechat_logins", ["kol_id"], name: "index_public_wechat_logins_on_kol_id", using: :btree
 
   create_table "push_messages", force: :cascade do |t|
     t.string   "title",               limit: 255
@@ -1133,12 +1160,14 @@ ActiveRecord::Schema.define(version: 20160603063335) do
     t.integer  "limit",         limit: 4
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
-    t.string   "task_type",     limit: 255
+    t.string   "task_type",     limit: 100
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
+
+  add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", unique: true, using: :btree
 
   create_table "stastic_data", force: :cascade do |t|
     t.datetime "start_time"
