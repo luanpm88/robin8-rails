@@ -4,7 +4,10 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :message, :url, :per_budget_type, :max_action
+          expose :id, :name, :description, :status, :message, :per_budget_type, :max_action
+          expose :url do |campaign|
+            campaign.url.gsub("#rd","").gsub("#wechat_redirect","")   rescue campaign.url
+          end
           expose :per_action_budget do |campaign|
             campaign.get_per_action_budget(false)
           end

@@ -1,0 +1,20 @@
+<table border="1">
+  <tr>
+    <th>广告主ID</th>
+    <th>广告主名称</th>
+    <th>活动ID</th>
+    <th>活动名称</th>
+    <th>总预算</th>
+    <th>活动实际花费</th>
+  </tr>
+  <% @campaigns.each do |c| %>
+  <tr>
+    <td><%= c.user_id %></td>
+    <td><%= c.user.name %></td>
+    <% %w(id name budget).each do |v| %>
+      <td> <%= multi_send c, v %> </td>
+    <% end %>
+    <td><%= (c.avail_click >= c.max_action ? c.max_action*c.per_action_budget : c.avail_click*c.per_action_budget).round(2) %></td>
+  </tr>
+  <% end %>
+</table>

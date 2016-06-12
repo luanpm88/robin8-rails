@@ -1,5 +1,4 @@
 require File.expand_path('../boot', __FILE__)
-
 require 'rails/all'
 
 ROADIE_I_KNOW_ABOUT_VERSION_3 = true # Remove after Roadie 3.1

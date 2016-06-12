@@ -111,7 +111,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def actual_budget(from_brand = true)
-    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)
+    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
   end
 
   def get_per_action_budget(from_brand = true)
@@ -341,7 +341,7 @@ class Campaign < ActiveRecord::Base
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
     begin
-      if URI(self.url).host == "mp.weixin.qq.com" 
+      if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
           self.url = self.url + "#wechat_redirect"
