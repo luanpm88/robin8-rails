@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607092147) do
+ActiveRecord::Schema.define(version: 20160612064345) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -254,6 +254,8 @@ ActiveRecord::Schema.define(version: 20160607092147) do
     t.integer  "campaign_apply_id", limit: 4
     t.integer  "observer_status",   limit: 4,     default: 0
     t.text     "observer_text",     limit: 65535
+    t.datetime "upload_time"
+    t.datetime "check_time"
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -322,10 +324,12 @@ ActiveRecord::Schema.define(version: 20160607092147) do
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
     t.string   "address",                  limit: 255
-    t.boolean  "hide_brand_name",          limit: 1,                                 default: false
-    t.boolean  "end_apply_check",          limit: 1,                                 default: false
-    t.decimal  "service_fee",                               precision: 8,  scale: 2, default: 0.0
+    t.boolean  "hide_brand_name",          limit: 1,                       default: false
+    t.boolean  "end_apply_check",          limit: 1,                       default: false
+    t.float    "tax_rate",                 limit: 24
     t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -1164,7 +1168,7 @@ ActiveRecord::Schema.define(version: 20160607092147) do
     t.datetime "updated_at",                               null: false
   end
 
-  add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
+  add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", unique: true, using: :btree
 
   create_table "stastic_data", force: :cascade do |t|
     t.datetime "start_time"

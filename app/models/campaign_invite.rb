@@ -71,10 +71,10 @@ class CampaignInvite < ActiveRecord::Base
     campaign = self.campaign
     kol = self.kol
     if campaign.status == 'executing'
-      self.update_attributes(:img_status => 'passed')
+      self.update_attributes(:img_status => 'passed', :check_time => Time.now)
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
-        self.update_attributes!(:img_status => 'passed', :status => 'settled')
+        self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
         if campaign.is_click_type?  || campaign.is_cpa_type?
           kol.income(self.avail_click * campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
@@ -90,7 +90,7 @@ class CampaignInvite < ActiveRecord::Base
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
-      self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason)
+      self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
       #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
@@ -98,7 +98,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def reupload_screenshot(img_url)
-    self.update_attributes(:img_status => 'pending', :screenshot => img_url)
+    self.update_attributes(:img_status => 'pending', :screenshot => img_url, :reject_reason => nil, :upload_time => Time.now )
     Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
