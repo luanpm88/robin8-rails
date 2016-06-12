@@ -1,7 +1,7 @@
 class CampaignShow < ActiveRecord::Base
   CookieTimeout = Rails.env.production? ? 45.minutes : 20.seconds
   OpenidTimeout = Rails.env.production? ? 45.minutes : 20.seconds
-  OpenidMaxCount = 2
+  OpenidMaxCount = 1
   IpTimeout = Rails.env.production? ? 1.seconds : 10.seconds
   IpMaxCount = Rails.env.production? ? 20 : 2
   if Rails.env.production?
