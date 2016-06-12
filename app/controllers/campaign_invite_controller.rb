@@ -99,8 +99,6 @@ class CampaignInviteController < ApplicationController
     if params[:status] == "reject"
       @campaign_invite.screenshot_reject
       if @campaign_invite.img_status == 'rejected'
-        # sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
-        # res = sms_client.send_reject_sms
         return render json: { result: 'reject' }
       else
         return render json: { result: 'error' }
@@ -120,7 +118,6 @@ class CampaignInviteController < ApplicationController
 
 
     if params[:status] == "reject"
-      Rails.logger.alipay.info "-------- params[:status] == 'reject' --------------"
       if params[:reject_reason].present?
         reject_reason = params[:reject_reason]
       else
@@ -128,10 +125,8 @@ class CampaignInviteController < ApplicationController
       end
       @campaign_invites.each do |c|
         c.screenshot_reject reject_reason
-        Rails.logger.alipay.info "-------- @campaign_invites.each --------------"
       end
 
-      Rails.logger.alipay.info "-------- before json: { result: 'reject' } --------------"
       return render json: { result: 'reject' }
     end
     return render json: { result: 'error' }
