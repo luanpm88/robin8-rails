@@ -41,6 +41,10 @@ every :tuesday, :at => '0:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
 
+every 1.day, :at => '1:00 am' do
+  rake "kol_amount_statistic:export"
+end
+
 # every 12.hours do
 #   runner "KolStatus.schedule_update_status"
 # end
