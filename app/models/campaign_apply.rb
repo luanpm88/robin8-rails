@@ -31,10 +31,11 @@ class CampaignApply < ActiveRecord::Base
 
   #结束审核
   def self.end_apply_check(campaign_id)
+    campaign = Campaign.find campaign_id
+    return if  campaign.end_apply_check == true
     ActiveRecord::Base.transaction do
-      campaign = Campaign.find campaign_id
       return if campaign.blank?
-      campaign.update_column(:end_apply_check, true)
+      campaign.update_columns({:end_apply_check => true, :end_apply_time => Time.now})
       #审核通过的
       brand_passed_kol_ids = CampaignApply.brand_passed.where(:campaign_id => campaign_id).collect{|t| t.kol_id}
       CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => brand_passed_kol_ids).update_all(:status => 'approved', :approved_at => Time.now)

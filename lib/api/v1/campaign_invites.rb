@@ -106,6 +106,7 @@ module API
             uploader.store!(params[:screenshot])
             campaign_invite.screenshot = uploader.url
             campaign_invite.img_status = 'pending'
+            campaign_invite.upload_time = Time.now
             #是否进入自动审核
             if params[:campaign_logo].present?
               campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
