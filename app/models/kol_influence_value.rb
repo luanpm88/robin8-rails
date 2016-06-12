@@ -84,6 +84,7 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.diff_score(kol_uuid, kol_id = nil, kol_value)
+    return 0 if kol_value.nil?
     last_auto = before_kol_value(kol_uuid, kol_id, kol_value)
     if last_auto
       value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
@@ -95,7 +96,7 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.before_kol_value(kol_uuid,kol_id = nil, kol_value = nil)
-    return nil if kol_value.nil?
+    return 0 if kol_value.nil?
     if kol_id.present?
       KolInfluenceValueHistory.where(:kol_id => kol_id).where("created_at < #{kol_value.to_date}").order("id desc").first   rescue nil
     else
