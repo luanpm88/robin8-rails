@@ -120,7 +120,7 @@ class CampaignInviteController < ApplicationController
 
 
     if params[:status] == "reject"
-      # mobile_numbers = []
+      Rails.logger.alipay.info "-------- params[:status] == 'reject' --------------"
       if params[:reject_reason].present?
         reject_reason = params[:reject_reason]
       else
@@ -128,10 +128,10 @@ class CampaignInviteController < ApplicationController
       end
       @campaign_invites.each do |c|
         c.screenshot_reject reject_reason
-        # mobile_numbers << c.kol.mobile_number
+        Rails.logger.alipay.info "-------- @campaign_invites.each --------------"
       end
 
-      # CampaignInviteSmsWorker.perform_async(mobile_numbers, params[:status])
+      Rails.logger.alipay.info "-------- before json: { result: 'reject' } --------------"
       return render json: { result: 'reject' }
     end
     return render json: { result: 'error' }
