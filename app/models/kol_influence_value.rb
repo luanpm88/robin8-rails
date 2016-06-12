@@ -88,7 +88,7 @@ class KolInfluenceValue < ActiveRecord::Base
       diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
       return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
     else
-      return nil
+      return 0
     end
   end
 
