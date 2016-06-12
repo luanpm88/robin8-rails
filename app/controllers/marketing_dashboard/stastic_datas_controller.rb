@@ -60,10 +60,8 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   end
 
   def download_kol_amount_statistics
-    Rails.logger.download_kol_amount_statistics.info "-------- 开始统计 --------------"
     file_path = File.expand_path("~/kol_amount_statistic/kol_amount.csv")
     send_file file_path, filename: "kol_amount##{Time.current.strftime("%Y-%m-%d")}.csv"
-    Rails.logger.download_kol_amount_statistics.info "-------- 统计结束 --------------"
   end
 
   # 统计在某时间段所有campaign
