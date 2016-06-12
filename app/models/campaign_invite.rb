@@ -94,7 +94,6 @@ class CampaignInvite < ActiveRecord::Base
       #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
-      Rails.logger.alipay.info "-------- 拒绝截图成功 --------------"
     end
   end
 
