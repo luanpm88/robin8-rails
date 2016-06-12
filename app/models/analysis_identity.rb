@@ -21,7 +21,7 @@ class AnalysisIdentity < ActiveRecord::Base
     params.merge!(info_type)
     if duration
       params['end_date'] = Date.today
-      params['start_date'] = Date.today - duration.days  + 1.days  # 含end_date start_date
+      params['start_date'] = Date.today - duration.days
     end
     return RestClient.get("#{ServerIp}/weibo/report", {:params => params})
   end
@@ -36,9 +36,13 @@ class AnalysisIdentity < ActiveRecord::Base
   def self.complete_follower_data(data = [],len)
     data_len = data.size
     if data_len < len
-      today = Date.today
-      (data_len..len).to_a.each do |i|
-        data.insert(0,{"r_date" => today - i.days, 'number' => 0 })
+      if data && data.size > 0
+        _start = data[0]["r_date"].to_date
+      else
+        _start = Date.today
+      end
+      (1..(len - data_len)).to_a.each do |i|
+        data.insert(0,{"r_date" => _start - i.days, 'number' => 0 })
       end
     end
     data
@@ -48,9 +52,13 @@ class AnalysisIdentity < ActiveRecord::Base
   def self.complete_sorted_friends(data = [],len)
     data_len = data.size
     if data_len < len
-      today = Date.today
-      (data_len..len).to_a.each do |i|
-        data.insert(0,{"r_date" => today - i.days, 'total_number' => 0, 'verified_number' => 0, 'unverified_number' => 0 })
+      if data && data.size > 0
+        _start = data[0]["r_date"].to_date
+      else
+        _start = Date.today
+      end
+      (1..(len - data_len)).to_a.each do |i|
+        data.insert(0,{"r_date" => _start - i.days, 'total_number' => 0, 'verified_number' => 0, 'unverified_number' => 0 })
       end
     end
     data
@@ -66,7 +74,7 @@ class AnalysisIdentity < ActiveRecord::Base
 
   def self.fake_list
     fake_list = []
-    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"weibo","name":"Robin8示例数据","nick_name":nil,"avatar_url":"http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg","user_name":nil,"location":"上海 静安区","gender":"f","uid":"1340795523", "authorize_time": Time.now})
-    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000002,"provider":"public_wechat","name":"Robin8示例数据","nick_name": 'robin8china',"avatar_url":'http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg',"user_name":nil, "authorize_time": Time.now})
+    # fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"weibo","name":"Robin8示例数据","nick_name":nil,"avatar_url":"http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg","user_name":nil,"location":"上海 静安区","gender":"f","uid":"1340795523", "authorize_time": Time.now})
+    # fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000002,"provider":"public_wechat","name":"Robin8示例数据","nick_name": 'robin8china',"avatar_url":'http://tva2.sinaimg.cn/crop.105.0.277.277.180/0065v6MHjw8f362ctlvo1j30dw0dwdh6.jpg',"user_name":nil, "authorize_time": Time.now})
   end
 end

@@ -39,9 +39,9 @@ class KolInfluenceValueHistory < ActiveRecord::Base
     end
     index = 0
     if kol_id
-      history =  KolInfluenceValueHistory.where(:kol_id => kol_id, :is_auto => true).order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.where(:kol_id => kol_id, :is_auto => true).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
     else
-      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).order("id desc").limit(HistorySize)
+      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).group("DATE(created_at), kol_id").order("id desc").limit(HistorySize)
     end
     history.each do |record|
       history_scores << {:date => date - (7 * index).days, :score => record.influence_score}

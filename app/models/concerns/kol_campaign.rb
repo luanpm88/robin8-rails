@@ -95,7 +95,7 @@ module Concerns
         campaign_apply = self.campaign_applies.create(campaign_id: campaign_id, name: params[:name], phone: params[:phone],  weixin_no: params[:weixin_no],
                                      weixin_friend_count: params[:weixin_friend_count], status: 'applying', expect_price: params[:expect_price],
                                      remark:  params[:remark])
-        Image.where(:id => params[:image_ids].split(",")).update_all(:referable => campaign_apply)     if params[:image_ids].present?
+        Image.where(:id => params[:image_ids].split(",")).update_all(:referable_id => campaign_apply.id, :referable_type => campaign_apply.class.to_s)     if params[:image_ids].present?
         # 成功报名后，同步更改campaign_invites  等同于接收活动
         campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
         if campaign_invite.new_record?
@@ -111,7 +111,8 @@ module Concerns
     end
 
     def hide_recruit
-      self.app_version < "1.2.0"  || self.app_version == "2"
+      self.app_platform != 'IOS' || self.app_version < "1.2.0"
+      # self.app_version < "1.2.0"  || self.app_version == "2"
     end
   end
 end

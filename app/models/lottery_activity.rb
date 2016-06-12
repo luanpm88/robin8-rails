@@ -6,11 +6,10 @@ class LotteryActivity < ActiveRecord::Base
 
   has_many :orders, class_name: LotteryActivityOrder.to_s, dependent: :destroy
   has_many :kols, through: :orders
-  has_many :posters, class_name: LotteryActivityPoster.to_s, as: :imageable, dependent: :destroy
-  has_many :pictures, class_name: LotteryActivityPicture.to_s, as: :imageable, dependent: :destroy
   has_many :tickets, through: :orders, source: :tickets
 
   belongs_to :lucky_kol, class_name: Kol.to_s
+  belongs_to :lottery_product, class_name: LotteryProduct.to_s
 
   validates_numericality_of :total_number, greater_than_or_equal_to: 1
   validates_inclusion_of :status, :in => %w( pending executing drawing finished )

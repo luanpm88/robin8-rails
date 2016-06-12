@@ -68,6 +68,9 @@ module API
                 identity.save
               end
             end
+          else
+            kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                                  device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
           end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary

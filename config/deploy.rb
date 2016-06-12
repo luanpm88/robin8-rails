@@ -118,6 +118,17 @@ namespace :deploy do
     end
   end
 
+  namespace :sidekiq do
+    [:start, :stop, :restart, :reload, :status].each do |command|
+      desc "Run upstart task: #{command} sidekiq"
+      task command do
+        on roles :app do
+          execute :sudo, "service", "sidekiq", "#{command}", "index=0"
+        end
+      end
+    end
+  end
+
   # desc 'Restart application'
   # task :restart do
   #   on roles(:app), in: :sequence, wait: 5 do
@@ -126,9 +137,15 @@ namespace :deploy do
   # end
 
   #after :publishing, :restart
-  after :publishing, :upload_localization
+  # after :publishing, :upload_localization
+  if fetch(:rails_env) == "production"
+    after :publishing, 'sidekiq:reload'
+  end
   after :publishing, :update_crontab
   after :publishing, :sync_assets
+  if fetch(:rails_env) == "production"
+    after :publishing, 'sidekiq:restart'
+  end
   after :publishing, 'unicorn:restart'
 
   after :restart, :clear_cache do

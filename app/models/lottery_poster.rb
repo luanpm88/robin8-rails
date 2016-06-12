@@ -1,0 +1,2 @@
+class LotteryPoster < Picture
+end
