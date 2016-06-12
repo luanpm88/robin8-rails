@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607092147) do
+ActiveRecord::Schema.define(version: 20160601105708) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -295,27 +295,27 @@ ActiveRecord::Schema.define(version: 20160607092147) do
     t.string   "name",                     limit: 255
     t.text     "description",              limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                                    precision: 10
-    t.integer  "user_id",                  limit: 4
-    t.datetime "created_at",                                                                         null: false
-    t.datetime "updated_at",                                                                         null: false
-    t.integer  "release_id",               limit: 4
-    t.text     "concepts",                 limit: 16777215
-    t.text     "summaries",                limit: 16777215
-    t.text     "hashtags",                 limit: 16777215
-    t.string   "content_type",             limit: 255
-    t.boolean  "non_cash",                 limit: 1,                                 default: false
-    t.string   "short_description",        limit: 255
-    t.text     "url",                      limit: 65535
-    t.float    "per_action_budget",        limit: 53
+    t.decimal  "budget",                                precision: 10
+    t.integer  "user_id",              limit: 4
+    t.datetime "created_at",                                                                     null: false
+    t.datetime "updated_at",                                                                     null: false
+    t.integer  "release_id",           limit: 4
+    t.text     "concepts",             limit: 16777215
+    t.text     "summaries",            limit: 16777215
+    t.text     "hashtags",             limit: 16777215
+    t.string   "content_type",         limit: 255
+    t.boolean  "non_cash",             limit: 1,                                 default: false
+    t.string   "short_description",    limit: 255
+    t.text     "url",                  limit: 65535
+    t.float    "per_action_budget",    limit: 53
     t.datetime "start_time"
-    t.text     "message",                  limit: 65535
-    t.string   "status",                   limit: 255
-    t.integer  "max_action",               limit: 4
-    t.integer  "avail_click",              limit: 4,                                 default: 0
-    t.integer  "total_click",              limit: 4,                                 default: 0
-    t.string   "finish_remark",            limit: 255
-    t.string   "img_url",                  limit: 255
+    t.text     "message",              limit: 65535
+    t.string   "status",               limit: 255
+    t.integer  "max_action",           limit: 4
+    t.integer  "avail_click",          limit: 4,                                 default: 0
+    t.integer  "total_click",          limit: 4,                                 default: 0
+    t.string   "finish_remark",        limit: 255
+    t.string   "img_url",              limit: 255
     t.datetime "actual_deadline_time"
     t.string   "per_budget_type",          limit: 255
     t.text     "task_description",         limit: 65535
