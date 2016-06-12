@@ -87,20 +87,19 @@ class KolInfluenceValue < ActiveRecord::Base
     return 0 if kol_value.nil?
     last_auto = before_kol_value(kol_uuid, kol_id, kol_value)
     if last_auto
-      value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
-      diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
-      return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
+      diff = kol_value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
+      return "影响力分数#{kol_value.influence_score}分 比上周增加了#{diff}分"
     else
-      return 0
+      return "影响力分数#{kol_value.influence_score}分 比上周增加了#{kol_value.influence_score}分"
     end
   end
 
   def self.before_kol_value(kol_uuid,kol_id = nil, kol_value = nil)
-    return 0 if kol_value.nil?
+    return nil if kol_value.nil?
     if kol_id.present?
-      KolInfluenceValueHistory.where(:kol_id => kol_id).where("created_at < #{kol_value.to_date}").order("id desc").first   rescue nil
+      KolInfluenceValueHistory.where(:kol_id => kol_id).where("created_at < '#{kol_value.created_at.to_date}'").order("id desc").first   rescue nil
     else
-      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).where("created_at < #{kol_value.to_date}").order("id desc").first   rescue nil
+      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).where("created_at < '#{kol_value.created_at.to_date}''").order("id desc").first   rescue nil
     end
   end
 
