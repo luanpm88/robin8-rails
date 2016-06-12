@@ -47,7 +47,6 @@ class Campaign < ActiveRecord::Base
                                          when campaigns.status = 'executing' then 3
                                          when campaigns.status ='executed' then 2
                                          else 1 end desc,
-                                        case campaigns.per_budget_type when 'recruit' then 4 else 1 end desc,
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
@@ -55,9 +54,10 @@ class Campaign < ActiveRecord::Base
   after_save :create_job
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
-  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 15.minutes
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 30.minutes
+  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
   RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
+  BaseTaxRate = 0.3
   def email
     user.try :email
   end
@@ -110,28 +110,37 @@ class Campaign < ActiveRecord::Base
     self.redis_total_click.value   rescue self.total_click
   end
 
-  def get_fee_info
-    "#{self.take_budget} / #{self.budget}"
+  def actual_budget(from_brand = true)
+    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
   end
 
-  def take_budget
+  def get_per_action_budget(from_brand = true)
+    from_brand ? per_action_budget : actual_per_action_budget
+  end
+
+  def get_fee_info(from_brand = true)
+    "#{self.take_budget(from_brand)} / #{self.actual_budget(from_brand)}"
+  end
+
+  def take_budget(from_brand = true)
+    per_budget = self.get_per_action_budget(from_brand)
     if self.is_click_type? or self.is_cpa_type?
       if self.status == 'settled'
-        (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+        (self.settled_invites.sum(:avail_click) * per_budget).round(2)       rescue 0
       else
-        (get_avail_click * self.per_action_budget).round(2)       rescue 0
+        (get_avail_click * per_budget).round(2)       rescue 0
       end
     else
       if self.status == 'settled'
-        (self.settled_invites.count * self.per_action_budget).round(2) rescue 0
+        (self.settled_invites.count * per_budget).round(2) rescue 0
       else
-        (self.valid_invites.count * self.per_action_budget).round(2) rescue 0
+        (self.valid_invites.count * per_budget).round(2) rescue 0
       end
     end
   end
 
-  def remain_budget
-    return (self.budget - self.take_budget).round(2)
+  def remain_budget(from_brand = true)
+    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)
   end
 
   def post_count
@@ -330,7 +339,7 @@ class Campaign < ActiveRecord::Base
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
     begin
-      if URI(self.url).host == "mp.weixin.qq.com" 
+      if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
           self.url = self.url + "#wechat_redirect"
