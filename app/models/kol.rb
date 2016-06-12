@@ -103,6 +103,11 @@ class Kol < ActiveRecord::Base
     not confirmed_at.nil?
   end
 
+  def safe_name
+    return self.name if /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/.match(self.name).blank?
+
+    self.name[0, 3] + "*" * 4 + self.name[7, 4]
+  end
 
   def categories
     iptc_categories.reload.map do |c|
@@ -201,11 +206,11 @@ class Kol < ActiveRecord::Base
   def verifying_income
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
-      if invite.campaign &&  invite.campaign.per_action_budget
+      if invite.campaign &&  invite.campaign.actual_per_action_budget
         if invite.campaign.is_post_type?  || invite.campaign.is_recruit_type?
-          income += invite.campaign.per_action_budget
+          income += invite.campaign.actual_per_action_budget
         else
-          income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
+          income += invite.campaign.actual_per_action_budget * invite.get_avail_click  rescue 0
         end
       end
     end
@@ -235,8 +240,8 @@ class Kol < ActiveRecord::Base
     income = 0
     count = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      if invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )
-        income += invite.campaign.per_action_budget
+      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
+        income += invite.campaign.actual_per_action_budget
         count += 1
       end
     end
@@ -264,7 +269,7 @@ class Kol < ActiveRecord::Base
     puts today_show_hash
     self.campaign_invites.not_rejected.where(:campaign_id => show_campaign_ids).includes(:campaign).each do |invite|
       if invite.campaign.is_click_type? || invite.campaign.is_cpa_type?
-        income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0
+        income += invite.campaign.actual_per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0
         count += 1
       end
     end

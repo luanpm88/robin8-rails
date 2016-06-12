@@ -23,8 +23,8 @@ class SelectCampaignPartial extends Component {
               </div>
               <div className="at-box-ct">
                 <p>转发活动包括：CPC（按点击计费的转发活动）</p>
-                <p>CPA（按用户任务完成数量计费的转发活动）</p>
                 <p>CPP（按转发次数计费的转发活动）</p>
+                <p>&nbsp;</p>
               </div>
               <div className="at-box-bt">
                 <Link to="/brand/campaigns/new" className="btn">
