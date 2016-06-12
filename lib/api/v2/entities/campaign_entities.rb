@@ -21,8 +21,12 @@ module API
           expose :total_click do |campaign|
             campaign.get_total_click
           end
-          expose :take_budget
-          expose :remain_budget
+          expose :take_budget  do |campaign|
+            campaign.take_budget(false)
+          end
+          expose :remain_budget do |campaign|
+            campaign.remain_budget(false)
+          end
           expose :share_times
           expose :interval_time do |campaign|
             interval_time(Time.now, campaign.deadline)
