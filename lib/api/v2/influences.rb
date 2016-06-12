@@ -143,7 +143,7 @@ module API
           present :error, 0
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
-          present :last_influence_score, (KolInfluenceValue.last_cal_value(params[:kol_uuid], current_kol.try(:id)).influence_score  rescue nil)
+          present :last_influence_score, (KolInfluenceValue.before_kol_value(params[:kol_uuid], current_kol.try(:id), kol_value).influence_score  rescue nil)
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
@@ -156,7 +156,7 @@ module API
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate = kol_value.get_item_scores
           present :error, 0
-          present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid], current_kol.try(:id))
+          present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid], current_kol.try(:id), kol_value)
           present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid],  current_kol.try(:id))
         end
