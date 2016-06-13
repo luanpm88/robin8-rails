@@ -54,9 +54,9 @@ module Campaigns
         if target.target_type == 'region'
           if self.is_recruit_type?
             if target.target_content == '全部' || target.target_content == '全部 全部'
-              kols = Kol.active.unios.where("app_version >= '1.2.0'")
+              kols = Kol.active.ios.where("app_version >= '1.2.0'")
             else
-              kols = Kol.active.unios.where(:app_city => target.get_citys).where("app_version >= '1.2.0'")
+              kols = Kol.active.ios.where(:app_city => target.get_citys).where("app_version >= '1.2.0'")
             end
           end
         # elsif target.target_type == 'age'

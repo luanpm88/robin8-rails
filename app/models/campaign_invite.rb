@@ -99,7 +99,6 @@ class CampaignInvite < ActiveRecord::Base
 
   def reupload_screenshot(img_url)
     self.update_attributes(:img_status => 'pending', :screenshot => img_url, :reject_reason => nil, :upload_time => Time.now )
-    Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
   def get_total_click
