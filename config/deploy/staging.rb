@@ -17,7 +17,6 @@
 
 if $*.include? "new_qa"
   server '139.196.44.225', user: 'deployer', roles: %w{web app db master}
-  server '139.196.169.53', user: 'deployer', roles: %w{app slave}
   set :branch, 'master_cn'
   set :server_name, '139.196.44.225'
 else
