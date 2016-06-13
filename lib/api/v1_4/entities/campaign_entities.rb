@@ -79,8 +79,8 @@ module API
             expose :start_time
           end
           expose :invalid_reasons do |campaign|
-            if campaign.invalid_reason.present?
-              campaign.invalid_reason.split("\n")
+            if campaign.invalid_reasons.present?
+              campaign.invalid_reasons.split("\n")
             else
               []
             end
