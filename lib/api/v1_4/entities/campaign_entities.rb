@@ -23,7 +23,7 @@ module API
         end
 
         class CampaignAlipayEntity < Grape::Entity
-          expose :id, :string
+          expose :id, :status, :need_pay_amount
           expose :alipay_url do |campaign|
             campaign.generate_alipay_campaign_order
           end
@@ -31,7 +31,7 @@ module API
 
         class CampaignListEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :need_pay_amount, :status, :img_url, :name
+          expose :id, :need_pay_amount, :status, :img_url, :name, :budget
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
@@ -42,6 +42,10 @@ module API
           expose :id, :need_pay_amount, :status
           expose :brand_amount do |campaign|
             campaign.user.avail_amount.to_f
+          end
+
+          expose :alipay_url do |campaign|
+            campaign.generate_alipay_campaign_order
           end
         end
 
@@ -64,6 +68,22 @@ module API
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
+          end
+        end
+
+        class DetailEntity < Grape::Entity
+          format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :voucher_amount, :used_voucher
+          with_options(format_with: :iso_timestamp) do
+            expose :deadline
+            expose :start_time
+          end
+          expose :invalid_reasons do |campaign|
+            if campaign.invalid_reasons.present?
+              campaign.invalid_reasons.split("\n")
+            else
+              []
+            end
           end
         end
 

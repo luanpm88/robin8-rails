@@ -31,7 +31,7 @@ module API
           if service.errors.empty?
             campaign = brand_user.campaigns.last
             present :error, 0
-            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CreateCampaignEntity
+            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
           end
         end
@@ -138,6 +138,19 @@ module API
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
         end
+
+        desc '获取 全的详情'
+        params do
+          requires :id, type: Integer
+        end
+        get "/detail" do
+          brand_user = current_kol.find_or_create_brand_user
+          campaign = Campaign.find params[:id]
+          present :error, 0
+          present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
+          present :kol_amount, current_kol.avail_amount.to_f
+        end
+
 
         desc "通过brand 余额 支付"
         params do
