@@ -1,0 +1,58 @@
+<div class="container-fluid">
+<h2>查看夺宝商品</h2>
+<%= link_to "返回上一页", marketing_dashboard_lottery_products_path, class: "btn btn-default" %>
+<hr/>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>商品详情</h3>
+    <table class="table table-bordered">
+      <tr>
+        <td> 商品名称 </td>
+        <td> <%= @lottery_product.name %> </td>
+      </tr>
+      <tr>
+        <td> 商品描述 </td>
+        <td> <%= @lottery_product.description %> </td>
+      </tr>
+      <tr>
+        <td> 价格 </td>
+        <td> <%= @lottery_product.price %> </td>
+      </tr>
+      <tr>
+        <td> 创建时间 </td>
+        <td> <%= @lottery_product.created_at %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<h4>商品封面</h4>
+<div class="item">
+  <%= image_tag @lottery_product.cover.url, style: 'max-width: 340px;' if @lottery_product.cover %>
+</div>
+
+<hr />
+
+<h4>轮播图片</h4>
+
+<% @lottery_product.posters.each do |picture| %>
+  <div class="item">
+    <%= image_tag picture.name.url, style: "max-width: 340px;" %>
+  </div>
+<% end %>
+
+<hr />
+
+<h4>商品图片</h4>
+
+<% @lottery_product.pictures.each do |picture| %>
+  <div class="item">
+    <%= image_tag picture.name.url, style: "max-width: 340px;" %>
+  </div>
+<% end %>
+
+<hr/>
+
+
+

@@ -149,7 +149,16 @@
               <%= link_to '用户新增', new_kol_marketing_dashboard_stastic_datas_path %>
             </li>
             <li>
-              <%= link_to '日统计', day_statics_marketing_dashboard_stastic_datas_path %>
+              <%= link_to '日统计', day_statistics_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to 'kol收支账户金额统计', kol_amount_statistics_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to '按时段统计活动详情', campaign_statistics_in_time_range_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to '按时段统计kol提现', kol_withdraw_statistics_in_time_range_marketing_dashboard_stastic_datas_path %>
             </li>
           </ul>
         </li>
@@ -157,16 +166,16 @@
           <a href="#">一元夺宝 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '创建夺宝活动', new_marketing_dashboard_lottery_activity_path %>
+              <%= link_to '创建商品', new_marketing_dashboard_lottery_product_path %>
             </li>
             <li>
-              <%= link_to '所有夺宝活动', marketing_dashboard_lottery_activities_path %>
+              <%= link_to '管理商品', marketing_dashboard_lottery_products_path %>
             </li>
             <li>
-              <%= link_to '未发布夺宝活动', marketing_dashboard_lottery_activities_path(pending: true) %>
+              <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
             </li>
             <li>
-              <%= link_to '已发布夺宝活动', marketing_dashboard_lottery_activities_path(executing: true) %>
+              <%= link_to '执行的活动', marketing_dashboard_lottery_activities_path(executing: true) %>
             </li>
           </ul>
         </li>

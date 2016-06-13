@@ -1,0 +1,11 @@
+<div class="container-fluid">
+  <h2>
+    编辑夺宝商品
+    <%= link_to "返回上一页", marketing_dashboard_lottery_products_path, class: "btn btn-default pull-right" %>
+  </h2>
+  <hr/>
+
+  <%= form_for([:marketing_dashboard, @lottery_product], url: marketing_dashboard_lottery_product_path, html: { multiple: true}) do |f| %>
+    <%= render partial: 'form', locals: { f: f}  %>
+  <% end %>
+</div>

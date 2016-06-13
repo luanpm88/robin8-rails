@@ -3,20 +3,30 @@ module API
     module Entities
       module LotteryActivityEntities
         class Kol < Grape::Entity
-          expose :id, :name
+          expose :id
+
+          expose :name do |kol|
+            kol.safe_name
+          end
+
           expose :avatar_url do |kol|
             kol.avatar.url rescue nil
           end
         end
 
         class Order < Grape::Entity
-          expose :id, :code, :created_at, :number, :credits
+          expose :id, :code, :number, :created_at, :credits
         end
 
         class Basic < Grape::Entity
-          expose :id, :name, :code, :published_at, :total_number, :actual_number, :status
+          expose :id, :name, :code, :total_number, :actual_number, :status, :published_at
+
+          expose :name do |activity|
+            activity.lottery_product.name
+          end
+
           expose :poster_url do |activity|
-            activity.poster.url rescue nil
+            activity.lottery_product.cover.url rescue nil
           end
         end
 
@@ -42,7 +52,7 @@ module API
           end
 
           expose :winner_name do |activity|
-            activity.lucky_kol.name rescue nil
+            activity.lucky_kol.safe_name rescue nil
           end
 
           expose :winner_token_number do |activity|
@@ -51,9 +61,18 @@ module API
         end
 
         class Show < Basic
-          expose :description, :lucky_number, :draw_at
+          expose :lucky_number
+
+          expose :draw_at do |activity|
+            activity.draw_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil
+          end
+
+          expose :description do |activity|
+            activity.lottery_product.description
+          end
+
           expose :pictures do |activity|
-            activity.posters.map(&:url)
+            activity.lottery_product.posters.map(&:url)
           end
 
           expose :winner_self, if: lambda { |activity, opts| opts[:kol] } do |activity, opts|
@@ -61,7 +80,7 @@ module API
           end
 
           expose :winner_name do |activity|
-            activity.lucky_kol.name rescue nil
+            activity.lucky_kol.safe_name rescue nil
           end
 
           expose :winner_avatar_url do |activity|

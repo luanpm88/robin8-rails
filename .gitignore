@@ -59,4 +59,4 @@ app/assets/webpack/
 npm-debug.log*
 config/selector_city.txt
 config/new_selector_city.txt
-lib/api_test/
+db/schema.rb

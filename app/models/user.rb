@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
+  PlatformMobile = '13088888888'
+  def self.get_platform_account
+    User.find_by :mobile_number => PlatformMobile
+  end
   validates_presence_of :mobile_number, :if => Proc.new{|user| user.new_record? or user.mobile_number_changed?}
   validates_presence_of :password, :if => Proc.new { |user| user.encrypted_password_changed? }
   validates_uniqueness_of :mobile_number, allow_blank: true, allow_nil: true, :message => "手机号码已经存在"

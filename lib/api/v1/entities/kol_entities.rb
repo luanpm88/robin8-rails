@@ -6,7 +6,7 @@ module API
           expose :id, :email, :mobile_number, :gender, :date_of_birthday,
                  :alipay_account, :alipay_name, :desc, :age, :weixin_friend_count
           expose :name do  |kol|
-            kol.name || kol.mobile_number
+            kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :country do |kol|
             kol.app_country
@@ -95,7 +95,7 @@ module API
         class Common < Grape::Entity
           expose :email, :mobile_number
           expose :name do  |kol|
-            kol.name || kol.mobile_number
+            kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :avatar_url do |kol|
             kol.avatar.url(200)  rescue ''

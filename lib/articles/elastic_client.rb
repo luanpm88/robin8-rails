@@ -67,7 +67,7 @@ module Articles
         query = {
           bool: {
             filter: [
-              { term: { chosen: 't'}},
+              # { term: { chosen: 't'}},
               { range: { publish_date: { gte: Date.today - 30.days }}}
             ]
           }
@@ -135,7 +135,7 @@ end
 #     "bool": {
 #        "filter": [
 #           { "term":  { "chosen": "t" }},
-#           { "range": { "publish_date": { "gte": "2016-03-21" }}}
+#           { "range": { "publish_date": { "gte": "2016-06-01" }}}
 #        ]
 #     }
 #   }
