@@ -109,7 +109,7 @@ class FinancialRechargePartial extends React.Component {
   }
 
   render_avatar() {
-    const brand = this.props.data.get('brand')
+    const brand = this.props.profileData.get('brand')
     if (brand.get("avatar_url")) {
       return <img ref="avatar" src={brand.get("avatar_url")} />
     } else {
@@ -118,7 +118,7 @@ class FinancialRechargePartial extends React.Component {
   }
 
   render() {
-    const brand = this.props.data.get('brand')
+    const brand = this.props.profileData.get('brand')
     return (
       <div className="financial page">
         <div className="container">

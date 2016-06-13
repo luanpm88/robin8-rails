@@ -13,7 +13,9 @@ module Brand
           end
         end
         expose :direct do |object|
-          if object.direct == 'income'
+          if object.direct == 'income' && object.subject == "campaign_tax"
+            "退还佣金"
+          elsif object.direct == 'income'
             "充值"
           elsif object.direct == 'payout'
             "活动消耗"

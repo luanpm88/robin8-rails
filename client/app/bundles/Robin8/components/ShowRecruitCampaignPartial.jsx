@@ -15,9 +15,10 @@ import StateText   from './recruit_campaigns/show/StateText';
 
 function select(state){
   return {
-    campaign_invites: state.$$brandStore.get("campaign_invites"),
-    hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
-    paginate: state.$$brandStore.get("paginate"),
+    campaign: state.campaignReducer.get('campaign'),
+    campaign_invites: state.campaignReducer.get("campaign_invites"),
+    hasfetchedInvite: state.campaignReducer.get("hasfetchedInvite"),
+    paginate: state.campaignReducer.get("paginate"),
   };
 }
 
@@ -47,7 +48,7 @@ class ShowRecruitCampaignPartial extends Component {
   }
 
   render_result_view() {
-    const campaign = this.props.data.get('campaign');
+    const campaign = this.props.campaign;
 
     if (campaign.get("recruit_status") === "settling") {
       return (
@@ -65,8 +66,7 @@ class ShowRecruitCampaignPartial extends Component {
   }
 
   render() {
-    const campaign = this.props.data.get('campaign');
-    const { actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
+    const { campaign, actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
     const status = campaign.get("recruit_status");
 
