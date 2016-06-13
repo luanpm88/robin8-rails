@@ -195,8 +195,30 @@ module API
         desc "支付宝回调地址"
         params do
           requires :out_trade_no, type: String
+          requires :discount, type: String
+          requires :payment_type, type: String
+          requires :subject, type: String
+          requires :trade_no, type: String
+          requires :buyer_email, type: String
+          requires :gmt_create, type: String
+          requires :notify_type, type: String
+          requires :quantity, type: String
+          requires :seller_id, type: String
+          requires :notify_time, type: String
+          requires :body, type: String
+          requires :trade_status, type: String
+          requires :is_total_fee_adjust, type: String
+          requires :total_fee, type: String
+          requires :gmt_payment, type: String
+          requires :seller_email, type: String
+          requires :price, type: String
+          requires :buyer_id, type: String
+          requires :notify_id, type: String
+          requires :use_coupon, type: String
+          requires :sign_type, type: String
+          requires :sign, type: String
         end
-        get '/notify' do
+        post '/notify' do
           campaign = Campaign.find_by :trade_number =>  params[:out_trade_no]
           content_type 'text/plain'
           unless campaign.present?
@@ -205,9 +227,11 @@ module API
           if campaign.alipay_status == 1
             body "success" and return
           end
-          if campaign.alipay_status == 0 && Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
+          if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared(params)) && Alipay::Notify.verify?(declared(params))
             campaign.need_pay_amount = 0
             campaign.alipay_status = 1
+
+            campaign.alipay_notify_text = declared(params).to_s
             campaign.save
             body "success"
             return
@@ -226,7 +250,8 @@ module API
             error_403!({error: 1, detail: "活动已经开始, 不能撤销!"})  and return
           end
           if campaign.status == "unpay"
-            
+            if Campaign.last.used_voucher
+            end
           end
         end
       end

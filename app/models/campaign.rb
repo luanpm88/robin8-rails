@@ -132,6 +132,22 @@ class Campaign < ActiveRecord::Base
     "#{self.take_budget(from_brand)} / #{self.actual_budget(from_brand)}"
   end
 
+  def budget
+    if self.attributes["budget"].to_i == self.attributes["budget"]
+      self.attributes["budget"].to_i
+    else
+      self.attributes["budget"]
+    end
+  end
+
+  def need_pay_amount
+    if self.attributes["need_pay_amount"].to_i == self.attributes["need_pay_amount"]
+      self.attributes["need_pay_amount"].to_i
+    else
+      self.attributes["need_pay_amount"]
+    end
+  end
+
   def take_budget(from_brand = true)
     per_budget = self.get_per_action_budget(from_brand)
     if self.is_click_type? or self.is_cpa_type?
