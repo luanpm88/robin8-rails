@@ -6,11 +6,12 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
+  include Campaigns::AlipayHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
 
-  #Status : unexecute agreed rejected  executing executed
+  #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
   belongs_to :user
@@ -52,6 +53,7 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   before_save :format_url
   after_save :create_job
+  before_create :genereate_camapign_number
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
@@ -87,6 +89,14 @@ class Campaign < ActiveRecord::Base
       avail_clicks.unshift 0
     end
     [self.per_budget_type, labels, total_clicks, avail_clicks]
+  end
+
+  def get_stats_for_app
+    if self.per_budget_type == "click" or self.per_budget_type == "cpa"
+      get_stats[1..-1]
+    elsif self.per_budget_type == "post"
+      get_stats[1...-1]
+    end
   end
 
   def need_finish
@@ -251,24 +261,31 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
-    if self.status_changed? && self.status == 'unexecute'
-      if self.user.avail_amount >= self.budget
-        self.user.frozen(budget, 'campaign', self)
-        Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-      else
-        Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
+    if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
+      self.update_columns :status => 'unexecute', :has_pay => true
+    end
+
+    if self.status_changed? && self.status.to_s == 'unexecute'
+      if not self.has_pay
+        if self.user.avail_amount >= self.budget
+          self.user.frozen(budget, 'campaign', self)
+          self.update_column :has_pay, true
+          Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+        else
+          Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
+        end
       end
-    elsif (self.status_changed? && status == 'agreed')
+    elsif (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else
         CampaignWorker.perform_async(self.id, 'send_invites')
       end
-    elsif (self.status_changed? && status == 'rejected')
+    elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
-      self.user.unfrozen(budget, 'campaign', self)
+      #self.user.unfrozen(budget, 'campaign', self)
     end
   end
 
@@ -350,5 +367,9 @@ class Campaign < ActiveRecord::Base
     rescue Exception => e
       # 出错了 就不更新url
     end
+  end
+
+  def genereate_camapign_number
+    self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 end

@@ -1,5 +1,6 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
+
   # counter :redis_new_income      #unit is cent
   list :read_message_ids, :maxlength => 2000             # 所有阅读过的
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
@@ -7,6 +8,7 @@ class Kol < ActiveRecord::Base
   include Concerns::PayTransaction
   include Concerns::KolCampaign
   include Concerns::KolTask
+  include Kols::BrandUserHelper
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

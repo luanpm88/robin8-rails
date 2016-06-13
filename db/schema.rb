@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601105708) do
+ActiveRecord::Schema.define(version: 20160612142035) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -47,17 +47,14 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                            default: 0,     null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_super_admin",         limit: 1,                            default: false
-    t.decimal  "amount",                             precision: 15, scale: 2, default: 0.0
-    t.decimal  "frozen_amount",                      precision: 15, scale: 2, default: 0.0
-    t.decimal  "avail_amount",                       precision: 15, scale: 2, default: 0.0
+    t.boolean  "is_super_admin",         limit: 1,   default: false
   end
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
@@ -80,11 +77,11 @@ ActiveRecord::Schema.define(version: 20160601105708) do
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
   create_table "alipay_orders", force: :cascade do |t|
-    t.string   "trade_no",        limit: 255
+    t.string   "trade_no",        limit: 191
     t.string   "alipay_trade_no", limit: 255
     t.decimal  "credits",                     precision: 8, scale: 2
     t.string   "status",          limit: 255,                         default: "pending"
-    t.string   "user_id",         limit: 255
+    t.integer  "user_id",         limit: 4
     t.datetime "created_at",                                                              null: false
     t.datetime "updated_at",                                                              null: false
     t.decimal  "tax",                         precision: 8, scale: 2, default: 0.0
@@ -218,6 +215,7 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "weixin_no",           limit: 255
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "agree_reason",        limit: 255
@@ -254,6 +252,8 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.integer  "campaign_apply_id", limit: 4
     t.integer  "observer_status",   limit: 4,     default: 0
     t.text     "observer_text",     limit: 65535
+    t.datetime "upload_time"
+    t.datetime "check_time"
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -295,37 +295,46 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "name",                     limit: 255
     t.text     "description",              limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                                precision: 10
-    t.integer  "user_id",              limit: 4
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
-    t.integer  "release_id",           limit: 4
-    t.text     "concepts",             limit: 16777215
-    t.text     "summaries",            limit: 16777215
-    t.text     "hashtags",             limit: 16777215
-    t.string   "content_type",         limit: 255
-    t.boolean  "non_cash",             limit: 1,                                 default: false
-    t.string   "short_description",    limit: 255
-    t.text     "url",                  limit: 65535
-    t.float    "per_action_budget",    limit: 53
+    t.decimal  "budget",                                    precision: 10
+    t.integer  "user_id",                  limit: 4
+    t.datetime "created_at",                                                               null: false
+    t.datetime "updated_at",                                                               null: false
+    t.integer  "release_id",               limit: 4
+    t.text     "concepts",                 limit: 16777215
+    t.text     "summaries",                limit: 16777215
+    t.text     "hashtags",                 limit: 16777215
+    t.string   "content_type",             limit: 255
+    t.boolean  "non_cash",                 limit: 1,                       default: false
+    t.string   "short_description",        limit: 255
+    t.text     "url",                      limit: 65535
+    t.float    "per_action_budget",        limit: 53
     t.datetime "start_time"
-    t.text     "message",              limit: 65535
-    t.string   "status",               limit: 255
-    t.integer  "max_action",           limit: 4
-    t.integer  "avail_click",          limit: 4,                                 default: 0
-    t.integer  "total_click",          limit: 4,                                 default: 0
-    t.string   "finish_remark",        limit: 255
-    t.string   "img_url",              limit: 255
+    t.text     "message",                  limit: 65535
+    t.string   "status",                   limit: 255
+    t.integer  "max_action",               limit: 4
+    t.integer  "avail_click",              limit: 4,                       default: 0
+    t.integer  "total_click",              limit: 4,                       default: 0
+    t.string   "finish_remark",            limit: 255
+    t.string   "img_url",                  limit: 255
     t.datetime "actual_deadline_time"
     t.string   "per_budget_type",          limit: 255
     t.text     "task_description",         limit: 65535
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
     t.string   "address",                  limit: 255
-    t.boolean  "hide_brand_name",          limit: 1,                                 default: false
-    t.boolean  "end_apply_check",          limit: 1,                                 default: false
-    t.decimal  "service_fee",                               precision: 8,  scale: 2, default: 0.0
+    t.boolean  "hide_brand_name",          limit: 1,                       default: false
+    t.boolean  "end_apply_check",          limit: 1,                       default: false
+    t.boolean  "has_pay",                  limit: 1,                       default: false
+    t.decimal  "need_pay_amount",                           precision: 10, default: 0
+    t.string   "pay_way",                  limit: 255
+    t.boolean  "used_voucher",             limit: 1,                       default: false
+    t.decimal  "voucher_amount",                            precision: 10, default: 0
+    t.string   "trade_number",             limit: 255
+    t.integer  "alipay_status",            limit: 4,                       default: 0
+    t.string   "invalid_reason",           limit: 255
     t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -1156,7 +1165,7 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "reward_cycle",  limit: 255
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
-    t.string   "task_type",     limit: 255
+    t.string   "task_type",     limit: 50
     t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
@@ -1219,7 +1228,7 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "task_type",      limit: 255
     t.integer  "invitees_id",    limit: 4
     t.string   "screenshot",     limit: 255
-    t.string   "status",         limit: 255, default: "pending"
+    t.string   "status",         limit: 191, default: "pending"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
@@ -1406,7 +1415,7 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email",      limit: 255
-    t.string   "name",                   limit: 191
+    t.string   "name",                   limit: 255
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "company",                limit: 255
@@ -1431,13 +1440,13 @@ ActiveRecord::Schema.define(version: 20160601105708) do
     t.string   "keywords",               limit: 255
     t.string   "real_name",              limit: 255
     t.decimal  "appliable_credits",                  precision: 12, scale: 2, default: 0.0
+    t.integer  "kol_id",                 limit: 4
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
