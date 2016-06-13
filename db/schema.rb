@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160612142035) do
+ActiveRecord::Schema.define(version: 20160613074754) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -295,16 +295,16 @@ ActiveRecord::Schema.define(version: 20160612142035) do
     t.string   "name",                     limit: 255
     t.text     "description",              limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                                    precision: 10
+    t.decimal  "budget",                                    precision: 12, scale: 2
     t.integer  "user_id",                  limit: 4
-    t.datetime "created_at",                                                               null: false
-    t.datetime "updated_at",                                                               null: false
+    t.datetime "created_at",                                                                         null: false
+    t.datetime "updated_at",                                                                         null: false
     t.integer  "release_id",               limit: 4
     t.text     "concepts",                 limit: 16777215
     t.text     "summaries",                limit: 16777215
     t.text     "hashtags",                 limit: 16777215
     t.string   "content_type",             limit: 255
-    t.boolean  "non_cash",                 limit: 1,                       default: false
+    t.boolean  "non_cash",                 limit: 1,                                 default: false
     t.string   "short_description",        limit: 255
     t.text     "url",                      limit: 65535
     t.float    "per_action_budget",        limit: 53
@@ -312,8 +312,8 @@ ActiveRecord::Schema.define(version: 20160612142035) do
     t.text     "message",                  limit: 65535
     t.string   "status",                   limit: 255
     t.integer  "max_action",               limit: 4
-    t.integer  "avail_click",              limit: 4,                       default: 0
-    t.integer  "total_click",              limit: 4,                       default: 0
+    t.integer  "avail_click",              limit: 4,                                 default: 0
+    t.integer  "total_click",              limit: 4,                                 default: 0
     t.string   "finish_remark",            limit: 255
     t.string   "img_url",                  limit: 255
     t.datetime "actual_deadline_time"
@@ -322,15 +322,15 @@ ActiveRecord::Schema.define(version: 20160612142035) do
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
     t.string   "address",                  limit: 255
-    t.boolean  "hide_brand_name",          limit: 1,                       default: false
-    t.boolean  "end_apply_check",          limit: 1,                       default: false
-    t.boolean  "has_pay",                  limit: 1,                       default: false
-    t.decimal  "need_pay_amount",                           precision: 10, default: 0
+    t.boolean  "hide_brand_name",          limit: 1,                                 default: false
+    t.boolean  "end_apply_check",          limit: 1,                                 default: false
+    t.boolean  "has_pay",                  limit: 1,                                 default: false
+    t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
     t.string   "pay_way",                  limit: 255
-    t.boolean  "used_voucher",             limit: 1,                       default: false
-    t.decimal  "voucher_amount",                            precision: 10, default: 0
+    t.boolean  "used_voucher",             limit: 1,                                 default: false
+    t.decimal  "voucher_amount",                            precision: 10,           default: 0
     t.string   "trade_number",             limit: 255
-    t.integer  "alipay_status",            limit: 4,                       default: 0
+    t.integer  "alipay_status",            limit: 4,                                 default: 0
     t.string   "invalid_reason",           limit: 255
     t.float    "actual_per_action_budget", limit: 24
     t.datetime "check_time"

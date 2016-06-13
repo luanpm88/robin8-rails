@@ -222,6 +222,12 @@ module API
         put "/revoke" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+          if not %w(unpay unexecute rejected).include? campaign.status
+            error_403!({error: 1, detail: "活动已经开始, 不能撤销!"})  and return
+          end
+          if campaign.status == "unpay"
+            
+          end
         end
       end
     end
