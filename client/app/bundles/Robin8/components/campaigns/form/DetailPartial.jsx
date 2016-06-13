@@ -72,7 +72,7 @@ export default class DetailPartial extends React.Component {
   }
 
   renderDetailTips(){
-    const tip = "<p>1.&nbsp;按照发布奖励KOL: 只要分享即可获得奖励。\
+    const tip = "<p>1.&nbsp;按照转发奖励KOL: 只要分享即可获得奖励。\
                  <p>2.&nbsp;按照点击奖励KOL: 要求被分享出去的活动必须有朋友点击才可获得奖励, 最后按该次分享被点击的次数结算。\
                  "
                  //<p>3.&nbsp;按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。
@@ -100,7 +100,7 @@ export default class DetailPartial extends React.Component {
                 <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照点击奖励KOL
               </label>
-              { 
+              {
                 do{
                 /*
                   <label>
@@ -142,6 +142,10 @@ export default class DetailPartial extends React.Component {
                   <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input " style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
+                  </div>
+                  <div className="price-tip">
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                   </div>
                 </div>
               </div>
