@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class CampaignStatsEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
@@ -18,7 +18,7 @@ module API
           expose :take_budget
           expose :share_times
           expose :stats_data do |campaign|
-            campaign.get_stats
+            campaign.get_stats_for_app
           end
         end
 
@@ -79,8 +79,8 @@ module API
             expose :start_time
           end
           expose :invalid_reasons do |campaign|
-            if campaign.invalid_reasons.present?
-              campaign.invalid_reasons.split("\n")
+            if campaign.invalid_reason.present?
+              campaign.invalid_reason.split("\n")
             else
               []
             end

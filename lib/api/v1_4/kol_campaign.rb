@@ -146,11 +146,16 @@ module API
         get "/detail" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+          
           present :error, 0
-          present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
-          present :kol_amount, current_kol.avail_amount.to_f
+          if %w(unpay unexecute rejected).include? campaign.status
+            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
+            present :kol_amount, current_kol.avail_amount.to_f
+          end
+          if campaign.need_pay_amount == 0 and %w(executing executed settled).include? campaign.status
+            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
+          end
         end
-
 
         desc "通过brand 余额 支付"
         params do
@@ -209,6 +214,15 @@ module API
             return
           end
           body "error"
+        end
+
+        desc "审核通过前 撤销"
+        params do
+          requires :id, type: Integer
+        end
+        put "/revoke" do
+          brand_user = current_kol.find_or_create_brand_user
+          campaign = Campaign.find params[:id]
         end
       end
     end

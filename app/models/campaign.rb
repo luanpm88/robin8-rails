@@ -91,6 +91,14 @@ class Campaign < ActiveRecord::Base
     [self.per_budget_type, labels, total_clicks, avail_clicks]
   end
 
+  def get_stats_for_app
+    if self.per_budget_type == "click" or self.per_budget_type == "cpa"
+      get_stats[1..-1]
+    elsif self.per_budget_type == "post"
+      get_stats[1...-1]
+    end
+  end
+
   def need_finish
     self.per_budget_type == 'post' && self.valid_invites.size >= self.max_action && self.status == 'executing'
   end
