@@ -36,7 +36,7 @@ const validateFailed = (errors) => {
 }
 
 function select(state){
-  return { brand: state.$$brandStore.get("brand")};
+  return { brand: state.profileReducer.get("brand")};
 }
 
 class UpdateRecruitCampaignPartial extends React.Component{
@@ -53,7 +53,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
   _updateCampaign() {
     const { updateRecruit } = this.props.actions;
-    const campaign_id = this.props.data.get("campaign").get("id");
+    const campaign_id = this.props.params.id;
     const campaign_fields = this.props.values;
     updateRecruit(campaign_id, campaign_fields);
   }
@@ -110,9 +110,9 @@ UpdateRecruitCampaignPartial = reduxForm({
   returnRejectedSubmitPromise: true,
   validate
 },
-  state => ({
-    initialValues: state.$$brandStore.get("campaign").toJSON()
-  })
+state => ({
+  initialValues: state.campaignReducer.get("campaign").toJSON()
+})
 )(UpdateRecruitCampaignPartial);
 
 export default connect(select)(UpdateRecruitCampaignPartial);

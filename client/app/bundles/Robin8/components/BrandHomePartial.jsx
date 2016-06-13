@@ -12,8 +12,8 @@ export default class BrandHeader extends React.Component {
 
   render() {
 
-    const { actions, data } = this.props;
-    const brand = data.get('brand');
+    const { actions, profileData } = this.props;
+    const brand = profileData.get('brand');
 
     return (
       <div className="page page-home">
