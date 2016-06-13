@@ -21,5 +21,9 @@ module Kols
       end
       user
     end
+
+    def brand_amount
+      self.find_or_create_brand_user.amount
+    end
   end
 end

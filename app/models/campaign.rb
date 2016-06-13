@@ -6,6 +6,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
+  include Campaigns::AlipayHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
@@ -53,6 +54,7 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   before_save :format_url
   after_save :create_job
+  before_create :genereate_camapign_number
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
@@ -242,10 +244,13 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    if self.need_pay_amount == 0 and self.status == 'unpay'
+      self.update_columns :status => 'unexecute', :has_pay => true
+    end
+
     if self.status_changed? && self.status.to_s == 'unexecute'
       if not self.has_pay
         if self.user.avail_amount >= self.budget
-
           self.user.frozen(budget, 'campaign', self)
           self.update_column :has_pay, true
           Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
@@ -261,7 +266,7 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status.to_s == 'rejected')
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
-      self.user.unfrozen(budget, 'campaign', self)
+      #self.user.unfrozen(budget, 'campaign', self)
     end
   end
 
@@ -340,5 +345,9 @@ class Campaign < ActiveRecord::Base
     rescue Exception => e
       # 出错了 就不更新url
     end
+  end
+
+  def genereate_camapign_number
+    self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 end
