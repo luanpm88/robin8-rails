@@ -112,7 +112,7 @@
     background-color: transparent !important;
     border: none !important;
   }
-  
+
   .bootstrap-touchspin-down{
     background-image: url(~icon-minus.png);
     background-position: center;
@@ -194,4 +194,14 @@
 
 .recruit-budget-form-area .bootstrap-touchspin-prefix {
   font-family: FuturaStd-Medium;
+}
+
+.content .recruit-per-budget-price-tip .stat {
+  text-align: center;
+  position: relative;
+  top: -46px;
+  margin: 5px 0;
+  color: #737373;
+  font-size: 12px;
+  font-weight: 400;
 }
