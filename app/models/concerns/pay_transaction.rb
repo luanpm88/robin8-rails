@@ -57,6 +57,13 @@ module Concerns
       end
     end
 
+    def payout_by_alipay(credits, subject, item, opposite=nil)
+      ActiveRecord::Base.transaction do
+        transaction = build_transaction(credits, subject, 'payout', item , opposite)
+        transaction.save!
+      end
+    end
+
     def build_transaction(credits,  subject, direct, item = nil, opposite = nil)
       self.transactions.build(:credits => credits, :account => self, :subject => subject, :direct => direct,
                       :item => item, :opposite => opposite, :amount => self.amount, :frozen_amount => self.frozen_amount,
