@@ -101,6 +101,9 @@
               <i class="icon-pwd"></i>
               <label for='user[password]'>密码</label>
               <input type="password" class="form-control" name='user[password]' placeholder="密码" required>
+              <div class="forget-password-block">
+                <button type='button' class='forget-password-btn'>忘记密码</button>
+              </div>
             </div>
             <div class="loginTips">
               <p class='tipsFailed help-block'>
@@ -128,6 +131,55 @@
     </div>
   </div>
   <!-- 登录注册Modal E -->
+
+
+
+  <!-- 忘记密码Modal S -->
+  <div class="modal fade" id="forget-password-modal" tabindex="-1" data-backdrop="static">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog">
+      <!-- 引入忘记密码组件 -->
+      <div class="forget-password-wrap">
+        <h3>重设密码</h3>
+        <div class="tab-content">
+          <div id="forget-password-tab-pane" class="tab-pane fade in active">
+            <%= form_tag('/users/modify_password', method: 'post', remote: true) do %>
+              <div class="form-group">
+                <i class="icon-mobile"></i>
+                <label>手机</label>
+                <input type="text" class="form-control forget-password-brand-mobile-number" name='user[mobile_number]' placeholder="输入您的手机" required>
+
+              </div>
+              <div class="form-group verify_code_group">
+                <i class="icon-verify"></i>
+                <label>验证码</label>
+                <input type="text" class="form-control verify_code" name='user[verify_code]' placeholder="输入验证码" required>
+                <div class="verify_code_block">
+                  <button type='button' class='send-forget-password-verify-code'>获取验证码</button>
+                </div>
+
+              </div>
+              <div class="form-group password-group">
+                <i class="icon-pwd"></i>
+                <label>密码</label>
+                <input type="password" class="form-control" name='user[password]' placeholder="设置新密码" required>
+              </div>
+              <div class="tips">
+                <p class='phone-number-error  error help-block'>手机号码格式错误!!</p>
+                <p class='no-phone-number  error help-block'>此用户未注册，请检查手机号码是否正确!!</p>
+                <p class='tipsFailed error help-block'></p>
+                <p class='tipsSuccess help-block'>修改成功，正在登录...</p>
+              </div>
+
+              <button type="submit" class="btn btn-blue btn-block">完成</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  <!-- 忘记密码 E -->
+    </div>
+  </div>
+  <!-- 忘记密码Modal E -->
 
   <!-- Small modal -->
   <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
@@ -162,6 +214,46 @@
 
         <section class='tips'>
           <p class='not_unique_number'><%= "手机号码已存在" %></p>
+          <p class='mobile_numer_is_blank'><%= "请输入正确格式的手机号码" %></p>
+          <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
+          <p class='send_sms_failed'><%= "验证码发送失败, 请稍后再试" %></p>
+          <p class='send_sms_success'><%= "验证码发送成功" %></p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade forget-password-rucaptcha-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <a class='close'>
+          <%= image_tag('register_verification_close_button.png') %>
+        </a>
+
+        <p>
+          请输入图形验证码！
+        </p>
+
+        <div class="clearfix">
+          <%= rucaptcha_input_tag(class: 'form-control forget-password-rucaptcha-input', placeholder: '图片验证码') %>
+
+          <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+
+          <span class='rucaptcha_tips'>
+            <p>看不清楚?</p>
+            <p>点击图片更换</p>
+          </span>
+
+        </div>
+
+        <br/>
+
+        <a class='forget-password-rucaptcha-ok'>确定</a>
+
+        <section class='tips'>
+          <p class='no_user'><%= "此用户未注册，请检查手机号码是否正确!!" %></p>
           <p class='mobile_numer_is_blank'><%= "请输入正确格式的手机号码" %></p>
           <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
           <p class='send_sms_failed'><%= "验证码发送失败, 请稍后再试" %></p>
