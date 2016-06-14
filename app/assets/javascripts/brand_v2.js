@@ -127,7 +127,7 @@ $(function(){
       beforeSend: function(xhr){
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: {'phone_number': phone_number, 'role': 'user', '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
+      data: {'phone_number': phone_number, 'role': 'user', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
     })
     .done(function(data){
       $('.bs-example-modal-sm .tips').children().hide();
@@ -135,10 +135,10 @@ $(function(){
       if (data['mobile_number_is_blank']) {
         alert('mobile number is blank');
         $('.rucaptcha_error')
-      } else if (data['not_unique']) {
+      } else if (data['no_user']) {
         $(".brand_mobile_number").css({"border-color": "red"})
-        $(".not_unique_number").show();
-        $(".not_unique_number").siblings().hide();
+        $(".no_user").show();
+        $(".no_user").siblings().hide();
       } else if (data['rucaptcha_not_right']) {
         $(".rucaptcha_not_right").show();
       } else if (data['code']) {
