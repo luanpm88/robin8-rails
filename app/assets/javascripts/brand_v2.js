@@ -115,7 +115,7 @@ $(function(){
     // send code and mobile number to request send sms
     var rucaptcha_code = $('.forget-password-rucaptcha-input').val().trim();
     var phone_number = $('.forget-password-brand-mobile-number').val().trim();
-    var send_verify_code_text = $('.send_verify_code').text();
+    var send_verify_code_text = $('.send-forget-password-verify-code').text();
     var count = 60;
     var countdown;
 
@@ -130,7 +130,7 @@ $(function(){
       data: {'phone_number': phone_number, 'role': 'user', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
     })
     .done(function(data){
-      $('.bs-example-modal-sm .tips').children().hide();
+      $('.forget-password-rucaptcha-modal-sm .tips').children().hide();
 
       if (data['mobile_number_is_blank']) {
         alert('mobile number is blank');
@@ -149,15 +149,15 @@ $(function(){
         countdown = setInterval(CountDown, 1000);
         $(".send_sms_success").show();
         $(".send_sms_success").siblings().hide();
-        $('.bs-example-modal-sm').modal('hide');
+        $('.forget-password-rucaptcha-modal-sm').modal('hide');
       }
     });
 
     function CountDown(){
-      $('.send_verify_code').attr('disabled', 'true');
-      $('.send_verify_code').text(count + ' s');
+      $('.send-forget-password-verify-code').attr('disabled', 'true');
+      $('.send-forget-password-verify-code').text(count + ' s');
       if (count===0){
-        $('.send_verify_code').text(send_verify_code_text).removeAttr('disabled');
+        $('.send-forget-password-verify-code').text(send_verify_code_text).removeAttr('disabled');
         clearInterval(countdown);
       }
       count--;
