@@ -53,6 +53,35 @@ class UsersController < ApplicationController
     end
   end
 
+  def modify_password
+    verify_code = Rails.cache.fetch(user_params[:mobile_number])
+    @user = User.where(mobile_number: user_params[:mobile_number]).first
+    if @user
+      if verify_code != params["user"]["verify_code"]
+        @user.errors[:base] << "验证码错误!!"
+        render template: 'users/modify_password_failed.js.erb'
+      else
+        @user.update_attributes(password: user_params[:password])
+        if @user.errors.any?
+          render template: 'users/modify_password_failed.js.erb'
+        else
+          sign_in @user
+          render :template => 'users/modify_password.js.erb' and return
+        end
+      end
+    else
+      render template: 'users/modify_password_failed.js.erb'
+    end
+  end
+
+  def check_exist_by_mobile_number  #检查通过手机号码检查 user 是否存在
+    @user = User.find_by(mobile_number: params[:phone_number])
+    unless @user
+      render json: {no_user: true} and return
+    end
+    render json: {no_user: false}
+  end
+
   def delete_user
     manageable_users = User.where(invited_by_id: current_user.id)
     @user = manageable_users.find(params[:id])
