@@ -65,7 +65,6 @@ class UsersController < ApplicationController
         if @user.errors.any?
           render template: 'users/modify_password_failed.js.erb'
         else
-          sign_in @user
           render :template => 'users/modify_password.js.erb' and return
         end
       end
