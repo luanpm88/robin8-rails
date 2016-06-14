@@ -18,7 +18,8 @@ module API
         get "/bill" do
           brand_user = current_kol.find_or_create_brand_user
           transactions = paginate(Kaminari.paginate_array(brand_user.paid_transactions.order('created_at DESC')))
-          present transactions
+          present :error, 0
+          present :transactions, transactions, with: API::V1_4::Entities::TransactionEntities::TransactionEntity
         end
       end
     end
