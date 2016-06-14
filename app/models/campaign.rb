@@ -72,7 +72,7 @@ class Campaign < ActiveRecord::Base
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
-  def get_stats
+  def get_stats api_from="brand"
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
@@ -83,7 +83,7 @@ class Campaign < ActiveRecord::Base
       total_clicks << shows.by_date(date.to_datetime).count
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
-    if total_clicks.size == 1
+    if total_clicks.size == 1 and api_from == "brand"
       labels.unshift "活动开始"
       total_clicks.unshift 0
       avail_clicks.unshift 0
@@ -93,9 +93,9 @@ class Campaign < ActiveRecord::Base
 
   def get_stats_for_app
     if self.per_budget_type == "click" or self.per_budget_type == "cpa"
-      get_stats[1..-1]
+      get_stats('app')[1..-1]
     elsif self.per_budget_type == "post"
-      get_stats[1...-1]
+      get_stats('app')[1...-1]
     end
   end
 

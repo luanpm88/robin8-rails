@@ -13,8 +13,19 @@ module API
       module TransactionEntities
         class TransactionEntity <  Grape::Entity
           expose :id
-          expose :item_type
-          expose :subject
+
+          expose :created_at do |object|
+            object.created_at.strftime("%m-%d")
+          end
+
+          expose :title do |object|
+            if object.item_type == "Campaign"
+              object.item.name
+            else
+              "账户充值"
+            end
+          end
+
           expose :credits do |object|
             if object.direct == 'income'
               "+#{object.credits}"
@@ -22,21 +33,28 @@ module API
               "-#{object.credits}"
             end
           end
-          expose :direct do |object|
-            if object.direct == 'income'
-              "充值"
-            elsif object.direct == 'payout'
-              "活动消耗"
+
+          expose :pay_way do |object|
+            if object.direct == 'payout' and object.item_type == "Campaign"
+              object.item.pay_way
+            else
+              ""
             end
           end
-          expose :avail_amount
-          expose :trade_no
-          expose :created_at do |object|
-            object.created_at.strftime("%Y.%m.%d")
+          
+          expose :direct_text do |object|
+            if object.direct == 'income'
+              if object.item_type == "Campaign"
+                "活动退款"
+              else
+                "充值"
+              end
+            elsif object.direct == 'payout'
+              "活动付款"
+            end
           end
-          expose :remark do |object|
-            object.get_subject
-          end
+
+
         end
       end
     end
