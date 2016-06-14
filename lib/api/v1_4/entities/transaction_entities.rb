@@ -53,8 +53,6 @@ module API
               "活动付款"
             end
           end
-
-
         end
       end
     end
