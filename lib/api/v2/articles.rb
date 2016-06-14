@@ -12,7 +12,7 @@ module API
           optional :title, type: String
         end
         get '/' do
-          if params[:type] == 'select'
+          if params[:type] == 'select'  || current_kol.article_actions.size == 0
             articles = ::Articles::Store.get_select_like_list(current_kol.id)
           else
             last_request_time = Rails.cache.read("article_last_request_#{current_kol.id}") || nil

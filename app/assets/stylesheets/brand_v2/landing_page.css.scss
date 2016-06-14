@@ -30,7 +30,7 @@ body.landing_page_bg {
 
 body.mobile_landing_page_bg{
  background: image-url('robin8_brand_bg.jpg') no-repeat top center;
- background-size: cover; 
+ background-size: cover;
 }
 
 
@@ -152,6 +152,7 @@ button.btn-blue:hover {
   right: -2px;
   width: 5px;
 }
+
 .infographic-influence-box .infographic-show .inf-bad {
   float: right;
   background-color: #e45d34;
@@ -425,6 +426,22 @@ button.btn-blue:hover {
   right: 0;
   top: 0;
 }
+
+.signinup-wrap .login-password .forget-password-block {
+  width: 100px;
+  height: 70px;
+  line-height: 70px;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  .forget-password-btn {
+    outline: 0;
+    background: none;
+    border: none;
+  }
+}
+
 .signinup-wrap .form-group .verify_code {
   width: 230px;
 }
@@ -485,6 +502,144 @@ button.btn-blue:hover {
   background-image: image-url('signinup_sprites.png');
   background-repeat: no-repeat;
 }
+
+#forget-password-modal {
+  .forget-password-wrap {
+    width: 330px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    h3 {
+      color: #fff;
+      font-size: 32px;
+      text-align: center;
+      position: relative;
+      top: -25px;
+    }
+  }
+  .forget-password-wrap .help-block {
+    margin-bottom: 20px;
+    margin-top: 0px !important;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .forget-password-wrap label {
+    display: none;
+  }
+  .forget-password-wrap .form-group,
+  .forget-password-wrap .btn {
+    box-shadow: 10.5px 18.187px 19px 0px rgba(0, 0, 0, 0.2);
+  }
+
+  .forget-password-wrap .form-group {
+    position: relative;
+  }
+  .forget-password-wrap .form-group:first-child {
+    margin-bottom: 0;
+  }
+  .forget-password-wrap .form-group:first-child:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #e0e0e0;
+  }
+  .forget-password-wrap .form-control {
+    padding: 0 50px;
+    height: 70px;
+    text-align: left;
+    border: none !important;
+    border-radius: 0 0 0 0 ;
+    box-shadow: none;
+  }
+
+  .forget-password-wrap .password-group {
+    border: none !important;
+  }
+
+  .forget-password-wrap .form-group:first-child .form-control {
+    // border-radius: 2px 2px 0 0;
+  }
+  .forget-password-wrap .form-group:nth-child(2) .form-control {
+    border-radius: 4px 4px 0 0;
+  }
+  .forget-password-wrap .verify_code_group {
+    background: #fff;
+  }
+  .forget-password-wrap .verify_code_group .verify_code_block {
+    width: 100px;
+    height: 70px;
+    line-height: 70px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .forget-password-wrap .form-group .verify_code {
+    width: 230px;
+  }
+
+  .forget-password-wrap .form-group:nth-child(5) .form-control {
+    border-radius: 0 0 4px 4px;
+  }
+
+  .forget-password-wrap .login-password {
+    border: none;
+    input {
+      border-radius: 0 0 4px 4px;
+    }
+  }
+
+  .forget-password-wrap .icon-email,
+  .forget-password-wrap .icon-pwd,
+  .forget-password-wrap .what,
+  .forget-password-wrap .icon-brand,
+  .forget-password-wrap .icon-mobile,
+  .forget-password-wrap .icon-verify {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    margin-top: -12px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+  .forget-password-wrap .icon-brand {
+    background-image: image-url('register_name_icons.png')
+  }
+  .forget-password-wrap .icon-mobile {
+    background: image-url('register_phone_icons.png') no-repeat 3px;
+  }
+  .forget-password-wrap .icon-verify {
+    background-image: image-url('register_verification_icons.png');
+  }
+  .forget-password-wrap .icon-email {
+    background-image: image-url('signinup_sprites.png');
+    background-repeat: no-repeat;
+    background-position: -1px 0;
+  }
+  .forget-password-wrap .icon-pwd {
+    background-image: image-url('signinup_sprites.png');
+    background-repeat: no-repeat;
+    background-position: 0 -24px;
+  }
+  .forget-password-wrap .what {
+    right: 18px;
+    left: auto;
+    margin-top: -7.5px;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    text-indent: -9999px;
+    background-position: 100% 0;
+    background-image: image-url('signinup_sprites.png');
+    background-repeat: no-repeat;
+  }
+}
+
 .social-binding {
   position: relative;
   margin-top: 70px;
@@ -646,17 +801,27 @@ a.download-btn:link{
   text-show: none;
 }
 
-#signinupModal .close {
-  position: absolute;
-  right: 60px;
-  top: 60px;
-  color: #efefef;
-  font-size: 36px;
-  font-weight: 400;
-  text-show: none;
+#signinupModal, #forget-password-modal {
+  .close {
+    position: absolute;
+    right: 60px;
+    top: 60px;
+    color: #efefef;
+    font-size: 36px;
+    font-weight: 400;
+    text-show: none;
+  }
 }
-#signinupModal .modal-dialog {
-  margin-top: 70px;
+#signinupModal {
+  .modal-dialog {
+    margin-top: 70px;
+  }
+}
+
+#forget-password-modal {
+  .modal-dialog {
+    margin-top: 152px;
+  }
 }
 .modal-backdrop.in{
   opacity: 0.8 !important;
@@ -670,12 +835,12 @@ a.download-btn:link{
 .loginTips p {
   display: none;
 }
-.send_verify_code{
+.send_verify_code, .send-forget-password-verify-code{
   outline: 0;
   background: none;
   border: none;
 }
-.rucaptcha_input {
+.rucaptcha_input, .forget-password-rucaptcha-input {
   width: 118px !important;height: 32px !important;border: 2px solid #e1eaf6 !important;
   float: left;
   border-radius: 0 !important;
@@ -684,7 +849,7 @@ a.download-btn:link{
   width: 67px;height: 30px;float: left;
   margin-left: 2px;
 }
-.rucaptcha_ok {
+.rucaptcha_ok, .forget-password-rucaptcha-ok {
   width: 118px;
   height: 30px;
   cursor: pointer;
@@ -712,21 +877,26 @@ a.download-btn:link{
 .rucaptcha_ok:hover {
   text-decoration: none;color: #fff;
 }
-.bs-example-modal-sm .modal-content {
-  position: absolute;
-  left: -15px;
-  border-radius: 0 !important;
-  padding: 20px;
-  height: 182px;
-  width: 330px;
-  margin-top: 58%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+.bs-example-modal-sm, .forget-password-rucaptcha-modal-sm {
+  .modal-content {
+    position: absolute;
+    left: -15px;
+    border-radius: 0 !important;
+    padding: 20px;
+    height: 182px;
+    width: 330px;
+    margin-top: 58%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  }
 }
-.bs-example-modal-sm .modal-content .close {
-  cursor: pointer;
-  position: relative;
-  right: 8px;
-  top: -3px;
+
+.bs-example-modal-sm, .forget-password-rucaptcha-modal-sm {
+  .modal-content .close {
+    cursor: pointer;
+    position: relative;
+    right: 8px;
+    top: -3px;
+  }
 }
 
 .form-group{

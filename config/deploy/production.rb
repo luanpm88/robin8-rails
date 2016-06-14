@@ -17,16 +17,29 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.14.144', user: 'deployer', roles: %w{web app db master}
+  server '139.196.169.53', user: 'deployer', roles: %w{app slave}
   set :branch, 'master_cn'
-else
-
 end
 
 set :unicorn_env, "production"
 set :unicorn_rack_env, "production"
 set :rails_env, "production"
-
 set :rbenv_ruby, '2.2.0'
+
+namespace :assets_chores do
+  desc 'copy manifest.json from master to slave'
+  task :pull_manifest_from_master do
+    master = roles(:app).find { |h| h.roles.include?(:master) }
+    master_hostname = "#{master.user || 'root'}@#{master.hostname}"
+
+    on roles(:slave) do
+      execute "mkdir -p #{release_path}/public/assets/"
+      execute "scp #{master_hostname}:/home/deployer/robin8_assets/assets/manifest.json #{release_path}/public/assets/manifest.json"
+    end
+  end
+end
+
+after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
