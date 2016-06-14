@@ -40,7 +40,7 @@ export default class DetailPartial extends React.Component {
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
-      min: 0.1,
+      min: 0.2,
       max: 10000000,
       step: 0.1,
       decimals: 1,
