@@ -43,8 +43,10 @@ class KolInfluenceValueHistory < ActiveRecord::Base
       oldest_cal_date = record.created_at.to_date
       index += 1
     end
-    (0..(HistorySize - index)).each do |i|
+    i = 0
+    while i < HistorySize - index
       history_scores << {:date => oldest_cal_date - (7 * (i + 1)).days, :score => 0}
+      i += 1
     end
     history_scores.sort_by{|t| t[:date]}
   end
