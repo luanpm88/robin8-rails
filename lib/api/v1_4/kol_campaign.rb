@@ -25,7 +25,7 @@ module API
             uploader = AvatarUploader.new
             uploader.store!(params[:img])
           end
-          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget])
+          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :camapign_from => "app")
           service.perform
           if service.errors.empty?
             campaign = brand_user.campaigns.last
@@ -110,7 +110,7 @@ module API
               else
                 pay_amount = campaign.need_pay_amount
               end
-              current_kol.payout pay_amount, "campaign_used_voucher", campaign
+              current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
@@ -175,7 +175,15 @@ module API
             if brand_user.avail_amount < campaign.need_pay_amount
               error_403!({error: 1, detail: "余额不足, 请尝试支付宝支付!!"})  and return
             else
-              brand_user.frozen campaign.need_pay_amount, 'campaign', campaign
+              if campaign.camapign_from == "app"
+                brand_user.payout campaign.need_pay_amount, 'campaign', campaign
+                if campaign.used_voucher
+                  current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign
+                  current_kol.payout campaign.voucher_amount, 'campaign_used_voucher', campaign
+                end
+              else
+                brand_user.frozen campaign.need_pay_amount, 'campaign', campaign
+              end
               campaign.need_pay_amount = 0
               campaign.pay_way = 'balance'
               campaign.save
@@ -219,6 +227,7 @@ module API
           requires :sign, type: String
         end
         post '/notify' do
+          # 走frozen 充值流程
           campaign = Campaign.find_by :trade_number =>  params[:out_trade_no]
           content_type 'text/plain'
           unless campaign.present?
@@ -228,11 +237,17 @@ module API
             body "success" and return
           end
           if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared(params)) && Alipay::Notify.verify?(declared(params))
+            campaign.user.payout_by_alipay campaign.need_pay_amount, "campaign_pay_by_alipay", campaign
             campaign.need_pay_amount = 0
-            campaign.alipay_status = 1
+            campaign.alipay_status   = 1
+            campaign.pay_way         = 'alipay'
 
             campaign.alipay_notify_text = declared(params).to_s
             campaign.save
+            if campaign.used_voucher
+              current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign
+              current_kol.payout campaign.voucher_amount, 'campaign_used_voucher', campaign
+            end
             body "success"
             return
           end
@@ -246,13 +261,27 @@ module API
         put "/revoke" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+          if campaign.status == "revoked"
+            error_403!({error: 1, detail: "活动已经撤销, 不能重复撤销!"})  and return
+          end
           if not %w(unpay unexecute rejected).include? campaign.status
             error_403!({error: 1, detail: "活动已经开始, 不能撤销!"})  and return
           end
+
           if campaign.status == "unpay"
-            if Campaign.last.used_voucher
+            if campaign.used_voucher
+              current_kol.unfrozen(campaign.budget-campaign.need_pay_amount, "campaign_revoke", campaign)
             end
+            campaign.update(:status => "revoked", :check_time => Time.now)
+          elsif %w(unexecute rejected).include? campaign.status
+            if campaign.used_voucher
+              current_kol.income campaign.voucher_amount, 'campaign_used_voucher_and_revoke', campaign
+            end
+            brand_user.income(campaign.budget-campaign.voucher_amount, "campaign_revoke", campaign)
+            campaign.update(:status => "revoked", :check_time => Time.now)
           end
+          present :error, 0
+          present :detail, "成功撤销"
         end
       end
     end
