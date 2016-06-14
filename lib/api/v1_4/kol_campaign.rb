@@ -129,13 +129,25 @@ module API
         get "/show" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
-          if campaign.need_pay_amount > 0
+          if campaign.need_pay_amount > 0 or (campaign.need_pay_amount == 0 and params[:check_pay].to_i == 1)
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
-          elsif campaign.need_pay_amount == 0 and %w(executing executed settled).include? campaign.status
+          elsif campaign.need_pay_amount == 0 and %w(agreed executing executed settled).include? campaign.status
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
+        end
+
+        desc "获取campaign 参与人的列表"
+        params do
+          requires :id, type: Integer
+        end
+        get "/joined_kols" do
+          brand_user = current_kol.find_or_create_brand_user
+          campaign = Campaign.find_by :id => params[:campaign_id], :user_id => current_user.id
+          campaign_invites = paginate(Kaminari.paginate_array(campaign.valid_invites({:include => :kol })))
+          present :error, 0
+          present campaign_invites
         end
 
         desc '获取 全的详情'
