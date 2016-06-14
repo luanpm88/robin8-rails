@@ -41,8 +41,7 @@ set :slack_msg_updated, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branc
 set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml config/redis.yml}
-set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml  config/redis.yml}
+set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml config/redis.yml config/mongoid.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system client/node_modules}
@@ -63,7 +62,7 @@ set :sidekiq_role, %w{ master }
 
 namespace :deploy do
   task :upload_localization do
-    on roles(:app)  do
+    on roles(:db)  do
       within "#{current_path}" do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'localization:upload'
@@ -94,7 +93,7 @@ namespace :deploy do
 
   desc "Update the crontab file"
   task :update_crontab do
-    on roles :app do
+    on roles :master do
       within current_path do
         execute :bundle, :exec, "whenever --update-crontab #{fetch(:application)} --set environment=#{fetch(:rails_env)}"
       end
