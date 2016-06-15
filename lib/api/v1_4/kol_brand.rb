@@ -4,7 +4,7 @@ module API
       resources :kol_brand do
         before do
           action_name =  @options[:path].join("")
-          authenticate!
+          authenticate! if action_name != '/notify'
         end
 
         desc "广告主详情页面"
