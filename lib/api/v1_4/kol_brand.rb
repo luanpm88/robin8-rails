@@ -28,8 +28,13 @@ module API
           if params[:credits].to_i <= 500
             error_403!({error: 1, detail: "充值金额不能小于500"})  and return
           end
+          alipay_url = brand_user.generate_alipay_recharge_order_for_app params[:credits]
+          present :error, 0
+          present :alipay_url, alipay_url
         end
       end
+
+      desc "支付宝回调"
     end
   end
 end

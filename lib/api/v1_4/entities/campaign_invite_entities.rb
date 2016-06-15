@@ -13,6 +13,10 @@ module API
           expose :avail_click do |invite|
             invite.get_avail_click
           end
+
+          expose :total_click do |invite|
+            invite.get_total_click
+          end
         end
       end
     end
