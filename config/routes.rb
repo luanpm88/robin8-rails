@@ -103,6 +103,8 @@ Rails.application.routes.draw do
       get 'info'
       get 'get_avail_amount'
       get :avail_amount
+      get :check_exist_by_mobile_number
+      post :modify_password
     end
   end
 
