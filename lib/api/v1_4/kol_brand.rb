@@ -21,6 +21,14 @@ module API
           present :error, 0
           present :transactions, transactions, with: API::V1_4::Entities::TransactionEntities::TransactionEntity
         end
+
+        desc '充值'
+        post do
+          brand_user = current_kol.find_or_create_brand_user
+          if params[:credits].to_i <= 500
+            error_403!({error: 1, detail: "充值金额不能小于500"})  and return
+          end
+        end
       end
     end
   end
