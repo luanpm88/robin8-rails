@@ -10,6 +10,10 @@ module Users
       end
       set_flash_message(:notice, :signed_in) if is_flashing_format?
       sign_in(resource_name, resource)
+      unless cookies[:remember_signed_in]
+        cookies.permanent[:remember_signed_in] = SecureRandom.hex
+        UserSignInRecord.create(sign_in_token: cookies.permanent[:remember_signed_in], user_id: resource.id)
+      end
       yield resource if block_given?
       render :template => 'users/session_create_success.js.erb'
       # respond_with resource, location: after_sign_in_path_for(resource)
