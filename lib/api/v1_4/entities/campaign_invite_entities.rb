@@ -10,7 +10,7 @@ module API
             invite.kol.safe_name
           end
 
-          expose :get_avail_click do |invite|
+          expose :avail_click do |invite|
             invite.get_avail_click
           end
         end
