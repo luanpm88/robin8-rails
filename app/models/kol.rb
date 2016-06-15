@@ -157,7 +157,8 @@ class Kol < ActiveRecord::Base
   end
 
   def create_campaign_invites_after_signup
-    CampaignSyncAfterSignup.perform_async(self.id)
+    # CampaignSyncAfterSignup.perform_async(self.id)
+    self.sync_campaigns
   end
 
 
@@ -421,8 +422,8 @@ class Kol < ActiveRecord::Base
         attrs.delete("kol_uuid")
         identity.attributes = attrs
         identity.kol_id = kol_id
-        identity.save
-        Weibo.update_identity_info(identity)
+        identity.save!
+        # Weibo.update_identity_info(identity)
       end
   end
 
