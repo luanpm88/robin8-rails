@@ -32,50 +32,50 @@ module API
           present :error, 0
           present :alipay_url, alipay_url
         end
-      end
 
-      desc "支付宝回调"
-      params do
-        requires :out_trade_no, type: String
-        requires :discount, type: String
-        requires :payment_type, type: String
-        requires :subject, type: String
-        requires :trade_no, type: String
-        requires :buyer_email, type: String
-        requires :gmt_create, type: String
-        requires :notify_type, type: String
-        requires :quantity, type: String
-        requires :seller_id, type: String
-        requires :notify_time, type: String
-        requires :body, type: String
-        requires :trade_status, type: String
-        requires :is_total_fee_adjust, type: String
-        requires :total_fee, type: String
-        requires :gmt_payment, type: String
-        requires :seller_email, type: String
-        requires :price, type: String
-        requires :buyer_id, type: String
-        requires :notify_id, type: String
-        requires :use_coupon, type: String
-        requires :sign_type, type: String
-        requires :sign, type: String
-      end
-      post "/notify" do
-        alipay_order = AlipayOrder.find_by :trade_no =>  params[:out_trade_no]
-        content_type 'text/plain'
-        unless alipay_order.present?
-          body "error" and return
+        desc "支付宝回调"
+        params do
+          requires :out_trade_no, type: String
+          requires :discount, type: String
+          requires :payment_type, type: String
+          requires :subject, type: String
+          requires :trade_no, type: String
+          requires :buyer_email, type: String
+          requires :gmt_create, type: String
+          requires :notify_type, type: String
+          requires :quantity, type: String
+          requires :seller_id, type: String
+          requires :notify_time, type: String
+          requires :body, type: String
+          requires :trade_status, type: String
+          requires :is_total_fee_adjust, type: String
+          requires :total_fee, type: String
+          requires :gmt_payment, type: String
+          requires :seller_email, type: String
+          requires :price, type: String
+          requires :buyer_id, type: String
+          requires :notify_id, type: String
+          requires :use_coupon, type: String
+          requires :sign_type, type: String
+          requires :sign, type: String
         end
-        if alipay_order.status == "paid"
-          body "success" and return
-        end
+        post "/notify" do
+          alipay_order = AlipayOrder.find_by :trade_no =>  params[:out_trade_no]
+          content_type 'text/plain'
+          unless alipay_order.present?
+            body "error" and return
+          end
+          if alipay_order.status == "paid"
+            body "success" and return
+          end
 
-        if alipay_order.status == "pending" && Alipay::Sign.verify?(declared(params)) && Alipay::Notify.verify?(declared(params))
-          alipay_order.pay
-          body "success"
-          return
+          if alipay_order.status == "pending" && Alipay::Sign.verify?(declared(params)) && Alipay::Notify.verify?(declared(params))
+            alipay_order.pay
+            body "success"
+            return
+          end
+          body "error"
         end
-        body "error"
       end
     end
   end
