@@ -224,8 +224,10 @@ class KolsController < ApplicationController
     if phone_number.blank?
       render json: {mobile_number_is_blank: true}
     else
-      if params[:role] == 'user'
+      if params[:role] == 'user' && params[:forget_password].nil?
         return render json: {not_unique: true}  if User.check_mobile_number phone_number
+      elsif params[:role] == 'user' && params[:forget_password]
+        return render json: {no_user: true} unless User.check_mobile_number phone_number
       else
         return render json: {not_unique: true}  if Kol.check_mobile_number phone_number
       end
