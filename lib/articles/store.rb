@@ -1,9 +1,9 @@
 module Articles
  class Store
    #发现文章列表
-   DefaultSize = 20
-   MaxSize = 100
-   PerPage = 10
+   DefaultSize = 24
+   MaxSize = 120
+   PerPage = 12
    def self.get_discovery_list(kol_id, title = nil, page = 1)
      Rails.logger.elastic.info "=======get_discovery_list===kol_id:#{kol_id}====title:#{title}"
      selected_articles = search_list(kol_id, title, {:page => page})

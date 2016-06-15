@@ -12,7 +12,7 @@ module API
             campaign.get_per_action_budget(false)
           end
           expose :budget do |campaign|
-            campaign.actual_budget(false)
+            campaign.actual_budget(false).round(0)
           end
           expose :img_url do |campaign|
             campaign.img_cover_url

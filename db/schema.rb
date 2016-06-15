@@ -325,6 +325,10 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.string   "address",                  limit: 255
     t.boolean  "hide_brand_name",          limit: 1,                                 default: false
     t.boolean  "end_apply_check",          limit: 1,                                 default: false
+    t.decimal  "service_fee",                               precision: 8,  scale: 2, default: 0.0
+    t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
     t.boolean  "has_pay",                  limit: 1,                                 default: false
     t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
     t.string   "pay_way",                  limit: 255
@@ -332,10 +336,7 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.decimal  "voucher_amount",                            precision: 10,           default: 0
     t.string   "trade_number",             limit: 255
     t.integer  "alipay_status",            limit: 4,                                 default: 0
-    t.string   "invalid_reason",           limit: 255
-    t.float    "actual_per_action_budget", limit: 24
-    t.datetime "check_time"
-    t.datetime "end_apply_time"
+    t.string   "invalid_reasons",          limit: 255
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "camapign_from",            limit: 255,                               default: "pc"
   end
@@ -1399,6 +1400,13 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.integer  "bluesnap_subscription_id", limit: 4
     t.datetime "suspended_at"
     t.integer  "bluesnap_order_id",        limit: 4
+  end
+
+  create_table "user_sign_in_records", force: :cascade do |t|
+    t.string   "sign_in_token", limit: 255
+    t.string   "user_id",       limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "users", force: :cascade do |t|

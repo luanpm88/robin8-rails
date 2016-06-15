@@ -13,21 +13,6 @@ class CampaignSyncAfterSignup
     end
 
     return unless kol.present?
-
-    Campaign.where(:status => :agreed).each do |campaign|
-      if campaign.is_recruit_type?
-        kol.add_campaign_id campaign.id   if kol.app_platform == 'IOS'  #if  campaign.region_target.blank? ||  campaign.region_target.get_citys.include?(kol.app_city)
-      else
-        kol.add_campaign_id campaign.id
-      end
-    end
-
-    Campaign.where(:status => :executing).each do |campaign|
-      if campaign.is_recruit_type?
-        kol.add_campaign_id campaign.id   if kol.app_platform == 'IOS'  #if campaign.region_target.blank? ||  campaign.region_target.get_citys.include?(kol.app_city)
-      else
-        kol.add_campaign_id campaign.id
-      end
-    end
+    kol.sync_campaigns
   end
 end

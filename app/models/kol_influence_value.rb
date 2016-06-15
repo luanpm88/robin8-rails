@@ -44,9 +44,9 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.cal_total_score(kol_value)
-    BaseScore + kol_value.location_score + kol_value.mobile_model_score + kol_value.identity_score +
-      kol_value.contact_score +  kol_value.identity_count_score  + kol_value.campaign_total_click_score +
-      kol_value.campaign_avg_click_score +  kol_value.article_total_click_score +  kol_value.article_avg_click_score
+    BaseScore + (kol_value.location_score || 0) + (kol_value.mobile_model_score || 0) + (kol_value.identity_score || 0) +
+      (kol_value.contact_score || 0) +  (kol_value.identity_count_score || 0)  + (kol_value.campaign_total_click_score || 0) +
+      (kol_value.campaign_avg_click_score || 0) +  (kol_value.article_total_click_score || 0) +  (kol_value.article_avg_click_score || 0)
   end
 
   def self.get_score(kol_uuid, current_kol = nil)
@@ -59,11 +59,11 @@ class KolInfluenceValue < ActiveRecord::Base
 
   ItemBaseScore = 76
   def get_item_scores
-    feature_score =  ItemBaseScore + location_score +  mobile_model_score  +  identity_count_score  +  verify_score
-    active_score =  ItemBaseScore + follower_score + status_score + register_score
-    campaign_score = ItemBaseScore + campaign_avg_click_score + campaign_total_click_score
-    share_score = ItemBaseScore + article_avg_click_score + article_total_click_score
-    contacts_score = ItemBaseScore + contact_score
+    feature_score =  ItemBaseScore + (location_score || 0) +  (mobile_model_score || 0)  +  (identity_count_score || 0)  +  (verify_score || 0)
+    active_score =  ItemBaseScore + (follower_score || 0) + (status_score || 0) + (register_score || 0)
+    campaign_score = ItemBaseScore + (campaign_avg_click_score || 0) + (campaign_total_click_score || 0)
+    share_score = ItemBaseScore + (article_avg_click_score || 0) + (article_total_click_score || 0)
+    contacts_score = ItemBaseScore + (contact_score || 0)
     rate = {}
     rate[:feature_rate] =  (feature_score / 216.0).round(2)
     rate[:active_rate] =  (active_score / 256.0).round(2)

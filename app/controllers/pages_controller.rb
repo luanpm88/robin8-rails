@@ -65,6 +65,13 @@ class PagesController < ApplicationController
     render "home", :layout => 'application'
   end
 
+  def check_used_to_signed_in    #检查是否曾经登录过网站
+    if UserSignInRecord.where(sign_in_token: cookies[:remember_signed_in]).present?
+      render json: {success: true} and return
+    end
+    render nothing: true
+  end
+
   def pricing
     # 暂时注释掉
     #@products = Package.active.where "slug like 'new%'"
