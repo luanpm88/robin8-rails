@@ -3,7 +3,22 @@
 //= require jquery_ujs
 //= require bootstrap
 
+show_sign_up_modal = function() {
+  if($('.quick-login').attr("show-after-loading") == 'true'){
+    $("#signinupModal").modal('show');
+  }
+  $(".verify_code").val("").attr("placeholder", "输入验证码");
+  $(".password").val("").attr("placeholder", "设置密码");
+  $(".new-password").val("").attr("placeholder", "设置新密码");
+}
+
 $(function(){
+
+  if($("#downloadModal").attr("show-after-loading") == 'true'){
+    $("#downloadModal").modal('show');
+  }
+
+  setTimeout(show_sign_up_modal,500)
 
   $('.quick-login').click(function() {
     // 清除不必要的填充
