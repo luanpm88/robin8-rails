@@ -25,6 +25,13 @@ module API
             uploader = AvatarUploader.new
             uploader.store!(params[:img])
           end
+
+          if params[:budget].to_i <= 100
+            error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
+          end
+          if params[:deadline].to_date < params[:start_time].to_date
+            error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
+          end
           service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
@@ -54,6 +61,12 @@ module API
           campaign = Campaign.find params[:id]
           unless %w(unpay unexecute rejected).include?(campaign.status)
             error_403!({error: 1, detail: "活动已经开始不能修改!"})  and return
+          end
+          if params[:budget].to_i <= 100
+            error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
+          end
+          if params[:deadline].to_date < params[:start_time].to_date
+            error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
           declared_params = declared(params)
           if params[:img]
