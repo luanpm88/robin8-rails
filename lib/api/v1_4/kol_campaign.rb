@@ -102,6 +102,7 @@ module API
         put "/pay_by_voucher" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+          campaign.bugdet_editable = false
           if params[:used_voucher].to_i == 1
             if current_kol.avail_amount > 0
               pay_amount = 0

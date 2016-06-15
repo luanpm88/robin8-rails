@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615094750) do
+ActiveRecord::Schema.define(version: 20160615100915) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(version: 20160615094750) do
     t.datetime "end_apply_time"
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "campaign_from",            limit: 255,                               default: "pc"
+    t.boolean  "bugdet_editable",          limit: 1,                                 default: true
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
