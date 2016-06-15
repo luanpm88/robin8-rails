@@ -2,16 +2,12 @@ module API
   module V1_4
     module Entities
       module CampaignInviteEntities
-        class JoinKolsEntities < Grape::Entity
+        class JoinKolsEntity < Grape::Entity
           expose :avatar_url do |invite|
             invite.kol.avatar_url
           end
           expose :kol_name do |invite|
             invite.kol.safe_name
-          end
-
-          expose :total_click do |invite|
-            invite.get_total_click
           end
 
           expose :get_avail_click do |invite|

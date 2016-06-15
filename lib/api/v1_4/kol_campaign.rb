@@ -147,7 +147,7 @@ module API
           campaign = Campaign.find_by :id => params[:id], :user_id => brand_user.id
           campaign_invites = paginate(Kaminari.paginate_array(campaign.valid_invites({:include => :kol })))
           present :error, 0
-          present campaign_invites
+          present campaign_invites, with: API::V1_4::Entities::CampaignInviteEntities::JoinKolsEntity
         end
 
         desc '获取 全的详情'
