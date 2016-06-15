@@ -35,31 +35,32 @@ module API
 
         desc "支付宝回调"
         params do
-          requires :out_trade_no, type: String
-          requires :discount, type: String
-          requires :payment_type, type: String
-          requires :subject, type: String
-          requires :trade_no, type: String
-          requires :buyer_email, type: String
-          requires :gmt_create, type: String
-          requires :notify_type, type: String
-          requires :quantity, type: String
-          requires :seller_id, type: String
-          requires :notify_time, type: String
-          requires :body, type: String
-          requires :trade_status, type: String
-          requires :is_total_fee_adjust, type: String
-          requires :total_fee, type: String
-          requires :gmt_payment, type: String
-          requires :seller_email, type: String
-          requires :price, type: String
-          requires :buyer_id, type: String
-          requires :notify_id, type: String
-          requires :use_coupon, type: String
-          requires :sign_type, type: String
-          requires :sign, type: String
+          optional :out_trade_no, type: String
+          optional :discount, type: String
+          optional :payment_type, type: String
+          optional :subject, type: String
+          optional :trade_no, type: String
+          optional :buyer_email, type: String
+          optional :gmt_create, type: String
+          optional :notify_type, type: String
+          optional :quantity, type: String
+          optional :seller_id, type: String
+          optional :notify_time, type: String
+          optional :body, type: String
+          optional :trade_status, type: String
+          optional :is_total_fee_adjust, type: String
+          optional :total_fee, type: String
+          optional :gmt_payment, type: String
+          optional :seller_email, type: String
+          optional :price, type: String
+          optional :buyer_id, type: String
+          optional :notify_id, type: String
+          optional :use_coupon, type: String
+          optional :sign_type, type: String
+          optional :sign, type: String
         end
         post "/notify" do
+          binding.pry
           alipay_order = AlipayOrder.find_by :trade_no =>  params[:out_trade_no]
           content_type 'text/plain'
           unless alipay_order.present?
@@ -68,8 +69,8 @@ module API
           if alipay_order.status == "paid"
             body "success" and return
           end
-
-          if alipay_order.status == "pending" && Alipay::Sign.verify?(declared(params)) && Alipay::Notify.verify?(declared(params))
+          declared_params = declared(params).reject do |i| params[i].blank?  end
+          if alipay_order.status == "pending" && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
             alipay_order.pay
             body "success"
             return

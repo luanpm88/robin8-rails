@@ -278,14 +278,13 @@ class Campaign < ActiveRecord::Base
 
   def create_job
     if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
-      self.update_columns :status => 'unexecute', :has_pay => true
+      self.update_columns :status => 'unexecute'
     end
 
     if self.status_changed? && self.status.to_s == 'unexecute'
-      if not self.has_pay
+      if not self.campaign_from ==  "app"
         if self.user.avail_amount >= self.budget
           self.user.frozen(budget, 'campaign', self)
-          self.update_column :has_pay, true
           Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
         else
           Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"

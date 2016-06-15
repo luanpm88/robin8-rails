@@ -15,6 +15,10 @@ Rails.application.routes.draw do
         delete :delete_target
         get :stop
       end
+      collection do
+        put :reject
+      end
+      
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
