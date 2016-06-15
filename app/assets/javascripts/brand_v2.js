@@ -4,6 +4,19 @@
 //= require bootstrap
 
 $(function(){
+
+  $('.quick-login').click(function() {
+    $.ajax({
+      method: 'GET',
+      url: '/pages/check_used_to_signed_in',
+    })
+    .done(function(data){
+      if (data['success']) {
+        $('.sign-in-tab').click();
+      }
+    });
+  });
+
   $(".rucaptcha_tag").click(function(){
     $.ajax({
       method: "GET",

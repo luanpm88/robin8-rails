@@ -128,6 +128,7 @@ Rails.application.routes.draw do
 
   get '/signup', to: 'pages#signup'
   get '/signin', to: 'pages#signin'
+  get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
