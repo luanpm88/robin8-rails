@@ -73,7 +73,7 @@ module API
 
         class DetailEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :voucher_amount, :used_voucher
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :voucher_amount, :used_voucher, :bugdet_editable
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time

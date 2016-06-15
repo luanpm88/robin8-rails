@@ -47,6 +47,7 @@ module API
           optional :per_action_budget, type: Float
           optional :start_time, type: DateTime
           optional :deadline, type: DateTime
+          optional :budget, type: Float
         end
         put '/update' do
           brand_user = current_kol.find_or_create_brand_user
@@ -63,7 +64,14 @@ module API
           if campaign.status == "rejected"
             declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
           end
-          service = KolUpdateCampaignService.new(brand_user, campaign, declared_params.reject do |i| i == :id end.to_h)
+
+          declared_params.reject do |i| i == :id or i == :budget end.to_h
+
+          unless campaign.bugdet_editable
+            declared_params = declared_params.reject do |i| i == :budget end.to_h
+          end
+
+          service = KolUpdateCampaignService.new(brand_user, campaign, declared_params)
           service.perform
           campaign.reload
           present :error, 0
@@ -115,9 +123,9 @@ module API
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
-              campaign.save
             end
           end
+          campaign.save
           campaign.reload
           present :error, 0
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
