@@ -27,8 +27,8 @@ export default function CampaignFormValidate(options){
           errors[fieldName] = "最低费用100元";
         }
       } else if (fieldName == 'per_action_budget' && value) {
-        if ($("input:radio:checked").val() === 'click' && parseFloat(value) < 0.1) {
-          errors[fieldName] = "最低金额为 0.1 元";
+        if ($("input:radio:checked").val() === 'click' && parseFloat(value) < 0.2) {
+          errors[fieldName] = "最低金额为 0.2 元";
         } else if ($("input:radio:checked").val() === 'post' && parseFloat(value) < 2) {
           errors[fieldName] = "最低金额为 2 元";
         } else if ($("input:radio:checked").val() == 'cpa' && parseFloat(value) < 1) {

@@ -87,11 +87,11 @@ class PushMessage < ActiveRecord::Base
     push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
     # 个推限定list 最大为1000
     title =  '你有新的特邀转发活动'
+    device_tokens =  Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}.uniq
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
-    push_kol_ids.in_groups_of(1000,false){|group_kol_ids|
-      device_tokens = Kol.where(:id => group_kol_ids ).collect{|t| t.device_token}
+    device_tokens.in_groups_of(1000,false){|group_device_tokens|
       push_message = self.new(:template_type => 'transmission', :template_content => template_content, :title => title,
-                              :receiver_type => 'List', :receiver_ids => group_kol_ids, :receiver_cids => device_tokens )
+                              :receiver_type => 'List', :receiver_cids => group_device_tokens )
       push_message.save
       sleep 0.5
     }

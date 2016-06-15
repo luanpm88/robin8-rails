@@ -45,7 +45,7 @@ const validateFailed = (errors) => {
 }
 
 function select(state) {
-  return { brand: state.$$brandStore.get("brand") }
+  return { brand: state.profileReducer.get("brand") }
 }
 
 
@@ -176,7 +176,7 @@ EditProfilePartial = reduxForm({
   validate
 },
 state => ({
-  initialValues: state.$$brandStore.get("brand").toJSON()
+  initialValues: state.profileReducer.get("brand").toJSON()
 })
 )(EditProfilePartial);
 

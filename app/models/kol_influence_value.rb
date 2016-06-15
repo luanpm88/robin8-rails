@@ -44,9 +44,9 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.cal_total_score(kol_value)
-    BaseScore + kol_value.location_score + kol_value.mobile_model_score + kol_value.identity_score +
-      kol_value.contact_score +  kol_value.identity_count_score  + kol_value.campaign_total_click_score +
-      kol_value.campaign_avg_click_score +  kol_value.article_total_click_score +  kol_value.article_avg_click_score
+    BaseScore + (kol_value.location_score || 0) + (kol_value.mobile_model_score || 0) + (kol_value.identity_score || 0) +
+      (kol_value.contact_score || 0) +  (kol_value.identity_count_score || 0)  + (kol_value.campaign_total_click_score || 0) +
+      (kol_value.campaign_avg_click_score || 0) +  (kol_value.article_total_click_score || 0) +  (kol_value.article_avg_click_score || 0)
   end
 
   def self.get_score(kol_uuid, current_kol = nil)

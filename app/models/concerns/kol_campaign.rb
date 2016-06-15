@@ -114,5 +114,15 @@ module Concerns
       self.app_platform != 'IOS' || self.app_version < "1.2.0"
       # self.app_version < "1.2.0"  || self.app_version == "2"
     end
+
+    def sync_campaigns
+      Campaign.where(:status => [:agreed, :executing]).each do |campaign|
+        if campaign.is_recruit_type?
+          self.add_campaign_id campaign.id   if self.app_platform == 'IOS'  #if  campaign.region_target.blank? ||  campaign.region_target.get_citys.include?(kol.app_city)
+        else
+          self.add_campaign_id campaign.id
+        end
+      end
+    end
   end
 end
