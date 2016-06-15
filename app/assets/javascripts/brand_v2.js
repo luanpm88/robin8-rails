@@ -6,6 +6,12 @@
 $(function(){
 
   $('.quick-login').click(function() {
+    // 清除不必要的填充
+    $(".verify_code").val("").attr("placeholder", "输入验证码");
+    $(".password").val("").attr("placeholder", "设置密码");
+    $(".new-password").val("").attr("placeholder", "设置新密码");
+
+    // 验证user是否登录过网站，如果登录过，则选择登录 tab
     $.ajax({
       method: 'GET',
       url: '/pages/check_used_to_signed_in',
