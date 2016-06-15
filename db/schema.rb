@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.datetime "updated_at",                                                              null: false
     t.decimal  "tax",                         precision: 8, scale: 2, default: 0.0
     t.boolean  "need_invoice",    limit: 1,                           default: false
+    t.string   "recharge_from",   limit: 255
   end
 
   add_index "alipay_orders", ["trade_no"], name: "index_alipay_orders_on_trade_no", unique: true, using: :btree
