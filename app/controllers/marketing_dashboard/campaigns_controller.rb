@@ -88,9 +88,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
     @campaign.update(:status => :rejected, :invalid_reason => params[:invalid_reason])
 
-    if params[:invalid_reason].blank?
-      render :json => {:status => "ok"} and return
-    end
+    render :json => {:status => "ok"}
   end
 
 

@@ -8,7 +8,7 @@
       <div class="modal-body admin-reject-modal-body">
           <div class="col-sm-4">
             <div class="form-group">
-              <input type="text_area" name='invalid_reason'  cols=40 rows= 15 class='reject_reason form-control', placeholder="填写审核不通过的理由">
+              <textarea id="invalid_reason" class="invalid_reason processed" name="post-text" cols="30" rows="15" tabindex="101" data-min-length="" placeholder="填写审核不通过的理由"></textarea>
             </div>
           </div>
       </div>
@@ -87,11 +87,14 @@
     {
       method: "put",
       url: "/marketing_dashboard/campaigns/reject",
-      data: {campaign_id: $(this).attr("data-campaign-id")}
+      data: {campaign_id: $(this).attr("data-campaign-id"), invalid_reason: $("#invalid_reason").val()}
     }).done(function(data){
       if(data["status"] == 'error'){
         alert(data["message"])
       }else{
+        alert("成功拒绝")
+        $(".admin-campaign-modal").modal("hide")
+        location.reload();
       }
     })
   })
