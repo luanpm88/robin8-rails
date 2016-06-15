@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615033844) do
+ActiveRecord::Schema.define(version: 20160615094750) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -325,7 +325,6 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.string   "address",                  limit: 255
     t.boolean  "hide_brand_name",          limit: 1,                                 default: false
     t.boolean  "end_apply_check",          limit: 1,                                 default: false
-    t.boolean  "has_pay",                  limit: 1,                                 default: false
     t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
     t.string   "pay_way",                  limit: 255
     t.boolean  "used_voucher",             limit: 1,                                 default: false
@@ -337,7 +336,7 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.datetime "check_time"
     t.datetime "end_apply_time"
     t.text     "alipay_notify_text",       limit: 65535
-    t.string   "camapign_from",            limit: 255,                               default: "pc"
+    t.string   "campaign_from",            limit: 255,                               default: "pc"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree

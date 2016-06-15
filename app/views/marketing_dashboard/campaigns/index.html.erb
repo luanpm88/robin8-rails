@@ -1,5 +1,26 @@
-<table class='table table-bordered'>
+<div class="modal admin-campaign-modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">填写审核不通过的理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input type="text_area" name='invalid_reason'  cols=40 rows= 15 class='reject_reason form-control', placeholder="填写审核不通过的理由">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject reject-campaign-checked btn-primary">确认不通过</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<table class='table table-bordered'>
   <thead>
     <tr>
       <th>ID</th>
@@ -16,6 +37,7 @@
       <th>Deadline</th>
       <th>Accepted Kols Count</th>
       <th>Status</th>
+      <th>活动来自</th>
       <th>Ops</th>
     </tr>
   </thead>
@@ -26,7 +48,7 @@
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td> <%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
-        <% %w(per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status).each do |v| %>
+        <% %w(per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status campaign_from).each do |v| %>
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td>
@@ -37,6 +59,9 @@
           <%= link_to '统计', get_brand_campaign_show_url(c), :target => "_blank" %> | <br/>
           <% if c.status == 'unexecute' %>
             <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
+            <% if c.campaign_from == "app" %>
+              <button type="button" class="reject-campaign" data-campaign-id= <%= c.id %>>不通过</button> | <br/>
+            <% end %>
           <% end %>
           <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
             <%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
@@ -51,3 +76,23 @@
 </table>
 
 <%= will_paginate @campaigns %>
+
+<script>
+  $(".reject-campaign").click(function(){
+    $(".admin-campaign-modal").modal("show")
+    $(".reject-campaign-checked").attr("data-campaign-id", $(this).attr("data-campaign-id"))
+  })
+  $(".reject-campaign-checked").click(function(){
+    $.ajax(
+    {
+      method: "put",
+      url: "/marketing_dashboard/campaigns/reject",
+      data: {campaign_id: $(this).attr("data-campaign-id")}
+    }).done(function(data){
+      if(data["status"] == 'error'){
+        alert(data["message"])
+      }else{
+      }
+    })
+  })
+</script>
