@@ -67,7 +67,7 @@ module Articles
         query = {
           bool: {
             filter: [
-              # { term: { chosen: 't'}},
+              { term: { chosen: 't'}},
               { range: { publish_date: { gte: Date.today - 30.days }}}
             ]
           }
@@ -82,7 +82,7 @@ module Articles
                               sort: sort,
                               filter: filter,
                               from: options[:from] || 0,
-                              size:  options[:size] || 30
+                              size:  options[:size] || 24
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}
         sources

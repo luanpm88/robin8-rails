@@ -72,6 +72,9 @@ export default class RecruitBudgetPartial extends React.Component{
               </div>
             </div>
           </div>
+          <div className="recruit-per-budget-price-tip">
+            <p className="stat"> Robin8将根据大数据分析结果为不同的KOL呈现不同的价格 </p>
+          </div>
         </div>
       </div>
     )

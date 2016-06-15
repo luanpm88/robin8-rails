@@ -35,8 +35,7 @@ const validateFailed = (errors) => {
 
 function select(state) {
   return {
-    brand: state.$$brandStore.get("brand"),
-    readyState: state.$$brandStore.get("readyState")
+    brand: state.profileReducer.get("brand"),
   };
 }
 
@@ -55,7 +54,7 @@ class UpdateCampaignPartial extends React.Component {
 
   _updateCampaign() {
     const { updateCampaign } = this.props.actions;
-    const campaign_id = this.props.data.get("campaign").get("id");
+    const campaign_id = this.props.params.id;
     const campaign_fields = this.props.values;
     updateCampaign(campaign_id, campaign_fields);
   }
@@ -101,7 +100,7 @@ UpdateCampaignPartial = reduxForm({
 },
 
 state => ({
-  initialValues: state.$$brandStore.get("campaign").toJSON()
+  initialValues: state.campaignReducer.get("campaign").toJSON()
 })
 )(UpdateCampaignPartial);
 

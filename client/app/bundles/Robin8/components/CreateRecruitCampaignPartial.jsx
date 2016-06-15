@@ -51,7 +51,7 @@ const validateFailed = (errors) => {
 }
 
 function select(state){
-  return { brand: state.$$brandStore.get("brand")};
+  return { brand: state.profileReducer.get("brand")};
 }
 
 class CreateRecruitCampaign extends React.Component{

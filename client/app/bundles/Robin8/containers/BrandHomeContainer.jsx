@@ -11,13 +11,13 @@ import * as brandActionCreators from '../actions/brandActionCreators';
 
 
 function select(state) {
-  return { data: state.$$brandStore };
+  return { profileData: state.profileReducer };
 }
 
 class BrandHomeContainer extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    profileData: PropTypes.object.isRequired,
   }
 
   constructor(props, context) {
@@ -25,19 +25,19 @@ class BrandHomeContainer extends React.Component {
   }
 
   render() {
-    const { dispatch, data } = this.props;
+    const { dispatch, profileData } = this.props;
     const actions = bindActionCreators(brandActionCreators, dispatch)
 
     const childrenWithProps = React.Children.map(this.props.children, (child) =>{
       return React.cloneElement(child, {
-        data: this.props.data,
+        profileData: this.props.profileData,
         actions
       })
     })
 
     return (
       <div>
-        <BrandNav {...{ actions, data }} />
+        <BrandNav {...{ actions, profileData }} />
         { childrenWithProps }
       </div>
     );

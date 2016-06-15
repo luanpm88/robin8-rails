@@ -1,9 +1,9 @@
 module Articles
  class Store
    #发现文章列表
-   DefaultSize = 20
-   MaxSize = 100
-   PerPage = 10
+   DefaultSize = 24
+   MaxSize = 120
+   PerPage = 12
    def self.get_discovery_list(kol_id, title = nil, page = 1)
      Rails.logger.elastic.info "=======get_discovery_list===kol_id:#{kol_id}====title:#{title}"
      selected_articles = search_list(kol_id, title, {:page => page})
@@ -32,7 +32,7 @@ module Articles
        else
          #2.1  推荐时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
-         if text
+         if text.present?
            #2.2  把文章关键字 去查询
            articles = ElasticClient.search(text, {:push_list_ids => PushArticle.get_push_ids(kol_id), :size => DefaultSize})
          else

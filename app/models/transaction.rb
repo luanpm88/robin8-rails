@@ -46,7 +46,7 @@ class Transaction < ActiveRecord::Base
       when 'campaign_used_voucher'
         "营销活动(#{self.item.name}) 任务奖金抵用"
       when 'campaign_tax'
-        '活动佣金'
+        "活动佣金(#{self.item.name})"
       when "campaign_revoke"
         "营销活动(#{self.item.name}) 撤销"
       when "campaign_pay_by_alipay"

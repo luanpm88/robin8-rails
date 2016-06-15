@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615033844) do
+ActiveRecord::Schema.define(version: 20160615040428) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -325,6 +325,7 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.string   "address",                  limit: 255
     t.boolean  "hide_brand_name",          limit: 1,                                 default: false
     t.boolean  "end_apply_check",          limit: 1,                                 default: false
+<<<<<<< HEAD
     t.boolean  "has_pay",                  limit: 1,                                 default: false
     t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
     t.string   "pay_way",                  limit: 255
@@ -336,6 +337,20 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.float    "actual_per_action_budget", limit: 24
     t.datetime "check_time"
     t.datetime "end_apply_time"
+=======
+    t.decimal  "service_fee",                               precision: 8,  scale: 2, default: 0.0
+    t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
+    t.boolean  "has_pay",                  limit: 1,                                 default: false
+    t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
+    t.string   "pay_way",                  limit: 255
+    t.boolean  "used_voucher",             limit: 1,                                 default: false
+    t.decimal  "voucher_amount",                            precision: 10,           default: 0
+    t.string   "trade_number",             limit: 255
+    t.integer  "alipay_status",            limit: 4,                                 default: 0
+    t.string   "invalid_reasons",          limit: 255
+>>>>>>> master_cn
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "camapign_from",            limit: 255,                               default: "pc"
   end
@@ -1399,6 +1414,13 @@ ActiveRecord::Schema.define(version: 20160615033844) do
     t.integer  "bluesnap_subscription_id", limit: 4
     t.datetime "suspended_at"
     t.integer  "bluesnap_order_id",        limit: 4
+  end
+
+  create_table "user_sign_in_records", force: :cascade do |t|
+    t.string   "sign_in_token", limit: 255
+    t.string   "user_id",       limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "users", force: :cascade do |t|
