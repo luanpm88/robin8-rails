@@ -143,7 +143,6 @@ module API
           requires :id, type: Integer
         end
         get "/joined_kols" do
-          paginate per_page: 10
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find_by :id => params[:id], :user_id => brand_user.id
           campaign_invites = paginate(Kaminari.paginate_array(campaign.valid_invites({:include => :kol })))
