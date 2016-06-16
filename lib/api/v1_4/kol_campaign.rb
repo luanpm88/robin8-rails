@@ -26,7 +26,7 @@ module API
             uploader.store!(params[:img])
           end
 
-          if params[:budget].to_i <= 100
+          if params[:budget].to_i < 100
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
           if params[:deadline].to_date < params[:start_time].to_date
@@ -62,7 +62,7 @@ module API
           unless %w(unpay unexecute rejected).include?(campaign.status)
             error_403!({error: 1, detail: "活动已经开始不能修改!"})  and return
           end
-          if params[:budget].to_i <= 100
+          if params[:budget].to_i < 100
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
           if params[:deadline].to_date < params[:start_time].to_date
@@ -209,7 +209,7 @@ module API
             if brand_user.avail_amount < campaign.need_pay_amount
               error_403!({error: 1, detail: "余额不足, 请尝试支付宝支付!!"})  and return
             else
-              if campaign.camapign_from == "app"
+              if campaign.campaign_from == "app"
                 brand_user.payout campaign.need_pay_amount, 'campaign', campaign
                 if campaign.used_voucher
                   current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign
