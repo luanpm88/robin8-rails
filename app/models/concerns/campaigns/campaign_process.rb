@@ -100,7 +100,7 @@ module Campaigns
         self.passed_invites.each do |invite|
           kol = invite.kol
           invite.update_column(:status, 'settled')
-          if is_click_type? or is_cpa_type?
+          if is_click_type? or is_cpa_type? or is_cpi_type?
             kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
             Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
           else
@@ -123,7 +123,7 @@ module Campaigns
         self.update_column(:status, 'settled')
         self.user.unfrozen(self.budget, 'campaign', self)
         Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-        if is_click_type?  || is_cpa_type?
+        if is_click_type?  || is_cpa_type?  || is_cpi_type?
           pay_total_click = self.settled_invites.sum(:avail_click)
           User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
           self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
