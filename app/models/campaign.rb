@@ -53,7 +53,7 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   before_save :format_url
   after_save :create_job
-  before_create :genereate_camapign_number
+  before_create :genereate_campaign_number
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
@@ -384,7 +384,7 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def genereate_camapign_number
+  def genereate_campaign_number
     self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 end
