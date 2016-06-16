@@ -14,7 +14,7 @@ class Transaction < ActiveRecord::Base
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund)
 
   # subject
   # manual_recharge manual_withdraw
@@ -53,6 +53,8 @@ class Transaction < ActiveRecord::Base
         "营销活动(#{self.item.name}) 支付宝支付"
       when "campaign_used_voucher_and_revoke"
         "营销活动(#{self.item.name}) 撤销"
+      when "campaign_refund"
+        "营销活动(#{self.item.name}) 退款"
     end
   end
 
