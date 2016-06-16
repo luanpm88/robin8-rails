@@ -71,6 +71,14 @@ class Transaction < ActiveRecord::Base
     end
   end
 
+  def credits
+    if self.attributes["credits"].to_i == self.attributes["credits"]
+      self.attributes["credits"].to_i
+    else
+      self.attributes["credits"]
+    end
+  end
+
   def generate_trade_no
     self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
   end
