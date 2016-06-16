@@ -372,7 +372,13 @@ class Campaign < ActiveRecord::Base
   def format_url
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
+
+
     begin
+      unless self.url.start_with?("http://") || self.url.start_with?("https://")
+        self.url = "http://" + self.url
+      end
+  
       if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
