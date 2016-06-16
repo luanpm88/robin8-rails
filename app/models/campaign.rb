@@ -51,7 +51,7 @@ class Campaign < ActiveRecord::Base
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
-  before_save :format_url
+  before_validation :format_url
   after_save :create_job
   before_create :genereate_campaign_number
 
@@ -375,7 +375,7 @@ class Campaign < ActiveRecord::Base
 
     url_changed = self.url_changed?
     begin
-      unless self.url.start_with?("http://") || self.url.start_with?("https://")
+      unless self.url.start_with?("http:") || self.url.start_with?("https:")
         self.url = "http://" + self.url
       end
   
@@ -390,6 +390,7 @@ class Campaign < ActiveRecord::Base
     end
     if url_changed and not self.url.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)"))
       self.errors[:url] = "活动链接格式不正确"
+      return false
     end
   end
 
