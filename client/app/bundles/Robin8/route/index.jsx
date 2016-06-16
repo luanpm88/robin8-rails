@@ -31,6 +31,12 @@ export default (
       }, "previewCampaign");
     }}/>
 
+    <Route path="campaigns/:id/pay" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/payCampaignPartial').default);
+      }, "payCampaign");
+    }}/>
+
     <Route path="campaigns/:id" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/ShowCampaignPartial').default);

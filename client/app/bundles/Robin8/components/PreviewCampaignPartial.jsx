@@ -1,12 +1,11 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
 
 import "campaign/preview.scss";
 
-import BreadCrumb     from './shared/BreadCrumb';
+import BreadCrumb from './shared/BreadCrumb';
 
 function select(state) {
   return {
@@ -14,8 +13,7 @@ function select(state) {
   }
 }
 
-
-class CreateCampaignPartial extends React.Component {
+class PreviewCampaignPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -40,20 +38,16 @@ class CreateCampaignPartial extends React.Component {
 
   render() {
     const campaign = this.props.campaign
-    const { saveCampaign } = this.props.actions;
 
     return (
       <div className="page page-activity page-activity-preview">
         <div className="container">
          <BreadCrumb />
-          <div className="creat-activity-wrap">
-
-            <div className="creat-form-footer">
-              <p>{campaign.get("name")}</p>
-              <p>{campaign.get("status")}</p>
-              <p className="help-block">跳转到支付页面</p>
-              <button type="submit" onClick={} className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
-            </div>
+          <div className="preview-activity-wrap">
+            <p>{campaign.get("name")}</p>
+            <p>{campaign.get("status")}</p>
+            <p className="help-block">跳转到支付页面</p>
+            <Link to={`/brand/campaigns/${campaign.get("id")}/pay`} className="btn btn-blue btn-lg payCampaignSubmit">立即支付</Link>
           </div>
         </div>
       </div>
@@ -61,4 +55,4 @@ class CreateCampaignPartial extends React.Component {
   }
 }
 
-export default connect(select)(CreateCampaignPartial)
+export default connect(select)(PreviewCampaignPartial)
