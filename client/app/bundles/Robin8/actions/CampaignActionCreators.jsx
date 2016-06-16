@@ -42,7 +42,7 @@ export function saveCampaign(campaign) {
         body: formData
       }
     ),
-    redirect: '/brand/'
+    redirect: '/brand/campaigns/:id/preview'
   };
 }
 

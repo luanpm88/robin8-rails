@@ -25,6 +25,12 @@ export default (
       }, "updateCampaign");
     }}/>
 
+    <Route path="campaigns/:id/preview" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/PreviewCampaignPartial').default);
+      }, "previewCampaign");
+    }}/>
+
     <Route path="campaigns/:id" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/ShowCampaignPartial').default);
