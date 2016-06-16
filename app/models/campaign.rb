@@ -375,7 +375,7 @@ class Campaign < ActiveRecord::Base
 
     url_changed = self.url_changed?
     begin
-      unless self.url.start_with?("http:") || self.url.start_with?("https:")
+      unless self.url.downcase.start_with?("http:") || self.url.downcase.start_with?("https:")
         self.url = "http://" + self.url
       end
   

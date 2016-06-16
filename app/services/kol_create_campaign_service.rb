@@ -41,7 +41,7 @@ class KolCreateCampaignService
       @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :target].include? k }
       return true
     rescue Exception => e
-      @errors.concat e.record.errors.full_messages.flatten
+      @errors.concat e.record.errors.messages.map(&:last).flatten
       return false
     end
   end
