@@ -60,7 +60,6 @@ module API
           optional :sign, type: String
         end
         post "/notify" do
-          binding.pry
           alipay_order = AlipayOrder.find_by :trade_no =>  params[:out_trade_no]
           content_type 'text/plain'
           unless alipay_order.present?
