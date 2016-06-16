@@ -373,7 +373,7 @@ class Campaign < ActiveRecord::Base
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
 
-
+    url_changed = self.url_changed?
     begin
       unless self.url.start_with?("http://") || self.url.start_with?("https://")
         self.url = "http://" + self.url
@@ -387,6 +387,9 @@ class Campaign < ActiveRecord::Base
       end
     rescue Exception => e
       # 出错了 就不更新url
+    end
+    if url_changed and not self.url.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)"))
+      self.errors[:url] = "活动链接格式不正确"
     end
   end
 
