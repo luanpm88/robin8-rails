@@ -39,6 +39,8 @@ module API
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
+          else
+            error_403!({error: 1, detail: service.first_error_message})  and return
           end
         end
 
