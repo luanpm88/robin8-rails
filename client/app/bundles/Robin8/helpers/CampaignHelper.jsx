@@ -93,6 +93,15 @@ export function canEditCampaign(status){
   }
 }
 
+export function canPayCampaign(status) {
+  switch (status) {
+    case "unpay":
+      return true
+    default:
+      return false
+  }
+}
+
 export function isRecruitCampaign(per_budget_type){
   return per_budget_type === 'recruit' ? true : false;
 }

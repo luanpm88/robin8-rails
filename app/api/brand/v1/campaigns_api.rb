@@ -85,6 +85,7 @@ module Brand
           patch ":id/lock_budget" do
             @campaign = Campaign.find declared(params)[:campaign_id]
             @campaign.update_attributes(budget_editable: false)
+            present @campaign
           end
 
           desc 'pay campaign use balance'  #使用余额支付 campaign
@@ -247,7 +248,6 @@ module Brand
       group do
         post 'campaigns/alipay_notify' do
           params.delete 'route_info'
-          binding.pry
           Rails.logger.alipay.info "-------- web端单笔支付，进入'campaigns/alipay_notify'路由  --------------"
           if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
             Rails.logger.alipay.info "-------- web端单笔支付，验证 支付宝签名 成功  --------------"

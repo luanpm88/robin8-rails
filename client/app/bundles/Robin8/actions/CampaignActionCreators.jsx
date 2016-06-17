@@ -107,7 +107,7 @@ export function goPayCampaign(campaign_id) {
         body: JSON.stringify(data)
       }
     ),
-    redirect: `/brand/campaigns/${campaign.get("id")}/pay`
+    redirect: `/brand/campaigns/${campaign_id}/pay`
   };
 }
 

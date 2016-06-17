@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router'
 
 import "campaign/pay.scss";
 
@@ -40,6 +41,26 @@ class CreateCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  componentDidUpdate() {
+    if (this.props.campaign.size) {
+      if (this.props.campaign.get("status") !== 'unpay') {
+        browserHistory.push(`/brand/campaigns/${this.props.campaign.get("id")}/preview`)
+      }
+    }
+  }
+
+  renderSubmitButton() {
+    const campaign = this.props.campaign
+    if (campaign.get("status") === 'unpay') {
+      return (
+        <div>
+          <button type="submit" onClick={this._pay} className="btn btn-blue btn-lg payCampaignSubmit">立即使用余额支付</button>
+          <button type="submit" onClick={this._pay2} className="btn btn-blue btn-lg payCampaignSubmit">立即使用支付宝支付</button>
+        </div>
+      )
+    }
+  }
+
   render() {
     const campaign = this.props.campaign
 
@@ -52,8 +73,7 @@ class CreateCampaignPartial extends React.Component {
             <p>{campaign.get("budget")}</p>
             <p className="help-block">账户余额支付</p>
             <p className="help-block">支付宝支付</p>
-            <button type="submit" onClick={this._pay} className="btn btn-blue btn-lg payCampaignSubmit">立即使用余额支付</button>
-            <button type="submit" onClick={this._pay2} className="btn btn-blue btn-lg payCampaignSubmit">立即使用支付宝支付</button>
+            { this.renderSubmitButton() }
           </div>
         </div>
       </div>

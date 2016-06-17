@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -35,6 +35,8 @@ export default class Campaign extends React.Component {
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
       return <Link to={this.getUrl() + "/edit"} className="edit-campaign-btn btn">编辑</Link>
+    } else if(canPayCampaign(campaign.get("status"))) {
+      return <Link to={this.getUrl() + "/edit"} className="edit-campaign-btn btn">支付</Link>
     }
   }
 

@@ -36,6 +36,13 @@ class PreviewCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  renderSubmitButton() {
+    const campaign = this.props.campaign
+    if (campaign.get('status') ==="unpay") {
+      return <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
+    }
+  }
+
   render() {
     const campaign = this.props.campaign
 
@@ -47,8 +54,7 @@ class PreviewCampaignPartial extends React.Component {
             <p>{campaign.get("name")}</p>
             <p>{campaign.get("status")}</p>
             <p className="help-block">跳转到支付页面</p>
-            <Link to={`/brand/campaigns/${campaign.get("id")}/pay`} className="btn btn-blue btn-lg payCampaignSubmit">立即支付</Link>
-            <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">完成发布活动</button>
+            {this.renderSubmitButton()}
           </div>
         </div>
       </div>
