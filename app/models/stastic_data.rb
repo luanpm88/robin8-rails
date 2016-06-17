@@ -49,7 +49,7 @@ class StasticData < ActiveRecord::Base
             (select * from campaign_invites
               group by kol_id
             ) as uniq_campaign_invites
-          where created_at > '#{_start}' and forward = 1
+          where created_at > '#{_start}'
           group by DATE(created_at)
           order by created asc"
     result = CampaignInvite.find_by_sql(sql)
