@@ -251,7 +251,9 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    raise 'status 不能为空' if self.status.blank?
     if self.status_changed? && self.status == 'unexecute'
+      puts "--------status_changed? and  == 'unexecute'"
       if self.user.avail_amount >= self.budget
         self.user.frozen(budget, 'campaign', self)
         Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
