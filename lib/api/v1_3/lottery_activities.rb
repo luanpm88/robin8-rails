@@ -57,8 +57,11 @@ module API
           activity = LotteryActivity.available.where(code: params[:code]).take
           return {:error => 1, :detail => '无法找到此夺宝活动'} unless activity
 
-          orders = activity.orders.paid.ordered.page(params[:page]).per_page(10)
-          to_paginate(orders)
+          orders = activity.orders.paid.ordered
+          if params[:page]
+            orders = orders.page(params[:page]).per_page(10)
+            to_paginate(orders)
+          end
           present :error, 0
           present :orders, orders, with: API::V1_3::Entities::LotteryActivityEntities::KolingOrder
         end
