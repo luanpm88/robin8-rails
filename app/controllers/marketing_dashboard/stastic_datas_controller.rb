@@ -45,14 +45,16 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   def day_statistics
     day_count = 5
     _start = (day_count + 1).days.ago
-    @value = KolInfluenceValue.where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @article = ArticleAction.where(:forward => true).where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @campaign = CampaignInvite.where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    @value = StasticData.day_statistics_value(_start)
+    @article = StasticData.day_statistics_article(_start)
+    @campaign = StasticData.day_statistics_invite(_start)
     @collect =  []
     today = Date.today
     day_count.times.each do |index|
-      @collect << {:date => (today - index.days), :value => (@value[index].count rescue nil), :article => (@article[index].count rescue nil),
-                   :campaign => (@campaign[index].count rescue nil)}
+      date = today - index.days
+      @collect << {:date => date, :value => (@value.select{|t| t.count if t.created == date}[0].count rescue 0),
+                   :article => (@article.select{|t| t.count if t.created == date}[0].count rescue 0),
+                   :campaign => (@campaign.select{|t| t.count if t.created == date}[0].count rescue 0)}
     end
   end
 

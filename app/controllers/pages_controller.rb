@@ -214,4 +214,8 @@ class PagesController < ApplicationController
     @price = params[:price]
     render 'pay', :layout => 'brand_v2'
   end
+
+  def kol_publish_campaign_help
+    render :layout => false
+  end
 end

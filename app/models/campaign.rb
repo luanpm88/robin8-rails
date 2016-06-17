@@ -277,6 +277,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    raise 'status 不能为空' if self.status.blank?
     if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
       self.update_columns :status => 'unexecute'
     end
