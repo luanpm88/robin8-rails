@@ -17,7 +17,7 @@ module API
         end
         post 'reg_notice' do
           return {:error => 1, :detail => 'api_token错误'}  if params[:api_token] != CpiReg::ApiToken
-          CpiReg.create_reg(params)
+          ::CpiReg.create_reg(params)
           present :error, 0
         end
       end

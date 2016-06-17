@@ -1,5 +1,5 @@
 class CampaignShow < ActiveRecord::Base
-  includes Concerns::CampaignShowForCpi
+  include Concerns::CampaignShowForCpi
   CookieTimeout = Rails.env.production? ? 45.minutes : 20.seconds
   OpenidTimeout = Rails.env.production? ? 45.minutes : 20.seconds
   OpenidMaxCount = 1

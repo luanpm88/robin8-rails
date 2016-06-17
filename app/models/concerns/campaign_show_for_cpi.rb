@@ -2,7 +2,6 @@ module Concerns
   module CampaignShowForCpi
     extend ActiveSupport::Concern
     included do
-      #for cpi
       Expired = 2.hours
       scope :effective, -> {where("created_at > '#{Expired.ago}'" ).where.not(:status => false)}
     end
@@ -22,6 +21,7 @@ module Concerns
     end
 
     class_methods do
+      #for cpi
       def find_visit(cpi_reg)
         if cpi_reg.app_platform == "IOS"
           invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :app_platform => cpi_reg.app_platform,
@@ -35,13 +35,12 @@ module Concerns
       end
 
       def update_inviter(cpi_reg)
-        invitation = find_inviter(cpi_reg)
+        invitation = find_visit(cpi_reg)
         if invitation
           #need lock?
           invitation.status = true
           invitation.remark = 'cpi_reg'
           invitation.reg_time = Time.now
-          invitation.remark = 'cpi_reg'
           cpi_reg.campaign_show_id = invitation.id
           cpi_reg.status = 'success'
           cpi_reg.save! && invitation.save!

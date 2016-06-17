@@ -384,8 +384,9 @@ ActiveRecord::Schema.define(version: 20160616083038) do
     t.string   "os_version",       limit: 255
     t.string   "device_model",     limit: 255
     t.integer  "campaign_show_id", limit: 4
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.string   "status",           limit: 30,  default: "pending"
   end
 
   create_table "discounts", force: :cascade do |t|
