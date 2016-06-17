@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615100915) do
+ActiveRecord::Schema.define(version: 20160617062554) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -328,7 +328,7 @@ ActiveRecord::Schema.define(version: 20160615100915) do
     t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
     t.string   "pay_way",                  limit: 255
     t.boolean  "used_voucher",             limit: 1,                                 default: false
-    t.decimal  "voucher_amount",                            precision: 10,           default: 0
+    t.decimal  "voucher_amount",                            precision: 12, scale: 2, default: 0.0
     t.string   "trade_number",             limit: 255
     t.integer  "alipay_status",            limit: 4,                                 default: 0
     t.string   "invalid_reason",           limit: 255

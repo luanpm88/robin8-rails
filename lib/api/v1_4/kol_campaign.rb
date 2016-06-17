@@ -37,6 +37,15 @@ module API
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
+
+          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
+            error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
+          end
+
+          if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+
           service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
@@ -80,6 +89,15 @@ module API
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
+
+          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
+            error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
+          end
+          
+          if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+          
           declared_params = declared(params)
           if params[:img]
             uploader = AvatarUploader.new
