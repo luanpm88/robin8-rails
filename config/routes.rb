@@ -139,7 +139,7 @@ Rails.application.routes.draw do
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
   get '/download_invitation', to: 'pages#download_invitation'
   get '/invite', to: 'pages#invite'
-
+  get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help'
   resources :campaign, only: [:index, :create, :update, :show]
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'

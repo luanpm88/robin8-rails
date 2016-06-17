@@ -18,4 +18,40 @@ class StasticData < ActiveRecord::Base
     result = Kol.find_by_sql(sql)
     result.group_by{|t| t.created}
   end
+
+  def self.day_statistics_value(_start)
+    sql = "select DATE(created_at) as created, count(*) as count
+          from
+            (select * from kol_influence_values
+              group by kol_id
+            ) as uniq_values
+          where created_at > '#{_start}'
+          group by DATE(created_at)
+          order by created asc"
+    result = KolInfluenceValue.find_by_sql(sql)
+  end
+
+  def self.day_statistics_article(_start)
+    sql = "select DATE(created_at) as created, count(*) as count
+          from
+            (select * from article_actions
+              group by kol_id
+            ) as uniq_article_actions
+          where created_at > '#{_start}' and forward = 1
+          group by DATE(created_at)
+          order by created asc"
+    result = ArticleAction.find_by_sql(sql)
+  end
+
+  def self.day_statistics_invite(_start)
+    sql = "select DATE(created_at) as created, count(*) as count
+          from
+            (select * from campaign_invites
+              group by kol_id
+            ) as uniq_campaign_invites
+          where created_at > '#{_start}'
+          group by DATE(created_at)
+          order by created asc"
+    result = CampaignInvite.find_by_sql(sql)
+  end
 end
