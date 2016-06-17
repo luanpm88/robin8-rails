@@ -388,9 +388,11 @@ class Campaign < ActiveRecord::Base
     rescue Exception => e
       # 出错了 就不更新url
     end
-    if url_changed and not self.url.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)"))
-      self.errors[:url] = "活动链接格式不正确"
-      return false
+    if url_changed
+      if not self.url.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)")) or self.url.include?("..") or (not self.url.include?("."))
+        self.errors[:url] = "活动链接格式不正确"
+        return false
+      end
     end
   end
 
