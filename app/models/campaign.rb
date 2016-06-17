@@ -7,10 +7,10 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
   include Campaigns::AlipayHelper
+  include Campaigns::ValidationHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
-
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
