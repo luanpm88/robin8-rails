@@ -110,7 +110,7 @@ module API
 
           declared_params.reject do |i| i == :id or i == :budget end.to_h
 
-          unless campaign.bugdet_editable
+          unless campaign.budget_editable
             declared_params = declared_params.reject do |i| i == :budget end.to_h
           end
 
@@ -154,7 +154,7 @@ module API
         put "/pay_by_voucher" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
-          campaign.bugdet_editable = false
+          campaign.budget_editable = false
           if params[:used_voucher].to_i == 1 and campaign.used_voucher == false
             if current_kol.avail_amount > 0
               pay_amount = 0
