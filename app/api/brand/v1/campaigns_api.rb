@@ -78,6 +78,18 @@ module Brand
           end
         end
 
+        desc 'pay campaign use balance'  #使用余额支付 campaign
+        params do
+          requires :campaign_id, type: Integer
+          requires :pay_way, type: String
+        end
+        patch ":id/pay_by_balance" do
+          @campaign = Campaign.find declared(params)[:campaign_id]
+          @campaign.set_pay_way(declared(params)[:pay_way])
+          @campaign.pay_need_pay_amount if current_user.avail_amount >= @campaign.need_pay_amount
+          present @campaign
+        end
+
         desc 'Update a campaign'
         params do
           requires :name, type: String

@@ -148,6 +148,14 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def pay_need_pay_amount
+    self.update_attributes!(need_pay_amount: 0)
+  end
+
+  def set_pay_way(way)
+    self.update_attributes!(pay_way: way)
+  end
+
   def take_budget(from_brand = true)
     per_budget = self.get_per_action_budget(from_brand)
     if self.is_click_type? or self.is_cpa_type?
@@ -279,14 +287,14 @@ class Campaign < ActiveRecord::Base
   def create_job
     raise 'status 不能为空' if self.status.blank?
     if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
-      self.update_columns :status => 'unexecute'
+      self.update_attributes :status => 'unexecute'
     end
 
     if self.status_changed? && self.status.to_s == 'unexecute'
       if not self.campaign_from ==  "app"
-        if self.user.avail_amount >= self.budget
-          self.user.frozen(budget, 'campaign', self)
-          Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+        if self.user.avail_amount >= self.need_pay_amount
+          self.user.payout(budget, 'campaign', self)
+          Rails.logger.transaction.info "-------- create_job: after payout  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
         else
           Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
         end
@@ -379,7 +387,7 @@ class Campaign < ActiveRecord::Base
       unless self.url.downcase.start_with?("http:") || self.url.downcase.start_with?("https:")
         self.url = "http://" + self.url
       end
-  
+
       if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")

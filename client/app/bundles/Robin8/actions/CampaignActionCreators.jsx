@@ -90,6 +90,26 @@ export function fetchCampaign(id) {
   };
 }
 
+export function payCampaignByBalance(campaign_id) {
+  const data = { campaign_id, pay_way: "balance" };
+  return {
+    type: actionTypes.PAY_CAMPAIGN_BY_BALANCE,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/pay_by_balance`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      }
+    ),
+    redirect: '/brand/'
+  };
+}
+
 export function fetchInvitesOfCampaign(campaign_id, current_page){
   return {
     type: actionTypes.FETCH_INVITES_OF_CAMPAIGN,

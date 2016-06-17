@@ -1,7 +1,6 @@
 import { browserHistory } from 'react-router'
 
 function excuteRedirect(redirect_path, json) {
-  debugger
   if (redirect_path == '/brand/campaigns/:id/preview') {
     redirect_path = `/brand/campaigns/${json.id}/preview`
   }

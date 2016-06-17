@@ -25,8 +25,9 @@ class CreateCampaignPartial extends React.Component {
   }
 
   _pay() {
-    const payCampaign = this.props.actions
-    debugger
+    const { payCampaignByBalance } = this.props.actions;
+    const campaign = this.props.campaign;
+    payCampaignByBalance(campaign.get("id"));
   }
 
   componentDidMount() {
