@@ -52,8 +52,9 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     today = Date.today
     day_count.times.each do |index|
       date = today - index.days
-      @collect << {:date => date, :value => (@value.select{|t| t.count if t.created == date}[0] rescue 0), :article => (@article[index].count rescue nil),
-                   :campaign => (@campaign[index].count rescue nil)}
+      @collect << {:date => date, :value => (@value.select{|t| t.count if t.created == date}[0].count rescue 0),
+                   :article => (@article.select{|t| t.count if t.created == date}[0].count rescue 0),
+                   :campaign => (@campaign.select{|t| t.count if t.created == date}[0].count rescue 0)}
     end
   end
 
