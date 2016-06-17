@@ -78,6 +78,15 @@ module Brand
             end
           end
 
+          desc 'lock budget, make budget_editable to false'
+          params do
+            requires :campaign_id, type: Integer
+          end
+          patch ":id/lock_budget" do
+            @campaign = Campaign.find declared(params)[:campaign_id]
+            @campaign.update_attributes(budget_editable: false)
+          end
+
           desc 'pay campaign use balance'  #使用余额支付 campaign
           params do
             requires :campaign_id, type: Integer

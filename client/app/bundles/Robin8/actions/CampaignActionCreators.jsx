@@ -90,26 +90,26 @@ export function fetchCampaign(id) {
   };
 }
 
-// export function goPayCampaign(campaign_id) {
-//   const data = { campaign_id };
-//
-//   return {
-//     type: actionTypes.GO_PAY_CAMPAIGN,
-//     promise: fetch(
-//       `${baseUrl}/campaigns/${campaign_id}/`, {
-//         headers: {
-//           "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
-//           'Accept': 'application/json',
-//           'Content-Type': 'application/json'
-//         },
-//         credentials: "same-origin",
-//         method: 'PATCH',
-//         body: JSON.stringify(data)
-//       }
-//     ),
-//     redirect: '/brand/'
-//   };
-// }
+export function goPayCampaign(campaign_id) {
+  const data = { campaign_id };
+
+  return {
+    type: actionTypes.GO_PAY_CAMPAIGN,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/lock_budget`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      }
+    ),
+    redirect: `/brand/campaigns/${campaign.get("id")}/pay`
+  };
+}
 
 export function payCampaignByBalance(campaign_id) {
   const data = { campaign_id, pay_way: "balance" };

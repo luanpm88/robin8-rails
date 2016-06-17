@@ -71,6 +71,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
         $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
       }
       return $$state;
+    
+    case actionTypes.GO_PAY_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
+      }
+      return $$state;
 
     case actionTypes.PAY_CAMPAIGN_BY_BALANCE:
       $$state = $$state.set("readyState", fetchState);
