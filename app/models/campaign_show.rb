@@ -155,7 +155,7 @@ class CampaignShow < ActiveRecord::Base
                                      :other_options => options.inspect, :proxy_ips => proxy_ips, :openid => openid)
     if campaign.is_cpi_type?
       status, remark = false, 'cpi_visit'
-      campaign_show.appid = campaign.appid
+      campaign_show.appid = campaign.appid  || campaign.user.appid
       campaign_show = campaign_show.generate_more_info
     else
       status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, openid, options)
