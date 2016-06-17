@@ -118,6 +118,7 @@ module API
           service.perform
           campaign.reload
           present :error, 0
+          present :kol_amount, current_kol.avail_amount.to_f
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
         end
 
@@ -154,7 +155,7 @@ module API
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
           campaign.bugdet_editable = false
-          if params[:used_voucher].to_i == 1
+          if params[:used_voucher].to_i == 1 and campaign.used_voucher == false
             if current_kol.avail_amount > 0
               pay_amount = 0
               if campaign.need_pay_amount > current_kol.avail_amount
