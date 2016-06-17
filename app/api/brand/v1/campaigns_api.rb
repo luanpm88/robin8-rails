@@ -248,8 +248,11 @@ module Brand
         post 'campaigns/alipay_notify' do
           params.delete 'route_info'
           binding.pry
+          Rails.logger.alipay.info "-------- web端单笔支付，进入'campaigns/alipay_notify'路由  --------------"
           if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
+            Rails.logger.alipay.info "-------- web端单笔支付，验证 支付宝签名 成功  --------------"
             @campaign = Campaign.find_by trade_number: params[:out_trade_no]
+            Rails.logger.alipay.info "-------- web端单笔支付，查找 @campaign 成功,  --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} ---need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
             if @campaign.alipay_status == 0 && params[:trade_status] == 'TRADE_SUCCESS'  # 0 代表未付款
               @campaign.update_attributes(alipay_notify_text: params.to_s)
               @campaign.with_lock do
@@ -260,6 +263,7 @@ module Brand
                 @campaign.save!
               end
             end
+            Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
             env['api.format'] = :txt
             body "success"
           else
