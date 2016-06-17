@@ -24,12 +24,8 @@ module CampaignObserver
 
     shows = CampaignShow.where(:campaign_id => campaign_id, :kol_id => kol_id).order("created_at asc")
 
-    if shows.count > MaxTotalClickCount
-      invalid_reasons << "总点击量大于#{MaxTotalClickCount}"
-    end
-
-    if shows.where(:status => "1").count > MaxValidClickCount
-      invalid_reasons << "有效点击量大于#{MaxValidClickCount}"
+    if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.3
+      invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 30% "
     end
 
     shows.each do |show|
@@ -67,23 +63,23 @@ module CampaignObserver
       end
     end
 
-    cookie_and_user_agents.keys.each do |cookie|
-      if cookie_and_user_agents[cookie].values.sum > MaxUniqCookieVisitCount
-        invalid_reasons << "单一cookie 访问了 #{cookie_and_user_agents[cookie].values.sum}了, 超过了#{MaxUniqCookieVisitCount}次的限制"
-      end
-    end;
+    # cookie_and_user_agents.keys.each do |cookie|
+    #   if cookie_and_user_agents[cookie].values.sum > MaxUniqCookieVisitCount
+    #     invalid_reasons << "单一cookie 访问了 #{cookie_and_user_agents[cookie].values.sum}了, 超过了#{MaxUniqCookieVisitCount}次的限制"
+    #   end
+    # end;
 
-    if morning_visit_count > MaxMorningVisitCount
-      invalid_reasons << "凌晨1点-6点 访问了 #{morning_visit_count}次, 超过了#{MaxMorningVisitCount}次的限制"
-    end
+    # if morning_visit_count > MaxMorningVisitCount
+    #   invalid_reasons << "凌晨1点-6点 访问了 #{morning_visit_count}次, 超过了#{MaxMorningVisitCount}次的限制"
+    # end
 
-    if ip_score_less_50_count > IpScoreLess50Count
-      invalid_reasons << "访问者ip 小于50分的次数 超过了#{IpScoreLess50Count}次"
-    end
+    # if ip_score_less_50_count > IpScoreLess50Count
+    #   invalid_reasons << "访问者ip 小于50分的次数 超过了#{IpScoreLess50Count}次"
+    # end
 
-    if user_agents_count.values.max.to_i >= MaxUniqUserAgentCount
-      invalid_reasons << "单一user_agent 访问了 #{user_agents_count.values.max}不能超过: #{MaxUniqUserAgentCount}次"
-    end
+    # if user_agents_count.values.max.to_i >= MaxUniqUserAgentCount
+    #   invalid_reasons << "单一user_agent 访问了 #{user_agents_count.values.max}不能超过: #{MaxUniqUserAgentCount}次"
+    # end
 
     clicks_group_by_visit_time.keys.each do |key|
       values = clicks_group_by_visit_time[key]
@@ -150,11 +146,11 @@ module CampaignObserver
   def observer_text
     texts = []
     texts << "总点击量不能超过: #{MaxTotalClickCount}次"
-    texts << "有效点击量不能超过: #{MaxValidClickCount}次"
-    texts << "单一cookie 不能超过:  #{MaxUniqCookieVisitCount}次"
-    texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
-    texts << "访问者ip 不能超过#{IpScoreLess50Count}次"
-    texts << "单一user_agent 不能超过: #{MaxUniqUserAgentCount}次"
+    # texts << "有效点击量不能超过: #{MaxValidClickCount}次"
+    # texts << "单一cookie 不能超过:  #{MaxUniqCookieVisitCount}次"
+    # texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
+    # texts << "访问者ip 不能超过#{IpScoreLess50Count}次"
+    # texts << "单一user_agent 不能超过: #{MaxUniqUserAgentCount}次"
     texts  << "统计点击时间分布情况, 判断是否是通过爬虫点击"
     texts  << "该用户最近接过的 3个campaign 点击的cookies 重合度, 来判断这个用户 是否会有固定的人群 帮他点击"
     texts
