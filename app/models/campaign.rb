@@ -289,7 +289,6 @@ class Campaign < ActiveRecord::Base
     if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
       self.update_attributes :status => 'unexecute'
     end
-
     if self.status_changed? && self.status.to_s == 'unexecute'
       if not self.campaign_from ==  "app"
         if self.user.avail_amount >= self.need_pay_amount

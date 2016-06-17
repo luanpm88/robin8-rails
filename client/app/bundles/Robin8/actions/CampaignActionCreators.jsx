@@ -90,6 +90,27 @@ export function fetchCampaign(id) {
   };
 }
 
+// export function goPayCampaign(campaign_id) {
+//   const data = { campaign_id };
+//
+//   return {
+//     type: actionTypes.GO_PAY_CAMPAIGN,
+//     promise: fetch(
+//       `${baseUrl}/campaigns/${campaign_id}/`, {
+//         headers: {
+//           "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+//           'Accept': 'application/json',
+//           'Content-Type': 'application/json'
+//         },
+//         credentials: "same-origin",
+//         method: 'PATCH',
+//         body: JSON.stringify(data)
+//       }
+//     ),
+//     redirect: '/brand/'
+//   };
+// }
+
 export function payCampaignByBalance(campaign_id) {
   const data = { campaign_id, pay_way: "balance" };
   return {
@@ -103,6 +124,26 @@ export function payCampaignByBalance(campaign_id) {
         },
         credentials: "same-origin",
         method: 'PATCH',
+        body: JSON.stringify(data)
+      }
+    ),
+    redirect: '/brand/'
+  };
+}
+
+export function payCampaignByAlipay(campaign_id) {
+  const data = { campaign_id };
+  return {
+    type: actionTypes.PAY_CAMPAIGN_BY_ALIPAY,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/pay_by_alipay`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        method: 'POST',
         body: JSON.stringify(data)
       }
     ),

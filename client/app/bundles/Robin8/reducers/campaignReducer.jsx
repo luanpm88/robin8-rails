@@ -79,6 +79,16 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
+    case actionTypes.PAY_CAMPAIGN_BY_ALIPAY:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        debugger
+        if(action.result.alipay_recharge_url) {
+          window.location = action.result.alipay_recharge_url;
+        }
+      }
+      return $$state;
+
     case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
     case actionTypes.FETCH_APPLIES_OF_RECRUIT_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);

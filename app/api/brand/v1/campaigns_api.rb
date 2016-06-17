@@ -1,206 +1,264 @@
 module Brand
   module V1
     class CampaignsAPI < Base
+      group do
+        before do
+          authenticate!
+          current_ability
+        end
 
-      before do
-        authenticate!
-        current_ability
-      end
+        resource :campaigns do
 
-      resource :campaigns do
+          # short_url api should not placed in here. but now I don't know where to placed :(
+          # and should placed before :id, otherwise grape will match :id not :short_url
+          desc 'Generate short url by origin url and identifier'
+          params do
+            requires :url, type: String
+            requires :identifier, type: String
+          end
+          get :short_url do
+            # todo: should add execption handle
+            action_url_params = declared params
+            uuid = Base64.encode64({ :campaign_action_url_identifier => action_url_params[:identifier], :step => '2'}.to_json).gsub("\n","")
+            origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
+            short_url = ShortUrl.convert origin_action_url
+          end
 
-        # short_url api should not placed in here. but now I don't know where to placed :(
-        # and should placed before :id, otherwise grape will match :id not :short_url
-        desc 'Generate short url by origin url and identifier'
+          params do
+            requires :campaign_id, type: String
+          end
+          get :statistics_clicks do
+            campaign = Campaign.find params[:campaign_id]
+            present campaign.get_stats
+          end
+
+          desc 'Return a campaign by id'
+          params do
+            requires :id, type: Integer, desc: 'Campaign id'
+          end
+          get ':id' do
+            @campaign = Campaign.find_by(id: params[:id])
+            if can?(:read, @campaign)
+              present @campaign
+            else
+              error_403! "没有查看权限"
+            end
+          end
+
+          desc 'Create a campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :url, type: String
+            requires :img_url, type: String
+            requires :budget, type: Float
+            requires :per_budget_type, type: String
+            requires :per_action_budget, type: Float
+            optional :message, type: String
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :target, type: Hash do
+              requires :age    , type:String
+              requires :region , type:String
+              requires :gender , type:String
+            end
+            optional :campaign_action_url, type: Hash do
+              optional :action_url            , type: String
+              optional :short_url             , type: String
+              optional :action_url_identifier , type: String
+            end
+          end
+          post do
+            service = CreateCampaignService.new current_user, declared(params)
+
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+
+          desc 'pay campaign use balance'  #使用余额支付 campaign
+          params do
+            requires :campaign_id, type: Integer
+            requires :pay_way, type: String
+          end
+          patch ":id/pay_by_balance" do
+            @campaign = Campaign.find declared(params)[:campaign_id]
+            if current_user.avail_amount >= @campaign.need_pay_amount
+              @campaign.pay_way = declared(params)[:pay_way]
+              @campaign.need_pay_amount = 0
+              @campaign.save!
+              present @campaign
+            else
+              return error_unprocessable! ["amount_not_engouh", '账号余额不足, 请充值!']
+            end
+          end
+
+          desc 'pay campaign use alipay'  #使用支付宝支付 campaign
+          params do
+            requires :campaign_id, type: Integer
+          end
+          post ":id/pay_by_alipay" do
+            @campaign = Campaign.find declared(params)[:campaign_id]
+
+            ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
+            return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
+            notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
+
+            alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
+            { out_trade_no: @campaign.trade_number,
+              subject: 'Robin8活动付款',
+              total_fee: 0.01,
+              return_url: return_url,
+              notify_url: notify_url
+            },
+            {
+              sign_type: 'RSA',
+              key: ALIPAY_RSA_PRIVATE_KEY
+            }
+            )
+            return { alipay_recharge_url: alipay_recharge_url }
+          end
+
+          desc 'Update a campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :url, type: String
+            requires :img_url, type: String
+            requires :budget, type: Float
+            requires :per_budget_type, type: String
+            requires :per_action_budget, type: Float
+            optional :message, type: String
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :target, type: Hash do
+              requires :age    , type:String
+              requires :region , type:String
+              requires :gender , type:String
+            end
+            optional :campaign_action_url, type: Hash do
+              optional :action_url            , type: String
+              optional :short_url             , type: String
+              optional :action_url_identifier , type: String
+            end
+          end
+          put ':id' do
+            service = UpdateCampaignService.new current_user, params[:id], declared(params)
+
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+        end
+
+        desc 'Create a recruit campaign'
         params do
-          requires :url, type: String
-          requires :identifier, type: String
+          requires :name, type: String
+          requires :description, type: String
+          requires :task_description, type: String
+          optional :address, type: String
+          requires :img_url, type: String
+          requires :region, type: String
+          requires :influence_score, type: String
+          requires :recruit_start_time, type: DateTime
+          requires :recruit_end_time, type: DateTime
+          requires :start_time, type: DateTime
+          requires :deadline, type: DateTime
+          requires :per_action_budget, type: Float
+          requires :recruit_person_count, type: Float
+          optional :budget,   type: Float
+          optional :hide_brand_name, type: Boolean
         end
-        get :short_url do
-          # todo: should add execption handle
-          action_url_params = declared params
-          uuid = Base64.encode64({ :campaign_action_url_identifier => action_url_params[:identifier], :step => '2'}.to_json).gsub("\n","")
-          origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
-          short_url = ShortUrl.convert origin_action_url
+        post 'recruit_campaigns' do
+          params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
+          service = CreateRecruitCampaignService.new current_user, declared(params)
+          if service.perform
+            present service.campaign
+          else
+            error_unprocessable! service.first_error_message
+          end
         end
 
+        desc 'Update a recruit campaign'
         params do
-          requires :campaign_id, type: String
+          requires :name, type: String
+          requires :description, type: String
+          requires :task_description, type: String
+          optional :address, type: String
+          requires :img_url, type: String
+          requires :region, type: String
+          requires :influence_score, type: String
+          requires :recruit_start_time, type: DateTime
+          requires :recruit_end_time, type: DateTime
+          requires :start_time, type: DateTime
+          requires :deadline, type: DateTime
+          requires :per_action_budget, type: Float
+          requires :recruit_person_count, type: Float
+          optional :budget,   type: Float
+          optional :hide_brand_name, type: Boolean
         end
-        get :statistics_clicks do
-          campaign = Campaign.find params[:campaign_id]
-          present campaign.get_stats
+        put '/recruit_campaigns/:id' do
+          params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
+          service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
+          if service.perform
+            present service.campaign
+          else
+            error_unprocessable! service.first_error_message
+          end
         end
 
-        desc 'Return a campaign by id'
+        desc "Get a recruit_campaign"
         params do
-          requires :id, type: Integer, desc: 'Campaign id'
+          requires :id, type: Integer
         end
-        get ':id' do
-          @campaign = Campaign.find_by(id: params[:id])
-          if can?(:read, @campaign)
-            present @campaign
+        get '/recruit_campaigns/:id' do
+          @recruit_campaign = Campaign.find_by(id: declared(params)[:id])
+          if can?(:read, @recruit_campaign)
+            present @recruit_campaign
           else
             error_403! "没有查看权限"
           end
         end
 
-        desc 'Create a campaign'
+        desc "change recruit_campaign's 'end_apply_check' status "
         params do
-          requires :name, type: String
-          requires :description, type: String
-          requires :url, type: String
-          requires :img_url, type: String
-          requires :budget, type: Float
-          requires :per_budget_type, type: String
-          requires :per_action_budget, type: Float
-          optional :message, type: String
-          requires :start_time, type: DateTime
-          requires :deadline, type: DateTime
-          requires :target, type: Hash do
-            requires :age    , type:String
-            requires :region , type:String
-            requires :gender , type:String
-          end
-          optional :campaign_action_url, type: Hash do
-            optional :action_url            , type: String
-            optional :short_url             , type: String
-            optional :action_url_identifier , type: String
-          end
+          requires :id, type: Integer
         end
-        post do
-          service = CreateCampaignService.new current_user, declared(params)
+        put "/recruit_campaigns/:id/end_apply_check" do
+          CampaignApply.end_apply_check(declared(params)[:id])
+          present Campaign.find_by(id: declared(params)[:id])
+        end
+      end
 
-          if service.perform
-            present service.campaign
+
+      group do
+        post 'campaigns/alipay_notify' do
+          params.delete 'route_info'
+          binding.pry
+          if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
+            @campaign = Campaign.find_by trade_number: params[:out_trade_no]
+            if @campaign.alipay_status == 0 && params[:trade_status] == 'TRADE_SUCCESS'  # 0 代表未付款
+              @campaign.update_attributes(alipay_notify_text: params.to_s)
+              @campaign.with_lock do
+                @campaign.user.payout_by_alipay @campaign.need_pay_amount, "campaign_pay_by_alipay", @campaign
+                @campaign.pay_way = 'alipay'
+                @campaign.need_pay_amount = 0
+                @campaign.alipay_status   = 1
+                @campaign.save!
+              end
+            end
+            env['api.format'] = :txt
+            body "success"
           else
-            error_unprocessable! service.first_error_message
-          end
-        end
-
-        desc 'pay campaign use balance'  #使用余额支付 campaign
-        params do
-          requires :campaign_id, type: Integer
-          requires :pay_way, type: String
-        end
-        patch ":id/pay_by_balance" do
-          @campaign = Campaign.find declared(params)[:campaign_id]
-          @campaign.set_pay_way(declared(params)[:pay_way])
-          @campaign.pay_need_pay_amount if current_user.avail_amount >= @campaign.need_pay_amount
-          present @campaign
-        end
-
-        desc 'Update a campaign'
-        params do
-          requires :name, type: String
-          requires :description, type: String
-          requires :url, type: String
-          requires :img_url, type: String
-          requires :budget, type: Float
-          requires :per_budget_type, type: String
-          requires :per_action_budget, type: Float
-          optional :message, type: String
-          requires :start_time, type: DateTime
-          requires :deadline, type: DateTime
-          requires :target, type: Hash do
-            requires :age    , type:String
-            requires :region , type:String
-            requires :gender , type:String
-          end
-          optional :campaign_action_url, type: Hash do
-            optional :action_url            , type: String
-            optional :short_url             , type: String
-            optional :action_url_identifier , type: String
-          end
-        end
-        put ':id' do
-          service = UpdateCampaignService.new current_user, params[:id], declared(params)
-
-          if service.perform
-            present service.campaign
-          else
-            error_unprocessable! service.first_error_message
+            return error_unprocessable! "支付失败，请重试"
           end
         end
       end
 
-      desc 'Create a recruit campaign'
-      params do
-        requires :name, type: String
-        requires :description, type: String
-        requires :task_description, type: String
-        optional :address, type: String
-        requires :img_url, type: String
-        requires :region, type: String
-        requires :influence_score, type: String
-        requires :recruit_start_time, type: DateTime
-        requires :recruit_end_time, type: DateTime
-        requires :start_time, type: DateTime
-        requires :deadline, type: DateTime
-        requires :per_action_budget, type: Float
-        requires :recruit_person_count, type: Float
-        optional :budget,   type: Float
-        optional :hide_brand_name, type: Boolean
-      end
-      post 'recruit_campaigns' do
-        params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
-        service = CreateRecruitCampaignService.new current_user, declared(params)
-        if service.perform
-          present service.campaign
-        else
-          error_unprocessable! service.first_error_message
-        end
-      end
-
-      desc 'Update a recruit campaign'
-      params do
-        requires :name, type: String
-        requires :description, type: String
-        requires :task_description, type: String
-        optional :address, type: String
-        requires :img_url, type: String
-        requires :region, type: String
-        requires :influence_score, type: String
-        requires :recruit_start_time, type: DateTime
-        requires :recruit_end_time, type: DateTime
-        requires :start_time, type: DateTime
-        requires :deadline, type: DateTime
-        requires :per_action_budget, type: Float
-        requires :recruit_person_count, type: Float
-        optional :budget,   type: Float
-        optional :hide_brand_name, type: Boolean
-      end
-      put '/recruit_campaigns/:id' do
-        params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
-        service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
-        if service.perform
-          present service.campaign
-        else
-          error_unprocessable! service.first_error_message
-        end
-      end
-
-      desc "Get a recruit_campaign"
-      params do
-        requires :id, type: Integer
-      end
-      get '/recruit_campaigns/:id' do
-        @recruit_campaign = Campaign.find_by(id: declared(params)[:id])
-        if can?(:read, @recruit_campaign)
-          present @recruit_campaign
-        else
-          error_403! "没有查看权限"
-        end
-      end
-
-      desc "change recruit_campaign's 'end_apply_check' status "
-      params do
-        requires :id, type: Integer
-      end
-      put "/recruit_campaigns/:id/end_apply_check" do
-        CampaignApply.end_apply_check(declared(params)[:id])
-        present Campaign.find_by(id: declared(params)[:id])
-      end
     end
   end
 end
