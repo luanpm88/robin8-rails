@@ -24,8 +24,8 @@ module CampaignObserver
 
     shows = CampaignShow.where(:campaign_id => campaign_id, :kol_id => kol_id).order("created_at asc")
 
-    if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.3
-      invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 30% "
+    if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.1
+      invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
     end
 
     shows.each do |show|
@@ -145,14 +145,14 @@ module CampaignObserver
 
   def observer_text
     texts = []
-    texts << "总点击量不能超过: #{MaxTotalClickCount}次"
+    texts << "总点击量不能超过: #{MaxTotalClickCount}次, 有效点击比 小于 10%"
     # texts << "有效点击量不能超过: #{MaxValidClickCount}次"
     # texts << "单一cookie 不能超过:  #{MaxUniqCookieVisitCount}次"
     # texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
     # texts << "访问者ip 不能超过#{IpScoreLess50Count}次"
     # texts << "单一user_agent 不能超过: #{MaxUniqUserAgentCount}次"
     texts  << "统计点击时间分布情况, 判断是否是通过爬虫点击"
-    texts  << "该用户最近接过的 3个campaign 点击的cookies 重合度, 来判断这个用户 是否会有固定的人群 帮他点击"
+    #texts  << "该用户最近接过的 3个campaign 点击的cookies 重合度, 来判断这个用户 是否会有固定的人群 帮他点击"
     texts
   end
 end

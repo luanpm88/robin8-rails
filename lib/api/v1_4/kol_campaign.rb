@@ -139,7 +139,7 @@ module API
           else
             campaigns = brand_user.campaigns
           end
-          campaigns = campaigns.order("created_at desc").page(params[:page] || 1).per_page(10)
+          campaigns = campaigns.where(:per_budget_type => ["click", "post"]).order("created_at desc").page(params[:page] || 1).per_page(10)
           present :error, 0
           to_paginate(campaigns)
           present :campaigns, campaigns, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
