@@ -222,7 +222,7 @@ module API
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
           end
-          if campaign.need_pay_amount == 0 and %w(executing executed settled).include? campaign.status
+          if campaign.need_pay_amount == 0 and %w(agreed executing executed settled).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
         end
