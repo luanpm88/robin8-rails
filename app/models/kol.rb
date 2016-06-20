@@ -270,7 +270,7 @@ class Kol < ActiveRecord::Base
     end
     puts today_show_hash
     self.campaign_invites.not_rejected.where(:campaign_id => show_campaign_ids).includes(:campaign).each do |invite|
-      if invite.campaign.is_click_type? || invite.campaign.is_cpa_type?
+      if invite.campaign.is_click_type? || invite.campaign.is_cpa_type? ||  invite.campaign.is_cpi_type?
         income += invite.campaign.actual_per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0
         count += 1
       end

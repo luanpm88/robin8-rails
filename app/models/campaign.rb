@@ -150,7 +150,7 @@ class Campaign < ActiveRecord::Base
 
   def take_budget(from_brand = true)
     per_budget = self.get_per_action_budget(from_brand)
-    if self.is_click_type? or self.is_cpa_type?
+    if self.is_click_type? or self.is_cpa_type? or self.is_cpi_type?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * per_budget).round(2)       rescue 0
       else
@@ -170,7 +170,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click" or self.is_cpa_type?
+    if self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?
       return -1
     end
     return valid_invites.count
@@ -191,7 +191,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?)
+    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type? or self.is_cpi_type?)
       finish('fee_end')
     end
   end
@@ -247,9 +247,9 @@ class Campaign < ActiveRecord::Base
     Message.new_remind_upload(self)
   end
 
-  ['click', 'post', 'recruit', 'cpa'].each do |value|
+  ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
     define_method "is_#{value}_type?" do
-      self.per_budget_type == value
+      self.per_action_type == value || self.per_budget_type == value
     end
   end
 

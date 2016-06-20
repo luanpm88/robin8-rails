@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :message, :per_budget_type, :max_action
+          expose :id, :name, :description, :status, :message, :max_action, :per_budget_type, :per_action_type
           expose :url do |campaign|
             campaign.url.gsub("#rd","").gsub("#wechat_redirect","")   rescue campaign.url
           end
@@ -47,6 +47,7 @@ module API
           expose :address
           expose :hide_brand_name
           expose :task_description
+          expose :action_desc
           with_options(format_with: :iso_timestamp) do
             expose :recruit_start_time
             expose :recruit_end_time
