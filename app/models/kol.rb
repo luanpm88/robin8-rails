@@ -486,10 +486,6 @@ class Kol < ActiveRecord::Base
     self.save
   end
 
-  def get_kol_level
-    self.kol_level || 'A'
-  end
-
   def self.hide_real_mobile_number(mobile_number)
     mobile_number.to_s[0,3] + "****" + mobile_number.to_s[7,4]   rescue mobile_number
   end
