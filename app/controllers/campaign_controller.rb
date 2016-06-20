@@ -23,6 +23,10 @@ class CampaignController < ApplicationController
     render json: article, serializer: ArticleSerializer
   end
 
+  def valid_campaigns
+    #Campaign.where("url is not null").order("created_at desc").
+  end
+
   def update_article
     campaign = Campaign.find(params[:id])
     if current_user.nil?
