@@ -87,10 +87,10 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check kol's max_click depend on kol credits level
-    if kol && kol.get_kol_level
+    if kol && kol.kol_level.present?
       store_key =  "kol_level_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-      if current_total_click >= KolCreditLevels["#{kol.get_kol_level}"]
+      if current_total_click >= KolCreditLevels["#{kol.kol_level}"]
         return [false, "exceed_kol_level_threshold"]
       else
         Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)

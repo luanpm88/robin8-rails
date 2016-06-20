@@ -37,7 +37,7 @@ class KolUpdateCampaignService
         @campaign.update_attributes(@campaign_params)
       end
     rescue Exception => e
-      @errors.concat e.record.errors.full_messages.flatten
+      @errors.concat e.record.errors.messages.map(&:last).flatten
       return false
     end
   end

@@ -26,12 +26,26 @@ module API
             uploader.store!(params[:img])
           end
 
-          if params[:budget].to_i <= 100
+          if params[:budget].to_i < 100
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
-          if params[:deadline].to_date < params[:start_time].to_date
+
+          if (params[:start_time].to_time - Time.now) < 2.hours
+            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          end
+
+          if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
+
+          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
+            error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
+          end
+
+          if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+
           service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
@@ -39,6 +53,8 @@ module API
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
+          else
+            error_403!({error: 1, detail: service.first_error_message})  and return
           end
         end
 
@@ -62,12 +78,26 @@ module API
           unless %w(unpay unexecute rejected).include?(campaign.status)
             error_403!({error: 1, detail: "活动已经开始不能修改!"})  and return
           end
-          if params[:budget].to_i <= 100
+          if params[:budget].to_i < 100
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
-          if params[:deadline].to_date < params[:start_time].to_date
+
+          if (params[:start_time].to_time - Time.now) < 2.hours
+            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          end
+
+          if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
+
+          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
+            error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
+          end
+          
+          if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+          
           declared_params = declared(params)
           if params[:img]
             uploader = AvatarUploader.new
@@ -80,7 +110,7 @@ module API
 
           declared_params.reject do |i| i == :id or i == :budget end.to_h
 
-          unless campaign.bugdet_editable
+          unless campaign.budget_editable
             declared_params = declared_params.reject do |i| i == :budget end.to_h
           end
 
@@ -88,6 +118,7 @@ module API
           service.perform
           campaign.reload
           present :error, 0
+          present :kol_amount, current_kol.avail_amount.to_f
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
         end
 
@@ -123,8 +154,8 @@ module API
         put "/pay_by_voucher" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
-          campaign.bugdet_editable = false
-          if params[:used_voucher].to_i == 1
+          campaign.budget_editable = false
+          if params[:used_voucher].to_i == 1 and campaign.used_voucher == false
             if current_kol.avail_amount > 0
               pay_amount = 0
               if campaign.need_pay_amount > current_kol.avail_amount
@@ -209,7 +240,7 @@ module API
             if brand_user.avail_amount < campaign.need_pay_amount
               error_403!({error: 1, detail: "余额不足, 请尝试支付宝支付!!"})  and return
             else
-              if campaign.camapign_from == "app"
+              if campaign.campaign_from == "app"
                 brand_user.payout campaign.need_pay_amount, 'campaign', campaign
                 if campaign.used_voucher
                   current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign

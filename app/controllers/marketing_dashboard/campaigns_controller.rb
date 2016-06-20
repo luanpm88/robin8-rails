@@ -86,7 +86,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       render :json => {:status => "error", :message => "需要填写拒绝理由"} and return
     end
 
-    @campaign.update(:status => :rejected, :invalid_reason => params[:invalid_reason])
+    @campaign.update(:status => :rejected, :invalid_reasons => params[:invalid_reason])
 
     render :json => {:status => "ok"}
   end

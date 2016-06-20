@@ -7,10 +7,10 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
   include Campaigns::AlipayHelper
+  include Campaigns::ValidationHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
-
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
@@ -51,14 +51,11 @@ class Campaign < ActiveRecord::Base
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
-  before_save :format_url
+  before_validation :format_url
   after_save :create_job
-  before_create :genereate_camapign_number
+  before_create :genereate_campaign_number
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
-  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
-  RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
   BaseTaxRate = 0.3
   def email
     user.try :email
@@ -72,7 +69,7 @@ class Campaign < ActiveRecord::Base
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
-  def get_stats
+  def get_stats api_from="brand"
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
@@ -83,7 +80,7 @@ class Campaign < ActiveRecord::Base
       total_clicks << shows.by_date(date.to_datetime).count
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
-    if total_clicks.size == 1
+    if total_clicks.size == 1 and api_from == "brand"
       labels.unshift "活动开始"
       total_clicks.unshift 0
       avail_clicks.unshift 0
@@ -93,9 +90,9 @@ class Campaign < ActiveRecord::Base
 
   def get_stats_for_app
     if self.per_budget_type == "click" or self.per_budget_type == "cpa"
-      get_stats[1..-1]
+      get_stats('app')[1..-1]
     elsif self.per_budget_type == "post"
-      get_stats[1...-1]
+      get_stats('app')[1...-1]
     end
   end
 
@@ -186,67 +183,6 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-
-  def add_click(valid)
-    Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
-    self.redis_avail_click.increment  if valid
-    self.redis_total_click.increment
-    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type? or self.is_cpi_type?)
-      finish('fee_end')
-    end
-  end
-
-  #finish_remark:  expired or fee_end
-  def finish(finish_remark)
-    self.reload
-    Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
-    if self.status == 'executing'
-      ActiveRecord::Base.transaction do
-        update_info(finish_remark)
-        end_invites
-        settle_accounts_for_kol
-        if !Rails.env.test?
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-          CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
-          CampaignObserverWorker.perform_async(self.id)
-        elsif Rails.env.test?
-          CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
-          CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
-          CampaignWorker.new.perform(self.id, 'remind_upload')
-          CampaignObserverWorker.new.perform(self.id)
-        end
-      end
-    end
-  end
-
-  def update_info(finish_remark)
-    self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
-                            :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
-  end
-
-  # 更新invite 状态和点击数
-  def end_invites
-    campaign_invites.each do |invite|
-      next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
-      if invite.status == 'approved'
-        invite.status = 'finished'
-        invite.avail_click = invite.redis_avail_click.value
-        invite.total_click = invite.redis_total_click.value
-      elsif
-        # receive but not apporve  we must delete
-        invite.delete
-      end
-      invite.save!
-    end
-  end
-
-  # 提醒上传截图
-  def remind_upload
-    Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
-    Message.new_remind_upload(self)
-  end
-
   ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_action_type == value || self.per_budget_type == value
@@ -277,6 +213,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    raise 'status 不能为空' if self.status.blank?
     if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
       self.update_columns :status => 'unexecute'
     end
@@ -372,7 +309,13 @@ class Campaign < ActiveRecord::Base
   def format_url
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
+
+    url_changed = self.url_changed?
     begin
+      unless self.url.downcase.start_with?("http:") || self.url.downcase.start_with?("https:")
+        self.url = "http://" + self.url
+      end
+
       if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
@@ -382,9 +325,15 @@ class Campaign < ActiveRecord::Base
     rescue Exception => e
       # 出错了 就不更新url
     end
+    if url_changed
+      if not self.url.downcase.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)")) or self.url.downcase.include?("..") or (not self.url.include?("."))
+        self.errors[:url] = "活动链接格式不正确"
+        return false
+      end
+    end
   end
 
-  def genereate_camapign_number
+  def genereate_campaign_number
     self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 end

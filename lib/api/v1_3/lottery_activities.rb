@@ -132,6 +132,12 @@ module API
             present :avail_ticket, order.lottery_activity.avail_number
           end
         end
+
+        desc "获取kol 可用余额"
+        get 'kol_amount' do
+          present :error, 0
+          present :kol_amount, current_kol.avail_amount
+        end
       end
     end
   end
