@@ -79,7 +79,7 @@ export function updateCampaign(campaign_id, campaign) {
         body: formData
       }
     ),
-    redirect: '/brand/'
+    redirect: '/brand/campaigns/:id/preview'
   };
 }
 
