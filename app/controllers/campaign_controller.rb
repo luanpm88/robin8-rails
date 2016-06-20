@@ -23,6 +23,14 @@ class CampaignController < ApplicationController
     render json: article, serializer: ArticleSerializer
   end
 
+  def valid_campaigns
+    if params[:api_key] != Rails.application.secrets[:janna_api_key]
+      render :json => {:status => 'error', :message => "api key not right"} and return
+    end
+    campaigns = Campaign.where("url is not null").order("created_at desc").page((params[:page] || 1).to_i).per_page((params[:per_page]|| 10).to_i)
+    render :json => {:campaigns => campaigns.map do |i| [i.id, i.url, i.get_avail_click] end, :status => "ok"}
+  end
+
   def update_article
     campaign = Campaign.find(params[:id])
     if current_user.nil?

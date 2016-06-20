@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617094219) do
+ActiveRecord::Schema.define(version: 20160620041238) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 20160617094219) do
     t.text     "observer_text",     limit: 65535
     t.datetime "upload_time"
     t.datetime "check_time"
+    t.boolean  "auto_check",        limit: 1,     default: false
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -344,6 +345,9 @@ ActiveRecord::Schema.define(version: 20160617094219) do
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "campaign_from",            limit: 255,                               default: "pc"
     t.boolean  "budget_editable",          limit: 1,                                 default: true
+    t.string   "per_action_type",          limit: 255
+    t.string   "action_desc",              limit: 255
+    t.string   "appid",                    limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
