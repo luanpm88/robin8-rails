@@ -1,7 +1,6 @@
 module Campaigns
   module CampaignProcess
     extend ActiveSupport::Concern
-
     def reset_campaign(origin_budget,new_budget, new_per_action_budget)
       Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
       self.user.unfrozen(origin_budget.to_f, 'campaign', self)
@@ -48,7 +47,6 @@ module Campaigns
       end
     end
 
-
     #finish_remark:  expired or fee_end
     def finish(finish_remark)
       self.reload
@@ -59,17 +57,31 @@ module Campaigns
           end_invites
           settle_accounts_for_kol
           if !Rails.env.test?
-            CampaignWorker.perform_at(Time.now + Campaign::SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-            CampaignWorker.perform_at(Time.now + Campaign::SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-            CampaignWorker.perform_at(Time.now + Campaign::RemindUploadWaitTime ,self.id, 'remind_upload')
+            CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+            CampaignWorker.perform_at(campaign.cal_settle_time ,self.id, 'settle_accounts_for_brand')
+            CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
+            CampaignObserverWorker.perform_async(self.id)
           elsif Rails.env.test?
             CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
             CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
             CampaignWorker.new.perform(self.id, 'remind_upload')
+            CampaignObserverWorker.new.perform(self.id)
           end
         end
       end
     end
+
+    def cal_settle_time
+      time = Time.now + SettleWaitTimeForBrand
+      # 周六或者周日，或者周五17点后，都调整到下周15：00
+      if time.wday == 6 || time.wday == 0 || (time.wday == 5 && time.hour >= 17) ||
+        time = time.end_of_week + 15.hours
+      elsif  time.wday == 1 && time.hour < 15        #周一15点前：也调整到15点
+        time = time.beginning_of_week + 15.hours
+      end
+      time
+    end
+
 
     def update_info(finish_remark)
       self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
@@ -155,6 +167,22 @@ module Campaigns
       end
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
+
+    def add_click(valid)
+      Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
+      self.redis_avail_click.increment  if valid
+      self.redis_total_click.increment
+      if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?)
+        finish('fee_end')
+      end
+    end
+
+    # 提醒上传截图
+    def remind_upload
+      Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
+      Message.new_remind_upload(self)
+    end
+
   end
 end
 
