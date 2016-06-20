@@ -146,8 +146,7 @@ export function payCampaignByAlipay(campaign_id) {
         method: 'POST',
         body: JSON.stringify(data)
       }
-    ),
-    redirect: '/brand/'
+    )
   };
 }
 

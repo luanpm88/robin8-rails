@@ -117,7 +117,8 @@ module Brand
             notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
 
             alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
-            { out_trade_no: @campaign.trade_number,
+            {
+              out_trade_no: @campaign.trade_number,
               subject: 'Robin8活动付款',
               total_fee: 0.01,
               return_url: return_url,

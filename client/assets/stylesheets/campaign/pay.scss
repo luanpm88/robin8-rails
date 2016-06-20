@@ -1,0 +1,58 @@
+.page-activity-pay {
+  .pay-activity-wrap {
+    background-color: #fff;
+    padding: 30px;
+
+    .pay-type {
+      font-size: 18px;
+      color: #9b9a9a;
+    }
+
+    .pay-by-balance, .pay-by-alipay {
+      .pay-by-balance-text, .pay-by-alipay-text  {
+        font-size: 22px;
+      }
+      .balance-amount, .alipay-pay-tip {
+        font-size: 18px;
+        color: #9b9a9a;
+      }
+
+      .recharge {
+        font-size: 18px;
+        color: #2dcad0;
+        text-decoration: none;
+      }
+
+      .check-balance, .check-alipay {
+        width: 24px;
+        height: 24px;
+        display: block;
+        border: solid 1px #9b9a9a;
+        border-radius: 12px;
+        cursor: pointer;
+        float: right;
+        margin-top: 5px;
+        margin-right: 50px;
+      }
+
+      .checked-img {
+        background-image: url(~radio_checked.png)
+      }
+    }
+
+    .total-pay-amount {
+      text-align: center;
+      .pay-amount-text {
+        font-size: 18px;
+      }
+      .need-pay-amount {
+        font-size: 26px;
+      }
+    }
+  }
+
+  .payCampaignSubmit {
+    margin-top: 50px;
+    text-align: center;
+  }
+}
