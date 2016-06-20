@@ -75,7 +75,7 @@ class CampaignInvite < ActiveRecord::Base
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
         self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
-        if campaign.is_click_type?  || campaign.is_cpa_type?  || self.is_cpi_type?
+        if campaign.is_click_type?  || campaign.is_cpa_type?  || campaign.is_cpi_type?
           kol.income(self.avail_click * campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
         else
