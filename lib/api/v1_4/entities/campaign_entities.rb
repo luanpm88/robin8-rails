@@ -8,6 +8,9 @@ module API
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
+            expose :cal_settle_time do |campaign|
+              campaign.cal_settle_time campaign.actual_deadline_time
+            end
           end
           expose :avail_click do |campaign|
             campaign.get_avail_click
