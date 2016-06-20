@@ -126,7 +126,7 @@ class CampaignInvite < ActiveRecord::Base
     return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
-    if campaign.is_click_type? or campaign.is_cpa_type? || self.is_cpi_type?
+    if campaign.is_click_type? or campaign.is_cpa_type? || campaign.is_cpi_type?
       (get_avail_click * campaign.get_per_action_budget(false)).round(2)       rescue 0
     else
       campaign.get_per_action_budget(false).round(2) rescue 0
