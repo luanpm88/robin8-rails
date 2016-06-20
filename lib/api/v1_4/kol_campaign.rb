@@ -165,10 +165,10 @@ module API
               pay_amount = 0
               if campaign.need_pay_amount > current_kol.avail_amount
                 pay_amount = current_kol.avail_amount
-                current_kol.payout pay_amount, "campaign_used_voucher", campaign
+                current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               else
                 pay_amount = campaign.need_pay_amount
-                current_kol.frozen pay_amount, "campaign_used_voucher", campaign
+                current_kol.payout pay_amount, "campaign_used_voucher", campaign
               end
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
