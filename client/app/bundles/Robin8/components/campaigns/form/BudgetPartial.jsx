@@ -16,6 +16,14 @@ export default class BudgetPartial extends React.Component {
     })
   }
 
+  hideTouchSpinButton() {
+    if (this.props.budgetEditable === false) {
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-down').remove()
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-up').remove()
+      $(".budget-input").attr('disabled', true);
+    }
+  }
+
   _handleBudgetInputChange() {
     const { onChange } = this.props.budget;
     $('.budget-input').change(function() {
@@ -27,6 +35,10 @@ export default class BudgetPartial extends React.Component {
   componentDidMount() {
     this._initTouchSpin();
     this._handleBudgetInputChange();
+  }
+
+  componentDidUpdate() {
+    this.hideTouchSpinButton();
   }
 
 
