@@ -112,6 +112,10 @@ module API
 
           unless campaign.budget_editable
             declared_params = declared_params.reject do |i| i == :budget end.to_h
+          else
+            if campaign.budget != params[:budget]
+              campaign.need_pay_amount = params[:budget]
+            end
           end
 
           service = KolUpdateCampaignService.new(brand_user, campaign, declared_params)
