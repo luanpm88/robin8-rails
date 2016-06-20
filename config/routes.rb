@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
   get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_kol_and_campaign'
   get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
+  get "campaign/valid_campaigns" => "campaign#valid_campaigns"
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
