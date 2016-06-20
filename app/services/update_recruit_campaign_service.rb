@@ -50,8 +50,8 @@ class UpdateRecruitCampaignService
       ActiveRecord::Base.transaction do
         update_recruit_region
         update_recruit_influnce_score
+        @campaign.reset_campaign origin_budget, budget, per_action_budget if can_edit_budget?
         @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
-        @campaign.reset_campaign origin_budget, budget, per_action_budget
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten

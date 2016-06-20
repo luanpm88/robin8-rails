@@ -41,6 +41,9 @@ class PreviewCampaignPartial extends React.Component {
     if (campaign.get('status') ==="unpay") {
       return <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
     }
+    if (campaign.get('status') === 'unexecute') {
+      return <Link to={'/brand/'} className="btn btn-blue btn-lg"> 返回</Link>
+    }
   }
 
   render() {
