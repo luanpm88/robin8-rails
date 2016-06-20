@@ -65,7 +65,7 @@ module Campaigns
           settle_accounts_for_kol
           if !Rails.env.test?
             CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-            CampaignWorker.perform_at(campaign.cal_settle_time ,self.id, 'settle_accounts_for_brand')
+            CampaignWorker.perform_at(self.cal_settle_time ,self.id, 'settle_accounts_for_brand')
             CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
             CampaignObserverWorker.perform_async(self.id)
           elsif Rails.env.test?
