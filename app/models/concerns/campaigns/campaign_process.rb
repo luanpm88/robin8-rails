@@ -1,6 +1,13 @@
 module Campaigns
   module CampaignProcess
     extend ActiveSupport::Concern
+
+    included do
+      SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
+      SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
+      RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
+    end
+
     def reset_campaign(origin_budget,new_budget, new_per_action_budget)
       Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
       self.user.unfrozen(origin_budget.to_f, 'campaign', self)
@@ -71,10 +78,10 @@ module Campaigns
       end
     end
 
-    def cal_settle_time
-      time = Time.now + SettleWaitTimeForBrand
+    def cal_settle_time(end_time = nil)
+      time = (end_time ||  Time.now) + SettleWaitTimeForBrand
       # 周六或者周日，或者周五17点后，都调整到下周15：00
-      if time.wday == 6 || time.wday == 0 || (time.wday == 5 && time.hour >= 17) ||
+      if time.wday == 6 || time.wday == 0 || (time.wday == 5 && time.hour >= 17)
         time = time.end_of_week + 15.hours
       elsif  time.wday == 1 && time.hour < 15        #周一15点前：也调整到15点
         time = time.beginning_of_week + 15.hours

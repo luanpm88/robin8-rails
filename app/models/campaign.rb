@@ -56,9 +56,6 @@ class Campaign < ActiveRecord::Base
   before_create :genereate_campaign_number
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
-  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
-  RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
   BaseTaxRate = 0.3
   def email
     user.try :email
@@ -319,7 +316,7 @@ class Campaign < ActiveRecord::Base
       unless self.url.downcase.start_with?("http:") || self.url.downcase.start_with?("https:")
         self.url = "http://" + self.url
       end
-  
+
       if URI(self.url).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
