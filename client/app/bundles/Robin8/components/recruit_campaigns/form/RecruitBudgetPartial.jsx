@@ -20,6 +20,15 @@ export default class RecruitBudgetPartial extends React.Component{
     $(".spinner-box").find(".bootstrap-touchspin-up").html("")
   }
 
+  hideTouchSpinButton() {
+    if (this.props.budgetEditable === false) {
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-down').remove()
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-up').remove()
+      $(".recruit-person-count-input").attr('disabled', true);
+      $(".per-action-budget").attr('disabled', true);
+    }
+  }
+
   _handleBudgetInputChange() {
     const { per_action_budget } = this.props
     $('.per-action-budget').change(function() {
@@ -35,6 +44,10 @@ export default class RecruitBudgetPartial extends React.Component{
   componentDidMount() {
     this._initTouchSpin();
     this._handleBudgetInputChange();
+  }
+
+  componentDidUpdate() {
+    this.hideTouchSpinButton();
   }
 
   renderBudgetTips(){

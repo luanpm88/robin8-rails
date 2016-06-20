@@ -28,7 +28,7 @@ class UpdateRecruitCampaignService
       return false
     end
 
-    if @campaign.status != "unexecute"
+    unless can_edit?
       @errors << "活动已经开始, 不能编辑"
       return false
     end
@@ -86,6 +86,14 @@ class UpdateRecruitCampaignService
     unless campaign_target.target_content.eql? @campaign_params[:influence_score]
       campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
     end
+  end
+
+  def can_edit?
+    ['unexecute', 'unpay'].include?(@campaign.status) ? true : false
+  end
+
+  def can_edit_budget?
+    @campaign.budget_editable
   end
 
 end

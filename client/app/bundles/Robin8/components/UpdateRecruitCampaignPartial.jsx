@@ -36,7 +36,10 @@ const validateFailed = (errors) => {
 }
 
 function select(state){
-  return { brand: state.profileReducer.get("brand")};
+  return {
+    brand: state.profileReducer.get("brand"),
+    campaign: state.campaignReducer.get("campaign")
+  };
 }
 
 class UpdateRecruitCampaignPartial extends React.Component{
@@ -78,6 +81,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
     const { name, description, img_url, influence_score, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
+    const { campaign } = this.props;
     const { saveRecruit } = this.props.actions;
     return(
       <div className="page page-recruit page-recruit-new">
@@ -89,7 +93,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
               <RecruitTargetPartial {...{influence_score, region}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
-              <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
+              <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
