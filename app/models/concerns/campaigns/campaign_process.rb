@@ -155,7 +155,7 @@ module Campaigns
             User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
 
             if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
-              self.user.income((self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
+              self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
             end
 
             Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
