@@ -51,7 +51,8 @@ class Kol < ActiveRecord::Base
   has_one  :address, as: :addressable
 
   has_many :lottery_activity_orders
-  has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
+  has_many :paied_lottery_activity_orders, -> {where("status != 'pending'")}, :class => LotteryActivityOrder
+  has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
@@ -270,7 +271,7 @@ class Kol < ActiveRecord::Base
     end
     puts today_show_hash
     self.campaign_invites.not_rejected.where(:campaign_id => show_campaign_ids).includes(:campaign).each do |invite|
-      if invite.campaign.is_click_type? || invite.campaign.is_cpa_type?
+      if invite.campaign.is_click_type? || invite.campaign.is_cpa_type? ||  invite.campaign.is_cpi_type?
         income += invite.campaign.actual_per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0
         count += 1
       end
