@@ -9,7 +9,6 @@ class StasticData < ActiveRecord::Base
     sql = "select DATE(created_at) as created,utm_source, count(*) as count
           from
             (select * from kols
-              where id > 40000
               group by device_token
             ) as uniq_ds
           where utm_source is not null

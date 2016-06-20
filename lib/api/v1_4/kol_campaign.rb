@@ -104,6 +104,7 @@ module API
             uploader.store!(params[:img])
             declared_params.merge!(:img_url => uploader.url)
           end
+
           if campaign.status == "rejected"
             declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
           end
