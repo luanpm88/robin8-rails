@@ -71,6 +71,26 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
+  def reject 
+    @campaign = Campaign.find_by :id => params[:campaign_id]
+    if @campaign.campaign_from != 'app'
+      render :json => {:status => "error", :message => "web 端产生的活动 暂时不支持 审核拒绝"} and return
+    end
+
+
+    if @campaign.status != "unexecute"
+      render :json => {:status => "error", :message => "活动不是待审核状态， 不能审核拒绝"} and return
+    end
+
+    if params[:invalid_reason].blank?
+      render :json => {:status => "error", :message => "需要填写拒绝理由"} and return
+    end
+
+    @campaign.update(:status => :rejected, :invalid_reasons => params[:invalid_reason])
+
+    render :json => {:status => "ok"}
+  end
+
 
   def add_or_remove_recruit_kol
     kol_id = params[:kol_id]

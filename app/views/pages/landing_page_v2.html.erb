@@ -47,7 +47,7 @@
         <div class="tab-content">
           <!-- 注册 S -->
           <div id="signup-tab-pane" class="tab-pane fade in active">
-            <%= form_tag('/users/new', method: 'post', remote: true) do %>
+            <%= form_tag('/users/new', method: 'post', remote: true, autocomplete: "off") do %>
               <div class="form-group">
                 <i class="icon-brand"></i>
                 <label>品牌名称</label>
@@ -95,7 +95,7 @@
             <div class="form-group">
               <i class="icon-mobile"></i>
               <label for='user[login]'>手机号</label>
-              <input type="text" class="form-control" name='user[login]' placeholder="手机号码/邮箱" required>
+              <input type="text" class="form-control mobile-number" name='user[login]' placeholder="手机号码/邮箱" required>
             </div>
             <div class="form-group login-password">
               <i class="icon-pwd"></i>
@@ -262,12 +262,3 @@
       </div>
     </div>
   </div>
-
-  <script type="text/javascript">
-    if($("#downloadModal").attr("show-after-loading") == 'true'){
-      $("#downloadModal").modal('show');
-    }
-    if($('.quick-login').attr("show-after-loading") == 'true'){
-      $(".quick-login").click()
-    }
-  </script>
