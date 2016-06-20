@@ -31,6 +31,7 @@ module API
           present :activity, activity, with: API::V1_3::Entities::LotteryActivityEntities::Show, kol: current_kol
           present :tickets, activity.token_ticket_codes(current_kol)
           present :token_number, activity.token_number(current_kol)
+          present :kol_amount, current_kol.avail_amount
         end
 
         desc 'show description of (:code) lottery activity.'

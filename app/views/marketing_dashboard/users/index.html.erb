@@ -17,6 +17,7 @@
       <th>Company</th>
       <th>Amount</th>
       <th>Avail Amount</th>
+      <th>Created at</th>
       <th>Ops</th>
     </tr>
   </thead>
@@ -26,6 +27,7 @@
         <% %w(id name email mobile_number utm_source company amount avail_amount).each do |v| %>
           <td> <%= u.send v %> </td>
         <% end %>
+        <td> <%= u.created_at.to_s(:date_time) %> </td>
         <td>
           <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
           </br>
