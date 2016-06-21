@@ -20,6 +20,7 @@
         <% end %>
         <td> <img src="<%= f.screenshot.url(200) %>" alt=""> </td>
         <td id="feedback_<%= f.id %>">
+          <%= link_to 'KOL详情', "/marketing_dashboard/kols/#{f.kol_id}" %></br>
           <% if f.status == 'pending' %>
               <%= link_to '设为已处理', processed_marketing_dashboard_feedback_path(f), :remote => true %>
           <% else %>
