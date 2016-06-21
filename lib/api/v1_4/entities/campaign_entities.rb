@@ -8,6 +8,9 @@ module API
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
+            expose :cal_settle_time do |campaign|
+              campaign.cal_settle_time campaign.actual_deadline_time
+            end
           end
           expose :avail_click do |campaign|
             campaign.get_avail_click
@@ -31,7 +34,7 @@ module API
 
         class CampaignListEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :need_pay_amount, :status, :img_url, :name, :budget
+          expose :id, :need_pay_amount, :status, :img_url, :name, :budget, :per_budget_type, :per_action_budget
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time

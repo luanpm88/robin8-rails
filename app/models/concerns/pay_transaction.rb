@@ -23,6 +23,7 @@ module Concerns
     def frozen(credits,  subject, item = nil, opposite = nil)
       if can_pay?(credits)
         ActiveRecord::Base.transaction do
+          self.lock!
           self.increment!(:frozen_amount, credits)
           transaction = build_transaction(credits, subject, 'frozen', item , opposite)
           transaction.save!
@@ -35,6 +36,7 @@ module Concerns
     def unfrozen(credits,  subject, item = nil, opposite = nil)
       return raise "解冻的金额超过冻结金额 credits:#{credits}  frozen_amount:#{frozen_amount}" if credits.to_f  > frozen_amount.to_f
       ActiveRecord::Base.transaction do
+        self.lock!
         self.decrement!(:frozen_amount, credits)
         transaction = build_transaction(credits, subject, 'unfrozen', item , opposite)
         transaction.save!
@@ -43,6 +45,7 @@ module Concerns
 
     def income(credits,  subject, item = nil, opposite = nil)
       ActiveRecord::Base.transaction do
+        self.lock!
         self.increment!(:amount, credits)
         transaction = build_transaction(credits, subject, 'income', item , opposite)
         transaction.save!
@@ -51,6 +54,7 @@ module Concerns
 
     def payout(credits,  subject, item = nil, opposite = nil)
       ActiveRecord::Base.transaction do
+        self.lock!
         self.decrement!(:amount, credits)
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
         transaction.save!
@@ -59,6 +63,7 @@ module Concerns
 
     def payout_by_alipay(credits, subject, item, opposite=nil)
       ActiveRecord::Base.transaction do
+        self.lock!
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
         transaction.save!
       end

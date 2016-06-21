@@ -14,7 +14,7 @@ module API
           requires :app_version, type: String
           requires :os_version, type: String
           requires :device_model, type: String
-          requires :city_name, type: String
+          optional :city_name, type: String
         end
         post 'reg_notice' do
           return {:error => 1, :detail => 'api_token错误'}  if params[:api_token] != CpiReg::ApiToken

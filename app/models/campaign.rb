@@ -189,7 +189,6 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-
   def recruit_status
     return 'pending' if self.status == 'unexecute'
     return 'rejected' if self.status == 'rejected'
