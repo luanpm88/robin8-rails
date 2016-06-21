@@ -3,7 +3,7 @@ import React from 'react';
 class PreviewCommonCampaignPartial extends React.Component {
 
   render() {
-    const campaign = this.props.campaign
+    const campaign = this.props.campaign;
 
     return (
       <div className="preview-activity-wrap">

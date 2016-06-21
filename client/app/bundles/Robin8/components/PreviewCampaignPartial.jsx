@@ -7,6 +7,8 @@ import _ from 'lodash';
 import "campaign/preview.scss";
 
 import PreviewCommonCampaignPartial from './campaigns/preview/PreviewCommonCampaignPartial';
+import PreviewRecruitCampaignPartial from './campaigns/preview/PreviewRecruitCampaignPartial';
+
 
 function select(state) {
   return {
@@ -59,7 +61,7 @@ class PreviewCampaignPartial extends React.Component {
   renderPreviewPartial() {
     const campaign = this.props.campaign;
     if (campaign.get("per_budget_type") === 'recruit') {
-      return <PreviewCommonCampaignPartial campaign={campaign} />
+      return <PreviewRecruitCampaignPartial campaign={campaign} />
     } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
       return <PreviewCommonCampaignPartial campaign={campaign} />
     }
@@ -77,8 +79,10 @@ class PreviewCampaignPartial extends React.Component {
               {this.renderReturnEditBtn()}
             </li>
           </ol>
-          {this.renderPreviewPartial()}
-          {this.renderSubmitButton()}
+          <div className="preview-section">
+            {this.renderPreviewPartial()}
+            {this.renderSubmitButton()}
+          </div>
         </div>
       </div>
     )
