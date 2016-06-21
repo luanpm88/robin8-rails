@@ -12,6 +12,7 @@ class CampaignShow < ActiveRecord::Base
     KolCreditLevels = {'A' => 4, 'B' => 1}
   end
 
+  belongs_to :campaign
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}

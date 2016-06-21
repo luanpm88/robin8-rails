@@ -3,7 +3,7 @@ module Concerns
     extend ActiveSupport::Concern
     included do
       Expired = 2.hours
-      scope :effective, -> {where("created_at > '#{Expired.ago}'" ).where.not(:status => false)}
+      scope :effective, -> {where("created_at > '#{Expired.ago}'" ).where(:status => false)}
     end
 
     def generate_more_info
@@ -24,11 +24,11 @@ module Concerns
       #for cpi
       def find_visit(cpi_reg)
         if cpi_reg.app_platform == "IOS"
-          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :app_platform => cpi_reg.app_platform,
+          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :app_platform => cpi_reg.app_platform, :appid => appid,
                                                     :os_version => cpi_reg.os_version).first
         else
           device_model = cpi_reg.device_model.strip.downcase.gsub(" ","")     rescue nil
-          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :device_model => device_model,
+          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :device_model => device_model, :appid => appid,
                                                     :app_platform => cpi_reg.app_platform, :os_version => cpi_reg.os_version).first
         end
         invitation
@@ -40,15 +40,16 @@ module Concerns
           #need lock?
           #更新 avail_click
           campaign = invitation.campaign
-          if campaign && campaign.status == 'executing' && campaign.redis_total_click <= campaign.max_action
+          campaign_invite = CampaignInvite.find_by(:campaign_id => invitation.campaign_id, :kol_id => invitation.kol_id)
+          if campaign_invite && campaign && campaign.status == 'executing' && campaign.redis_total_click <= campaign.max_action
             invitation.status = true
             invitation.remark = 'cpi_reg'
             invitation.reg_time = Time.now
             cpi_reg.campaign_show_id = invitation.id
             cpi_reg.status = 'success'
             cpi_reg.save! && invitation.save!
-            invitation.add_click(status,remark)
-            campaign.add_click(status)
+            campaign_invite.add_click(true,'cpi_reg')
+            campaign.add_click(true)
           else
             #invitation status not update to true
             invitation.remark = 'cpi_reg'
