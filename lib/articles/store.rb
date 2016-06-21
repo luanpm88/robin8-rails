@@ -32,12 +32,10 @@ module Articles
        else
          #2.1  推荐时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
-         if text.present?
+         articles = []
            #2.2  把文章关键字 去查询
-           articles = ElasticClient.search(text, {:push_list_ids => PushArticle.get_push_ids(kol_id), :size => DefaultSize})
-         else
-           articles = ElasticClient.search(text, {:select => true, :size => DefaultSize})
-         end
+         articles = ElasticClient.search(text, {:push_list_ids => PushArticle.get_push_ids(kol_id), :size => DefaultSize})  if text.present?
+         articles = ElasticClient.search(text, {:select => true, :size => DefaultSize})    if articles.nil? || articles.size == 0
          articles.sample(DefaultSize)
        end
      end
