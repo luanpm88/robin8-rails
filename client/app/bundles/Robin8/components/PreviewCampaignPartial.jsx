@@ -42,10 +42,18 @@ class PreviewCampaignPartial extends React.Component {
   renderSubmitButton() {
     const campaign = this.props.campaign;
     if (campaign.get('status') ==="unpay") {
-      return <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
+      return (
+        <div className="submit-group">
+          <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
+        </div>
+      )
     }
     if (campaign.get('status') === 'unexecute') {
-      return <Link to={'/brand/'} className="btn btn-blue btn-lg"> 返回</Link>
+      return (
+        <div className="return-back-group">
+          <Link to={'/brand/'} className="btn btn-blue btn-lg returnBackBtn"> 返回</Link>
+        </div>
+      )
     }
   }
 
@@ -79,6 +87,7 @@ class PreviewCampaignPartial extends React.Component {
               {this.renderReturnEditBtn()}
             </li>
           </ol>
+          <p className="confirm-order-text">订单确认</p>
           <div className="preview-section">
             {this.renderPreviewPartial()}
             {this.renderSubmitButton()}

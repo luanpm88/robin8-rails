@@ -1,166 +1,183 @@
 .page-activity-preview {
-  .preview-activity-wrap {
+  .confirm-order-text {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px 0;
+  }
+
+
+  .preview-section {
     width: 1000px;
     background-color: #fff;
     padding: 80px 200px;
 
-    .activity-detail-info-group {
-      width: 600px;
-      .acitvity-title {
-        font-size: 30px;
-      }
+    .preview-activity-wrap {
+      .activity-detail-info-group {
+        width: 600px;
+        .acitvity-title {
+          font-size: 30px;
+        }
 
-      .acitvity-description-group {
-        margin-top: 30px;
+        .acitvity-description-group {
+          margin-top: 30px;
 
-        .acitvity-description-text {
+          .acitvity-description-text {
+            font-size: 18px;
+          }
+          .activity-description {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #9b9a9a;
+          }
+        }
+
+        .acitvity-time-range-group {
+          margin-top: 30px;
+
+          .acitvity-time-range-text {
+            font-size: 18px;
+          }
+          .acitvity-start-time {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #9b9a9a;
+          }
+          .acitvity-end-time {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #9b9a9a;
+          }
+        }
+
+        .acitvity-budget-group {
+          margin-top: 30px;
           font-size: 18px;
+          .acitvity-budget-text {
+
+          }
+          .acitvity-budget {
+            color: #9b9a9a;
+          }
         }
-        .activity-description {
-          margin-top: 10px;
-          font-size: 16px;
-          color: #9b9a9a;
+
+        .acitvity-amount-group {
+          margin-top: 40px;
+          position: relative;
+          text-align: center;
+          margin-left: 258px;
+
+          .yuan {
+            font-size: 18px;
+          }
+
+          .acitvity-amount-text {
+            font-size: 18px;
+            color: #9b9a9a;
+          }
+
+          .acitvity-amount {
+            font-size: 26px;
+          }
+
         }
       }
+    }
 
-      .acitvity-time-range-group {
-        margin-top: 30px;
+    .preview-recruit-activity-wrap {
 
-        .acitvity-time-range-text {
+      .activity-detail-info-group {
+        width: 600px;
+        .acitvity-title {
+          font-size: 30px;
+        }
+
+        .acitvity-description-group,  .acitvity-task-group{
+          margin-top: 20px;
+
+          .acitvity-description-text, .acitvity-task-text {
+            font-size: 18px;
+          }
+          .activity-description, .activity-task {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #9b9a9a;
+          }
+        }
+
+        .acitvity-recruit-time-range-group, .acitvity-time-range-group, .acitvity-address-group {
           font-size: 18px;
-        }
-        .acitvity-start-time {
-          margin-top: 10px;
-          font-size: 16px;
-          color: #9b9a9a;
-        }
-        .acitvity-end-time {
-          margin-top: 10px;
-          font-size: 16px;
-          color: #9b9a9a;
-        }
-      }
 
-      .acitvity-budget-group {
-        margin-top: 30px;
-        font-size: 18px;
-        .acitvity-budget-text {
+          .acitvity-recruit-time-range-text, .acitvity-time-range-text, .acitvity-address-text {
 
+          }
+          .acitvity-recruit-start-time, .acitvity-start-time,
+          .acitvity-recruit-end-time, .acitvity-end-time, .acitvity-address {
+            color: #9b9a9a;
+          }
         }
-        .acitvity-budget {
-          color: #9b9a9a;
+
+        .acitvity-recruit-time-range-group {
+          margin-top: 20px;
         }
-      }
 
-      .acitvity-amount-group {
-        margin-top: 40px;
-        position: relative;
-        text-align: center;
-        margin-left: 258px;
-
-        .yuan {
+        .acitvity-recruit-count-group {
+          margin-top: 20px;
           font-size: 18px;
+          .acitvity-recruit-count-text {
+
+          }
+          .acitvity-recruit-count {
+            color: #9b9a9a;
+          }
         }
 
-        .acitvity-amount-text {
+        .acitvity-per-budget-group {
+          margin-top: 20px;
           font-size: 18px;
-          color: #9b9a9a;
+          .acitvity-per-budget-text {
+
+          }
+          .acitvity-per-budget {
+            color: #9b9a9a;
+          }
         }
 
-        .acitvity-amount {
-          font-size: 26px;
-        }
+        .acitvity-amount-group {
+          margin-top: 40px;
+          position: relative;
+          text-align: center;
+          margin-left: 258px;
 
+          .yuan {
+            font-size: 18px;
+          }
+
+          .acitvity-amount-text {
+            font-size: 18px;
+            color: #9b9a9a;
+          }
+
+          .acitvity-amount {
+            font-size: 26px;
+          }
+        }
       }
+    }
+
+    .submit-group {
+      position: relative;
+      text-align: center;
+      margin-left: 258px;
       .payCampaignSubmit {
         width: 222px;
       }
     }
-  }
 
-
-  .preview-recruit-activity-wrap {
-    width: 1000px;
-    background-color: #fff;
-    padding: 80px 200px;
-
-    .activity-detail-info-group {
-      width: 600px;
-      .acitvity-title {
-        font-size: 30px;
-      }
-
-      .acitvity-description-group,  .acitvity-task-group{
-        margin-top: 20px;
-
-        .acitvity-description-text, .acitvity-task-text {
-          font-size: 18px;
-        }
-        .activity-description, .activity-task {
-          margin-top: 10px;
-          font-size: 16px;
-          color: #9b9a9a;
-        }
-      }
-
-      .acitvity-recruit-time-range-group, .acitvity-time-range-group, .acitvity-address-group {
-        font-size: 18px;
-
-        .acitvity-recruit-time-range-text, .acitvity-time-range-text, .acitvity-address-text {
-
-        }
-        .acitvity-recruit-start-time, .acitvity-start-time,
-        .acitvity-recruit-end-time, .acitvity-end-time, .acitvity-address {
-          color: #9b9a9a;
-        }
-      }
-
-      .acitvity-recruit-time-range-group {
-        margin-top: 20px;
-      }
-
-      .acitvity-recruit-count-group {
-        margin-top: 20px;
-        font-size: 18px;
-        .acitvity-recruit-count-text {
-
-        }
-        .acitvity-recruit-count {
-          color: #9b9a9a;
-        }
-      }
-
-      .acitvity-per-budget-group {
-        margin-top: 20px;
-        font-size: 18px;
-        .acitvity-per-budget-text {
-
-        }
-        .acitvity-per-budget {
-          color: #9b9a9a;
-        }
-      }
-
-      .acitvity-amount-group {
-        margin-top: 40px;
-        position: relative;
-        text-align: center;
-        margin-left: 258px;
-
-        .yuan {
-          font-size: 18px;
-        }
-
-        .acitvity-amount-text {
-          font-size: 18px;
-          color: #9b9a9a;
-        }
-
-        .acitvity-amount {
-          font-size: 26px;
-        }
-      }
-      .payCampaignSubmit {
+    .return-back-group {
+      margin-top: 35px;
+      text-align: center;
+      .returnBackBtn {
         width: 222px;
       }
     }

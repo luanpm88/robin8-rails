@@ -7,8 +7,21 @@ class PreviewRecruitCampaignPartial extends React.Component {
     if (campaign.get('address')) {
       return (
         <div className="acitvity-address-group">
-          <span className="acitvity-address-text">活动时间:&nbsp;</span>
+          <span className="acitvity-address-text">活动地址:&nbsp;</span>
           <span className="acitvity-address">{campaign.get("address")}</span>
+        </div>
+      )
+    }
+  }
+
+  renderAmount() {
+    const campaign = this.props.campaign;
+    if (campaign.get("status") == 'unpay') {
+      return (
+        <div className="acitvity-amount-group">
+          <span className="acitvity-amount-text">支付总额:&nbsp;</span>
+          <span className="yuan">￥</span>
+          <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
         </div>
       )
     }
@@ -24,11 +37,11 @@ class PreviewRecruitCampaignPartial extends React.Component {
             <p>{campaign.get("name")}</p>
           </div>
           <div className="acitvity-description-group">
-            <p className="acitvity-description-text">活动简介</p>
+            <p className="acitvity-description-text">活动简介:</p>
             <p className="activity-description">{campaign.get("description")}</p>
           </div>
           <div className="acitvity-task-group">
-            <p className="acitvity-task-text">活动简介</p>
+            <p className="acitvity-task-text">活动任务:</p>
             <p className="activity-description">{campaign.get("task_description")}</p>
           </div>
           <div className="acitvity-recruit-time-range-group">
@@ -50,11 +63,7 @@ class PreviewRecruitCampaignPartial extends React.Component {
             <span className="acitvity-per-budget-text">人均奖励:&nbsp;</span>
             <span className="acitvity-per-budget">{campaign.get("per_action_budget")}&nbsp;元</span>
           </div>
-          <div className="acitvity-amount-group">
-            <span className="acitvity-amount-text">支付总额:&nbsp;</span>
-            <span className="yuan">￥</span>
-            <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
-          </div>
+          {this.renderAmount()}
         </div>
       </div>
     )

@@ -12,11 +12,11 @@ class PreviewCommonCampaignPartial extends React.Component {
             <p>{campaign.get("name")}</p>
           </div>
           <div className="acitvity-description-group">
-            <p className="acitvity-description-text">活动简介</p>
+            <p className="acitvity-description-text">活动简介:</p>
             <p className="activity-description">{campaign.get("description")}</p>
           </div>
           <div className="acitvity-time-range-group">
-            <p className="acitvity-time-range-text">推广时间</p>
+            <p className="acitvity-time-range-text">推广时间:</p>
             <span className="acitvity-start-time">{campaign.get("start_time")}&nbsp;-&nbsp;</span>
             <span className="acitvity-end-time">{campaign.get("deadline")}</span>
           </div>
