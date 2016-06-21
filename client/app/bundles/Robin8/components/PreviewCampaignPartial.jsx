@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import moment from 'moment';
+import _ from 'lodash';
 
 import "campaign/preview.scss";
 
-import BreadCrumb from './shared/BreadCrumb';
+import PreviewCommonCampaignPartial from './campaigns/preview/PreviewCommonCampaignPartial';
 
 function select(state) {
   return {
@@ -37,12 +38,30 @@ class PreviewCampaignPartial extends React.Component {
   }
 
   renderSubmitButton() {
-    const campaign = this.props.campaign
+    const campaign = this.props.campaign;
     if (campaign.get('status') ==="unpay") {
       return <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
     }
     if (campaign.get('status') === 'unexecute') {
       return <Link to={'/brand/'} className="btn btn-blue btn-lg"> 返回</Link>
+    }
+  }
+
+  renderReturnEditBtn() {
+    const campaign = this.props.campaign;
+    if (campaign.get("per_budget_type") === 'recruit') {
+      return <Link to={`/brand/recruits/${campaign.get("id")}/edit`}>返回修改</Link>
+    } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
+      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`}>返回修改</Link>
+    }
+  }
+
+  renderPreviewPartial() {
+    const campaign = this.props.campaign;
+    if (campaign.get("per_budget_type") === 'recruit') {
+      return <PreviewCommonCampaignPartial campaign={campaign} />
+    } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
+      return <PreviewCommonCampaignPartial campaign={campaign} />
     }
   }
 
@@ -52,13 +71,14 @@ class PreviewCampaignPartial extends React.Component {
     return (
       <div className="page page-activity page-activity-preview">
         <div className="container">
-         <BreadCrumb />
-          <div className="preview-activity-wrap">
-            <p>{campaign.get("name")}</p>
-            <p>{campaign.get("status")}</p>
-            <p className="help-block">跳转到支付页面</p>
-            {this.renderSubmitButton()}
-          </div>
+          <ol className="breadcrumb">
+            <li>
+              <i className="caret-arrow left" />
+              {this.renderReturnEditBtn()}
+            </li>
+          </ol>
+          {this.renderPreviewPartial()}
+          {this.renderSubmitButton()}
         </div>
       </div>
     )
