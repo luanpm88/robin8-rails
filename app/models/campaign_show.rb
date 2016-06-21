@@ -113,6 +113,11 @@ class CampaignShow < ActiveRecord::Base
     # end
 
       # check campaign status
+    if campaign.redis_avail_click.value.to_i > campaign.max_action.to_i
+      return [false, 'campaign_fee_end']
+    end
+
+
     if campaign.status == 'executed'  ||  campaign.status == 'settled'
       return [false, 'campaign_had_executed']
     end
