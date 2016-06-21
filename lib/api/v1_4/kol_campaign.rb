@@ -104,6 +104,7 @@ module API
             uploader.store!(params[:img])
             declared_params.merge!(:img_url => uploader.url)
           end
+
           if campaign.status == "rejected"
             declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
           end
@@ -112,6 +113,10 @@ module API
 
           unless campaign.budget_editable
             declared_params = declared_params.reject do |i| i == :budget end.to_h
+          else
+            if campaign.budget != params[:budget]
+              campaign.need_pay_amount = params[:budget]
+            end
           end
 
           service = KolUpdateCampaignService.new(brand_user, campaign, declared_params)
@@ -139,7 +144,7 @@ module API
           else
             campaigns = brand_user.campaigns
           end
-          campaigns = campaigns.order("created_at desc").page(params[:page] || 1).per_page(10)
+          campaigns = campaigns.where(:per_budget_type => ["click", "post"]).order("created_at desc").page(params[:page] || 1).per_page(10)
           present :error, 0
           to_paginate(campaigns)
           present :campaigns, campaigns, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
@@ -160,10 +165,11 @@ module API
               pay_amount = 0
               if campaign.need_pay_amount > current_kol.avail_amount
                 pay_amount = current_kol.avail_amount
+                current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               else
                 pay_amount = campaign.need_pay_amount
+                current_kol.payout pay_amount, "campaign_used_voucher", campaign
               end
-              current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
@@ -216,7 +222,7 @@ module API
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
           end
-          if campaign.need_pay_amount == 0 and %w(executing executed settled).include? campaign.status
+          if campaign.need_pay_amount == 0 and %w(agreed executing executed settled).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
         end

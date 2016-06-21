@@ -14,7 +14,12 @@ module ExceptionNotifier
         messages << exception.backtrace
       end
 
-      ExceptionMailer.delay.deliver_notification(title, messages, to: @options[:recipients], from: @options[:sender])
+      ExceptionMailWorker.perform_async({
+        title: title,
+        message: messages,
+        to: @options[:recipients],
+        from: @options[:sender]
+      })
     end
 
     def self.default_options

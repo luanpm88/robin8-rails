@@ -72,6 +72,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check_useragent?  &&   visitor_referer
+    return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
     return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
