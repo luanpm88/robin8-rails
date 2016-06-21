@@ -18,6 +18,7 @@ module API
         end
         post 'reg_notice' do
           return {:error => 1, :detail => 'api_token错误'}  if params[:api_token] != CpiReg::ApiToken
+          params[:reg_ip] = request.ip    #override
           ::CpiReg.create_reg(params)
           present :error, 0
         end
