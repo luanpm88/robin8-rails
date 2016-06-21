@@ -71,13 +71,8 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
-  def reject 
+  def reject
     @campaign = Campaign.find_by :id => params[:campaign_id]
-    if @campaign.campaign_from != 'app'
-      render :json => {:status => "error", :message => "web 端产生的活动 暂时不支持 审核拒绝"} and return
-    end
-
-
     if @campaign.status != "unexecute"
       render :json => {:status => "error", :message => "活动不是待审核状态， 不能审核拒绝"} and return
     end

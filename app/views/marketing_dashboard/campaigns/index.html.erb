@@ -59,9 +59,7 @@
           <%= link_to '统计', get_brand_campaign_show_url(c), :target => "_blank" %> | <br/>
           <% if c.status == 'unexecute' %>
             <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
-            <% if c.campaign_from == "app" %>
-              <button type="button" class="reject-campaign" data-campaign-id= <%= c.id %>>不通过</button> | <br/>
-            <% end %>
+            <button type="button" class="reject-campaign" data-campaign-id= <%= c.id %>>不通过</button> | <br/>
           <% end %>
           <% if ['unexecute', 'unpay'].exclude?(c.status) && c.per_budget_type == "recruit" %>
             <%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
