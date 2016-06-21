@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
+  after_create :init_appid
+
   PlatformMobile = '13088888888'
   def self.get_platform_account
     User.find_by :mobile_number => PlatformMobile
@@ -168,6 +170,11 @@ class User < ActiveRecord::Base
     elsif conditions.has_key?(:mobile_number) || conditions.has_key?(:email)
       where(conditions.to_hash).first
     end
+  end
+
+  def init_appid
+    self.update_column(:appid, SecureRandom.hex) if self.appid.blank?
+    self.appid
   end
 
   private
