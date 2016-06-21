@@ -113,7 +113,7 @@ class UpdateCampaignService
   end
 
   def can_edit?
-    ['unexecute', 'unpay'].include?(@campaign.status) ? true : false
+    ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
   end
 
   def can_edit_budget?

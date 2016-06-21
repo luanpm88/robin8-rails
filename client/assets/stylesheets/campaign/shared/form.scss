@@ -9,6 +9,15 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
+.reject-reasons {
+  color: #fff;
+  font-size: 18px;
+  background-color: #e45d34;
+  li {
+    height: 54px;
+    line-height: 54px;
+  }
+}
 .header {
   margin-bottom: 40px;
 }
@@ -570,6 +579,25 @@
   text-align: left;
 }
 
+.submit-or-revoke {
+  width: 400px;
+  margin: 0 auto;
+  button {
+    width: 150px;
+    color: #fff;
+    &:first-child {
+      float: left;
+    }
+    &:last-child {
+      float: right;
+      background-color: #c1c1c1;
+    }
+  }
+  .revoke-campaign:hover {
+    color: #fff;
+    background-color: grey;
+  }
+}
 // .per_action_budget-input{
 //   margin-left: -13px !important;
 // }

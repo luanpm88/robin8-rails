@@ -87,6 +87,7 @@ export function campaignStatusHelper(status){
 export function canEditCampaign(status){
   switch(status){
     case "unexecute":
+    case "rejected":
       return true
     default:
       return false

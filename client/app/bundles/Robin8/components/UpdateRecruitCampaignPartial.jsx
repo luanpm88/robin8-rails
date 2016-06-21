@@ -15,6 +15,7 @@ import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
 import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
+import CampaignRejectReasons from './shared/CampaignRejectReasons'
 
 const validate = new CampaignFormValidate({
   name: { require: true },
@@ -66,16 +67,28 @@ class UpdateRecruitCampaignPartial extends React.Component{
     initToolTip({placement:'bottom', html: true});
   }
 
-  render_breadcrumb(){
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
+  renderRejectReasons() {
+    const campaign = this.props.campaign;
+    if (campaign.get('status') === 'rejected') {
+      return <CampaignRejectReasons campaign={campaign} />
+    }
   }
+
+  renderSubmitOrRevokeBtn() {
+    const campaign = this.props.campaign;
+    const { handleSubmit, submitting, invalid } = this.props;
+    if (campaign.get("status") === 'unpay' || campaign.get("status") === 'unexecute') {
+      return <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动</button>
+    } else if (campaign.get("status") === 'rejected') {
+      return (
+        <div className="submit-or-revoke">
+          <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
+          <button type="submit" className="btn revoke-campaign" disabled={ submitting }>撤销活动</button>
+        </div>
+      )
+    }
+  }
+
 
   render(){
     const { name, description, img_url, influence_score, start_time, deadline,
@@ -87,6 +100,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
       <div className="page page-recruit page-recruit-new">
         <div className="container">
           <BreadCrumb />
+          {this.renderRejectReasons()}
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
@@ -96,7 +110,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
-                <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
+                {this.renderSubmitOrRevokeBtn()}
               </div>
             </form>
           </div>

@@ -6,7 +6,7 @@ module Brand
         expose :id, :name, :description, :short_description, :task_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
-               :budget_editable, :invalid_reasons, :pay_way, :need_pay_amount
+               :budget_editable, :pay_way, :need_pay_amount
 
         expose :user, using: Entities::User
 
@@ -115,6 +115,10 @@ module Brand
 
         expose :recruit_status do |object, opts|
             object.recruit_status if object.per_budget_type == 'recruit'
+        end
+
+        expose :invalid_reasons do |object, opts|
+          object.invalid_reasons.split(/\n/) if object.invalid_reasons.present?
         end
 
         with_options(format_with: :iso_timestamp) do

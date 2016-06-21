@@ -41,7 +41,7 @@ class PreviewCampaignPartial extends React.Component {
 
   renderSubmitButton() {
     const campaign = this.props.campaign;
-    if (campaign.get('status') ==="unpay") {
+    if (campaign.get('status') === "unpay") {
       return (
         <div className="submit-group">
           <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
