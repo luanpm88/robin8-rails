@@ -104,8 +104,10 @@ module API
             uploader.store!(params[:img])
             declared_params.merge!(:img_url => uploader.url)
           end
+
           if campaign.status == "rejected"
-            declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
+            campaign.status = "unexecute"
+            campaign.invalid_reasons = nil
           end
 
           declared_params.reject do |i| i == :id or i == :budget end.to_h
@@ -164,10 +166,11 @@ module API
               pay_amount = 0
               if campaign.need_pay_amount > current_kol.avail_amount
                 pay_amount = current_kol.avail_amount
+                current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               else
                 pay_amount = campaign.need_pay_amount
+                current_kol.payout pay_amount, "campaign_used_voucher", campaign
               end
-              current_kol.frozen pay_amount, "campaign_used_voucher", campaign
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
@@ -220,7 +223,7 @@ module API
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
           end
-          if campaign.need_pay_amount == 0 and %w(executing executed settled).include? campaign.status
+          if campaign.need_pay_amount == 0 and %w(agreed executing executed settled).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
         end
