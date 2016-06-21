@@ -77,8 +77,9 @@ module IdentityAnalysis
       end
     end
 
+    #TODO monit file is exist?
     def self.get_appid(cookies,redirect_url)
-      url = "https://res.wx.qq.com/c/=/mpres/zh_CN/htmledition/js/safe/safe_check2a92e6.js,/mpres/zh_CN/htmledition/js/common/wx/Step218877.js,/mpres/zh_CN/htmledition/js/safe/Scan2d3016.js,/mpres/zh_CN/htmledition/js/user/validate_wx2d3016.js"
+      url = "https://res.wx.qq.com/c/=/mpres/zh_CN/htmledition/js/biz_common/moment26d05a.js,/mpres/zh_CN/htmledition/js/safe/safe_check2a92e6.js,/mpres/zh_CN/htmledition/js/common/wx/Step218877.js,/mpres/zh_CN/htmledition/js/safe/Scan2e91e6.js,/mpres/zh_CN/htmledition/js/user/validate_wx2e91e6.js"
       req = Typhoeus.get(url,
                           :headers => {
                             :user_agent => UserAgent,
@@ -87,7 +88,7 @@ module IdentityAnalysis
                             :Cookie => cookies
                           })
       response = req.response_body
-      appid = response.match(/appid:\"(.*?)\",/)[1]
+      appid = response.match(/appid:\"(.*?)\",/)[1]   rescue nil
       appid
     end
 
