@@ -198,10 +198,10 @@ module Campaigns
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
 
-    def add_click(valid)
+    def add_click(valid, only_increment_avail = false)
       Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
       self.redis_avail_click.increment  if valid
-      self.redis_total_click.increment
+      self.redis_total_click.increment  if only_increment_avail == false
       if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?)
         finish('fee_end')
       end
