@@ -38,12 +38,25 @@ module Concerns
         invitation = find_visit(cpi_reg)
         if invitation
           #need lock?
-          invitation.status = true
-          invitation.remark = 'cpi_reg'
-          invitation.reg_time = Time.now
-          cpi_reg.campaign_show_id = invitation.id
-          cpi_reg.status = 'success'
-          cpi_reg.save! && invitation.save!
+          #更新 avail_click
+          campaign = invitation.campaign
+          if campaign && campaign.status == 'executing' && campaign.redis_total_click <= campaign.max_action
+            invitation.status = true
+            invitation.remark = 'cpi_reg'
+            invitation.reg_time = Time.now
+            cpi_reg.campaign_show_id = invitation.id
+            cpi_reg.status = 'success'
+            cpi_reg.save! && invitation.save!
+            invitation.add_click(status,remark)
+            campaign.add_click(status)
+          else
+            #invitation status not update to true
+            invitation.remark = 'cpi_reg'
+            invitation.reg_time = Time.now
+            cpi_reg.campaign_show_id = invitation.id
+            cpi_reg.status = 'success'
+            cpi_reg.save! && invitation.save!
+          end
         end
       end
     end

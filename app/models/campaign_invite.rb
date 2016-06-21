@@ -133,10 +133,10 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def add_click(valid, remark = nil)
+  def add_click(valid, remark = nil, only_increment_avail = false)
     self.redis_avail_click.increment if valid
     self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
-    self.redis_total_click.increment
+    self.redis_total_click.increment   if only_increment_avail == false
     return true
   end
 

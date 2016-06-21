@@ -143,7 +143,7 @@ module Campaigns
           self.update_column(:status, 'settled')
           # self.user.unfrozen(self.budget, 'campaign', self)
           Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-          if is_click_type?  || is_cpa_type?  || is_cpi_type?
+          if is_click_type? || is_cpa_type? || is_cpi_type?
             pay_total_click = self.settled_invites.sum(:avail_click)
             User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
             if (self.budget - (pay_total_click * self.per_action_budget)) > 0
@@ -164,7 +164,7 @@ module Campaigns
           self.update_column(:status, 'settled')
           self.user.unfrozen(self.budget, 'campaign', self)
           Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-          if is_click_type?  || is_cpa_type?  || is_cpi_type?
+          if is_click_type? || is_cpa_type? || is_cpi_type?
             pay_total_click = self.settled_invites.sum(:avail_click)
             User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
             self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
@@ -198,11 +198,11 @@ module Campaigns
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
 
-    def add_click(valid)
+    def add_click(valid, only_increment_avail = false)
       Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
       self.redis_avail_click.increment  if valid
-      self.redis_total_click.increment
-      if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?)
+      self.redis_total_click.increment  if only_increment_avail == false
+      if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?)
         finish('fee_end')
       end
     end

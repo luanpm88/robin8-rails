@@ -183,8 +183,6 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-
-
   ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_action_type == value || self.per_budget_type == value
