@@ -106,7 +106,8 @@ module API
           end
 
           if campaign.status == "rejected"
-            declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
+            campaign.status = "unexecute"
+            campaign.invalid_reasons = nil
           end
 
           declared_params.reject do |i| i == :id or i == :budget end.to_h

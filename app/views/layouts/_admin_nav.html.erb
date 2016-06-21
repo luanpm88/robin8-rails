@@ -52,6 +52,9 @@
               <%= link_to '所有待审核截图', pending_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
+              <%= link_to '所有转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2, :per_action_type => "post") %>
+            </li>
+            <li>
               <%= link_to '有作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
             </li>
             <li>

@@ -10,4 +10,13 @@ class MarketingDashboard::BaseController < ApplicationController
     }
   end
 
+
 end
+
+class SearchHelper
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  field :key, type: String
+  field :item_type, type: String
+end
+

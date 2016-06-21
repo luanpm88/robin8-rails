@@ -1,3 +1,18 @@
+<div class="row">
+  <div class="panel-body">
+    <%= form_for(@search_helper || SearchHelper.new, url: "/marketing_dashboard/campaign_invites/pending", method: :get) do |f| %>
+      <div class="field form-group search_form">
+        <%= f.text_field :key, autofocus: true, class: "form-control", placeholder: "通过活动id 或者 kol id 或者 kol 手机号搜索" %>
+        <div class="field form-group">
+          <%= f.label "搜索范围" %><br />
+          <%= f.select :item_type, ["kol", "campaign"], class: "form-control" %>
+        </div>
+        <%= f.submit "搜索", class: "btn btn-lg btn-success search_button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
 <div class="modal admin-campaign-invite-modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
