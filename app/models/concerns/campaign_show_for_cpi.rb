@@ -24,11 +24,11 @@ module Concerns
       #for cpi
       def find_visit(cpi_reg)
         if cpi_reg.app_platform == "IOS"
-          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :app_platform => cpi_reg.app_platform, :appid => appid,
+          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :app_platform => cpi_reg.app_platform, :appid => cpi_reg.appid,
                                                     :os_version => cpi_reg.os_version).first
         else
           device_model = cpi_reg.device_model.strip.downcase.gsub(" ","")     rescue nil
-          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :device_model => device_model, :appid => appid,
+          invitation = CampaignShow.effective.where(:visitor_ip => cpi_reg.reg_ip, :device_model => device_model, :appid => cpi_reg.appid,
                                                     :app_platform => cpi_reg.app_platform, :os_version => cpi_reg.os_version).first
         end
         invitation
