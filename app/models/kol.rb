@@ -461,7 +461,7 @@ class Kol < ActiveRecord::Base
   end
 
   def can_update_alipay
-    self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
+    self.alipay_account.present? && self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
   end
 
   def address!
