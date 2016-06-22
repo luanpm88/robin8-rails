@@ -54,6 +54,8 @@
           <%= link_to '接受的活动', marketing_dashboard_kol_campaigns_path(k.id), :target => "_blank"  %>
           |
           <%= link_to "修改", edit_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
+          |
+          <%= link_to "活动补偿", campaign_compensation_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
         </td>
       </tr>
     <% end %>
