@@ -86,6 +86,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
+    case actionTypes.REVOKE_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
+      }
+      return $$state;
+
     case actionTypes.PAY_CAMPAIGN_BY_ALIPAY:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {

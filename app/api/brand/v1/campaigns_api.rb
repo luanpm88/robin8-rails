@@ -95,13 +95,14 @@ module Brand
           end
           patch ":id/pay_by_balance" do
             @campaign = Campaign.find declared(params)[:campaign_id]
-            if current_user.avail_amount >= @campaign.need_pay_amount
-              @campaign.pay_way = declared(params)[:pay_way]
-              @campaign.need_pay_amount = 0
-              @campaign.save!
-              present @campaign
-            else
-              return error_unprocessable! ["amount_not_engouh", '账号余额不足, 请充值!']
+            if declared(params)[:pay_way] == 'balance'
+              if current_user.avail_amount >= @campaign.need_pay_amount
+                @campaign.update_attributes(pay_way: declared(params)[:pay_way])
+                @campaign.pay
+                present @campaign
+              else
+                return error_unprocessable! ["amount_not_engouh", '账号余额不足, 请充值!']
+              end
             end
           end
 
@@ -130,6 +131,22 @@ module Brand
             }
             )
             return { alipay_recharge_url: alipay_recharge_url }
+          end
+
+          desc 'revoke campaign'  #撤销 campaign
+          params do
+            requires :campaign_id, type: Integer
+          end
+          patch ":id/revoke_campaign" do
+            @campaign = Campaign.find declared(params)[:campaign_id]
+            if @campaign.status == "revoked"
+              error_unprocessable! "活动已经撤销, 不能重复撤销!" and return
+            end
+            unless %w(unpay unexecute rejected).include? @campaign.status
+              error_unprocessable! "活动已经开始, 不能撤销!" and return
+            end
+            @campaign.revoke
+            present @campaign
           end
 
           desc 'Update a campaign'
@@ -250,18 +267,14 @@ module Brand
         post 'campaigns/alipay_notify' do
           params.delete 'route_info'
           Rails.logger.alipay.info "-------- web端单笔支付，进入'campaigns/alipay_notify'路由  --------------"
-          if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
+          if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params) && params[:trade_status] == 'TRADE_SUCCESS'
             Rails.logger.alipay.info "-------- web端单笔支付，验证 支付宝签名 成功  --------------"
             @campaign = Campaign.find_by trade_number: params[:out_trade_no]
             Rails.logger.alipay.info "-------- web端单笔支付，查找 @campaign 成功,  --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} ---need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
-            if @campaign.alipay_status == 0 && params[:trade_status] == 'TRADE_SUCCESS'  # 0 代表未付款
-              @campaign.update_attributes(alipay_notify_text: params.to_s)
+            if @campaign.alipay_status == 0
               @campaign.with_lock do
-                @campaign.user.payout_by_alipay @campaign.need_pay_amount, "campaign_pay_by_alipay", @campaign
-                @campaign.pay_way = 'alipay'
-                @campaign.need_pay_amount = 0
-                @campaign.alipay_status   = 1
-                @campaign.save!
+                @campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
+                @campaign.pay
               end
             end
             Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"

@@ -41,13 +41,13 @@ class CreateCampaignPartial extends React.Component {
   choosePayWay() {
     $('.check-balance').addClass("checked-img");
     $('.check-balance').attr("value", "balance")
+    $('.check-alipay').attr("value", "")
     $('.check-balance').on('click', function(){
       $(this).attr("value", "balance")
       $(this).addClass("checked-img");
       $('.check-alipay').removeClass("checked-img")
       $('.check-alipay').attr("value", "")
     })
-
     $('.check-alipay').on('click', function(){
       $(this).attr("value", "alipay")
       $(this).addClass("checked-img");

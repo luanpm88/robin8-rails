@@ -222,20 +222,20 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
-    raise 'status 不能为空' if self.status.blank?
-    if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
-      self.update_attributes :status => 'unexecute'
-    end
-    if self.status_changed? && self.status.to_s == 'unexecute'
-      if not self.campaign_from ==  "app"
-        if self.user.avail_amount >= self.need_pay_amount
-          self.user.payout(budget, 'campaign', self)
-          Rails.logger.transaction.info "-------- create_job: after payout  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-        else
-          Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
-        end
-      end
-    elsif (self.status_changed? && status.to_s == 'agreed')
+    # raise 'status 不能为空' if self.status.blank?
+    # if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
+    #   self.update_attributes :status => 'unexecute'
+    # end
+    # if self.status_changed? && self.status.to_s == 'unexecute'
+    #   if not self.campaign_from ==  "app"
+    #     if self.user.avail_amount >= self.need_pay_amount
+    #       self.user.payout(need_pay_amount, 'campaign', self)
+    #       Rails.logger.transaction.info "-------- create_job: after payout  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+    #     else
+    #       Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
+    #     end
+    #   end
+    if (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')

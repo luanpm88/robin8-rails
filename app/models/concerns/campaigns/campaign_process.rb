@@ -8,6 +8,48 @@ module Campaigns
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
     end
 
+    def pay
+      ActiveRecord::Base.transaction do
+        if self.pay_way == 'balance'
+          self.user.payout(self.need_pay_amount, 'campaign', self)
+          Rails.logger.transaction.info "-------- 执行user payout: ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+        elsif self.pay_way == 'alipay'
+          self.user.payout_by_alipay(self.need_pay_amount, 'campaign_pay_by_alipay', self)
+          self.alipay_status = 1
+          Rails.logger.transaction.info "-------- 执行user pay_by_alipay: ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+        end
+        if self.used_voucher
+          self.user.kol.unfrozen(self.voucher_amount, 'campaign_used_voucher', self)
+          Rails.logger.transaction.info "-------- use voucher ------- 执行kol unfrozen ---cid:#{self.id}--user_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+          self.user.kol.payout(self.voucher_amount, 'campaign_used_voucher', self)
+          Rails.logger.transaction.info "-------- use voucher ------- 执行kol payout ---cid:#{self.id}--user_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+        end
+        self.need_pay_amount = 0
+        self.status = 'unexecute'
+        self.save!
+      end
+    end
+
+    def revoke
+      ActiveRecord::Base.transaction do
+        if self.status == 'unpay'
+          if self.used_voucher
+            self.user.kol.unfrozen(self.budget - self.need_pay_amount, "campaign_revoke", self)
+            Rails.logger.transaction.info "--------活动撤销退款给kol, 执行kol unfrozen:  ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+          end
+          self.update_attributes!(status: "revoked", revoke_time: Time.now)
+        elsif %w(unexecute rejected).include? self.status
+          if self.used_voucher
+            self.user.kol.income(self.voucher_amount, 'campaign_used_voucher_and_revoke', self)
+            Rails.logger.transaction.info "--------活动撤销退款给kol, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+          end
+          self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
+          Rails.logger.transaction.info "--------活动撤销退款给user, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+          self.update_attributes!(status: 'revoked', revoke_time: Time.now)
+        end
+      end
+    end
+
     def reset_campaign(origin_budget,new_budget, new_per_action_budget)
       Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
       self.user.unfrozen(origin_budget.to_f, 'campaign', self)
@@ -215,4 +257,3 @@ module Campaigns
 
   end
 end
-

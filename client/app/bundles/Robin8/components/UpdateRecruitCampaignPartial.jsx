@@ -17,6 +17,8 @@ import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 import CampaignRejectReasons from './shared/CampaignRejectReasons'
 
+import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
+
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
@@ -46,7 +48,7 @@ function select(state){
 class UpdateRecruitCampaignPartial extends React.Component{
   constructor(props, context){
     super(props, context);
-    _.bindAll(this, ['_fetchCampaign', '_updateCampaign']);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign']);
   }
 
   _fetchCampaign() {
@@ -60,6 +62,12 @@ class UpdateRecruitCampaignPartial extends React.Component{
     const campaign_id = this.props.params.id;
     const campaign_fields = this.props.values;
     updateRecruit(campaign_id, campaign_fields);
+  }
+
+  _revokeCampaign() {
+    const { revokeCampaign } = this.props.actions;
+    const campaign_id = this.props.params.id;
+    revokeCampaign(campaign_id);
   }
 
   componentDidMount() {
@@ -77,13 +85,11 @@ class UpdateRecruitCampaignPartial extends React.Component{
   renderSubmitOrRevokeBtn() {
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
-    if (campaign.get("status") === 'unpay' || campaign.get("status") === 'unexecute') {
-      return <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动</button>
-    } else if (campaign.get("status") === 'rejected') {
+    if (canEditCampaign(campaign.get("status")), canPayCampaign(campaign.get("status"))) {
       return (
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
-          <button type="submit" className="btn revoke-campaign" disabled={ submitting }>撤销活动</button>
+          <a onClick={this._revokeCampaign} className="btn revoke-campaign">撤销活动</a>
         </div>
       )
     }

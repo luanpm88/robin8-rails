@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   has_many :kols_lists, dependent: :destroy
   has_many :contacts, through: :media_lists
 
-  has_many :campaigns
+  has_many :campaigns, -> {where.not(status: 'revoked')}
   has_many :campaign_invites, through: :campaigns
 
   has_many :article_comments, as: :sender
@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_many :private_kols
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
+  belongs_to :kol
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
   PlatformMobile = '13088888888'

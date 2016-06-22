@@ -48,7 +48,6 @@ export function saveCampaign(campaign) {
 
 export function updateCampaign(campaign_id, campaign) {
   var formData = new FormData()
-
   for(let key of Object.keys(campaign)) {
     switch(key) {
       case 'age':
@@ -147,6 +146,26 @@ export function payCampaignByAlipay(campaign_id) {
         body: JSON.stringify(data)
       }
     )
+  };
+}
+
+export function revokeCampaign(campaign_id) {
+  const data = { campaign_id };
+  return {
+    type: actionTypes.REVOKE_CAMPAIGN,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/revoke_campaign`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: "same-origin",
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      }
+    ),
+    redirect: '/brand/'
   };
 }
 

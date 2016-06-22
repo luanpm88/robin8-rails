@@ -588,14 +588,17 @@
     &:first-child {
       float: left;
     }
-    &:last-child {
-      float: right;
-      background-color: #c1c1c1;
-    }
   }
-  .revoke-campaign:hover {
+
+  .revoke-campaign {
+    width: 150px;
     color: #fff;
-    background-color: grey;
+    float: right;
+    background-color: #c1c1c1;
+    &:hover {
+      color: #fff;
+      background-color: grey;
+    }
   }
 }
 // .per_action_budget-input{
