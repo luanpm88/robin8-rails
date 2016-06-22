@@ -9,6 +9,14 @@ module Brand
 
         expose :user, using: Entities::User
 
+        expose :per_budget_collect_type do |object|
+          if %w(cpa cpi).include? object.per_budget_type
+            "cpa_cpi"
+          else
+            ""
+          end
+        end
+
         expose :recruit_person_count do |object, opts|
           object.recruit_person_count if object.per_budget_type == "recruit"
         end
