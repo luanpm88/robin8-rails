@@ -105,7 +105,7 @@ class Message < ActiveRecord::Base
     message.name = campaign.name
     message.logo_url = campaign.img_url rescue nil
     message.is_read = false
-    message.title = "您有一个活动补偿红包"
+    message.title = "您有一个活动补偿红包,请在钱包中查看"
     message.save
 
     generate_push_message(message)

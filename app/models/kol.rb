@@ -252,8 +252,8 @@ class Kol < ActiveRecord::Base
   end
 
   def task_income(date)
-    income = self.transactions.recent(date,date).tasks.sum(:credits)
-    count = self.transactions.recent(date,date).tasks.count
+    income = self.transactions.recent(date,date).realtime_transaction.sum(:credits)
+    count = self.transactions.recent(date,date).realtime_transaction.count
     [income,count]
   end
 
