@@ -9,13 +9,18 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
-.reject-reasons {
+.reject-reasons-group {
+  padding: 15px 40px;
   color: #fff;
   font-size: 18px;
-  background-color: #e45d34;
-  li {
-    height: 54px;
-    line-height: 54px;
+  background: linear-gradient(to right, #e45d34, #fd7850); 
+  .reject-reasons-text {
+    float: left;
+    width: 90px;
+  }
+
+  .reject-reasons {
+    margin-left: 90px;
   }
 }
 .header {

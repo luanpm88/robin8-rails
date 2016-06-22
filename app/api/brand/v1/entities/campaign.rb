@@ -118,7 +118,7 @@ module Brand
         end
 
         expose :invalid_reasons do |object, opts|
-          object.invalid_reasons.split(/\n/) if object.invalid_reasons.present?
+          object.invalid_reasons.gsub(/\n/, ' ') if object.invalid_reasons.present?
         end
 
         with_options(format_with: :iso_timestamp) do

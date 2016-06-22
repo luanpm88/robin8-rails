@@ -4,15 +4,14 @@ export default class CampaignRejectReasons extends React.Component {
   render() {
     const campaign = this.props.campaign;
     return (
-      <ol className="reject-reasons">
-      {
-        do {
-          campaign.get("invalid_reasons").map(function(reason, index) {
-            return <li key={index}>{reason}</li>
-          })
-        }
-      }
-      </ol>
+      <div className="reject-reasons-group">
+        <div className="reject-reasons-text">
+          拒绝理由:
+        </div>
+        <div className="reject-reasons">
+          { campaign.get("invalid_reasons") }
+        </div>
+      </div>
     );
   }
 }
