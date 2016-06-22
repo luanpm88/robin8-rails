@@ -36,6 +36,9 @@
           position: absolute;
           left: 0;
           top: 0;
+          @media (min-width: $phone-width) {
+            top: -8px;
+          }
           @media (max-width: $phone-width) {
             width: 30px;
             height: 35px;
@@ -99,9 +102,8 @@
     }
     ul {
       margin-top: 20px;
-      // list-style: none;
-      // padding: 0;
-      padding-left: 21px;
+      list-style: none;
+      padding: 0 0 0 2px;
       li {
         font-size: 14px;
       }
@@ -110,6 +112,7 @@
       width: 50%;
       float: left;
       padding-top: 25px;
+      padding-left: 70px;
     }
   }
   .bd-cont {
