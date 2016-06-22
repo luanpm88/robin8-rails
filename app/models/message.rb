@@ -98,6 +98,19 @@ class Message < ActiveRecord::Base
     generate_push_message(message)
   end
 
+  # create or update
+  def self.new_campaign_compensation(invite, campaign)
+    message = Message.new(:message_type => 'common', :receiver => invite.kol, :item => campaign, :sender => 'Robin8')
+    message.sender = 'Robin8'
+    message.name = campaign.name
+    message.logo_url = campaign.img_url rescue nil
+    message.is_read = false
+    message.title = "您有一个活动补偿红包"
+    message.save
+
+    generate_push_message(message)
+  end
+
 
   def self.test_income(kol_id = 84)
     kol = Kol.find kol_id
