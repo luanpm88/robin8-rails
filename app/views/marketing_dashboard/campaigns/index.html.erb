@@ -26,6 +26,7 @@
       <th>ID</th>
       <th>Name</th>
       <th>User ID</th>
+      <th>User Name</th>
       <th>Type</th>
       <th>CPA/CPP</th>
       <th>Budget</th>
@@ -48,6 +49,7 @@
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td> <%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
+        <td> <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
         <% %w(per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status campaign_from).each do |v| %>
           <td> <%= multi_send c, v %> </td>
         <% end %>
