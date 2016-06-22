@@ -213,6 +213,25 @@ module Campaigns
       Message.new_remind_upload(self)
     end
 
+    class_methods do
+      PushStartHour = 9
+      PushEndHour = 18
+      PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
+      def can_push_message(campaign)
+        now =  Time.now
+        last_campaign = Campaign.where(:status => ['executing', 'executed']).where.not(:id => campaign.id).order("start_time desc").first
+        if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time)
+          return true
+        else
+          return false
+        end
+      end
+
+      def today_had_pushed_message
+        Campaign.where(:status => ['executing', 'executed']).where("start_time > '#{Date.today.to_s} #{PushStartHour}:00'").count > 0 ? true : false
+      end
+    end
+
   end
 end
 
