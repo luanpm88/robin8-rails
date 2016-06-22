@@ -7,6 +7,7 @@ module Concerns
     end
 
     def generate_more_info
+      return self if self.visitor_agent.blank?
       if self.visitor_agent.downcase.include?("iphone")
         self.app_platform = 'IOS'
         res = self.visitor_agent.match(/\s\(.*?OS\s(.*?)\slike/)
