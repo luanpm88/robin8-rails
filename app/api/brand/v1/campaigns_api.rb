@@ -95,7 +95,7 @@ module Brand
           end
           patch ":id/pay_by_balance" do
             @campaign = Campaign.find declared(params)[:campaign_id]
-            if declared(params)[:pay_way] == 'balance'
+            if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
               if current_user.avail_amount >= @campaign.need_pay_amount
                 @campaign.update_attributes(pay_way: declared(params)[:pay_way])
                 @campaign.pay
@@ -103,6 +103,8 @@ module Brand
               else
                 return error_unprocessable! ["amount_not_engouh", '账号余额不足, 请充值!']
               end
+            else
+              return error_unprocessable! "已经支付成功, 请勿重复支付!"
             end
           end
 

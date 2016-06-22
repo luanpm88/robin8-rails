@@ -84,7 +84,7 @@ class UpdateCampaignPartial extends React.Component {
   renderSubmitOrRevokeBtn() {
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
-    if (canEditCampaign(campaign.get("status")), canPayCampaign(campaign.get("status"))) {      
+    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {      
       return (
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
