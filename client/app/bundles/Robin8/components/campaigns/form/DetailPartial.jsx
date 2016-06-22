@@ -55,9 +55,20 @@ export default class DetailPartial extends React.Component {
   }
 
   _listenPerBudgetTypeChange() {
-    const { per_action_budget } = this.props;
+    const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
     $("input[name='action_type']").change(function(){
       per_action_budget.onBlur();
+      if(per_budget_type.value == "post" || per_budget_type.value == "click"){
+        per_budget_collect_type.onChange('');
+      }else{
+        per_budget_collect_type.onChange('cpa_cpi');
+      }
+    })
+
+    $("input[name='cap_cpi-collect-action_type']").click(function(){
+      if(per_budget_type.value == "post" || per_budget_type.value == "click"){
+        per_budget_type.onChange("cpa");
+      }
     })
   }
 
@@ -80,10 +91,8 @@ export default class DetailPartial extends React.Component {
   }
 
   render() {
-    const { per_budget_type, per_budget_collect_type, action_url, action_url_identifier, short_url, per_action_budget, per_budget_collect_type } = this.props
-    console.log('-------------------');
-    console.log(per_budget_collect_type.value);
-    console.log(per_budget_type.value);
+    const { per_budget_type, per_budget_collect_type, action_url, action_url_identifier, short_url, per_action_budget} = this.props
+    
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
@@ -106,7 +115,7 @@ export default class DetailPartial extends React.Component {
               {
                 do{
                 <label>
-                  <input {...per_budget_collect_type} type="radio" name="action_type" value="cpa_cpi" onChange={per_budget_collect_type.onChange} checked={(per_budget_type.value === "cpa" || per_budget_type.value === "cpi" || per_budget_collect_type.value === "cpa_cpi")} />
+                  <input {...per_budget_collect_type} type="radio" className="cap_cpi-collect-action_type" name="cap_cpi-collect-action_type" value="cpa_cpi" onChange={per_budget_collect_type.onChange} checked={(per_budget_type.value === "cpa" || per_budget_type.value === "cpi" || per_budget_collect_type.value === "cpa_cpi")} />
                   按照行动奖励KOL
                 </label>
               }
@@ -119,11 +128,11 @@ export default class DetailPartial extends React.Component {
               </div>
               <div className="sources-check cpa-cpi-select radio">
                 <label>
-                    <input {...per_budget_type} type="radio" name="cpa_cpi_action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
+                    <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                   按照转发奖励KOL
                 </label>
                 <label>
-                    <input {...per_budget_type} type="radio" name="cpa_cpi_action_type" value="cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpi"} />
+                    <input {...per_budget_type} type="radio" name="action_type" value="cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpi"} />
                   按照转发奖励KOL
                 </label>
               </div>

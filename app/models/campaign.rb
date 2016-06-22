@@ -13,7 +13,7 @@ class Campaign < ActiveRecord::Base
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
-  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
+  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
