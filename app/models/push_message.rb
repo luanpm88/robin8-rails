@@ -23,7 +23,7 @@ class PushMessage < ActiveRecord::Base
 
   def self.create_message_push(message)
     #to one
-    if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected'
+    if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected' || message.message_type == 'common'
       receiver = message.receiver
       push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                               :title => message.title, :receiver_cids => [receiver.device_token] )

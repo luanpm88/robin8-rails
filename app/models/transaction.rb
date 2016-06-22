@@ -56,7 +56,7 @@ class Transaction < ActiveRecord::Base
       when "campaign_refund"
         "营销活动(#{self.item.name}) 退款"
       when 'campaign_compensation'
-        "活动补偿(#{self.item.name})"
+        "活动补偿红包(#{self.item.name})"
     end
   end
 
