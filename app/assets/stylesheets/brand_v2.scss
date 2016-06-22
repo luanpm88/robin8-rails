@@ -1,0 +1,15 @@
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+$phone-width: 450px;
+$tablet-width: 768px;
+$inner-width: 1060px;
+$font-color: #181616;
+$primary-color: #2fe1dc;
+$divider-color: #eae3cc;
+
+@import './brand_v2/reset';
+@import './brand_v2/mixin';
+@import './brand_v2/icon';
+@import './brand_v2/global';
+@import 'brand_v2/page/*';

@@ -16,8 +16,16 @@ class PagesController < ApplicationController
     if user_signed_in?
       redirect_to '/brand/'
     else
-      render 'landing_page_v2', :layout => 'brand_v2'
+      render 'marketing', :layout => 'brand_v2'
     end
+  end
+
+  def kols
+    render 'kol', :layout => 'brand_v2'
+  end
+
+  def brands
+    render 'branding', :layout => 'brand_v2'
   end
 
   def track_url

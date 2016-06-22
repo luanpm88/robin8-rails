@@ -1,0 +1,157 @@
+.marketing-pg {
+  position: relative;
+  color: #fff;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #161616;
+    opacity: .85;
+    z-index: 0;
+  }
+  .hero-cont {
+    position: relative;
+    h1 {
+      font-size: 42px;
+      margin: 50px 0 0;
+    }
+    .hero-ls {
+      list-style: none;
+      padding: 0;
+      margin-top: 50px;
+
+      li {
+        position: relative;
+        padding: 0;
+        font-size: 18px;
+        line-height: 28px;
+        margin-top: 20px;
+        display: block;
+        padding-left: 45px;
+        .icon-correct {
+          position: absolute;
+          left: 0;
+          top: 0;
+          @media (max-width: $phone-width) {
+            width: 30px;
+            height: 35px;
+          }
+        }
+      }
+    }
+    @media (min-width: $phone-width) {
+      h1 {
+        font-size: 60px;
+        margin: 0;
+      }
+      .hero-ls {
+        margin-top: 90px;
+
+        li {
+          padding-left: 63px;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+  .quick-login-wrap {
+    display: none;
+
+    .tab-content > .tab-pane {
+      display: block;
+    }
+    .tab-menu {
+      margin-bottom: 70px;
+    }
+    .login-password .forget-password-block {
+      color: $font-color;
+    }
+  }
+  @media (min-width: $phone-width) {
+    .hero-left {
+      width: 50%;
+      float: left;
+      position: relative;
+    }
+    .hero-right {
+      width: 50%;
+      float: right;
+      position: relative;
+    }
+    .quick-login-wrap {
+      display: block;
+    }
+  }
+}
+
+.section-act-ct {
+  @media (min-width: $tablet-width) {
+    padding: 150px 0 150px 0;
+  }
+
+  .hd-cont {
+    h3 {
+      margin-bottom: 30px;
+    }
+    ul {
+      margin-top: 20px;
+      // list-style: none;
+      // padding: 0;
+      padding-left: 21px;
+      li {
+        font-size: 14px;
+      }
+    }
+    @media(min-width: $phone-width) {
+      width: 50%;
+      float: left;
+      padding-top: 25px;
+    }
+  }
+  .bd-cont {
+    img {
+      width: 100%;
+      max-width: 500px;
+    }
+    @media(min-width: $phone-width) {
+      width: 50%;
+      float: right;
+      img {
+        margin-right: -100px;
+      }
+    }
+  }
+}
+
+.section-monit {
+  @media (min-width: $tablet-width) {
+    padding: 150px 0 150px 0;
+  }
+
+  .hd-cont {
+    @media(min-width: $phone-width) {
+      width: 50%;
+      float: right;
+      padding-left: 100px;
+      padding-top: 10px;
+
+      h3 {
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .bd-cont {
+    img {
+      width: 100%;
+      max-width: 500px;
+    }
+    @media(min-width: $phone-width) {
+      width: 50%;
+      float: left;
+    }
+  }
+}
