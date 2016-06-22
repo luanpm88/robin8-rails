@@ -54,6 +54,7 @@ class Message < ActiveRecord::Base
       message.receiver_type = "All"
       message.save
     end
+    generate_push_message(message) if Campaign.can_push_message(campaign)
   end
 
   def self.new_announcement(announcement)
