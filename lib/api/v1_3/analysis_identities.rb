@@ -51,10 +51,16 @@ module API
         end
 
         params do
-          requires :identity_id, type: String
+          optional :identity_id, type: String
+          optional :login_id, type: Integer
         end
         put 'identity_unbind' do
-          identity = AnalysisIdentity.find params[:identity_id]        rescue nil
+          if params[:identity_id].present?
+            identity = AnalysisIdentity.find params[:identity_id]        rescue nil
+          else
+            login = PublicWechatLogin.find(params[:login_id])            rescue nil
+            identity = AnalysisIdentity.find_by :name => login.username    rescue nil
+          end
           if identity
             identity.delete
             present :error, 0
