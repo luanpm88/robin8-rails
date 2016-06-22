@@ -77,9 +77,21 @@ module IdentityAnalysis
       end
     end
 
-    #TODO monit file is exist?
+    def self.get_appid_url(cookies, redirect_url)
+      readtemplate_req = Typhoeus.get(redirect_url,
+                                    :headers => {
+                                      :user_agent => UserAgent,
+                                      'X-Requested-With' => 'XMLHttpRequest',
+                                      :Cookie => cookies,
+                                      :referer => "https://mp.weixin.qq.com/",
+                                    })
+      body = readtemplate_req.response_body.to_s
+      url = body.match(/onerror=\"wx_loaderror\(this\)\".*src=\"(.*safe_check.*validate.*js)\"/)[1] rescue nil
+      url
+    end
+
     def self.get_appid(cookies,redirect_url)
-      url = "https://res.wx.qq.com/c/=/mpres/zh_CN/htmledition/js/biz_common/moment26d05a.js,/mpres/zh_CN/htmledition/js/safe/safe_check2a92e6.js,/mpres/zh_CN/htmledition/js/common/wx/Step218877.js,/mpres/zh_CN/htmledition/js/safe/Scan2e91e6.js,/mpres/zh_CN/htmledition/js/user/validate_wx2e91e6.js"
+      url = get_appid_url(cookies,redirect_url)
       req = Typhoeus.get(url,
                           :headers => {
                             :user_agent => UserAgent,
@@ -88,7 +100,7 @@ module IdentityAnalysis
                             :Cookie => cookies
                           })
       response = req.response_body
-      appid = response.match(/appid:\"(.*?)\",/)[1]   rescue nil
+      appid = response.match(/appid:\"(.*?)\",/)[1]
       appid
     end
 
