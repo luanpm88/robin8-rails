@@ -33,7 +33,7 @@ export default (
 
     <Route path="campaigns/:id/pay" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
-        cb(null, require('../components/payCampaignPartial').default);
+        cb(null, require('../components/PayCampaignPartial').default);
       }, "payCampaign");
     }}/>
 

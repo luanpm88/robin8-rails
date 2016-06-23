@@ -14,7 +14,7 @@ function select(state) {
   }
 }
 
-class CreateCampaignPartial extends React.Component {
+class PayCampaignPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -122,4 +122,4 @@ class CreateCampaignPartial extends React.Component {
   }
 }
 
-export default connect(select)(CreateCampaignPartial)
+export default connect(select)(PayCampaignPartial)
