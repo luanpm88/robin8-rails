@@ -114,6 +114,7 @@
 
     .hero-qrcode {
       margin-top: 100px;
+      padding-left: 42px;
       .btn {
         display: none;
       }
@@ -370,22 +371,21 @@
       height: 167px;
       img {
         width: 100%;
+        max-width: 160px;
       }
       p {
         font-size: 12px;
         line-height: 14px;
-        margin: 0;
         height: 80px;
         overflow: hidden;
-        margin-top: 5px;
+        margin: 5px auto 0 auto;
+        max-width: 180px;
       }
       &.no-txt {
         height: 83px;
       }
       @media(min-width: $phone-width) {
         width: 33.3%;
-        max-width: 160px;
-        margin: 0 85px 0 85px;
         padding: 0;
       }
     }
@@ -419,9 +419,8 @@
       }
       @media(min-width: $phone-width) {
         width: 33.3%;
-        max-width: 160px;
-        margin: 0 85px 0 85px;
         padding: 0;
+        text-align: center;
       }
     }
   }
