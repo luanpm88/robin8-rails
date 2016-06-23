@@ -222,7 +222,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
-    # raise 'status 不能为空' if self.status.blank?
+    raise 'status 不能为空' if self.status.blank?
     # if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
     #   self.update_attributes :status => 'unexecute'
     # end
@@ -245,7 +245,6 @@ class Campaign < ActiveRecord::Base
     elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
-      #self.user.unfrozen(budget, 'campaign', self)
     end
   end
 

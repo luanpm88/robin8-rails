@@ -33,7 +33,14 @@ class UpdateCampaignService
       return false
     end
 
-    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
+    if @campaign.status == "rejected"
+      @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
+    end
+
+    unless can_edit_budget?
+      @errors << "活动已提交, 总预算不能更改!"
+    end
+
     # if not enough_amount? @user, origin_budget, budget
     #   @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
     #   return false
@@ -46,14 +53,13 @@ class UpdateCampaignService
       return false
     end
 
-
     begin
       ActiveRecord::Base.transaction do
 
         update_campaign_action_urls
         update_campaign_targets
 
-        @campaign.reset_campaign(origin_budget, budget, per_action_budget) if can_edit_budget?
+        # @campaign.reset_campaign(origin_budget, budget, per_action_budget) if can_edit_budget?
         @campaign.update_attributes(@campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
       end
     rescue Exception => e

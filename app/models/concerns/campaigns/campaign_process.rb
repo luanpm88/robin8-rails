@@ -43,7 +43,11 @@ module Campaigns
             self.user.kol.income(self.voucher_amount, 'campaign_used_voucher_and_revoke', self)
             Rails.logger.transaction.info "--------活动撤销退款给kol, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
           end
-          self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
+
+          if(self.budget - self.voucher_amount) > 0
+            self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
+          end
+          
           Rails.logger.transaction.info "--------活动撤销退款给user, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
           self.update_attributes!(status: 'revoked', revoke_time: Time.now)
         end
@@ -58,7 +62,7 @@ module Campaigns
         self.user.frozen(new_budget.to_f, 'campaign', self)
         Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       else
-        Rails.logger.error("品牌商余额不足--reset_campaign - campaign_id: #{self.id}")
+        Rails.logger.transaction.error("品牌商余额不足--reset_campaign - campaign_id: #{self.id}")
       end
     end
 

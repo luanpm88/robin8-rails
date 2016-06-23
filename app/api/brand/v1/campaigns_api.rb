@@ -123,7 +123,7 @@ module Brand
             {
               out_trade_no: @campaign.trade_number,
               subject: 'Robin8活动付款',
-              total_fee: 0.01,
+              total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
               return_url: return_url,
               notify_url: notify_url
             },

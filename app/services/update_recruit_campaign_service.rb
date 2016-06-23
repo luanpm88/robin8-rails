@@ -23,22 +23,23 @@ class UpdateRecruitCampaignService
       return false
     end
 
+    if @campaign.status == "rejected"
+      @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
+    end
+
     if @campaign.user.id != @user.id
       @errors << 'No permission!'
       return false
     end
 
     unless can_edit?
-      @errors << "活动已经开始, 不能编辑"
+      @errors << "活动已经开始, 不能编辑!"
       return false
     end
 
     validate_recruit_time
-
-    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
-    if not enough_amount? @user, origin_budget, budget
-      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
-      return false
+    unless can_edit_budget?
+      @errors << "活动已提交, 招募人数或者人均奖励不能更改!"
     end
 
     if @errors.size > 0
@@ -50,7 +51,6 @@ class UpdateRecruitCampaignService
       ActiveRecord::Base.transaction do
         update_recruit_region
         update_recruit_influnce_score
-        @campaign.reset_campaign origin_budget, budget, per_action_budget if can_edit_budget?
         @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
       end
     rescue Exception => e

@@ -170,12 +170,13 @@ module API
               else
                 pay_amount = campaign.need_pay_amount
                 current_kol.payout pay_amount, "campaign_used_voucher", campaign
+                campaign.pay_way = "kol_voucher"
               end
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
               if campaign.need_pay_amount == 0 and campaign.status.to_s == 'unpay'
-                campaign.update_attributes :status => 'unexecute'
+                campaign.status = 'unexecute'
               end
             end
           end
