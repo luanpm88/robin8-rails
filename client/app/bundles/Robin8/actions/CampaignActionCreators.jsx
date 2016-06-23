@@ -103,3 +103,6 @@ export function fetchStatisticsClicksOfCampaign(campaign_id){
     promise: fetch(`${baseUrl}/campaigns/statistics_clicks?campaign_id=${campaign_id}`, {"credentials": "include"})
   };
 }
+
+
+export function fetch

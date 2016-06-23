@@ -11,6 +11,7 @@ import Overview       from './campaigns/show/Overview';
 import Target         from './campaigns/show/Target';
 import KolList        from './campaigns/show/KolList';
 import Influnce       from './campaigns/show/Influnce';
+import Install       from './campaigns/show/Install';
 
 function select(state){
   return {
@@ -61,6 +62,7 @@ class ShowCampaignPartial extends Component {
           <Overview {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
+          <Install {...{campaign, actions, campaign_id, campaign_statistics}} />
         </div>
       </div>
     );
