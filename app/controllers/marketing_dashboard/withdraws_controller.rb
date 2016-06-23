@@ -8,7 +8,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   def pending
     @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
 
-    render 'pending'
+    render 'index'
   end
 
   def agreed

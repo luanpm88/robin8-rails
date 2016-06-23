@@ -3,21 +3,32 @@
     <tr>
       <th>ID</th>
       <th>Kol ID</th>
-      <th>Real Name</th>
       <th>Credits</th>
       <th>Withdraw type</th>
+      <th>Real Name</th>
       <th>Alipay No.</th>
-      <th>Bank Name</th>
-      <th>Bank No.</th>
       <th>Status</th>
+      <th>Total Amount</th>
+      <th>Frozen Amount</th>
+      <th>Avail Amount</th>
+      <th>Ops</th>
     </tr>
   </thead>
   <tbody>
     <% @withdraws.each do |w| %>
       <tr>
-        <% %w(id kol_id real_name credits withdraw_type alipay_no bank_name bank_no status).each do |v| %>
+        <% %w(id kol_id credits withdraw_type real_name alipay_no status).each do |v| %>
           <td> <%= multi_send w, v %> </td>
         <% end %>
+        <td> <%= w.kol.amount %> </td>
+        <td> <%= w.kol.frozen_amount %> </td>
+        <td> <%= w.kol.avail_amount %> </td>
+        <td>
+          <% if w.status == 'pending' %>
+            <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
+            <%= link_to 'Reject', marketing_dashboard_withdraw_reject_path(w.id), method: :post %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
