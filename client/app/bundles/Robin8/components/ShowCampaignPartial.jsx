@@ -55,6 +55,7 @@ class ShowCampaignPartial extends Component {
   render() {
     const {campaign, actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics, campaign_installs} = this.props;
     const campaign_id = this.props.params.id
+
     return (
       <div className="page page-activity page-activity-show">
         <div className="container">
@@ -63,7 +64,13 @@ class ShowCampaignPartial extends Component {
           <Overview {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
-          <Install {...{campaign, actions, campaign_id, campaign_installs}} />
+          {
+            do {
+              if(campaign.get("per_budget_type") == "cpi"){
+                <Install {...{campaign, actions, campaign_id, campaign_installs}} />
+              }
+            }
+          }
         </div>
       </div>
     );

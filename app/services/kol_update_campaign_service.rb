@@ -69,7 +69,7 @@ class KolUpdateCampaignService
   end
 
   def update_campaign_action_urls
-    if campaign.per_budget_type == 'cpa' && @campaign_params[:per_budget_type] != 'cpa'
+    if campaign.per_budget_type == 'cpa'  && @campaign_params[:per_budget_type] != 'cpa'
       campaign.campaign_action_urls.destroy_all and return
     end
 
