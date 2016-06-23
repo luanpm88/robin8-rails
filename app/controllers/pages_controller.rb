@@ -24,7 +24,7 @@ class PagesController < ApplicationController
     render 'kol', :layout => 'brand_v2'
   end
 
-  def moment
+  def moments
     render 'marketing', :layout => 'brand_v2'
   end
 

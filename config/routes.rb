@@ -124,7 +124,7 @@ Rails.application.routes.draw do
 
   get 'kols', to: 'pages#kols'
   get 'brands/bigv', to: 'pages#bigv'
-  get 'brands/moment', to: 'pages#moment'
+  get 'brands/moments', to: 'pages#moments'
 
   root 'pages#home'
 
