@@ -20,7 +20,7 @@
         <td> <%= campaign_apply.kol.identities.where(provider: 'weibo').maximum("followers_count") %> </td>
         <td>
            <% campaign_apply.kol.identities.where(:provider => "weibo").each do |weibo| %>
-             <%= link_to weibo.name, weibo.url, :target => "_blank" %>
+             <%= link_to weibo.name, weibo.get_weibo_url, :target => "_blank" %>
              </br>
            <% end %>
         </td>
