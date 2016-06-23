@@ -117,6 +117,7 @@
       height: 10px;
       &:before {
         content: "+";
+        font-style: normal;
       }
     }
     &:before, &:after {
@@ -141,10 +142,14 @@
 
   .nav .open > a, .nav .open > a:hover, .nav .open > a:focus,
   .nav > li > a:hover, .nav > li > a:focus {
-    background-color: rgba(65, 65, 65, .6);
-    &:after, &:before {
-      width: 50%;
-      opacity: 1;
+    background-color: transparent;
+
+    @media(min-width: $phone-width) {
+      background-color: rgba(65, 65, 65, .6);
+      &:after, &:before {
+        width: 50%;
+        opacity: 1;
+      }
     }
   }
 
