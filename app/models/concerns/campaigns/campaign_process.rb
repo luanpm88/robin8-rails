@@ -219,7 +219,8 @@ module Campaigns
       PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
       def can_push_message(campaign)
         now =  Time.now
-        last_campaign = Campaign.where(:status => ['executing', 'executed']).where.not(:id => campaign.id).order("start_time desc").first
+        # notice : recruit cmapaign start_time is after
+        last_campaign = Campaign.where(:status => ['executing', 'executed', 'settled']).where("start_time < '#{now}'").where.not(:id => campaign.id).order("start_time desc").first
         if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time)
           return true
         else
