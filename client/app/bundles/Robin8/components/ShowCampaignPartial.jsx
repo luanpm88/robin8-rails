@@ -11,6 +11,7 @@ import Overview       from './campaigns/show/Overview';
 import Target         from './campaigns/show/Target';
 import KolList        from './campaigns/show/KolList';
 import Influnce       from './campaigns/show/Influnce';
+import Install       from './campaigns/show/Install';
 
 function select(state){
   return {
@@ -18,7 +19,8 @@ function select(state){
     campaign_invites: state.campaignReducer.get("campaign_invites"),
     hasfetchedInvite: state.campaignReducer.get("hasfetchedInvite"),
     paginate: state.campaignReducer.get("paginate"),
-    campaign_statistics: state.campaignReducer.get("campaign_statistics")
+    campaign_statistics: state.campaignReducer.get("campaign_statistics"),
+    campaign_installs: state.campaignReducer.get("campaign_installs")
   };
 }
 
@@ -51,8 +53,9 @@ class ShowCampaignPartial extends Component {
   }
 
   render() {
-    const {campaign, actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
+    const {campaign, actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics, campaign_installs} = this.props;
     const campaign_id = this.props.params.id
+
     return (
       <div className="page page-activity page-activity-show">
         <div className="container">
@@ -61,6 +64,13 @@ class ShowCampaignPartial extends Component {
           <Overview {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
+          {
+            do {
+              if(campaign.get("per_budget_type") == "cpi"){
+                <Install {...{campaign, actions, campaign_id, campaign_installs}} />
+              }
+            }
+          }
         </div>
       </div>
     );

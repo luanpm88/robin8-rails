@@ -9,6 +9,8 @@ export function showCampaignTypeText(budget_type){
       return "行动"
     case  "post":
       return "转发"
+    case "cpi":
+      return "安装"
   }
 }
 

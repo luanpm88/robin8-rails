@@ -32,6 +32,14 @@ module Brand
           present campaign.get_stats
         end
 
+        params do
+          requires :campaign_id, type: String
+        end
+        get :installs do
+          campaign = Campaign.find params[:campaign_id]
+          present campaign.get_platforms_for_cpi
+        end
+
         desc 'Return a campaign by id'
         params do
           requires :id, type: Integer, desc: 'Campaign id'
