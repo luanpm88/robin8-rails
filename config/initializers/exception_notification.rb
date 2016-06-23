@@ -9,7 +9,23 @@ ExceptionNotification.configure do |config|
                                   ActionController::UrlGenerationError)
 
   config.ignore_if do |exception, options|
-    Rails.env.development?
+    skip = false
+
+    key = "#{Rails.application.class.parent.to_s} #{exception.inspect} "
+    key += exception.backtrace.slice(0,1).join("\n") unless exception.backtrace.blank?
+
+    begin
+      if !!Redis::Objects.redis.get(key)
+        skip = Redis::Objects.redis.incr(key) % 50 != 0
+      else
+        Redis::Objects.redis.setex(key, 60 * 30, 0)
+        skip = false
+      end
+    rescue
+      Rails.logger.error("异常通知邮件过滤出错!")
+    end
+
+    Rails.env.development? || !!skip
   end
 
   # Email notifier sends notifications by email.
@@ -20,9 +36,10 @@ ExceptionNotification.configure do |config|
   # }
 
   host_name = (`hostname`).gsub("\n", "")
+  app_name = Rails.application.class.parent.to_s
 
   config.add_notifier :async_mail, {
-    :sender           => %{"Exception Notification from #{host_name}" <exception.notify@robin8.com>},
+    :sender           => %{"[#{app_name}] Exception Notification from #{host_name}" <exception.notify@robin8.com>},
     :recipients       => %w{dev_notify@robin8.com}
   }
 end
