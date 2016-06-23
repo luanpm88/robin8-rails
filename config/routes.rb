@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get 'articles/:id/show' => "articles#show"
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
-  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_kol_and_campaign'
+  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_hl_and_campaign'
   get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
   get "campaign/valid_campaigns" => "campaign#valid_campaigns"
 
@@ -123,7 +123,9 @@ Rails.application.routes.draw do
   get 'share_by_email/show'
   post 'share_by_email' => 'share_by_email#create'
 
-  get '/home', to: 'pages#home'
+  get 'home', to: 'pages#home'
+  get 'kols', to: 'pages#kols'
+  get 'brands', to: 'pages#brands'
 
   root 'pages#home'
 
@@ -162,8 +164,6 @@ Rails.application.routes.draw do
   post 'campaign_invite/reject', to: 'interested_campaigns#update'
   post 'campaign_invite/invite', to: 'interested_campaigns#update'
   post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
-
-
 
   # =========================申请支付宝需要的页面路由用完要删掉=============================
   get 'join_in', to: 'pages#join_in'

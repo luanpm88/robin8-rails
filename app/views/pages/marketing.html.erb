@@ -1,0 +1,125 @@
+<%= render :partial => "pages/partials/header" %>
+
+<div class="hero-section marketing-pg hero-bg">
+  <div class="container">
+    <div class="hero-left">
+      <div class="hero-cont">
+        <h1>轻松刷遍朋友圈</h1>
+        <ul class="hero-ls">
+          <li><span class="icon-correct"></span>小预算精准触达终端消费者</li>
+          <li><span class="icon-correct"></span>海量朋友圈KOL来做你的品牌大使</li>
+          <li><span class="icon-correct"></span>按效果付费</li>
+          <li><span class="icon-correct"></span>适用于H5，微信公众号文章，任何网页</li>
+        </ul>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="quick-login-wrap signinup-wrap">
+        <ul class="tab-menu">
+          <li class="active"><a class="sign-in-tab">登录</a></li>
+          <li><a href="#signinupModal" data-toggle="modal">注册</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane">
+            <%= form_tag('/users/sign_in', method: 'post', remote: true) do %>
+              <div class="form-group">
+                <i class="icon-mobile"></i>
+                <label for='user[login]'>手机号</label>
+                <input type="text" class="form-control" name='user[login]' placeholder="手机号码/邮箱" required>
+              </div>
+              <div class="form-group login-password">
+                <i class="icon-pwd"></i>
+                <label for='user[password]'>密码</label>
+                <input type="password" class="form-control password" name='user[password]' placeholder="密码" required>
+                <div class="forget-password-block">
+                  <button type='button' class='forget-password-btn'>忘记密码</button>
+                </div>
+              </div>
+              <div class="loginTips">
+                <p class='tipsFailed help-block'>
+                  用户名或密码错误，请重新尝试
+                </p>
+                <p class='tipsSuccess help-block'>
+                  登录成功，正在跳转...
+                </p>
+              </div>
+              <button type="submit" class="btn btn-blue btn-block">立即登录</button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section section-card section-act-ct ">
+  <div class="container">
+    <div class="hd-cont">
+      <h3>
+        <span class="order-number"><i>01/</i></span>
+        创建活动
+      </h3>
+      <p>
+        无论是您的付费模式是<br/> CPC / CPP / CPA，还是招募，<br/>Robin8的活动类型丰富多彩，<br/>自助充值即可创建活动
+      </p>
+      <ul class="acts-ls">
+        <li>CPC（按点击计费的转发活动）</li>
+        <li>CPA（按用户任务完成数量计费的转发活动）</li>
+        <li>CPP（按转发次数计费的转发活动）</li>
+      </ul>
+    </div>
+    <div class="bd-cont">
+      <div class="act-ct-pic">
+        <%= image_tag "page/marketing-atc-ct.png" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section section-card section-monit">
+  <div class="container">
+    <div class="hd-cont">
+      <h3>
+        <span class="order-number"><i>02/</i></span>
+        实时监控
+      </h3>
+      <p>在朋友圈的活动投放表现实时可见，<br/>您可以清楚的看到有哪些KOL分享了<br/>您的活动，每位KOL带来了多少点击<br/>以及朋友圈好友的互动情况。</p>
+    </div>
+    <div class="bd-cont">
+      <div class="monit-pic">
+        <%= image_tag "page/marketing-monit.png" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section section-card section-cops">
+  <div class="container">
+    <div class="hd-cont">
+      <h3>
+        <span class="order-number"><i>04/</i></span>
+        合作品牌
+      </h3>
+    </div>
+    <div class="bd-cont">
+      <div class="cops-wrap">
+        <ul class="cops-ls">
+          <li><%= image_tag "page/cops/cop-1.png" %></li>
+          <li><%= image_tag "page/cops/cop-2.png" %></li>
+          <li><%= image_tag "page/cops/cop-3.png" %></li>
+          <li><%= image_tag "page/cops/cop-4.png" %></li>
+          <li><%= image_tag "page/cops/cop-5.png" %></li>
+          <li><%= image_tag "page/cops/cop-6.png" %></li>
+          <li><%= image_tag "page/cops/cop-7.png" %></li>
+          <li><%= image_tag "page/cops/cop-8.png" %></li>
+          <li><%= image_tag "page/cops/cop-9.png" %></li>
+          <li><%= image_tag "page/cops/cop-10.png" %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render :partial => "pages/partials/login_modal" %>
+<%= render :partial => "pages/partials/footer" %>

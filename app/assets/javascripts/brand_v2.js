@@ -31,7 +31,19 @@ $(function(){
     $("#downloadModal").modal('show');
   }
 
-  setTimeout(show_sign_up_modal,500)
+  $( window ).scroll(function() {
+    $("#site-navbar").toggleClass("navrbar-sticky", $(window).scrollTop() > 100);
+  });
+
+  $("#site-ctlbar").click(function() {
+    if ($(this).hasClass("open")) {
+      $(this).removeClass("open");
+      $("#site-navbar").removeClass("visible");
+    } else {
+      $(this).addClass("open");
+      $("#site-navbar").addClass("visible");
+    }
+  });
 
   $('.quick-login').click(function() {
     // 清除不必要的填充
@@ -66,7 +78,6 @@ $(function(){
     var phone_number = $('.brand_mobile_number').val().trim();
 
     if(phone_number.match(/^1[34578][0-9]{9}$/)) {
-      console.log('good mobile')
       $(".tips .phone-number-error").hide();
       $('.bs-example-modal-sm').modal()
     } else {
@@ -78,8 +89,6 @@ $(function(){
   $('.send-forget-password-verify-code').click(function(){
     var phone_number = $('.forget-password-brand-mobile-number').val().trim();
     if(phone_number.match(/^1[34578][0-9]{9}$/)) {
-      console.log('good mobile')
-
       $.ajax({
         method: 'GET',
         url: '/users/check_exist_by_mobile_number',
@@ -112,8 +121,6 @@ $(function(){
     var send_verify_code_text = $('.send_verify_code').text();
     var count = 60;
     var countdown;
-
-    console.log('phone_number', phone_number);
 
     $.ajax({
       method: 'POST',
