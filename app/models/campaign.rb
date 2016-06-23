@@ -183,14 +183,9 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  # Notice cpi type is_cpa_type? = false
   ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
     define_method "is_#{value}_type?" do
-      if self.per_action_type.present?
-        self.per_action_type == value
-      else
-        self.per_budget_type == value
-      end
+      self.per_budget_type == value
     end
   end
 
