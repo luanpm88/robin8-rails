@@ -138,7 +138,7 @@
   padding: 60px 0 70px 0;
   .hd-cont {
     width: 100%;
-    margin-top: 70px;
+    margin-top: 85px;
     @media(min-width: $phone-width) {
       width: 50%;
       float: right;
@@ -158,12 +158,12 @@
     }
     img {
       width: 100%;
-      max-width: 500px;
+      max-width: 430px;
     }
   }
 
   .learn-more {
-    padding: 30px 0 0;
+    padding: 45px 0 0;
   }
 }
 

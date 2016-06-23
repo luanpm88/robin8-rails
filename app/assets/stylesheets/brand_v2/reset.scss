@@ -49,6 +49,8 @@ input:-webkit-autofill:focus{
 .btn {
   padding: 0;
   line-height: 36px;
+  transition: all .2s linear;
+  -webkit-transition: all .2s linear;
 }
 .btn.btn-line {
   background: transparent;
