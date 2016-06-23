@@ -105,4 +105,9 @@ export function fetchStatisticsClicksOfCampaign(campaign_id){
 }
 
 
-export function fetch
+export function fetchInstallsOfCampaign(campaign_id){
+  return {
+    type: actionTypes.FETCH_INSTALLS_OF_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaigns/installs?campaign_id=${campaign_id}`, {"credentials": "include"})
+  };
+}

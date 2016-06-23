@@ -7,11 +7,17 @@ export default class Install extends React.Component{
   }
 
   componentDidMount() {
-    const { fetchInstallOfCampaign } = this.props.actions;
-    fetchInstallOfCampaign(this.props.campaign_id);      
+    const { fetchInstallsOfCampaign } = this.props.actions;
+    fetchInstallsOfCampaign(this.props.campaign_id);      
   }
 
   generate_echarts_options(){
+    const {campaign_installs } = this.props;
+
+    if(campaign_installs.size != 2){
+      return
+    }
+
     const option = {
     tooltip : {
         trigger: 'item',
@@ -29,8 +35,8 @@ export default class Install extends React.Component{
             radius : '55%',
             center: ['50%', '60%'],
             data:[
-                {value:335, name:'Ios用户'},
-                {value:310, name:'Android用户'}
+                {value: campaign_installs.get(0), name:'Ios用户'},
+                {value: campaign_installs.get(1), name:'Android用户'}
             ],
             itemStyle: {
                 emphasis: {
@@ -48,6 +54,7 @@ export default class Install extends React.Component{
 
   render(){
     const options = this.generate_echarts_options()
+    const {campaign_installs } = this.props;
     return(
       <div className="panel install-charts-panel">
         <div className="panel-heading">
@@ -59,13 +66,17 @@ export default class Install extends React.Component{
             <div className="influence-charts-area">
               { do 
                 {
-                  // if(campaign.get("total_click") === 0){
-                  //   <div className="panel-body showMiddleTip">
-                  //     暂时没有安装用户
-                  //   </div>
-                  // }else{
+                  if(campaign_installs.size == 0){
+                    <div className="panel-body showMiddleTip">
+                      数据加载中...
+                    </div>
+                  }else if((campaign_installs.size == 2) && campaign_installs.get(0) == 0 && campaign_installs.get(1) == 0){
+                    <div className="panel-body showMiddleTip">
+                      暂时没有安装用户
+                    </div>
+                  }else if(campaign_installs.size == 2){
                     <ReactEcharts height={500} option={options}  showLoading={false}/>
-                  //}
+                  }
                 }
               }
             </div>
