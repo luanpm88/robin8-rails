@@ -28,6 +28,7 @@
             <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
             <%= link_to 'Reject', marketing_dashboard_withdraw_reject_path(w.id), method: :post %>
           <% end %>
+          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(k.kol_id), :target => "_blank" %>
         </td>
       </tr>
     <% end %>

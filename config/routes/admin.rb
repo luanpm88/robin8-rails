@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       end
       member do
         match 'campaign_compensation', via: [:post, :get]
+        get :transaction
       end
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
