@@ -23,20 +23,18 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>User ID</th>
-      <th>User Name</th>
+      <th>ID/Name</th>
+      <th>User</th>
       <th>Type</th>
-      <th>CPA/CPP</th>
+      <th>Per/Actual
+      </th>
       <th>Budget</th>
       <th>Spent</th>
-      <th>Max Click</th>
-      <th>Avail Click</th>
-      <th>Total Click</th>
-      <th>Start_at</th>
-      <th>Deadline</th>
-      <th>Accepted Kols Count</th>
+      <th>Avail</br>
+        /Total</th>
+      <th>Start/Deadline</th>
+      <th>Actual Deadline</th>
+      <th>Accepted Count</th>
       <th>Status</th>
       <th>活动来自</th>
       <th>Ops</th>
@@ -45,14 +43,36 @@
   <tbody>
     <% @campaigns.each do |c| %>
       <tr>
-        <% %w(id name).each do |v| %>
-          <td> <%= multi_send c, v %> </td>
-        <% end %>
-        <td> <%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
-        <td> <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
-        <% %w(per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status campaign_from).each do |v| %>
-          <td> <%= multi_send c, v %> </td>
-        <% end %>
+        <td>
+          <%= c.id %>
+          <br><br>
+          <%= c.name %>
+        </td>
+        <td>
+          <%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%> <br><br>
+          <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
+        </td>
+        <td><%= c.per_budget_type %></td>
+        <td>
+          <%= c.per_action_budget %></br></br>
+          <%= c.actual_per_action_budget %>
+        </td>
+        <td><%= c.budget %></br></br>
+           max action:</br><%= c.max_action %>
+        </td>
+        <td><%= c.take_budget %></td>
+        <td>
+           <%= c.get_avail_click %></br>
+           <%= c.get_avail_click %></br>
+        </td>
+        <td>
+          <%= c.start_time.to_s(:date_time) %></br>
+          <%= c.deadline.to_s(:date_time)%></br>
+        </td>
+        <td><%= c.actual_deadline_time.to_s(:date_time)  rescue nil %></td>
+        <td><%= c.campaign_invites.count %></td>
+        <td><%= c.status %></td>
+        <td><%= c.campaign_from %></td>
         <td>
           <%= link_to '编辑', get_edit_brand_campaign_show_url(c), :target => "_blank" %> |<br/>
           <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank" %> | <br/>
