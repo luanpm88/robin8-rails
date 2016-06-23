@@ -2,6 +2,19 @@ import React from 'react';
 
 class PreviewCommonCampaignPartial extends React.Component {
 
+  renderAmount() {
+    const campaign = this.props.campaign;
+    if (campaign.get("status") == 'unpay') {
+      return (
+        <div className="acitvity-amount-group">
+          <span className="acitvity-amount-text">支付总额:&nbsp;</span>
+          <span className="yuan">￥</span>
+          <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
+        </div>
+      )
+    }
+  }
+
   render() {
     const campaign = this.props.campaign;
 
@@ -24,11 +37,7 @@ class PreviewCommonCampaignPartial extends React.Component {
             <span className="acitvity-budget-text">单次预算:&nbsp;&nbsp;</span>
             <span className="acitvity-budget">{campaign.get("per_action_budget")}&nbsp;元</span>
           </div>
-          <div className="acitvity-amount-group">
-            <span className="acitvity-amount-text">支付总额:&nbsp;</span>
-            <span className="yuan">￥</span>
-            <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
-          </div>
+          {this.renderAmount()}
         </div>
       </div>
     )

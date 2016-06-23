@@ -37,8 +37,10 @@ class UpdateCampaignService
       @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
     end
 
-    unless can_edit_budget?
-      @errors << "活动已提交, 总预算不能更改!"
+    if can_edit_budget?
+      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
+    else
+      @errors << "活动已提交, 总预算不能更改!" if @campaign.budget_changed?
     end
 
     # if not enough_amount? @user, origin_budget, budget

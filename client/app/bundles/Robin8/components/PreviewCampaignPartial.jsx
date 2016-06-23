@@ -39,6 +39,15 @@ class PreviewCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  renderHeader() {
+    const campaign = this.props.campaign;
+    if (campaign.get('status') == 'unpay') {
+      return <p className="confirm-order-text">订单确认</p>
+    } else {
+      return <p className="confirm-order-text">修改成功</p>
+    }
+  }
+
   renderSubmitButton() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === "unpay") {
@@ -87,7 +96,7 @@ class PreviewCampaignPartial extends React.Component {
               {this.renderReturnEditBtn()}
             </li>
           </ol>
-          <p className="confirm-order-text">订单确认</p>
+          {this.renderHeader()}
           <div className="preview-section">
             {this.renderPreviewPartial()}
             {this.renderSubmitButton()}

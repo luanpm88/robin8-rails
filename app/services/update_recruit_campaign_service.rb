@@ -38,8 +38,10 @@ class UpdateRecruitCampaignService
     end
 
     validate_recruit_time
-    unless can_edit_budget?
-      @errors << "活动已提交, 招募人数或者人均奖励不能更改!"
+    if can_edit_budget?
+      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
+    else
+      @errors << "活动已提交, 总预算不能更改!" if @campaign.budget_changed?
     end
 
     if @errors.size > 0
