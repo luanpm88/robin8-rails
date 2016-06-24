@@ -39,19 +39,19 @@ class PayCampaignPartial extends React.Component {
   }
 
   choosePayWay() {
-    $('.check-balance').addClass("checked-img");
+    $('.check-balance .ok-sign').addClass("checked-img");
     $('.check-balance').attr("value", "balance")
     $('.check-alipay').attr("value", "")
     $('.check-balance').on('click', function(){
-      $(this).attr("value", "balance")
-      $(this).addClass("checked-img");
-      $('.check-alipay').removeClass("checked-img")
+      $('.check-balance').attr("value", "balance")
+      $('.check-balance .ok-sign').addClass("checked-img");
+      $('.check-alipay .ok-sign').removeClass("checked-img")
       $('.check-alipay').attr("value", "")
     })
     $('.check-alipay').on('click', function(){
-      $(this).attr("value", "alipay")
-      $(this).addClass("checked-img");
-      $('.check-balance').removeClass("checked-img")
+      $('.check-alipay').attr("value", "alipay")
+      $('.check-alipay .ok-sign').addClass("checked-img");
+      $('.check-balance .ok-sign').removeClass("checked-img")
       $('.check-balance').attr("value", "")
     })
   }
@@ -96,7 +96,9 @@ class PayCampaignPartial extends React.Component {
               <Link to="/brand/financial/recharge" className="recharge" target="_blank">&nbsp;&nbsp;立即充值</Link>
 
               <div ref='check-balance' className="check-balance">
+                <span className="ok-sign">
 
+                </span>
               </div>
 
             </div>
@@ -105,7 +107,9 @@ class PayCampaignPartial extends React.Component {
               <span className="pay-by-alipay-text">支付宝支付</span>
               <span className="alipay-pay-tip">&nbsp;&nbsp;(支付宝支付暂不支持开具发票)</span>
               <div ref='check-alipay' className="check-alipay">
+                <span className="ok-sign">
 
+                </span>
               </div>
             </div>
             <hr />
