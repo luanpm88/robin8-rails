@@ -1,6 +1,7 @@
 <table class="table table-bordered">
   <thead>
     <tr>
+      <th>Chose</th>
       <th>ID</th>
       <th>Kol ID</th>
       <th>Credits</th>
@@ -17,6 +18,11 @@
   <tbody>
     <% @withdraws.each do |w| %>
       <tr>
+        <td>
+          <% if w.status== 'pending' %>
+            <%= check_box_tag "withdraw_id[]", w.id, false, :class => 'withdraw_checkbox' %>
+          <% end %>
+        </td>
         <% %w(id kol_id credits withdraw_type real_name alipay_no status).each do |v| %>
           <td> <%= multi_send w, v %> </td>
         <% end %>
@@ -28,11 +34,41 @@
             <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
             <%= link_to 'Reject', marketing_dashboard_withdraw_reject_path(w.id), method: :post %>
           <% end %>
-          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(k.kol_id), :target => "_blank" %>
+          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', :confirm => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
+<%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', :confirm => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
 
 <%= will_paginate @withdraws %>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".batch").click(function(e){
+      e.preventDefault();
+      if($(".withdraw_checkbox:checked").length > 0){
+        var batch_ids = "";
+        var handle_action = $(this).attr("data-action");
+        $(".withdraw_checkbox:checked").each(function(){
+          batch_ids += $(this).val();
+          batch_ids += ","
+        });
+        console.log(batch_ids);
+        $.post("/marketing_dashboard/withdraws/batch_handle", {"batch_ids": batch_ids, "handle_action": handle_action},function(data){
+          if(data.status == 'error'){
+            alert(data.text);
+          }else if (data.status == 'ok'){
+            alert("操作成功");
+            window.location.href = '/marketing_dashboard/withdraws'
+          }
+        })
+      }else{
+        alert("请选择要批量操作的提现申请");
+      }
+    })
+  })
+</script>
