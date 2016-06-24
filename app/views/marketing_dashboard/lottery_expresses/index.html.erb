@@ -24,7 +24,7 @@
 
   <tbody>
     <% @lottery_activities.each do |lottery_activity| %>
-      <% addr = lottery_activity.lucky_kol.address %>
+      <% addr = lottery_activity.lucky_kol.address! %>
       <tr>
         <td><%= lottery_activity.code %></td>
         <td><%= lottery_activity.name %></td>
