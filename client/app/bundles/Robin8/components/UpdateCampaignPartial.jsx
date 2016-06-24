@@ -6,15 +6,17 @@ import _ from 'lodash'
 
 import "campaign/activity/form.scss";
 
-import BreadCrumb      from './shared/BreadCrumb';
-import IntroPartial    from './campaigns/form/IntroPartial';
-import TargetPartial   from './campaigns/form/TargetPartial';
-import DetailPartial   from './campaigns/form/DetailPartial';
-import DatePartial     from './campaigns/form/DatePartial';
-import BudgetPartial   from './campaigns/form/BudgetPartial';
-import initToolTip     from './shared/InitToolTip';
-import CampaignFormValidate from './shared/validate/CampaignFormValidate'
-import CampaignRejectReasons from './shared/CampaignRejectReasons'
+import BreadCrumb              from './shared/BreadCrumb';
+import IntroPartial            from './campaigns/form/IntroPartial';
+import TargetPartial           from './campaigns/form/TargetPartial';
+import DetailPartial           from './campaigns/form/DetailPartial';
+import DatePartial             from './campaigns/form/DatePartial';
+import BudgetPartial           from './campaigns/form/BudgetPartial';
+import RevokeConfirmModal      from './campaigns/modals/RevokeConfirmModal';
+
+import initToolTip             from './shared/InitToolTip';
+import CampaignFormValidate    from './shared/validate/CampaignFormValidate'
+import CampaignRejectReasons   from './shared/CampaignRejectReasons'
 
 import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
@@ -47,7 +49,14 @@ class UpdateCampaignPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign']);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign', '_renderRevokeModal']);
+    this.state = {
+      showRevokeConfirmModal: false
+    };
+  }
+
+  closeRevokeConfirmModal() {
+    this.setState({showRevokeConfirmModal: false});
   }
 
   _fetchCampaign() {
@@ -81,14 +90,18 @@ class UpdateCampaignPartial extends React.Component {
     }
   }
 
+  _renderRevokeModal() {
+    this.setState({showRevokeConfirmModal: true});
+  }
+
   renderSubmitOrRevokeBtn() {
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
-    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {      
+    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {
       return (
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
-          <a onClick={this._revokeCampaign} className="btn revoke-campaign">撤销活动</a>
+          <a onClick={this._renderRevokeModal} className="btn revoke-campaign">撤销活动</a>
         </div>
       )
     }
@@ -119,6 +132,7 @@ class UpdateCampaignPartial extends React.Component {
             </form>
           </div>
         </div>
+        <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>
     )
   }

@@ -13,6 +13,8 @@ import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
+import RevokeConfirmModal      from './campaigns/modals/RevokeConfirmModal';
+
 import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 import CampaignRejectReasons from './shared/CampaignRejectReasons'
@@ -48,7 +50,14 @@ function select(state){
 class UpdateRecruitCampaignPartial extends React.Component{
   constructor(props, context){
     super(props, context);
-    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign']);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign', '_renderRevokeModal']);
+    this.state = {
+      showRevokeConfirmModal: false
+    };
+  }
+
+  closeRevokeConfirmModal() {
+    this.setState({showRevokeConfirmModal: false});
   }
 
   _fetchCampaign() {
@@ -82,6 +91,10 @@ class UpdateRecruitCampaignPartial extends React.Component{
     }
   }
 
+  _renderRevokeModal() {
+    this.setState({showRevokeConfirmModal: true});
+  }
+
   renderSubmitOrRevokeBtn() {
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -89,7 +102,8 @@ class UpdateRecruitCampaignPartial extends React.Component{
       return (
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
-          <a onClick={this._revokeCampaign} className="btn revoke-campaign">撤销活动</a>
+          <a onClick={this._renderRevokeModal} className="btn revoke-campaign">撤销活动</a>
+
         </div>
       )
     }
@@ -122,6 +136,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
           </div>
           <div id="sublist"></div>
         </div>
+        <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>
     )
   }
