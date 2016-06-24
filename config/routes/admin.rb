@@ -98,7 +98,8 @@ Rails.application.routes.draw do
         patch :pub
       end
     end
-    resources :lottery_activities
 
+    resources :lottery_activities
+    resources :lottery_expresses
   end
 end
