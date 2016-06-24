@@ -44,6 +44,11 @@
     height: 64px;
   }
 
+  .link-to-show-page {
+    display: block;
+    width: 100px;
+  }
+
   .brand-activity-content {
     position: relative;
     height: 100%;
@@ -105,10 +110,103 @@
         background: #e14b1e;
       }
     }
+
+    .before-pay-edit-campaign-btn {
+      position: absolute;
+      right: 45px;
+      top: 31px;
+      width: 82px;
+      height: 36px;
+      color: #e45d34;
+    }
+
+    .pay-campaign-btn {
+      position: absolute;
+      right: 0;
+      top: 25px;
+      width: 82px;
+      height: 36px;
+      border: 1px solid #2dcad0;
+      color: #2dcad0;
+      box-shadow: none;
+
+      &:hover {
+        color: #fff;
+        border: 1px solid #2dcad0;
+        background: #2dcad0;
+      }
+    }
+
     .detail-link,
     .stop-btn {
-      float: right;
+      position: absolute;
+      right: 0;
+      top: 45px;
+      width: 82px;
+      height: 36px;
+      border: 1px solid #e14b1e;
+      color: #e14b1e;
+      box-shadow: none;
+
+      &:hover {
+        color: #fff;
+        border: 1px solid #e14b1e;
+        background: #e14b1e;
+      }
     }
+
+    .campaign-pay-stop-btn {
+      position: absolute;
+      right: 0;
+      top: 47px;
+      width: 82px;
+      height: 36px;
+      border: 1px solid #2dcad0;
+      color: #2dcad0;
+      box-shadow: none;
+
+      &:hover {
+        color: #fff;
+        border: 1px solid #2dcad0;
+        background: #2dcad0;
+      }
+    }
+
+    .campaign-before-pay-stop-btn {
+      position: absolute;
+      right: 45px;
+      top: 54px;
+      width: 82px;
+      height: 36px;
+      color: #e45d34;
+    }
+
+    .recruit-pay-stop-btn {
+      position: absolute;
+      right: 0;
+      top: 58px;
+      width: 82px;
+      height: 36px;
+      border: 1px solid #2dcad0;
+      color: #2dcad0;
+      box-shadow: none;
+
+      &:hover {
+        color: #fff;
+        border: 1px solid #2dcad0;
+        background: #2dcad0;
+      }
+    }
+
+    .recruit-before-pay-stop-btn {
+      position: absolute;
+      right: 45px;
+      top: 65px;
+      width: 82px;
+      height: 36px;
+      color: #e45d34;
+    }
+
     .detail-link {
       width: 14px;
       color: #fff;
@@ -248,4 +346,3 @@
     }
   }
 }
-

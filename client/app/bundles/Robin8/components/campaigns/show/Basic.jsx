@@ -28,8 +28,13 @@ export default class Basic extends React.Component {
   renderEditCampaignButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
       return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-default btn-red btn-line stop-btn">编辑</Link>
-    } else if(canPayCampaign(campaign.get("status"))) {
-      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-default btn-red btn-line stop-btn">支付</Link>
+    } else if (canPayCampaign(campaign.get("status"))) {
+      return (
+        <div>
+          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="campaign-before-pay-stop-btn">编辑</Link>
+          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn campaign-pay-stop-btn">支付</Link>
+        </div>
+      )
     }
   }
 
