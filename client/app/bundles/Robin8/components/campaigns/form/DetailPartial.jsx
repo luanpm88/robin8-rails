@@ -55,21 +55,22 @@ export default class DetailPartial extends React.Component {
   }
 
   _listenPerBudgetTypeChange() {
-    const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
     $("input[name='action_type']").change(function(){
+      const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       per_action_budget.onBlur();
       if(per_budget_type.value == "post" || per_budget_type.value == "click"){
         per_budget_collect_type.onChange('');
       }else{
         per_budget_collect_type.onChange('cpa_cpi');
       }
-    })
+    }.bind(this))
 
     $("input[name='cap_cpi-collect-action_type']").click(function(){
+      const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       if(per_budget_type.value == "post" || per_budget_type.value == "click"){
         per_budget_type.onChange("cpa");
       }
-    })
+    }.bind(this))
   }
 
   componentDidMount() {
