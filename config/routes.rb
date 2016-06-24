@@ -123,9 +123,10 @@ Rails.application.routes.draw do
   get 'share_by_email/show'
   post 'share_by_email' => 'share_by_email#create'
 
-  get 'home', to: 'pages#home'
+  get 'home', to: 'pages#moments'
   get 'kols', to: 'pages#kols'
-  get 'brands', to: 'pages#brands'
+  get 'brands/bigv', to: 'pages#bigv'
+  get 'brands/moments', to: 'pages#moments'
 
   root 'pages#home'
 

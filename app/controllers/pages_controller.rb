@@ -24,7 +24,15 @@ class PagesController < ApplicationController
     render 'kol', :layout => 'brand_v2'
   end
 
-  def brands
+  def moments
+    if user_signed_in?
+      redirect_to '/brand/'
+    else
+      render 'marketing', :layout => 'brand_v2'
+    end
+  end
+
+  def bigv
     render 'branding', :layout => 'brand_v2'
   end
 
