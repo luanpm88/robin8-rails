@@ -1,6 +1,38 @@
 import React from 'react';
+import moment from 'moment';
+import "moment-duration-format";
+
+
+import { showCampaignTypeText } from '../../../helpers/CampaignHelper'
 
 export default class PhonePreviewCampaignPartial extends React.Component {
+
+  renderShareDescription() {
+    const { campaign } = this.props;
+    if (campaign.get('per_budget_type') == 'click') {
+      return <p>分享后好友点击此文章即可获得报酬</p>
+    }
+    else if (campaign.get("per_budget_type") == 'post' ) {
+      return <p>转发此文章 立即获得报酬</p>
+    }
+    else if (campaign.get("per_budget_type") == 'recruit') {
+      return <p>参与招募活动获得奖励</p>
+    }
+  }
+
+  renderTime() {
+    const campaign = this.props.campaign;
+    const now = moment(Date.now());
+    const deadline = moment(campaign.get('deadline'));
+    const minutes = deadline.diff(now, 'minutes');
+    const remain_time = moment.duration(minutes, "minutes").format("d[天]h[小时]m[分钟]");
+    if (now < deadline) {
+      return <p>距结束{remain_time}</p>
+    } else {
+      return <p>已结束</p>
+    }
+
+  }
 
   render() {
     const { campaign, brand } = this.props;
@@ -20,10 +52,10 @@ export default class PhonePreviewCampaignPartial extends React.Component {
           </div>
 
           <div className="budget-info">
-            <p>点击 | ￥{campaign.get("per_action_budget")}</p>
+            <p>{showCampaignTypeText(campaign.get("per_budget_type"))} | ￥{campaign.get("per_action_budget")}</p>
             <div className="share-description">
-              <p>分享后好友点击此文章即可获得报酬</p>
-              <p>距离结束还剩xxx天</p>
+              {this.renderShareDescription()}
+              {this.renderTime()}
             </div>
           </div>
 
