@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620041238) do
+ActiveRecord::Schema.define(version: 20160623072225) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -339,6 +339,8 @@ ActiveRecord::Schema.define(version: 20160620041238) do
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "campaign_from",            limit: 255,                               default: "pc"
     t.boolean  "budget_editable",          limit: 1,                                 default: true
+    t.string   "action_desc",              limit: 255
+    t.string   "appid",                    limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -369,6 +371,21 @@ ActiveRecord::Schema.define(version: 20160620041238) do
   add_index "contacts", ["author_id", "origin"], name: "index_contacts_on_author_id_and_origin", using: :btree
   add_index "contacts", ["email", "origin"], name: "index_contacts_on_email_and_origin", using: :btree
   add_index "contacts", ["twitter_screen_name", "origin"], name: "index_contacts_on_twitter_screen_name_and_origin", using: :btree
+
+  create_table "cpi_regs", force: :cascade do |t|
+    t.string   "appid",            limit: 255
+    t.string   "reg_ip",           limit: 255
+    t.string   "bundle_name",      limit: 255
+    t.string   "app_platform",     limit: 255
+    t.string   "app_version",      limit: 255
+    t.string   "os_version",       limit: 255
+    t.string   "device_model",     limit: 255
+    t.integer  "campaign_show_id", limit: 4
+    t.string   "status",           limit: 255, default: "pending"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.string   "city_name",        limit: 255
+  end
 
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255
@@ -1452,6 +1469,7 @@ ActiveRecord::Schema.define(version: 20160620041238) do
     t.string   "real_name",              limit: 255
     t.decimal  "appliable_credits",                  precision: 12, scale: 2, default: 0.0
     t.integer  "kol_id",                 limit: 4
+    t.string   "appid",                  limit: 255
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

@@ -8,12 +8,13 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignBaseHelper
   include Campaigns::AlipayHelper
   include Campaigns::ValidationHelper
+  include Campaigns::StatsHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
   validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
-  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
+  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -155,7 +156,7 @@ class Campaign < ActiveRecord::Base
 
   def take_budget(from_brand = true)
     per_budget = self.get_per_action_budget(from_brand)
-    if self.is_click_type? or self.is_cpa_type?
+    if self.is_click_type? or self.is_cpa_type? or self.is_cpi_type?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * per_budget).round(2)       rescue 0
       else
@@ -175,7 +176,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click" or self.is_cpa_type?
+    if self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?
       return -1
     end
     return valid_invites.count
@@ -191,13 +192,11 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-
   ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end
   end
-
 
   def recruit_status
     return 'pending' if self.status == 'unexecute'

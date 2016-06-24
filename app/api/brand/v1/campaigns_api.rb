@@ -32,6 +32,15 @@ module Brand
             present campaign.get_stats
           end
 
+          params do
+            requires :campaign_id, type: String
+          end
+          get :installs do
+            campaign = Campaign.find params[:campaign_id]
+            present campaign.get_platforms_for_cpi
+          end
+
+
           desc 'Return a campaign by id'
           params do
             requires :id, type: Integer, desc: 'Campaign id'
@@ -120,17 +129,17 @@ module Brand
             notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
 
             alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
-            {
-              out_trade_no: @campaign.trade_number,
-              subject: 'Robin8活动付款',
-              total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
-              return_url: return_url,
-              notify_url: notify_url
-            },
-            {
-              sign_type: 'RSA',
-              key: ALIPAY_RSA_PRIVATE_KEY
-            }
+              {
+                out_trade_no: @campaign.trade_number,
+                subject: 'Robin8活动付款',
+                total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
+                return_url: return_url,
+                notify_url: notify_url
+              },
+              {
+                sign_type: 'RSA',
+                key: ALIPAY_RSA_PRIVATE_KEY
+              }
             )
             return { alipay_recharge_url: alipay_recharge_url }
           end

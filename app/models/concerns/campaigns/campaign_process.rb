@@ -47,7 +47,7 @@ module Campaigns
           if(self.budget - self.voucher_amount) > 0
             self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
           end
-          
+
           Rails.logger.transaction.info "--------活动撤销退款给user, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
           self.update_attributes!(status: 'revoked', revoke_time: Time.now)
         end
@@ -165,7 +165,7 @@ module Campaigns
         self.passed_invites.each do |invite|
           kol = invite.kol
           invite.update_column(:status, 'settled')
-          if is_click_type? or is_cpa_type?
+          if is_click_type? or is_cpa_type? or is_cpi_type?
             kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
             Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
           else
@@ -177,36 +177,36 @@ module Campaigns
     end
 
     # 结算 for brand
-    def settle_accounts_for_brand
-      Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
-      return if self.status != 'executed'
-      #首先先付款给期间审核的kol
-      self.finished_invites.update_all({:img_status => 'passed', :auto_check => true})
-      settle_accounts_for_kol
-      #剩下的邀请  状态全设置为拒绝
-      ActiveRecord::Base.transaction do
-        self.update_column(:status, 'settled')
-        # self.user.unfrozen(self.budget, 'campaign', self)
-        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-        if is_click_type?  || is_cpa_type?
-          pay_total_click = self.settled_invites.sum(:avail_click)
-          User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
-          if (self.budget - (pay_total_click * self.per_action_budget)) > 0
-            self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
-          end
-          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-        else
-          settled_invite_size = self.settled_invites.size
-          User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
+     def settle_accounts_for_brand
+       Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+       return if self.status != 'executed'
+       #首先先付款给期间审核的kol
+       self.finished_invites.update_all({:img_status => 'passed', :auto_check => true})
+       settle_accounts_for_kol
+       #剩下的邀请  状态全设置为拒绝
+       ActiveRecord::Base.transaction do
+         self.update_column(:status, 'settled')
+         # self.user.unfrozen(self.budget, 'campaign', self)
+         Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+         if is_click_type?  || is_cpa_type?
+           pay_total_click = self.settled_invites.sum(:avail_click)
+           User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
+           if (self.budget - (pay_total_click * self.per_action_budget)) > 0
+             self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
+           end
+           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+         else
+           settled_invite_size = self.settled_invites.size
+           User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
 
-          if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
-            self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
-          end
+           if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
+             self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
+           end
 
-          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-        end
-      end
-    end
+           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+         end
+       end
+     end
 
     def cal_actual_per_action_budget
       if is_click_type?
@@ -227,11 +227,11 @@ module Campaigns
       self.update_column(:actual_per_action_budget, actual_per_action_budget)
     end
 
-    def add_click(valid)
+    def add_click(valid, only_increment_avail = false)
       Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
       self.redis_avail_click.increment  if valid
-      self.redis_total_click.increment
-      if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?)
+      self.redis_total_click.increment  if only_increment_avail == false
+      if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?)
         finish('fee_end')
       end
     end

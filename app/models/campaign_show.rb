@@ -1,15 +1,18 @@
 class CampaignShow < ActiveRecord::Base
+  include Concerns::CampaignShowForCpi
   CookieTimeout = Rails.env.production? ? 45.minutes : 20.seconds
   OpenidTimeout = Rails.env.production? ? 45.minutes : 20.seconds
   OpenidMaxCount = 1
   IpTimeout = Rails.env.production? ? 1.seconds : 10.seconds
   IpMaxCount = Rails.env.production? ? 20 : 2
+
   if Rails.env.production?
     KolCreditLevels = {'A' => 100, 'B' => 10}
   else
     KolCreditLevels = {'A' => 4, 'B' => 1}
   end
 
+  belongs_to :campaign
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
@@ -70,6 +73,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check_useragent?  &&   visitor_referer
+    return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
     return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
@@ -153,13 +157,22 @@ class CampaignShow < ActiveRecord::Base
     return false if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
 
     visitor_ip = proxy_ips.split(",").first || visitor_ip
-    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, openid, options)
-    CampaignShow.create!(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
-                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_url => request_uri,
-                        :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips,
-                        :openid => openid)
+    campaign_show = CampaignShow.new(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
+                                     :visit_time => Time.now, :visitor_ip => visitor_ip, :request_url => request_uri, :visitor_agent => visitor_agent, :visitor_referer => visitor_referer,
+                                     :other_options => options.inspect, :proxy_ips => proxy_ips, :openid => openid)
+    if campaign.is_cpi_type?
+      status, remark = false, 'cpi_visit'
+      campaign_show.appid = campaign.appid  || campaign.user.appid
+      campaign_show = campaign_show.generate_more_info
+    else
+      status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, openid, options)
+    end
+    campaign_show.status = status
+    campaign_show.remark = remark
+    campaign_show.save
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     campaign_invite.add_click(status,remark)
     campaign.add_click(status)
   end
+
 end

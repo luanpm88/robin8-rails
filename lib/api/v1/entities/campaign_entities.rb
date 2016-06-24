@@ -4,7 +4,21 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :message, :per_budget_type, :max_action
+          expose :id, :name, :description, :status, :message, :max_action
+          expose :per_budget_type do |campaign|
+            if campaign.is_cpi_type?
+              'cpa'
+            else
+              campaign.per_budget_type
+            end
+          end
+          expose :per_action_type do |campaign|
+            if campaign.is_cpi_type?
+              'cpi'
+            else
+               nil
+            end
+          end
           expose :url do |campaign|
             campaign.url.gsub("#rd","").gsub("#wechat_redirect","")   rescue campaign.url
           end
@@ -47,6 +61,7 @@ module API
           expose :address
           expose :hide_brand_name
           expose :task_description
+          expose :action_desc
           with_options(format_with: :iso_timestamp) do
             expose :recruit_start_time
             expose :recruit_end_time

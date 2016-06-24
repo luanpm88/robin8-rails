@@ -102,7 +102,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -117,7 +117,7 @@ class UpdateCampaignPartial extends React.Component {
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
               <BudgetPartial {...{ budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
-              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand }} />
+              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
@@ -134,7 +134,7 @@ class UpdateCampaignPartial extends React.Component {
 
 UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
   returnRejectedSubmitPromise: true,
   validate
 },

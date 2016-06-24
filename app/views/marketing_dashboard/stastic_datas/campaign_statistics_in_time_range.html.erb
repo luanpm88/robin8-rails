@@ -35,7 +35,7 @@
           <% %w(id name budget).each do |v| %>
             <td> <%= multi_send c, v %> </td>
           <% end %>
-          <% if c.is_click_type?  || c.is_cpa_type? %>
+          <% if c.is_click_type?  || c.is_cpa_type? || c.is_cpi_type? %>
             <% spent = c.settled_invites.sum(:avail_click) * c.per_action_budget %>
           <% else %>
             <% spent = c.settled_invites.size * c.per_action_budget %>
