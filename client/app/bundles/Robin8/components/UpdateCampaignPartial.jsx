@@ -49,7 +49,7 @@ class UpdateCampaignPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_revokeCampaign', '_renderRevokeModal']);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_renderRevokeModal']);
     this.state = {
       showRevokeConfirmModal: false
     };
@@ -70,12 +70,6 @@ class UpdateCampaignPartial extends React.Component {
     const campaign_id = this.props.params.id;
     const campaign_fields = this.props.values;
     updateCampaign(campaign_id, campaign_fields);
-  }
-
-  _revokeCampaign() {
-    const { revokeCampaign } = this.props.actions;
-    const campaign_id = this.props.params.id;
-    revokeCampaign(campaign_id);
   }
 
   componentDidMount() {

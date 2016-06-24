@@ -2,6 +2,7 @@
  * 品牌活动详细
  * 02.01.2016 23:49
  */
+@import "../shared/modal.scss";
 
 .campaign_url,
 .campaign_action_short_url,
@@ -406,4 +407,18 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.revoke-campaign-group {
+  width: 100%;
+  text-align: center;
+  .revoke-campaign-btn {
+    width: 200px;
+    color: #fff;
+    background-color: #c1c1c1;
+    &:hover {
+      color: #fff;
+      background-color: grey;
+    }
+  }
 }
