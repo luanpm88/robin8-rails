@@ -58,7 +58,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
         @withdraws.each do |withdraw|
           withdraw.update_attributes(:status => 'rejected')
         end
-      end                                                                            o
+      end
       render :json => {:status => 'ok', :message => '操作成功'}
     else
       render :json => {:status => 'error', :message => '你选择中含已审核的'}
