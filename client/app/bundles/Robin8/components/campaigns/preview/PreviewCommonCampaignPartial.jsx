@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PhonePreviewCampaignPartial from './PhonePreviewCampaignPartial';
+
 class PreviewCommonCampaignPartial extends React.Component {
 
   renderAmount() {
@@ -16,13 +18,14 @@ class PreviewCommonCampaignPartial extends React.Component {
   }
 
   render() {
-    const campaign = this.props.campaign;
+    const { brand, campaign } = this.props;
 
     return (
       <div className="preview-activity-wrap">
+        <PhonePreviewCampaignPartial campaign={campaign} brand={brand} />
         <div className="activity-detail-info-group" >
           <div className="acitvity-title">
-            <p>{campaign.get("name")}</p>
+            <p className="activity-description">{ _.truncate(campaign.get("name"), {'length': 18}) }</p>
           </div>
           <div className="acitvity-description-group">
             <p className="acitvity-description-text">活动简介:</p>

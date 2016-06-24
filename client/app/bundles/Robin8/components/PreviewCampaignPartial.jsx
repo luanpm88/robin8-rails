@@ -12,7 +12,8 @@ import PreviewRecruitCampaignPartial from './campaigns/preview/PreviewRecruitCam
 
 function select(state) {
   return {
-    campaign: state.campaignReducer.get('campaign'),
+    brand: state.profileReducer.get("brand"),
+    campaign: state.campaignReducer.get('campaign')
   }
 }
 
@@ -76,11 +77,11 @@ class PreviewCampaignPartial extends React.Component {
   }
 
   renderPreviewPartial() {
-    const campaign = this.props.campaign;
+    const { brand, campaign } = this.props;
     if (campaign.get("per_budget_type") === 'recruit') {
-      return <PreviewRecruitCampaignPartial campaign={campaign} />
+      return <PreviewRecruitCampaignPartial campaign={campaign} brand={brand} />
     } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
-      return <PreviewCommonCampaignPartial campaign={campaign} />
+      return <PreviewCommonCampaignPartial campaign={campaign} brand={brand} />
     }
   }
 

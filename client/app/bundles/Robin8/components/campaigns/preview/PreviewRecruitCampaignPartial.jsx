@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PhonePreviewCampaignPartial from './PhonePreviewCampaignPartial';
+
 class PreviewRecruitCampaignPartial extends React.Component {
 
   renderAddress() {
@@ -28,21 +30,22 @@ class PreviewRecruitCampaignPartial extends React.Component {
   }
 
   render() {
-    const campaign = this.props.campaign;
+    const { brand, campaign } = this.props;
 
     return (
       <div className="preview-recruit-activity-wrap">
+        <PhonePreviewCampaignPartial campaign={campaign} brand={brand} />
         <div className="activity-detail-info-group" >
           <div className="acitvity-title">
-            <p>{campaign.get("name")}</p>
+            <p className="activity-description">{ _.truncate(campaign.get("name"), {'length': 18}) }</p>
           </div>
           <div className="acitvity-description-group">
             <p className="acitvity-description-text">活动简介:</p>
-            <p className="activity-description">{campaign.get("description")}</p>
+            <p className="activity-description">{ _.truncate(campaign.get("description"), {'length': 100}) }</p>
           </div>
           <div className="acitvity-task-group">
             <p className="acitvity-task-text">活动任务:</p>
-            <p className="activity-description">{campaign.get("task_description")}</p>
+            <p className="activity-description">{ _.truncate(campaign.get("task_description"), {'length': 68}) }</p>
           </div>
           <div className="acitvity-recruit-time-range-group">
             <span className="acitvity-recruit-time-range-text">报名时间:&nbsp;</span>
