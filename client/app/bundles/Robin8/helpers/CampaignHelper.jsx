@@ -6,11 +6,13 @@ export function showCampaignTypeText(budget_type){
     case "click":
       return "点击"
     case "cpa":
-      return "行动"
+      return "效果"
     case  "post":
       return "转发"
     case "recruit":
       return '参与'
+    case "cpi":
+      return '下载'
   }
 }
 

@@ -17,6 +17,10 @@ export default class PhonePreviewCampaignPartial extends React.Component {
     }
     else if (campaign.get("per_budget_type") == 'recruit') {
       return <p>参与招募活动获得奖励</p>
+    } else if (campaign.get("per_budget_type") == 'cpi') {
+      return <p>邀请好友下载APP立即获得奖励</p>
+    } else if (campaign.get("per_budget_type") == 'cpa') {
+      return <p>分享后好友完成指定任务立即获得报酬</p>
     }
   }
 
