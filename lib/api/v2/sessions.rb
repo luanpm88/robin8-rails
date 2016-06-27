@@ -13,7 +13,7 @@ module API
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
             if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
               kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-              kol_value.update_column(:kol_id => kol.id)
+              KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
             end
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
@@ -78,7 +78,7 @@ module API
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
             if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
               kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-              kol_value.update_column(:kol_id => kol.id)
+              KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
             end
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
