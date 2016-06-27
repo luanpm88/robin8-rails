@@ -90,16 +90,16 @@
                 <col width="25%"/>
               </colgroup>
               <tr>
-                <td><i>Per:</i> <%= c.per_budget_type %></td>
+                <td><i>Type:</i> <%= c.per_budget_type %></td>
+                <td><i>Max Action:</i> <%= c.max_action.to_i %></td>
                 <td><i>Actual:</i> <%= c.actual_per_action_budget %></td>
                 <td><i>Budget:</i> <%= c.budget %></td>
-                <td><i>Max Action:</i> <%= c.max_action %></td>
               </tr>
               <tr>
-                <td><i>Spent:</i> <%= c.take_budget %></td>
                 <td><i>Avail:</i> <%= c.get_avail_click %></td>
                 <td><i>Total:</i> <%= c.get_total_click %></td>
                 <td><i>Accepted Count:</i> <%= c.campaign_invites.count %></td>
+                <td><i>Spent:</i> <%= c.take_budget %></td>
               </tr>
               <tr>
                 <td colspan="2"><i>Start:</i> <%= c.start_time.to_s(:date_time) %></td>
@@ -107,9 +107,9 @@
               </tr>
               <tr>
                 <td colspan="2"><i>Actual Deadline:</i> <%= c.actual_deadline_time.to_s(:date_time)  rescue nil %></td>
-                <td><i>活动来自:</i> <%= c.campaign_from %></td>
+                <td><i>From:</i> <%= c.campaign_from %></td>
                 <td>
-                  <i>用户:</i>
+                  <i>KOL:</i>
                   <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
                   [<%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>]
                 </td>

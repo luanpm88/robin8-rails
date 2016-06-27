@@ -28,6 +28,14 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def testable
+    @campaigns = Campaign.testable
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
+
+    render 'index'
+  end
+
   def show
     @campaign = Campaign.find params[:id]
   end
