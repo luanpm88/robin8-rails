@@ -6,6 +6,7 @@ module Concerns
 
     included do
       scope :testable, -> (key = "name") { where("#{key} LIKE ?", "%#{TESTABLE_IDENTIFIER}%") }
+      scope :realable, -> (key = "name") { where.not("#{key} LIKE ?", "%#{TESTABLE_IDENTIFIER}%") }
     end
   end
 end
