@@ -71,7 +71,7 @@ class PreviewCampaignPartial extends React.Component {
     const campaign = this.props.campaign;
     if (campaign.get("per_budget_type") === 'recruit') {
       return <Link to={`/brand/recruits/${campaign.get("id")}/edit`}>返回修改</Link>
-    } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
+    } else if (_.includes(['click', 'post', 'cpa', 'cpi'], campaign.get("per_budget_type"))) {
       return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`}>返回修改</Link>
     }
   }
@@ -80,7 +80,7 @@ class PreviewCampaignPartial extends React.Component {
     const { brand, campaign } = this.props;
     if (campaign.get("per_budget_type") === 'recruit') {
       return <PreviewRecruitCampaignPartial campaign={campaign} brand={brand} />
-    } else if (_.includes(['click', 'post', 'cpa'], campaign.get("per_budget_type"))) {
+    } else if (_.includes(['click', 'post', 'cpa', 'cpi'], campaign.get("per_budget_type"))) {
       return <PreviewCommonCampaignPartial campaign={campaign} brand={brand} />
     }
   }

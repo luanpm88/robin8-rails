@@ -43,6 +43,7 @@
         }
 
         .campaign-detail {
+          margin-top: 10px;
           p {
             text-align: center;
             margin-bottom: 5px;
@@ -66,14 +67,15 @@
           }
         }
         .budget-info {
-          margin-top: 12px;
+          margin-top: -3px;
           p {
             font-size: 11px;
             text-align: center;
           }
         }
         .share-description {
-          background-color: grey;
+          height: 47px;
+          background-color: #424241;
           padding-top: 5px;
           padding-bottom: 2px;
           margin: 0px 15px;
@@ -83,7 +85,8 @@
               color: #fff;
             }
             &:last-child {
-              color: yellow;
+              font-size: 9px;
+              color: #ecb200;
             }
           }
         }
@@ -91,13 +94,16 @@
         .next-and-submit {
           margin-top: 14px;
           .next {
+            margin-top: -6px;
+            text-align: center;
+            font-size: 9px;
             span {
               display: block;
             }
-            text-align: center;
-            font-size: 9px;
           }
           .share-btn {
+            margin-top: 6px;
+            font-size: 12px;
             height: 35px;
             line-height: 35px;
             text-align: center;
@@ -130,11 +136,12 @@
 
           .acitvity-description-text {
             font-size: 18px;
+            font-weight: bold;
           }
           .activity-description {
             margin-top: 10px;
             font-size: 16px;
-            color: #9b9a9a;
+            color: #000;
           }
         }
 
@@ -143,16 +150,14 @@
 
           .acitvity-time-range-text {
             font-size: 18px;
+            font-weight: bold;
+            color: #000;
           }
-          .acitvity-start-time {
+          .acitvity-start-time, .acitvity-end-time {
             margin-top: 10px;
             font-size: 16px;
-            color: #9b9a9a;
-          }
-          .acitvity-end-time {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #9b9a9a;
+            color: #000;
+            font-weight: 200;
           }
         }
 
@@ -160,10 +165,11 @@
           margin-top: 30px;
           font-size: 18px;
           .acitvity-budget-text {
-
+            font-weight: bold;
           }
           .acitvity-budget {
-            color: #9b9a9a;
+            font-weight: 200;
+            color: #000;
           }
         }
 
@@ -203,11 +209,12 @@
 
           .acitvity-description-text, .acitvity-task-text {
             font-size: 18px;
+            font-weight: bold;
           }
           .activity-description, .activity-task {
             margin-top: 10px;
             font-size: 16px;
-            color: #9b9a9a;
+            color: #000;
           }
         }
 
@@ -215,11 +222,12 @@
           font-size: 18px;
 
           .acitvity-recruit-time-range-text, .acitvity-time-range-text, .acitvity-address-text {
-
+            font-weight: bold;
           }
           .acitvity-recruit-start-time, .acitvity-start-time,
           .acitvity-recruit-end-time, .acitvity-end-time, .acitvity-address {
-            color: #9b9a9a;
+            color: #000;
+            font-weight: 200;
           }
         }
 
@@ -231,10 +239,11 @@
           margin-top: 20px;
           font-size: 18px;
           .acitvity-recruit-count-text {
-
+            font-weight: bold;
           }
           .acitvity-recruit-count {
-            color: #9b9a9a;
+            color: #000;
+            font-weight: 200;
           }
         }
 
@@ -242,10 +251,11 @@
           margin-top: 20px;
           font-size: 18px;
           .acitvity-per-budget-text {
-
+            font-weight: bold;
           }
           .acitvity-per-budget {
-            color: #9b9a9a;
+            color: #000;
+            font-weight: 200;
           }
         }
 
@@ -275,7 +285,7 @@
       position: relative;
       text-align: center;
       margin-left: 610px;
-      margin-top: 20px;
+      margin-top: 17px;
       .payCampaignSubmit {
         width: 222px;
       }

@@ -22,7 +22,7 @@ export default class TargetPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-target">
         <div className="header">
-          <h3 className="tit">推广目标&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">推广目标&nbsp;<span className="what"><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="creat-activity-target">

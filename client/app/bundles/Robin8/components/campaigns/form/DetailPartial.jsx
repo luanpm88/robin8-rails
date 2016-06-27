@@ -93,11 +93,11 @@ export default class DetailPartial extends React.Component {
 
   render() {
     const { per_budget_type, per_budget_collect_type, action_url, action_url_identifier, short_url, per_action_budget} = this.props
-    
+
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
-          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}>?</span></h3>
+          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
@@ -141,7 +141,7 @@ export default class DetailPartial extends React.Component {
                 do {
                   if(per_budget_type.value == "cpa"){
                     <div>
-                      <div className="clearfix">
+                      <div className="action-url-area clearfix">
                         <p className="action-url-text">确认链接</p>
                         <div className="action-url-section">
                           <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>

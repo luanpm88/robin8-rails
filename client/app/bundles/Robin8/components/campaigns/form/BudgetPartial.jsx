@@ -66,7 +66,7 @@ export default class BudgetPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-budget">
         <div className="header">
-          <h3 className="tit">推广预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips()}>?</span>
+          <h3 className="tit">推广预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips()}><span className="question-sign">?</span></span>
           </h3>
         </div>
         <div className="content">

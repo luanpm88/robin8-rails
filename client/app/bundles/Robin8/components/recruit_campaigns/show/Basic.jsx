@@ -15,7 +15,7 @@ export default class Basic extends React.Component {
       return (
         <div>
           <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="recruit-before-pay-stop-btn">编辑</Link>
-          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn recruit-pay-stop-btn">支付</Link>
+          <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn recruit-pay-stop-btn">支付</Link>
         </div>
       )
     }

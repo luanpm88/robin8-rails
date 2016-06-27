@@ -39,7 +39,7 @@ export default class Campaign extends React.Component {
       return (
         <div>
           <Link to={this.getUrl() + "/edit"} className="before-pay-edit-campaign-btn">编辑</Link>
-          <Link to={this.getUrl() + "/preview"} className="btn pay-campaign-btn">支付</Link>
+          <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn pay-campaign-btn">支付</Link>
         </div>
       )
     }
