@@ -7,12 +7,24 @@ module API
 
       resources :public_login do
         params do
-          requires :username, type: String
+          optional :username, type: String
           optional :password, type: String
           optional :imgcode, type: String
           optional :cookies, type: String
+          optional :identity_id, type: Integer
+          exactly_one_of :username, :identity_id
         end
         post 'login_with_account' do
+          if params[:identity_id]
+            identity = AnalysisIdentity.find params[:identity_id]    rescue nil
+            if identity.blank?
+              present :error, 0
+              present :detail, '账号没有找到'
+            else
+              params[:username] = identity.name
+              params[:password] = PasswordHandle.decode_pwd(identity.password_encrypted)
+            end
+          end
           res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode], params[:cookies])
           if res[0] == 'error'
             present :error, 1
