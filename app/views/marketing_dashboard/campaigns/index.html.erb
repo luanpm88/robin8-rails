@@ -28,7 +28,7 @@
 </div>
 
 <div class="container-fluid" style="padding: 20px 0;">
-  <%= search_form_for @q, url: marketing_dashboard_campaigns_path, class: "form-inline pull-right" do |f| %>
+  <%= search_form_for @q, url: request.path, class: "form-inline pull-right" do |f| %>
     <div class="form-group">
       <%= f.search_field :id_eq, class: "form-control", placeholder: "活动ID" %>
     </div>
@@ -42,7 +42,7 @@
     </div>
 
     <%= f.submit "搜索", class: "btn btn-primary" %>
-    <%= link_to "清除过滤", marketing_dashboard_campaigns_path, class: "btn btn-default" %>
+    <%= link_to "清除过滤", request.path, class: "btn btn-default" %>
   <% end %>
 </div>
 
@@ -137,7 +137,7 @@
   </tbody>
 </table>
 
-<%= will_paginate @campaigns %>
+<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>
 
 <script>
   $(".reject-campaign").click(function(){

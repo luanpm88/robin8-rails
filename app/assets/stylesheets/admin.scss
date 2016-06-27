@@ -4,6 +4,7 @@
 *= require lib/metisMenu.min
 *= require sass-bootstrap-glyphicons
 *= require font-awsome
+
 */
 @import 'bootstrap';
 
@@ -14,4 +15,8 @@ td {
 
 .search_input{
   width: 300px;
+}
+
+.pagination {
+  margin-top: 0;
 }

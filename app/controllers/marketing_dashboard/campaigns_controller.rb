@@ -13,18 +13,23 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def pending
-    @campaigns = Campaign.all.where(status: 'unexecute').order('created_at DESC').paginate(paginate_params)
+    @campaigns = Campaign.where(status: 'unexecute')
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
+
+    render 'index'
+  end
+
+  def agreed
+    @campaigns = Campaign.where.not(status: 'unexecute')
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
 
   def show
     @campaign = Campaign.find params[:id]
-  end
-
-  def agreed
-    @campaigns = Campaign.all.where.not(status: 'unexecute').order('created_at DESC').paginate(paginate_params)
-    render 'index'
   end
 
   def add_target
