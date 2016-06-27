@@ -6,14 +6,14 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
                    User.find(params[:user_id]).campaigns
                  else
                    Campaign.all
-                 end
+                 end.realable
 
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def pending
-    @campaigns = Campaign.where(status: 'unexecute')
+    @campaigns = Campaign.where(status: 'unexecute').realable
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
@@ -21,7 +21,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agreed
-    @campaigns = Campaign.where.not(status: 'unexecute')
+    @campaigns = Campaign.where.not(status: 'unexecute').realable
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
