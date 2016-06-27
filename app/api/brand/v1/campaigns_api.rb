@@ -125,7 +125,7 @@ module Brand
             @campaign = Campaign.find declared(params)[:campaign_id]
 
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
-            return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
+            return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand?from=pay_campaign' : "#{Rails.application.secrets[:domain]}/brand?from=pay_campaign"
             notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
 
             alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
