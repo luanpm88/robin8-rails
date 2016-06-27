@@ -42,6 +42,7 @@
 </table>
 <%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', :confirm => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
 <%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', :confirm => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
+<%= link_to '导出CSV', marketing_dashboard_withdraws_path(format: :csv), :class => 'btn btn-default' %>
 
 <%= will_paginate @withdraws %>
 

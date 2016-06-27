@@ -3,6 +3,14 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def index
     @withdraws = Withdraw.all.order('created_at DESC').includes(:kol).paginate(paginate_params)
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"提现记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+      end
+    end
   end
 
   def pending
