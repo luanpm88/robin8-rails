@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'agreed'
+        get 'testable'
       end
       member do
         get :targets

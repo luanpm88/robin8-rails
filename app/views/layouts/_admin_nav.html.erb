@@ -39,6 +39,9 @@
             <li>
               <%= link_to '已通过活动', agreed_marketing_dashboard_campaigns_path %>
             </li>
+            <li>
+              <%= link_to '测试的活动', testable_marketing_dashboard_campaigns_path %>
+            </li>
           </ul>
         <!-- /.nav-second-level -->
         </li>
@@ -76,6 +79,12 @@
             <ul class="nav nav-second-level">
               <li>
                 <%= link_to '所有的Kols', marketing_dashboard_kols_path %>
+              </li>
+              <li>
+                <%= link_to 'A级的Kols', marketing_dashboard_kols_path(:kol_level => "A") %>
+              </li>
+              <li>
+                <%= link_to 'B级的Kols', marketing_dashboard_kols_path(:kol_level => "B") %>
               </li>
               <li>
                 <%= link_to '被拉黑的Kols', marketing_dashboard_kols_path(:ban => 1) %>
