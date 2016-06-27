@@ -10,7 +10,7 @@ class PasswordHandle
   end
 
   def self.decode_pwd(data)
-    JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]
+    JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0][Key]
   end
 
 end
