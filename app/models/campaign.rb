@@ -199,6 +199,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def recruit_status
+    return 'unpay' if self.status == 'unpay'
     return 'pending' if self.status == 'unexecute'
     return 'rejected' if self.status == 'rejected'
     return 'coming' if self.status == 'agreed'

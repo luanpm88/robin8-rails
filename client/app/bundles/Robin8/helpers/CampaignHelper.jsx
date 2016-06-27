@@ -57,6 +57,9 @@ export function genderHelper(gender){
 
 export function campaignStatusHelper(status){
   switch(status){
+    // 未付款
+    case "unpay":
+      return(<img className="campaign-status-img" src={ require('campaign-unpay.png') } />)
     // 审核中
     case "unexecute":
     case "pending":
