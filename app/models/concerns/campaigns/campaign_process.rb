@@ -192,6 +192,8 @@ module Campaigns
           actual_per_action_budget = point1 * 0.1
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
+      elsif is_recruit_type?
+        actual_per_action_budget = (self.per_action_budget * 0.7).round(0)
       else
         actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
       end
