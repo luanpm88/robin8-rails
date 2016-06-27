@@ -11,7 +11,9 @@ module API
           kol = Kol.reg_or_sign_in(params)
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)    if kol_value.present?
+            if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score > kol.influence_score )
+              kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
+            end
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
@@ -73,7 +75,9 @@ module API
           end
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)     if kol_value.present?
+            if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score > kol.influence_score )
+              kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
+            end
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
