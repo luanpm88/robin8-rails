@@ -104,6 +104,8 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
             else
               if params[:ban]
                 Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+              elsif params[:kol_level] and ["A", "B"].include? params[:kol_level]
+                Kol.where(kol_level: params[:kol_level])
               else
                 Kol.all
               end

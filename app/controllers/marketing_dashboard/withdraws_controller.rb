@@ -2,25 +2,27 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   before_action :set_withdraw, only: [:agree, :reject]
 
   def index
-    @withdraws = Withdraw.all.order('created_at DESC').includes(:kol).paginate(paginate_params)
+    @withdraws = Withdraw.all.order('created_at DESC').includes(:kol)
+
+    formated_response "全部"
   end
 
   def pending
-    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC')
 
-    render 'index'
+    formated_response "待处理的"
   end
 
   def agreed
-    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC')
 
-    render 'index'
+    formated_response "通过的"
   end
 
   def rejected
-    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC')
 
-    render 'index'
+    formated_response "拒绝的"
   end
 
   def agree
@@ -82,5 +84,20 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   private
   def set_withdraw
     @withdraw = Withdraw.find params[:withdraw_id]
+  end
+
+  def formated_response(name)
+    respond_to do |format|
+      format.html do
+        @withdraws = @withdraws.paginate(paginate_params) unless @withdraw
+        render 'index'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{name}提现记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
   end
 end
