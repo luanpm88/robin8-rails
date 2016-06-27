@@ -106,7 +106,7 @@
             <% if c.status == 'unexecute' %>
               <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
               <% if c.campaign_from != "app" %>
-              <a href="" onclick="return false;" class="btn btn-danger reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
+              <a href="" onclick="return false;" class="btn btn-warning reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
               <% end %>
             <% end %>
             <div class="btn-group" role="group">
