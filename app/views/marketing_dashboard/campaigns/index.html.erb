@@ -1,3 +1,8 @@
+<style type="text/css">
+  .table-responsive table {
+    margin-bottom: 0;
+  }
+</style>
 <div class="modal admin-campaign-modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -6,18 +11,39 @@
         <h4 class="modal-title">填写审核不通过的理由</h4>
       </div>
       <div class="modal-body admin-reject-modal-body">
-          <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-8 col-sm-offset-2">
             <div class="form-group">
-              <textarea id="invalid_reason" class="invalid_reason processed" name="post-text" cols="30" rows="15" tabindex="101" data-min-length="" placeholder="填写审核不通过的理由"></textarea>
+              <textarea id="invalid_reason" class="invalid_reason processed" name="post-text" rows="8" data-min-length="" placeholder="填写审核不通过的理由" style="width: 100%; border: 1px solid #ccc;"></textarea>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn reject reject-campaign-checked btn-primary">确认不通过</button>
             </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn reject reject-campaign-checked btn-primary">确认不通过</button>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<div class="container-fluid" style="padding: 20px 0;">
+  <%= search_form_for @q, url: marketing_dashboard_campaigns_path, class: "form-inline pull-right" do |f| %>
+    <div class="form-group">
+      <%= f.search_field :id_eq, class: "form-control", placeholder: "活动ID" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.search_field :name_or_per_budget_type_or_status_cont, class: "form-control", placeholder: "活动名称/类型/状态" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.search_field :user_name_or_user_mobile_number_cont, class: "form-control", placeholder: "用户名/手机号" %>
+    </div>
+
+    <%= f.submit "搜索", class: "btn btn-primary" %>
+    <%= link_to "清除过滤", marketing_dashboard_campaigns_path, class: "btn btn-default" %>
+  <% end %>
 </div>
 
 <table class='table table-bordered'>
@@ -26,16 +52,15 @@
       <th>ID/Name</th>
       <th>User</th>
       <th>Type</th>
-      <th>Per/Actual
-      </th>
+      <th>Per/Actual</th>
       <th>Budget</th>
       <th>Spent</th>
-      <th>Avail</br>
-        /Total</th>
-      <th>Start/Deadline</th>
-      <th>Actual Deadline</th>
+      <th>Avail/Total</th>
+      <th><%= sort_link(@q, :start_time, "Start") %></th>
+      <th><%= sort_link(@q, :deadline, "Deadline") %></th>
+      <th><%= sort_link(@q, :actual_deadline_time, "Actual Deadline") %></th>
       <th>Accepted Count</th>
-      <th>Status</th>
+      <th><%= sort_link(@q, :status, "Status") %></th>
       <th>活动来自</th>
       <th>Ops</th>
     </tr>
@@ -54,7 +79,7 @@
         </td>
         <td><%= c.per_budget_type %></td>
         <td>
-          <%= c.per_action_budget %></br></br>
+          <%= c.per_action_budget %><br/>
           <%= c.actual_per_action_budget %>
         </td>
         <td><%= c.budget %></br></br>
@@ -62,35 +87,50 @@
         </td>
         <td><%= c.take_budget %></td>
         <td>
-           <%= c.get_avail_click %></br>
-           <%= c.get_avail_click %></br>
+          <%= c.get_avail_click %> <br />
+          <%= c.get_total_click %>
         </td>
         <td>
-          <%= c.start_time.to_s(:date_time) %></br>
-          <%= c.deadline.to_s(:date_time)%></br>
+          <%= c.start_time.to_s(:date_time) %>
+        </td>
+        <td>
+          <%= c.deadline.to_s(:date_time)%>
         </td>
         <td><%= c.actual_deadline_time.to_s(:date_time)  rescue nil %></td>
         <td><%= c.campaign_invites.count %></td>
         <td><%= c.status %></td>
         <td><%= c.campaign_from %></td>
-        <td>
-          <%= link_to '编辑', get_edit_brand_campaign_show_url(c), :target => "_blank" %> |<br/>
-          <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank" %> | <br/>
-          <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %> | <br/>
-          <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %> | <br/>
-          <%= link_to '统计', get_brand_campaign_show_url(c), :target => "_blank" %> | <br/>
-          <% if c.status == 'unexecute' %>
-            <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
-            <% if c.campaign_from == "app" %>
-              <button type="button" class="reject-campaign" data-campaign-id= <%= c.id %>>不通过</button> | <br/>
+
+        <td width="85px">
+          <div class="btn-group-vertical" role="group" aria-label="...">
+            <% if c.status == 'unexecute' %>
+              <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+              <% if c.campaign_from != "app" %>
+              <a href="" onclick="return false;" class="btn btn-danger reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
+              <% end %>
             <% end %>
-          <% end %>
-          <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
-            <%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
-          <% end %>
-          <% if c.status == 'executing' %>
-            <%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %>
-          <% end %>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                操作
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank" %></li>
+                <li><%= link_to '编辑', get_edit_brand_campaign_show_url(c), :target => "_blank" %></li>
+                <li><%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %></li>
+                <li><%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %></li>
+                <li><%= link_to '统计', get_brand_campaign_show_url(c), :target => "_blank" %></li>
+
+                <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
+                <li><%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
+                <% end %>
+
+                <% if c.status == 'executing' %>
+                <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
         </td>
       </tr>
     <% end %>

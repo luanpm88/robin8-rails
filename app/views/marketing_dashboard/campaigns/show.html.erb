@@ -1,7 +1,14 @@
-<table class="table table-striped">
+<div class="container-fluid" style="padding: 20px 0;">
+  <div class="btn-group" role="group">
+    <%= link_to 'CampaignInvites', marketing_dashboard_campaign_campaign_invites_path(@campaign.id), class: 'btn btn-primary' %>
+    <%= link_to 'CampaignShows', marketing_dashboard_campaign_campaign_shows_path(@campaign.id), class: 'btn btn-primary' %>
+  </div>
+</div>
 
-  <%= link_to 'CampaignInvites', marketing_dashboard_campaign_campaign_invites_path(@campaign.id), :class => 'btn btn-primary' %> &nbsp;
-  <%= link_to 'CampaignShows', marketing_dashboard_campaign_campaign_shows_path(@campaign.id), :class => 'btn btn-primary' %>
+<table class="table table-striped">
+  <colgroup>
+    <col width="200" />
+  </colgroup>
 
   <% %w(id user_id user.email name description start_time deadline budget take_budget per_action_budget per_budget_type img_url url avail_click total_click status actual_deadline_time).each do |v| %>
     <tr>
@@ -16,7 +23,7 @@
 
   <% if @campaign.is_cpa_type? %>
   <tr>
-    <td>Antion Urls</td>
+    <td>CPA短链</td>
     <td>
       <% @campaign.campaign_action_urls.each do |action| %>
         <%= link_to action.action_url %> <br />

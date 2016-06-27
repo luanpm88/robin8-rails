@@ -1,12 +1,15 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   def index
     @campaigns = if params[:kol_id]
-                   Kol.find(params[:kol_id]).campaigns.order('created_at DESC')
+                   Kol.find(params[:kol_id]).campaigns
                  elsif params[:user_id]
-                  User.find(params[:user_id]).campaigns.order('created_at DESC')
+                   User.find(params[:user_id]).campaigns
                  else
-                   Campaign.all.order('created_at DESC')
-                 end.paginate(paginate_params)
+                   Campaign.all
+                 end
+
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def pending
