@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623072225) do
+ActiveRecord::Schema.define(version: 20160624035916) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -860,6 +860,10 @@ ActiveRecord::Schema.define(version: 20160623072225) do
     t.string   "lottery_number",     limit: 255
     t.string   "lottery_issue",      limit: 255
     t.integer  "lottery_product_id", limit: 4
+    t.string   "express_number",     limit: 255
+    t.string   "express_name",       limit: 255
+    t.datetime "delivered_at"
+    t.boolean  "delivered",          limit: 1,   default: false
   end
 
   create_table "lottery_activity_orders", force: :cascade do |t|
