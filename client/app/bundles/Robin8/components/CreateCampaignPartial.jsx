@@ -34,11 +34,11 @@ const initCampaign = {
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
-  url: { require: true, url: { require_protocol: true } },
+  url: { require: true, url: { require_protocol: false } },
   img_url: { require_img: true },
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
-  action_url: {url: { require_protocol: true }},
+  action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
 })
 
