@@ -15,7 +15,7 @@ class CampaignInvite < ActiveRecord::Base
   OcrDetails = {"unfound" => "抱歉，没有发现指定的转发活动", "time" => '内容发布时间必须在30分钟前', "group" => '请勿设置好友分组', "owner" => '非您本人发布的活动'}
   # Ocr_detail  'unfound','time','group','owner']
   #  ocr_detail_text:
-  UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
+  UploadScreenshotWait = 0.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -60,7 +60,7 @@ class CampaignInvite < ActiveRecord::Base
     if campaign.is_recruit_type?
       status == 'finished' && img_status != 'passed' && Time.now >= self.campaign.start_time  &&  Time.now < self.upload_end_at
     else
-      (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  Time.now < self.upload_end_at
+      (status == 'approved' || status == 'finished') && img_status != 'passed' &&  Time.now < self.upload_end_at
     end
   end
 

@@ -115,6 +115,7 @@ module Campaigns
     def settle_accounts_for_kol
       Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
+      self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
       self.passed_invites.each do |invite|
         kol = invite.kol
         invite.update_column(:status, 'settled')
