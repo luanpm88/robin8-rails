@@ -100,12 +100,12 @@ export default class Influnce extends React.Component{
       <div className="panel influence-charts-panel">
         <div className="panel-heading">
           <a href="#influenceChartsPanel" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">影响力</h4>
+          <h4 className="panel-title">参与情况</h4>
         </div>
         <div id="influenceChartsPanel" className="panel-collapse collapse in">
           <div className="panel-body">
             <div className="influence-charts-area">
-              { do 
+              { do
                 {
                   if(campaign.get("total_click") === 0){
                     <div className="panel-body showMiddleTip">

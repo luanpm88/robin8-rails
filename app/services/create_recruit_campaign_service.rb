@@ -24,14 +24,13 @@ class CreateRecruitCampaignService
       return false
     end
 
-    if not enough_amount?(@user, @campaign_params[:budget])
-      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
-      return false
-    end
+    # if not enough_amount?(@user, @campaign_params[:budget])
+    #   @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
+    #   return false
+    # end
 
     validate_recruit_time
-
-    @campaign_params.merge!({:status => :unexecute})
+    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
 
     if @errors.size > 0
       return false
@@ -65,8 +64,8 @@ class CreateRecruitCampaignService
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 
-  def enough_amount? user, budget
-    avail_amout = user.avail_amount
-    avail_amout >= budget ? true : false
-  end
+  # def enough_amount? user, budget
+  #   avail_amout = user.avail_amount
+  #   avail_amout >= budget ? true : false
+  # end
 end

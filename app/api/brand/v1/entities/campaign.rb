@@ -5,9 +5,18 @@ module Brand
 
         expose :id, :name, :description, :short_description, :task_description,
                :img_url, :status, :message, :url, :address, :budget,
-               :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check
+               :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
+               :budget_editable, :pay_way, :need_pay_amount
 
         expose :user, using: Entities::User
+
+        expose :per_budget_collect_type do |object|
+          if %w(cpa cpi).include? object.per_budget_type
+            "cpa_cpi"
+          else
+            ""
+          end
+        end
 
         expose :recruit_person_count do |object, opts|
           object.recruit_person_count if object.per_budget_type == "recruit"
@@ -114,6 +123,10 @@ module Brand
 
         expose :recruit_status do |object, opts|
             object.recruit_status if object.per_budget_type == 'recruit'
+        end
+
+        expose :invalid_reasons do |object, opts|
+          object.invalid_reasons.gsub(/\n/, ' ') if object.invalid_reasons.present?
         end
 
         with_options(format_with: :iso_timestamp) do

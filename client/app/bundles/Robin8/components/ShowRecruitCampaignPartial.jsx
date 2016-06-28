@@ -12,6 +12,9 @@ import Overview    from './recruit_campaigns/show/Overview';
 import ResultView  from './recruit_campaigns/show/ResultView';
 import KolList     from './recruit_campaigns/show/KolList';
 import StateText   from './recruit_campaigns/show/StateText';
+import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
+
+import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
 function select(state){
   return {
@@ -23,6 +26,22 @@ function select(state){
 }
 
 class ShowRecruitCampaignPartial extends Component {
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      showRevokeConfirmModal: false
+    };
+  }
+
+  closeRevokeConfirmModal() {
+    this.setState({showRevokeConfirmModal: false});
+  }
+
+  renderRevokeModal() {
+    this.setState({showRevokeConfirmModal: true});
+  }
+
   componentDidMount() {
     this._fetchRecruit();
     this.bind_toggle_text();
@@ -65,6 +84,17 @@ class ShowRecruitCampaignPartial extends Component {
     }
   }
 
+  renderRevokeBtn() {
+    const campaign = this.props.campaign;
+    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {
+      return (
+        <div className="revoke-campaign-group">
+          <button onClick={this.renderRevokeModal.bind(this)} className="btn revoke-campaign-btn">撤销活动</button>
+        </div>
+      )
+    }
+  }
+
   render() {
     const { campaign, actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
@@ -79,7 +109,9 @@ class ShowRecruitCampaignPartial extends Component {
           { this.render_result_view() }
           { this.render_state_text(campaign, campaign_id, actions) }
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
+          { this.renderRevokeBtn() }
         </div>
+        <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>
     );
   }
