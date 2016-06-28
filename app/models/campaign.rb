@@ -56,6 +56,7 @@ class Campaign < ActiveRecord::Base
   before_validation :format_url
   after_save :create_job
   before_create :genereate_campaign_number
+  after_create :update_user_status
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -343,5 +344,11 @@ class Campaign < ActiveRecord::Base
 
   def genereate_campaign_number
     self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
+  end
+
+  def update_user_status
+    unless self.user.is_active
+      self.user.update(:is_active => true)
+    end
   end
 end
