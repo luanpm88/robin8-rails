@@ -94,6 +94,10 @@ class Identity < ActiveRecord::Base
     end
   end
 
+  def get_weibo_url
+    self.url || "http://weibo.com/#{self.uid}"
+  end
+
   private
   def spider_weibo_data
     if self.provider == "weibo" and self.kol_id.present? and self.has_grabed == false

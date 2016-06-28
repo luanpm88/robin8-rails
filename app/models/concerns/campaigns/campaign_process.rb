@@ -161,50 +161,47 @@ module Campaigns
     def settle_accounts_for_kol
       Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
-      ActiveRecord::Base.transaction do
-        self.passed_invites.each do |invite|
-          kol = invite.kol
-          invite.update_column(:status, 'settled')
-          if is_click_type? or is_cpa_type? or is_cpi_type?
-            kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
-            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-          else
-            kol.income(self.get_per_action_budget(false), 'campaign', self, self.user)
-            Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-          end
+      self.passed_invites.each do |invite|
+        kol = invite.kol
+        invite.update_column(:status, 'settled')
+        if is_click_type? or is_cpa_type?
+          kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
+          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
+        else
+          kol.income(self.get_per_action_budget(false), 'campaign', self, self.user)
+          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
         end
       end
     end
 
     # 结算 for brand
-     def settle_accounts_for_brand
+    def settle_accounts_for_brand
        Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
        self.finished_invites.update_all({:img_status => 'passed', :auto_check => true})
        settle_accounts_for_kol
        #剩下的邀请  状态全设置为拒绝
-       ActiveRecord::Base.transaction do
-         self.update_column(:status, 'settled')
-         # self.user.unfrozen(self.budget, 'campaign', self)
-         Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-         if is_click_type?  || is_cpa_type?
-           pay_total_click = self.settled_invites.sum(:avail_click)
-           User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
-           if (self.budget - (pay_total_click * self.per_action_budget)) > 0
-             self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
-           end
-           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-         else
-           settled_invite_size = self.settled_invites.size
-           User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
 
-           if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
-             self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
-           end
-
-           Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+       self.update_column(:status, 'settled')
+       # self.user.unfrozen(self.budget, 'campaign', self)
+       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+       if is_click_type?  || is_cpa_type?
+         pay_total_click = self.settled_invites.sum(:avail_click)
+         User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
+         if (self.budget - (pay_total_click * self.per_action_budget)) > 0
+           self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
          end
+         Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+       else
+         settled_invite_size = self.settled_invites.size
+         User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
+
+         if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
+           self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
+         end
+
+         Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
        end
      end
 
@@ -221,6 +218,8 @@ module Campaigns
           actual_per_action_budget = point1 * 0.1
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
+      elsif is_recruit_type?
+        actual_per_action_budget = (self.per_action_budget * 0.7).round(0)
       else
         actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
       end
@@ -240,6 +239,26 @@ module Campaigns
     def remind_upload
       Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
       Message.new_remind_upload(self)
+    end
+
+    class_methods do
+      PushStartHour = 9
+      PushEndHour = 18
+      PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
+      def can_push_message(campaign)
+        now =  Time.now
+        # notice : recruit cmapaign start_time is after
+        last_campaign = Campaign.where(:status => ['executing', 'executed', 'settled']).where("start_time < '#{now}'").where.not(:id => campaign.id).order("start_time desc").first
+        if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time)
+          return true
+        else
+          return false
+        end
+      end
+
+      def today_had_pushed_message
+        Campaign.where(:status => ['executing', 'executed']).where("start_time > '#{Date.today.to_s} #{PushStartHour}:00'").count > 0 ? true : false
+      end
     end
 
   end

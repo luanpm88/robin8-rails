@@ -1,0 +1,10 @@
+<h3>活动补偿</h3>
+kol id: <%= @kol.id %> </br>
+kol name: <%= @kol.name %> </br>
+kol mobile_number: <%= @kol.mobile_number %> </br>
+
+<%= form_tag campaign_compensation_marketing_dashboard_kol_path(@kol) do %>
+  请选择需要补偿的活动：<%= select_tag :compensation_campaign_invite_id, options_for_select(@rejected_campaign_invite_arr)  %>
+  </br>
+  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+<% end %>

@@ -253,8 +253,8 @@ class Kol < ActiveRecord::Base
   end
 
   def task_income(date)
-    income = self.transactions.recent(date,date).tasks.sum(:credits)
-    count = self.transactions.recent(date,date).tasks.count
+    income = self.transactions.recent(date,date).realtime_transaction.sum(:credits)
+    count = self.transactions.recent(date,date).realtime_transaction.count
     [income,count]
   end
 
@@ -462,7 +462,7 @@ class Kol < ActiveRecord::Base
   end
 
   def can_update_alipay
-    self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
+    self.alipay_account.blank? || (self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0)
   end
 
   def address!

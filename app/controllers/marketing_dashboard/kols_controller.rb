@@ -33,7 +33,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def disban
     @kol.update(forbid_campaign_time: Time.now)
-    
+
     respond_to do |format|
       format.html { redirect_to marketing_dashboard_kols_path, notice: 'Disban successfully!' }
       format.json { head :no_content }
@@ -59,6 +59,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     end
   end
 
+  def transaction
+    @kol = Kol.find(params[:id])
+    @transactions = Transaction.where(:account_type => 'Kol', :account_id => params[:id] ).order('id desc').paginate(paginate_params)
+  end
+
   def edit
     @kol = Kol.find params[:id]
   end
@@ -73,6 +78,25 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     redirect_to marketing_dashboard_kols_path
   end
 
+  def campaign_compensation
+    @kol = Kol.find params[:id]
+    if request.get?
+      @rejected_campaign_invite_arr = CampaignInvite.where(:kol_id => @kol.id, :status => 'rejected').order("id desc").includes(:campaign).collect{|t| [ "【campaign_id】: #{t.campaign_id}, 【campaign_name】: #{t.campaign.name}, 【credits】: #{t.avail_click * t.campaign.actual_per_action_budget}", t.id]}
+    else
+      campaign_invite = CampaignInvite.find params[:compensation_campaign_invite_id]   rescue nil
+      campaign = campaign_invite.campaign                                              rescue nil
+      if campaign_invite.blank?  || campaign.blank?
+        flash[:notice] = '你尚未选择补偿的活动，或者补偿的活动未找到'
+        redirect_to marketing_dashboard_kols_path
+      else
+        @kol.income(campaign_invite.avail_click * campaign.get_per_action_budget(false), 'campaign_compensation', campaign)
+        Message.new_campaign_compensation(campaign_invite, campaign)
+        flash[:notice] = '操作成功'
+        redirect_to marketing_dashboard_kols_path
+      end
+    end
+  end
+
   private
   def load_kols
     @kols = if params[:campaign_id]
@@ -80,6 +104,8 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
             else
               if params[:ban]
                 Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+              elsif params[:kol_level] and ["A", "B"].include? params[:kol_level]
+                Kol.where(kol_level: params[:kol_level])
               else
                 Kol.all
               end

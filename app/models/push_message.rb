@@ -23,23 +23,16 @@ class PushMessage < ActiveRecord::Base
 
   def self.create_message_push(message)
     #to one
-    if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected'
+    push_message = nil
+    if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected' || message.message_type == 'common'
       receiver = message.receiver
       push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                               :title => message.title, :receiver_cids => [receiver.device_token] )
       push_message.template_content = transmission_template_content(message)
-      push_message.message_id = message.id
-      push_message.item_id = message.item_id
-      push_message.item_type = message.item_type
-      push_message.save
     elsif message.message_type == 'announcement'
       push_message = self.new(:receiver_type => 'All', :template_type => 'transmission', :title => message.title,
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
-      push_message.message_id = message.id
-      push_message.item_id = message.item_id
-      push_message.item_type = message.item_type
-      push_message.save
     elsif message.message_type == 'campaign'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
                               :title => message.title)
@@ -52,15 +45,18 @@ class PushMessage < ActiveRecord::Base
         push_message.receiver_ids = [receiver.id]
         push_message.receiver_cids = [receiver.device_token]
       elsif message.receiver_type == 'List'
-        receivers = Kol.where(:id => message.receiver_ids)
-        push_message.receiver_type = 'List'
-        push_message.receiver_ids = receivers.collect{|t| t.id }
-        push_message.receiver_cids = receivers.collect{|t| t.device_token}
+        device_tokens =  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
+        device_tokens.in_groups_of(1000,false){|group_device_tokens|
+          push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
+                                  :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
+          push_message.message_id = message.id
+          push_message.item_id = message.item_id
+          push_message.item_type = message.item_type
+          push_message.save
+          sleep 0.5
+        }
+        return #only save
       end
-      push_message.message_id = message.id
-      push_message.item_id = message.item_id
-      push_message.item_type = message.item_type
-      push_message.save
     # to list
     elsif message.message_type == 'remind_upload'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
@@ -69,6 +65,10 @@ class PushMessage < ActiveRecord::Base
       push_message.receiver_type = 'List'
       push_message.receiver_ids = receivers.collect{|t| t.id }
       push_message.receiver_cids = receivers.collect{|t| t.device_token}
+    end
+
+    #统一保存
+    if push_message
       push_message.message_id = message.id
       push_message.item_id = message.item_id
       push_message.item_type = message.item_type
@@ -78,6 +78,7 @@ class PushMessage < ActiveRecord::Base
 
   Robin8Logo = "http://7xozqe.com2.z0.glb.qiniucdn.com/robin8_log-2016-3-30.jpg"
   def self.push_campaign_message
+    return if Campaign.today_had_pushed_message
     executing_campaigns = Campaign.where(:status => 'executing', :end_apply_check => false)
     return if  executing_campaigns.size == 0
     should_push_kol_ids = []

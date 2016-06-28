@@ -1,0 +1,13 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+@mixin img-shadow {
+  border-radius: 3px;
+  box-shadow: 0 4px 15px 1px #eee;
+  -webkit-box-shadow: 0 4px 15px 1px #eee;
+}

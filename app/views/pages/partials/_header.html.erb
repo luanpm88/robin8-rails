@@ -1,0 +1,35 @@
+<header id="site-navbar" class="navbar r-site-header">
+  <div class="container-fl">
+    <a href="/" class="logo"></a>
+    <div id="site-ctlbar" class="ctlbar">
+      <em></em><em></em><em></em>
+    </div>
+    <div class="navbar-wrap">
+      <ul class="nav navbar-nav navbar-right">
+        <% if false %>
+        <li>
+          <a href="#signinupModal" class="quick-login" show-after-loading="<%= params[:landing_at] == 'brand' ? true : false %>" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
+        </li>
+        <% end %>
+        <li>
+          <a href="/ranking"><i class="icon-ranking"></i> 排行榜</a>
+        </li>
+        <li>
+          <a href="/"><i class="icon-search"></i> 搜索引擎</a>
+        </li>
+        <li>
+          <a href="/kols"><i class="icon-user"></i> 我是网红</a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+            <i class="icon-brand"></i> 我是广告主 <em></em>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/brands/moments">朋友圈推广</a></li>
+            <li><a href="/brands/bigv">寻找大V</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

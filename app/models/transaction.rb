@@ -7,14 +7,14 @@ class Transaction < ActiveRecord::Base
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
-  scope :tasks, ->{where("subject in ('check_in', 'invite_friend', 'complete_info')")}
+  scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation')")}  #campaign_compensation
 
   after_create :generate_trade_no
 
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation)
 
   # subject
   # manual_recharge manual_withdraw
@@ -55,6 +55,8 @@ class Transaction < ActiveRecord::Base
         "营销活动(#{self.item.name}) 撤销"
       when "campaign_refund"
         "营销活动(#{self.item.name}) 退款"
+      when 'campaign_compensation'
+        "活动补偿红包(#{self.item.name})"
     end
   end
 
@@ -80,7 +82,8 @@ class Transaction < ActiveRecord::Base
   end
 
   def generate_trade_no
-    self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
+    incr_id = "%03d" % ($redis.incr(Date.today.to_s)%1000).to_s
+    self.update_attributes(trade_no: (Time.current.strftime("%Y%m%d%H%M%S%L") + incr_id + (1..9).to_a.sample(4).join))
   end
 
 

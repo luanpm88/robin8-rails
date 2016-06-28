@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'agreed'
+        get 'testable'
       end
       member do
         get :targets
@@ -18,7 +19,7 @@ Rails.application.routes.draw do
       collection do
         put :reject
       end
-      
+
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
@@ -31,6 +32,10 @@ Rails.application.routes.draw do
       collection do
         get 'search'
         post 'search'
+      end
+      member do
+        match 'campaign_compensation', via: [:post, :get]
+        get :transaction
       end
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
@@ -78,6 +83,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'agreed'
         get 'rejected'
+        match 'batch_handle', via: [:post]
       end
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]

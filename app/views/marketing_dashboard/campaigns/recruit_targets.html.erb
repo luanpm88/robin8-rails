@@ -1,5 +1,5 @@
 <h2><%= @title %></h2>
-<% attrs = %w(id kol名称 电话号码 微博粉丝数 微信号 微信粉丝数 性别 地区 头像 推荐理由 操作) %>
+<% attrs = %w(id kol名称 电话号码 微博粉丝数 微博链接 微信号 微信粉丝数 性别 地区 头像 推荐理由 操作) %>
 <table class='table table-bordered'>
   <thead>
 
@@ -18,6 +18,12 @@
         <td> <%= campaign_apply.kol.send :name %> </td>
         <td> <%= campaign_apply.send :phone %> </td>
         <td> <%= campaign_apply.kol.identities.where(provider: 'weibo').maximum("followers_count") %> </td>
+        <td>
+           <% campaign_apply.kol.identities.where(:provider => "weibo").each do |weibo| %>
+             <%= link_to weibo.name, weibo.get_weibo_url, :target => "_blank" %>
+             </br>
+           <% end %>
+        </td>
         <td> <%= campaign_apply.weixin_no %> </td>
         <td> <%= campaign_apply.send :weixin_friend_count %> </td>
         <% if campaign_apply.kol.gender == 1 %>
