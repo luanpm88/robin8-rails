@@ -133,7 +133,7 @@ module Campaigns
       Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
       #首先先付款给期间审核的kol
-      self.finished_invites.update_all({:img_status => 'passed', :auto_check => true})
+      self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
       settle_accounts_for_kol
       #剩下的邀请  状态全设置为拒绝
       if self.campaign_from == "app"
