@@ -10,7 +10,7 @@ export function showCampaignTypeText(budget_type){
     case  "post":
       return "转发"
     case "cpi":
-      return "安装"
+      return "下载次数"
   }
 }
 

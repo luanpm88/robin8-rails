@@ -55,21 +55,22 @@ export default class DetailPartial extends React.Component {
   }
 
   _listenPerBudgetTypeChange() {
-    const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
     $("input[name='action_type']").change(function(){
+      const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       per_action_budget.onBlur();
       if(per_budget_type.value == "post" || per_budget_type.value == "click"){
         per_budget_collect_type.onChange('');
       }else{
         per_budget_collect_type.onChange('cpa_cpi');
       }
-    })
+    }.bind(this))
 
     $("input[name='cap_cpi-collect-action_type']").click(function(){
+      const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       if(per_budget_type.value == "post" || per_budget_type.value == "click"){
         per_budget_type.onChange("cpa");
       }
-    })
+    }.bind(this))
   }
 
   componentDidMount() {
@@ -129,11 +130,11 @@ export default class DetailPartial extends React.Component {
               <div className="sources-check cpa-cpi-select radio">
                 <label>
                     <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
-                  按照转发奖励KOL
+                  按链接点击次数付费
                 </label>
                 <label>
                     <input {...per_budget_type} type="radio" name="action_type" value="cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpi"} />
-                  按照转发奖励KOL
+                  按下载次数付费(用于APP推广)
                 </label>
               </div>
               {
