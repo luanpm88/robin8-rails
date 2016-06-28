@@ -18,6 +18,7 @@ module API
             present :error, 1
             present :detail, '数据格式不对'
           elsif ::CpiReg.had_reg?(decry_data)
+            params[:reg_ip] = request.ip    #override
             ::CpiReg.create_reg(params, decry_data, ::CpiReg::AlreadRegStatus)
             present :error, 1
             present :detail, '该用户已经注册'
