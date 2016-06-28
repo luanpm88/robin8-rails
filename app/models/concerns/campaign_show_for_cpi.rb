@@ -36,6 +36,7 @@ module Concerns
       end
 
       def update_inviter(cpi_reg)
+        return if cpi_reg.status == CpiReg::AlreadRegStatus
         invitation = find_visit(cpi_reg)
         if invitation
           #need lock?
