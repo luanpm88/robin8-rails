@@ -125,7 +125,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_per_action_budget(from_brand = true)
-    from_brand ? per_action_budget : actual_per_action_budget
+    from_brand ? per_action_budget : (actual_per_action_budget || cal_actual_per_action_budget)
   end
 
   def get_fee_info(from_brand = true)
