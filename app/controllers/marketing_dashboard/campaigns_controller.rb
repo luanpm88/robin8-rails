@@ -15,8 +15,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def pending
     @campaigns = Campaign.where(status: 'unexecute').realable
     @q = @campaigns.ransack(params[:q])
-    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
-
+    @campaigns = @q.result.where("deadline >?", Time.now).order('created_at DESC').paginate(paginate_params)
     render 'index'
   end
 
