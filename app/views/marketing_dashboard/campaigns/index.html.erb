@@ -92,7 +92,7 @@
               <tr>
                 <td><i>Type:</i> <%= c.per_budget_type %></td>
                 <td><i>Max Action:</i> <%= c.max_action.to_i %></td>
-                <td><i>Actual:</i> <%= c.get_per_action_budget %></td>
+                <td><i>真实单次预算/广告主设置的单次预算:</i> <%= c.get_per_action_budget(false) %> / <%= c.per_budget_budget %></td>
                 <td><i>Budget:</i> <%= c.budget %></td>
               </tr>
               <tr>
