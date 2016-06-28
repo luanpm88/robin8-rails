@@ -61,7 +61,7 @@ class PreviewCampaignPartial extends React.Component {
     if (campaign.get('status') === 'unexecute') {
       return (
         <div className="return-back-group">
-          <Link to={'/brand/'} className="btn btn-blue btn-lg returnBackBtn"> 返回</Link>
+          <Link to={'/brand/'} className="btn btn-blue btn-lg returnBackBtn"> 修改成功，返回主页</Link>
         </div>
       )
     }

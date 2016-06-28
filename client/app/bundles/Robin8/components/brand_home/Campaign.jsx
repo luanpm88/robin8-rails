@@ -59,7 +59,7 @@ export default class Campaign extends React.Component {
       } else {
         return (
           <h2 className="activity-title">
-            { _.truncate(campaign.get("name"), {"length": 22 + padding, "omission": ".."})}
+            { _.truncate(campaign.get("name"), {"length": 21 + padding, "omission": ".."})}
             <span className="label label-orange">招募</span>
           </h2>
         )
