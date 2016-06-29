@@ -23,22 +23,25 @@ class UpdateRecruitCampaignService
       return false
     end
 
+    if @campaign.status == "rejected"
+      @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
+    end
+
     if @campaign.user.id != @user.id
       @errors << 'No permission!'
       return false
     end
 
-    if @campaign.status != "unexecute"
-      @errors << "活动已经开始, 不能编辑"
+    unless can_edit?
+      @errors << "活动已经开始, 不能编辑!"
       return false
     end
 
     validate_recruit_time
-
-    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
-    if not enough_amount? @user, origin_budget, budget
-      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
-      return false
+    if can_edit_budget?
+      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
+    else
+      @errors << "活动已提交, 总预算不能更改!" if @campaign.budget_changed?
     end
 
     if @errors.size > 0
@@ -51,7 +54,6 @@ class UpdateRecruitCampaignService
         update_recruit_region
         update_recruit_influnce_score
         @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
-        @campaign.reset_campaign origin_budget, budget, per_action_budget
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -86,6 +88,14 @@ class UpdateRecruitCampaignService
     unless campaign_target.target_content.eql? @campaign_params[:influence_score]
       campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
     end
+  end
+
+  def can_edit?
+    ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
+  end
+
+  def can_edit_budget?
+    @campaign.budget_editable
   end
 
 end

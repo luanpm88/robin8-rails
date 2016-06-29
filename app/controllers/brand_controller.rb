@@ -42,7 +42,9 @@ class BrandController < ApplicationController
   end
 
   def redirect_alipay_request
-    if params.keys.include?('buyer_id') and params.keys.include?('trade_no') and params.keys.include?('trade_status') and params.keys.include?('sign')
+    if (params[:from] == 'pay_campaign') and params.keys.include?('buyer_id') and params.keys.include?('trade_no') and params.keys.include?('trade_status') and params.keys.include?('sign')
+      redirect_to '/brand/'
+    elsif params.keys.include?('buyer_id') and params.keys.include?('trade_no') and params.keys.include?('trade_status') and params.keys.include?('sign')
       redirect_to '/brand/financial/recharge'
     end
   end

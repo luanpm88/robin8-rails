@@ -22,7 +22,7 @@ module Brand
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
                                         subject: 'Robin8账户充值',
-                                        total_fee: actual_credits,
+                                        total_fee: (ENV["total_fee"] || actual_credits).to_f,
                                         return_url: return_url,
                                         notify_url: notify_url
                                       },

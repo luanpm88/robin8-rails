@@ -49,7 +49,7 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right">
         <li>
-          <%= sort_link(@q, :start_time, "Start") %>
+          <%= sort_link(@q, :start_time, "Start Time") %>
         </li>
         <li>
           <%= sort_link(@q, :deadline, "Deadline") %>
@@ -92,7 +92,7 @@
               <tr>
                 <td><i>Type:</i> <%= c.per_budget_type %></td>
                 <td><i>Max Action:</i> <%= c.max_action.to_i %></td>
-                <td><i>Actual:</i> <%= c.actual_per_action_budget %></td>
+                <td><i>真实单次预算/广告主设置的单次预算:</i> <%= c.get_per_action_budget(false) %> / <%= c.per_action_budget %></td>
                 <td><i>Budget:</i> <%= c.budget %></td>
               </tr>
               <tr>
@@ -102,14 +102,14 @@
                 <td><i>Spent:</i> <%= c.take_budget %></td>
               </tr>
               <tr>
-                <td colspan="2"><i>Start:</i> <%= c.start_time.to_s(:date_time) %></td>
+                <td colspan="2"><i>Start Time:</i> <%= c.start_time.to_s(:date_time) %></td>
                 <td colspan="2"><i>Deadline:</i> <%= c.deadline.to_s(:date_time)%></td>
               </tr>
               <tr>
                 <td colspan="2"><i>Actual Deadline:</i> <%= c.actual_deadline_time.to_s(:date_time)  rescue nil %></td>
                 <td><i>From:</i> <%= c.campaign_from %></td>
                 <td>
-                  <i>KOL:</i>
+                  <i>用户:</i>
                   <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
                   [<%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>]
                 </td>

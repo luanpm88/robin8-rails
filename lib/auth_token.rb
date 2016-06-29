@@ -51,6 +51,17 @@ module AuthToken
     end
   end
 
+  def AuthToken.decry_cpi_data(data)
+    decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue {}
+    return decoded_data
+  end
+
+  def AuthToken.test_cpi_data
+    payload = {:appid => 'xxx', :device_uuid => '_1231231', :api_token => ::CpiReg::ApiToken}
+    data = JWT.encode(payload, Secret, Algorithm)
+    data
+  end
+
 
   def AuthToken.valid_time?(decoded_data)
     return true

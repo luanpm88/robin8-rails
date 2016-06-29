@@ -9,6 +9,21 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
+.reject-reasons-group {
+  padding: 15px 40px;
+  color: #fff;
+  font-size: 18px;
+  background: linear-gradient(to right, #e45d34, #fd7850);
+  .reject-reasons-text {
+    float: left;
+    width: 90px;
+  }
+
+  .reject-reasons {
+    min-height: 20px;
+    margin-left: 90px;
+  }
+}
 .header {
   margin-bottom: 40px;
 }
@@ -361,11 +376,17 @@
 }
 
 .creat-content-sources .sources-check label {
-  margin-right: 100px;
+  margin-right: 90px;
 }
 
 .creat-content-sources .sources-check label:first-child {
   margin-left: 20px !important;
+}
+
+.creat-content-sources .action-url-group {
+  .action-url-area {
+    margin-top: 64px;
+  }
 }
 
 .creat-content-sources .action-url-group .action-url-text {
@@ -402,7 +423,7 @@
 }
 
 .creat-content-sources .action-url-group .action-url-notice {
-  color: #2ba6aa;
+  color: #2dcad0;
   font-size: 13px;
 }
 
@@ -432,8 +453,8 @@
 }
 
 .spinner-box .btn{
-  padding-top: 3px;
-  padding-left: 2px;
+  padding-top: 0px !important;
+  padding-left: 0px !important;
 }
 
 .spinner-box .bootstrap-touchspin span:first-child .btn{
@@ -564,12 +585,59 @@
 
 .what{
   padding-top: 2px;
+  .question-sign {
+    position: relative;
+    top: -1px;
+  }
 }
 
 .tooltip-inner {
   text-align: left;
 }
 
+.submit-or-revoke {
+  width: 400px;
+  margin: 0 auto;
+  button {
+    width: 150px;
+    color: #fff;
+    &:first-child {
+      float: left;
+    }
+  }
+
+  .revoke-campaign {
+    width: 150px;
+    color: #fff;
+    float: right;
+    background-color: #c1c1c1;
+    &:hover {
+      color: #fff;
+      background-color: grey;
+    }
+  }
+}
 // .per_action_budget-input{
 //   margin-left: -13px !important;
 // }
+div.sources-check.cpa-cpi-select{
+  margin-top: -70px;
+  margin-left: 159px;
+}
+
+.cpa-cpi-select-img{
+  margin-left: 140px;
+  margin-top: -25px;
+}
+
+
+.cpi-tip-label {
+  line-height: 100px;
+  margin-bottom: -28px;
+  label{
+    margin-left: 137px;
+    color: #9b9a9a;
+    font-size: 14px;
+    font-weight: 400;
+  }
+}

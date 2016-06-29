@@ -1,13 +1,13 @@
 class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::BaseController
 
   def index
-    if params[:pending]
-      @lottery_activities = LotteryActivity.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
-    elsif params[:executing]
-      @lottery_activities = LotteryActivity.where(status: 'executing').order('created_at DESC').paginate(paginate_params)
+    if params[:status]
+      @lottery_activities = LotteryActivity.where(status: params[:status])
     else
-      @lottery_activities = LotteryActivity.order('created_at DESC').paginate(paginate_params)
+      @lottery_activities = LotteryActivity.all
     end
+
+    @lottery_activities.order('created_at DESC').paginate(paginate_params)
   end
 
   # def edit

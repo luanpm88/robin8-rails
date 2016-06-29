@@ -2,7 +2,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   before_action :set_user, only: [:recharge, :withdraw]
 
   def index
-    @users = User.all.order('created_at DESC').paginate(paginate_params)
+    @users = User.where(:is_active => true).order('created_at DESC').paginate(paginate_params)
   end
 
   def show

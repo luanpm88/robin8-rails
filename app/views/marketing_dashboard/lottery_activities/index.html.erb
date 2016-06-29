@@ -1,5 +1,19 @@
 <h3>一元夺宝</h3>
 
+<div>
+  <ul class="nav nav-pills">
+    <li class="<%= 'active' if params[:status].nil? %>" >
+      <%= link_to "全部", marketing_dashboard_lottery_activities_path %>
+    </li>
+
+    <% ["executing", "drawing", "finished"].each do |s| %>
+    <li class="<%= 'active' if s == params[:status] %>" >
+      <%= link_to LotteryActivity.i18t_status(s), marketing_dashboard_lottery_activities_path(status: s) %>
+    </li>
+    <% end %>
+  </ul>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>

@@ -75,7 +75,7 @@ class CampaignInvite < ActiveRecord::Base
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
         self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
-        if campaign.is_click_type?  || campaign.is_cpa_type?
+        if campaign.is_click_type?  || campaign.is_cpa_type?  || campaign.is_cpi_type?
           kol.income(self.avail_click * campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
         else
@@ -126,17 +126,17 @@ class CampaignInvite < ActiveRecord::Base
     return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
-    if campaign.is_click_type? or campaign.is_cpa_type?
+    if campaign.is_click_type? or campaign.is_cpa_type? || campaign.is_cpi_type?
       (get_avail_click * campaign.get_per_action_budget(false)).round(2)       rescue 0
     else
       campaign.get_per_action_budget(false).round(2) rescue 0
     end
   end
 
-  def add_click(valid, remark = nil)
+  def add_click(valid, remark = nil, only_increment_avail = false)
     self.redis_avail_click.increment if valid
     self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
-    self.redis_total_click.increment
+    self.redis_total_click.increment   if only_increment_avail == false
     return true
   end
 

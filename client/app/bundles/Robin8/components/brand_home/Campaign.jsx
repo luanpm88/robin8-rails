@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -35,6 +35,13 @@ export default class Campaign extends React.Component {
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
       return <Link to={this.getUrl() + "/edit"} className="edit-campaign-btn btn">编辑</Link>
+    } else if(canPayCampaign(campaign.get("status"))) {
+      return (
+        <div>
+          <Link to={this.getUrl() + "/edit"} className="before-pay-edit-campaign-btn">编辑</Link>
+          <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn pay-campaign-btn">支付</Link>
+        </div>
+      )
     }
   }
 
@@ -42,19 +49,36 @@ export default class Campaign extends React.Component {
     const padding = canEditCampaign(campaign.get("status")) ? -3 : 0;
 
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
-      return (
-        <h2 className="activity-title">
-          { _.truncate(campaign.get("name"), {"length": 20 + padding, "omission": ".."})}
-          <span className="label label-orange">招募</span>
-        </h2>
-      )
+      if (canPayCampaign(campaign.get("status"))) {
+        return (
+          <h2 className="activity-title">
+            { _.truncate(campaign.get("name"), {"length": 16 + padding, "omission": ".."})}
+            <span className="label label-orange">招募</span>
+          </h2>
+        )
+      } else {
+        return (
+          <h2 className="activity-title">
+            { _.truncate(campaign.get("name"), {"length": 21 + padding, "omission": ".."})}
+            <span className="label label-orange">招募</span>
+          </h2>
+        )
+      }
     }
     else {
-      return (
-        <h2 className="activity-title">
-          { _.truncate(campaign.get("name"), {'length': 21 + padding, "omission": ".."})}
-        </h2>
-      )
+      if (canPayCampaign(campaign.get("status"))) {
+        return (
+          <h2 className="activity-title">
+            { _.truncate(campaign.get("name"), {'length': 18 + padding, "omission": ".."})}
+          </h2>
+        )
+      } else {
+        return (
+          <h2 className="activity-title">
+            { _.truncate(campaign.get("name"), {'length': 24 + padding, "omission": ".."})}
+          </h2>
+        )
+      }
     }
   }
 
@@ -130,7 +154,7 @@ export default class Campaign extends React.Component {
     return (
       <div className={classes} key={index}>
         <div className="brand-activity-content">
-          <Link to={this.getUrl()}>
+          <Link to={this.getUrl()} className="link-to-show-page">
             { this.renderCampaignName(campaign) }
           </Link>
 

@@ -8,7 +8,7 @@ module Users
         out_trade_no: alipay_order.trade_no,
         notify_url: Rails.application.secrets[:alipay][:brand_recharge_notify_url],
         subject: "支付宝充值",
-        total_fee: credits,
+        total_fee: (ENV["total_fee"] || credits).to_f,
         body: '支付宝支付'
       }
       Alipay::Mobile::Service.mobile_securitypay_pay_string(params, :sign_type => 'RSA', :key => Rails.application.secrets[:alipay][:private_key])

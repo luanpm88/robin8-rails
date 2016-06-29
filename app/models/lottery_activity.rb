@@ -19,6 +19,7 @@ class LotteryActivity < ActiveRecord::Base
 
   scope :executing, -> { where("status = ? and published_at <= ?", "executing", Time.now) }
   scope :available, -> { where.not(status: [ "pending" ]) }
+  scope :delivered, -> { where(delivered: true) }
   scope :ordered, -> { order("created_at desc") }
 
 
@@ -87,7 +88,11 @@ class LotteryActivity < ActiveRecord::Base
   end
 
   def status_text
-    case self.status
+    LotteryActivity.i18t_status self.status
+  end
+
+  def self.i18t_status(s)
+    case s
     when "executing"
       "执行中"
     when "finished"

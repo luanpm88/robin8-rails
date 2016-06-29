@@ -7,7 +7,7 @@ class UpdateCampaignService
     @user                   = user
     @campaign               = Campaign.find_by_id campaign_id
     @campaign_params = permited_params_from args
-    
+
     @errors                 = []
   end
 
@@ -23,7 +23,7 @@ class UpdateCampaignService
       return false
     end
 
-    if @campaign.status != "unexecute"
+    unless can_edit?
       @errors << "活动已经开始, 不能编辑"
       return false
     end
@@ -33,19 +33,27 @@ class UpdateCampaignService
       return false
     end
 
-    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
-    if not enough_amount? @user, origin_budget, budget
-      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
-      return false
+    if @campaign.status == "rejected"
+      @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
     end
+
+    if can_edit_budget?
+      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
+    else
+      @errors << "活动已提交, 总预算不能更改!" if @campaign.budget_changed?
+    end
+
+    # if not enough_amount? @user, origin_budget, budget
+    #   @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
+    #   return false
+    # end
 
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
-    
+
     if @errors.size > 0
       return false
     end
-
 
     begin
       ActiveRecord::Base.transaction do
@@ -53,9 +61,8 @@ class UpdateCampaignService
         update_campaign_action_urls
         update_campaign_targets
 
+        # @campaign.reset_campaign(origin_budget, budget, per_action_budget) if can_edit_budget?
         @campaign.update_attributes(@campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
-        @campaign.reset_campaign origin_budget, budget, per_action_budget
-
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -69,9 +76,9 @@ class UpdateCampaignService
 
   private
 
-  def enough_amount? user, origin_budget, budget
-    user.avail_amount.to_f + origin_budget.to_f >= budget.to_f
-  end
+  # def enough_amount? user, origin_budget, budget
+  #   user.avail_amount.to_f + origin_budget.to_f >= budget.to_f
+  # end
 
   def permited_params_from params
     params.nil? ? {} : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
@@ -111,6 +118,14 @@ class UpdateCampaignService
     @campaign_params[:target].each do |k,v|
       @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
     end
+  end
+
+  def can_edit?
+    ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
+  end
+
+  def can_edit_budget?
+    @campaign.budget_editable
   end
 
 end
