@@ -1,0 +1,46 @@
+<h3>一元夺宝 中奖名单</h3>
+
+<div class="pull-right">
+  <%= search_form_for @q, url: marketing_dashboard_lottery_expresses_path do |f| %>
+    <%= f.search_field :name_or_code_cont, placeholder: "活动名称或者活动编号" %>
+    <%= f.submit %>
+    <%= link_to "清除过滤", marketing_dashboard_lottery_expresses_path %>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>活动名称</th>
+      <th><%= sort_link(@q, :draw_at, "开奖时间") %></th>
+      <th>姓名</th>
+      <th>电话</th>
+      <th><%= sort_link(@q, :delivered, "已发货") %></th>
+      <th><%= sort_link(@q, :delivered_at, "发货时间") %></th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lottery_activities.each do |lottery_activity| %>
+      <% addr = lottery_activity.lucky_kol.address! %>
+      <tr>
+        <td><%= lottery_activity.code %></td>
+        <td><%= lottery_activity.name %></td>
+        <td><%= lottery_activity.draw_at.strftime "%Y-%m-%d %H:%M" rescue "无" %></td>
+        <td><%= addr.name || lottery_activity.lucky_kol.name %></td>
+        <td><%= addr.phone || lottery_activity.lucky_kol.mobile_number %></td>
+        <td>
+          <span style="color: <%= lottery_activity.delivered ? 'green' : 'red' %>">
+            <%= lottery_activity.delivered ? "是" : "否" %>
+          </span>
+        </td>
+        <td><%= lottery_activity.delivered_at.strftime "%Y-%m-%d %H:%M" rescue "无" %></td>
+        <td>
+          <%= link_to '发货管理', edit_marketing_dashboard_lottery_express_path(lottery_activity) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
