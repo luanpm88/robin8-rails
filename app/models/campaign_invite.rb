@@ -39,6 +39,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
+  scope :need_day_settle, -> {where("(status='finished' or status='approved') && img_status == 'passed'")}
   delegate :name, to: :campaign
   def upload_start_at
      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
@@ -68,8 +69,21 @@ class CampaignInvite < ActiveRecord::Base
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass
     return false if self.img_status == 'passed' || self.status == 'settled'  ||  self.status == 'rejected'
-    if self.campaign.status == 'executing' || self.campaign.status == 'executed'
+    campaign = self.campaign
+    kol = self.kol
+    if campaign.status == 'executing'
       self.update_attributes(:img_status => 'passed', :check_time => Time.now)
+    elsif campaign.status == 'executed'
+      ActiveRecord::Base.transaction do
+        self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
+        if campaign.is_click_type?  || campaign.is_cpa_type?  || campaign.is_cpi_type?
+          kol.income(self.avail_click * campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
+          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
+        else
+          kol.income(campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
+          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: - forward--cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
+        end
+      end
     end
     Message.new_check_message('screenshot_passed', self, campaign)
   end
@@ -187,4 +201,17 @@ class CampaignInvite < ActiveRecord::Base
       "有作弊嫌疑"
     end
   end
+
+  #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
+  def self.day_settle(async = true, deadline = nil)
+    if async
+      CampaignDaySettleWorker.perform_async
+    else
+      deadline = Time.now if deadline.blank?
+      CampaignInvite.need_day_settle.each do |invite|
+        CampaignShow.invite_need_settle(invite.campaign_id, invite.kol_id, deadline)
+      end
+    end
+  end
+
 end

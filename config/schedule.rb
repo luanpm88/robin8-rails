@@ -41,6 +41,10 @@ every :tuesday, :at => '0:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
 
+every 1.day, :at => '0:05 am' do
+  runner "Campaign.schedule_day_settle"
+end
+
 every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
 end
