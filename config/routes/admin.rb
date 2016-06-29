@@ -97,6 +97,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :manual_recharges, only:[:index] do
+      collection do
+        post 'search'
+      end
+    end
+
     resources :transactions do
       collection do
         get 'search'
