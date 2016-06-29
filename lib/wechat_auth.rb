@@ -10,28 +10,28 @@ class WechatAuth
     JSAPI_TICKET_KEY = "wechat_global_jsapi_ticket"
 
     def access_token
-      request_access_token unless Redis.current.exists(ACCESS_TOKEN_KEY)
-      Redis.current.get(ACCESS_TOKEN_KEY)
+      request_access_token unless $redis.exists(ACCESS_TOKEN_KEY)
+      $redis.get(ACCESS_TOKEN_KEY)
     end
 
     def request_access_token
       values = Rails.application.secrets[:wechat].values_at(:app_id, :app_secret)
       request(ACCESS_TOKEN_URL % values) do |data|
         unless data["access_token"].blank?
-          Redis.current.setex(ACCESS_TOKEN_KEY, 7200.seconds, data["access_token"])
+          $redis.setex(ACCESS_TOKEN_KEY, 7200.seconds, data["access_token"])
         end
       end
     end
 
     def jsapi_ticket
-      request_jsapi_ticket unless Redis.current.exists(JSAPI_TICKET_KEY)
-      Redis.current.get(JSAPI_TICKET_KEY)
+      request_jsapi_ticket unless $redis.exists(JSAPI_TICKET_KEY)
+      $redis.get(JSAPI_TICKET_KEY)
     end
 
     def request_jsapi_ticket
       request(JSAPI_TICKET_URL % access_token) do |data|
         unless data["ticket"].blank?
-          Redis.current.setex(JSAPI_TICKET_KEY, 7200.seconds, data["ticket"])
+          $redis.setex(JSAPI_TICKET_KEY, 7200.seconds, data["ticket"])
         end
       end
     end
