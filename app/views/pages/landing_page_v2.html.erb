@@ -1,14 +1,4 @@
-  <header class="navbar r-site-header">
-    <div class="container-fluid">
-      <a href="/" class="logo">Robin8</a>
-      <% if !mobile_request? %>
-        <div class="navbar-action pull-right">
-          <a href="#signinupModal" class="quick-login" show-after-loading="<%= params[:landing_at] == 'brand' ? true : false %>" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
-        </div>
-      <% end %>
-    </div>
-  </header>
-  <!-- 头部 E -->
+  <%= render :partial => "pages/partials/header" %>
 
   <div class="container">
     <div class="jumbotron-content">
@@ -262,3 +252,5 @@
       </div>
     </div>
   </div>
+
+  <%= render :partial => "pages/partials/footer" %>

@@ -84,8 +84,9 @@ export default class DetailPartial extends React.Component {
   }
 
   renderDetailTips(){
-    const tip = "<p>1.&nbsp;按照转发奖励KOL: 只要分享即可获得奖励。\
-                 <p>2.&nbsp;按照点击奖励KOL: 要求被分享出去的活动必须有朋友点击才可获得奖励, 最后按该次分享被点击的次数结算。\
+    const tip = "<p>1.&nbsp;按照转发奖励KOL: 按照KOL转发一次性付费。\
+                 <p>2.&nbsp;按照点击奖励KOL: KOL分享后按照好友有效点击数付费。\
+                 <p>2.&nbsp;按照活动效果奖励KOL: KOL分享后按照活动效果付费。\
                  "
                  //<p>3.&nbsp;按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。
     return tip
@@ -93,11 +94,11 @@ export default class DetailPartial extends React.Component {
 
   render() {
     const { per_budget_type, per_budget_collect_type, action_url, action_url_identifier, short_url, per_action_budget} = this.props
-    
+
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
-          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}>?</span></h3>
+          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
@@ -117,7 +118,7 @@ export default class DetailPartial extends React.Component {
                 do{
                 <label>
                   <input {...per_budget_collect_type} type="radio" className="cap_cpi-collect-action_type" name="cap_cpi-collect-action_type" value="cpa_cpi" onChange={per_budget_collect_type.onChange} checked={(per_budget_type.value === "cpa" || per_budget_type.value === "cpi" || per_budget_collect_type.value === "cpa_cpi")} />
-                  按照行动奖励KOL
+                  按照活动效果奖励KOL
                 </label>
               }
             }
@@ -141,7 +142,7 @@ export default class DetailPartial extends React.Component {
                 do {
                   if(per_budget_type.value == "cpa"){
                     <div>
-                      <div className="clearfix">
+                      <div className="action-url-area clearfix">
                         <p className="action-url-text">确认链接</p>
                         <div className="action-url-section">
                           <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
@@ -182,6 +183,8 @@ export default class DetailPartial extends React.Component {
                   <div className="price-tip">
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                   </div>
                 </div>
               </div>

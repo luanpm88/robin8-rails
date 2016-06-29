@@ -22,11 +22,12 @@ class SelectCampaignPartial extends Component {
                 <h3>转发活动</h3>
               </div>
               <div className="at-box-ct">
-                <p>转发活动包括：CPC（按点击计费的转发活动）</p>
-                <p>CPP（按转发次数计费的转发活动）</p>
+                <p>转发活动包括：CPC（KOL分享后按照好友有效点击数付费）</p>
+                <p>CPP（按照KOL转发一次性付费）</p>
+                <p>CPA（KOL分享后按照活动效果付费）</p>
                 <p>&nbsp;</p>
               </div>
-              <div className="at-box-bt">
+              <div className="at-box-bt at-box-bt-left">
                 <Link to="/brand/campaigns/new" className="btn">
                   立即创建
                 </Link>

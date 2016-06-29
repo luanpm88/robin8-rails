@@ -5,13 +5,17 @@ import { connect } from 'react-redux';
 
 import "campaign/activity/show.scss";
 
-import BreadCrumb     from './shared/BreadCrumb';
-import Basic          from './campaigns/show/Basic';
-import Overview       from './campaigns/show/Overview';
-import Target         from './campaigns/show/Target';
-import KolList        from './campaigns/show/KolList';
-import Influnce       from './campaigns/show/Influnce';
+import BreadCrumb               from './shared/BreadCrumb';
+import Basic                    from './campaigns/show/Basic';
+import Overview                 from './campaigns/show/Overview';
+import Target                   from './campaigns/show/Target';
+import KolList                  from './campaigns/show/KolList';
+import Influnce                 from './campaigns/show/Influnce';
 import Install       from './campaigns/show/Install';
+
+import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
+
+import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
 function select(state){
   return {
@@ -25,6 +29,22 @@ function select(state){
 }
 
 class ShowCampaignPartial extends Component {
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      showRevokeConfirmModal: false
+    };
+  }
+
+  closeRevokeConfirmModal() {
+    this.setState({showRevokeConfirmModal: false});
+  }
+
+  renderRevokeModal() {
+    this.setState({showRevokeConfirmModal: true});
+  }
+
   componentDidMount() {
     console.log("---------campaign show did mount--------");
     this._fetchCampaign();
@@ -52,6 +72,17 @@ class ShowCampaignPartial extends Component {
     });
   }
 
+  renderRevokeBtn() {
+    const campaign = this.props.campaign;
+    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {
+      return (
+        <div className="revoke-campaign-group">
+          <button onClick={this.renderRevokeModal.bind(this)} className="btn revoke-campaign-btn">撤销活动</button>
+        </div>
+      )
+    }
+  }
+
   render() {
     const {campaign, actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics, campaign_installs} = this.props;
     const campaign_id = this.props.params.id
@@ -71,7 +102,9 @@ class ShowCampaignPartial extends Component {
               }
             }
           }
+          { this.renderRevokeBtn() }
         </div>
+        <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>
     );
   }

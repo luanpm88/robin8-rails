@@ -1,5 +1,12 @@
 import { browserHistory } from 'react-router'
 
+function excuteRedirect(redirect_path, json) {
+  if (redirect_path == '/brand/campaigns/:id/preview') {
+    redirect_path = `/brand/campaigns/${json.id}/preview`
+  }
+  browserHistory.push(redirect_path)
+}
+
 export default function promiseMiddleware() {
   return next => action => {
     const { promise, redirect, ...rest } = action;
@@ -25,7 +32,7 @@ export default function promiseMiddleware() {
 
         // 成功后的跳转
         if (redirect) {
-          browserHistory.push(redirect)
+          excuteRedirect(redirect, json)
         }
         return next({ ...rest, result: json, readyState: 'success' })
       }

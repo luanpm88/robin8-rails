@@ -6,11 +6,13 @@ export function showCampaignTypeText(budget_type){
     case "click":
       return "点击"
     case "cpa":
-      return "行动"
+      return "效果"
     case  "post":
       return "转发"
+    case "recruit":
+      return '参与'
     case "cpi":
-      return "下载次数"
+      return '下载'
   }
 }
 
@@ -55,6 +57,9 @@ export function genderHelper(gender){
 
 export function campaignStatusHelper(status){
   switch(status){
+    // 未付款
+    case "unpay":
+      return(<img className="campaign-status-img" src={ require('campaign-unpay.png') } />)
     // 审核中
     case "unexecute":
     case "pending":
@@ -89,6 +94,16 @@ export function campaignStatusHelper(status){
 export function canEditCampaign(status){
   switch(status){
     case "unexecute":
+    case "rejected":
+      return true
+    default:
+      return false
+  }
+}
+
+export function canPayCampaign(status) {
+  switch (status) {
+    case "unpay":
       return true
     default:
       return false

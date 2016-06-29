@@ -49,9 +49,11 @@ class Kol < ActiveRecord::Base
   has_many :kol_identity_prices
 
   has_one  :address, as: :addressable
+  has_one :user
 
   has_many :lottery_activity_orders
-  has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
+  has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
+  has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
@@ -251,8 +253,8 @@ class Kol < ActiveRecord::Base
   end
 
   def task_income(date)
-    income = self.transactions.recent(date,date).tasks.sum(:credits)
-    count = self.transactions.recent(date,date).tasks.count
+    income = self.transactions.recent(date,date).realtime_transaction.sum(:credits)
+    count = self.transactions.recent(date,date).realtime_transaction.count
     [income,count]
   end
 
@@ -460,7 +462,7 @@ class Kol < ActiveRecord::Base
   end
 
   def can_update_alipay
-    self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
+    self.alipay_account.blank? || (self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0)
   end
 
   def address!

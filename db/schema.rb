@@ -345,6 +345,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "campaign_from",            limit: 255,                               default: "pc"
     t.boolean  "budget_editable",          limit: 1,                                 default: true
+    t.string   "per_action_type",          limit: 255
     t.string   "action_desc",              limit: 255
     t.string   "appid",                    limit: 255
   end
@@ -491,7 +492,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id",                   limit: 4
     t.string   "provider",                  limit: 255
-    t.string   "uid",                       limit: 255
+    t.string   "uid",                       limit: 50
     t.string   "token",                     limit: 255
     t.string   "token_secret",              limit: 255
     t.string   "name",                      limit: 255
@@ -542,6 +543,8 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.datetime "access_token_refresh_time"
     t.integer  "last_status_id",            limit: 4
   end
+
+  add_index "identities", ["kol_id", "uid"], name: "index_identities_on_kol_id_and_uid", unique: true, using: :btree
 
   create_table "images", force: :cascade do |t|
     t.integer  "referable_id",   limit: 4
@@ -1277,7 +1280,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
 
   create_table "tmp_identities", force: :cascade do |t|
     t.string   "provider",                  limit: 255
-    t.string   "uid",                       limit: 255
+    t.string   "uid",                       limit: 50
     t.string   "token",                     limit: 255
     t.string   "token_secret",              limit: 255
     t.string   "name",                      limit: 255
@@ -1302,7 +1305,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.boolean  "verified",                  limit: 1,        default: false
     t.string   "refresh_token",             limit: 255
     t.datetime "refresh_time"
-    t.string   "kol_uuid",                  limit: 255
+    t.string   "kol_uuid",                  limit: 50
     t.float    "score",                     limit: 24
     t.string   "province",                  limit: 255
     t.string   "city",                      limit: 255
@@ -1311,6 +1314,8 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
   end
+
+  add_index "tmp_identities", ["kol_uuid", "uid"], name: "index_tmp_identities_on_kol_uuid_and_uid", unique: true, using: :btree
 
   create_table "tmp_kol_contacts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 4

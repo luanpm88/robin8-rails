@@ -1,3 +1,17 @@
+<div class="row">
+  <div class="panel-body">
+    <%= form_for(@search_helper || SearchHelper.new, url: "/marketing_dashboard/campaign_invites", method: :get) do |f| %>
+      <div class="field form-group search_form">
+        <%= f.text_field :key, autofocus: true, class: "form-control", placeholder: "通过活动id 或者 kol id 或者 kol 手机号搜索" %>
+        <div class="field form-group">
+          <%= f.label "搜索范围" %><br />
+          <%= f.select :item_type, ["kol", "campaign"], class: "form-control" %>
+        </div>
+        <%= f.submit "搜索", class: "btn btn-lg btn-success search_button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
 <table class='table table-bordered'>
   <thead>
     <tr>
@@ -7,9 +21,7 @@
       <th>Total Click</th>
       <th>Avail Click</th>
       <th>Img Status</th>
-      <% if params[:action] == 'rejected' %>
-        <th>Reject Reason</th>
-      <% end %>
+      <th>Reject Reason</th>
       <th>Img</th>
       <th>Ops</th>
     </tr>
@@ -18,14 +30,8 @@
   <tbody>
     <% @campaign_invites.each do |c| %>
       <tr>
-        <% if c.img_status == 'rejected' && params[:action] == 'rejected' %>
-          <% %w(id kol_id campaign_id get_total_click get_avail_click img_status reject_reason).each do |v| %>
-            <td> <%= multi_send c, v %> </td>
-          <% end %>
-        <% else %>
-          <% %w(id kol_id campaign_id get_total_click get_avail_click img_status).each do |v| %>
-            <td> <%= multi_send c, v %> </td>
-          <% end %>
+        <% %w(id kol_id campaign_id get_total_click get_avail_click img_status reject_reason).each do |v| %>
+          <td> <%= multi_send c, v %> </td>
         <% end %>
         <td><%= link_to image_tag(c.screenshot, :width => "100px"), c.screenshot, :target => "_blank"%></td>
         <td>

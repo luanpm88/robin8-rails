@@ -22,6 +22,7 @@ class CampaignApply < ActiveRecord::Base
   # end
 
   def brand_pass_kol
+    raise '超出最大招募人数' if CampaignApply.where(:campaign_id => self.campaign_id).brand_passed.count >= self.campaign.max_action
     self.update_column(:status, 'brand_passed')
   end
 

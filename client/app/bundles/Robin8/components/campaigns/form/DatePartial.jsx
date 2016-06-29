@@ -53,7 +53,7 @@ export default class DatePartial extends React.Component {
     return (
       <div className="creat-activity-form creat-date">
         <div className="header">
-          <h3 className="tit">推广时间&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDateTips()}>?</span></h3>
+          <h3 className="tit">推广时间&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDateTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="date-range-form-area input-daterange">

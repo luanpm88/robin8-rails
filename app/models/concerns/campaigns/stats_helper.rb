@@ -4,7 +4,6 @@ module Campaigns
     def get_platforms_for_cpi
       platforms = self.campaign_shows.where(:status => "1").map(&:app_platform)
       [platforms.count("IOS"), platforms.count("Android")]
-      [10, 11]
     end
   end
 end

@@ -17,7 +17,7 @@ export default function CampaignFormValidate(options){
         // url
 
         const val = fieldOption.url.message;
-        errors[fieldName] = (val ? val : '链接格式错误, 以 http:// 或 https://开头');
+        errors[fieldName] = (val ? val : '链接格式错误');
       } else if (value && fieldOption.email && !validator.isEmail(value)) {
         errors[fieldName] = "邮箱格式不正确";
       } else if(!value && fieldOption.require_img) {
@@ -37,12 +37,12 @@ export default function CampaignFormValidate(options){
           errors[fieldName] = "单次预算不能大于总预算";
         }
       } else if ( fieldName === 'action_url' || fieldName === 'short_url') {
-        if ($("input:radio:checked").val() === 'cpa') {
+        if ($("input[name='action_type']:checked").val() === 'cpa') {
           if (!value) {
             errors[fieldName] = "该选项为必填项";
           } else if (value && !validator.isURL(value, fieldOption.url)) {
             const val = fieldOption.url.message;
-            errors[fieldName] = '链接格式错误, 以 http:// 或 https://开头';
+            errors[fieldName] = '链接格式错误';
           }
         }
       }

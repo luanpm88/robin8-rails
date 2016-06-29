@@ -54,6 +54,7 @@ class Message < ActiveRecord::Base
       message.receiver_type = "All"
       message.save
     end
+    generate_push_message(message) if Campaign.can_push_message(campaign)
   end
 
   def self.new_announcement(announcement)
@@ -92,6 +93,19 @@ class Message < ActiveRecord::Base
     end
     message.is_read = false
     message.title ="新收入 ￥#{invite.redis_new_income.value / 100.0}"
+    message.save
+
+    generate_push_message(message)
+  end
+
+  # create or update
+  def self.new_campaign_compensation(invite, campaign)
+    message = Message.new(:message_type => 'common', :receiver => invite.kol, :item => campaign, :sender => 'Robin8')
+    message.sender = 'Robin8'
+    message.name = campaign.name
+    message.logo_url = campaign.img_url rescue nil
+    message.is_read = false
+    message.title = "您有一个活动补偿红包,请在钱包中查看"
     message.save
 
     generate_push_message(message)

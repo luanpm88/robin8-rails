@@ -8,10 +8,17 @@ class AlipayOrder < ActiveRecord::Base
   validates_inclusion_of :status, :in => STATUS
 
   belongs_to :user
+  after_create :update_user_status
 
   STATUS.each do |status|
     define_method "#{status}?" do
       self.status == status
+    end
+  end
+
+  def update_user_status
+    unless self.user.is_active
+      self.user.update(:is_active => true)
     end
   end
 

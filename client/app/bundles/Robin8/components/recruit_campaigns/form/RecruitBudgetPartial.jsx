@@ -20,6 +20,15 @@ export default class RecruitBudgetPartial extends React.Component{
     $(".spinner-box").find(".bootstrap-touchspin-up").html("")
   }
 
+  hideTouchSpinButton() {
+    if (this.props.budgetEditable === false) {
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-down').remove()
+      $('.creat-budget .bootstrap-touchspin .bootstrap-touchspin-up').remove()
+      $(".recruit-person-count-input").attr('disabled', true);
+      $(".per-action-budget").attr('disabled', true);
+    }
+  }
+
   _handleBudgetInputChange() {
     const { per_action_budget } = this.props
     $('.per-action-budget').change(function() {
@@ -37,6 +46,10 @@ export default class RecruitBudgetPartial extends React.Component{
     this._handleBudgetInputChange();
   }
 
+  componentDidUpdate() {
+    this.hideTouchSpinButton();
+  }
+
   renderBudgetTips(){
     const tip = "<p>1.&nbsp;选择预计招募的人数，以及人均的奖励金额；</p>\
                  <p>2.&nbsp;招募预算总额 = 预计招募人数 x 人均奖励</p>"
@@ -48,7 +61,7 @@ export default class RecruitBudgetPartial extends React.Component{
     return(
       <div className="creat-activity-form creat-budget">
         <div className="header">
-          <h3 className="tit">招募预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips()}>?</span>
+          <h3 className="tit">招募预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips()}><span className="question-sign">?</span></span>
           </h3>
         </div>
         <div className="content">

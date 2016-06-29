@@ -93,11 +93,11 @@ module API
           if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
             error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
           end
-          
+
           if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
-          
+
           declared_params = declared(params)
           if params[:img]
             uploader = AvatarUploader.new
@@ -106,7 +106,8 @@ module API
           end
 
           if campaign.status == "rejected"
-            declared_params.merge!(:invalid_reasons => nil, :status => 'unexecute')
+            campaign.status = "unexecute"
+            campaign.invalid_reasons = nil
           end
 
           declared_params.reject do |i| i == :id or i == :budget end.to_h
@@ -169,19 +170,22 @@ module API
               else
                 pay_amount = campaign.need_pay_amount
                 current_kol.payout pay_amount, "campaign_used_voucher", campaign
+                campaign.pay_way = "kol_voucher"
               end
               campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
               campaign.voucher_amount =  pay_amount
               campaign.used_voucher = true
+              if campaign.need_pay_amount == 0 and campaign.status.to_s == 'unpay'
+                campaign.status = 'unexecute'
+              end
             end
           end
           campaign.save
-          campaign.reload
           present :error, 0
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
         end
 
-        desc "获取详情" 
+        desc "获取详情"
         params do
           requires :id, type: Integer
         end
@@ -216,7 +220,7 @@ module API
         get "/detail" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
-          
+
           present :error, 0
           if %w(unpay unexecute rejected).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
@@ -234,7 +238,6 @@ module API
         end
 
         put "/pay" do
-          brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
           if campaign.need_pay_amount <= 0
             error_403!({error: 1, detail: "已支付成功, 请勿重复支付"}) and return
@@ -243,21 +246,11 @@ module API
             error_403!({error: 1, detail: "支付方式不正确"})  and return
           end
           if params[:pay_way] == "balance"
-            if brand_user.avail_amount < campaign.need_pay_amount
+            if campaign.user.avail_amount < campaign.need_pay_amount
               error_403!({error: 1, detail: "余额不足, 请尝试支付宝支付!!"})  and return
             else
-              if campaign.campaign_from == "app"
-                brand_user.payout campaign.need_pay_amount, 'campaign', campaign
-                if campaign.used_voucher
-                  current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign
-                  current_kol.payout campaign.voucher_amount, 'campaign_used_voucher', campaign
-                end
-              else
-                brand_user.frozen campaign.need_pay_amount, 'campaign', campaign
-              end
-              campaign.need_pay_amount = 0
-              campaign.pay_way = 'balance'
-              campaign.save
+              campaign.update_attributes(pay_way: params[:pay_way])
+              campaign.pay
               present :error, 0
               present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignBalancePayEntity
             end
@@ -309,17 +302,8 @@ module API
           end
           declared_params = declared(params).reject do |i| params[i].blank?  end
           if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
-            campaign.user.payout_by_alipay campaign.need_pay_amount, "campaign_pay_by_alipay", campaign
-            campaign.need_pay_amount = 0
-            campaign.alipay_status   = 1
-            campaign.pay_way         = 'alipay'
-
-            campaign.alipay_notify_text = declared(params).to_s
-            campaign.save
-            if campaign.used_voucher
-              current_kol.unfrozen campaign.voucher_amount, 'campaign_used_voucher', campaign
-              current_kol.payout campaign.voucher_amount, 'campaign_used_voucher', campaign
-            end
+            campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
+            campaign.pay
             body "success"
             return
           end
@@ -331,7 +315,6 @@ module API
           requires :id, type: Integer
         end
         put "/revoke" do
-          brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
           if campaign.status == "revoked"
             error_403!({error: 1, detail: "活动已经撤销, 不能重复撤销!"})  and return
@@ -339,19 +322,7 @@ module API
           if not %w(unpay unexecute rejected).include? campaign.status
             error_403!({error: 1, detail: "活动已经开始, 不能撤销!"})  and return
           end
-
-          if campaign.status == "unpay"
-            if campaign.used_voucher
-              current_kol.unfrozen(campaign.budget-campaign.need_pay_amount, "campaign_revoke", campaign)
-            end
-            campaign.update(:status => "revoked", :check_time => Time.now)
-          elsif %w(unexecute rejected).include? campaign.status
-            if campaign.used_voucher
-              current_kol.income campaign.voucher_amount, 'campaign_used_voucher_and_revoke', campaign
-            end
-            brand_user.income(campaign.budget-campaign.voucher_amount, "campaign_revoke", campaign)
-            campaign.update(:status => "revoked", :check_time => Time.now)
-          end
+          campaign.revoke
           present :error, 0
           present :detail, "成功撤销"
         end

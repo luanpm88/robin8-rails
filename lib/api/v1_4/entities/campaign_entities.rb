@@ -9,7 +9,7 @@ module API
             expose :deadline
             expose :start_time
             expose :cal_settle_time do |campaign|
-              campaign.cal_settle_time campaign.actual_deadline_time
+              (campaign.cal_settle_time campaign.actual_deadline_time).strftime("%Y-%m-%d %H:%M:%S")
             end
           end
           expose :avail_click do |campaign|

@@ -27,7 +27,7 @@ export default class TargetPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-target">
         <div className="header">
-          <h3 className="tit">招募人群&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}>?</span></h3>
+          <h3 className="tit">招募人群&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="creat-recruit-target">

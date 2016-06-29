@@ -31,7 +31,7 @@ export function saveRecruit(campaign) {
         body: formData
       }
     ),
-    redirect: '/brand/'
+    redirect: '/brand/campaigns/:id/preview'
   };
 }
 
@@ -64,7 +64,7 @@ export function updateRecruit(campaign_id, campaign) {
         body: formData
       }
     ),
-    redirect: '/brand/'
+    redirect: '/brand/campaigns/:id/preview'
   };
 }
 

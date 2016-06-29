@@ -26,5 +26,9 @@ module Users
       respond_to_on_destroy
     end
 
+    def after_sign_out_path_for(resource_or_scope)
+      brands_moments_path
+    end
+
   end
 end

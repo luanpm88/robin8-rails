@@ -3,7 +3,10 @@ module Kols
     extend ActiveSupport::Concern
     def find_or_create_brand_user
       unless self.mobile_number
-        user = User.find_or_create_by(:kol_id => self.id)
+        user = User.where(:kol_id => self.id).first
+        unless user
+          user = User.create(:kol_id => self.id, :is_active => false)
+        end
         return user
       end
 
@@ -13,7 +16,7 @@ module Kols
       end
 
       unless user
-        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id)
+        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, :is_active => false)
       end
       user
     end

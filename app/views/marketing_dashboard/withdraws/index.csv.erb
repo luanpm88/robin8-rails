@@ -1,0 +1,31 @@
+<%
+  cols = [
+    'id',
+    'kol_id',
+    'real_name',
+    'credits',
+    'withdraw_type',
+    'alipay_no',
+    'bank_name',
+    'bank_no',
+    'status',
+    'created_at',
+    'remark'
+  ]
+%>
+<%=
+  CSV.generate do |csv|
+    csv << cols
+    @withdraws.each do |withdraw|
+      values = withdraw.attributes.values_at(*cols).map do |value|
+        if value.is_a? Time
+          value.strftime("%Y-%m-%d %H:%M:%S")
+        else
+          value
+        end
+      end
+
+      csv << values
+    end
+  end.encode('gb2312', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>
