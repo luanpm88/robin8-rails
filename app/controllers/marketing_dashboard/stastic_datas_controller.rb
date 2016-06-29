@@ -128,14 +128,14 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
 
   def user_recharge_format_to_csv(items)
     CSV.generate do |csv|
-      csv << ['广告主id', '广告主名称', '流水id' '充值方式', '充值金额', '充值税费(0.6%)']
+      csv << ['广告主id', '广告主名称', '流水id' '充值方式', '充值金额', '充值税费(0.6%)', '充值时间']
       items.each do |item|
         if item.subject.in? ["manual_recharge", "manaual_recharge"]
           subject = "线下充值"
         elsif item.subject == "alipay_recharge"
           subject = "支付宝充值"
         end
-        csv << [item.account.id, item.account.name, item.id, subject, item.credits.to_f, item.tax.to_f] #数据内容
+        csv << [item.account.id, item.account.name, item.id, subject, item.credits.to_f, item.tax.to_f, item.created_at.strftime("%Y-%m-%d-%H:%M:%S")] #数据内容
       end
     end
   end
