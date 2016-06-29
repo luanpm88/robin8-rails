@@ -1,9 +1,39 @@
+<%
+  title = "我最近发现一款每天都可以赚钱的APP，您也来试试？"
+  description = "Robin8基于大数据的社交影响力平台"
+  poster_url = "http://7xuw3n.com1.z0.glb.clouddn.com/logo.png?imageView2/1/w/150/h/150"
+  app_id = Rails.application.secrets.wechat[:app_id]
+  nonce = SecureRandom.hex(8)
+  ts = Time.now.to_i
+  url = request.fullpath
+  signature = WechatAuth.signature nonce, ts, url
+%>
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
     <meta charset="utf-8">
-    <title>Robin8-Invites</title>
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    <!-- Open Graph meta -->
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:site_name" content="Robin8" />
+    <meta property="og:url" content="<%= url %>" />
+    <meta property="og:image" content="<%= poster_url %>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="150" />
+    <meta property="og:image:height" content="150" />
+    <!-- Wechat meta -->
+    <meta property="weixin:timeline_title" content="<%= title %>" />
+    <meta property="weixin:chat_title" content="<%= title %>" />
+    <meta property="weixin:description" content="<%= description %>" />
+    <meta property="weixin:image" content="<%= poster_url %>" />
+    <%= favicon_link_tag 'favicon.ico' %>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <style>
       * {
         box-sizing: border-box;
@@ -95,6 +125,41 @@
         background-color: #10777b;
       }
     </style>
+
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+      wx.config({
+          debug: true,
+          appId: '<%= app_id %>',
+          timestamp: '<%= ts %>',
+          nonceStr: '<%= nonce %>',
+          signature: '<%= signature %>',
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo'
+          ]
+      });
+
+      wx.ready(function () {
+        var shareData = {
+          title: '<%= title %>',
+          desc: '<%= description %>',
+          link: '<%= url %>',
+          imgUrl: '<%= poster_url %>'
+        };
+
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+      });
+
+      wx.error(function (res) {
+        console.log(res.errMsg);
+      });
+    </script>
   </head>
   <body>
     <div class="bg" style="background-image: url(<%= asset_url("invite-bg.jpg") %>)"></div>
