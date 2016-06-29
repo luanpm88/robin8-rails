@@ -18,9 +18,6 @@ module API
           expose :article_author do |article|
             article['biz_name']
           end
-          expose :article_author do |article|
-            article['biz_name']
-          end
         end
       end
     end
