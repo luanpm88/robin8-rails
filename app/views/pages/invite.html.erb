@@ -5,7 +5,7 @@
   app_id = Rails.application.secrets.wechat[:app_id]
   nonce = SecureRandom.hex(8)
   ts = Time.now.to_i
-  url = request.fullpath
+  url = request.url
   signature = WechatAuth.signature nonce, ts, url
 %>
 
@@ -129,7 +129,7 @@
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
       wx.config({
-          debug: true,
+          debug: false,
           appId: '<%= app_id %>',
           timestamp: '<%= ts %>',
           nonceStr: '<%= nonce %>',
