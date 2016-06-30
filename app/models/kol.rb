@@ -55,6 +55,8 @@ class Kol < ActiveRecord::Base
   has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
+  has_many :clients, as: :owner
+
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
 
