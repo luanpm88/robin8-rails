@@ -2,11 +2,12 @@
   title = "我最近发现一款每天都可以赚钱的APP，您也来试试？"
   description = "Robin8基于大数据的社交影响力平台"
   poster_url = "http://7xuw3n.com1.z0.glb.clouddn.com/logo.png?imageView2/1/w/150/h/150"
-  app_id = Rails.application.secrets.wechat[:app_id]
-  nonce = SecureRandom.hex(8)
-  ts = Time.now.to_i
   url = request.url
-  signature = WechatAuth.signature nonce, ts, url
+  sign_package = ($weixin_client.get_jssign_package(url) rescue {})
+  app_id = sign_package['appId']
+  nonce = sign_package['nonceStr']
+  ts = sign_package['timestamp']
+  signature = sign_package['signature']
 %>
 
 <!DOCTYPE html>
@@ -126,7 +127,7 @@
       }
     </style>
 
-    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <%= javascript_include_tag "http://res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
     <script type="text/javascript">
       wx.config({
           debug: false,

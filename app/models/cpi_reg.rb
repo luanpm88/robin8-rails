@@ -11,10 +11,11 @@ class CpiReg < ActiveRecord::Base
   end
 
   def self.create_reg(params, decry_data, status = 'pending')
+     decry_data.symbolize_keys!
      cpi_reg = self.create!(bundle_name: params[:bundle_name], app_platform: params[:app_platform],
                             app_version: params[:app_version], city_name: params[:city_name],
                             os_version: params[:os_version], device_model:params[:device_model], reg_ip: params[:reg_ip],
-                            appid: decry_data['appid'], device_uuid: decry_data['device_uuid'], status: status )
+                            appid: decry_data[:appid], device_uuid: decry_data[:device_uuid], status: status )
      CampaignShow.update_inviter(cpi_reg)      if status == 'pending'
   end
 

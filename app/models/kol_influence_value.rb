@@ -13,34 +13,39 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.kol_id = kol_id
     best_identity = Influence::Identity.get_best_identity(kol_uuid)
     if best_identity
-      kol_value.follower_score = Influence::Identity.cal_follower_score(best_identity)
-      kol_value.status_score = Influence::Identity.cal_status_score(best_identity)
-      kol_value.register_score = Influence::Identity.cal_register_score(best_identity)
-      kol_value.verify_score = Influence::Identity.cal_verify_score(best_identity)
+      kol_value.follower_score = get_item_max_score(kol_value.follower_score, Influence::Identity.cal_follower_score(best_identity))
+      kol_value.status_score = get_item_max_score(kol_value.status_score, Influence::Identity.cal_status_score(best_identity))
+      kol_value.register_score = get_item_max_score(kol_value.register_score, Influence::Identity.cal_register_score(best_identity))
+      kol_value.verify_score = get_item_max_score(kol_value.verify_score, Influence::Identity.cal_verify_score(best_identity))
     end
     if kol_id
-      kol_value.campaign_total_click_score = Influence::CampaignClick.get_total_click_score(kol_id)
-      kol_value.campaign_avg_click_score  = Influence::CampaignClick.get_avg_click_score(kol_id)
-      kol_value.article_total_click_score = Influence::ArticleClick.get_total_click_score(kol_id)
-      kol_value.article_avg_click_score = Influence::ArticleClick.get_avg_click_score(kol_id)
+      kol_value.campaign_total_click_score = get_item_max_score(kol_value.campaign_total_click_score, Influence::CampaignClick.get_total_click_score(kol_id))
+      kol_value.campaign_avg_click_score  = get_item_max_score(kol_value.campaign_avg_click_score, Influence::CampaignClick.get_avg_click_score(kol_id))
+      kol_value.article_total_click_score = get_item_max_score(kol_value.article_total_click_score, Influence::ArticleClick.get_total_click_score(kol_id))
+      kol_value.article_avg_click_score = get_item_max_score(kol_value.article_avg_click_score, Influence::ArticleClick.get_avg_click_score(kol_id))
     end
-    kol_value.location_score = Influence::Other.kol_location_score(kol_uuid,kol_city)
-    kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)     if kol_mobile_model.present?
-    kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
-    kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
-    kol_value.contact_score = Influence::Contact.cal_score(kol_uuid,kol_id)
-    influence_score = cal_total_score(kol_value)
+    kol_value.location_score = get_item_max_score(kol_value.location_score, Influence::Other.kol_location_score(kol_uuid,kol_city))
+    kol_value.mobile_model_score = get_item_max_score(kol_value.mobile_model_score, Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model))
+    kol_value.identity_score = get_item_max_score(kol_value.identity_score, Influence::Identity.get_identity_score(kol_uuid))
+    kol_value.identity_count_score = get_item_max_score(kol_value.identity_count_score, Influence::Other.identity_count_score(kol_uuid))
+    kol_value.contact_score = get_item_max_score(kol_value.contact_score, Influence::Contact.cal_score(kol_uuid,kol_id))
+    kol_value.influence_score = cal_total_score(kol_value)
     #如果当前分数没上次高 则不保存，不覆盖。但还是生成历史
-    if  kol_value.influence_score.to_i < influence_score
-      kol_value.influence_score = influence_score
-      kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
-      kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
-      kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
-      kol_value.save
-    end
+    kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
+    kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
+    kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
+    kol_value.save
     kol.update_influence_result(kol_uuid,kol_value.influence_score, kol_value.updated_at)   if kol.present?
     KolInfluenceValueHistory.generate_history(kol_value, is_auto)
     kol_value
+  end
+
+  def self.get_item_max_score(origin_val, now_val)
+    if origin_val.blank? || (now_val.to_i > origin_val.to_i  rescue false)
+      now_val
+    else
+      origin_val
+    end
   end
 
   def self.cal_total_score(kol_value)

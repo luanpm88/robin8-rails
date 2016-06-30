@@ -34,6 +34,7 @@ module Concerns
       task_records.invite_friend
     end
 
+    #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
       return if self.app_platform.blank? || self.os_version.blank?
       download_invitation = DownloadInvitation.find_invation(self)
@@ -44,6 +45,11 @@ module Concerns
           task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
           task_record.sync_to_transaction    if self.invite_count.count <= 5
         end
+      else   #创建cpi_reg
+        params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,
+                  device_model:self.device_model, reg_ip: self.current_sign_in_ip}
+        data = {appid: Kol.get_official_appid, device_uuid: (self.IMEI || self.IDFA)}
+        CpiReg.create_reg(params, data)
       end
     end
 

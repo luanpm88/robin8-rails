@@ -492,4 +492,13 @@ class Kol < ActiveRecord::Base
     mobile_number.to_s[0,3] + "****" + mobile_number.to_s[7,4]   rescue mobile_number
   end
 
+  def self.get_official_appid
+    if Rails.env.production?
+      '5cfed04140924e84de5445642cef531d'
+    else
+      'xxx'
+    end
+
+  end
+
 end
