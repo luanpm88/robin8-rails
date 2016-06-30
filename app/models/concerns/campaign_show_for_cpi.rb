@@ -37,7 +37,7 @@ module Concerns
 
       def update_inviter(cpi_reg)
         return if cpi_reg.status == CpiReg::AlreadRegStatus
-        invitation = find_visit(cpi_reg)
+        invitation = find_visit(cpi_reg)            #find campaign_show
         if invitation
           #need lock?
           #更新 avail_click
@@ -54,10 +54,10 @@ module Concerns
             campaign.add_click(true)
           else
             #invitation status not update to true
-            invitation.remark = 'cpi_reg'
+            invitation.remark = 'cpi_reg_but_executed'
             invitation.reg_time = Time.now
             cpi_reg.campaign_show_id = invitation.id
-            cpi_reg.status = 'success'
+            cpi_reg.status = 'success_but_executed'
             cpi_reg.save! && invitation.save!
           end
         end
