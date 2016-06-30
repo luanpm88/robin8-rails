@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   mount RuCaptcha::Engine => "/rucaptcha"
   mount ApplicationAPI => '/brand_api'
 
+  # add oauth2 routes
+  use_doorkeeper
+
   get 'track_urls/:id', to: "pages#track_url"
 
   get 'qiniu_upload_token', to: 'brand#qiniu'

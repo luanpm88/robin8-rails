@@ -223,6 +223,8 @@ GEM
     docx (0.2.07)
       nokogiri (~> 1.5)
       rubyzip (~> 1.1.6)
+    doorkeeper (1.4.2)
+      railties (>= 3.1)
     ejs (1.1.1)
     elasticsearch (1.0.15)
       elasticsearch-api (= 1.0.15)
@@ -788,6 +790,7 @@ DEPENDENCIES
   devise
   devise_invitable
   docx
+  doorkeeper
   ejs
   elasticsearch
   email_validator
@@ -903,3 +906,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.12.3
