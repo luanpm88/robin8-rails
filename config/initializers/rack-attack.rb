@@ -1,7 +1,7 @@
 require 'slack-notifier'
 
 class Rack::Attack
-  
+
   # Blacklisting from Rails.cache
   Rack::Attack.blacklist('block <ip>') do |req|
     # if 'block #{req.ip}'exists in cache store, will block the request
@@ -13,11 +13,15 @@ class Rack::Attack
   end
 
   Rack::Attack.throttle('req/ip', limit: 1000, period: 2.minutes) do |req|
-    req.ip unless req.path.start_with?('/assets')
+    req.ip unless Rack::Attack.throttle_whitelisted_path?(req)
   end
 
   self.blacklisted_response = lambda do |env|
     [ 503, {}, 'The server is currently unavailable (because it is overloaded or down for maintenance).' ]
+  end
+
+  def self.throttle_whitelisted_path?(req)
+    (req.path.start_with?('/assets') || req.path.match(/v1_[\d]\/public_login\/check_status\z/)) ? true : false
   end
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
