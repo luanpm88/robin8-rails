@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630065616) do
+ActiveRecord::Schema.define(version: 20160630094153) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -491,6 +491,14 @@ ActiveRecord::Schema.define(version: 20160630065616) do
   end
 
   add_index "followers", ["news_room_id"], name: "index_followers_on_news_room_id", using: :btree
+
+  create_table "hot_items", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.string   "url",        limit: 255
+    t.datetime "publish_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id",                   limit: 4

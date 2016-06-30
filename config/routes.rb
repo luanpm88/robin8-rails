@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
+  get 'read_hot_item' => 'commons#read_hot_item'
 
   resources :identities do
     member do

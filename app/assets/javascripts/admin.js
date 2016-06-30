@@ -7,3 +7,11 @@
 //= require momentjs
 //= require momentjs/locale/zh-cn
 //= require eonasdan-bootstrap-datetimepicker
+
+$(function(){
+  $(".date").datetimepicker({
+    ignoreReadonly: true,
+    format: 'YYYY-MM-DD',
+    locale: 'zh-cn'
+  })
+});
