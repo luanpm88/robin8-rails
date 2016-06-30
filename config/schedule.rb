@@ -41,8 +41,14 @@ every :tuesday, :at => '0:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
 
-every 1.day, :at => '0:05 am' do
-  runner "Campaign.schedule_day_settle"
+if Rails.env.produciton?
+  every 1.day, :at => '0:05 am' do
+    runner "Campaign.schedule_day_settle"
+  end
+else
+  every 10.minutes do
+    runner "Campaign.schedule_day_settle"
+  end
 end
 
 every 1.day, :at => '1:00 am' do

@@ -39,7 +39,8 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
-  scope :need_day_settle, -> {where("(status='finished' or status='approved') && img_status == 'passed'")}
+  scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time > '#{1.days.ago}')")}
+  # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
   delegate :name, to: :campaign
   def upload_start_at
      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
@@ -76,12 +77,11 @@ class CampaignInvite < ActiveRecord::Base
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
         self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
-        if campaign.is_click_type?  || campaign.is_cpa_type?  || campaign.is_cpi_type?
-          kol.income(self.avail_click * campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
-          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
-        else
+        if campaign.is_recruit_type?  || campaign.is_post_type?
           kol.income(campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: - forward--cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
+        else
+          # 自动审核
         end
       end
     end
@@ -203,13 +203,41 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
-  def self.day_settle(async = true, deadline = nil)
+  def self.day_settle(async = true)
     if async
-      CampaignDaySettleWorker.perform_async
+      CampaignDaySettleWorker.perform_async()
     else
-      deadline = Time.now if deadline.blank?
-      CampaignInvite.need_day_settle.each do |invite|
-        CampaignShow.invite_need_settle(invite.campaign_id, invite.kol_id, deadline)
+      if Rails.env.production?
+        deadline = Date.today.beginning_of_day - 1.minutes
+      else
+        deadline = Time.now
+      end
+      #campaign.is_post_type? || campaign.is_recruit_type?  origin logic
+      campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'post', 'click', 'cpa']).collect{|t| t.id}
+      return if campaign_ids.size == 0
+      #cpi post click campaign 超过一天的截图自动审核通过
+      CampaignInvite.where(:camaign_id => campaign_ids).can_auto_passed.update_all(:status => 'passed', :auto_check => true)
+      #对审核通过的自动结算
+      CampaignInvite.where(:campaign_id => campaign_ids).need_day_settle.each do |invite|
+
+      end
+    end
+  end
+
+  def settle(auto = true)
+    return if self.status == 'settle' || self.status == 'rejected'
+    CampaignInvite.transaction do
+      if ['cpi', 'post', 'click', 'cpa'].include? self.campaign.per_budget_type
+        #1. 先自动审核通过
+        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.upload_time > 1.days.ago
+        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, deadline)
+        credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
+        transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user)
+        campaign_shows.update_all(:transaction_id => transaction.id)
+        self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
+        Rails.logger.transaction.info "---day_settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
+      else
+
       end
     end
   end
