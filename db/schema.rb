@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624035916) do
+ActiveRecord::Schema.define(version: 20160630065616) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -284,9 +284,11 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.string   "app_platform",    limit: 255
     t.string   "os_version",      limit: 255
     t.datetime "reg_time"
+    t.integer  "transaction_id",  limit: 4
   end
 
   add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
+  add_index "campaign_shows", ["transaction_id"], name: "index_campaign_shows_on_transaction_id", using: :btree
 
   create_table "campaign_targets", force: :cascade do |t|
     t.string   "target_type",    limit: 255
@@ -345,9 +347,9 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.text     "alipay_notify_text",       limit: 65535
     t.string   "campaign_from",            limit: 255,                               default: "pc"
     t.boolean  "budget_editable",          limit: 1,                                 default: true
-    t.string   "per_action_type",          limit: 255
     t.string   "action_desc",              limit: 255
     t.string   "appid",                    limit: 255
+    t.datetime "revoke_time"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -392,6 +394,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.datetime "updated_at",                                       null: false
     t.string   "status",           limit: 30,  default: "pending"
     t.string   "city_name",        limit: 255
+    t.string   "device_uuid",      limit: 100
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -1252,9 +1255,10 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.string   "name",       limit: 255
     t.string   "label",      limit: 255
     t.integer  "position",   limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "cover_url",  limit: 255
+    t.boolean  "enabled",    limit: 1,   default: true
   end
 
   create_table "task_records", force: :cascade do |t|
@@ -1485,6 +1489,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.decimal  "appliable_credits",                  precision: 12, scale: 2, default: 0.0
     t.integer  "kol_id",                 limit: 4
     t.string   "appid",                  limit: 50
+    t.boolean  "is_active",              limit: 1,                            default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

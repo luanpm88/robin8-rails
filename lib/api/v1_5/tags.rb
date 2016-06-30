@@ -1,9 +1,9 @@
 module API
-  module V1
+  module V1_5
     class Tags < Grape::API
       resources :tags do
         get 'list' do
-          tags  = Tag.all.order('position desc').limit(13)
+          tags  = Tag.all.order('position desc')
           present :error, 0
           present :tags, tags, with: API::V1::Entities::TagEntities::Summary
         end
