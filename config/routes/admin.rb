@@ -64,11 +64,13 @@ Rails.application.routes.draw do
         get :new_kol
         get :day_statistics
         get :kol_amount_statistics
+        get :user_recharge_statistics
         get :campaign_statistics_in_time_range
         get :kol_withdraw_statistics_in_time_range
         post :campaign_statistics_in_time_range
         post :kol_withdraw_statistics_in_time_range
         get :download_kol_amount_statistics
+        get :download_user_recharge_statistics
         get :download_campaign_statistics_in_time_range
         get :download_kol_withdraw_statistics_in_time_range
       end
@@ -95,6 +97,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :manual_recharges, only:[:index] do
+      collection do
+        post 'search'
+      end
+    end
+
     resources :transactions do
       collection do
         get 'search'
@@ -116,7 +124,8 @@ Rails.application.routes.draw do
         patch :pub
       end
     end
-    resources :lottery_activities
 
+    resources :lottery_activities
+    resources :lottery_expresses
   end
 end

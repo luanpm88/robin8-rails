@@ -85,32 +85,24 @@
         <td> 电话 </td>
         <td> <%= @lottery_activity.lucky_kol.mobile_number %> </td>
       </tr>
-      <tr>
-        <td> Email </td>
-        <td> <%= @lottery_activity.lucky_kol.email %> </td>
-      </tr>
     </table>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <h3>中奖者收获地址</h3>
+    <h3>中奖者收货地址</h3>
     <table class="table table-bordered">
       <tr>
         <td> 收货人 </td>
         <td> <%= @lottery_activity.lucky_kol.address!.name %> </td>
       </tr>
       <tr>
-        <td> 收获号码 </td>
+        <td> 收货号码 </td>
         <td> <%= @lottery_activity.lucky_kol.address!.phone %> </td>
       </tr>
       <tr>
-        <td> 收获城市 </td>
-        <td> <%= @lottery_activity.lucky_kol.address!.region %> </td>
-      </tr>
-      <tr>
-        <td> 收获地址 </td>
+        <td> 收货地址 </td>
         <td> <%= @lottery_activity.lucky_kol.address!.location %> </td>
       </tr>
     </table>

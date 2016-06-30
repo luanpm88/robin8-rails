@@ -1,0 +1,27 @@
+<table border="1">
+  <tr>
+    <th>广告主ID</th>
+    <th>广告主名称</th>
+    <th>流水ID</th>
+    <th>充值方式</th>
+    <th>充值金额</th>
+    <th>充值税费(0.6%)</th>
+    <th>充值时间</th>
+  </tr>
+  <% @transactions.each do |c| %>
+  <tr>
+    <td><%= c.account.id %></td>
+    <td><%= c.account.name %></td>
+    <td><%= c.id %></td>
+    <% if c.subject.in? ["manual_recharge", "manaual_recharge"] %>
+      <td>线下充值</td>
+    <% elsif c.subject == 'alipay_recharge' %>
+      <td>支付宝充值</td>
+    <% end %>
+    <td><%= c.credits.to_f %></td>
+    <td><%= c.tax.to_f %></td>
+    <td><%= c.created_at.strftime("%Y-%m-%d-%H:%M:%S") %></td>
+
+  </tr>
+  <% end %>
+</table>

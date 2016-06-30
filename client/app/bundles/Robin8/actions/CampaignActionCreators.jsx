@@ -14,6 +14,14 @@ export function saveCampaign(campaign) {
 
   for(let key of Object.keys(campaign)) {
     switch(key) {
+      case 'url':
+        const regex = /^http|https:\/\//
+        if (regex.test(campaign.url)) {
+          formData.append(`${key}`, campaign[key])
+        }
+        else {
+          formData.append(`${key}`, 'http://' + campaign[key])
+        }
       case 'age':
       case 'gender':
         formData.append(`target[${key}]`, campaign[key]);
@@ -50,6 +58,14 @@ export function updateCampaign(campaign_id, campaign) {
   var formData = new FormData()
   for(let key of Object.keys(campaign)) {
     switch(key) {
+      case 'url':
+        const regex = /^http|https:\/\//
+        if (regex.test(campaign.url)) {
+          formData.append(`${key}`, campaign[key])
+        }
+        else {
+          formData.append(`${key}`, 'http://' + campaign[key])
+        }
       case 'age':
       case 'gender':
         formData.append(`target[${key}]`, campaign[key]);

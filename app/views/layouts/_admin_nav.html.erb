@@ -106,6 +106,9 @@
           </ul>
         </li>
         <li>
+          <%= link_to "线下充值列表", marketing_dashboard_manual_recharges_path %>
+        </li>
+        <li>
           <a href="#">提现管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
             <li>
@@ -167,6 +170,9 @@
               <%= link_to 'kol收支账户金额统计', kol_amount_statistics_marketing_dashboard_stastic_datas_path %>
             </li>
             <li>
+              <%= link_to 'brand充值金额列表', user_recharge_statistics_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
               <%= link_to '按时段统计活动详情', campaign_statistics_in_time_range_marketing_dashboard_stastic_datas_path %>
             </li>
             <li>
@@ -187,7 +193,7 @@
               <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
             </li>
             <li>
-              <%= link_to '执行的活动', marketing_dashboard_lottery_activities_path(executing: true) %>
+              <%= link_to '中奖名单', marketing_dashboard_lottery_expresses_path %>
             </li>
           </ul>
         </li>

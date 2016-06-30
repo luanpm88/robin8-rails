@@ -66,6 +66,18 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     send_file file_path, filename: "kol_amount##{Time.current.strftime("%Y-%m-%d")}.csv"
   end
 
+  def user_recharge_statistics
+  end
+
+  def download_user_recharge_statistics
+    @transactions = Transaction.where(account_type: 'User').where(direct: "income").where(subject: ["manual_recharge", "manaual_recharge", "alipay_recharge"]).order('created_at DESC')
+    respond_to do |format|
+      format.csv { send_data user_recharge_format_to_csv(@transactions), filename: "brand充值列表##{Time.current.strftime("%Y-%m-%d")}.csv" }
+      format.xls { headers["Content-Disposition"] = "attachment; filename=\"brand充值列表##{Time.current.strftime("%Y-%m-%d")}.xls\"" }
+    end
+  end
+
+
   # 统计在某时间段所有campaign
   def campaign_statistics_in_time_range
     render 'campaign_statistics_in_time_range' and return if (request.method.eql? 'GET') && params[:page].blank?
@@ -110,6 +122,20 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
       items.each do |item|
         spent = item.avail_click >= item.max_action ? item.max_action*item.per_action_budget : item.avail_click*item.per_action_budget
         csv << [item.user_id, item.user.name, item.id,item.user_id, item.budget, spent.round(2)] #数据内容
+      end
+    end
+  end
+
+  def user_recharge_format_to_csv(items)
+    CSV.generate do |csv|
+      csv << ['广告主id', '广告主名称', '流水id' '充值方式', '充值金额', '充值税费(0.6%)', '充值时间']
+      items.each do |item|
+        if item.subject.in? ["manual_recharge", "manaual_recharge"]
+          subject = "线下充值"
+        elsif item.subject == "alipay_recharge"
+          subject = "支付宝充值"
+        end
+        csv << [item.account.id, item.account.name, item.id, subject, item.credits.to_f, item.tax.to_f, item.created_at.strftime("%Y-%m-%d-%H:%M:%S")] #数据内容
       end
     end
   end
