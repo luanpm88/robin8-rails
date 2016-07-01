@@ -208,7 +208,7 @@ class CampaignInvite < ActiveRecord::Base
       else
         transaction_time = Time.now
       end
-      campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'post', 'click', 'cpa']).collect{|t| t.id}
+      campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'click', 'cpa']).collect{|t| t.id}
       return if campaign_ids.size == 0
       #对审核通过的自动结算
       CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
@@ -220,7 +220,7 @@ class CampaignInvite < ActiveRecord::Base
   def settle(auto = false, transaction_time = Time.now)
     return if self.status == 'settle' || self.status == 'rejected'
     CampaignInvite.transaction do
-      if ['cpi', 'post', 'click', 'cpa'].include? self.campaign.per_budget_type
+      if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
         self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624035916) do
+ActiveRecord::Schema.define(version: 20160630103942) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -492,6 +492,14 @@ ActiveRecord::Schema.define(version: 20160624035916) do
 
   add_index "followers", ["news_room_id"], name: "index_followers_on_news_room_id", using: :btree
 
+  create_table "hot_items", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.string   "origin_url", limit: 255
+    t.datetime "publish_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id",                   limit: 4
     t.string   "provider",                  limit: 255
@@ -800,7 +808,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.string   "app_platform",           limit: 255
     t.string   "app_version",            limit: 255
     t.string   "private_token",          limit: 80
-    t.string   "device_token",           limit: 255
+    t.string   "device_token",           limit: 80
     t.string   "desc",                   limit: 255
     t.string   "alipay_account",         limit: 255
     t.string   "name",                   limit: 255
@@ -824,11 +832,14 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.string   "kol_level",              limit: 255
   end
 
+  add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
+  add_index "kols", ["forbid_campaign_time"], name: "index_kols_on_forbid_campaign_time", using: :btree
   add_index "kols", ["invite_code"], name: "index_kols_on_invite_code", using: :btree
   add_index "kols", ["mobile_number"], name: "index_kols_on_mobile_number", unique: true, using: :btree
   add_index "kols", ["private_token"], name: "index_kols_on_private_token", using: :btree
   add_index "kols", ["reset_password_token"], name: "index_kols_on_reset_password_token", unique: true, using: :btree
+  add_index "kols", ["updated_at"], name: "index_kols_on_updated_at", using: :btree
 
   create_table "kols_lists", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -1255,9 +1266,10 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.string   "name",       limit: 255
     t.string   "label",      limit: 255
     t.integer  "position",   limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "cover_url",  limit: 255
+    t.boolean  "enabled",    limit: 1,   default: true
   end
 
   create_table "task_records", force: :cascade do |t|
@@ -1488,6 +1500,7 @@ ActiveRecord::Schema.define(version: 20160624035916) do
     t.decimal  "appliable_credits",                  precision: 12, scale: 2, default: 0.0
     t.integer  "kol_id",                 limit: 4
     t.string   "appid",                  limit: 50
+    t.boolean  "is_active",              limit: 1,                            default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
