@@ -44,7 +44,11 @@ class CampaignInvite < ActiveRecord::Base
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
   delegate :name, to: :campaign
   def upload_start_at
-     approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
+    if  campaign.is_recruit_type? || campaign.is_post_type?
+      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
+    else
+      approved_at.blank? ? nil : approved_at
+    end
   end
 
   def upload_end_at
@@ -63,7 +67,7 @@ class CampaignInvite < ActiveRecord::Base
     if campaign.is_recruit_type?
       status == 'finished' && img_status != 'passed' && Time.now >= self.campaign.start_time  &&  Time.now < self.upload_end_at
     else
-      (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  Time.now < self.upload_end_at
+      (status == 'approved' || status == 'finished') && img_status != 'passed' &&  Time.now > self.upload_start_at &&  Time.now < self.upload_end_at
     end
   end
 
