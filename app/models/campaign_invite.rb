@@ -40,7 +40,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
-  scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time > '#{CanAutoCheckInterval.ago}'))")}
+  scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time < '#{CanAutoCheckInterval.ago}'))")}
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
   delegate :name, to: :campaign
   def upload_start_at
@@ -222,7 +222,7 @@ class CampaignInvite < ActiveRecord::Base
     CampaignInvite.transaction do
       if ['cpi', 'post', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
-        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time > CanAutoCheckInterval.ago
+        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
         transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
