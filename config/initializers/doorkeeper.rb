@@ -8,13 +8,11 @@ Doorkeeper.configure do
     # fail "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
     # Put your resource owner authentication logic here.
     # Example implementation:
-    binding.pry
     Kol.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
   end
 
   resource_owner_from_credentials do |_routes|
     u = Kol.find_by_mobile_number(params[:username])
-    binding.pry
     u if u && u.valid_password?(params[:password])
   end
 
