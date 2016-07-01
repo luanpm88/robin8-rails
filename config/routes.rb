@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
+  mount ActionCable.server => '/cable'
   mount ApplicationAPI => '/brand_api'
 
   get 'track_urls/:id', to: "pages#track_url"
