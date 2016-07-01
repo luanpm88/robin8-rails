@@ -37,18 +37,16 @@ every 1.day, :at => '12:00 pm' do
 end
 
 #keep with secret
-every :tuesday, :at => '0:05 am' do
+every :tuesday, :at => '0:10 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
 
-if Rails.env.produciton?
-  every 1.day, :at => '0:05 am' do
-    runner "Campaign.schedule_day_settle"
-  end
-else
-  every 5.minutes do
-    runner "Campaign.schedule_day_settle"
-  end
+every 1.day, :at => '0:05 am' do
+  runner "Campaign.schedule_day_settle", :environment => 'produciton'
+end
+
+every 5.minutes do
+  runner "Campaign.schedule_day_settle", :environment => 'staging'
 end
 
 every 1.day, :at => '1:00 am' do
