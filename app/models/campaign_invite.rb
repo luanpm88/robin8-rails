@@ -16,6 +16,7 @@ class CampaignInvite < ActiveRecord::Base
   # Ocr_detail  'unfound','time','group','owner']
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
+  CanAutoCheckInterval = Rails.env.production? ? 1.days : 5.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -39,7 +40,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
-  scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time > '#{1.days.ago}')")}
+  scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time > '#{CanAutoCheckInterval.ago}')")}
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
   delegate :name, to: :campaign
   def upload_start_at
@@ -70,29 +71,20 @@ class CampaignInvite < ActiveRecord::Base
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass
     return false if self.img_status == 'passed' || self.status == 'settled'  ||  self.status == 'rejected'
-    campaign = self.campaign
-    kol = self.kol
     if campaign.status == 'executing'
       self.update_attributes(:img_status => 'passed', :check_time => Time.now)
     elsif campaign.status == 'executed'
-      ActiveRecord::Base.transaction do
-        self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
-        if campaign.is_recruit_type?  || campaign.is_post_type?
-          kol.income(campaign.get_per_action_budget(false), 'campaign', campaign, campaign.user)
-          Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: - forward--cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{kol.avail_amount}-"
-        else
-          # 自动审核
-        end
-      end
+      self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
+      self.settle
     end
     Message.new_check_message('screenshot_passed', self, campaign)
   end
 
+  #审核拒绝
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
       self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
-      #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
@@ -208,37 +200,35 @@ class CampaignInvite < ActiveRecord::Base
       CampaignDaySettleWorker.perform_async()
     else
       if Rails.env.production?
-        deadline = Date.today.beginning_of_day - 1.minutes
+        transaction_time = Date.today.beginning_of_day - 1.minutes
       else
-        deadline = Time.now
+        transaction_time = Time.now
       end
-      #campaign.is_post_type? || campaign.is_recruit_type?  origin logic
       campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'post', 'click', 'cpa']).collect{|t| t.id}
       return if campaign_ids.size == 0
-      #cpi post click campaign 超过一天的截图自动审核通过
-      CampaignInvite.where(:camaign_id => campaign_ids).can_auto_passed.update_all(:status => 'passed', :auto_check => true)
       #对审核通过的自动结算
-      CampaignInvite.where(:campaign_id => campaign_ids).need_day_settle.each do |invite|
-
+      CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
+        invite.settle(true, transaction_time)
       end
     end
   end
 
-  def settle(auto = true)
+  def settle(auto = false, transaction_time = Time.now)
     return if self.status == 'settle' || self.status == 'rejected'
     CampaignInvite.transaction do
       if ['cpi', 'post', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
-        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.upload_time > 1.days.ago
-        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, deadline)
+        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time > CanAutoCheckInterval.ago
+        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
-        transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user)
+        transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
         campaign_shows.update_all(:transaction_id => transaction.id)
-        self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
-        Rails.logger.transaction.info "---day_settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
-      else
-
+        Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
+      elsif ['recruit', 'post'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
+        self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
+        Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       end
+      self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
     end
   end
 

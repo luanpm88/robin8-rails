@@ -163,15 +163,7 @@ module Campaigns
       Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
       self.passed_invites.each do |invite|
-        kol = invite.kol
-        invite.update_column(:status, 'settled')
-        if is_click_type? or is_cpa_type? or is_cpi_type?
-          kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-        else
-          kol.income(self.get_per_action_budget(false), 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-        end
+        invite.settle
       end
     end
 

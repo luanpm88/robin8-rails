@@ -46,7 +46,7 @@ if Rails.env.produciton?
     runner "Campaign.schedule_day_settle"
   end
 else
-  every 10.minutes do
+  every 5.minutes do
     runner "Campaign.schedule_day_settle"
   end
 end
