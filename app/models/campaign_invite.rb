@@ -199,9 +199,9 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
-  def self.day_settle(async = true)
+  def self.schedule_day_settle(async = true)
     if async
-      CampaignDaySettleWorker.perform_async()
+      CampaignDaySettleWorker.perform_async
     else
       if Rails.env.production?
         transaction_time = Date.today.beginning_of_day - 1.minutes

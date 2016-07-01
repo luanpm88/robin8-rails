@@ -1,7 +1,7 @@
 class CampaignDaySettleWorker
   include Sidekiq::Worker
 
-  def perform(deadline)
-    CampaignInvite.day_settle(deadline)
+  def perform
+    CampaignInvite.day_settle
   end
 end
