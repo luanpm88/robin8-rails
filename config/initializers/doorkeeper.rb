@@ -8,8 +8,16 @@ Doorkeeper.configure do
     # fail "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
     # Put your resource owner authentication logic here.
     # Example implementation:
+    binding.pry
     Kol.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
   end
+
+  resource_owner_from_credentials do |_routes|
+    u = Kol.find_by_mobile_number(params[:username])
+    binding.pry
+    u if u && u.valid_password?(params[:password])
+  end
+
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
   # admin_authenticator do
@@ -73,7 +81,7 @@ Doorkeeper.configure do
   #
   # If not specified, Doorkeeper enables all the four grant flows.
   #
-  # grant_flows %w(authorization_code implicit password client_credentials)
+  grant_flows %w(authorization_code implicit password client_credentials)
 
   # Under some circumstances you might want to have applications auto-approved,
   # so that the user skips the authorization step.

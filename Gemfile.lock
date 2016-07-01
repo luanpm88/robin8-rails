@@ -223,7 +223,7 @@ GEM
     docx (0.2.07)
       nokogiri (~> 1.5)
       rubyzip (~> 1.1.6)
-    doorkeeper (1.4.2)
+    doorkeeper (4.0.0.rc2)
       railties (>= 3.1)
     ejs (1.1.1)
     elasticsearch (1.0.15)
