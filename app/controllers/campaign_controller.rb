@@ -31,6 +31,14 @@ class CampaignController < ApplicationController
     render :json => {:campaigns => campaigns.map do |i| [i.id, i.url, i.get_avail_click] end, :status => "ok"}
   end
 
+  def campaign_targets
+    if params[:api_key] != Rails.application.secrets[:janna_api_key]
+      render :json => {:status => 'error', :message => "api key not right"} and return
+    end
+    campaign_targets = CampaignTarget.order("created_at desc").page((params[:page] || 1).to_i).per_page((params[:per_page]|| 10).to_i)
+    render :json => {:campaign_targets => campaign_targets, :status => "ok"}
+  end
+
   def update_article
     campaign = Campaign.find(params[:id])
     if current_user.nil?

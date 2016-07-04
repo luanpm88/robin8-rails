@@ -162,16 +162,9 @@ module Campaigns
     def settle_accounts_for_kol
       Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
+      # self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
       self.passed_invites.each do |invite|
-        kol = invite.kol
-        invite.update_column(:status, 'settled')
-        if is_click_type? or is_cpa_type? or is_cpi_type?
-          kol.income(invite.avail_click * self.get_per_action_budget(false), 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-        else
-          kol.income(self.get_per_action_budget(false), 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.get_per_action_budget(false)}-- after avail_amount:#{kol.avail_amount}"
-        end
+        invite.settle
       end
     end
 
@@ -180,7 +173,7 @@ module Campaigns
        Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
-       self.finished_invites.update_all({:img_status => 'passed', :auto_check => true})
+       self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
        settle_accounts_for_kol
        #剩下的邀请  状态全设置为拒绝
        self.update_column(:status, 'settled')

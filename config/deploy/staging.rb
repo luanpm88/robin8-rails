@@ -30,6 +30,7 @@ set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 set :rails_env, "staging"
 set :rbenv_ruby, '2.2.0'
+set :environment, 'staging'
 
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'

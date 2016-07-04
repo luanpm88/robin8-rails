@@ -114,6 +114,38 @@ module API
           end
           expose :has_contacts
         end
+
+
+        class InviteeSummary < Grape::Entity
+          expose :id
+          expose :name do  |kol|
+            kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
+          end
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)  rescue ''
+          end
+        end
+
+        class InviteeDetail < Grape::Entity
+          expose :id, :app_city_label, :influence_score
+          expose :name do  |kol|
+            kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
+          end
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)  rescue ''
+          end
+          expose :tags do |kol|
+            kol.tags.collect{|t|  t.label }
+          end
+          expose :influence_level do |kol|
+            return nil if kol.influence_score == -1
+            Influence::Value.get_influence_level(kol.influence_score)
+          end
+          expose :rank_index do |kol|
+            return nil if kol.influence_score == -1
+            KolContact.joined.where(:kol_id => kol.id).where("influence_score > '#{kol.influence_score}'").count + 1
+          end
+        end
       end
     end
   end

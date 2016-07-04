@@ -1,0 +1,41 @@
+<h3>线下付款列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_manual_recharges_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>广告主ID</th>
+      <th>广告主名称</th>
+      <th>流水ID</th>
+      <th>充值方式</th>
+      <th>充值金额</th>
+      <th>充值税费(0.6%)</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |c| %>
+    <tr>
+      <td><%= c.account.id %></td>
+      <td><%= c.account.name %></td>
+      <td><%= c.id %></td>
+      <% if c.subject.in? ["manual_recharge", "manaual_recharge"] %>
+        <td>线下充值</td>
+      <% elsif c.subject == 'alipay_recharge' %>
+        <td>支付宝充值</td>
+      <% end %>
+      <td><%= c.credits.to_f %></td>
+      <td><%= c.tax.to_f %></td>
+      <td><%= c.created_at.strftime("%Y-%m-%d-%H:%M:%S")%></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @transactions %>
