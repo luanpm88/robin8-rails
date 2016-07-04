@@ -16,7 +16,7 @@ class CampaignInvite < ActiveRecord::Base
   # Ocr_detail  'unfound','time','group','owner']
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
-  CanAutoCheckInterval = Rails.env.production? ? 1.days : 5.minutes
+  CanAutoCheckInterval = Rails.env.production? ? 3.hours : 2.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -222,7 +222,7 @@ class CampaignInvite < ActiveRecord::Base
     CampaignInvite.transaction do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
-        self.update_column(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
+        self.update_columns(:status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
         transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
