@@ -101,6 +101,7 @@ Rails.application.routes.draw do
 
   resources :users do
     collection do
+      get 'get_user_by_token'
       get 'identities'
       get 'get_identities'
       get 'info'
@@ -135,6 +136,7 @@ Rails.application.routes.draw do
   get '/signup', to: 'pages#signup'
   get '/signin', to: 'pages#signin'
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
+  get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'

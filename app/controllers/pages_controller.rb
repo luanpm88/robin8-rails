@@ -88,6 +88,13 @@ class PagesController < ApplicationController
     render nothing: true
   end
 
+  def scan_qr_code_and_login
+    token = SecureRandom.uuid
+    $redis.set token, params[:id]
+    ActionCable.server.broadcast "uuid_3000", result: "success", token: token
+    head :ok
+  end
+
   def pricing
     # 暂时注释掉
     #@products = Package.active.where "slug like 'new%'"
