@@ -43,7 +43,7 @@ module Concerns
           inviter = download_invitation.inviter
           download_invitation.active_invitation
           task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-          task_record.sync_to_transaction    if self.invite_count.count <= 5
+          # task_record.sync_to_transaction    if self.invite_count.count <= 5
         end
       else   #创建cpi_reg
         params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,
