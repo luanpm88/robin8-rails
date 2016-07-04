@@ -57,6 +57,7 @@ class Kol < ActiveRecord::Base
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
+  scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
 
   def email_required?
     false if self.provider != "signup"
