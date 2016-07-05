@@ -29,6 +29,13 @@ class ApplicationController < ActionController::Base
     cookies[:_robin8_visitor] ||= SecureRandom.hex
   end
 
+  def set_union_access_token
+    return unless current_user.kol
+    cookies.permanent[:_robin8_union] = {
+      value: current_user.kol.union_access_token.token,
+      domain: :all
+    }
+  end
 
   def is_china_request?
     return true

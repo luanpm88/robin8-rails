@@ -6,6 +6,7 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
+  include Concerns::Unionability
   include Concerns::KolCampaign
   include Concerns::KolTask
   include Kols::BrandUserHelper
@@ -55,8 +56,6 @@ class Kol < ActiveRecord::Base
   has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
-  has_many :clients, as: :owner
-
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
 
@@ -76,7 +75,6 @@ class Kol < ActiveRecord::Base
 
   include Models::Identities
   extend Models::Oauth
-
 
   def record_identity(identity)
     Rails.cache.write("provide_info_#{self.id}", identity)

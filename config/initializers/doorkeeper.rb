@@ -11,12 +11,6 @@ Doorkeeper.configure do
     Kol.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
   end
 
-  resource_owner_from_credentials do |_routes|
-    u = Kol.find_by_mobile_number(params[:username])
-    u if u && u.valid_password?(params[:password])
-  end
-
-
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
   # admin_authenticator do
   #   # Put your admin authentication logic here.
