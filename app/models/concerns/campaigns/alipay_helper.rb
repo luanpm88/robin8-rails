@@ -20,7 +20,7 @@ module Campaigns
     end
 
     def alipay_amount
-      self.amount - self.voucher_amount
+      self.budget - self.voucher_amount
     end
   end
 

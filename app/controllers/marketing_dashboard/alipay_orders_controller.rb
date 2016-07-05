@@ -29,6 +29,23 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
   end
 
   def campaigns
-    @campaigns = Campaign.where(:pay_way => "alipay").paginate(paginate_params)
+    @campaigns = Campaign.where(:pay_way => "alipay").order('created_at DESC').paginate(paginate_params)
+  end
+
+  def search_campaigns
+    if params[:trade_no]
+      search_by = params[:search_key]
+      @campaigns = Campaign.where(:pay_way => "alipay").where("trade_no = ? OR alipay_trade_no = ?", search_by, search_by).order('created_at DESC').paginate(paginate_params)
+      render 'campaigns' and return
+    else
+      search_by = params[:search_key]
+      if @user = User.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
+        @campaigns = Campaign.where(:pay_way => "alipay").where(:user_id => @user.id).order('created_at DESC').paginate(paginate_params)
+
+        render 'campaigns' and return
+      else
+        render json: {error: "没有这个用户"} and return
+      end
+    end
   end
 end

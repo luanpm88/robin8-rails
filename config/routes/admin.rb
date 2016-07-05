@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       collection do
         post 'search'
         get "campaigns"
+        post "search_campaigns"
       end
     end
 

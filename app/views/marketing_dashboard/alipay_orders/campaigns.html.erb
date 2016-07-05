@@ -1,13 +1,13 @@
 <h3>使用支付宝 单笔支付活动列表</h3>
 <div class="well">
-  <%= form_tag search_marketing_dashboard_alipay_orders_path do %>
+  <%= form_tag search_campaigns_marketing_dashboard_alipay_orders_path do %>
     <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
     <%= submit_tag 'Search', :class => 'btn btn-primary' %>
   <% end %>
 </div>
 
 <div class="well">
-  <%= form_tag search_marketing_dashboard_alipay_orders_path(trade_no: true) do %>
+  <%= form_tag search_campaigns_marketing_dashboard_alipay_orders_path(trade_no: true) do %>
     <%= text_field_tag :search_key, nil, :placeholder => "以订单号或者支付宝订单号进行搜索", :class => "search_input" %>
     <%= submit_tag 'Search', :class => 'btn btn-primary' %>
   <% end %>
@@ -30,14 +30,14 @@
   <tbody>
     <% @campaigns.each do |campaign| %>
       <tr>
-        <%= campaign.id %>
-        <%= campaign.name %>
-        <%= campaign.user.id %>
-        <%= campaign.user.name %>
-        <%= campaign.trade_number %>
-        <%= campaign.alipay_trade_no %>
-        <%= campaign.alipay_amount %>
-        <%= campaign.created_at %>
+        <td><%= campaign.id %></td>
+        <td><%= campaign.name %></td>
+        <td><%= campaign.user.id %></td>
+        <td><%= campaign.user.name %></td>
+        <td><%= campaign.trade_number %></td>
+        <td><%= campaign.alipay_trade_no %></td>
+        <td><%= campaign.alipay_amount %></td>
+        <td><%= campaign.created_at %></td>
       </tr>
     <% end %>
   </tbody>
