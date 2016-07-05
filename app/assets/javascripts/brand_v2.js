@@ -114,7 +114,7 @@ $(function(){
       beforeSend: function(xhr){
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: {'phone_number': phone_number, 'role': 'user', '_rucaptcha': $('.rucaptcha_input').val()}
+      data: {'phone_number': phone_number, 'role': 'kol', '_rucaptcha': $('.rucaptcha_input').val()}
     })
     .done(function(data){
       $('.bs-example-modal-sm .tips').children().hide();
@@ -168,7 +168,7 @@ $(function(){
       beforeSend: function(xhr){
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: {'phone_number': phone_number, 'role': 'user', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
+      data: {'phone_number': phone_number, 'role': 'kol', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
     })
     .done(function(data){
       $('.forget-password-rucaptcha-modal-sm .tips').children().hide();
