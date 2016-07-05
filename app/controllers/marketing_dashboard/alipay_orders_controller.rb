@@ -32,6 +32,12 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
     @campaigns = Campaign.where(:pay_way => "alipay").order('created_at DESC').paginate(paginate_params)
   end
 
+  def change_campaign_desc
+    @campaign = Campaign.find params[:campaign_id]
+    @campaign.update(:admin_desc => params[:admin_desc])
+    render :json => {:status => "ok"}
+  end
+
   def search_campaigns
     if params[:trade_no]
       search_by = params[:search_key]

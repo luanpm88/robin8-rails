@@ -1,3 +1,32 @@
+<style type="text/css">
+  .table-responsive table {
+    margin-bottom: 0;
+  }
+</style>
+<div class="modal admin-campaign-modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">添加备注理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+        <div class="row">
+          <div class="col-sm-8 col-sm-offset-2">
+            <div class="form-group">
+              <textarea id="admin_desc" class="invalid_reason processed" name="post-text" rows="8" data-min-length="" placeholder="添加备注" style="width: 100%; border: 1px solid #ccc;"></textarea>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn reject change-campaign-desc-checked btn-primary">确认</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h3>使用支付宝 单笔支付活动列表</h3>
 <div class="well">
   <%= form_tag search_campaigns_marketing_dashboard_alipay_orders_path do %>
@@ -25,6 +54,8 @@
       <th>支付宝订单号</th>
       <th>支付金额</th>
       <th>下单时间</th>
+      <th>备注</th>
+      <th>修改备注</th>
     </tr>
   </thead>
   <tbody>
@@ -38,9 +69,34 @@
         <td><%= campaign.alipay_trade_no %></td>
         <td><%= campaign.alipay_amount %></td>
         <td><%= campaign.created_at %></td>
+        <td><%= campaign.admin_desc %></td>
+        <td><a href="" onclick="return false;" class="btn btn-warning change-campaign-desc" data-campaign-id=<%= campaign.id %> >修改备注</a></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <%= will_paginate @campaigns %>
+
+<script>
+  $(".change-campaign-desc").click(function(){
+    $(".admin-campaign-modal").modal("show")
+    $(".change-campaign-desc-checked").attr("data-campaign-id", $(this).attr("data-campaign-id"))
+  })
+  $(".change-campaign-desc-checked").click(function(){
+    $.ajax(
+    {
+      method: "put",
+      url: "/marketing_dashboard/alipay_orders/change_campaign_desc",
+      data: {campaign_id: $(this).attr("data-campaign-id"), admin_desc: $("#admin_desc").val()}
+    }).done(function(data){
+      if(data["status"] == 'error'){
+        alert(data["message"])
+      }else{
+        alert("添加成功")
+        $(".admin-campaign-modal").modal("hide")
+        location.reload();
+      }
+    })
+  })
+</script>

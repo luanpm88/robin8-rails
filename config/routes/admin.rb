@@ -96,6 +96,7 @@ Rails.application.routes.draw do
         post 'search'
         get "campaigns"
         post "search_campaigns"
+        put "change_campaign_desc"
       end
     end
 
