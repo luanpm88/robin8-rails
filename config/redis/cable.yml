@@ -3,6 +3,11 @@ production: &defaults
   url: redis://redis:3ddabdcbfd880614701fd14c8f096fd82e92d198346ad1071ae8d175e83c2a23bcb3ef55f3ec72ced1d14fdb7e6dd186996e2bf3d6ace245a5e23194e3becf33@127.0.0.1:6379
   timeout: 1
 
+staging: &defaults
+  adapter: redis
+  url: redis://redis:3ddabdcbfd880614701fd14c8f096fd82e92d198346ad1071ae8d175e83c2a23bcb3ef55f3ec72ced1d14fdb7e6dd186996e2bf3d6ace245a5e23194e3becf33@127.0.0.1:6379
+  timeout: 1
+
 development:
   <<: *defaults
   url: redis://redis:3ddabdcbfd880614701fd14c8f096fd82e92d198346ad1071ae8d175e83c2a23bcb3ef55f3ec72ced1d14fdb7e6dd186996e2bf3d6ace245a5e23194e3becf33@127.0.0.1:6379
