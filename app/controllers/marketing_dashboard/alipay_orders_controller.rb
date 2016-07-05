@@ -35,7 +35,7 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
   def search_campaigns
     if params[:trade_no]
       search_by = params[:search_key]
-      @campaigns = Campaign.where(:pay_way => "alipay").where("trade_no = ? OR alipay_trade_no = ?", search_by, search_by).order('created_at DESC').paginate(paginate_params)
+      @campaigns = Campaign.where(:pay_way => "alipay").where("trade_number = ? OR alipay_notify_text = ?", search_by, search_by).order('created_at DESC').paginate(paginate_params)
       render 'campaigns' and return
     else
       search_by = params[:search_key]
