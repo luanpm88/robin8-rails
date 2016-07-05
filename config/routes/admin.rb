@@ -94,6 +94,7 @@ Rails.application.routes.draw do
     resources :alipay_orders do
       collection do
         post 'search'
+        get "campaigns"
       end
     end
 

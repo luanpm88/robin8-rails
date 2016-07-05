@@ -27,4 +27,8 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
       end
     end
   end
+
+  def campaigns
+    @campaigns = Campaign.where(:pay_way => "alipay").paginate(paginate_params)
+  end
 end

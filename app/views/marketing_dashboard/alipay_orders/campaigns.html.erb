@@ -1,0 +1,46 @@
+<h3>使用支付宝 单笔支付活动列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_alipay_orders_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<div class="well">
+  <%= form_tag search_marketing_dashboard_alipay_orders_path(trade_no: true) do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以订单号或者支付宝订单号进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>活动id</th>
+      <th>活动名称</th>
+      <th>用户id</th>
+      <th>品牌名称</th>
+      <th>订单号</th>
+      <th>支付宝订单号</th>
+      <th>支付金额</th>
+      <th>下单时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @campaigns.each do |campaign| %>
+      <tr>
+        <%= campaign.id %>
+        <%= campaign.name %>
+        <%= campaign.user.id %>
+        <%= campaign.user.name %>
+        <%= campaign.trade_number %>
+        <%= campaign.alipay_trade_no %>
+        <%= campaign.alipay_amount %>
+        <%= campaign.created_at %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaigns %>
