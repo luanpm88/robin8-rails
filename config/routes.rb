@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
-  mount ApplicationAPI => '/brand_api'
+  mount BrandAPI => '/brand_api'
+  mount PropertyAPI => '/prop'
 
   use_doorkeeper
 

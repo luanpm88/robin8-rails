@@ -1,5 +1,4 @@
-
-class ApplicationAPI < Grape::API
+class BrandAPI < Grape::API
   format :json
 
   # rescue_from CanCan::AccessDenied do |e|
