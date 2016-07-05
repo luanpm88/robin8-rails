@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160630094153) do
-=======
-ActiveRecord::Schema.define(version: 20160630103942) do
->>>>>>> day_settle
+ActiveRecord::Schema.define(version: 20160705082555) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -498,7 +494,6 @@ ActiveRecord::Schema.define(version: 20160630103942) do
 
   create_table "hot_items", force: :cascade do |t|
     t.string   "title",      limit: 255
-    t.string   "url",        limit: 255
     t.string   "origin_url", limit: 255
     t.datetime "publish_at"
     t.datetime "created_at",             null: false
@@ -835,6 +830,7 @@ ActiveRecord::Schema.define(version: 20160630103942) do
     t.integer  "age",                    limit: 4
     t.integer  "weixin_friend_count",    limit: 4
     t.string   "kol_level",              limit: 255
+    t.string   "id_card",                limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1013,6 +1009,47 @@ ActiveRecord::Schema.define(version: 20160630103942) do
   add_index "news_rooms", ["campaign_name"], name: "index_news_rooms_on_campaign_name", using: :btree
   add_index "news_rooms", ["subdomain_name"], name: "index_news_rooms_on_subdomain_name", unique: true, using: :btree
   add_index "news_rooms", ["user_id"], name: "index_news_rooms_on_user_id", using: :btree
+
+  create_table "oauth_access_grants", force: :cascade do |t|
+    t.integer  "resource_owner_id", limit: 4,     null: false
+    t.integer  "application_id",    limit: 4,     null: false
+    t.string   "token",             limit: 120,   null: false
+    t.integer  "expires_in",        limit: 4,     null: false
+    t.text     "redirect_uri",      limit: 65535, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "revoked_at"
+    t.string   "scopes",            limit: 255
+  end
+
+  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_9975cf819c", using: :btree
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.integer  "resource_owner_id", limit: 4
+    t.integer  "application_id",    limit: 4
+    t.string   "token",             limit: 120, null: false
+    t.string   "refresh_token",     limit: 120
+    t.integer  "expires_in",        limit: 4
+    t.datetime "revoked_at"
+    t.datetime "created_at",                    null: false
+    t.string   "scopes",            limit: 255
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",         limit: 255,                   null: false
+    t.string   "uid",          limit: 50,                    null: false
+    t.string   "secret",       limit: 255,                   null: false
+    t.text     "redirect_uri", limit: 65535,                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "union",        limit: 1,     default: false
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "payments", force: :cascade do |t|
     t.integer  "user_product_id",       limit: 4
@@ -1568,6 +1605,8 @@ ActiveRecord::Schema.define(version: 20160630103942) do
   end
 
   add_foreign_key "campaign_targets", "campaigns"
+  add_foreign_key "oauth_access_grants", "kols", column: "resource_owner_id"
+  add_foreign_key "oauth_access_tokens", "kols", column: "resource_owner_id"
   add_foreign_key "weibo_invites", "campaigns"
   add_foreign_key "weibo_invites", "weibos"
 end
