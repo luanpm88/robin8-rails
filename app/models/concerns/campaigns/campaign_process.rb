@@ -144,17 +144,18 @@ module Campaigns
 
     # 更新invite 状态和点击数
     def end_invites
+      # ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
       campaign_invites.each do |invite|
         next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
         if invite.status == 'approved'
           invite.status = 'finished'
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
-        elsif
+          invite.save!
+        else
           # receive but not apporve  we must delete
           invite.delete
         end
-        invite.save!
       end
     end
 
