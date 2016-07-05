@@ -204,6 +204,7 @@ class KolsController < ApplicationController
     unless sms_request_is_valid?
       return render json: {}
     end
+
     if params[:login_user] == "yes"
       unless sms_request_is_valid_for_login_user?
         return render json: {}
@@ -215,34 +216,36 @@ class KolsController < ApplicationController
     end
 
     phone_number = params[:phone_number]
+    return render json: {mobile_number_is_blank: true} if phone_number.blank?
+
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
       ms_client.send_sms
       return render json: {code: 0}
     end
 
-    if phone_number.blank?
-      render json: {mobile_number_is_blank: true}
+    if params[:role] == 'user'
+      number_existed = User.check_mobile_number phone_number
     else
-      if params[:role] == 'user' && params[:forget_password].nil?
-        return render json: {not_unique: true}  if User.check_mobile_number phone_number
-      elsif params[:role] == 'user' && params[:forget_password]
-        return render json: {no_user: true} unless User.check_mobile_number phone_number
-      else
-        return render json: {not_unique: true}  if Kol.check_mobile_number phone_number
-      end
-
-      total_send_key = "robin8_send_sms_count"
-      send_count =  Rails.cache.fetch(total_send_key).to_i || 1
-      Rails.cache.write(total_send_key, send_count + 1, :expires_in => 50.hours)
-      Rails.logger.sms_spider.error "发送的 有效的量已经超过了 #{send_count}"
-
-      sms_client = YunPian::SendRegisterSms.new(phone_number)
-
-      res = sms_client.send_sms  rescue {}
-      Rails.logger.sms_spider.error "send sms code #{res}"
-      render json: res
+      number_existed = Kol.check_mobile_number phone_number
     end
+
+    if params[:forget_password]
+      return render json: {no_user: true} unless number_existed
+    else
+      return render json: {not_unique: true} if number_existed
+    end
+
+    total_send_key = "robin8_send_sms_count"
+    send_count =  Rails.cache.fetch(total_send_key).to_i || 1
+    Rails.cache.write(total_send_key, send_count + 1, :expires_in => 50.hours)
+    Rails.logger.sms_spider.error "发送的 有效的量已经超过了 #{send_count}"
+
+    sms_client = YunPian::SendRegisterSms.new(phone_number)
+
+    res = sms_client.send_sms  rescue {}
+    Rails.logger.sms_spider.error "send sms code #{res}"
+    render json: res
   end
 
   def valid_phone_number
