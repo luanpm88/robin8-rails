@@ -138,12 +138,18 @@ module API
             kol.tags.collect{|t|  t.label }
           end
           expose :influence_level do |kol|
-            return nil if kol.influence_score == -1
-            Influence::Value.get_influence_level(kol.influence_score)
+            if kol.influence_score == -1
+              nil
+            else
+              Influence::Value.get_influence_level(kol.influence_score)
+            end
           end
           expose :rank_index do |kol|
-            return nil if kol.influence_score == -1
-            KolContact.joined.where(:kol_id => kol.id).where("influence_score > '#{kol.influence_score}'").count + 1
+            if kol.influence_score == -1
+              nil
+            else
+              KolContact.joined.where(:kol_id => kol.id).where("influence_score > '#{kol.influence_score}'").count + 1
+            end
           end
         end
       end
