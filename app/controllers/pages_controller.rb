@@ -238,7 +238,7 @@ class PagesController < ApplicationController
 
   def uuid_and_qr_code_url
     uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
-    url = "http://qr.topscan.com/api.php?text=#{Rails.application.secrets[:domain]}/pages/scan_qr_code_and_login?token=#{uuid}&id=2"
+    url = "http://qr.topscan.com/api.php?text=#{Rails.application.secrets[:domain]}/pages/scan_qr_code_and_login?token=#{uuid}%26id=2"
     return uuid, url
   end
 
