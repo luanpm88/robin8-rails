@@ -36,6 +36,22 @@ class CampaignShow < ActiveRecord::Base
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
+    else
+      # check_openid?
+      store_key = openid.to_s + campaign.id.to_s
+      if Rails.cache.read(store_key)
+        return [false, 'openid_visit_fre']
+      else
+        Rails.cache.write(store_key, now, :expires_in => OpenidTimeout)
+      end
+      # openid_ip_reach_max
+      store_key = "openid_max_" + openid.to_s + campaign.id.to_s
+      openid_current_count = Rails.cache.read(store_key) || 0
+      if openid_current_count > OpenidMaxCount
+        return [false, 'openid_reach_max_count']
+      else
+        Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
+      end
     end
 
     # check_ip?
@@ -44,23 +60,6 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'ip_visit_fre']
     else
       Rails.cache.write(store_key, now, :expires_in => IpTimeout)
-    end
-
-      # check_openid?
-    store_key = openid.to_s + campaign.id.to_s
-    if Rails.cache.read(store_key)
-      return [false, 'openid_visit_fre']
-    else
-      Rails.cache.write(store_key, now, :expires_in => OpenidTimeout)
-    end
-
-    # openid_ip_reach_max
-    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
-    openid_current_count = Rails.cache.read(store_key) || 0
-    if openid_current_count > OpenidMaxCount
-      return [false, 'openid_reach_max_count']
-    else
-      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
     end
 
     # check_ip_reach_max
