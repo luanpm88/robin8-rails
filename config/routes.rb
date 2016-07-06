@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     registrations: "users/registrations",
     passwords: "users/passwords",
     invitations: "users/invitations",
-    omniauth_callbacks: "users/omniauth_callbacks",
+    # omniauth_callbacks: "users/omniauth_callbacks",
     confirmations: "users/confirmations"
   }
 
@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
   end
 
+  get "auth/:action/callback", to: "authentications", constraints: { action: /weibo|wechat/ }
 
   get 'set_locale' => 'pages#set_locale'
   get '/users/manageable_users' => 'users#manageable_users'
@@ -98,7 +99,8 @@ Rails.application.routes.draw do
   devise_for :kols, controllers: {
     registrations: "kols/registrations",
     sessions: "users/sessions",
-    passwords: "kols/passwords"
+    passwords: "kols/passwords",
+    # omniauth_callbacks: "users/omniauth_callbacks"
   }
 
   resources :users do

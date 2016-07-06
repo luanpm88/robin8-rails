@@ -10,10 +10,12 @@ class Kol < ActiveRecord::Base
   include Concerns::KolCampaign
   include Concerns::KolTask
   include Kols::BrandUserHelper
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.years
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable, allow_unconfirmed_access_for: 1.years
 
   has_many :identities, -> {order('updated_at desc')}, :dependent => :destroy, autosave: true
 

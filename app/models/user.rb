@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, #:validatable, :confirmable,
-         :omniauthable, :invitable, :authentication_keys => [:login]
+         :invitable, :authentication_keys => [:login]
 
   has_many :identities, dependent: :destroy
 
