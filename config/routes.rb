@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
   end
 
-  get "auth/:action/callback", to: "authentications", constraints: { action: /weibo|wechat/ }
+  get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat/ }
 
   get 'set_locale' => 'pages#set_locale'
   get '/users/manageable_users' => 'users#manageable_users'

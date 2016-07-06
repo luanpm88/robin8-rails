@@ -1,20 +1,24 @@
-class AuthenticationsController < Devise::OmniauthCallbacksController
+class AuthenticationsController < ApplicationController
   # :twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat
   before_action :handle_omniauth_callback, only: [ :weibo, :wechat ]
 
   def weibo
+    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
     if identity.blank?
       # create identity, redirect to register path
-      Identity.create_identity_from_app(params.merge(:from_type => 'web'))
-      # current_kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar.url.blank?
+      identity_params = params.merge(:from_type => 'web')
+      identity_params.merge!(kol_id: current_kol.id) if current_kol
+      identity = Identity.create_identity_from_app(identity_params)
+      redirect_to cookies.delete(:return_url) || root_path(identity_code: identity.id) #重定向到 注册页面
     else
       # sign in and set union token
-      user = identity.kol.user
+      user = identity.kol.find_or_create_brand_user
       sign_in user # maybe change later !
       set_union_access_token
+      redirect_to cookies.delete(:return_url) || root_path
     end
   end
 
@@ -31,8 +35,6 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
 
   def handle_omniauth_callback
     auth = request.env['omniauth.auth']
-
-    params = {}
     params[:uid] = auth.uid
     params[:provider] = auth.provider
     params[:token] = auth.credentials.token
@@ -56,4 +58,14 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
       auth.info.urls[:Weibo]
     end
   end
+
+  def current_token
+    Doorkeeper::AccessToken.find_by_token cookies["_robin8_union"]
+  end
+
+  def current_kol
+    return @current_kol if @current_kol
+    @current_kol = Kol.where(id: current_token.resource_owner_id).take
+  end
+
 end
