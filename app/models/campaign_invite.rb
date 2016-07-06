@@ -224,6 +224,7 @@ class CampaignInvite < ActiveRecord::Base
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
+        next if campaign_shows.size == 0
         credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
         transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
         campaign_shows.update_all(:transaction_id => transaction.id)
