@@ -18,7 +18,7 @@ class CampaignShowController < ApplicationController
 
     Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
     if @campaign and @campaign.is_cpa_type?
-      return deal_with_cpa_campaign uuid_params
+      return deal_with_cpa_campaign(uuid_params, openid)
     end
 
     if @campaign.status == 'agreed' ||  @campaign_invite.blank?
@@ -39,7 +39,7 @@ class CampaignShowController < ApplicationController
   end
 
   private
-  def deal_with_cpa_campaign uuid_params
+  def deal_with_cpa_campaign uuid_params, openid
     if ["unexecute", "agreed"].include?(@campaign.status)
       redirect_to @campaign.url
       return
