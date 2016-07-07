@@ -31,6 +31,7 @@ module API
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid],  current_kol.try(:id))
           present :contact_count, contacts.size
           present :rank_index, rank_index
+          present :foward_read_count, (current_kol.article_actions.forward.collect{|t| t.redis_click.value}.sum  rescue 0)
         end
 
         params do
