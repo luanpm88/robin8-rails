@@ -1,9 +1,8 @@
 class AuthenticationsController < ApplicationController
   # :twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat
-  before_action :handle_omniauth_callback, only: [ :weibo, :wechat ]
+  before_action :handle_omniauth_callback, only: [ :weibo, :wechat, :qq_connect ]
 
   def weibo
-    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
@@ -26,7 +25,6 @@ class AuthenticationsController < ApplicationController
   # end
 
   def qq_connect
-    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
@@ -54,7 +52,6 @@ class AuthenticationsController < ApplicationController
   private
 
   def handle_omniauth_callback
-    binding.pry
     auth = request.env['omniauth.auth']
     Rails.logger.alipay.info "-------- handle_omniauth_callback  --------------"
     Rails.logger.alipay.info "#{auth}"
@@ -62,25 +59,22 @@ class AuthenticationsController < ApplicationController
     params[:uid] = auth.uid
     params[:provider] = auth.provider
     params[:token] = auth.credentials.token
-    params[:token_secret] = auth.credentials.secret
-    params[:name] = (auth.provider == 'twitter' || auth.provider == 'wechat') ? auth.info.nickname : auth.info.name
+    params[:name] = (auth.provider == 'qq_connect' || auth.provider == 'wechat') ? auth.info.nickname : auth.info.name
     params[:email] = auth.info.email
-    params[:avatar_url] = (auth.provider == 'wechat') ? auth.info.headimgurl : auth.info.image rescue nil
+    params[:avatar_url] = case auth.provider
+                          when 'wechat'
+                            auth.info.headimgurl
+                          when 'qq_connect'
+                            auth.extra.raw_info.figureurl_qq_2
+                          else
+                            auth.info.image
+                          end
     params[:desc] = auth.info.description rescue nil
     params[:unionid] = auth.extra.raw_info.unionid rescue nil
-
-    params[:url] = case auth.provider
-    when 'facebook'
-      auth.extra.raw_info.link
-    when 'google_oauth2'
-      auth.extra.raw_info.profile
-    when 'twitter'
-      auth.info.urls[:Twitter]
-    when 'linkedin'
-      auth.info.urls.public_profile
-    when 'weibo'
-      auth.info.urls[:Weibo]
-    end
+    params[:province] = auth.extra.raw_info.province
+    params[:city] = auth.extra.raw_info.city
+    params[:gener] = auth.extra.raw_info.gender
+    params[:url] = auth.provider == 'weibo' ? auth.info.urls[:Weibo] : nil
   end
 
   def omniauth_params
