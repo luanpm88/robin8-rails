@@ -16,13 +16,13 @@ module Property
           optional :name, type: String
           optional :email, type: String
           optional :phone, type: String
-          optional :avatar, type: Rack::Multipart::UploadedFile
+          optional :avatar_url, type: String
         end
         put "/" do
           if current_kol.update(
               name: params[:name],
               email: params[:email],
-              avatar: params[:avatar])
+              remote_avatar_url: params[:avatar_url])
             present current_kol, with: Property::V1::Entities::Profile
           else
             error!({error: '修改用户信息出错了'}, 400)

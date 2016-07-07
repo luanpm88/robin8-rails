@@ -7,6 +7,7 @@ module Property
       content_type :json, 'application/json'
 
       mount Profile
+      mount Account
     end
   end
 end

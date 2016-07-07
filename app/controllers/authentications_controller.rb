@@ -11,13 +11,13 @@ class AuthenticationsController < ApplicationController
       identity_params = params.merge(:from_type => 'web')
       identity_params.merge!(kol_id: current_kol.id) if current_kol
       identity = Identity.create_identity_from_app(identity_params)
-      redirect_to cookies.delete(:return_url) || root_path(identity_code: identity.id) #重定向到 注册页面
+      redirect_to omniauth_params['return_url'] || root_path(identity_code: identity.id) #重定向到 注册页面
     else
       # sign in and set union token
       user = identity.kol.find_or_create_brand_user
       sign_in user # maybe change later !
       set_union_access_token
-      redirect_to cookies.delete(:return_url) || root_path
+      redirect_to omniauth_params['return_url'] || root_path
     end
   end
 
@@ -60,4 +60,7 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+  def omniauth_params
+    request.env['omniauth.params']
+  end
 end
