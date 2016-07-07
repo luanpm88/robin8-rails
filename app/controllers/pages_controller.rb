@@ -73,14 +73,6 @@ class PagesController < ApplicationController
     render "landing_page_brand", :layout => 'landing'
   end
 
-  def singup
-    render "home", :layout => 'application'
-  end
-
-  def signin
-    render "home", :layout => 'application'
-  end
-
   def check_used_to_signed_in    #检查是否曾经登录过网站
     if UserSignInRecord.where(sign_in_token: cookies[:remember_signed_in]).present?
       render json: {success: true} and return
