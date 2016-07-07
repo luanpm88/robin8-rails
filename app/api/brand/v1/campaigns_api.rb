@@ -21,7 +21,7 @@ module Brand
             action_url_params = declared params
             uuid = Base64.encode64({ :campaign_action_url_identifier => action_url_params[:identifier], :step => '2'}.to_json).gsub("\n","")
             origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
-            short_url = ShortUrl.convert $weixin_client.authorize_url(origin_action_url)
+            short_url = ShortUrl.convert origin_action_url
           end
 
           params do
