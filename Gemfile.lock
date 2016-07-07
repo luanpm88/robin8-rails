@@ -414,6 +414,11 @@ GEM
     omniauth-oauth2 (1.3.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    omniauth-qq (0.3.0)
+      multi_json
+      omniauth (~> 1.0)
+      omniauth-oauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-twitter (1.2.0)
       json (~> 1.3)
       omniauth-oauth (~> 1.1)
@@ -830,6 +835,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-linkedin
   omniauth-linkedin-oauth2
+  omniauth-qq
   omniauth-twitter
   omniauth-wechat-oauth2!
   omniauth-weibo-oauth2
