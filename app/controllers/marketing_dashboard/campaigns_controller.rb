@@ -20,7 +20,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agreed
-    @campaigns = Campaign.where.not(status: 'unexecute').realable
+    @campaigns = Campaign.where.not(status: ['unexecute', "unpay"]).realable
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
