@@ -33,9 +33,9 @@ class CampaignShow < ActiveRecord::Base
 
     cpa_first_step_key = nil
     if campaign.is_cpa_type?
+      cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s 
       if options[:step] != 2
         if openid
-          cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s 
           Rails.cache.write(cpa_first_step_key, openid, :expired_at => campaign.deadline)
         end
         return [false, 'is_first_step_of_cpa_campaign'] 
