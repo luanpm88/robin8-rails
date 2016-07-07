@@ -99,6 +99,16 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  def current_token
+    return @current_token if @current_token
+    @current_token = Doorkeeper::AccessToken.find_by_token cookies["_robin8_union"]
+  end
+
+  def current_kol
+    return @current_kol if @current_kol
+    @current_kol = Kol.where(id: current_token.resource_owner_id).take if current_token
+  end
+
   protected
 
   def configure_permitted_parameters

@@ -3,7 +3,6 @@ class AuthenticationsController < ApplicationController
   before_action :handle_omniauth_callback, only: [ :weibo, :wechat ]
 
   def weibo
-    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
@@ -24,6 +23,8 @@ class AuthenticationsController < ApplicationController
 
   # def wechat
   # end
+
+
 
   def failure
     p params
@@ -57,15 +58,6 @@ class AuthenticationsController < ApplicationController
     when 'weibo'
       auth.info.urls[:Weibo]
     end
-  end
-
-  def current_token
-    Doorkeeper::AccessToken.find_by_token cookies["_robin8_union"]
-  end
-
-  def current_kol
-    return @current_kol if @current_kol
-    @current_kol = Kol.where(id: current_token.resource_owner_id).take
   end
 
 end
