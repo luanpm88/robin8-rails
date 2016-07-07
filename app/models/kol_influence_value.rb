@@ -69,14 +69,16 @@ class KolInfluenceValue < ActiveRecord::Base
     campaign_score = ItemBaseScore + (campaign_avg_click_score || 0) + (campaign_total_click_score || 0)
     share_score = ItemBaseScore + (article_avg_click_score || 0) + (article_total_click_score || 0)
     contacts_score = ItemBaseScore + (contact_score || 0)
+    score = {:feature_score => feature_score, :active_score => active_score, :campaign_score => campaign_score,
+             :share_score => share_score, :contacts_score => contacts_score }
     rate = {}
     rate[:feature_rate] =  (feature_score / 216.0).round(2)
     rate[:active_rate] =  (active_score / 256.0).round(2)
     rate[:campaign_rate] =  (campaign_score / 176.0).round(2)
     rate[:share_rate] =  (share_score / 176.0).round(2)
     rate[:contact_rate] =  (contacts_score / 176.0).round(2)
-    puts rate
     rate
+    [rate, score]
   end
 
   def self.schedule_cal_influence

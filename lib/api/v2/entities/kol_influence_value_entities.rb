@@ -29,21 +29,39 @@ module API
           end
         end
 
-        class History  < Grape::Entity
-          expose :feature_rate do |history|
-            history[:feature_rate] >= 0.5 ? history[:feature_rate] : 0.5      rescue 0.5
+        class ItemRate  < Grape::Entity
+          expose :feature_rate do |value|
+            value[:feature_rate] >= 0.5 ? value[:feature_rate] : 0.5      rescue 0.5
           end
-          expose :active_rate do |history|
-            history[:active_rate] >= 0.5 ? history[:active_rate] : 0.5        rescue 0.5
+          expose :active_rate do |value|
+            value[:active_rate] >= 0.5 ? value[:active_rate] : 0.5        rescue 0.5
           end
-          expose :campaign_rate do |history|
-            history[:campaign_rate] >= 0.5 ? history[:campaign_rate] : 0.5     rescue 0.5
+          expose :campaign_rate do |value|
+            value[:campaign_rate] >= 0.5 ? value[:campaign_rate] : 0.5     rescue 0.5
           end
-          expose :share_rate do |history|
-            history[:share_rate] >= 0.5 ? history[:share_rate] : 0.5           rescue 0.5
+          expose :share_rate do |value|
+            value[:share_rate] >= 0.5 ? value[:share_rate] : 0.5           rescue 0.5
           end
-          expose :contact_rate do |history|
-            history[:contact_rate] >= 0.5 ? history[:contact_rate] : 0.5       rescue 0.5
+          expose :contact_rate do |value|
+            value[:contact_rate] >= 0.5 ? value[:contact_rate] : 0.5       rescue 0.5
+          end
+        end
+
+        class ItemScore < Grape::Entity
+          expose :feature_score do |value|
+            value[:feature_score]
+          end
+          expose :active_score do |value|
+            value[:active_score]
+          end
+          expose :campaign_score do |value|
+            value[:campaign_score]
+          end
+          expose :share_score do |value|
+            value[:share_score]
+          end
+          expose :contact_score do |value|
+            value[:contact_score]
           end
         end
       end

@@ -62,4 +62,16 @@ class Weibo
     return if res.blank? ||  res.size == 0
     KolStatus.add_status(identity, res["statuses"])
   end
+
+  def self.get_status(identity)
+    if identity.access_token_refresh_time && (identity.access_token_refresh_time <  Time.now + AccessTokenExpired)
+      update_identity_to_db(identity)
+    elsif identity.refresh_token && identity.refresh_time < Time.now + RefreshTokenExpired
+      update_refresh_token(identity)
+      server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
+      res_json = RestClient.get(server)    rescue ""
+      res = JSON.parse res_json        rescue {}
+      res["statuses"].each do ||
+    end
+  end
 end
