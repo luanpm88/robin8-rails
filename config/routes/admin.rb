@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'agreed'
         get 'rejected'
+        get :search
         match 'batch_handle', via: [:post]
       end
       match '/agree' => 'withdraws#agree', via: [:post]

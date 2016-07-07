@@ -7,6 +7,15 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
     formated_response "全部"
   end
 
+  def search
+    search_by = params[:search_key]
+    kol = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
+    if kol
+      @withdraws = Withdraw.where(:kol_id => kol.id).order('created_at DESC').includes(:kol)
+    end
+    formated_response "全部"
+  end
+
   def pending
     @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC')
 
