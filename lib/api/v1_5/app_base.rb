@@ -5,6 +5,7 @@ module API
       mount API::V1_5::Tags
       mount API::V1_5::HotItems
       mount API::V1_5::Kols
+      mount API::V1_5::Influences
     end
   end
 end

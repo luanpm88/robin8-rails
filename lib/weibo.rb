@@ -65,13 +65,19 @@ class Weibo
 
   def self.get_status(identity)
     if identity.access_token_refresh_time && (identity.access_token_refresh_time <  Time.now + AccessTokenExpired)
-      update_identity_to_db(identity)
+      #nothing to do
     elsif identity.refresh_token && identity.refresh_time < Time.now + RefreshTokenExpired
       update_refresh_token(identity)
-      server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
-      res_json = RestClient.get(server)    rescue ""
-      res = JSON.parse res_json        rescue {}
-      res["statuses"].each do ||
+    else
+      return [false, nil]
     end
+    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
+    res_json = RestClient.get(server)    rescue ""
+    res = JSON.parse res_json        rescue {}
+    statuses = []
+    res["statuses"].each do |status|
+      statuses << status['text']
+    end
+    return [true, statuses]
   end
 end

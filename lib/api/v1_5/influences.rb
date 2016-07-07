@@ -2,6 +2,10 @@ module API
   module V1_5
     class Influences < Grape::API
       resources :influences do
+        before do
+          authenticate!
+        end
+
         params do
           requires :kol_uuid, type: String
         end
@@ -19,6 +23,7 @@ module API
           end
           rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count + 1
           present :error, 0
+          present :identities, current_kol.get_uniq_identities, with: API::V1::Entities::IdentityEntities::Summary
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid], current_kol.try(:id), kol_value)
           present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::ItemRate
@@ -26,6 +31,30 @@ module API
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid],  current_kol.try(:id))
           present :contact_count, contacts.size
           present :rank_index, rank_index
+        end
+
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'my_analysis' do
+           weibo_identity = current_kol.identities.provider('weibo').order('score desc').first rescue nil
+           if weibo_identity.nil?
+             weibo_identity_status = 'no_bind'
+           else
+             state, statuses = Weibo.get_status(weibo_identity)
+             if state == false
+               weibo_identity_status = 'had_expired'
+             else
+               res = NlpService.get_analyze_content(statuses)
+               weibo_identity_status = 'active'
+               categories = res['category']
+               wordclouds = res["wordcloud"].collect{|t| t['text']}
+             end
+           end
+           present :error, 0
+           present :weibo_identity_status, weibo_identity_status
+           present :categories, categories, with: API::V1_5::Entities::NlpServiceEntities::Category
+           present :wordclouds, wordclouds
         end
       end
     end

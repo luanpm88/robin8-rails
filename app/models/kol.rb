@@ -498,7 +498,10 @@ class Kol < ActiveRecord::Base
     else
       'xxx'
     end
+  end
 
+  def get_uniq_identities
+    self.identities.group("provider")
   end
 
 end
