@@ -231,3 +231,5 @@ gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
 # https://github.com/CanCanCommunity/cancancan
 gem 'cancancan', '~> 1.10'
 gem 'alipay', '~> 0.12.0'
+# https://github.com/rails/actioncable/tree/archive
+gem 'actioncable', github: 'rails/actioncable', branch: "archive"

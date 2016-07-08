@@ -16,6 +16,7 @@ class PagesController < ApplicationController
     if user_signed_in?
       redirect_to '/brand/'
     else
+      @uuid, @qr_code_url = uuid_and_qr_code_url
       render 'marketing', :layout => 'brand_v2'
     end
   end
@@ -28,6 +29,7 @@ class PagesController < ApplicationController
     if user_signed_in?
       redirect_to '/brand/'
     else
+      @uuid, @qr_code_url = uuid_and_qr_code_url
       render 'marketing', :layout => 'brand_v2'
     end
   end
@@ -86,6 +88,14 @@ class PagesController < ApplicationController
       render json: {success: true} and return
     end
     render nothing: true
+  end
+
+  def scan_qr_code_and_login
+    # token = SecureRandom.uuid
+    token = params[:token]
+    $redis.set token, params[:id]
+    ActionCable.server.broadcast "uuid_#{token}", result: "success", token: token
+    head :ok
   end
 
   def pricing
@@ -220,18 +230,16 @@ class PagesController < ApplicationController
     redirect_to params[:redirect_url] || 'http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb'
   end
 
-
-  # =====================申请支付宝===================
-  def join_in
-    render 'join_in', :layout => 'brand_v2'
-  end
-
-  def pay
-    @price = params[:price]
-    render 'pay', :layout => 'brand_v2'
-  end
-
   def kol_publish_campaign_help
     render :layout => false
   end
+
+  private
+
+  def uuid_and_qr_code_url
+    uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
+    url = "http://qr.topscan.com/api.php?text=#{Rails.application.secrets[:domain]}/pages/scan_qr_code_and_login?token=#{uuid}%26id=2"
+    return uuid, url
+  end
+
 end

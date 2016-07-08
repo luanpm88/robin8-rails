@@ -164,6 +164,10 @@ class User < ActiveRecord::Base
     false
   end
 
+  def self.find_user_by_token(token)   #扫码登录通过token查找user
+    find($redis.get(token))
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
