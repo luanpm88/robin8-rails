@@ -208,6 +208,8 @@ gem 'grape', '~> 0.9.0'
 gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
 gem 'grape-kaminari'
+# https://github.com/reprah/grape-raketasks
+gem 'grape-raketasks'
 
 gem 'jwt'
 

@@ -300,6 +300,10 @@ GEM
     grape-kaminari (0.1.8)
       grape
       kaminari
+    grape-raketasks (0.0.3)
+      activesupport
+      grape
+      rake
     guard (2.12.6)
       formatador (>= 0.2.4)
       listen (~> 2.7)
@@ -828,6 +832,7 @@ DEPENDENCIES
   grape-entity (~> 0.4.3)
   grape-kaminari
   grape-present_cache!
+  grape-raketasks
   guard-rspec
   has_scope
   hpricot
