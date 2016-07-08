@@ -37,7 +37,7 @@ module API
         params do
           requires :kol_uuid, type: String
         end
-        get 'my_analysis' do
+        get '/my_analysis' do
            weibo_identity = current_kol.identities.provider('weibo').order('score desc').first rescue nil
            if weibo_identity.nil?
              weibo_identity_status = 'no_bind'
