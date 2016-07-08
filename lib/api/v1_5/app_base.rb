@@ -6,6 +6,7 @@ module API
       mount API::V1_5::HotItems
       mount API::V1_5::Kols
       mount API::V1_5::Influences
+      mount API::V1_5::QrCodeLogin
     end
   end
 end

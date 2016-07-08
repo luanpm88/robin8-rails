@@ -113,6 +113,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :kols do
+    collection do
+      get 'get_kol_by_token'
+    end
+  end
+
   resources :payments do
     post 'create_subscription', on: :collection
     post 'update_subscription', on: :collection

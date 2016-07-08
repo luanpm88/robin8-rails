@@ -4,13 +4,6 @@ class UsersController < ApplicationController
     render json: current_user
   end
 
-  def get_user_by_token  #扫码登录根据token查找user
-    @user = User.find_user_by_token(params[:token])
-    $redis.del params[:token]
-    sign_in @user
-    redirect_to '/brand/'
-  end
-
   def get_active_subscription
     render json: current_user.active_subscription
   end
