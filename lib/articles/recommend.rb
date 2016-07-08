@@ -20,8 +20,9 @@ module Articles
     SearchUrl =  "#{Rails.application.secrets[:recommend_server]}:5001/search/v1.1/wechat/search"
     def self.get_search_list(title = nil, page = 1)
       params = {keywords:[title], from: (page - 1) * PerPage, size: PerPage }
-      res = RestClient.post SearchUrl, params, :timeout => TimeOut         rescue ""
-      JSON.parse(res)["articles"]                               rescue []
+      res = RestClient.post SearchUrl, params.to_json, :content_type => :json, :accept => :json, :timeout => TimeOut         rescue ""
+      res = JSON.parse(res)["articles"]                               rescue []
+      res
     end
 
   end
