@@ -96,8 +96,7 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       ActiveRecord::Base.transaction do
         self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
-        actual_per_action_budget = self.cal_actual_per_action_budget
-        self.update_column(:actual_per_action_budget, actual_per_action_budget)
+        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if self.actual_per_action_budget.blank?
         Message.new_campaign(self, get_kol_ids)
       end
     end
