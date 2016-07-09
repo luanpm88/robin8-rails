@@ -6,6 +6,7 @@ module Campaigns
       SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
+      KolBudgetRate = 0.7
     end
 
     def pay
@@ -208,8 +209,13 @@ module Campaigns
      end
 
     def cal_actual_per_action_budget
+      if self.user_id == 1240
+        kol_budget_rate = 0.9
+      else
+        kol_budget_rate = KolBudgetRate
+      end
       if is_click_type?
-        actual_per_budget = (self.per_action_budget * 0.7).round(2)
+        actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
         point1, point2 = actual_per_budget.divmod(0.1)
         point2 = point2.round(2)
         if point2 >= 0.08
@@ -221,9 +227,9 @@ module Campaigns
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
       elsif is_recruit_type?
-        actual_per_action_budget = (self.per_action_budget * 0.7).round(0)
+        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
       else
-        actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
+        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
       end
       actual_per_action_budget
     end
