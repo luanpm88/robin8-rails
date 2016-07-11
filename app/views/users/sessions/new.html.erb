@@ -13,9 +13,9 @@
         <% unless params[:no_social] %>
         <div class="divider">无需注册，社交账号立即登录</div>
         <div class="social-networks">
-          <a href="javascript:void(0);" class="sn-wechat">微信</a>
-          <a href="javascript:void(0);" class="sn-weibo">微博</a>
-          <a href="javascript:void(0);" class="sn-qq">QQ</a>
+          <a href="/auth/wechat" class="sn-wechat">微信</a>
+          <a href="/auth/weibo" data-url="" class="sn-weibo">微博</a>
+          <a href="/auth/qq_connect" data-url="" class="sn-qq">QQ</a>
         </div>
         <% end %>
         <div class="divider">账号直接登录</div>

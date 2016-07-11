@@ -50,14 +50,11 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :users, controllers: {
-    sessions: "users/sessions",
-    registrations: "users/registrations",
-    passwords: "users/passwords",
-    invitations: "users/invitations",
-    # omniauth_callbacks: "users/omniauth_callbacks",
-    confirmations: "users/confirmations"
-  }
+
+  get    '/users/sign_in', to: redirect('/login')
+  get    '/users/sign_up', to: redirect('/register')
+
+  devise_for :users
 
   devise_scope :user do
     match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
@@ -71,11 +68,12 @@ Rails.application.routes.draw do
     get    '/login',              to: "users/sessions#new"
     get    '/login/scan',         to: "users/sessions#scan"
     post   '/login',              to: "users/sessions#create"
-    delete '/logout',             to: "users/sessions#destroy"
+    get    '/logout',             to: "users/sessions#destroy"
     get    '/password',           to: "users/passwords#new"
     post   '/password',           to: "users/passwords#create"
     post   '/passport/sender/sms',to: "users/sessions#sms"
   end
+
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
 

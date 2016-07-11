@@ -23,9 +23,9 @@ class BrandController < ApplicationController
   private
   def authenticate_user!
     if current_kol
-      warden.set_user(current_kol.user, scope: :user) unless user_signed_in?
+      sign_in(:user, current_kol.user) if not user_signed_in?
     else
-      warden.logout(:user) if user_signed_in?
+      sign_out(:user) and flash[:alert] = "请您先登录或注册新账号" if user_signed_in?
     end
 
     if is_super_vistor?
@@ -33,7 +33,7 @@ class BrandController < ApplicationController
     elsif user_signed_in?
       super
     else
-      redirect_to '/'
+      redirect_to login_url(subdomain: :passprot, ok_url: brand_url(subdomain: false))
     end
   end
 
