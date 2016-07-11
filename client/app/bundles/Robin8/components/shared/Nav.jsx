@@ -32,7 +32,7 @@ export default class BrandNav extends React.Component {
                 <li><Link to={`/brand/${brand.get('id')}/edit`}>品牌资料</Link></li>
                 <li><Link to={'/brand/password'}>修改密码</Link></li>
                 <li><Link to={'/brand/financial/recharge'}>充值</Link></li>
-                <li><a href="/users/sign_out">退出</a></li>
+                <li><a href="/logout">退出</a></li>
               </ul>
             </div>
           </div>

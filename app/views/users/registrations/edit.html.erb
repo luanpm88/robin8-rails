@@ -1,0 +1,54 @@
+<div class="register-edit-wrap">
+  <div class="form-wrap">
+    <%= render partial: "users/shared/alert" %>
+    <div class="container">
+        <h3>完善账号资料</h3>
+        <% if @edit_mode == :password %>
+          <div class="divider">设置密码使用手机账号直接登录</div>
+        <% end %>
+        <% if @edit_mode == :mobile_number %>
+          <div class="divider">快速绑定手机号码</div>
+        <% end %>
+        <div class="form-panel">
+          <%= form_tag('/register/#{@kol.id}', method: 'put', remote: true) do %>
+            <div class="form-alert-wrap"></div>
+            <% if @edit_mode == :mobile_number %>
+              <div class="form-group">
+                <i class="icon-mobile"></i>
+                <input type="tel" class="form-control mobile-number" name='user[mobile_number]' placeholder="请填写您的手机号" required>
+              </div>
+              <div class="form-group col-2 captcha">
+                <div class="cell">
+                  <%= rucaptcha_input_tag(class: 'form-control captcha-code', placeholder: '请填写图片验证码') %>
+                </div>
+                <div class="cell">
+                  <%= rucaptcha_image_tag(alt: '图片验证码', class: "captcha-image", data: {
+                    toggle: "tooltip", placement: "top", title: "点击更换图片验证码" }) %>
+                </div>
+              </div>
+              <div class="form-group col-2">
+                <div class="cell">
+                  <input type="text" class="form-control sms-code" name='user[sms_code]' placeholder="请填写短信验证码" required />
+                </div>
+                <div class="cell">
+                  <a href="javascript:void(0);" class="sms-code-btn" data-edit=1 data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
+                </div>
+              </div>
+            <% end %>
+
+            <% if @edit_mode == :password %>
+              <div class="form-group">
+                <input type="password" class="form-control" name='user[password]' placeholder="请填写您的密码" required />
+              </div>
+            <% end %>
+
+            <button type="submit" class="submit-btn" data-loading-txt="正在提交...">确认提交</button>
+          <% end %>
+          <div class="form-bottom">
+            <%= link_to "跳过此步，直接进入", @ok_url, class: "password-link-btn" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
