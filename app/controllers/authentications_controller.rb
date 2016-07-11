@@ -3,7 +3,6 @@ class AuthenticationsController < ApplicationController
   before_action :handle_omniauth_callback, only: [ :weibo, :wechat, :qq_connect ]
 
   def weibo
-    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
@@ -66,7 +65,6 @@ class AuthenticationsController < ApplicationController
 
   def wechat_third_callback
     auth_code = params["auth_code"]
-    binding.pry
     if auth_code
       #查询公众号的授权信息
       auth_info = WxThird::Util.query_auth_info(auth_code)
