@@ -78,7 +78,7 @@ class CampaignInvite < ActiveRecord::Base
     if campaign.status == 'executing'
       self.update_attributes(:img_status => 'passed', :check_time => Time.now)
     elsif campaign.status == 'executed'
-      self.update_attributes!(:img_status => 'passed', :status => 'settled', :check_time => Time.now)
+      self.update_attributes!(:img_status => 'passed', :status => 'finished', :check_time => Time.now)
       self.settle
     end
     Message.new_check_message('screenshot_passed', self, campaign)
