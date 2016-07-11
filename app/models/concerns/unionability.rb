@@ -15,6 +15,7 @@ module Concerns
           { :value => conditions[:login].downcase }
         ]).take
 
+        return unless user
         user.valid_password?(conditions["password"]) ? user : nil
       end
     end

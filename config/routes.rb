@@ -62,6 +62,19 @@ Rails.application.routes.draw do
   devise_scope :user do
     match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
     match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
+
+    get    '/register',           to: "users/registrations#new"
+    post   '/register',           to: "users/registrations#create"
+    get    '/register/bind',      to: "users/registrations#bind"
+    get    '/register/edit',      to: "users/registrations#edit"
+    put    '/register',           to: "users/registrations#update"
+    get    '/login',              to: "users/sessions#new"
+    get    '/login/scan',         to: "users/sessions#scan"
+    post   '/login',              to: "users/sessions#create"
+    delete '/logout',             to: "users/sessions#destroy"
+    get    '/password',           to: "users/passwords#new"
+    post   '/password',           to: "users/passwords#create"
+    post   '/passport/sender/sms',to: "users/sessions#sms"
   end
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }

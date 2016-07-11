@@ -22,6 +22,12 @@ class BrandController < ApplicationController
 
   private
   def authenticate_user!
+    if current_kol
+      warden.set_user(current_kol.user, scope: :user) unless user_signed_in?
+    else
+      warden.logout(:user) if user_signed_in?
+    end
+
     if is_super_vistor?
       sign_in_as_super_visitor(params[:user_id])
     elsif user_signed_in?

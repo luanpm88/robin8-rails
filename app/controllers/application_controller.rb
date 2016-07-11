@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include Concerns::BrowserRequest
+  include Concerns::RequestSmsValidator
+
   before_filter :set_cookies
   before_filter :set_utm_source
   before_action :set_translations
@@ -10,6 +12,8 @@ class ApplicationController < ActionController::Base
   helper_method :china_locale?
   helper_method :mobile_request?
   helper_method :production?
+  helper_method :current_kol
+  helper_method :current_token
 
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
@@ -27,14 +31,6 @@ class ApplicationController < ActionController::Base
 
   def set_cookies
     cookies[:_robin8_visitor] ||= SecureRandom.hex
-  end
-
-  def set_union_access_token
-    return unless current_user.kol
-    cookies.permanent[:_robin8_union] = {
-      value: current_user.kol.union_access_token.token,
-      domain: :all
-    }
   end
 
   def is_china_request?
@@ -107,6 +103,19 @@ class ApplicationController < ActionController::Base
   def current_kol
     return @current_kol if @current_kol
     @current_kol = Kol.where(id: current_token.resource_owner_id).take if current_token
+  end
+
+  def set_union_access_token(obj)
+    return unless obj.respond_to? :union_access_token
+
+    cookies.permanent[:_robin8_union] = {
+      value: obj.union_access_token.token,
+      domain: :all
+    }
+  end
+
+  def clear_union_access_token
+    cookies.delete("_robin8_union")
   end
 
   protected

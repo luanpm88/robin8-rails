@@ -42,7 +42,7 @@ class UsersController < ApplicationController
       end
 
       sign_in @user
-      set_union_access_token
+      set_union_access_token(@kol)
       render :template => 'users/create.js.erb' and return
 
       # return redirect_to root_path + "#profile"
