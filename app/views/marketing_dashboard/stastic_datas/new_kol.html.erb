@@ -2,7 +2,8 @@
   <thead>
   <tr>
     <th>日期</th>
-    <th>新增总人数</th>
+    <th>新增绑手机人数</th>
+    <th>新增未绑手机人数</th>
     <th>新增绑微信</th>
     <th>新增绑微博</th>
     <th>新增绑QQ</th>
@@ -12,7 +13,8 @@
   <% @collect.each do | record |  %>
     <tr>
       <td><%= record[:date] %></td>
-      <td><%= record[:total] %></td>
+      <td><%= record[:bind_mobiles] %></td>
+      <td><%= record[:unbind_mobiles] %></td>
       <td><%= record[:wechat] %></td>
       <td><%= record[:weibo] %></td>
       <td><%= record[:qq] %></td>

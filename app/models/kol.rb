@@ -60,6 +60,7 @@ class Kol < ActiveRecord::Base
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
+  scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
 
   def email_required?
     false if self.provider != "signup"
@@ -427,7 +428,7 @@ class Kol < ActiveRecord::Base
         attrs.delete("id")
         attrs.delete("kol_uuid")
         identity.attributes = attrs
-        identity.kol_id = kol_id
+        identity.kol_id = kol_id   if identity.kol_id.blank?
         identity.save!
         # Weibo.update_identity_info(identity)
       end
@@ -500,7 +501,10 @@ class Kol < ActiveRecord::Base
     else
       'xxx'
     end
+  end
 
+  def get_uniq_identities
+    self.identities.group("provider")
   end
 
 end

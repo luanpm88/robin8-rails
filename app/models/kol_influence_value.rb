@@ -34,6 +34,7 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
     kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
     kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
+    kol_value.updated_at = Time.now
     kol_value.save
     kol.update_influence_result(kol_uuid,kol_value.influence_score, kol_value.updated_at)   if kol.present?
     KolInfluenceValueHistory.generate_history(kol_value, is_auto)
@@ -69,14 +70,16 @@ class KolInfluenceValue < ActiveRecord::Base
     campaign_score = ItemBaseScore + (campaign_avg_click_score || 0) + (campaign_total_click_score || 0)
     share_score = ItemBaseScore + (article_avg_click_score || 0) + (article_total_click_score || 0)
     contacts_score = ItemBaseScore + (contact_score || 0)
+    score = {:feature_score => feature_score, :active_score => active_score, :campaign_score => campaign_score,
+             :share_score => share_score, :contact_score => contacts_score }
     rate = {}
     rate[:feature_rate] =  (feature_score / 216.0).round(2)
     rate[:active_rate] =  (active_score / 256.0).round(2)
     rate[:campaign_rate] =  (campaign_score / 176.0).round(2)
     rate[:share_rate] =  (share_score / 176.0).round(2)
     rate[:contact_rate] =  (contacts_score / 176.0).round(2)
-    puts rate
     rate
+    [rate, score]
   end
 
   def self.schedule_cal_influence

@@ -11,8 +11,9 @@ Rails.application.routes.draw do
   mount RuCaptcha::Engine => "/rucaptcha"
   mount BrandAPI => '/brand_api'
   mount PropertyAPI => '/prop'
-
   use_doorkeeper
+  mount ActionCable.server => '/cable'
+  mount ApplicationAPI => '/brand_api'
 
   get 'track_urls/:id', to: "pages#track_url"
 
@@ -22,6 +23,7 @@ Rails.application.routes.draw do
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
+  get 'read_hot_item' => 'commons#read_hot_item'
 
   resources :identities do
     member do
@@ -116,6 +118,7 @@ Rails.application.routes.draw do
 
   resources :users do
     collection do
+      get 'get_user_by_token'
       get 'identities'
       get 'get_identities'
       get 'info'
@@ -123,6 +126,12 @@ Rails.application.routes.draw do
       get :avail_amount
       get :check_exist_by_mobile_number
       post :modify_password
+    end
+  end
+
+  resources :kols do
+    collection do
+      get 'get_kol_by_token'
     end
   end
 
@@ -148,6 +157,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
+  get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
@@ -180,8 +190,4 @@ Rails.application.routes.draw do
   post 'campaign_invite/reject', to: 'interested_campaigns#update'
   post 'campaign_invite/invite', to: 'interested_campaigns#update'
   post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
-
-  # =========================申请支付宝需要的页面路由用完要删掉=============================
-  get 'join_in', to: 'pages#join_in'
-  get 'pay', to: 'pages#pay'
 end

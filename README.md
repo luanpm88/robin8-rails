@@ -40,3 +40,5 @@ Starting MailCatcher
     init banner
     SpiderServer
     weixin secrets
+
+#   recommend_server: '139.196.204.131'

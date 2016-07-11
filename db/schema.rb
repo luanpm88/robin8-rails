@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630103942) do
+ActiveRecord::Schema.define(version: 20160705082555) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -349,6 +349,8 @@ ActiveRecord::Schema.define(version: 20160630103942) do
     t.string   "action_desc",              limit: 255
     t.string   "appid",                    limit: 255
     t.datetime "revoke_time"
+    t.string   "invalid_reasons",          limit: 255
+    t.string   "admin_desc",               limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -826,6 +828,7 @@ ActiveRecord::Schema.define(version: 20160630103942) do
     t.integer  "age",                    limit: 4
     t.integer  "weixin_friend_count",    limit: 4
     t.string   "kol_level",              limit: 255
+    t.string   "id_card",                limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1015,8 +1018,7 @@ ActiveRecord::Schema.define(version: 20160630103942) do
     t.datetime "revoked_at"
     t.string   "scopes",            limit: 255
   end
-
-  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_ac82406eb3", using: :btree
+  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_9975cf819c", using: :btree
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -1035,12 +1037,14 @@ ActiveRecord::Schema.define(version: 20160630103942) do
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",         limit: 255,   null: false
-    t.string   "uid",          limit: 50,    null: false
-    t.string   "secret",       limit: 255,   null: false
-    t.text     "redirect_uri", limit: 65535, null: false
+
+    t.string   "name",         limit: 255,                   null: false
+    t.string   "uid",          limit: 50,                    null: false
+    t.string   "secret",       limit: 255,                   null: false
+    t.text     "redirect_uri", limit: 65535,                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "union",        limit: 1,     default: false
   end
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree

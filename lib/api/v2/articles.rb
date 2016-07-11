@@ -6,26 +6,23 @@ module API
           authenticate!
         end
 
-        #发现文章列表
+        #发现文章列表   开始推荐和搜索在一起，后台搜索单独拆开（但是要兼容老版本）
         params do
           optional :type, type: String, values: ['discovery' ,'select']
           optional :title, type: String
         end
         get '/' do
-          if params[:type] == 'select'  || current_kol.article_actions.size == 0
-            articles = ::Articles::Store.get_select_like_list(current_kol.id)
+          last_request_time = Rails.cache.read("article_last_request_#{current_kol.id}") || nil
+          return error_403!({error: 1, detail: '刷新过快，请稍后再试！' })   if  (Time.now -  last_request_time <= 2)  rescue false
+          Rails.cache.write("article_last_request_#{current_kol.id}",Time.now)
+          #搜索的时候
+          if params[:title]
+            origin_page = Rails.cache.read("kol_search_#{params[:title]}_page") || 0
+            page = origin_page + 1
+            Rails.cache.write("kol_search_#{params[:title]}_page", page, :expires_in => 2.minutes)
+            articles = ::Articles::Recommend.get_search_list(params[:title], page )
           else
-            last_request_time = Rails.cache.read("article_last_request_#{current_kol.id}") || nil
-            return error_403!({error: 1, detail: '刷新过快，请稍后再试！' })   if  (Time.now -  last_request_time <= 2)  rescue false
-            Rails.cache.write("article_last_request_#{current_kol.id}",Time.now)
-            if params[:title]
-              origin_page = Rails.cache.read("kol_search_#{params[:title]}_page") || 0
-              page = origin_page + 1
-              Rails.cache.write("kol_search_#{params[:title]}_page", page, :expires_in => 2.minutes)
-            else
-              page = 1
-            end
-            articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title], page )
+            articles = ::Articles::Recommend.get_recommend_list(current_kol.id )
           end
           return error_403!({error: 1, detail: '没有找到新文章！' })  if articles.size == 0
           present :error, 0
@@ -43,7 +40,7 @@ module API
           return error_403!({error: 1, detail: '刷新过快，请稍后再试！' })   if  (Time.now -  last_request_time <= 2)  rescue false
           Rails.cache.write("article_last_request_#{current_kol.id}",Time.now)
 
-          articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title], params[:page] || 1)
+          articles = ::Articles::Recommend.get_search_list(params[:title], params[:page] || 1)
           present :error, 0
           present :articles_count, articles.size
           present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary

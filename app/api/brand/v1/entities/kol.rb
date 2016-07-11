@@ -2,7 +2,11 @@ module Brand
   module V1
     module Entities
       class Kol < Entities::Base
-        expose :id, :name, :avatar_url, :influence_score
+        expose :id, :avatar_url, :influence_score
+        expose :name do |object|
+          object.safe_name
+        end
+        
         expose :city do |object|
           object.app_city_label
         end

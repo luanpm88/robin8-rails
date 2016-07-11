@@ -28,16 +28,26 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   #只有在数据连续的时候  才可以，不然index值对应不正确
   def new_kol
     day_count = 5
-    _start = (day_count + 1).days.ago
-    @total = Kol.where("mobile_number is not null").where("created_at > '#{_start}'").select("DATE(created_at) as created, count(*) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @wechat = Identity.where(:provider => 'wechat').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @weibo = Identity.where(:provider => 'weibo').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
-    @qq = Identity.where(:provider => 'qq').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    # _start = (day_count + 1).days.ago
+    # @bind_mobiles = Kol.where("mobile_number is not null").where("created_at > '#{_start}'").select("DATE(created_at) as created, count(*) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    # @unbind_mobiles = Kol.where("mobile_number is null").where("created_at > '#{_start}'").select("DATE(created_at) as created, count(*) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    # @wechat = Identity.where(:provider => 'wechat').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    # @weibo = Identity.where(:provider => 'weibo').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
+    # @qq = Identity.where(:provider => 'qq').where("created_at > '#{_start}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at) asc").group("DATE(created_at)")
     @collect =  []
     today = Date.today
     day_count.times.each do |index|
-      @collect << {:date => (today - index.days), :total => (@total[index].count rescue nil), :wechat => (@wechat[index].count rescue nil),
-                   :weibo => (@weibo[index].count rescue nil), :qq => (@qq[index].count rescue nil)}
+      date = today - index.days
+      bind_mobiles = Kol.by_date(date).where("mobile_number is not null").count
+      unbind_mobiles = Kol.by_date(date).where("mobile_number is null").count
+      kol_ids = Kol.by_date(date).collect{|t| t.id}
+      identitys = Identity.where(:kol_id => kol_ids).by_date(date).group("provider").size
+      @collect << {:date => date,
+                   :bind_mobiles => bind_mobiles,
+                   :unbind_mobiles => unbind_mobiles,
+                   :wechat => identitys['wechat'],
+                   :weibo => identitys['weibo'],
+                   :qq => identitys['qq']}
     end
   end
 

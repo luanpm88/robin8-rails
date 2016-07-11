@@ -103,6 +103,9 @@
             <li>
               <%= link_to '已付款订单', marketing_dashboard_alipay_orders_path(paid: true) %>
             </li>
+            <li>
+              <%= link_to '单笔支付活动列表', campaigns_marketing_dashboard_alipay_orders_path(paid: true) %>
+            </li>
           </ul>
         </li>
         <li>
@@ -147,6 +150,9 @@
         </li>
         <li>
           <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
+        </li>
+        <li>
+          <%= link_to '热门榜单', marketing_dashboard_hot_items_path %>
         </li>
         <li>
           <a href="#">统计报表 <span class='fa arrow'></span> </a>

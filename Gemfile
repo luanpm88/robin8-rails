@@ -209,6 +209,8 @@ gem 'grape', '~> 0.9.0'
 gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
 gem 'grape-kaminari'
+# https://github.com/reprah/grape-raketasks
+gem 'grape-raketasks'
 
 gem 'jwt'
 
@@ -233,3 +235,5 @@ gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
 gem 'cancancan', '~> 1.10'
 gem 'alipay', '~> 0.12.0'
 gem 'doorkeeper'
+# https://github.com/rails/actioncable/tree/archive
+gem 'actioncable', github: 'rails/actioncable', branch: "archive"

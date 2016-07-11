@@ -62,8 +62,11 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
+            invitee_ids = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").collect{|t| t.kol_id}
+            invitees  = Kol.where(:id => invitee_ids)
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary
           end
         end
 
@@ -128,6 +131,9 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.status != 'running'
             return error_403!({error: 1, detail: '该营销活动已转发成功' })
+          elsif campaign.need_finish
+            CampaignWorker.perform_async(campaign.id, 'fee_end')
+            return error_403!({error: 1, detail: '该活动已经结束！' })
           else
             campaign_invite = current_kol.share_campaign_invite(params[:id])
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish

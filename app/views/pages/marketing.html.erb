@@ -124,3 +124,5 @@
 
 <%= render :partial => "pages/partials/login_modal" %>
 <%= render :partial => "pages/partials/footer" %>
+<img src="<%= @qr_code_url %>">
+<%= hidden_field_tag nil, @uuid, {class: "uuid"} %>

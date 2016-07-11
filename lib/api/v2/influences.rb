@@ -154,10 +154,10 @@ module API
         end
         get 'item_detail' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          item_rate = kol_value.get_item_scores
+          item_rate, item_score = kol_value.get_item_scores
           present :error, 0
           present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid], current_kol.try(:id), kol_value)
-          present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
+          present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::ItemRate
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid],  current_kol.try(:id))
         end
 

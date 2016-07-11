@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
     resources :track_urls
+    resources :hot_items
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
@@ -85,6 +86,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'agreed'
         get 'rejected'
+        post 'search'
         match 'batch_handle', via: [:post]
       end
       match '/agree' => 'withdraws#agree', via: [:post]
@@ -94,6 +96,9 @@ Rails.application.routes.draw do
     resources :alipay_orders do
       collection do
         post 'search'
+        get "campaigns"
+        post "search_campaigns"
+        put "change_campaign_desc"
       end
     end
 

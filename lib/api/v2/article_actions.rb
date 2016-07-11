@@ -33,6 +33,17 @@ module API
           present :article_actions, collect_article_actions, with: API::V2::Entities::ArticleActionEntities::Summary
         end
 
+        #转发列表
+        params do
+          optional :page, type: Integer
+        end
+        get 'forward' do
+          collect_article_actions = current_kol.article_actions.where(:forward => true).page(params[:page]).per_page(10)
+          present :error, 0
+          to_paginate(collect_article_actions)
+          present :article_actions, collect_article_actions, with: API::V2::Entities::ArticleActionEntities::Summary
+        end
+
 
         #搜索文章列表
         params do
