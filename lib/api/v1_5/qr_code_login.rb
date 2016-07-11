@@ -8,14 +8,14 @@ module API
 
       desc "二维码扫码登录"
       params do
-        requires :token, type: String
+        requires :login_token, type: String
       end
 
       post '/scan_qr_code_and_login' do
-        token = declared(params)[:token]
+        login_token = declared(params)[:login_token]
         id = current_kol.id
         $redis.set token, id
-        ActionCable.server.broadcast "uuid_#{token}", result: "success", token: token, id: id
+        ActionCable.server.broadcast "uuid_#{token}", result: "success", token: login_token, id: id
         present :error, 0
       end
     end
