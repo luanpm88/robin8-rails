@@ -46,12 +46,22 @@ class Identity < ActiveRecord::Base
     )
   end
 
-  def self.create_identity_from_app(params)
-    Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
-                    name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
-                    followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
-                    registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now)
+  def self.create_identity_from_app(params, identity = nil)
+    if identity
+      identity.update_attributes(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
+                      name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                      followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                      registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                      kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now)
+    else
+      Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
+                      name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                      followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                      registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                      kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now)
+
+    end
+
   end
 
 

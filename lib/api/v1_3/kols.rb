@@ -25,6 +25,7 @@ module API
           present :alipay_name, current_kol.alipay_name
           present :alipay_account, current_kol.alipay_account
           present :can_update_alipay, current_kol.can_update_alipay
+          present :id_card, current_kol.id_card
         end
 
         params do

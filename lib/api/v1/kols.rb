@@ -136,6 +136,7 @@ module API
           optional :gender, type: String
           optional :is_vip, type: Boolean
           optional :is_yellow_vip, type: Boolean
+          optional :bind_type, type: String
         end
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
@@ -146,6 +147,10 @@ module API
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             current_kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar.url.blank?
             present :error, 0
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          elsif params[:bind_type] == 'update' && identity.present?
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+            resent :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else
             return error_403!({error: 1, detail: '该账号已经被其他用户绑定！'})
