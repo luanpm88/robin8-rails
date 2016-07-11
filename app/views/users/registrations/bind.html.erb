@@ -6,6 +6,7 @@
         <div class="divider">快速绑定手机号码</div>
         <div class="form-panel">
           <%= form_tag('/register', method: 'post', remote: true) do %>
+            <input type="hidden" name="identity_code" value="<%= params[:identity_code] %>" />
             <div class="form-alert-wrap"></div>
             <div class="form-group">
               <i class="icon-mobile"></i>

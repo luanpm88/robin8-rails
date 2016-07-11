@@ -3,6 +3,7 @@ class AuthenticationsController < ApplicationController
   before_action :handle_omniauth_callback, only: [ :weibo, :wechat, :qq_connect ]
 
   def weibo
+    binding.pry
     identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
     identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
@@ -11,12 +12,12 @@ class AuthenticationsController < ApplicationController
       identity_params = params.merge(:from_type => 'web')
       identity_params.merge!(kol_id: current_kol.id) if current_kol
       identity = Identity.create_identity_from_app(identity_params)
-      redirect_to omniauth_params['ok_url'] || root_path(identity_code: identity.id) #重定向到 注册页面
+      redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id) #重定向到 注册页面
     else
       # sign in and set union token
       user = identity.kol.find_or_create_brand_user
-      sign_in user # maybe change later !
-      set_union_access_token
+      # sign_in user # maybe change later !
+      set_union_access_token(identity.kol)
       redirect_to omniauth_params['ok_url'] || root_path
     end
   end
@@ -59,9 +60,35 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+  def wechat_third
+    redirect_to WxThird::Util.loginpage_url
+  end
+
+  def wechat_third_callback
+    auth_code = params["auth_code"]
+    binding.pry
+    if auth_code
+      #查询公众号的授权信息
+      auth_info = WxThird::Util.query_auth_info(auth_code)
+      p "auth_info = " + auth_info.to_s
+      authorization_info = auth_info["authorization_info"]
+      #授权成功
+      if authorization_info && authorization_info.has_key?("authorizer_access_token")
+        authorizer_appid = authorization_info["authorizer_appid"]
+        # 获取授权公众账号的信息
+        authorizer_info_package = WxThird::Util.get_authorizer_info(authorizer_appid)
+        p "authorizer_info ==== #{authorizer_info_package.to_json}"
+        # params = Identity.switch_package_to_params(authorizer_info_package)
+        save_wechat_third_info(authorizer_info_package)
+      end
+    else
+      render :json => {"result" => "failure"}.to_json
+    end
+  end
+
   def failure
     p params
-    flash[:error] = '出错了，请联系管理员'
+    flash[:error] = '第三方授权登录出错了，请尝试其他方式登录'
     redirect_to root_path
   end
 
@@ -96,4 +123,16 @@ class AuthenticationsController < ApplicationController
   def omniauth_params
     request.env['omniauth.params']
   end
+
+  def save_wechat_third_info(package)
+    params[:uid] = package["authorization_info"]["authorizer_appid"]      rescue nil
+    params[:provider] = 'wechat_third'
+    params[:name] =  package["authorizer_info"]["nick_name"]         rescue nil
+    params[:avatar_url] = package["authorizer_info"]["head_img"]     rescue nil
+    params[:service_type_info] = package["authorizer_info"]["service_type_info"]["id"]    rescue nil
+    params[:verify_type_info] = package["authorizer_info"]["verify_type_info"]["id"]      rescue nil
+    params[:wx_user_name] = package["authorizer_info"]["user_name"]                       rescue nil
+    params[:alias] = package["authorizer_info"]["alias"]
+  end
+
 end

@@ -19,6 +19,9 @@ module Users
       return render json: { error: "无效的手机号或密码" }, status: :bad_request unless @kol.valid?
 
       if @kol.save
+        @identity = Identity.find(params[:identity_code]) if params[:identity_code]
+        @identity.update(kol: @kol) if @identity and @identity.kol.blank?
+
         @user = @kol.find_or_create_brand_user
         set_union_access_token(@kol)
         render json: { msg: "注册绑定成功，正在为您跳转...", ok_url: params[:ok_url].presence || brand_url(subdomain: false) }, status: :ok
@@ -88,7 +91,7 @@ module Users
     protected
 
     # def update_resource(resource, params)
-    #   if params[:password]=="" && params[:password_confirmation]=="" 
+    #   if params[:password]=="" && params[:password_confirmation]==""
     #     params.delete(:current_password)
     #     resource.update_without_password(params)
     #   else
