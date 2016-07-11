@@ -74,7 +74,7 @@ class Weibo
     server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
     res_json = RestClient.get(server)    rescue ""
     res = JSON.parse res_json        rescue {}
-    return [false, nil] if res["statuses"].blank?
+    return [false, nil] if res.blank? || res["statuses"].blank?
     statuses = []
     res["statuses"].each do |status|
       statuses << status['text']
