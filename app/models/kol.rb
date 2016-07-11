@@ -426,7 +426,7 @@ class Kol < ActiveRecord::Base
         attrs.delete("id")
         attrs.delete("kol_uuid")
         identity.attributes = attrs
-        identity.kol_id = kol_id
+        identity.kol_id = kol_id   if identity.kol_id.blank?
         identity.save!
         # Weibo.update_identity_info(identity)
       end
