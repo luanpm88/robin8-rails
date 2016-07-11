@@ -30,7 +30,15 @@ const getUploader = function() {
               $(".brand-error-notice-modal").modal("show");
             }
         }
-      }
+      },
+      filters : {
+        max_file_size : '4mb',
+        prevent_duplicates: true,
+        // Specify what files to browse for
+        mime_types: [
+            {title : "Image files", extensions : "jpg,gif,png,jpeg"}, // 限定jpg,gif,png后缀上传
+        ]
+    },
   });
 }
 
