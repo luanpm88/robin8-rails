@@ -5,13 +5,15 @@
       <h3>APP用户扫码登录</h3>
       <div class="scanner-step-wrap">
         <ul class="scan-steps">
-          <li><i>1</i> 打开 Robin8 APP</li>
-          <li><i>2</i> 进入 ［我的］</li>
+          <li><i>1</i> 打开 APP</li>
+          <li><i>2</i> 进入 ［我的 - 设置］</li>
           <li><i>3</i> 点击 ［扫一扫］</li>
         </ul>
       </div>
       <div class="scanner-cont">
-        <img />
+        <%= image_tag @url %>
+        <input type="hidden" name="ok_url" id="ok_url" value="<%= params[:ok_url] %>" />
+        <input type="hidden" id="scan_uuid" value="<%= @uuid %>" />
       </div>
       <div class="scanner-bottom">
         <a href="/login" class="back-btn">
@@ -21,3 +23,24 @@
     </div>
   </div>
 </div>
+
+<script>
+
+this.App = {};
+
+$(window).load(function() {
+  okUrl = $("#ok_url").val();
+  App.cable = Cable.createConsumer("/cable");
+  return App.cable.subscriptions.create({
+    channel: 'QrCodeLoginChannel',
+    uuid: $("#scan_uuid").val()
+  }, {
+    connected: function() {},
+    disconnected: function() {},
+    received: function(data) {
+      return window.location = "/login/scan/submit?token=" + data["token"] + "&id=" + data["id"] + "&ok_url=" + okUrl;
+    }
+  });
+});
+
+</script>

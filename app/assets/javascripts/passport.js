@@ -2,7 +2,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-
+//= require cable
 
 var AlertBox = function(container, renderFunc) {
     var container = $(container || 'body');

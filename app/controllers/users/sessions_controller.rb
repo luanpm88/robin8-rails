@@ -25,6 +25,22 @@ module Users
       redirect_to params[:ok_url].presence || login_url
     end
 
+    def scan
+      @uuid, @url = uuid_and_qr_code_url
+    end
+
+    def scan_submit
+      unless $redis.get(params[:token]) == params[:id]
+        flash[:error] = "扫码登录出错，请尝试其他方式"
+        return redirect_to login_url(params.slice(:ok_url))
+      end
+      @kol = Kol.find(params[:id])
+      @user = @kol.find_or_create_brand_user
+      $redis.del params[:token]
+      set_union_access_token(@kol)
+      redirect_to params[:ok_url].presence || brand_url(subdomain: false)
+    end
+
     def sms
       phone = params[:phone]
       return render json: { error: "没填写或无效的手机号码" }, status: :bad_request unless phone
@@ -58,6 +74,16 @@ module Users
 
     def after_sign_out_path_for(resource_or_scope)
       brands_moments_path
+    end
+
+    private
+
+    def uuid_and_qr_code_url
+      uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
+      $redis.set "login_uuid_#{uuid}", true
+      $redis.expire "login_uuid_#{uuid}", 1800
+      url = "http://qr.topscan.com/api.php?text=#{uuid}"
+      return uuid, url
     end
 
   end

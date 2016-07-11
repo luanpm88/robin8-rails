@@ -5,18 +5,6 @@ class KolsController < ApplicationController
                                           :methods => [:get_identity]})
   end
 
-  def get_kol_by_token  #扫码登录根据token查找kol
-    if $redis.get(params[:token]) == params[:id]
-      @kol = Kol.find(params[:id])
-      @user = @kol.find_or_create_brand_user
-      $redis.del params[:token]
-      sign_in @user
-      redirect_to '/brand/'
-    else
-      redirect_to root_path  #TODO 返回错误信息
-    end
-  end
-
   def get_score
     total = current_kol.avail_amount.to_f
 

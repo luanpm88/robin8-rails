@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   mount PropertyAPI => '/prop'
   use_doorkeeper
   mount ActionCable.server => '/cable'
-  mount ApplicationAPI => '/brand_api'
 
   get 'track_urls/:id', to: "pages#track_url"
 
@@ -69,6 +68,7 @@ Rails.application.routes.draw do
     put    '/register',           to: "users/registrations#update"
     get    '/login',              to: "users/sessions#new"
     get    '/login/scan',         to: "users/sessions#scan"
+    get    '/login/scan/submit',  to: "users/sessions#scan_submit"
     post   '/login',              to: "users/sessions#create"
     get    '/logout',             to: "users/sessions#destroy"
     get    '/password',           to: "users/passwords#new"
@@ -126,12 +126,6 @@ Rails.application.routes.draw do
       get :avail_amount
       get :check_exist_by_mobile_number
       post :modify_password
-    end
-  end
-
-  resources :kols do
-    collection do
-      get 'get_kol_by_token'
     end
   end
 
