@@ -16,6 +16,7 @@ module API
         id = current_kol.id
         $redis.set token, id
         ActionCable.server.broadcast "uuid_#{token}", result: "success", token: token, id: id
+        present :error, 0
       end
     end
 
