@@ -58,18 +58,27 @@ export default class DetailPartial extends React.Component {
     $("input[name='action_type']").change(function(){
       const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       per_action_budget.onBlur();
-      if(per_budget_type.value == "post" || per_budget_type.value == "click"){
-        per_budget_collect_type.onChange('');
-      }else{
-        per_budget_collect_type.onChange('cpa_cpi');
-      }
+      console.log("变化后的 %s")
+      console.log(per_budget_type.value)
+      // if(per_budget_type.value == "post" || per_budget_type.value == "click"){
+      //   per_budget_collect_type.onChange('');
+      // }else{
+      //   per_budget_collect_type.onChange('cpa_cpi');
+      // }
     }.bind(this))
+
 
     $("input[name='cap_cpi-collect-action_type']").click(function(){
       const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
       if(per_budget_type.value == "post" || per_budget_type.value == "click"){
         per_budget_type.onChange("cpa");
       }
+    }.bind(this))
+
+    $(".commonPerBudgetType").click(function(){
+      // 修改safari 下面的不兼容情况
+      const { per_budget_collect_type } = this.props;
+      per_budget_collect_type.onChange('');
     }.bind(this))
   }
 
@@ -107,11 +116,11 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照转发奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照点击奖励KOL
               </label>
               {

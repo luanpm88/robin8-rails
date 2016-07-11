@@ -1,3 +1,12 @@
+<h3>提现列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_withdraws_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+
 <table class="table table-bordered">
   <thead>
     <tr>

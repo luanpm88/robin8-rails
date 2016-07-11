@@ -6,6 +6,7 @@ module Campaigns
       SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
+      KolBudgetRate = 0.7
     end
 
     def pay
@@ -95,8 +96,7 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       ActiveRecord::Base.transaction do
         self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
-        actual_per_action_budget = self.cal_actual_per_action_budget
-        self.update_column(:actual_per_action_budget, actual_per_action_budget)
+        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if self.actual_per_action_budget.blank?
         Message.new_campaign(self, get_kol_ids)
       end
     end
@@ -144,17 +144,18 @@ module Campaigns
 
     # 更新invite 状态和点击数
     def end_invites
+      # ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
       campaign_invites.each do |invite|
         next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
         if invite.status == 'approved'
           invite.status = 'finished'
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
-        elsif
+          invite.save!
+        else
           # receive but not apporve  we must delete
           invite.delete
         end
-        invite.save!
       end
     end
 
@@ -174,8 +175,9 @@ module Campaigns
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
        self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
-       settle_accounts_for_kol
        #剩下的邀请  状态全设置为拒绝
+       self.campaign_invites.should_reject.update_all({:status => 'rejected', :img_status => 'rejected', :auto_check => true})
+       settle_accounts_for_kol
        self.update_column(:status, 'settled')
        # self.user.unfrozen(self.budget, 'campaign', self)
        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
@@ -199,8 +201,13 @@ module Campaigns
      end
 
     def cal_actual_per_action_budget
+      if self.user_id == 1240
+        kol_budget_rate = 0.9
+      else
+        kol_budget_rate = KolBudgetRate
+      end
       if is_click_type?
-        actual_per_budget = (self.per_action_budget * 0.7).round(2)
+        actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
         point1, point2 = actual_per_budget.divmod(0.1)
         point2 = point2.round(2)
         if point2 >= 0.08
@@ -212,9 +219,9 @@ module Campaigns
         end
         actual_per_action_budget = actual_per_action_budget.round(2)
       elsif is_recruit_type?
-        actual_per_action_budget = (self.per_action_budget * 0.7).round(0)
+        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
       else
-        actual_per_action_budget = (self.per_action_budget * 0.7).round(1)
+        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
       end
       actual_per_action_budget
     end

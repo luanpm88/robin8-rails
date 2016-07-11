@@ -36,7 +36,7 @@
             <i class="fa fa-tasks fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= Campaign.where(:status => "unexecute").count %></div>
+            <div class="huge"><%= Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count %></div>
             <div>待审核的活动个数</div>
           </div>
         </div>

@@ -25,25 +25,31 @@ module Concerns
       self.task_records.active.check_in.today.size > 0
     end
 
+    def today_invite_count
+      self.task_records.invite_friend.today.count
+    end
+
     def check_in
       task_record = self.task_records.create(:task_type => RewardTask::CheckIn, :status => 'active')
       task_record.sync_to_transaction
     end
 
     def invite_count
-      task_records.invite_friend
+      task_records.invite_friend.count
     end
+
 
     #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
-      return if self.app_platform.blank? || self.os_version.blank?
+      device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
+      return if self.app_platform.blank? || self.os_version.blank? || device_token_exist == true
       download_invitation = DownloadInvitation.find_invation(self)
       if download_invitation
         ActiveRecord::Base.transaction do
           inviter = download_invitation.inviter
           download_invitation.active_invitation
           task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-          task_record.sync_to_transaction    if self.invite_count.count <= 5
+          task_record.sync_to_transaction    if inviter.today_invite_count <= 5
         end
       else   #创建cpi_reg
         params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,

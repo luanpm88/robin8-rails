@@ -34,11 +34,31 @@ class CampaignShow < ActiveRecord::Base
 
     return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank? || !visitor_agent.include?("MicroMessenger")
 
+    cpa_first_step_key = nil
     if campaign.is_cpa_type?
-      return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
+      cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s 
+      if options[:step] != 2
+        if openid
+          Rails.cache.write(cpa_first_step_key, openid, :expired_at => campaign.deadline)
+        end
+        return [false, 'is_first_step_of_cpa_campaign'] 
+      end
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
+      if options[:step] == 2 and not (openid = Rails.cache.fetch(cpa_first_step_key))
+        return [false, "the_two_step_has_not_openid_of_cpa_campaign"]
+      end
+    end
+
+
+    # openid_ip_reach_max
+    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
+    openid_current_count = Rails.cache.read(store_key) || 0
+    if openid_current_count >= OpenidMaxCount
+      return [false, 'openid_reach_max_count']
+    else
+      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
     end
 
     # check_ip?
@@ -47,23 +67,6 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'ip_visit_fre']
     else
       Rails.cache.write(store_key, now, :expires_in => IpTimeout)
-    end
-
-      # check_openid?
-    store_key = openid.to_s + campaign.id.to_s
-    if Rails.cache.read(store_key)
-      return [false, 'openid_visit_fre']
-    else
-      Rails.cache.write(store_key, now, :expires_in => OpenidTimeout)
-    end
-
-    # openid_ip_reach_max
-    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
-    openid_current_count = Rails.cache.read(store_key) || 0
-    if openid_current_count > OpenidMaxCount
-      return [false, 'openid_reach_max_count']
-    else
-      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
     end
 
     # check_ip_reach_max

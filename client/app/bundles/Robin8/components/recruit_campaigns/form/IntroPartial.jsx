@@ -12,12 +12,33 @@ const getUploader = function() {
       get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
       unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
       domain: '7xozqe.com1.z0.glb.clouddn.com',                   // bucket 域名，下载资源时用到，**必需**
-      max_file_size: '100mb',             // 最大文件体积限制
+      max_file_size: '4mb',             // 最大文件体积限制
       flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
       max_retries: 3,                     // 上传失败最大重试次数
       chunk_size: '4mb',                  // 分块上传时，每块的体积
       multi_selection: false,
-      init: {}
+      init: {
+        'Error': function(up, err, errTip) {
+            const err_message = null
+            if(err["code"] == -601){
+                $(".brand-error-notice-modal .modal-body p").html("只支持jpg、gif、png、jpeg格式");
+                $(".brand-error-notice-modal .modal-title").html("上传失败");
+                $(".brand-error-notice-modal").modal("show");
+            }else if(err["code"] == -200){
+              $(".brand-error-notice-modal .modal-body p").html("图片最大不能超过4M");
+              $(".brand-error-notice-modal .modal-title").html("上传失败");
+              $(".brand-error-notice-modal").modal("show");
+            }
+        }
+      },
+      filters : {
+        max_file_size : '4mb',
+        prevent_duplicates: true,
+        // Specify what files to browse for
+        mime_types: [
+            {title : "Image files", extensions : "jpg,gif,png,jpeg"}, // 限定jpg,gif,png后缀上传
+        ]
+    },
   });
 }
 

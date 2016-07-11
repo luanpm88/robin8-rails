@@ -34,6 +34,7 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.influence_level = Influence::Value.get_influence_level(kol_value.influence_score)
     kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
     kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
+    kol_value.updated_at = Time.now
     kol_value.save
     kol.update_influence_result(kol_uuid,kol_value.influence_score, kol_value.updated_at)   if kol.present?
     KolInfluenceValueHistory.generate_history(kol_value, is_auto)

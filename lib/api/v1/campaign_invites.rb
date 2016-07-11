@@ -131,6 +131,9 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.status != 'running'
             return error_403!({error: 1, detail: '该营销活动已转发成功' })
+          elsif campaign.need_finish
+            CampaignWorker.perform_async(campaign.id, 'fee_end')
+            return error_403!({error: 1, detail: '该活动已经结束！' })
           else
             campaign_invite = current_kol.share_campaign_invite(params[:id])
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish

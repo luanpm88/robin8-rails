@@ -11,5 +11,17 @@ module Campaigns
       }
       Alipay::Mobile::Service.mobile_securitypay_pay_string(params, :sign_type => 'RSA', :key => Rails.application.secrets[:alipay][:private_key])
     end
+  
+    def alipay_trade_no
+      begin
+        self.alipay_notify_text.match(/trade_no=\".+?\"/).to_s.gsub("trade_no=\"", "").gsub("\"", "")
+      rescue Exception => e
+      end
+    end
+
+    def alipay_amount
+      self.budget - self.voucher_amount
+    end
   end
+
 end

@@ -9,7 +9,7 @@ class Identity < ActiveRecord::Base
   scope :order_by_provider, -> { order("case identities.provider  when 'wechat' then 3 when 'weibo' then 2 else 1 end  desc") }
 
   scope :valid, -> { }
-
+  scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
 
 
   WxThirdProvider = 'wechat_third'
