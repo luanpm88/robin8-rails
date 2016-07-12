@@ -58,9 +58,6 @@ Rails.application.routes.draw do
   devise_for :users
 
   devise_scope :user do
-    match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
-    match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
-
     get    '/register',           to: "users/registrations#new"
     post   '/register',           to: "users/registrations#create"
     get    '/register/bind',      to: "users/registrations#bind"
@@ -76,6 +73,9 @@ Rails.application.routes.draw do
     post   '/passport/sender/sms',to: "users/sessions#sms"
   end
 
+  get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
+  match "/auth/wechat_third" => "authentications#wechat_third", :via => [:get, :post]
+  match "/auth/wechat_third_callback" => "authentications#wechat_third_callback", :via => [:get, :post]
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
 

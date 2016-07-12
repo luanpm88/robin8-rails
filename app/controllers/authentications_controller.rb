@@ -42,8 +42,14 @@ class AuthenticationsController < ApplicationController
         # 获取授权公众账号的信息
         authorizer_info_package = WxThird::Util.get_authorizer_info(authorizer_appid)
         p "authorizer_info ==== #{authorizer_info_package.to_json}"
-        # params = Identity.switch_package_to_params(authorizer_info_package)
-        save_wechat_third_info(authorizer_info_package)
+        params = select_wechat_third_params(authorizer_info_package)
+        @identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+        if @identity
+          #此时提示转让公众号归属人
+        else
+          Identity.create_identity_from_app(params)
+          redirect_to root_path
+        end
       end
     else
       render :json => {"result" => "failure"}.to_json
@@ -87,15 +93,16 @@ class AuthenticationsController < ApplicationController
     request.env['omniauth.params']
   end
 
-  def save_wechat_third_info(package)
+  def select_wechat_third_params(package)
     params[:uid] = package["authorization_info"]["authorizer_appid"]      rescue nil
     params[:provider] = 'wechat_third'
     params[:name] =  package["authorizer_info"]["nick_name"]         rescue nil
-    params[:avatar_url] = package["authorizer_info"]["head_img"]     rescue nil
     params[:service_type_info] = package["authorizer_info"]["service_type_info"]["id"]    rescue nil
     params[:verify_type_info] = package["authorizer_info"]["verify_type_info"]["id"]      rescue nil
     params[:wx_user_name] = package["authorizer_info"]["user_name"]                       rescue nil
     params[:alias] = package["authorizer_info"]["alias"]
+    params[:from_type] = 'web'
+    params
   end
 
 end

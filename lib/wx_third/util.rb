@@ -104,7 +104,7 @@ module WxThird
       # 登陆 跳转
       def loginpage_url(pre_auth_code = nil)
         pre_auth_code = get_pre_auth_code if pre_auth_code.blank?
-        redirectUri = "#{Domain}/users/auth/wechat_third_callback"
+        redirectUri = "#{Domain}/auth/wechat_third_callback"
         return "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=#{AppId}&pre_auth_code=#{pre_auth_code}&redirect_uri=#{redirectUri}"
       end
 
