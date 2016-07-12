@@ -1,10 +1,9 @@
 module Users
-  class PasswordsController < Devise::PasswordsController
+  class PasswordsController < ApplicationController
     layout 'passport'
     respond_to :html, :json
 
     def new
-      super
     end
 
     def create
@@ -16,7 +15,7 @@ module Users
 
       if @kol.update(password: user_params[:password])
         flash[:notice] = "重置密码成功，请您重新登录"
-        render json: { msg: "重置密码成功，正在为您跳转...", ok_url: login_url(params.slice(:ok_url)) }, status: :ok
+        render json: { msg: "重置密码成功，正在为您跳转...", ok_url: login_url(params.permit(:ok_url)) }, status: :ok
       else
         render json: { error: "重置密码出错了，请稍后重试" }, status: :bad_request
       end

@@ -23,7 +23,7 @@ module Users
       flash[:notice] = "您已经成功退出了登录"
       clear_union_access_token
 
-      redirect_to params[:ok_url].presence || login_url
+      redirect_to params[:ok_url].presence || login_url(subdomain: :passport)
     end
 
     def scan
