@@ -14,13 +14,13 @@ class AuthenticationsController < ApplicationController
         identity_params = params.merge(:from_type => 'web')
         identity_params.merge!(kol_id: current_kol.id) if current_kol
         identity = Identity.create_identity_from_app(identity_params)
-        redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id) #重定向到 注册页面
+        redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id)
       else
         # sign in and set union token
         kol = identity.kol
         user = kol.find_or_create_brand_user
         set_union_access_token(kol)
-        redirect_to omniauth_params['ok_url'] || root_path
+        redirect_to omniauth_params['ok_url'] || brand_path
       end
     end
   end
@@ -48,7 +48,7 @@ class AuthenticationsController < ApplicationController
           #此时提示转让公众号归属人
         else
           Identity.create_identity_from_app(params)
-          redirect_to root_path
+          redirect_to brand_path
         end
       end
     else

@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_union_access_token
-    cookies.delete("_robin8_union")
+    cookies.delete("_robin8_union", domain: :all)
   end
 
   protected
