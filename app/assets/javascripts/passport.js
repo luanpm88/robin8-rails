@@ -57,6 +57,20 @@ $(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
 
+    $('.with-ok-url').click(function() {
+        var href = $(this).attr("href");
+            okUrl = $('input[name="ok_url"]').val();
+
+        if (okUrl && okUrl.length > 0) {
+            var sign = "?";
+            if (/\?/.test(href)) sign = "&";
+            href += sign + "ok_url=" + okUrl;
+        }
+
+        window.location.href = href;
+        return false;
+    });
+
     var captchaImage = $(".captcha-image");
     captchaImage.click(function(){
         if (captchaImage.hasClass('disabled')) return;

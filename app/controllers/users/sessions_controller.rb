@@ -16,10 +16,11 @@ module Users
       @user = @kol.find_or_create_brand_user
       set_union_access_token(@kol)
 
-      render json: { msg: "登录成功，正在为您跳转...", ok_url: params[:ok_url].presence || brand_url(subdomain: false) }, status: :ok
+      render json: { msg: "登录成功，正在为您跳转...", ok_url: register_edit_path(params.slice(:ok_url)) }, status: :ok
     end
 
     def destroy
+      flash[:notice] = "您已经成功退出了登录"
       clear_union_access_token
 
       redirect_to params[:ok_url].presence || login_url

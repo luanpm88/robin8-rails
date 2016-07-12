@@ -1,13 +1,18 @@
 module Users
-  class RegistrationsController < Devise::RegistrationsController
+  class RegistrationsController < ApplicationController
     layout 'passport'
     respond_to :html, :json
 
+    before_action :union_authenticate!, only: [ :edit, :update ]
+
     def new
-      super
     end
 
     def bind
+      unless params[:identity_code]
+        flash[:error] = "第三方登录异常，请尝试其他方式登录"
+        return redirect_to login_url(params.slice(:ok_url))
+      end
     end
 
     def create

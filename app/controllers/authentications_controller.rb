@@ -1,61 +1,27 @@
 class AuthenticationsController < ApplicationController
   # :twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat
-  before_action :handle_omniauth_callback, only: [ :weibo, :wechat, :qq_connect ]
+  AUTH_ACTIONS = [ :weibo, :wechat, :qq_connect ]
 
-  def weibo
-    identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-    identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
+  before_action :handle_omniauth_callback, only: AUTH_ACTIONS
 
-    if identity.blank?
-      # create identity, redirect to register path
-      identity_params = params.merge(:from_type => 'web')
-      identity_params.merge!(kol_id: current_kol.id) if current_kol
-      identity = Identity.create_identity_from_app(identity_params)
-      redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id) #重定向到 注册页面
-    else
-      # sign in and set union token
-      user = identity.kol.find_or_create_brand_user
-      # sign_in user # maybe change later !
-      set_union_access_token(identity.kol)
-      redirect_to omniauth_params['ok_url'] || root_path
-    end
-  end
+  AUTH_ACTIONS.each do |action|
+    define_method(action) do
+      identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+      identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
 
-  def wechat
-    identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-    identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
-
-    if identity.blank?
-      # create identity, redirect to register path
-      identity_params = params.merge(:from_type => 'web')
-      identity_params.merge!(kol_id: current_kol.id) if current_kol
-      identity = Identity.create_identity_from_app(identity_params)
-      redirect_to cookies.delete(:return_url) || root_path(identity_code: identity.id) #重定向到 注册页面
-    else
-      # sign in and set union token
-      user = identity.kol.find_or_create_brand_user
-      sign_in user # maybe change later !
-      set_union_access_token
-      redirect_to cookies.delete(:return_url) || root_path
-    end
-  end
-
-  def qq_connect
-    identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-    identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
-
-    if identity.blank?
-      # create identity, redirect to register path
-      identity_params = params.merge(:from_type => 'web')
-      identity_params.merge!(kol_id: current_kol.id) if current_kol
-      identity = Identity.create_identity_from_app(identity_params)
-      redirect_to cookies.delete(:return_url) || root_path(identity_code: identity.id) #重定向到 注册页面
-    else
-      # sign in and set union token
-      user = identity.kol.find_or_create_brand_user
-      sign_in user # maybe change later !
-      set_union_access_token
-      redirect_to cookies.delete(:return_url) || root_path
+      if identity.blank?
+        # create identity, redirect to register path
+        identity_params = params.merge(:from_type => 'web')
+        identity_params.merge!(kol_id: current_kol.id) if current_kol
+        identity = Identity.create_identity_from_app(identity_params)
+        redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id) #重定向到 注册页面
+      else
+        # sign in and set union token
+        kol = identity.kol
+        user = kol.find_or_create_brand_user
+        set_union_access_token(kol)
+        redirect_to omniauth_params['ok_url'] || root_path
+      end
     end
   end
 
@@ -85,9 +51,8 @@ class AuthenticationsController < ApplicationController
   end
 
   def failure
-    p params
     flash[:error] = '第三方授权登录出错了，请尝试其他方式登录'
-    redirect_to root_path
+    redirect_to login_url(params.slice(:ok_url))
   end
 
   private

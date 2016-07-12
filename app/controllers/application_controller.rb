@@ -105,6 +105,13 @@ class ApplicationController < ActionController::Base
     @current_kol = Kol.where(id: current_token.resource_owner_id).take if current_token
   end
 
+  def union_authenticate!
+    unless current_kol
+      flash[:error] = "您还没有登录，请您先登录或注册"
+      return redirect_to login_url(params.slice(:ok_url))
+    end
+  end
+
   def set_union_access_token(obj)
     return unless obj.respond_to? :union_access_token
 

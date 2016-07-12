@@ -5,7 +5,6 @@
     <div class="hero-left">
       <div class="hero-cont">
         <h1>轻松刷遍朋友圈</h1>
-        <%= link_to "微信", users_auth_wechat_third_path %>
         <ul class="hero-ls">
           <li><span class="icon-correct"></span>小预算精准触达终端消费者</li>
           <li><span class="icon-correct"></span>海量朋友圈KOL来做你的品牌大使</li>
@@ -124,5 +123,3 @@
 
 <%= render :partial => "pages/partials/login_modal" %>
 <%= render :partial => "pages/partials/footer" %>
-<img src="<%= @qr_code_url %>">
-<%= hidden_field_tag nil, @uuid, {class: "uuid"} %>
