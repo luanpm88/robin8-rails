@@ -11,7 +11,7 @@ module Users
     def bind
       unless params[:identity_code]
         flash[:error] = "第三方登录异常，请尝试其他方式登录"
-        return redirect_to login_url(params.slice(:ok_url))
+        return redirect_to login_url(params.permit(:ok_url))
       end
     end
 

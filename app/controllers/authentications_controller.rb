@@ -52,7 +52,7 @@ class AuthenticationsController < ApplicationController
 
   def failure
     flash[:error] = '第三方授权登录出错了，请尝试其他方式登录'
-    redirect_to login_url(params.slice(:ok_url))
+    redirect_to login_url(params.permit(:ok_url))
   end
 
   private

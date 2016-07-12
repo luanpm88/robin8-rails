@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
   def union_authenticate!
     unless current_kol
       flash[:error] = "您还没有登录，请您先登录或注册"
-      return redirect_to login_url(params.slice(:ok_url))
+      return redirect_to login_url(params.permit(:ok_url))
     end
   end
 

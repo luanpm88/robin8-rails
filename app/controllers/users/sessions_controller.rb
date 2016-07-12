@@ -16,7 +16,7 @@ module Users
       @user = @kol.find_or_create_brand_user
       set_union_access_token(@kol)
 
-      render json: { msg: "登录成功，正在为您跳转...", ok_url: register_edit_path(params.slice(:ok_url)) }, status: :ok
+      render json: { msg: "登录成功，正在为您跳转...", ok_url: register_edit_path(params.permit(:ok_url)) }, status: :ok
     end
 
     def destroy
@@ -33,7 +33,7 @@ module Users
     def scan_submit
       unless $redis.get(params[:token]) == params[:id]
         flash[:error] = "扫码登录出错，请尝试其他方式"
-        return redirect_to login_url(params.slice(:ok_url))
+        return redirect_to login_url(params.permit(:ok_url))
       end
       @kol = Kol.find(params[:id])
       @user = @kol.find_or_create_brand_user
@@ -74,7 +74,7 @@ module Users
     end
 
     def after_sign_out_path_for(resource_or_scope)
-      brands_moments_path
+      login_path
     end
 
     private
