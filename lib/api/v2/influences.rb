@@ -151,7 +151,7 @@ module API
         # 排名
         params do
           requires :kol_uuid, type: String
-          options :page, type: Integer
+          requires :page, type: Integer
         end
         get 'rank_with_page' do
           present :error, 0
@@ -172,9 +172,9 @@ module API
             present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
           end
           if current_kol
-            contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id).per(50).page(params[:page])
+            contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id).per_page(50).page(params[:page])
           else
-            contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid]).per(50).page(params[:page])
+            contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid]).per_page(50).page(params[:page])
           end
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
