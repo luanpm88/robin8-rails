@@ -238,6 +238,8 @@ class PagesController < ApplicationController
 
   def uuid_and_qr_code_url
     uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
+    $redis.set "login_uuid_#{uuid}", true
+    $redis.expire "login_uuid_#{uuid}", 1800
     url = "http://qr.topscan.com/api.php?text=#{uuid}"
     return uuid, url
   end
