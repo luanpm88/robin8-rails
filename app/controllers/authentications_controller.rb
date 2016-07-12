@@ -11,10 +11,22 @@ class AuthenticationsController < ApplicationController
 
       if identity.blank?
         # create identity, redirect to register path
-        identity_params = params.merge(:from_type => 'web')
-        identity_params.merge!(kol_id: current_kol.id) if current_kol
-        identity = Identity.create_identity_from_app(identity_params)
-        redirect_to omniauth_params['ok_url'] || register_bind_path(identity_code: identity.id)
+        if current_kol
+          params.merge!(kol_id: current_kol.id)
+          identity = Identity.create_identity_from_app(params)
+          return redirect_to omniauth_params['ok_url'] || brand_path
+        else
+          identity = Identity.create_identity_from_app(params)
+          return redirect_to register_bind_path(identity_code: identity.id)
+        end
+      elsif identity.kol.nil?
+        if current_kol
+          params.merge!(kol_id: current_kol.id)
+          identity.update(kol: current_kol)
+          return redirect_to omniauth_params['ok_url'] || brand_path
+        else
+          return redirect_to register_bind_path(identity_code: identity.id)
+        end
       else
         # sign in and set union token
         kol = identity.kol
@@ -87,6 +99,7 @@ class AuthenticationsController < ApplicationController
     params[:city] = auth.extra.raw_info.city
     params[:gener] = auth.extra.raw_info.gender
     params[:url] = auth.provider == 'weibo' ? auth.info.urls[:Weibo] : nil
+    params[:from_type] = 'web'
   end
 
   def omniauth_params
