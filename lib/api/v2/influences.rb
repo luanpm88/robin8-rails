@@ -148,6 +148,37 @@ module API
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
+        # 排名
+        params do
+          requires :kol_uuid, type: String
+          options :page, type: Integer
+        end
+        get 'rank_with_page' do
+          present :error, 0
+          if params[:page] > 1
+            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+            rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count   + 1
+            if current_kol
+              KolContact.update_joined_kols(current_kol.id)
+              joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
+            else
+              TmpKolContact.update_joined_kols(params[:kol_uuid])
+              joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
+            end
+            present :joined_count, joined_contacts.size
+            present :rank_index, rank_index
+            present :last_influence_score, (KolInfluenceValue.before_kol_value(params[:kol_uuid], current_kol.try(:id), kol_value).influence_score  rescue nil)
+            present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
+            present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
+          end
+          if current_kol
+            contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id).per(50).page(params[:page])
+          else
+            contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid]).per(50).page(params[:page])
+          end
+          present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
+        end
+
         # 维度得分
         params do
           requires :kol_uuid, type: String
