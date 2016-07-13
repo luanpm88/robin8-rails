@@ -48,5 +48,6 @@ module API
     mount API::V2::AppBase
     mount API::V1_3::AppBase
     mount API::V1_4::AppBase
+    mount API::V1_5::AppBase
   end
 end

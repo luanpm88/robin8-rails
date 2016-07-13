@@ -43,12 +43,13 @@ module Concerns
       end
     end
 
-    def income(credits,  subject, item = nil, opposite = nil)
+    def income(credits,  subject, item = nil, opposite = nil, created_at = nil)
       ActiveRecord::Base.transaction do
         self.lock!
         self.increment!(:amount, credits)
-        transaction = build_transaction(credits, subject, 'income', item , opposite)
+        transaction = build_transaction(credits, subject, 'income', item , opposite, created_at)
         transaction.save!
+        transaction
       end
     end
 
@@ -69,10 +70,10 @@ module Concerns
       end
     end
 
-    def build_transaction(credits,  subject, direct, item = nil, opposite = nil)
+    def build_transaction(credits,  subject, direct, item = nil, opposite = nil, created_at = Time.now)
       self.transactions.build(:credits => credits, :account => self, :subject => subject, :direct => direct,
                       :item => item, :opposite => opposite, :amount => self.amount, :frozen_amount => self.frozen_amount,
-                      :avail_amount => self.avail_amount)
+                      :avail_amount => self.avail_amount, :created_at => created_at)
     end
   end
 end

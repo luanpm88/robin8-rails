@@ -1,5 +1,7 @@
 class Tag < ActiveRecord::Base
 
+  default_scope ->{where(:enabled => true)}
+
   # def self.add_test_tags
   #   index = 0
   #   categories = { 'auto':'汽车', 'digit': '数码', 'education': '教育', 'health': '健康', 'sport': '体育', 'makeup': '美妆',

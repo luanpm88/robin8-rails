@@ -12,7 +12,7 @@ module API
         end
         get '/' do
           present :error, 0
-          transactions = current_kol.transactions.page(params[:page]).per_page(10)
+          transactions = current_kol.transactions.except_frozen.page(params[:page]).per_page(10)
           to_paginate(transactions)
           present :transactions, transactions, with: API::V1_3::Entities::TransactionEntities::Summary
         end
