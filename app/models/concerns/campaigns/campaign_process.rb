@@ -75,7 +75,7 @@ module Campaigns
       self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
       Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
       campaign_id = self.id
-      Kol.where(:id => get_kol_ids).each do |kol|
+      Kol.where(:id => (kol_ids ||get_kol_ids)).each do |kol|
         kol.add_campaign_id campaign_id
       end
       # make sure those execute late (after invite create)
@@ -94,6 +94,7 @@ module Campaigns
     # 开始进行  此时需要更改invite状态
     def go_start(kol_ids = nil)
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
+      return if self.status != 'unexecute'
       ActiveRecord::Base.transaction do
         self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
         self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if self.actual_per_action_budget.blank?
