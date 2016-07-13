@@ -18,6 +18,7 @@ module Users
     def create
       user_params[:mobile_number].strip! rescue nil
       @kol = Kol.new(user_params)
+      @kol.name = "用户#{Random.rand(10**8)}" if @kol.name.blank?
 
       sms_code = Rails.cache.fetch(user_params[:mobile_number])
       return render json: { error: "短信验证码错误" }, status: :forbidden unless sms_code.present? && sms_code == params["user"]["sms_code"]
