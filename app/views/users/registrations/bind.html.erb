@@ -7,6 +7,7 @@
         <div class="form-panel">
           <%= form_tag('/register', method: 'post', remote: true) do %>
             <input type="hidden" name="identity_code" value="<%= params[:identity_code] %>" />
+            <input type="hidden" name="ok_url" value="<%= params[:ok_url] %>" />
             <div class="form-alert-wrap"></div>
             <div class="form-group">
               <i class="icon-mobile"></i>
@@ -36,7 +37,7 @@
           <% end %>
           <div class="form-bottom">
             <a href="/login?no_social=true" class="back-btn">
-              <i class="l-arraw-left"></i>已有绑定？直接登录
+              <i class="l-arraw-left with-ok-url"></i>已有绑定？直接登录
             </a>
           </div>
         </div>

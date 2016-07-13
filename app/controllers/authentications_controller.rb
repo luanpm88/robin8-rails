@@ -17,7 +17,7 @@ class AuthenticationsController < ApplicationController
           return redirect_to omniauth_params['ok_url'] || brand_path
         else
           identity = Identity.create_identity_from_app(params)
-          return redirect_to register_bind_path(identity_code: identity.id)
+          return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])
         end
       elsif identity.kol.nil?
         if current_kol
@@ -25,7 +25,7 @@ class AuthenticationsController < ApplicationController
           identity.update(kol: current_kol)
           return redirect_to omniauth_params['ok_url'] || brand_path
         else
-          return redirect_to register_bind_path(identity_code: identity.id)
+          return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])
         end
       else
         # sign in and set union token
