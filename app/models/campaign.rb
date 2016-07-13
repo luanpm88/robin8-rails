@@ -57,6 +57,7 @@ class Campaign < ActiveRecord::Base
   after_save :create_job
   before_create :genereate_campaign_number
   after_create :update_user_status
+  after_save :deal_with_campaign_img_url
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -349,6 +350,15 @@ class Campaign < ActiveRecord::Base
   def update_user_status
     unless self.user.is_active
       self.user.update(:is_active => true)
+    end
+  end
+
+  def deal_with_campaign_img_url
+    if self.img_url.present? and self.img_url_changed?
+      file_name = URI(self.img_url).path.downcase[1..-1]
+      if file_name.end_with?("png") || file_name.end_with?("jpg") || file_name.end_with?("jpeg")
+        CampaignImgWorker.perform_async(self.id, self.img_url)
+      end
     end
   end
 end
