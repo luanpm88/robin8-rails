@@ -19,10 +19,10 @@ module Property
           optional :avatar_url, type: String
         end
         put "/" do
-          if current_kol.update(
-              name: params[:name],
-              email: params[:email],
-              remote_avatar_url: params[:avatar_url])
+          kol_params = ActionController::Parameters.new(params).permit(:name, :email)
+          kol_params.merge!(remote_avatar_url: params[:avatar_url]) if params[:avatar_url]
+
+          if current_kol.update(kol_params)
             present current_kol, with: Property::V1::Entities::Profile
           else
             error!({error: '修改用户信息出错了'}, 400)
