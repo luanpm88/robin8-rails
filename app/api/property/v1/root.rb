@@ -8,6 +8,7 @@ module Property
 
       mount Profile
       mount Account
+      mount Identity
     end
   end
 end
