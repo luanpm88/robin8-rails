@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     if current_kol
-      sign_in(:user, current_kol.user) if not user_signed_in?
+      sign_in(:user, current_kol.user) if not user_signed_in? or current_user != current_kol.user
     else
       sign_out(:user) and flash[:alert] = "请您先登录或注册新账号" if user_signed_in?
     end
@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       super
     else
-      redirect_to login_url(subdomain: :passprot, ok_url: brand_url(subdomain: false))
+      redirect_to login_url(subdomain: :passport, ok_url: brand_url(subdomain: false))
     end
   end
 
