@@ -506,7 +506,7 @@ class Kol < ActiveRecord::Base
   end
 
   def self.remove_device_token(device_token)
-    Kol.where(:device_token => device_token).update_all(:device_token => nil)
+    # Kol.where(:device_token => device_token).update_all(:device_token => nil)
   end
 
   # def remove_same_device_token
