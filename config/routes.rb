@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   mount BrandAPI => '/brand_api'
   mount PropertyAPI => '/prop'
   use_doorkeeper
-  mount ActionCable.server => '/cable'
 
   get 'track_urls/:id', to: "pages#track_url"
 
@@ -71,6 +70,7 @@ Rails.application.routes.draw do
     get    '/password',           to: "users/passwords#new"
     post   '/password',           to: "users/passwords#create"
     post   '/passport/sender/sms',to: "users/sessions#sms"
+    mount ActionCable.server => '/passport/scan/cable'
   end
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
