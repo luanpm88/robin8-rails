@@ -215,9 +215,9 @@ class CampaignInvite < ActiveRecord::Base
       ids = CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.collect{|t| t.id}
       Rails.logger.settle.info "----schedule_day_settle---day_settle:#{ids}--#{transaction_time}"
       #对审核通过的自动结算
-      # CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
-      #   invite.settle(true, transaction_time)
-      # end
+      CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
+        invite.settle(true, transaction_time)
+      end
     end
   end
 

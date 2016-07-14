@@ -42,11 +42,11 @@ every :tuesday, :at => '0:10 am' do
 end
 
 every 1.day, :at => '0:05 am' do
-  runner "CampaignInvite.schedule_day_settle", :environment => 'produciton'
+  runner "CampaignInvite.schedule_day_settle", :environment => 'production'
 end
 
-every 2.minutes do
-  runner "CampaignInvite.schedule_day_settle"
+every 5.minutes do
+  runner "CampaignInvite.schedule_day_settle", :environment => 'staging'
 end
 
 every 1.day, :at => '1:00 am' do
