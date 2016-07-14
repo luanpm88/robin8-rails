@@ -13,11 +13,11 @@ module API
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate, item_score = kol_value.get_item_scores
           if current_kol
-            KolContact.update_joined_kols(current_kol.id)
+            # KolContact.update_joined_kols(current_kol.id)
             joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
             contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id)
           else
-            TmpKolContact.update_joined_kols(params[:kol_uuid])
+            # TmpKolContact.update_joined_kols(params[:kol_uuid])
             joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
             contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid])
           end
