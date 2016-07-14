@@ -4,8 +4,13 @@ module Concerns
 
     def union_access_token
       return @union_access_token if @union_access_token
-      client = Doorkeeper::Application.where(union: true).take
-      @union_access_token = Doorkeeper::AccessToken.find_or_create_for(client, self.id, nil, 7200.seconds, false)
+
+      @union_access_token = Doorkeeper::AccessToken.find_or_create_for(
+        Doorkeeper::Application.where(union: true).take,
+        self.id,
+        Doorkeeper.configuration.scopes,
+        Doorkeeper.configuration.access_token_expires_in,
+        Doorkeeper.configuration.refresh_token_enabled?)
     end
 
     module ClassMethods
