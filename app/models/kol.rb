@@ -400,7 +400,11 @@ class Kol < ActiveRecord::Base
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
-    self.update_columns(:influence_score => influence_score, :kol_uuid => kol_uuid, :cal_time => cal_time)    if  self.influence_score.to_i < influence_score.to_i
+    if  self.influence_score.to_i < influence_score.to_i
+      self.update_columns(:influence_score => influence_score, :kol_uuid => kol_uuid, :cal_time => cal_time)
+      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).where("kol_id is null").update_all(:kol_id => self.id)
+    end
+
   end
 
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
