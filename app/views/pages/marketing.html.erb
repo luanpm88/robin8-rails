@@ -15,7 +15,7 @@
     </div>
     <div class="hero-right">
       <div class="quick-login-wrap signinup-wrap">
-      <% unless user_signed_in? %>
+      <% unless current_kol %>
         <ul class="tab-menu">
           <li class="active"><a class="sign-in-tab">登录</a></li>
           <li><%= link_to "注册", register_path(subdomain: "passport", ok_url: brand_url(subdomain: false)), target: "_blank" %></li>
@@ -49,14 +49,15 @@
           </div>
         </div>
       <% else %>
+        <% user = current_kol.user %>
         <div class="logged-wrap">
           <div class="profile">
-            <% avatar_url = current_user.avatar_url || asset_url('brand-profile-pic.jpg') %>
+            <% avatar_url = user.avatar_url || asset_url('brand-profile-pic.jpg') %>
             <div class="avatar" style="background-image: url('<%= avatar_url %>')">
             </div>
-            <div class="name"><%= current_user.name %></div>
+            <div class="name"><%= user.name %></div>
           </div>
-          <%= link_to "马上进入", brand_url, class: "btn btn-primary" %>
+          <%= link_to "马上进入", brand_url, class: "btn btn-primary", target: "_top" %>
         </div>
       <% end %>
       </div>

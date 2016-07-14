@@ -21,19 +21,12 @@ class BrandController < ApplicationController
   # end
 
   private
-  def authenticate_user!
-    if current_kol
-      sign_in(:user, current_kol.user) if not user_signed_in?
-    else
-      sign_out(:user) and flash[:alert] = "请您先登录或注册新账号" if user_signed_in?
-    end
 
+  def authenticate_user!
     if is_super_vistor?
       sign_in_as_super_visitor(params[:user_id])
-    elsif user_signed_in?
-      super
     else
-      redirect_to login_url(subdomain: :passprot, ok_url: brand_url(subdomain: false))
+      super
     end
   end
 

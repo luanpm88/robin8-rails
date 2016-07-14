@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
-  before_action :authenticate_kol!, only: [:withdraw_apply]
+  # before_action :authenticate_kol!, only: [:withdraw_apply]
 
   def set_locale
     unless params[:locale].blank?

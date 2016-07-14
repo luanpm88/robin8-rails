@@ -112,6 +112,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authenticate_user!
+    if current_kol
+      sign_in(:user, current_kol.user) if not user_signed_in?
+    else
+      sign_out(:user) and flash[:alert] = "请您先登录或注册新账号" if user_signed_in?
+    end
+
+    if user_signed_in?
+      super
+    else
+      redirect_to login_url(subdomain: :passprot, ok_url: brand_url(subdomain: false))
+    end
+  end
+
   def set_union_access_token(obj)
     return unless obj.respond_to? :union_access_token
 
