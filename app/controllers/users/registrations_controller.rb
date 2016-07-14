@@ -29,6 +29,7 @@ module Users
         @identity.update(kol: @kol) if @identity and @identity.kol.blank?
 
         @user = @kol.find_or_create_brand_user
+        @user.update_attributes(avatar: @identity.avatar_url)
         set_union_access_token(@kol)
         render json: { msg: "注册绑定成功，正在为您跳转...", ok_url: params[:ok_url].presence || brand_url(subdomain: false) }, status: :ok
       else
