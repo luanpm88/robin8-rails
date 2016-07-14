@@ -505,4 +505,14 @@ class Kol < ActiveRecord::Base
     self.identities.group("provider")
   end
 
+  def self.remove_device_token(device_token)
+    Kol.where(:device_token => device_token).update_all(:device_token => nil)
+  end
+
+  # def remove_same_device_token
+  #   if self.device_token.present? && self.device_token_changed?
+  #     Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)
+  #   end
+  # end
+
 end
