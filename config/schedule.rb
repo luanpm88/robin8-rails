@@ -45,7 +45,7 @@ every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'produciton'
 end
 
-every 5.minutes do
+every 2.minutes do
   runner "CampaignInvite.schedule_day_settle"
 end
 

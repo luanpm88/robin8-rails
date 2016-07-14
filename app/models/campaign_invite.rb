@@ -201,7 +201,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
   def self.schedule_day_settle(async = true)
-    Rails.logger.settle.logger "----schedule_day_settle---async:#{async}"
+    Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
     if async
       CampaignDaySettleWorker.perform_async
     else
@@ -213,7 +213,7 @@ class CampaignInvite < ActiveRecord::Base
       campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'click', 'cpa']).collect{|t| t.id}
       return if campaign_ids.size == 0
       ids = CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.collect{|t| t.id}
-      Rails.logger.settle.logger "----schedule_day_settle---day_settle:#{ids}--#{transaction_time}"
+      Rails.logger.settle.info "----schedule_day_settle---day_settle:#{ids}--#{transaction_time}"
       #对审核通过的自动结算
       # CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
       #   invite.settle(true, transaction_time)
