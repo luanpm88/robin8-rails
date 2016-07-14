@@ -8,7 +8,7 @@ module API
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.find_by(mobile_number: params[:mobile_number])
-          Kol.remove_device_token(params[:device_token])
+          kol.remove_same_device_token(params[:device_token])
           if kol.present?
             kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
                                   device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
@@ -48,7 +48,6 @@ module API
         post 'oauth_login' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           kol = identity.kol   rescue nil
-          Kol.remove_device_token(params[:device_token])
           if !kol
             ActiveRecord::Base.transaction do
               app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
@@ -74,6 +73,7 @@ module API
             kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
                                   device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
           end
+          kol.remove_same_device_token(params[:device_token])
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end

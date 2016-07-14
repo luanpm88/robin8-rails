@@ -9,7 +9,7 @@ module API
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           params[:current_sign_in_ip] = request.ip
           kol = Kol.reg_or_sign_in(params)
-          Kol.remove_device_token(params[:device_token])
+          kol.remove_same_device_token(params[:device_token])
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
             if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
@@ -63,7 +63,6 @@ module API
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           kol = identity.kol   rescue nil
-          Kol.remove_device_token(params[:device_token])
           if !kol
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
@@ -84,6 +83,7 @@ module API
             end
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
+          kol.remove_same_device_token(params[:device_token])
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
