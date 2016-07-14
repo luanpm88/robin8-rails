@@ -30,7 +30,7 @@ this.App = {};
 
 $(window).load(function() {
   okUrl = $("#ok_url").val();
-  App.cable = Cable.createConsumer("/cable");
+  App.cable = Cable.createConsumer("<%= smart_root_url("cable", protocol: "ws", subdomain: false) %>");
   return App.cable.subscriptions.create({
     channel: 'QrCodeLoginChannel',
     uuid: $("#scan_uuid").val()

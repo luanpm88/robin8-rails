@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160705082555) do
+ActiveRecord::Schema.define(version: 20160713021028) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -217,9 +217,9 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
     t.string   "expect_price",        limit: 255
+    t.string   "agree_reason",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "agree_reason",        limit: 255
     t.string   "remark",              limit: 255
   end
 
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.integer  "transaction_id",  limit: 4
   end
 
+  add_index "campaign_shows", ["appid"], name: "index_campaign_shows_on_appid", length: {"appid"=>191}, using: :btree
   add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
   add_index "campaign_shows", ["transaction_id"], name: "index_campaign_shows_on_transaction_id", using: :btree
 
@@ -333,7 +334,10 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.string   "address",                  limit: 255
     t.boolean  "hide_brand_name",          limit: 1,                                 default: false
     t.boolean  "end_apply_check",          limit: 1,                                 default: false
-    t.decimal  "need_pay_amount",                           precision: 12, scale: 2, default: 0.0
+    t.float    "actual_per_action_budget", limit: 24
+    t.datetime "check_time"
+    t.datetime "end_apply_time"
+    t.decimal  "need_pay_amount",                           precision: 13, scale: 3, default: 0.0
     t.string   "pay_way",                  limit: 255
     t.boolean  "used_voucher",             limit: 1,                                 default: false
     t.decimal  "voucher_amount",                            precision: 12, scale: 2, default: 0.0
@@ -395,7 +399,6 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.string   "city_name",        limit: 255
-    t.string   "device_uuid",      limit: 100
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -1018,7 +1021,8 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.datetime "revoked_at"
     t.string   "scopes",            limit: 255
   end
-  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_9975cf819c", using: :btree
+
+  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_fe4cd96c33", using: :btree
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -1254,7 +1258,7 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.string   "reward_cycle",  limit: 255
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
-    t.string   "task_type",     limit: 50
+    t.string   "task_type",     limit: 100
     t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
@@ -1538,7 +1542,7 @@ ActiveRecord::Schema.define(version: 20160705082555) do
     t.string   "real_name",              limit: 255
     t.decimal  "appliable_credits",                  precision: 12, scale: 2, default: 0.0
     t.integer  "kol_id",                 limit: 4
-    t.string   "appid",                  limit: 50
+    t.string   "appid",                  limit: 255
     t.boolean  "is_active",              limit: 1,                            default: true
   end
 
