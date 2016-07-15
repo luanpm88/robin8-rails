@@ -131,12 +131,12 @@ class ApplicationController < ActionController::Base
 
     cookies.permanent[:_robin8_union] = {
       value: obj.union_access_token.token,
-      domain: :all
+      domain: request.domain
     }
   end
 
   def clear_union_access_token
-    cookies.delete("_robin8_union", domain: :all)
+    cookies.delete("_robin8_union", domain: request.domain)
   end
 
   protected
