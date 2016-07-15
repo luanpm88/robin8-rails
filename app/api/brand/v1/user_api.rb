@@ -40,8 +40,9 @@ module Brand
         requires :new_password_confirmation , type: String
       end
       put '/password' do
-        if current_user.valid_password? params[:password]
-          if current_user.reset_password params[:new_password], params[:new_password_confirmation]
+        kol = current_user.kol
+        if kol.valid_password? params[:password]
+          if kol.reset_password params[:new_password], params[:new_password_confirmation]
             # TODO: in RESTful, update/delete success should return 204(no content).
             present current_user
           else
