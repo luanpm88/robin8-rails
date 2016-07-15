@@ -1,0 +1,27 @@
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #eef1f8;
+  height: auto;
+  font-family: "Microsoft YaHei", SimHei, Helvetica, "Segoe UI", "Lucida Grande", Arial, sans-serif;
+  color: #181616;
+  font-size: 16px;
+}
+
+input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  border: 1px solid #CCC!important;
+}
+input:-webkit-autofill:focus{
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.container {
+  width: 100%;
+  @include clearfix;
+  padding: 25px;
+}

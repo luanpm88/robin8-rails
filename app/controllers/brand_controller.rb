@@ -21,13 +21,12 @@ class BrandController < ApplicationController
   # end
 
   private
+
   def authenticate_user!
     if is_super_vistor?
       sign_in_as_super_visitor(params[:user_id])
-    elsif user_signed_in?
-      super
     else
-      redirect_to '/'
+      super
     end
   end
 

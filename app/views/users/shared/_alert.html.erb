@@ -1,0 +1,15 @@
+<div class="alert-wrap form-top-alert">
+  <% flash.map do |clz, msg| %>
+    <%
+      clz_name = case clz
+        when "notice"
+          "success"
+        when "error"
+          "danger"
+        else
+          "info"
+        end
+    %>
+    <div class="alert-data" data-type="<%= clz_name %>" data-message="<%= msg %>"></div>
+  <% end if flash.present? %>
+</div>

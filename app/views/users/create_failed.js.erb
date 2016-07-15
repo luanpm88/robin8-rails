@@ -1,5 +1,5 @@
 $('.tips p').hide();
 $('.tips .tipsFailed').show();
 $('.tips .tipsFailed').html('');
-$('.tips .tipsFailed').append("<%= @user.errors.messages.first.last.last %>")
+$('.tips .tipsFailed').append("<%= @kol.errors.messages.first.last.last %>")
 $('.tops .tipsFailed').siblings.hide();

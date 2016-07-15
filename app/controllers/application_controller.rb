@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include Concerns::BrowserRequest
+  include Concerns::RequestSmsValidator
+
   before_filter :set_cookies
   before_filter :set_utm_source
   before_action :set_translations
@@ -10,6 +12,8 @@ class ApplicationController < ActionController::Base
   helper_method :china_locale?
   helper_method :mobile_request?
   helper_method :production?
+  helper_method :current_kol
+  helper_method :current_token
 
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
@@ -28,7 +32,6 @@ class ApplicationController < ActionController::Base
   def set_cookies
     cookies[:_robin8_visitor] ||= SecureRandom.hex
   end
-
 
   def is_china_request?
     return true
@@ -90,6 +93,50 @@ class ApplicationController < ActionController::Base
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
+  end
+
+  def current_token
+    return @current_token if @current_token
+    @current_token = Doorkeeper::AccessToken.find_by_token cookies["_robin8_union"]
+  end
+
+  def current_kol
+    return @current_kol if @current_kol
+    @current_kol = Kol.where(id: current_token.resource_owner_id).take if current_token
+  end
+
+  def union_authenticate!
+    unless current_kol
+      flash[:error] = "您还没有登录，请您先登录或注册"
+      return redirect_to login_url(params.permit(:ok_url))
+    end
+  end
+
+  def authenticate_user!
+    if current_kol
+      sign_in(:user, current_kol.user) if not user_signed_in? or current_user != current_kol.user
+    else
+      sign_out(:user) and flash[:alert] = "请您先登录或注册新账号" if user_signed_in?
+    end
+
+    if user_signed_in?
+      super
+    else
+      redirect_to login_url(subdomain: :passport, ok_url: brand_url(subdomain: false))
+    end
+  end
+
+  def set_union_access_token(obj)
+    return unless obj.respond_to? :union_access_token
+
+    cookies.permanent[:_robin8_union] = {
+      value: obj.union_access_token.token,
+      domain: request.domain
+    }
+  end
+
+  def clear_union_access_token
+    cookies.delete("_robin8_union", domain: request.domain)
   end
 
   protected

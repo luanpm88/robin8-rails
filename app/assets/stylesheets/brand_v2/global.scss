@@ -518,3 +518,48 @@
   width: 100%;
   background: image-url('temp_join_in.png') no-repeat center;
 }
+
+.password-link {
+  color: #333;
+  text-decoration: none;
+  &:hover, &:active, &:focus {
+    color: #333;
+  }
+}
+
+.logged-wrap {
+  .profile {
+    width: 180px;
+    margin: 0 auto;
+    position: relative;
+    padding: 70px 0 20px 0;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    box-shadow: 10.5px 18.187px 19px 0 rgba(0,0,0,0.55);
+    -webkit-box-shadow: 10.5px 18.187px 19px 0 rgba(0,0,0,0.55);
+    margin: 15px auto;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    img {
+      width: 100%;
+    }
+  }
+  .name {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+  }
+  .btn {
+    display: block;
+    margin: 10px auto 0 auto;
+    width: 220px;
+    background-color: #2dcad0;
+    border-color: #2dcad0;
+  }
+}

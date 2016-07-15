@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
-  mount ActionCable.server => '/cable'
-  mount ApplicationAPI => '/brand_api'
+  mount BrandAPI => '/brand_api'
+  mount PropertyAPI => '/prop'
+  use_doorkeeper
 
   get 'track_urls/:id', to: "pages#track_url"
 
@@ -49,20 +50,34 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :users, controllers: {
-    sessions: "users/sessions",
-    registrations: "users/registrations",
-    passwords: "users/passwords",
-    invitations: "users/invitations",
-    omniauth_callbacks: "users/omniauth_callbacks",
-    confirmations: "users/confirmations"
-  }
+
+  get    '/users/sign_in', to: redirect('/login')
+  get    '/users/sign_up', to: redirect('/register')
+
+  devise_for :users
 
   devise_scope :user do
-    match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
-    match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
+    get    '/register',           to: "users/registrations#new"
+    post   '/register',           to: "users/registrations#create"
+    get    '/register/bind',      to: "users/registrations#bind"
+    get    '/register/edit',      to: "users/registrations#edit"
+    put    '/register',           to: "users/registrations#update"
+    get    '/login',              to: "users/sessions#new"
+    get    '/login/scan',         to: "users/sessions#scan"
+    get    '/login/scan/submit',  to: "users/sessions#scan_submit"
+    post   '/login',              to: "users/sessions#create"
+    get    '/logout',             to: "users/sessions#destroy"
+    get    '/password',           to: "users/passwords#new"
+    post   '/password',           to: "users/passwords#create"
+    post   '/passport/sender/sms',to: "users/sessions#sms"
+    mount ActionCable.server => '/passport/scan/cable'
   end
 
+  get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
+  match "/auth/wechat_third" => "authentications#wechat_third", :via => [:get, :post]
+  match "/auth/wechat_third_callback" => "authentications#wechat_third_callback", :via => [:get, :post]
+
+  get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
 
   get 'set_locale' => 'pages#set_locale'
   get '/users/manageable_users' => 'users#manageable_users'
@@ -97,7 +112,8 @@ Rails.application.routes.draw do
   devise_for :kols, controllers: {
     registrations: "kols/registrations",
     sessions: "users/sessions",
-    passwords: "kols/passwords"
+    passwords: "kols/passwords",
+    # omniauth_callbacks: "users/omniauth_callbacks"
   }
 
   resources :users do
@@ -110,12 +126,6 @@ Rails.application.routes.draw do
       get :avail_amount
       get :check_exist_by_mobile_number
       post :modify_password
-    end
-  end
-
-  resources :kols do
-    collection do
-      get 'get_kol_by_token'
     end
   end
 
@@ -140,8 +150,6 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  get '/signup', to: 'pages#signup'
-  get '/signin', to: 'pages#signin'
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
   get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'
   get '/about', to: 'pages#about'

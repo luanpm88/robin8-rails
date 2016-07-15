@@ -1,0 +1,46 @@
+<div class="register-wrap">
+  <div class="form-wrap">
+    <%= render partial: "users/shared/alert" %>
+    <div class="container">
+        <h3>注册Robin8会员</h3>
+        <div class="divider">手机号码快速注册</div>
+        <div class="form-panel">
+          <%= form_tag('/register', method: 'post', remote: true) do %>
+            <input type="hidden" name="ok_url" value="<%= params[:ok_url] %>" />
+            <div class="form-alert-wrap"></div>
+            <div class="form-group">
+              <i class="icon-mobile"></i>
+              <input type="tel" class="form-control mobile-number" name='user[mobile_number]' placeholder="请填写您的手机号" required>
+            </div>
+            <div class="form-group col-2 captcha">
+              <div class="cell">
+                <%= rucaptcha_input_tag(class: 'form-control captcha-code', placeholder: '请填写图片验证码') %>
+              </div>
+              <div class="cell">
+                <%= rucaptcha_image_tag(alt: '图片验证码', class: "captcha-image", data: {
+                  toggle: "tooltip", placement: "top", title: "点击更换图片验证码" }) %>
+              </div>
+            </div>
+            <div class="form-group col-2">
+              <div class="cell">
+                <input type="text" class="form-control sms-code" name='user[sms_code]' placeholder="请填写短信验证码" required />
+              </div>
+              <div class="cell">
+                <a href="javascript:void(0);" class="sms-code-btn" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name='user[password]' placeholder="请填写您的密码" required />
+            </div>
+            <button type="submit" class="submit-btn" data-loading-txt="正在注册...">立即注册</button>
+          <% end %>
+          <div class="form-bottom">
+            <a href="/login" class="back-btn with-ok-url">
+              <i class="l-arraw-left"></i>已有账号？立即登录
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

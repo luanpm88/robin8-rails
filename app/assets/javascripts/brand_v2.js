@@ -7,10 +7,10 @@ $(function(){
 
   // clean chrome form cache
   setTimeout(function() {
-    $(".mobile-number").val("").attr("placeholder", "手机号码/邮箱");
-    $(".verify_code").val("").attr("placeholder", "输入验证码");
-    $(".password").val("").attr("placeholder", "设置密码");
-    $(".new-password").val("").attr("placeholder", "设置新密码");
+    $(".mobile-number").val("");
+    $(".verify_code").val("");
+    $(".password").val("");
+    $(".new-password").val("");
   }, 500);
 
   if($("#downloadModal").attr("show-after-loading") == 'true'){
@@ -33,10 +33,10 @@ $(function(){
 
   $('.quick-login').click(function() {
     // 清除不必要的填充
-    $(".mobile-number").val("").attr("placeholder", "手机号码/邮箱");
-    $(".verify_code").val("").attr("placeholder", "输入验证码");
-    $(".password").val("").attr("placeholder", "设置密码");
-    $(".new-password").val("").attr("placeholder", "设置新密码");
+    $(".mobile-number").val("");
+    $(".verify_code").val("");
+    $(".password").val("");
+    $(".new-password").val("");
 
     // 验证user是否登录过网站，如果登录过，则选择登录 tab
     $.ajax({
@@ -114,7 +114,7 @@ $(function(){
       beforeSend: function(xhr){
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: {'phone_number': phone_number, 'role': 'user', '_rucaptcha': $('.rucaptcha_input').val()}
+      data: {'phone_number': phone_number, 'role': 'kol', '_rucaptcha': $('.rucaptcha_input').val()}
     })
     .done(function(data){
       $('.bs-example-modal-sm .tips').children().hide();
@@ -168,7 +168,7 @@ $(function(){
       beforeSend: function(xhr){
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: {'phone_number': phone_number, 'role': 'user', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
+      data: {'phone_number': phone_number, 'role': 'kol', 'forget_password': true, '_rucaptcha': $('.forget-password-rucaptcha-input').val()}
     })
     .done(function(data){
       $('.forget-password-rucaptcha-modal-sm .tips').children().hide();
@@ -211,4 +211,23 @@ $(function(){
     $('#forget-password-modal').modal('show');
   })
 
+  $('.quick-login-wrap form').on('ajax:success', function(e, data, status, xhr){
+      $(".tipsSuccess").show();
+      setTimeout(function() {
+          window.location.href = data.ok_url || "/";
+      }, 500);
+  }).on('ajax:error',function(e, xhr, status, error){
+      var data = xhr.responseJSON || JSON.parse(xhr.responseText);
+      if (!data) data = { error: "请求发生异常，请重试" };
+      $(".tipsFailed").show();
+  }).on('ajax:beforeSend',function(xhr, settings){
+      $(".help-block").hide();
+      var submitBtn = $(this).find("[type='submit']");
+      if (submitBtn.hasClass('disabled')) return false;
+      submitBtn.data("txt", submitBtn.html());
+      submitBtn.html(submitBtn.data("loading-txt")).addClass('disabled');
+  }).on('ajax:complete',function(xhr, status){
+      var submitBtn = $(this).find("[type='submit']");
+      submitBtn.html(submitBtn.data("txt")).removeClass('disabled');
+  });
 })

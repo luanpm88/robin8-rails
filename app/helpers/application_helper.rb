@@ -11,6 +11,10 @@ module ApplicationHelper
     ENV["REACT_ON_RAILS_ENV"] == "HOT"
   end
 
+  def smart_root_url path, opts={}
+    URI.join(root_url(opts), path).to_s
+  end
+
   private
 
   def send_tag_method(tag_method_name, args)
