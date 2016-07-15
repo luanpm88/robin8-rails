@@ -31,7 +31,7 @@ class AuthenticationsController < ApplicationController
         # sign in and set union token
         kol = identity.kol
         if kol.user
-          redirect_to omniauth_params['ok_url'], bound: true
+          redirect_to append_query_params(omniauth_params['ok_url'], "bound=true")
         else
           user = kol.find_or_create_brand_user
           set_union_access_token(kol)
@@ -120,6 +120,10 @@ class AuthenticationsController < ApplicationController
     params[:alias] = package["authorizer_info"]["alias"]
     params[:from_type] = 'web'
     params
+  end
+
+  def append_query_params(url, query_params)
+    url.include?("?") ? (url + "&" + query_params) : (url + "?" + query_params)
   end
 
 end
