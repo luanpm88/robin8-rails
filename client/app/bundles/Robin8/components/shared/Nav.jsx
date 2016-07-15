@@ -24,7 +24,7 @@ export default class BrandNav extends React.Component {
     return (
       <header className="navbar r-global-header">
         <div className="container-fluid">
-          <Link to="/brand/" className="logo">Robin8</Link>
+          <a href="/" className="logo">Robin8</a>
           <div className="navbar-user pull-right">
             <div className="dropdown ">
               <a href="#" data-toggle="dropdown" className="username">{ brand.get('name') }<i className="caret-arrow"></i></a>
