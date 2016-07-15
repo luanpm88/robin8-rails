@@ -31,7 +31,12 @@ class AuthenticationsController < ApplicationController
         # sign in and set union token
         kol = identity.kol
         if kol.user
-          redirect_to append_query_params(omniauth_params['ok_url'], "bound=true")
+          if omniauth_params['ok_url']
+            return redirect_to append_query_params(omniauth_params['ok_url'], "bound=true")
+          else
+            set_union_access_token(kol)
+            return redirect_to brand_path
+          end
         else
           user = kol.find_or_create_brand_user
           set_union_access_token(kol)
