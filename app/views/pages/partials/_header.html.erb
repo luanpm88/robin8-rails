@@ -29,6 +29,32 @@
             <li><a href="/brands/bigv" target="_top">寻找大V</a></li>
           </ul>
         </li>
+        <% if current_kol %>
+          <li class="dropdown profile">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+              <% avatar_url = current_kol.avatar_url || asset_url("default_pic.png") %>
+              <%= image_tag avatar_url, class: "img-circle" %>
+              <span><%= current_kol.safe_name.presence %></span>
+              <em></em>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/accounts/<%= current_kol.id %>/edit" data-no-turbolink="true" target="_top">个人中心</a>
+              </li>
+              <li>
+                <%= link_to logout_url(subdomain: :passport, ok_url: root_url) do %>
+                  退出
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to login_url(subdomain: :passport, ok_url: root_url) do %>
+              <i class="icon-login"></i> 登录/注册
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
