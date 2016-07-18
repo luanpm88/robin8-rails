@@ -152,6 +152,9 @@ module API
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
             resent :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          elsif identity.present? && identity.kol_id.blank?
+            current_kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if current_kol.avatar.url.blank?
+            identity.update_column(:kol_id, current_kol.id)
           else
             return error_403!({error: 1, detail: '该账号已经被其他用户绑定！'})
           end
