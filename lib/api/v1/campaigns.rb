@@ -79,7 +79,7 @@ module API
         put 'can_apply' do
           campaign = Campaign.find(params[:id]) rescue nil
           campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
-          if campaign.blank? || !campaign.is_recruit_type? ||  current_kol.app_platform != 'IOS' || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
+          if campaign.blank? || !campaign.is_recruit_type? ||  current_kol.app_version < '1.2.0' || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif !campaign.can_apply ||  campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'applying')
             return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
