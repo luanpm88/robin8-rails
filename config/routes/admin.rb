@@ -91,6 +91,7 @@ Rails.application.routes.draw do
       end
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
+      match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
     end
     resources :announcements, except: [:destroy]
     resources :alipay_orders do
