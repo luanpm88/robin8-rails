@@ -3,16 +3,6 @@
     <%= render partial: "users/shared/alert" %>
     <div class="container">
         <h3>社交账号绑定手机</h3>
-        
-        <div class="divider">您所绑定的QQ帐号</div>
-        <div style="text-align: center;">
-          <% @identity = Identity.find params[:identity_code] %>
-          <% if @identity.provider == 'qq_connect' %>
-            <img src="<%=@identity.avatar_url%>">
-            <p><%= @identity.name %></p>
-          <% end %>
-        </div>
-
         <div class="divider">快速绑定手机号码</div>
         <div class="form-panel">
           <%= form_tag('/register', method: 'post', remote: true) do %>
