@@ -308,6 +308,27 @@
     display: none;
   }
 
+  .profile {
+    width: 145px;
+    > a {
+      height: 60px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+      left: 12px;
+      position: absolute;
+      top: 13px;
+      &.img-circle {
+        border-radius: 50%;
+      }
+    }
+  }
+
   @media(min-width: $phone-width) {
     .navbar-nav {
       display: block;

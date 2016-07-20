@@ -37,7 +37,8 @@
 .icon-user,
 .icon-search,
 .icon-ranking,
-.icon-brand {
+.icon-brand,
+.icon-login {
   width: 30px;
   height: 30px;
   font-style: normal;
@@ -60,6 +61,10 @@
 
 .icon-brand {
   background-image: image-url("icon-brand.png");
+}
+
+.icon-login {
+  background-image: image-url("icon-login.png");
 }
 
 .arrow-down {
