@@ -85,7 +85,7 @@ class AuthenticationsController < ApplicationController
     Rails.logger.alipay.info "#{auth}"
 
     params[:uid] = auth.uid
-    params[:provider] = auth.provider
+    params[:provider] = (auth.provider == 'qq_connect') ? 'qq' : auth.provider
     params[:token] = auth.credentials.token
     params[:name] = (auth.provider == 'qq_connect' || auth.provider == 'wechat') ? auth.info.nickname : auth.info.name
     params[:email] = auth.info.email
