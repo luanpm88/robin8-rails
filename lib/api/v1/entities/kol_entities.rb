@@ -119,7 +119,7 @@ module API
         class InviteeSummary < Grape::Entity
           expose :id
           expose :name do  |kol|
-            kol.name.present? ? kol.name : Kol.hide_real_mobile_number(kol.mobile_number)
+            kol.name.present? ? kol.safe_name : Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :avatar_url do |kol|
             kol.avatar.url(200)  rescue ''
