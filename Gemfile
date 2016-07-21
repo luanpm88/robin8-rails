@@ -99,6 +99,7 @@ gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-weibo-oauth2'
+gem 'omniauth-qq'
 # gem 'omniauth-wechat-oauth2'
 gem "omniauth-wechat-oauth2", git: 'https://github.com/yangsr/omniauth-wechat-oauth2.git'
 gem 'active_model_serializers', "~> 0.8.0"
@@ -233,5 +234,6 @@ gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
 # https://github.com/CanCanCommunity/cancancan
 gem 'cancancan', '~> 1.10'
 gem 'alipay', '~> 0.12.0'
+gem 'doorkeeper'
 # https://github.com/rails/actioncable/tree/archive
 gem 'actioncable', github: 'rails/actioncable', branch: "archive"

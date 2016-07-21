@@ -28,8 +28,7 @@ export default function profileReducer($$state = initialState, action=nil) {
         $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
       }
       if(fetchState === 'success') {
-        window.location = '/users/sign_out';
-        window.location = '/';
+        window.location = '/logout';
       }
       return $$state;
     default:

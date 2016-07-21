@@ -12,23 +12,49 @@
         </li>
         <% end %>
         <li>
-          <a href="/ranking"><i class="icon-ranking"></i> 排行榜</a>
+          <a href="/ranking" target="_top"><i class="icon-ranking"></i> 排行榜</a>
         </li>
         <li>
-          <a href="/"><i class="icon-search"></i> 搜索引擎</a>
+          <a href="/" target="_top"><i class="icon-search"></i> 搜索引擎</a>
         </li>
         <li>
-          <a href="/kols"><i class="icon-user"></i> 我是网红</a>
+          <a href="/kols" target="_top"><i class="icon-user"></i> 我是网红</a>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
             <i class="icon-brand"></i> 我是广告主 <em></em>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/brands/moments">朋友圈推广</a></li>
-            <li><a href="/brands/bigv">寻找大V</a></li>
+            <li><a href="/brands/moments" target="_top">朋友圈推广</a></li>
+            <li><a href="/brands/bigv" target="_top">寻找大V</a></li>
           </ul>
         </li>
+        <% if current_kol %>
+          <li class="dropdown profile">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+              <% avatar_url = current_kol.avatar_url || asset_url("default_pic.png") %>
+              <%= image_tag avatar_url, class: "img-circle" %>
+              <span><%= current_kol.safe_name.presence %></span>
+              <em></em>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/accounts/<%= current_kol.id %>/edit" data-no-turbolink="true" target="_top">个人中心</a>
+              </li>
+              <li>
+                <%= link_to logout_url(subdomain: :passport, ok_url: root_url) do %>
+                  退出
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to login_url(subdomain: :passport, ok_url: root_url) do %>
+              <i class="icon-login"></i> 登录/注册
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>

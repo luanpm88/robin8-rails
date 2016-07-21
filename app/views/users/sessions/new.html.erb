@@ -1,0 +1,42 @@
+<div class="login-wrap">
+  <div class="form-wrap">
+    <%= render partial: "users/shared/alert" %>
+    <div class="outter-container">
+      <div class="scanner-btn-wrap">
+        <a href="/login/scan" class="scanner-btn with-ok-url"></a>
+        <span class="scanner-tip-wrap">
+          <span class="scanner-tip"><i class="arrow-l"></i> APP用户扫码登录</span>
+        </span>
+      </div>
+      <div class="container">
+        <h3>立即登录Robin8</h3>
+        <% unless params[:no_social] %>
+        <div class="divider">无需注册，社交账号立即登录</div>
+        <div class="social-networks">
+          <a href= "<%= smart_root_url('/auth/wechat', subdomain: false) %>" class="sn-wechat with-ok-url">微信</a>
+          <a href= "<%= smart_root_url('/auth/weibo', subdomain: false) %>" class="sn-weibo with-ok-url">微博</a>
+          <!-- <a href= "<%= smart_root_url('/auth/qq_connect', subdomain: false) %>" class="sn-qq with-ok-url">QQ</a> -->
+        </div>
+        <% end %>
+        <div class="divider">账号直接登录</div>
+        <div class="form-panel">
+          <%= form_tag('/login', method: 'post', remote: true) do %>
+            <input type="hidden" name="ok_url" value="<%= params[:ok_url] %>" />
+            <div class="form-alert-wrap"></div>
+            <div class="form-group">
+              <input type="text" class="form-control" name='user[login]' placeholder="请输入您的账号" required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name='user[password]' placeholder="请输入您的密码" required>
+            </div>
+            <button type="submit" class="submit-btn" data-loading-txt="正在登陆...">立即登录</button>
+          <% end %>
+          <div class="form-bottom">
+            <a href="/register" class='register-link-btn with-ok-url'>没有账号？立即注册</a>
+            <a href="/password" class='password-link-btn with-ok-url'>忘记密码</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
-  before_action :authenticate_kol!, only: [:withdraw_apply]
+  # before_action :authenticate_kol!, only: [:withdraw_apply]
 
   def set_locale
     unless params[:locale].blank?
@@ -13,12 +13,7 @@ class PagesController < ApplicationController
   end
 
   def home
-    if user_signed_in?
-      redirect_to '/brand/'
-    else
-      @uuid, @qr_code_url = uuid_and_qr_code_url
-      render 'marketing', :layout => 'brand_v2'
-    end
+    render 'marketing', :layout => 'brand_v2'
   end
 
   def kols
@@ -26,12 +21,7 @@ class PagesController < ApplicationController
   end
 
   def moments
-    if user_signed_in?
-      redirect_to '/brand/'
-    else
-      @uuid, @qr_code_url = uuid_and_qr_code_url
-      render 'marketing', :layout => 'brand_v2'
-    end
+    render 'marketing', :layout => 'brand_v2'
   end
 
   def bigv
@@ -75,27 +65,11 @@ class PagesController < ApplicationController
     render "landing_page_brand", :layout => 'landing'
   end
 
-  def singup
-    render "home", :layout => 'application'
-  end
-
-  def signin
-    render "home", :layout => 'application'
-  end
-
   def check_used_to_signed_in    #检查是否曾经登录过网站
     if UserSignInRecord.where(sign_in_token: cookies[:remember_signed_in]).present?
       render json: {success: true} and return
     end
     render nothing: true
-  end
-
-  def scan_qr_code_and_login
-    # token = SecureRandom.uuid
-    token = params[:token]
-    $redis.set token, params[:id]
-    ActionCable.server.broadcast "uuid_#{token}", result: "success", token: token
-    head :ok
   end
 
   def pricing
@@ -232,16 +206,6 @@ class PagesController < ApplicationController
 
   def kol_publish_campaign_help
     render :layout => false
-  end
-
-  private
-
-  def uuid_and_qr_code_url
-    uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
-    $redis.set "login_uuid_#{uuid}", true
-    $redis.expire "login_uuid_#{uuid}", 1800
-    url = "http://qr.topscan.com/api.php?text=#{uuid}"
-    return uuid, url
   end
 
 end

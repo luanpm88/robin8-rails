@@ -287,7 +287,9 @@ ActiveRecord::Schema.define(version: 20160713021028) do
     t.integer  "transaction_id",  limit: 4
   end
 
+  add_index "campaign_shows", ["appid"], name: "index_campaign_shows_on_appid", length: {"appid"=>191}, using: :btree
   add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
+  add_index "campaign_shows", ["transaction_id"], name: "index_campaign_shows_on_transaction_id", using: :btree
 
   create_table "campaign_targets", force: :cascade do |t|
     t.string   "target_type",    limit: 255
@@ -1022,7 +1024,7 @@ ActiveRecord::Schema.define(version: 20160713021028) do
     t.string   "scopes",            limit: 255
   end
 
-  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_9975cf819c", using: :btree
+  add_index "oauth_access_grants", ["resource_owner_id"], name: "fk_rails_fe4cd96c33", using: :btree
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -1041,6 +1043,7 @@ ActiveRecord::Schema.define(version: 20160713021028) do
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
+
     t.string   "name",         limit: 255,                   null: false
     t.string   "uid",          limit: 50,                    null: false
     t.string   "secret",       limit: 255,                   null: false

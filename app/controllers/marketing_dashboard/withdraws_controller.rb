@@ -1,5 +1,5 @@
 class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseController
-  before_action :set_withdraw, only: [:agree, :reject]
+  before_action :set_withdraw, only: [:agree, :reject, :permanent_frozen]
 
   def index
     @withdraws = Withdraw.all.order('created_at DESC').includes(:kol)
@@ -54,6 +54,14 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Reject sucessfully!' }
+      format.json { head :no_content }
+    end
+  end
+
+  def permanent_frozen
+    @withdraw.update_attributes(:status => 'permanent_frozen')
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
       format.json { head :no_content }
     end
   end

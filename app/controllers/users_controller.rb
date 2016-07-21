@@ -13,10 +13,10 @@ class UsersController < ApplicationController
     render json: user, each_serializer: UserSerializer
   end
 
-  def new
-    @user = User.new
-    render :layout => "website"
-  end
+  # def new
+  #   @user = User.new
+  #   render :layout => "website"
+  # end
 
   def create
     verify_code = Rails.cache.fetch(user_params[:mobile_number])
@@ -25,25 +25,24 @@ class UsersController < ApplicationController
     else
       user_params[:mobile_number].strip!      rescue nil
     end
-    @user = User.new(user_params)
 
-    if utm_source = cookies['utm_source']
-      @user.utm_source = utm_source
-      cookies.delete 'utm_source'
-    end
-
+    @kol = Kol.new(user_params)
     if verify_code != params["user"]["verify_code"]
-    # flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
-      @user.errors[:base] << "验证码错误!!"
+      @kol.errors[:base] << "验证码错误!!"
+
       render :template => 'users/create_failed.js.erb' and return
-    elsif @user.valid?
+    elsif @kol.valid?
       begin
-        @user.save
+        @kol.save
+        @user = @kol.find_or_create_brand_user
+        # @user.update(utm_source: cookies['utm_source'])
+        # cookies.delete 'utm_source'
       rescue ActiveRecord::RecordNotUnique => e
-	    render :template => 'users/create_failed.js.erb' and return
+        render :template => 'users/create_failed.js.erb' and return
       end
 
       sign_in @user
+      set_union_access_token(@kol)
       render :template => 'users/create.js.erb' and return
 
       # return redirect_to root_path + "#profile"
@@ -55,14 +54,15 @@ class UsersController < ApplicationController
 
   def modify_password
     verify_code = Rails.cache.fetch(user_params[:mobile_number])
-    @user = User.where(mobile_number: user_params[:mobile_number]).first
-    if @user
+    @kol = Kol.where(mobile_number: user_params[:mobile_number]).first
+
+    if @kol
       if verify_code != params["user"]["verify_code"]
-        @user.errors[:base] << "验证码错误!!"
+        @kol.errors[:base] << "验证码错误!!"
         render template: 'users/modify_password_failed.js.erb'
       else
-        @user.update_attributes(password: user_params[:password])
-        if @user.errors.any?
+        @kol.update_attributes(password: user_params[:password])
+        if @kol.errors.any?
           render template: 'users/modify_password_failed.js.erb'
         else
           render :template => 'users/modify_password.js.erb' and return
@@ -74,22 +74,20 @@ class UsersController < ApplicationController
   end
 
   def check_exist_by_mobile_number  #检查通过手机号码检查 user 是否存在
-    @user = User.find_by(mobile_number: params[:phone_number])
-    unless @user
-      render json: {no_user: true} and return
-    end
-    render json: {no_user: false}
+    @kol = Kol.find_by(mobile_number: params[:phone_number])
+
+    return render json: { no_user: @kol.nil? }
   end
 
-  def delete_user
-    manageable_users = User.where(invited_by_id: current_user.id)
-    @user = manageable_users.find(params[:id])
-    if @user.avatar_url
-      AmazonDeleteWorker.perform_in(20.seconds, @user.avatar_url)
-    end
-    @user.destroy
-    render json: manageable_users
-  end
+  # def delete_user
+  #   manageable_users = User.where(invited_by_id: current_user.id)
+  #   @user = manageable_users.find(params[:id])
+  #   if @user.avatar_url
+  #     AmazonDeleteWorker.perform_in(20.seconds, @user.avatar_url)
+  #   end
+  #   @user.destroy
+  #   render json: manageable_users
+  # end
 
   def identities
     render json: current_user.identities

@@ -44,7 +44,7 @@ Rails.application.configure do
   # Action Cable endpoint configuration
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
-  config.action_cable.allowed_request_origins = %w(http://robin8-staging.cn)
+  config.action_cable.allowed_request_origins = [/http:\/\/passport.robin8-staging.cn/, 'http://robin8-staging.cn']
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = false

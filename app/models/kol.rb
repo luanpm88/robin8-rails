@@ -6,13 +6,15 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
+  include Concerns::Unionability
   include Concerns::KolCampaign
   include Concerns::KolTask
   include Kols::BrandUserHelper
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.years
+         :recoverable, :rememberable, :trackable, :validatable
 
   has_many :identities, -> {order('updated_at desc')}, :dependent => :destroy, autosave: true
 
@@ -75,7 +77,6 @@ class Kol < ActiveRecord::Base
 
   include Models::Identities
   extend Models::Oauth
-
 
   def record_identity(identity)
     Rails.cache.write("provide_info_#{self.id}", identity)
@@ -144,18 +145,18 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  def all_score
-    wechat_score  = identity_score('wechat')
-    wechat_third_score = identity_score('wechat_third')
-    weibo_score = identity_score('weibo')
-    total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
-    {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
-     :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
-  end
-
-  def data_score
-    (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5)
-  end
+  # def all_score
+  #   wechat_score  = identity_score('wechat')
+  #   wechat_third_score = identity_score('wechat_third')
+  #   weibo_score = identity_score('weibo')
+  #   total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
+  #   {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
+  #    :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
+  # end
+  #
+  # def data_score
+  #   (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5)
+  # end
 
   def identity_score(provider)
     (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
@@ -400,7 +401,11 @@ class Kol < ActiveRecord::Base
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
-    self.update_columns(:influence_score => influence_score, :kol_uuid => kol_uuid, :cal_time => cal_time)    if  self.influence_score.to_i < influence_score.to_i
+    if  self.influence_score.to_i < influence_score.to_i
+      self.update_columns(:influence_score => influence_score, :kol_uuid => kol_uuid, :cal_time => cal_time)
+      KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).where("kol_id is null").update_all(:kol_id => self.id)
+    end
+
   end
 
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中

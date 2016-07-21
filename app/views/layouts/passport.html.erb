@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Robin8-网红搜索引擎和精准广告平台</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <%= render :partial => "shared/meta", locals: {} %>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <%= favicon_link_tag 'favicon.ico' %>
+  <%= javascript_include_tag 'passport' %>
+  <%= stylesheet_link_tag    'passport', media: 'all' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= yield %>
+  <%=render :partial => "shared/tongji"%>
+</body>
+</html>
