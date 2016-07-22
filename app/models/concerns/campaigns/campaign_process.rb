@@ -250,7 +250,7 @@ module Campaigns
         now =  Time.now
         # notice : recruit cmapaign start_time is after
         last_campaign = Campaign.where(:status => ['executing', 'executed', 'settled']).where("start_time < '#{now}'").where.not(:id => campaign.id).order("start_time desc").first
-        if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time)
+        if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time || last_campaign.start_time.hour < PushEndHour)
           return true
         else
           return false
