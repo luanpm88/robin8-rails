@@ -57,9 +57,17 @@ export default class DetailPartial extends React.Component {
   _listenPerBudgetTypeChange() {
     $("input[name='action_type']").change(function(){
       const { per_action_budget, per_budget_type, per_budget_collect_type } = this.props;
+      if(per_budget_type.value == 'post') {
+        per_action_budget.onChange("2.0")
+      }
+      if(per_budget_type.value == 'click') {
+        per_action_budget.onChange("0.2")
+      }
+      per_action_budget.onFocus();
       per_action_budget.onBlur();
-      console.log("变化后的 %s")
-      console.log(per_budget_type.value)
+
+      // console.log("变化后的 %s")
+      // console.log(per_budget_type.value)
       // if(per_budget_type.value == "post" || per_budget_type.value == "click"){
       //   per_budget_collect_type.onChange('');
       // }else{
@@ -116,12 +124,12 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
-                按照转发奖励KOL
-              </label>
-              <label>
                 <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照点击奖励KOL
+              </label>
+              <label>
+                <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                按照转发奖励KOL
               </label>
               {
                 do{
