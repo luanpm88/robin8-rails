@@ -48,7 +48,7 @@ module Campaigns
     end
 
     def three_hours_had_receive_kol_ids
-      if campaign.budget >= 500
+      if self.budget >= 500
         return []
       else
         self.class.where("approved_at > '#{3.hours.ago}'").collect{|t| t.kol_id}
