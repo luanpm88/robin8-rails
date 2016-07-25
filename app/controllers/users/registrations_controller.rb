@@ -27,7 +27,7 @@ module Users
       if @kol.save
         @identity = Identity.find(params[:identity_code]) if params[:identity_code]
         @identity.update(kol: @kol) if @identity and @identity.kol.blank?
-        @kol.update(remote_avatar_url: @identity.avatar_url)
+        @kol.update(remote_avatar_url: @identity.avatar_url) if @identity and @identity.kol.blank?
         @user = @kol.find_or_create_brand_user
         set_union_access_token(@kol)
         render json: { msg: "注册绑定成功，正在为您跳转...", ok_url: params[:ok_url].presence || brand_url(subdomain: false) }, status: :ok
