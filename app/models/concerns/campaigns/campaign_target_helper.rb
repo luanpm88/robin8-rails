@@ -14,8 +14,9 @@ module Campaigns
 
     def get_unmatched_kol_ids
       # 获取 不匹配的kol_ids
-      # (接过指定campaign 的kols + 指定去掉的kol + 黑名单中的kol).uniq - 指定添加的kol
-      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols +  today_receive_three_times_kol_ids).uniq - add_kols_by_targets
+      # (接过指定campaign 的kols + 指定去掉的kol + 黑名单中的kol + 今日结果三次 + 三小时内接过).uniq - 指定添加的kol
+      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols +
+        today_receive_three_times_kol_ids + three_hours_had_receive_kol_ids).uniq - add_kols_by_targets
     end
 
     def get_remove_kol_ids_by_target
@@ -46,6 +47,14 @@ module Campaigns
       get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
     end
 
+    def three_hours_had_receive_kol_ids
+      if campaign.budget >= 500
+        return []
+      else
+        self.class.where("approved_at > '#{3.hours.ago}'").collect{|t| t.kol_id}
+      end
+
+    end
 
     # 获取匹配kols
     def get_matching_kol_ids
