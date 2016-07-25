@@ -358,6 +358,22 @@
   margin-right: 20px;
 }
 
+.creat-material {
+  .content {
+    .material-option {
+      li {
+        float: left;
+        margin-right: 20px;
+        width: 200px;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .kol-message {
   padding: 30px 0px;
 }

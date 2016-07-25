@@ -211,6 +211,7 @@ module Brand
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
           optional :hide_brand_name, type: Boolean
+          optional :materials, type: String
         end
         post 'recruit_campaigns' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
@@ -239,6 +240,7 @@ module Brand
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
           optional :hide_brand_name, type: Boolean
+          optional :materials, type: String
         end
         put '/recruit_campaigns/:id' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]

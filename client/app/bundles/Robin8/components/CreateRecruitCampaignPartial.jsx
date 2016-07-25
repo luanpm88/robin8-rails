@@ -9,7 +9,8 @@ import "campaign/recruit/form.scss";
 
 import BreadCrumb            from './shared/BreadCrumb';
 import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
-import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
+import CampaignMaterialPartial  from './shared/campaign_material/CampaignMaterialPartial'
+// import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
@@ -34,7 +35,7 @@ const initCampaign = {
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
-  img_url: { require_img: true },
+  // img_url: { require_img: true },
   budget: { require: true},
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
@@ -67,7 +68,7 @@ class CreateRecruitCampaign extends React.Component{
     const { name, description, img_url, influence_score, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
           recruit_person_count, task_description, address, region,
-          hide_brand_name
+          hide_brand_name, materials
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
@@ -78,7 +79,8 @@ class CreateRecruitCampaign extends React.Component{
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
-              <RecruitTargetPartial {...{influence_score, region}}/>
+              {/* <RecruitTargetPartial {...{influence_score, region}}/> */}
+              {<CampaignMaterialPartial {...{materials}} />}
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
@@ -98,7 +100,8 @@ class CreateRecruitCampaign extends React.Component{
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
-         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region", "hide_brand_name"],
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
+         "recruit_person_count", "task_description", 'address', "region", "hide_brand_name", "materials"],
   returnRejectedSubmitPromise: true,
   validate
 },

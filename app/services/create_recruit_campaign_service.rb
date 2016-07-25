@@ -5,7 +5,7 @@ class CreateRecruitCampaignService
                   :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
                   :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name]
+                  :recruit_end_time, :hide_brand_name, :materials]
 
   attr_reader :errors, :campaign
 
