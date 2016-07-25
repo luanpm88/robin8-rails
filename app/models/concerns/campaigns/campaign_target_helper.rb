@@ -51,7 +51,7 @@ module Campaigns
       if self.budget >= 500
         return []
       else
-        self.class.where("approved_at > '#{3.hours.ago}'").collect{|t| t.kol_id}
+        CampaignInvite.where("approved_at > '#{3.hours.ago}'").collect{|t| t.kol_id}
       end
 
     end
