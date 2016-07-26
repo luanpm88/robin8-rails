@@ -360,6 +360,14 @@
 
 .creat-material {
   .content {
+    .materials {
+      li {
+        span:last-child {
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
     .material-option {
       li {
         float: left;

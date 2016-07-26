@@ -26,6 +26,15 @@ export default class CampaignMaterialPartial extends React.Component {
     onChange(this.materials)
   }
 
+  remove(e) {
+    const url = $(e.target).parent().children().first().text()
+    const index = this.material_array.indexOf(url)
+    if(index != -1) {
+      this.material_array.splice(index, 1);
+      this.update();
+    }
+  }
+
   uploadImg() {
     Qiniu.uploader({
         runtimes: 'html5,flash,html4',      // 上传模式,依次退化
@@ -93,8 +102,8 @@ export default class CampaignMaterialPartial extends React.Component {
       const material = this.material_array[index]
       materailList.push(
         <li className="" key={index}>
-          {material}
-          <span className="del">x</span>
+          <span>{material}</span>
+          <span className="del" onClick={this.remove.bind(this)}>x</span>
         </li>
       );
     }
@@ -108,7 +117,6 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   render() {
-    // const materials = this.props.materials;
     return (
       <div className="creat-activity-form creat-material">
         <div className="header">
