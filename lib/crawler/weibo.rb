@@ -14,18 +14,28 @@ module Crawler
       return {} if doc.blank?
       unescape_doc =  CGI.unescapeHTML(doc.to_s)
       content = eval(unescape_doc.to_s.gsub("null", '""'))
+      puts content
       info = {}
+      info[:uid] = content[:stage][:page][1][:id]
       info[:brief] = content[:stage][:page][1][:description]
       info[:username] = content[:stage][:page][1][:name]
       info[:statuses_count] = content[:stage][:page][1][:mblogNum]
-      info[:friends_count] = content[:stage][:page][1][:favourites_count]
+      info[:friends_count] = content[:stage][:page][1][:attNum]
       info[:followers_count] = content[:stage][:page][1][:fansNum]
-      info[:location] = content[:stage][:page][1][:nativePlace]
-      info[:avatar] = content[:stage][:page][1][:avatar_hd]
-
+      info[:province] = content[:stage][:page][1][:nativePlace]
+      info[:avatar_url] = content[:stage][:page][1][:avatar_hd]
+      if content[:stage][:page][1][:ta] == '她'
+        info[:gender] = '2'
+      elsif content[:stage][:page][1][:ta] == '他'
+        info[:gender] = '1'
+      else
+        info[:gender] = '0'
+      end
       info[:verified] = content[:stage][:page][1][:verified]
-      info[:verified_type] = content[:stage][:page][1][:verified_type]
-      info[:verified_reason] = content[:stage][:page][1][:verified_reason]
+      others = {}
+      others[:verified_type] = content[:stage][:page][1][:verified_type]
+      others[:verified_reason] = content[:stage][:page][1][:verified_reason]
+      info[:others] = others
       info
     end
 

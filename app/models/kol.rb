@@ -1,6 +1,9 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
 
+   # kol_role:  %w{public big_v mcn}
+  # role_apply_status %w{pending applying passed rejected}
+
   # counter :redis_new_income      #unit is cent
   list :read_message_ids, :maxlength => 2000             # 所有阅读过的
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
@@ -44,6 +47,7 @@ class Kol < ActiveRecord::Base
   after_save :update_click_threshold
 
   mount_uploader :avatar, ImageUploader
+  mount_uploader :avatar, ImageUploader
 
   has_many :withdraws
   has_many :article_actions
@@ -57,6 +61,11 @@ class Kol < ActiveRecord::Base
   has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
+  has_many :kol_shows
+  has_many :kol_professions
+  has_many :professions, :through => :kol_professions
+  has_many :images, :source => :referable
+  has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
