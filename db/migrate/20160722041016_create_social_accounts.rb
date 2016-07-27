@@ -18,6 +18,8 @@ class CreateSocialAccounts < ActiveRecord::Migration
       t.string   "city",                      limit: 255
       t.string   "gender",                    limit: 255
       t.string   "price",                     limit: 255
+      t.string   "second_price",              limit: 255
+      t.string   "repost_price",              limit: 255
       t.string   "screenshot",                limit: 255
 
       t.timestamps null: false

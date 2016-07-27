@@ -37,7 +37,7 @@ class CreateProfessions < ActiveRecord::Migration
       'beauty'            => '美妆',
       'fitness'           => '健身',
       'music'             => '音乐',
-      'overall'           => '综合'
+      'overall'           => "综合"
     }.each_with_index do |(key, value), index|
       Profession.create!(name: key, label: value, position: index + 1)
     end
