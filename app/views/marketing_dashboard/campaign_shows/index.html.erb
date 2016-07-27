@@ -4,6 +4,8 @@
       <th>ID</th>
       <th>Campaign ID</th>
       <th>Kol ID</th>
+      <th>openid</th>
+      <th>ips源</th>
       <th>Cookies</th>
       <th>IP</th>
       <th>Time</th>
@@ -17,7 +19,7 @@
   <tbody>
     <% @campaign_shows.each do |c| %>
       <tr>
-        <% %w(id campaign_id kol_id visitor_cookie visitor_ip visit_time status visitor_agent remark visitor_referer other_options).each do |v| %>
+        <% %w(id campaign_id kol_id openid  proxy_ips visitor_cookie visitor_ip visit_time status visitor_agent remark visitor_referer other_options).each do |v| %>
           <td><%= c.send v %></td>
         <% end %>
       </tr>

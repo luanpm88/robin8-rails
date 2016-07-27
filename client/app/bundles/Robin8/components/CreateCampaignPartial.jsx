@@ -24,8 +24,8 @@ const initCampaign = {
   gender: 'all',
   message: '',
   budget: 100,
-  per_budget_type: 'post',
-  per_action_budget: 2,
+  per_budget_type: 'click',
+  per_action_budget: 0.2,
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm'),
   per_budget_collect_type: ""
