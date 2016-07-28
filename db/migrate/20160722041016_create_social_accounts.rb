@@ -7,7 +7,7 @@ class CreateSocialAccounts < ActiveRecord::Migration
       t.string   "username",                      limit: 255
       t.string   "homepage",                       limit: 255
       t.string   "avatar_url",                limit: 255
-      t.string   "brief",                limit: 255
+      t.text     "brief"
       t.integer  "like_count",           limit: 8
       t.integer  "followers_count",           limit: 8
       t.integer  "friends_count",             limit: 8
@@ -24,5 +24,8 @@ class CreateSocialAccounts < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index :social_accounts, :uid
+    add_index :social_accounts, :provider
   end
 end

@@ -1,5 +1,4 @@
 class SocialAccount < ActiveRecord::Base
-
   has_many :social_account_professions
   has_many :professions, :through => :social_account_professions
 
@@ -8,6 +7,7 @@ class SocialAccount < ActiveRecord::Base
 
   private
   def auto_complete_info
+    return if self.followers_count.present?
     homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'
       homepage = homepage.gsub("weibo.com", 'm.weibo.cn')

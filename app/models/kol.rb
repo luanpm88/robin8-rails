@@ -1,7 +1,6 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
-
-   # kol_role:  %w{public big_v mcn_big_v mcn}
+  # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
 
   # counter :redis_new_income      #unit is cent
@@ -67,6 +66,9 @@ class Kol < ActiveRecord::Base
   has_many :images, :source => :referable
   has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
   has_many :social_accounts
+  has_many :agent_kols, :foreign_key => :agent_id
+  has_many :big_vs, :through => :agent_kols, :source => :kol
+  belongs_to :agent_kol, :foreign_key => :kol_id
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
@@ -521,10 +523,6 @@ class Kol < ActiveRecord::Base
   def get_uniq_identities
     self.identities.group("provider")
   end
-
-  # def self.remove_device_token(device_token)
-  #   Kol.where(:device_token => device_token).update_all(:device_token => nil)
-  # end
 
   def remove_same_device_token(device_token)
       Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727104707) do
+ActiveRecord::Schema.define(version: 20160728080057) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -60,6 +60,13 @@ ActiveRecord::Schema.define(version: 20160727104707) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "agent_kols", force: :cascade do |t|
+    t.integer  "agent_id",   limit: 4
+    t.integer  "kol_id",     limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
   create_table "alerts", force: :cascade do |t|
     t.integer  "stream_id",          limit: 4
     t.string   "email",              limit: 255
@@ -80,10 +87,10 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "trade_no",        limit: 191
     t.string   "alipay_trade_no", limit: 255
     t.decimal  "credits",                     precision: 8, scale: 2
-    t.string   "status",          limit: 255,                         default: "pending"
+    t.string   "status",          limit: 255
     t.integer  "user_id",         limit: 4
-    t.datetime "created_at",                                                              null: false
-    t.datetime "updated_at",                                                              null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
     t.decimal  "tax",                         precision: 8, scale: 2, default: 0.0
     t.boolean  "need_invoice",    limit: 1,                           default: false
     t.string   "recharge_from",   limit: 255
@@ -344,7 +351,7 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.integer  "alipay_status",            limit: 4,                                 default: 0
     t.string   "invalid_reasons",          limit: 255
     t.text     "alipay_notify_text",       limit: 65535
-    t.string   "campaign_from",            limit: 255,                               default: "pc"
+    t.string   "campaign_from",            limit: 255
     t.boolean  "budget_editable",          limit: 1,                                 default: true
     t.string   "action_desc",              limit: 255
     t.string   "appid",                    limit: 255
@@ -390,9 +397,9 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "os_version",       limit: 255
     t.string   "device_model",     limit: 255
     t.integer  "campaign_show_id", limit: 4
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
-    t.string   "status",           limit: 30,  default: "pending"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "status",           limit: 30
     t.string   "city_name",        limit: 255
     t.string   "device_uuid",      limit: 100
   end
@@ -476,10 +483,10 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "device_model", limit: 255
     t.string   "content",      limit: 1000
     t.integer  "kol_id",       limit: 4
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "screenshot",   limit: 255
-    t.string   "status",       limit: 255,  default: "pending"
+    t.string   "status",       limit: 255
   end
 
   create_table "followers", force: :cascade do |t|
@@ -597,11 +604,11 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "invoice_type",    limit: 255
     t.string   "title",           limit: 255
     t.string   "address",         limit: 255
-    t.string   "status",          limit: 255, default: "pending"
+    t.string   "status",          limit: 255
     t.string   "tracking_number", limit: 255
     t.integer  "user_id",         limit: 4
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "invoice_receivers", force: :cascade do |t|
@@ -615,10 +622,10 @@ ActiveRecord::Schema.define(version: 20160727104707) do
 
   create_table "invoices", force: :cascade do |t|
     t.string   "title",        limit: 255
-    t.string   "invoice_type", limit: 255, default: "common"
+    t.string   "invoice_type", limit: 255
     t.integer  "user_id",      limit: 4
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "ip_scores", force: :cascade do |t|
@@ -793,7 +800,7 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                              default: 0,         null: false
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,        null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -864,8 +871,8 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "id_card",                limit: 255
     t.string   "job_info",               limit: 255
     t.text     "brief",                  limit: 65535
-    t.string   "kol_role",               limit: 255
-    t.string   "role_apply_status",      limit: 255,                            default: "pending"
+    t.string   "kol_role",               limit: 255,                            default: "public"
+    t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
   end
 
@@ -900,9 +907,9 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.integer  "total_number",       limit: 4
     t.integer  "actual_number",      limit: 4
     t.string   "lucky_number",       limit: 255
-    t.string   "status",             limit: 255, default: "pending"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.string   "status",             limit: 255
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.integer  "lucky_kol_id",       limit: 4
     t.string   "code",               limit: 255
     t.datetime "draw_at"
@@ -921,11 +928,11 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.integer  "kol_id",              limit: 4
     t.integer  "lottery_activity_id", limit: 4
     t.integer  "credits",             limit: 4
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.string   "code",                limit: 255
     t.integer  "number",              limit: 4,   default: 0
-    t.string   "status",              limit: 255, default: "pending"
+    t.string   "status",              limit: 255
   end
 
   add_index "lottery_activity_orders", ["kol_id"], name: "index_lottery_activity_orders_on_kol_id", using: :btree
@@ -1049,9 +1056,9 @@ ActiveRecord::Schema.define(version: 20160727104707) do
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", limit: 4,     null: false
     t.integer  "application_id",    limit: 4,     null: false
-    t.string   "token",             limit: 120,   null: false
+    t.string   "token",             limit: 120
     t.integer  "expires_in",        limit: 4,     null: false
-    t.text     "redirect_uri",      limit: 65535, null: false
+    t.text     "redirect_uri",      limit: 65535
     t.datetime "created_at",                      null: false
     t.datetime "revoked_at"
     t.string   "scopes",            limit: 255
@@ -1063,7 +1070,7 @@ ActiveRecord::Schema.define(version: 20160727104707) do
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id", limit: 4
     t.integer  "application_id",    limit: 4
-    t.string   "token",             limit: 120, null: false
+    t.string   "token",             limit: 120
     t.string   "refresh_token",     limit: 120
     t.integer  "expires_in",        limit: 4
     t.datetime "revoked_at"
@@ -1076,10 +1083,10 @@ ActiveRecord::Schema.define(version: 20160727104707) do
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
-    t.string   "name",         limit: 255,                   null: false
-    t.string   "uid",          limit: 50,                    null: false
-    t.string   "secret",       limit: 255,                   null: false
-    t.text     "redirect_uri", limit: 65535,                 null: false
+    t.string   "name",         limit: 255
+    t.string   "uid",          limit: 50
+    t.string   "secret",       limit: 255
+    t.text     "redirect_uri", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "union",        limit: 1,     default: false
@@ -1327,7 +1334,7 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "username",        limit: 255
     t.string   "homepage",        limit: 255
     t.string   "avatar_url",      limit: 255
-    t.string   "brief",           limit: 255
+    t.text     "brief",           limit: 65535
     t.integer  "like_count",      limit: 8
     t.integer  "followers_count", limit: 8
     t.integer  "friends_count",   limit: 8
@@ -1400,9 +1407,9 @@ ActiveRecord::Schema.define(version: 20160727104707) do
     t.string   "task_type",      limit: 255
     t.integer  "invitees_id",    limit: 4
     t.string   "screenshot",     limit: 255
-    t.string   "status",         limit: 255, default: "pending"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.string   "status",         limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "task_records", ["kol_id"], name: "index_task_records_on_kol_id", using: :btree

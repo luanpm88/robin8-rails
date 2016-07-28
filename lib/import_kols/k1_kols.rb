@@ -4,5 +4,6 @@ module ImportKols
     def self.open_sheet
 
     end
+  class K1Kols
   end
 end
