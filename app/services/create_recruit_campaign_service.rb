@@ -5,7 +5,7 @@ class CreateRecruitCampaignService
                   :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
                   :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name, :materials]
+                  :recruit_end_time, :hide_brand_name]
 
   attr_reader :errors, :campaign
 
@@ -38,7 +38,9 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :influence_score].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :influence_score, :materials].include? k })
+
+        create_campaign_materials
 
         @campaign_params.select{ |k, v| [:region, :influence_score].include? k }.each do |k, v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
@@ -62,6 +64,13 @@ class CreateRecruitCampaignService
     params.merge!(per_budget_type: 'recruit')
     params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
     params.select { |k, v| PERMIT_PARAMS.include? k }
+  end
+
+  def create_campaign_materials
+    return unless @campaign_params[:materials].present?
+    eval(@campaign_params[:materials]).each do |material|
+      @campaign.campaign_materials.create(url_type: material.first, url: material.last)
+    end
   end
 
   # def enough_amount? user, budget

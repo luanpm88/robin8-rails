@@ -95,7 +95,7 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   renderMaterailList() {
-    this.materials = this.materials || this.props.materials.value;
+    this.materials = this.materials || eval(this.props.materials.value);
     this.material_array = []
     if(this.materials) {
       for(let index in this.materials) {

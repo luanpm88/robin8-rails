@@ -97,7 +97,7 @@ class UpdateRecruitCampaignService
   end
 
   def update_materials
-    return delete_all_materials if @campaign.campaign_materials.present? && @campaign_params[:materials].nil?
+    return delete_all_materials unless @campaign_params[:materials].present?
     existed_materials = []
     new_materials = []
     eval(@campaign_params[:materials]).each do |material|

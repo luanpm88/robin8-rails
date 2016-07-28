@@ -61,7 +61,7 @@ module Brand
           if object.campaign_materials
             materials = []
             object.campaign_materials.each { |material| materials << [material.try(:url_type), material.try(:url)] }
-            materials
+            materials.to_s
           else
             nil
           end
