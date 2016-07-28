@@ -54,7 +54,8 @@ class UpdateRecruitCampaignService
       ActiveRecord::Base.transaction do
         update_recruit_region
         update_recruit_influnce_score
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
+        update_materials
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region, :materials].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -89,6 +90,24 @@ class UpdateRecruitCampaignService
     unless campaign_target.target_content.eql? @campaign_params[:influence_score]
       campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
     end
+  end
+
+  def delete_all_materials
+    @campaign.campaign_materials.delete_all
+  end
+
+  def update_materials
+    return delete_all_materials if @campaign.campaign_materials.present? && @campaign_params[:materials].nil?
+    existed_materials = []
+    new_materials = []
+    eval(@campaign_params[:materials]).each do |material|
+      if campaign_material = @campaign.campaign_materials.where(url_type: material.first, url: material.last).take
+        existed_materials << campaign_material
+      else
+        new_materials << @campaign.campaign_materials.create(url_type: material.first, url: material.last)
+      end
+    end
+    (@campaign.campaign_materials - new_materials - existed_materials).each { |x| x.delete}
   end
 
   def can_edit?

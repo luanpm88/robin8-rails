@@ -6,7 +6,7 @@ module Brand
         expose :id, :name, :description, :short_description, :task_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
-               :budget_editable, :pay_way, :need_pay_amount, :materials
+               :budget_editable, :pay_way, :need_pay_amount
 
         expose :user, using: Entities::User
 
@@ -56,6 +56,16 @@ module Brand
         end
         expose :take_budget
         expose :remain_budget
+
+        expose :materials do |object, opts|
+          if object.campaign_materials
+            materials = []
+            object.campaign_materials.each { |material| materials << [material.try(:url_type), material.try(:url)] }
+            materials
+          else
+            nil
+          end
+        end
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
           if object.per_budget_type != 'recruit'

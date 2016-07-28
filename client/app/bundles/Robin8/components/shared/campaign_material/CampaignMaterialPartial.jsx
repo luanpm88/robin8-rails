@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import {} from '../plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
@@ -22,13 +23,15 @@ export default class CampaignMaterialPartial extends React.Component {
 
   update() {
     const { onChange } = this.props.materials;
-    this.materials = this.material_array.join(",");
-    onChange(this.materials)
+    this.materials = this.material_array
+    onChange(JSON.stringify(this.material_array))
   }
 
   remove(e) {
     const url = $(e.target).parent().children().first().text()
-    const index = this.material_array.indexOf(url)
+    const type = $(e.target).parent().children().first().next().text()
+    const material = [type, url]
+    const index = _.findIndex(this.material_array, function(m) { return m.toString() == material.toString() })
     if(index != -1) {
       this.material_array.splice(index, 1);
       this.update();
@@ -60,7 +63,8 @@ export default class CampaignMaterialPartial extends React.Component {
         init: {
           'FileUploaded': function(up, file, info) {
             const url = up.getOption('domain') + '/' + file.target_name
-            this.add(url)
+            const type_and_url = "img;" + url
+            this.add(type_and_url)
           }.bind(this)
         }
     });
@@ -91,18 +95,22 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   renderMaterailList() {
-    this.materials = this.props.materials.value;
+    this.materials = this.materials || this.props.materials.value;
+    this.material_array = []
     if(this.materials) {
-      this.material_array = this.materials.split(",");
-    } else {
-      this.material_array = []
+      for(let index in this.materials) {
+        this.material_array.push(this.materials[index]);
+      }
     }
     const materailList = [];
     for(let index in this.material_array) {
       const material = this.material_array[index]
+      const type = material[0]
+      const url = material[1]
       materailList.push(
         <li className="" key={index}>
-          <span>{material}</span>
+          <span>{url}</span>
+          <span>{type}</span> {/* 隐藏掉 */}
           <span className="del" onClick={this.remove.bind(this)}>x</span>
         </li>
       );
@@ -113,7 +121,10 @@ export default class CampaignMaterialPartial extends React.Component {
   submit(e) {
     e.preventDefault();
     const value = this.refs.input.value;
-    this.add(value)
+    var material = []
+    material.push('article')
+    material.push(value)
+    this.add(material)
   }
 
   render() {

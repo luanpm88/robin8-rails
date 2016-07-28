@@ -41,6 +41,7 @@ class Campaign < ActiveRecord::Base
   has_many :interested_campaigns
   belongs_to :release
   has_many :campaign_applies
+  has_many :campaign_materials
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
