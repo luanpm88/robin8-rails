@@ -872,7 +872,7 @@ ActiveRecord::Schema.define(version: 20160728080057) do
     t.string   "job_info",               limit: 255
     t.text     "brief",                  limit: 65535
     t.string   "kol_role",               limit: 255,                            default: "public"
-    t.string   "role_apply_status",      limit: 255
+    t.string   "role_apply_status",      limit: 255,                            default: "pending"
     t.boolean  "is_hot",                 limit: 1,                              default: false
   end
 
