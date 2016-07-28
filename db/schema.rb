@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725025624) do
+ActiveRecord::Schema.define(version: 20160727104707) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -638,6 +638,18 @@ ActiveRecord::Schema.define(version: 20160725025624) do
     t.string   "name",       limit: 255
   end
 
+  create_table "kol_announcements", force: :cascade do |t|
+    t.string   "category",   limit: 255
+    t.string   "cover",      limit: 255
+    t.string   "title",      limit: 255
+    t.string   "link",       limit: 255
+    t.string   "kol_id",     limit: 255
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "position",   limit: 4
+    t.boolean  "enable",     limit: 1,   default: true
+  end
+
   create_table "kol_categories", force: :cascade do |t|
     t.integer "kol_id",           limit: 4
     t.string  "iptc_category_id", limit: 191
@@ -762,6 +774,7 @@ ActiveRecord::Schema.define(version: 20160725025624) do
     t.string   "link",       limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.string   "provider",   limit: 255
   end
 
   create_table "kol_tags", force: :cascade do |t|
@@ -849,10 +862,11 @@ ActiveRecord::Schema.define(version: 20160725025624) do
     t.integer  "weixin_friend_count",    limit: 4
     t.string   "kol_level",              limit: 255
     t.string   "id_card",                limit: 255
-    t.string   "profession",             limit: 255
+    t.string   "job_info",               limit: 255
     t.text     "brief",                  limit: 65535
     t.string   "kol_role",               limit: 255
     t.string   "role_apply_status",      limit: 255,                            default: "pending"
+    t.boolean  "is_hot",                 limit: 1,                              default: false
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1299,6 +1313,13 @@ ActiveRecord::Schema.define(version: 20160725025624) do
 
   add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", unique: true, using: :btree
 
+  create_table "social_account_professions", force: :cascade do |t|
+    t.integer  "social_account_id", limit: 4
+    t.integer  "profession_id",     limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "social_accounts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 8
     t.string   "provider",        limit: 255
@@ -1312,14 +1333,17 @@ ActiveRecord::Schema.define(version: 20160725025624) do
     t.integer  "friends_count",   limit: 8
     t.integer  "reposts_count",   limit: 8
     t.integer  "statuses_count",  limit: 8
-    t.boolean  "verified",        limit: 1,   default: false
+    t.boolean  "verified",        limit: 1,     default: false
     t.string   "province",        limit: 255
     t.string   "city",            limit: 255
     t.string   "gender",          limit: 255
     t.string   "price",           limit: 255
     t.string   "screenshot",      limit: 255
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "repost_price",    limit: 255
+    t.string   "second_price",    limit: 255
+    t.text     "others",          limit: 65535
   end
 
   create_table "stastic_data", force: :cascade do |t|

@@ -1,0 +1,52 @@
+require 'rubygems'
+require "spreadsheet"
+module ImportKols
+  class VsKols
+    Path = '/Users/huxl/VS.xls'
+    Spreadsheet.client_encoding = "UTF-8"
+    @@professsions = nil
+    def self.import_sheet
+      book = Spreadsheet.open Path
+      sheet1 = book.worksheet 0
+      sheet1.each_with_index do |row,index|
+        next if index < 4
+        kol = create_kol(row)
+        create_social_account(kol, row)
+        return if row[1].nil?
+      end
+    end
+
+    def self.create_kol(row)
+      kol = Kol.find_or_initialize_by(:name => row[1])
+      if row[2] == "女"
+        kol.gender = 2
+      elsif row[2] == "男"
+        kol.gender = 1
+      else
+        kol.gender = 0
+      end
+      kol.brief = row[7]
+      kol.profession_ids =  [get_profession(row[6]) ]
+      kol
+    end
+
+    def self.get_profession(name)
+      return nil if name.nil?
+      if @@professsions.nil?
+        @@professsions = {}
+        Profession.all.each do |p|
+          @@professsions[p.label] = p.id
+        end
+      end
+      @@professsions[name]
+    end
+
+    def self.create_social_account(kol, row)
+      kol.social_accounts.build(:provider => 'meipai', :homepage => row[13], :price => row[15].to_i)
+      kol.social_accounts.build(:provider => 'weibo', :homepage => row[16])
+      kol.save
+    end
+  end
+end
+
+# ImportKols::VsKols.import_sheet

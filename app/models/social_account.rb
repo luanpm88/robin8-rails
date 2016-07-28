@@ -1,4 +1,8 @@
 class SocialAccount < ActiveRecord::Base
+
+  has_many :social_account_professions
+  has_many :professions, :through => :social_account_professions
+
   before_save :auto_complete_info
   serialize :others, Hash
 

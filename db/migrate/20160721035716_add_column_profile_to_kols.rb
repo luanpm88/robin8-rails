@@ -7,5 +7,8 @@ class AddColumnProfileToKols < ActiveRecord::Migration
     add_column :kols, :role_check_time, :datetime
 
     add_column :kols, :is_hot, :boolean, :default => false
+
+    add_index :kols, :is_hot
+    add_index :kols, :kol_role
   end
 end

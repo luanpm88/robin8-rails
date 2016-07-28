@@ -49,10 +49,10 @@ Rails.application.routes.draw do
   # }
 
   # very slow, don't load it in development env
-  unless Rails.env.development?
+  # unless Rails.env.development?
     devise_for :admin_users, ActiveAdmin::Devise.config
     ActiveAdmin.routes(self)
-  end
+  # end
 
   get    '/users/sign_in', to: redirect('/login')
   get    '/users/sign_up', to: redirect('/register')

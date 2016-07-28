@@ -94,6 +94,11 @@ Rails.application.routes.draw do
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
     end
     resources :announcements, except: [:destroy]
+    resources :kol_announcements do
+      member do
+        get :switch
+      end
+    end
     resources :alipay_orders do
       collection do
         post 'search'

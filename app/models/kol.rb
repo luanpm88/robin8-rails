@@ -1,7 +1,7 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
 
-   # kol_role:  %w{public big_v mcn}
+   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
 
   # counter :redis_new_income      #unit is cent
@@ -66,10 +66,12 @@ class Kol < ActiveRecord::Base
   has_many :professions, :through => :kol_professions
   has_many :images, :source => :referable
   has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
+  has_many :social_accounts
+
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
-
+  scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
 
   def email_required?
     false if self.provider != "signup"
