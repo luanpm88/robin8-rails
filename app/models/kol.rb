@@ -1,7 +1,6 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
-
-   # kol_role:  %w{public big_v mcn_big_v mcn}
+  # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
 
   # counter :redis_new_income      #unit is cent

@@ -1,5 +1,4 @@
 class SocialAccount < ActiveRecord::Base
-
   has_many :social_account_professions
   has_many :professions, :through => :social_account_professions
 

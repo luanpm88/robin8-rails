@@ -54,7 +54,7 @@ module API
           params[:kol_shows].split(",").each do |link|
             current_kol.kol_shows.create!(:link => link)
           end if params[:kol_shows].present?
-          current_kol.role_apply_status == 'applying'
+          current_kol.role_apply_status == 'pending' if current_kol
           present :error, 0
         end
       end
