@@ -1,10 +1,9 @@
 require 'rubygems'
 require "spreadsheet"
 module ImportKols
-  class VsKols
+  class VsKols < Base
     Path = '/Users/huxl/VS.xls'
     Spreadsheet.client_encoding = "UTF-8"
-    @@professsions = nil
     def self.import_sheet
       book = Spreadsheet.open Path
       sheet1 = book.worksheet 0
@@ -21,6 +20,7 @@ module ImportKols
 
     def self.create_kol(row)
       kol = Kol.find_or_initialize_by(:name => row[1])
+      kol.app_city = City.where("name like '%#{row[4][-2..-1]}%'").first.name_en  rescue nil
       kol.kol_role = 'mcn_big_v'
       if row[2] == "女"
         kol.gender = 2
@@ -32,17 +32,6 @@ module ImportKols
       kol.brief = row[7]
       kol.profession_ids =  [get_profession(row[6]) ]
       kol
-    end
-
-    def self.get_profession(name)
-      return nil if name.nil?
-      if @@professsions.nil?
-        @@professsions = {}
-        Profession.all.each do |p|
-          @@professsions[p.label] = p.id
-        end
-      end
-      @@professsions[name]
     end
 
     def self.create_social_account(kol, row)
