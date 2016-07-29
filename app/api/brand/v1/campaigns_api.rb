@@ -271,6 +271,29 @@ module Brand
           CampaignApply.end_apply_check(declared(params)[:id])
           present Campaign.find_by(id: declared(params)[:id])
         end
+
+        resource :invite_campaigns do
+          desc 'Create a invite campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :img_url, type: String
+            # requires :budget, type: Float
+            # requires :per_action_budget, type: Float
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :specified_kols, type: String
+          end
+          post "/" do
+            service = CreateInviteCampaignService.new current_user, declared(params)
+
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+        end
       end
 
 
