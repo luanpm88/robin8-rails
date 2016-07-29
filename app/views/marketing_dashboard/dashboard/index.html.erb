@@ -111,15 +111,19 @@
     </thead>
     <tbody>
       <tr>
+      CampaignInvite.count
         <td><%= User.count %></td>
         <td><%= User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count %></td>
         <td><%= Kol.count %></td>
-        <td><%= Kol.joins(:campaign_invites).group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count %></td>
+        <td><%= Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count %></td>
         <td><%=  Campaign.where(:status => "settled").count%></td>
         <td><%=  Campaign.where(:status => "settled").sum(:budget) %></td>
         <td><%= Withdraw.where(:status => "paid").sum(:credits) %></td>
       </tr>
     </tbody>
   </table>
+  ```
+  备注: 活动ID 337, 旅游城市推广招募KOL budget 是 350000
+  ```
 </div>
 <!-- /.row -->
