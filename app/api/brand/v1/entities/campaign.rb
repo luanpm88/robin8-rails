@@ -75,40 +75,35 @@ module Brand
 
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
-          else
-            nil
-          end
+          target = object.campaign_targets.find_by(target_type: "age")
+          target.target_content if target
         end
+
         expose :province do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "region").target_content.split(" ").first : nil
-          else
-            nil
-          end
+          target = object.campaign_targets.find_by(target_type: "region")
+          target.target_content.split(" ").first if target
         end
+
         expose :city do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "region").target_content.split(" ").last : nil
-          else
-            nil
-          end
+          target = object.campaign_targets.find_by(target_type: "region")
+          target.target_content.split(" ").last if target
         end
+
         expose :gender do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "gender").target_content : nil
-          else
-            nil
-          end
+          target = object.campaign_targets.find_by(target_type: "gender")
+          target.target_content if target
         end
 
         expose :region do |object, opts|
-          object.campaign_targets.where(target_type: :region).present? ? object.campaign_targets.find_by(target_type: "region").target_content : nil
+          target = object.campaign_targets.find_by(target_type: "region")
+          target.target_content if target
         end
+
         expose :influence_score do |object, opts|
-          object.campaign_targets.where(target_type: :influence_score).present? ? object.campaign_targets.find_by(target_type: 'influence_score').target_content : nil
+          target = object.campaign_targets.find_by(target_type: "influence_score")
+          target.target_content if target
         end
+        # ---------------------------------------------------
 
         expose :action_url do |object, opts|
           object.campaign_action_urls.present? ? object.campaign_action_urls.first.action_url : ""

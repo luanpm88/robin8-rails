@@ -10,6 +10,14 @@ export const initialState = Immutable.fromJS({
   hasfetchedInvite: false,
   campaign_statistics: [],
   campaign_installs: [],
+  selected_kols: [],
+  searched_kols: {
+    items: [],
+    condition: {
+      region: "全部"
+    },
+    paginate: {}
+  },
   paginate: {},
   error: ""
 });
@@ -134,6 +142,36 @@ export default function campaignReducer($$state = initialState, action=nil) {
       if(fetchState === "success"){
         $$state = $$state.merge({
           "campaign_installs": Immutable.fromJS(action.result.items),
+        })
+      }
+      return $$state;
+    case actionTypes.SEARCH_KOLS_IN_CONDITION:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success"){
+        $$state = $$state.mergeIn(['searched_kols', 'items'], action.result.items);
+        $$state = $$state.mergeIn(['searched_kols', 'paginate'], action.result.paginate);
+      }
+      return $$state;
+    case actionTypes.UPDATE_SEARCH_KOLS_CONDITION:
+      $$state = $$state.mergeIn(['searched_kols', 'condition'], action.data);
+      return $$state;
+    case actionTypes.ADD_SELECTED_KOL:
+      if (!$$state.get("selected_kols").find((k) => {
+        return k.get("id") == action.data.get("id")
+      })) {
+        $$state = $$state.merge({
+          "selected_kols": $$state.get("selected_kols").push(action.data)
+        })
+      }
+      return $$state;
+    case actionTypes.REMOVE_SELECTED_KOL:
+      const selectedKolIndex = $$state.get("selected_kols").findIndex((k) => {
+        return k.get("id") == action.data.get("id")
+      })
+
+      if (selectedKolIndex >= 0) {
+        $$state = $$state.merge({
+          "selected_kols": $$state.get("selected_kols").delete(selectedKolIndex)
         })
       }
       return $$state;
