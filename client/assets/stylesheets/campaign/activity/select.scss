@@ -22,14 +22,28 @@
     }
   }
 
+  .at-s-bottom {
+    padding: 25px 0 30px 0;
+    text-align: center;
+
+    .service-call {
+      margin-top: 30px;
+      background-color: #36cdd3;
+      color: #fff;
+      padding: 5px 20px;
+      font-size: 18px;
+    }
+  }
+
   .at-s-box {
     position: relative;
     display: block;
     float: left;
     width: 430px;
-    height: 290px;
+    height: 356px;
     background-color: #fff;
     padding: 30px 25px;
+    margin-top: 50px;
     transition: box-shadow .2s;
     -webkit-transition: -webkit-box-shadow .2s;
 
@@ -84,7 +98,7 @@
 
       h3 {
         text-align: center;
-        font-size: 21px;
+        font-size: 20px;
         color: #181616;
         margin: 20px 0 15px 0;
         padding: 0 10px;
@@ -107,9 +121,19 @@
         padding: 0;
         margin: 0;
       }
+      .bold {
+        font-weight: 600;
+        font-size: 18px;
+        color: #181616;
+        margin-bottom: 10px;
+      }
     }
 
     .at-box-bt {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      margin-left: -45px;
       padding: 20px 0;
       text-align: center;
 
@@ -130,8 +154,8 @@
         }
       }
     }
-    .at-box-bt-left {
-      margin: -22px 0px;
-    }
+    // .at-box-bt-left {
+    //   margin: -22px 0px;
+    // }
   }
 }
