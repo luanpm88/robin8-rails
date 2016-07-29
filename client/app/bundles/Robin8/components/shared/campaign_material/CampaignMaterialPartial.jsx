@@ -1,19 +1,28 @@
 import React from 'react';
 import _ from 'lodash';
-
 import {} from '../plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
+
+import CampaignMaterialModal from './modals/CampaignMaterialModal';
 
 export default class CampaignMaterialPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    // this.keywords = this.props.value
+
+    this.state = {
+      showMaterialModal: false,
+      materialType: ""
+    };
+  }
+
+  closeMaterialModal() {
+    this.setState({showMaterialModal: false});
   }
 
   componentDidMount() {
     this.uploadImg();
-    this.uploadCustom();
+    this.uploadFile();
   }
 
   add(material) {
@@ -28,8 +37,8 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   remove(e) {
-    const url = $(e.target).parent().children().first().text()
-    const type = $(e.target).parent().children().first().next().text()
+    const type = $(e.target).parent().find(".material-type").text().trim()
+    const url = $(e.target).parent().find(".material-url").text().trim()
     const material = [type, url]
     const index = _.findIndex(this.material_array, function(m) { return m.toString() == material.toString() })
     if(index != -1) {
@@ -63,14 +72,16 @@ export default class CampaignMaterialPartial extends React.Component {
         init: {
           'FileUploaded': function(up, file, info) {
             const url = up.getOption('domain') + '/' + file.target_name
-            const type_and_url = "img;" + url
-            this.add(type_and_url)
+            var material = []
+            material.push('image')
+            material.push(url)
+            this.add(material)
           }.bind(this)
         }
     });
   }
 
-  uploadCustom() {
+  uploadFile() {
     Qiniu.uploader({
         runtimes: 'html5,flash,html4',      // 上传模式,依次退化
         browse_button: 'upload-custom',      // 上传选择的点选按钮，**必需**
@@ -88,10 +99,33 @@ export default class CampaignMaterialPartial extends React.Component {
         init: {
           'FileUploaded': function(up, file, info) {
             const url = up.getOption('domain') + '/' + file.target_name
-            this.add(url)
+            var material = []
+            material.push('file')
+            material.push(url)
+            this.add(material)
           }.bind(this)
         }
     });
+  }
+
+  handleUrlClick(type, url) {
+    var material = []
+    material.push(type)
+    material.push(url)
+    this.add(material)
+  }
+
+  renderMaterailTypeImg(type) {
+    switch (type) {
+      case 'article':
+        return <img src={require("article_material.png")} />
+      case 'image':
+        return <img src={require("image_material.png")} />
+      case 'video':
+        return <img src={require("video_material.png")} />
+      case 'file':
+        return <img src={require("file_material.png")} />
+    }
   }
 
   renderMaterailList() {
@@ -109,8 +143,9 @@ export default class CampaignMaterialPartial extends React.Component {
       const url = material[1]
       materailList.push(
         <li className="" key={index}>
-          <span>{url}</span>
-          <span>{type}</span> {/* 隐藏掉 */}
+          { this.renderMaterailTypeImg(type) }
+          <span className="material-url">{url}</span>
+          <span className="material-type">{type}</span> {/* 隐藏掉 */}
           <span className="del" onClick={this.remove.bind(this)}>x</span>
         </li>
       );
@@ -118,34 +153,27 @@ export default class CampaignMaterialPartial extends React.Component {
     return materailList;
   }
 
-  submit(e) {
-    e.preventDefault();
-    const value = this.refs.input.value;
-    var material = []
-    material.push('article')
-    material.push(value)
-    this.add(material)
-  }
-
   render() {
     return (
-      <div className="creat-activity-form creat-material">
-        <div className="header">
-          <h3 className="tit">活动素材&nbsp;<span className="what" data-toggle="tooltip"><span className="question-sign">?</span></span></h3>
+      <div>
+        <div className="creat-activity-form creat-material">
+          <div className="header">
+            <h3 className="tit">活动素材&nbsp;<span className="what" data-toggle="tooltip"><span className="question-sign">?</span></span></h3>
+          </div>
+          <div className="content">
+            <ul className="materials">
+              {this.renderMaterailList()}
+            </ul>
+            <ul className="material-option clearfix" id="material-option">
+              <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
+              <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
+              <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
+              <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
+            </ul>
+          </div>
         </div>
-        <div className="content">
-          <ul className="materials">
-            {this.renderMaterailList()}
-          </ul>
-          <ul className="material-option clearfix" id="material-option">
-            <li className="upload-url">填写文章链接</li>
-            <li id="upload-img">上传图片</li>
-            <li className="upload-video">填写视频地址</li>
-            <li id="upload-custom">上传自定义文件</li>
-          </ul>
-        </div>
-        <input type="text" ref="input" placeholder="请输入品牌关键词" ref="input" />
-        <button onClick={this.submit.bind(this)}>submit</button>
+
+        <CampaignMaterialModal className="material-modal" show={this.state.showMaterialModal} onHide={this.closeMaterialModal.bind(this)} type={this.state.materialType} handleUrlClick={this.handleUrlClick.bind(this)} />
       </div>
     )
   }
