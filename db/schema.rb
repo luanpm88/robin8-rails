@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725042217) do
+ActiveRecord::Schema.define(version: 20160729064744) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -256,12 +256,22 @@ ActiveRecord::Schema.define(version: 20160725042217) do
     t.datetime "upload_time"
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
+    t.string   "kol_score",         limit: 255
+    t.string   "brand_opinion",     limit: 255
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
   add_index "campaign_invites", ["kol_id"], name: "index_campaign_invites_on_kol_id", using: :btree
   add_index "campaign_invites", ["status"], name: "index_campaign_invites_on_status", using: :btree
   add_index "campaign_invites", ["uuid"], name: "index_campaign_invites_on_uuid", unique: true, using: :btree
+
+  create_table "campaign_materials", force: :cascade do |t|
+    t.integer  "campaign_id", limit: 4
+    t.string   "url_type",    limit: 255
+    t.string   "url",         limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "campaign_shows", force: :cascade do |t|
     t.integer  "campaign_id",     limit: 4
@@ -350,7 +360,6 @@ ActiveRecord::Schema.define(version: 20160725042217) do
     t.string   "appid",                    limit: 255
     t.datetime "revoke_time"
     t.string   "admin_desc",               limit: 255
-    t.string   "materials",                limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree

@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from "react-router";
-import KolDetailModal from '../modals/KolDetail';
+import KolDetailModal from '../modals/KolDetailModal';
+import KolScoreModal  from '../modals/KolScoreModal';
 
 import isSuperVistor from "../../shared/VisitAsAdmin";
 import SwitchBox from "../../shared/SwitchBox";
@@ -9,12 +10,17 @@ export default class InviteKol extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      showKolDetailModal: false
+      showKolDetailModal: false,
+      showKolScoreModal: false
     };
   }
 
-  closeshowKolDetailModal() {
+  closeShowKolDetailModal() {
     this.setState({showKolDetailModal: false});
+  }
+
+  closeShowKolScoreModal() {
+    this.setState({showKolScoreModal: false});
   }
 
   updateKolStatus(status) {
@@ -76,15 +82,27 @@ export default class InviteKol extends React.Component {
     }
   }
 
-  handle_click() {
+  show_kol_detail_modal() {
     this.setState({showKolDetailModal: true})
+  }
+
+  show_kol_score_modal() {
+    this.setState({showKolScoreModal: true})
   }
 
   render_remark_and_pictures() {
     const { campaign_invite } = this.props;
     return (
-      <td className="detail-info"><a onClick={this.handle_click.bind(this)}>详细信息</a></td>
+      <td className="detail-info"><a onClick={this.show_kol_detail_modal.bind(this)}>详细信息</a></td>
     )
+  }
+
+  renderScoreMarkButton() {
+    const { campaign_invite } = this.props;
+    if (campaign_invite.get("kol_score")) {
+      return <td>已经评价</td>
+    }
+    return <td><button className="score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
   }
 
   render(){
@@ -99,11 +117,12 @@ export default class InviteKol extends React.Component {
           <i className="slash">/</i>
           {campaign_invite.get("weixin_friend_count") || "-"}
         </td>
-        <td>{campaign_invite.get("kol").get("influence_score") || "-"}</td>
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
         {this.render_remark_and_pictures()}
         {this.render_screenshot_or_switchbox()}
-        <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeshowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
+        {this.renderScoreMarkButton()}
+        <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeShowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
+        <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={this.props.index} actions={this.props.actions} campaignInvite={campaign_invite} />
       </tr>
     )
   }

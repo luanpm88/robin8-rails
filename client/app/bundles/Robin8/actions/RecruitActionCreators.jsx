@@ -116,3 +116,22 @@ export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, statu
     })
   }
 }
+
+export function updateKolScoreAndBrandOpinion(campaign_id, kol_id, index, score, opinion = "") {
+  const data = {campaign_id, kol_id, score, opinion};
+
+  return {
+    type: actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION,
+    index: index,
+    promise: fetch(`${baseUrl}/campaign_applies/update_score_and_opinion`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+  }
+}
