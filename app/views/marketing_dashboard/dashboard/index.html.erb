@@ -95,4 +95,31 @@
     </div>
   </div>
 </div>
+
+<div class="well">
+  <table class='table table-bordered'>
+    <thead>
+      <tr>
+        <th>Brand总人数</th>
+        <th>发过单的Brand总人数</th>
+        <th>Kol总人数</th>
+        <th>接过单Kol人数</th>
+        <th>已结算的Campaign总数</th>
+        <th>已结算的Campaign总价</th>
+        <th>Kol总共提现多少钱</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= User.count %></td>
+        <td><%= User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count %></td>
+        <td><%= Kol.count %></td>
+        <td><%= Kol.joins(:campaign_invites).group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count %></td>
+        <td><%=  Campaign.where(:status => "settled").count%></td>
+        <td><%=  Campaign.where(:status => "settled").sum(:budget) %></td>
+        <td><%= Withdraw.where(:status => "paid").sum(:credits) %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <!-- /.row -->
