@@ -16,6 +16,18 @@ export default class CampaignMaterialModal extends Component {
     }
   }
 
+  onKeyPress(e) {
+    if (e.key === 'Enter') {
+      const onHide = this.props.onHide;
+      const handleUrlClick  = this.props.handleUrlClick;
+      const type = this.props.type;
+      if (validator.isURL(this.refs.materialUrlInput.value.trim(), { require_protocol: false })) {
+        handleUrlClick(type, this.refs.materialUrlInput.value.trim());
+        onHide();
+      }
+    }
+  }
+
   handleChange(e) {
     if (validator.isURL(this.refs.materialUrlInput.value.trim(), { require_protocol: false })) {
       $('.error-tip').hide();
@@ -33,7 +45,7 @@ export default class CampaignMaterialModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <input ref='materialUrlInput' onChange={this.handleChange.bind(this)} className='material-url-input' type="text" />
+            <input ref='materialUrlInput' onChange={this.handleChange.bind(this)} onKeyPress={this.onKeyPress.bind(this)} className='material-url-input' type="text" />
             <p className="error-tip" style={{display: 'none'}}>链接地址格式错误</p>
           </div>
         </Modal.Body>
