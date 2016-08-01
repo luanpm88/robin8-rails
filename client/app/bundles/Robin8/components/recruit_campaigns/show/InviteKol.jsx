@@ -2,6 +2,7 @@ import React, { PropTypes } from "react";
 import { Link } from "react-router";
 import KolDetailModal from '../modals/KolDetailModal';
 import KolScoreModal  from '../modals/KolScoreModal';
+import KolScoreInfoModal from '../modals/KolScoreInfoModal';
 
 import isSuperVistor from "../../shared/VisitAsAdmin";
 import SwitchBox from "../../shared/SwitchBox";
@@ -11,7 +12,8 @@ export default class InviteKol extends React.Component {
     super(props, context);
     this.state = {
       showKolDetailModal: false,
-      showKolScoreModal: false
+      showKolScoreModal: false,
+      showKolScoreInfoModal: false
     };
   }
 
@@ -21,6 +23,10 @@ export default class InviteKol extends React.Component {
 
   closeShowKolScoreModal() {
     this.setState({showKolScoreModal: false});
+  }
+
+  closeShowKolScoreInfoModal() {
+    this.setState({showKolScoreInfoModal: false});
   }
 
   updateKolStatus(status) {
@@ -90,6 +96,10 @@ export default class InviteKol extends React.Component {
     this.setState({showKolScoreModal: true})
   }
 
+  show_score_info_modal() {
+    this.setState({showKolScoreInfoModal: true})
+  }
+
   render_remark_and_pictures() {
     const { campaign_invite } = this.props;
     return (
@@ -100,9 +110,9 @@ export default class InviteKol extends React.Component {
   renderScoreMarkButton() {
     const { campaign_invite } = this.props;
     if (campaign_invite.get("kol_score")) {
-      return <td>已经评价</td>
+      return <td><button className="btn btn-blue btn-default show-score-mark-btn" onClick={this.show_score_info_modal.bind(this)}>查看评分</button></td>
     }
-    return <td><button className="score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
+    return <td><button className="btn btn-blue btn-default score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
   }
 
   render(){
@@ -123,6 +133,7 @@ export default class InviteKol extends React.Component {
         {this.renderScoreMarkButton()}
         <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeShowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
         <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={this.props.index} actions={this.props.actions} campaignInvite={campaign_invite} />
+        <KolScoreInfoModal show={this.state.showKolScoreInfoModal} onHide={this.closeShowKolScoreInfoModal.bind(this)} campaignInvite={campaign_invite}  />
       </tr>
     )
   }

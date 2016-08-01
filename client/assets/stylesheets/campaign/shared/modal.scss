@@ -12,3 +12,41 @@
     }
   }
 }
+
+.kol-score-modal {
+  h4 {
+    font-weight: bold;
+  }
+  .modal-content {
+    padding-left: 30px;
+    padding-right: 30px;
+    .give-score, .my-opinion {
+      font-weight: bold;
+    }
+    .rating-gly-star {
+      input {
+        display: none;
+      }
+    }
+    .brand-opinion-group {
+      margin-top: 10px;
+      margin-bottom: 0px;
+      textarea {
+        width: 100%;
+        height: 100px;
+      }
+    }
+    .btn-submit {
+      width: 120px;
+      margin-left: 40%;
+      margin-right: 40%;
+    }
+
+    .kol-score-error-tip, .brand-opinion-error-tip {
+      height: 13px;
+      display: none;
+      color: #ce0101;
+      font-size: 13px;
+    }
+  }
+}

@@ -62,10 +62,6 @@ export default class KolDetailModal extends Component {
               <span className="wechat-count-text">微信粉丝量</span>
               <span className="wechat-count">{campaign_invite.get("weixin_friend_count") || "-"}</span>
             </li>
-            <li className="score">
-              <span className="score-text">影响力分数</span>
-              <span className="score-number">{campaign_invite.get("kol").get("influence_score") || "-"}</span>
-            </li>
             <li className="location">
               <span className="location-text">地区</span>
               <span className="location-city">{campaign_invite.get("kol").get("city") || "-"}</span>
