@@ -5,7 +5,7 @@ class CreateRecruitCampaignService
                   :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
                   :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name, :materials]
+                  :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -38,7 +38,7 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :influence_score, :materials].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :influence_score, :material_ids].include? k })
 
         create_campaign_materials
 
@@ -67,9 +67,9 @@ class CreateRecruitCampaignService
   end
 
   def create_campaign_materials
-    return unless @campaign_params[:materials].present?
-    eval(@campaign_params[:materials]).each do |material|
-      @campaign.campaign_materials.create(url_type: material.first, url: material.last)
+    return unless @campaign_params[:material_ids].present?
+    CampaignMaterial.where(id: @campaign_params[:material_ids].split(",")).each do |campaign_material|
+      campaign_material.update campaign_id: @campaign.id
     end
   end
 

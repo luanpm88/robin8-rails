@@ -117,6 +117,13 @@ export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, statu
   }
 }
 
+export function fetchRecruitCampaignMaterials(campaign_id) {
+  return {
+    type: actionTypes.FETCH_RECRUIT_CAMPAIGN_MATERIALS,
+    promise: fetch(`${baseUrl}/campaign_materials?campaign_id=${campaign_id}`, { "credentials": 'same-origin' })
+  };
+}
+
 export function updateKolScoreAndBrandOpinion(campaign_id, kol_id, index, score, opinion = "") {
   const data = {campaign_id, kol_id, score, opinion};
 

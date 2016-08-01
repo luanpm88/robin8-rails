@@ -10,6 +10,8 @@ export default class CampaignMaterialPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.material_array = []
+
     this.state = {
       showMaterialModal: false,
       materialType: ""
@@ -25,6 +27,30 @@ export default class CampaignMaterialPartial extends React.Component {
     this.uploadFile();
   }
 
+  saveRecruitCampaignMaterial(material) {
+    const url_type = material.type;
+    const url = material.url;
+    const data = {url_type, url}
+
+    fetch(`/brand_api/v1/campaign_materials`, {
+      headers: {
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'POST',
+      body: JSON.stringify(data)
+    }).then(function(response) {
+      response.json().then(function(data){
+        this.add(data)
+      }.bind(this))
+    }.bind(this),
+    function(error) {
+      console.error("----------创建素材失败---------------")
+    })
+  }
+
   add(material) {
     this.material_array.push(material)
     this.update()
@@ -32,8 +58,9 @@ export default class CampaignMaterialPartial extends React.Component {
 
   update() {
     const { onChange } = this.props.materials;
-    this.materials = this.material_array
     onChange(JSON.stringify(this.material_array))
+    const material_ids = _.map(this.material_array, 'id')
+    this.props.material_ids.onChange(material_ids);
   }
 
   remove(e) {
@@ -109,10 +136,11 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   handleUrlClick(type, url) {
-    var material = []
-    material.push(type)
-    material.push(url)
-    this.add(material)
+    var material = {}
+    material['type'] = type
+    material['url'] = url
+    // this.add(material)
+    this.saveRecruitCampaignMaterial(material);
   }
 
   renderMaterailTypeImg(type) {
@@ -129,18 +157,18 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   renderMaterailList() {
-    this.materials = this.materials || eval(this.props.materials.value);
-    this.material_array = []
-    if(this.materials) {
-      for(let index in this.materials) {
-        this.material_array.push(this.materials[index]);
-      }
-    }
+    // this.materials = this.materials || eval(this.props.materials.value);
+    // this.material_array = []
+    // if(this.materials) {
+    //   for(let index in this.materials) {
+    //     this.material_array.push(this.materials[index]);
+    //   }
+    // }
     const materailList = [];
     for(let index in this.material_array) {
       const material = this.material_array[index]
-      const type = material[0]
-      const url = material[1]
+      const type = material.url_type
+      const url = material.url
       materailList.push(
         <li className="" key={index}>
           { this.renderMaterailTypeImg(type) }
