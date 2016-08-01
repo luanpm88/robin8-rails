@@ -14,6 +14,10 @@ export function saveRecruit(campaign) {
           formData.append(`${key}`, campaign[key]);
         }
         break
+      case 'material_ids':
+        if(campaign[key] === undefined) {
+          break
+        }
       default:
         formData.append(`${key}`, campaign[key]);
     }
@@ -47,6 +51,10 @@ export function updateRecruit(campaign_id, campaign) {
           formData.append(`${key}`, campaign[key]);
         }
         break
+      case 'material_ids':
+        if(campaign[key] === undefined) {
+          break
+        }
       default:
         formData.append(`${key}`, campaign[key]);
     }

@@ -107,7 +107,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
   render(){
     const { name, description, img_url, influence_score, start_time, deadline,
-          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name, materials} = this.props.fields;
+          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name, materials, material_ids} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { campaign } = this.props;
     const { saveRecruit } = this.props.actions;
@@ -120,7 +120,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
               {/* <RecruitTargetPartial {...{influence_score, region}}/> */}
-              {<CampaignMaterialPartial {...{materials}} />}
+              {<CampaignMaterialPartial {...{materials, material_ids}} />}
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
@@ -142,7 +142,7 @@ UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "task_description", 'address', "region", "hide_brand_name", "materials"],
+         "recruit_person_count", "task_description", 'address', "region", "hide_brand_name", "materials", "material_ids"],
   returnRejectedSubmitPromise: true,
   validate
 },

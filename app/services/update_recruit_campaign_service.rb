@@ -5,7 +5,7 @@ class UpdateRecruitCampaignService
                    :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
                   :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name, :materials]
+                  :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -55,7 +55,7 @@ class UpdateRecruitCampaignService
         update_recruit_region
         update_recruit_influnce_score
         update_materials
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region, :materials].include? k })
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -97,14 +97,16 @@ class UpdateRecruitCampaignService
   end
 
   def update_materials
-    return delete_all_materials unless @campaign_params[:materials].present?
+    return delete_all_materials unless @campaign_params[:material_ids].present?
     existed_materials = []
     new_materials = []
-    eval(@campaign_params[:materials]).each do |material|
-      if campaign_material = @campaign.campaign_materials.where(url_type: material.first, url: material.last).take
+    @campaign_params[:material_ids].split(",").each do |id|
+      if campaign_material = @campaign.campaign_materials.where(id: id).take
         existed_materials << campaign_material
       else
-        new_materials << @campaign.campaign_materials.create(url_type: material.first, url: material.last)
+        campaign_material =  CampaignMaterial.where(id: id).take
+        campaign_material.update(campaign_id: @campaign.id)
+        new_materials << campaign_material
       end
     end
     (@campaign.campaign_materials - new_materials - existed_materials).each { |x| x.delete}

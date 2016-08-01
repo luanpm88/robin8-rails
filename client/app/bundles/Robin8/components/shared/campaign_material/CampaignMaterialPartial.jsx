@@ -64,10 +64,8 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   remove(e) {
-    const type = $(e.target).parent().find(".material-type").text().trim()
-    const url = $(e.target).parent().find(".material-url").text().trim()
-    const material = [type, url]
-    const index = _.findIndex(this.material_array, function(m) { return m.toString() == material.toString() })
+    const id = $(e.target).parent().find(".material-id").text().trim()
+    const index = _.findIndex(this.material_array, function(m) { return m.id == id })
     if(index != -1) {
       this.material_array.splice(index, 1);
       this.update();
@@ -99,10 +97,10 @@ export default class CampaignMaterialPartial extends React.Component {
         init: {
           'FileUploaded': function(up, file, info) {
             const url = up.getOption('domain') + '/' + file.target_name
-            var material = []
-            material.push('image')
-            material.push(url)
-            this.add(material)
+            var material = {}
+            material['type'] = 'image'
+            material['url'] = url
+            this.saveRecruitCampaignMaterial(material)
           }.bind(this)
         }
     });
@@ -126,10 +124,10 @@ export default class CampaignMaterialPartial extends React.Component {
         init: {
           'FileUploaded': function(up, file, info) {
             const url = up.getOption('domain') + '/' + file.target_name
-            var material = []
-            material.push('file')
-            material.push(url)
-            this.add(material)
+            var material = {}
+            material['type'] = 'file'
+            material['url'] = url
+            this.saveRecruitCampaignMaterial(material)
           }.bind(this)
         }
     });
@@ -139,7 +137,6 @@ export default class CampaignMaterialPartial extends React.Component {
     var material = {}
     material['type'] = type
     material['url'] = url
-    // this.add(material)
     this.saveRecruitCampaignMaterial(material);
   }
 
@@ -157,16 +154,19 @@ export default class CampaignMaterialPartial extends React.Component {
   }
 
   renderMaterailList() {
-    // this.materials = this.materials || eval(this.props.materials.value);
-    // this.material_array = []
-    // if(this.materials) {
-    //   for(let index in this.materials) {
-    //     this.material_array.push(this.materials[index]);
-    //   }
-    // }
+    if (this.material_array.length === 0) {
+      if (this.materials = eval(this.props.materials.value)) {
+        if(this.materials) {
+          for(let index in this.materials) {
+            this.material_array.push(this.materials[index]);
+          }
+        }
+      }
+    }
     const materailList = [];
     for(let index in this.material_array) {
       const material = this.material_array[index]
+      const id = material.id
       const type = material.url_type
       const url = material.url
       materailList.push(
@@ -174,6 +174,7 @@ export default class CampaignMaterialPartial extends React.Component {
           { this.renderMaterailTypeImg(type) }
           <span className="material-url">{url}</span>
           <span className="material-type">{type}</span> {/* 隐藏掉 */}
+          <span className="material-id">{id}</span> {/* 隐藏掉 */}
           <span className="del" onClick={this.remove.bind(this)}>x</span>
         </li>
       );
