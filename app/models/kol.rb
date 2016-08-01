@@ -65,7 +65,7 @@ class Kol < ActiveRecord::Base
   has_many :professions, :through => :kol_professions
   has_many :images, :source => :referable
   has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
-  has_many :social_accounts
+  has_many :social_accounts, -> {order("case provider when 'weibo' then 5 when 'meipai' then 4 when 'public_wechat' then 3 else 2 end desc")}
   has_many :agent_kols, :foreign_key => :agent_id
   has_many :big_vs, :through => :agent_kols, :source => :kol
   belongs_to :agent_kol, :foreign_key => :kol_id
@@ -312,6 +312,7 @@ class Kol < ActiveRecord::Base
   end
 
   def app_city_label
+    return nil if self.app_city.blank?
     City.find_by(:name_en => app_city).name rescue nil
   end
 
@@ -526,6 +527,10 @@ class Kol < ActiveRecord::Base
 
   def remove_same_device_token(device_token)
       Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)
+  end
+
+  def get_avatar_url
+    avatar.url || avatar_url
   end
 
 end

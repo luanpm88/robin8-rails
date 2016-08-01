@@ -24,5 +24,25 @@ module Crawler
       info[:others] = others
       info
     end
+
+    def self.create_kol_info(social_account)
+      doc = get_doc(social_account.homepage)
+      contents = []
+      doc.css('#mediasList li').each_with_index do |li, index|
+        return if index >= 3
+        contents << li.css(".feed-description").text.strip
+        KolShow.create(kol_id: social_account.kol_id, provider: 'meipai', cover_url: (li.css(".feed-v-wrap img")[0].attr("src") rescue nil),
+                       like_count: (li.css(".detail-count .feed-like span").text rescue nil),
+                       comment_count: (li.css(".detail-count .feed-comment span").text rescue nil),
+                       publish_time:  ("2016-" + li.css(".feed-user .feed-time").text.gsub("\t","").gsub("\n","").lstrip rescue nil),
+                       link: ("http://www.meipai.com" + li.css(".feed-description")[0].attr("href") rescue nil),
+                       desc: li.css(".feed-description").text.strip)
+      end
+      # 更新头像 和关键字
+      keywords = NlpService.get_analyze_content(contents)["wordcloud"].collect{|t| t['text']}
+      keywords.each do |keyword|
+        KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)
+      end
+    end
   end
 end

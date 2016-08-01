@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728080057) do
+ActiveRecord::Schema.define(version: 20160801073202) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -757,6 +757,15 @@ ActiveRecord::Schema.define(version: 20160728080057) do
 
   add_index "kol_influence_values", ["kol_uuid"], name: "index_kol_influence_values_on_kol_uuid", using: :btree
 
+  create_table "kol_keywords", force: :cascade do |t|
+    t.integer  "kol_id",            limit: 4
+    t.integer  "social_account_id", limit: 4
+    t.string   "keyword",           limit: 255
+    t.string   "weight",            limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
   create_table "kol_professions", force: :cascade do |t|
     t.integer  "kol_id",        limit: 4
     t.integer  "profession_id", limit: 4
@@ -775,13 +784,19 @@ ActiveRecord::Schema.define(version: 20160728080057) do
   end
 
   create_table "kol_shows", force: :cascade do |t|
-    t.integer  "kol_id",     limit: 4
-    t.string   "title",      limit: 255
-    t.text     "desc",       limit: 65535
-    t.string   "link",       limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "provider",   limit: 255
+    t.integer  "kol_id",        limit: 4
+    t.string   "title",         limit: 255
+    t.text     "desc",          limit: 65535
+    t.string   "link",          limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "provider",      limit: 255
+    t.integer  "like_count",    limit: 4
+    t.integer  "read_count",    limit: 4
+    t.integer  "repost_count",  limit: 4
+    t.integer  "comment_count", limit: 4
+    t.datetime "publish_time"
+    t.string   "cover_url",     limit: 255
   end
 
   create_table "kol_tags", force: :cascade do |t|
@@ -800,7 +815,7 @@ ActiveRecord::Schema.define(version: 20160728080057) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                              default: 0,        null: false
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -871,9 +886,10 @@ ActiveRecord::Schema.define(version: 20160728080057) do
     t.string   "id_card",                limit: 255
     t.string   "job_info",               limit: 255
     t.text     "brief",                  limit: 65535
-    t.string   "kol_role",               limit: 255,                            default: "public"
-    t.string   "role_apply_status",      limit: 255,                            default: "pending"
+    t.string   "kol_role",               limit: 255
+    t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
+    t.string   "avatar_url",             limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree

@@ -9,16 +9,21 @@ module API
         desc '列表'
         params do
           optional :page, type: Integer
+          optional :kol_announcement, type: String
           optional :profession_id, type: Integer
         end
         get '' do
           if params[:profession_id].blank?
-            big_v = Kol.order_by_hot.per(10).page(params[:page])
+            big_vs = Kol.includes(:professsions).order_by_hot.per(10).page(params[:page])
           else
-            big_v = Kol.joins(:kol_professions).where("kol_professions.profession_id = #{params[:profession_id]}").order_by_hot.per(10).page(params[:page])
+            big_vs = Kol.joins(:kol_professions).includes(:professsions).where("kol_professions.profession_id = #{params[:profession_id]}").order_by_hot.per(10).page(params[:page])
+          end
+          if params[:kol_announcement] == 'Y'
+            kol_announcements = KolAnnouncement.enable
+            present :kol_announcements, kol_announcements, with: API::V6::Entities::KolAnnouncementEntities::Summary
           end
           present :error, 0
-          present :big_v, big_v, with: API::V1::Entities::TagEntities::Summary
+          present :big_vs, big_vs, with: API::V1_6::BigVEntities::Summary
         end
       end
     end

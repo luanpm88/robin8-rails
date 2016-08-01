@@ -36,10 +36,10 @@ module ImportKols
 
     def self.create_social_account(kol, row)
       if row[13].present? && SocialAccount.find_by(:provider => 'meipai', :homepage => row[13]).blank?
-        kol.social_accounts.build(:provider => 'meipai', :homepage => row[13], :price => row[15].to_i)
+        kol.social_accounts.build(:provider => 'meipai', :homepage => row[13], :price => row[15].to_i, :profession_ids => [get_profession(row[13])])
       end
       if row[16].present? && SocialAccount.find_by(:provider => 'weibo', :homepage => row[16]).blank?
-        kol.social_accounts.build(:provider => 'weibo', :homepage => row[16])
+        kol.social_accounts.build(:provider => 'weibo', :homepage => row[16], :profession_ids => [get_profession(row[13])])
       end
     end
 

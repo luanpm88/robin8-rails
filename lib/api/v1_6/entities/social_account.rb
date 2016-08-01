@@ -5,6 +5,9 @@ module API
         class Summary < Grape::Entity
           expose :kol_id, :provider, :uid, :username, :homepage, :avatar_url, :brief, :followers_count, :friends_count,
                  :like_count, :reposts_count, :statuses_count, :price, :screenshot, :second_price, :repost_price
+          expose :professions do |social_account|
+            social_account.professions.collect{|t| {:id => t.id, :label => t.label} }
+          end
         end
       end
     end
