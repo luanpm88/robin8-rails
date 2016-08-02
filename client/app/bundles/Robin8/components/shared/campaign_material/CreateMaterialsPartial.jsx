@@ -6,7 +6,7 @@ import 'qiniu-js/dist/qiniu.min.js';
 import MaterialType, { MaterialUrl }    from './Material';
 import CampaignMaterialModal        from './modals/CampaignMaterialModal';
 
-export default class CampaignMaterialsPartial extends React.Component {
+export default class CreateMaterialsPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -142,7 +142,15 @@ export default class CampaignMaterialsPartial extends React.Component {
   }
 
   renderMaterailList() {
-    if (this.material_array.length === 0) {
+    if ((this.material_array.length === 0) && this.props.isShow ) {
+      var materials = this.props.campaign.get("materials");
+      if(materials) {
+        materials = eval(materials)
+        for(let index in materials) {
+          this.material_array.push(materials[index]);
+        }
+      }
+    } else if (this.material_array.length === 0) {
       if (this.materials = eval(this.props.materials.value)) {
         if(this.materials) {
           for(let index in this.materials) {
@@ -167,6 +175,28 @@ export default class CampaignMaterialsPartial extends React.Component {
     return materailList;
   }
 
+  renderMaterailButton() {
+    if(!this.props.isShow) {
+      return (
+        <ul className="material-option clearfix" id="material-option">
+          <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
+          <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
+          <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
+          <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
+        </ul>
+      )
+    }
+  }
+
+  renderCampaignMaterialModal() {
+    if(!this.props.isShow) {
+      return (
+        <CampaignMaterialModal className="material-modal" show={this.state.showMaterialModal} onHide={this.closeMaterialModal.bind(this)} type={this.state.materialType} handleUrlClick={this.handleUrlClick.bind(this)} />
+
+      )
+    }
+  }
+
   render() {
     return (
       <div>
@@ -178,16 +208,10 @@ export default class CampaignMaterialsPartial extends React.Component {
             <ul className="materials">
               {this.renderMaterailList()}
             </ul>
-            <ul className="material-option clearfix" id="material-option">
-              <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
-              <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
-              <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
-              <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
-            </ul>
+            {this.renderMaterailButton()}
           </div>
+          {this.renderCampaignMaterialModal()}
         </div>
-
-        <CampaignMaterialModal className="material-modal" show={this.state.showMaterialModal} onHide={this.closeMaterialModal.bind(this)} type={this.state.materialType} handleUrlClick={this.handleUrlClick.bind(this)} />
       </div>
     )
   }
