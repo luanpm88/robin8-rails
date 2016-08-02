@@ -5,6 +5,7 @@ class CreateHelperDocs < ActiveRecord::Migration
       t.string     :question
       t.text       :answer
       t.references :helper_tag
+      t.integer    :sort_weight, default: 100
       t.timestamps null: false
     end
   end

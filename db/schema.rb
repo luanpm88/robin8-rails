@@ -496,13 +496,15 @@ ActiveRecord::Schema.define(version: 20160802035845) do
     t.string   "question",      limit: 255
     t.text     "answer",        limit: 65535
     t.integer  "helper_tag_id", limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "sort_weight",   limit: 4,     default: 100
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   create_table "helper_tags", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "title",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "hot_items", force: :cascade do |t|

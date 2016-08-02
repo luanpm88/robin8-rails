@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     resources :track_urls
     resources :hot_items
+    resources :helper_docs
+    resources :helper_tags
+
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
@@ -133,5 +136,6 @@ Rails.application.routes.draw do
 
     resources :lottery_activities
     resources :lottery_expresses
+    
   end
 end
