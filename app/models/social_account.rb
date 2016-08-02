@@ -25,16 +25,26 @@ class SocialAccount < ActiveRecord::Base
 
 
   def create_kol_shows
-    homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'
-      homepage = homepage.gsub("weibo.com", 'm.weibo.cn')
       Crawler::Weibo.create_kol_info(self)
     elsif self.provider == 'meipai'
       Crawler::Meipai.create_kol_info(self)
     elsif self.provider == 'miaopai'
-
+      Crawler::Miaopai.create_kol_info(self)
     else
+      #
     end
+  end
+
+
+  def self.clear_data
+    return if Rails.env.production?
+    Kol.where(:kol_role => 'mcn_big_v').delete_all
+    KolShow.delete_all
+    KolKeyword.delete_all
+    SocialAccount.delete_all
+    SocialAccountProfession.delete_all
+    KolProfession.delete_all
   end
 
 end

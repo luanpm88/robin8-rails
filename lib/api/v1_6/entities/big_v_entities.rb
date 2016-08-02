@@ -21,6 +21,8 @@ module API
           expose :professions do |big_v|
             big_v.professions.collect{|t| {:id => t.id, :label => t.label} }
           end
+          expose :kol_shows, using: Entities::KolShowEntities::Summary
+          expose :kol_keywords, using: Entities::KolKeywordEntities::Summary
         end
       end
     end
