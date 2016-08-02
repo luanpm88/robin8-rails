@@ -19,7 +19,7 @@ class SelectCampaignPartial extends Component {
                 <div className="at-box-pic">
                   <img src={require('icon-light.png')} />
                 </div>
-                <h3>悬殊活动</h3>
+                <h3>悬赏活动</h3>
               </div>
               <div className="at-box-ct">
                 <p className="bold">支持朋友圈文章类广告发布</p>

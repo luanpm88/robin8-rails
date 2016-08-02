@@ -37,6 +37,7 @@ export default function promiseMiddleware() {
         return next({ ...rest, result: json, readyState: 'success' })
       }
     )['catch']( error => {
+      console.log("[ERROR]", error);
       error.response.json().then( (json) => {
         if(Array.isArray(json.detail)){
           if (json.detail[0] == "amount_not_engouh") {

@@ -34,6 +34,7 @@ class LotteryActivityOrder < ActiveRecord::Base
 private
 
   def assign_default_values
+    self.status = "pending" if self.status.nil?
     self.code = loop do
       c = '10%08d' % rand(10 **8)
       break c unless self.class.exists?(code: c)

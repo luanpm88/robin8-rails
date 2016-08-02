@@ -25,18 +25,14 @@ export function saveInvite(campaign) {
   };
 }
 
-export function updateSearchKolsCondition(condition){
-  return {
-    type: actionTypes.UPDATE_SEARCH_KOLS_CONDITION,
-    data: condition
-  };
-}
-
 export function searchKolsInCondition(condition, page = 1){
-  const region = condition.get("region");
+  let params = [ `page=${page}` ];
+  _.forIn(condition, (value, key) => params.push(`${key}=${value}`));
+
+  const queryString = params.join("&");
   return {
     type: actionTypes.SEARCH_KOLS_IN_CONDITION,
-    promise: fetch(`${baseUrl}/kols/search?page=${page}&region=${region}`, {"credentials": "include"})
+    promise: fetch(`${baseUrl}/kols/search?${queryString}`, {"credentials": "include"})
   };
 }
 

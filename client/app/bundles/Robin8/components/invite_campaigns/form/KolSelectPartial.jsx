@@ -6,6 +6,9 @@ import TargetPartial      from './TargetPartial';
 export default class KolSelectPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
+
+    this.searchCondition = {};
+
     _.bindAll(this, [
       "renderPaginator",
       "renderKolItem",
@@ -23,13 +26,12 @@ export default class KolSelectPartial extends React.Component {
   }
 
   handleSearchKolsInCondition(page = 1) {
-    const { actions, searched_kols } = this.props;
-    actions.searchKolsInCondition(searched_kols.get("condition"), page);
+    const { actions } = this.props;
+    actions.searchKolsInCondition(this.searchCondition, page);
   }
 
   handleConditionChange(condition = {}) {
-    const { actions } = this.props;
-    actions.updateSearchKolsCondition(condition);
+    this.searchCondition = condition;
     this.handleSearchKolsInCondition();
   }
 
@@ -44,8 +46,6 @@ export default class KolSelectPartial extends React.Component {
       });
 
       specified_kols.value.push(id);
-      console.log("-----------------------", specified_kols.value);
-
       actions.addSelectedKol(kol);
     }
   }
@@ -63,7 +63,6 @@ export default class KolSelectPartial extends React.Component {
       _.remove(specified_kols.value, (n) => {
         return n == id;
       });
-      console.log("-----------------------", specified_kols.value);
       actions.removeSelectedKol(kol);
     }
   }

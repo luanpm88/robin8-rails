@@ -13,9 +13,6 @@ export const initialState = Immutable.fromJS({
   selected_kols: [],
   searched_kols: {
     items: [],
-    condition: {
-      region: "全部"
-    },
     paginate: {}
   },
   paginate: {},
@@ -148,12 +145,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
     case actionTypes.SEARCH_KOLS_IN_CONDITION:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === "success"){
-        $$state = $$state.mergeIn(['searched_kols', 'items'], action.result.items);
+        if (action.result.items.length > 0) {
+          $$state = $$state.mergeIn(['searched_kols', 'items'], action.result.items);
+        } else {
+          $$state = $$state.setIn(['searched_kols', 'items'], Immutable.List());
+        }
         $$state = $$state.mergeIn(['searched_kols', 'paginate'], action.result.paginate);
       }
-      return $$state;
-    case actionTypes.UPDATE_SEARCH_KOLS_CONDITION:
-      $$state = $$state.mergeIn(['searched_kols', 'condition'], action.data);
       return $$state;
     case actionTypes.ADD_SELECTED_KOL:
       if (!$$state.get("selected_kols").find((k) => {
