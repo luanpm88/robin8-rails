@@ -367,9 +367,12 @@
     background-image: -webkit-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
     box-shadow: 5px 8.66px 18px 0px rgba(0, 0, 0, 0.3);
     .materials {
-      li {
+      .material {
         padding-top: 20px;
         line-height: 50px;
+        img {
+          float: left;
+        }
         .material-type, .material-id {
           display: none;
         }

@@ -9,8 +9,7 @@ import "campaign/recruit/form.scss";
 
 import BreadCrumb            from './shared/BreadCrumb';
 import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
-import CampaignMaterialPartial  from './shared/campaign_material/CampaignMaterialPartial'
-// import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
+import CampaignMaterialsPartial  from './shared/campaign_material/CampaignMaterialsPartial'
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
@@ -80,7 +79,7 @@ class CreateRecruitCampaign extends React.Component{
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
               {/* <RecruitTargetPartial {...{influence_score, region}}/> */}
-              {<CampaignMaterialPartial {...{materials, material_ids}} />}
+              {<CampaignMaterialsPartial {...{materials, material_ids}} />}
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />

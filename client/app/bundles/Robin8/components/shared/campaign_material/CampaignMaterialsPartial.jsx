@@ -3,9 +3,10 @@ import _ from 'lodash';
 import {} from '../plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
 
-import CampaignMaterialModal from './modals/CampaignMaterialModal';
+import MaterialType, { MaterialUrl }    from './Material';
+import CampaignMaterialModal        from './modals/CampaignMaterialModal';
 
-export default class CampaignMaterialPartial extends React.Component {
+export default class CampaignMaterialsPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -140,19 +141,6 @@ export default class CampaignMaterialPartial extends React.Component {
     this.saveRecruitCampaignMaterial(material);
   }
 
-  renderMaterailTypeImg(type) {
-    switch (type) {
-      case 'article':
-        return <img src={require("article_material.png")} />
-      case 'image':
-        return <img src={require("image_material.png")} />
-      case 'video':
-        return <img src={require("video_material.png")} />
-      case 'file':
-        return <img src={require("file_material.png")} />
-    }
-  }
-
   renderMaterailList() {
     if (this.material_array.length === 0) {
       if (this.materials = eval(this.props.materials.value)) {
@@ -170,12 +158,9 @@ export default class CampaignMaterialPartial extends React.Component {
       const type = material.url_type
       const url = material.url
       materailList.push(
-        <li className="" key={index}>
-          { this.renderMaterailTypeImg(type) }
-          <span className="material-url">{url}</span>
-          <span className="material-type">{type}</span> {/* 隐藏掉 */}
-          <span className="material-id">{id}</span> {/* 隐藏掉 */}
-          <span className="del" onClick={this.remove.bind(this)}>x</span>
+        <li className="material" key={index}>
+          <MaterialType type={type} />
+          <MaterialUrl {...{id, type, url}} isShow={false} handleRemove={this.remove.bind(this)} />
         </li>
       );
     }
