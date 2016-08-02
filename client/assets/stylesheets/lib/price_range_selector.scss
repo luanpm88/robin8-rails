@@ -1,0 +1,27 @@
+.price-range-selector-wrapper {
+  @include maskable;
+}
+
+.price-range-selector {
+  .price-form-alert {
+    padding: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    color: red;
+    display: none;
+  }
+  .price-inline-form {
+    text-align: center;
+    .strip {
+      font-size: 24px;
+      margin: 0 18px 0 3px;
+    }
+    input[type='number'] {
+      width: 100px;
+      line-height: 32px;
+      text-align: center;
+      border: 0;
+      font-size: 24px;
+    }
+  }
+}

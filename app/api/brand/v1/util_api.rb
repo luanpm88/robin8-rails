@@ -3,7 +3,7 @@ module Brand
     class UtilAPI < Base
       
       before do
-        authenticate!
+        # authenticate!
       end
 
       desc 'Get Qiniu upload token'
@@ -11,6 +11,12 @@ module Brand
         put_policy = Qiniu::Auth::PutPolicy.new 'robin8'
         uptoken = Qiniu::Auth.generate_uptoken put_policy
         {uptoken: uptoken}
+      end
+
+      desc 'Get supported profession list'
+      get '/professions' do
+        professions = Profession.where(enable: true).order("position asc")
+        present professions
       end
     end
   end

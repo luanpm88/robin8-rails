@@ -1,22 +1,105 @@
 import React from 'react';
+import _ from "lodash";
 import { jobAreaSelect } from '../../shared/CitySelector';
+import ProfessionSelector from '../../shared/ProfessionSelector';
+import SnsSelector from '../../shared/SnsSelector';
+import PriceRangeSelector from '../../shared/PriceRangeSelector';
 
 export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ["_addTriggerTargetRegionInputChange"])
+    _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
-  _addTriggerTargetRegionInputChange(){
-    const { onChange } = this.props;
-    onChange({
-      region: $('.target-city-label').text()
+  handleConditionChange(){
+    let condition = {};
+
+    const regionText = $('.target-city-label').text().trim();
+    if (regionText != "全部") {
+      const condstr = regionText.split("/").join(",");
+      _.assignIn(condition, {region: condstr});
+    }
+
+    const professionItems = this.professionSelector.activeItems;
+    if (professionItems.length > 0) {
+      const condstr = professionItems.map((item) => {
+        return item.name;
+      }).join(",");
+      _.assignIn(condition, {profession: condstr});
+    }
+
+    const snsItems = this.snsSelector.activeItems;
+    if (snsItems.length > 0) {
+      const condstr = snsItems.map((item) => {
+        return item.name;
+      }).join(",");
+      _.assignIn(condition, {sns: condstr});
+    }
+
+    const { minValue, maxValue } = this.priceRangeSelector;
+    if (minValue >= 0 && maxValue > minValue) {
+      const condstr = [ minValue, maxValue ].join(",");
+      _.assignIn(condition, {price_range: condstr});
+    }
+
+    this.props.onChange(condition);
+  }
+
+  initConditionComponent() {
+    $(".target-city-label").bind("change", this.handleConditionChange)
+
+    this.professionSelector = new ProfessionSelector({
+      onSelectionDone: (activeItems, state=true) => {
+        let activeText;
+
+        if (activeItems.length > 0) {
+          activeText = activeItems.map((item) => {
+            return item.label;
+          }).join("/");
+        }
+
+        $("#profession-result").html(activeText || "全部");
+        if (!!state) this.handleConditionChange();
+      }
     });
+
+    this.snsSelector = new SnsSelector({
+      onSelectionDone: (activeItems, state=true) => {
+        let activeText;
+
+        if (activeItems.length > 0) {
+          activeText = activeItems.map((item) => {
+            return `<span class="target-item sns-icon icon-${item.name}"></span>`;
+          }).join("");
+        }
+
+        $("#sns-result").html(activeText || "全部");
+        if (!!state) this.handleConditionChange();
+      }
+    });
+
+    this.priceRangeSelector = new PriceRangeSelector({
+      onSelectionDone: (minValue, maxValue, state=true) => {
+        let priceResult;
+
+        if (minValue >= 0 && maxValue > 0) {
+          priceResult = `${minValue} <span class="strip">-</span> ${maxValue}`;
+        }
+
+        $("#price-range-result").html(priceResult || "全部");
+        if (!!state) this.handleConditionChange();
+      }
+    });
+
+    this.snsSelector.set();
+    this.professionSelector.set();
+    this.priceRangeSelector.set();
   }
 
   componentDidMount(){
-    $(".target-city-label").bind("change", this._addTriggerTargetRegionInputChange)
+    this.initConditionComponent();
+    this.handleConditionChange();
   }
 
   renderTargetTitle(){
@@ -32,16 +115,51 @@ export default class TargetPartial extends React.Component {
           <h3 className="tit">搜索KOL&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
-          <div className="campaign-target">
-            <div className="form-group">
-              <div className="target-region-range">
-                <label >地区</label>
-                <div className="target-region-selector">
-                  <span id="btn_jobArea" className="target-city-label" readOnly="readonly"></span>
+          <div className="campaign-target-group">
+
+            <div className="row">
+              <div className="col-md-3">
+                <div className="campaign-target target-region">
+                  <label >地区</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
+                  <div className="target-result">
+                    <div id="btn_jobArea" className="target-city-label">全部</div>
+                  </div>
                 </div>
-                <a className="btn btn-blue btn-default region-button" onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
+              </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-profession">
+                  <label>分类</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { this.professionSelector.show() }}>选择分类</a>
+                  <div className="target-result">
+                    <div id="profession-result"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-sns">
+                  <label>平台</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { this.snsSelector.show() }}>社交媒体</a>
+                  <div className="target-result">
+                    <div id="sns-result"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-price-range">
+                  <label>价格</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { this.priceRangeSelector.show() }}>价格区间</a>
+                  <div className="target-result">
+                    <div id="price-range-result"></div>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
