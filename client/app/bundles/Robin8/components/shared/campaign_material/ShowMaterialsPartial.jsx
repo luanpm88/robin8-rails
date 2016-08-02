@@ -39,8 +39,8 @@ export default class ShowMaterialsPartial extends React.Component {
     return (
       <div>
         <div className="panel show-activity-form show-material">
-          <div className="show-content">
-            <ul className="show-materials">
+          <div className="content">
+            <ul className="materials">
               {this.renderMaterailList()}
             </ul>
           </div>

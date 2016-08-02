@@ -142,15 +142,7 @@ export default class CreateMaterialsPartial extends React.Component {
   }
 
   renderMaterailList() {
-    if ((this.material_array.length === 0) && this.props.isShow ) {
-      var materials = this.props.campaign.get("materials");
-      if(materials) {
-        materials = eval(materials)
-        for(let index in materials) {
-          this.material_array.push(materials[index]);
-        }
-      }
-    } else if (this.material_array.length === 0) {
+    if (this.material_array.length === 0) {
       if (this.materials = eval(this.props.materials.value)) {
         if(this.materials) {
           for(let index in this.materials) {
@@ -176,25 +168,20 @@ export default class CreateMaterialsPartial extends React.Component {
   }
 
   renderMaterailButton() {
-    if(!this.props.isShow) {
-      return (
-        <ul className="material-option clearfix" id="material-option">
-          <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
-          <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
-          <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
-          <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
-        </ul>
-      )
-    }
+    return (
+      <ul className="material-option clearfix" id="material-option">
+        <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
+        <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
+        <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
+        <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
+      </ul>
+    )
   }
 
   renderCampaignMaterialModal() {
-    if(!this.props.isShow) {
-      return (
-        <CampaignMaterialModal className="material-modal" show={this.state.showMaterialModal} onHide={this.closeMaterialModal.bind(this)} type={this.state.materialType} handleUrlClick={this.handleUrlClick.bind(this)} />
-
-      )
-    }
+    return (
+      <CampaignMaterialModal className="material-modal" show={this.state.showMaterialModal} onHide={this.closeMaterialModal.bind(this)} type={this.state.materialType} handleUrlClick={this.handleUrlClick.bind(this)} />
+    )
   }
 
   render() {
