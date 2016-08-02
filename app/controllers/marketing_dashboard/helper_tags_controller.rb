@@ -23,8 +23,16 @@ class MarketingDashboard::HelperTagsController < MarketingDashboard::BaseControl
 
   def edit
     @title = "编辑分类"
+    @helper_tag = HelperTag.find(params[:id])
   end
 
   def update
+    @helper_tag = HelperTag.find(params[:id])
+    if @helper_tag.update_attributes(params.require(:helper_tag).permit(:title))
+      redirect_to marketing_dashboard_helper_tags_url
+    else
+      flash[:alert] = @helper_tag.errors.messages.values.flatten.join("\n")
+      render :edit
+    end
   end
 end
