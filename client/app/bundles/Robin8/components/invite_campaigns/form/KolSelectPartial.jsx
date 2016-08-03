@@ -120,10 +120,15 @@ export default class KolSelectPartial extends React.Component {
 
     return(
       <tr className={`kol-item ${state}`} data-id={kol.get("id")} key={ `kol-${kol.get("id")}` }>
-        <td>{kol.get("name")}</td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
+        <td>
+          <div className="avatar">
+            <img src={kol.get("avatar_url")} />
+            {kol.get("username")}
+          </div>
+        </td>
+        <td>{kol.get("provider_text")}</td>
+        <td>{kol.get("sale_price")}/条</td>
+        <td>{kol.get("professions").map(i => i.get("label")).join("/")}</td>
         <td>
           { actionBtn }
           <div className="arrow-right show-detail"></div>
@@ -136,8 +141,10 @@ export default class KolSelectPartial extends React.Component {
     return (
       <table>
         <colgroup width="200"></colgroup>
-        <colgroup span="3"></colgroup>
-        <colgroup width="120"></colgroup>
+        <colgroup width="180"> ></colgroup>
+        <colgroup width="180"> ></colgroup>
+        <colgroup width="180"></colgroup>
+        <colgroup width="180"></colgroup>
         <thead>
           <tr>
             <th>报名列表</th>

@@ -1,10 +1,9 @@
 module Brand
   module V1
-    class KolsAPI < Base
+    class SocialAccountsAPI < Base
       helpers do
         def join_table(name)
           @join_state ||= {
-            social_accounts: false,
             kol_professions: false
           }
 
@@ -20,61 +19,53 @@ module Brand
           # authenticate!
         end
 
-        resource :kols do
+        resource :social_accounts do
 
-          desc 'Search kols with conditions and return kols list'
+          desc 'Search social accounts with conditions and return accounts list'
           params do
             optional :region, type: String
+            optional :profession, type: String
+            optional :sns, type: String
+            optional :price_range, type: String
           end
           get "search" do
-            @kols = Kol.all
+            @social_accounts = SocialAccount.all
 
             if params[:region] and params[:region] != "全部"
               regions = params[:region].split(",").reject(&:blank?)
               cities = City.where(name: regions).map(&:name_en)
 
-              @kols = @kols.where(app_city: cities)
+              @social_accounts = @social_accounts.where(city: cities)
             end
 
             if params[:profession] and params[:profession] != "全部"
               profession_params = params[:profession].split(",").reject(&:blank?)
               professions = Profession.where(name: profession_params).map(&:id)
 
-              join_table(:kol_professions)
-              @kols = @kols.where("`kol_professions`.`profession_id` IN (?)", professions)
+              join_table(:social_account_professions)
+              @social_accounts = @social_accounts.where("`social_account_professions`.`profession_id` IN (?)", professions)
             end
 
             if params[:sns] and params[:sns] != "全部"
               sns_params = params[:sns].split(",").reject(&:blank?)
               sns = sns_params & ["public_wechat", "weibo", "meipai", "miaopai"]
 
-              join_table(:social_accounts)
-              @kols = @kols.where("`social_accounts`.`provider` IN (?)", sns)
+              @social_accounts = @social_accounts.where("`social_accounts`.`provider` IN (?)", sns)
             end
 
             if params[:price_range] and params[:price_range] != "全部"
               min_price, max_price = params[:price_range].split(",").map(&:to_i)
               if min_price >= 0 and max_price > min_price
 
-                join_table(:social_accounts)
-                @kols = @kols.where("`social_accounts`.`price` BETWEEN ? AND ?", min_price, max_price)
+                @social_accounts = @social_accounts.where("`social_accounts`.`price` BETWEEN ? AND ?", min_price, max_price)
               end
             end
 
-            if params[:just_count]
-              {
-                count: @kols.count
-              }
-            else
-              @kols = @kols.page(params[:page]).per_page(6)
-              {
-                items: @kols,
-                paginate: {
-                  "X-Page": @kols.current_page,
-                  "X-Total-Pages": @kols.total_pages
-                }
-              }
-            end
+            @social_accounts = @social_accounts.page(params[:page]).per_page(6)
+
+            present @social_accounts, with: Entities::SocialAccount
+            header "X-Page", @social_accounts.current_page
+            header "X-Total-Pages", @social_accounts.total_pages
           end
         end
       end
