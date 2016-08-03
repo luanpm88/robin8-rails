@@ -31,6 +31,18 @@ module Brand
           @campaign_applies = @campaign.valid_applies({:include => :kol})
           present @campaign_applies
         end
+
+        params do
+          requires :campaign_id, type: Integer
+          requires :kol_id, type: Integer
+          requires :score, type: String
+          requires :opinion, type: String
+        end
+        put 'update_score_and_opinion' do
+          campaign_invite = CampaignInvite.find_by campaign_id: declared(params)[:campaign_id], kol_id: declared(params)[:kol_id]
+          campaign_invite.update kol_score: declared(params)[:score], brand_opinion: declared(params)[:opinion]
+          present campaign_invite.campaign_apply
+        end
       end
     end
   end
