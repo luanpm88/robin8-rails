@@ -13,6 +13,8 @@ import CreateMaterialsPartial  from './shared/campaign_material/CreateMaterialsP
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
+import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
+
 import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 
@@ -24,11 +26,12 @@ const initCampaign = {
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
-  region: "全部",
   address: "",
   recruit_person_count: 1,
   hide_brand_name: false,
-  influence_score: "gt_400"
+  region: "全部",
+  profession: "全部",
+  sns_platform: "全部"
 }
 
 const validate = new CampaignFormValidate({
@@ -64,9 +67,9 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   render(){
-    const { name, description, img_url, influence_score, start_time, deadline,
+    const { name, description, img_url, profession, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
-          recruit_person_count, task_description, address, region,
+          recruit_person_count, task_description, address, region, sns_platform,
           hide_brand_name, materials, material_ids
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -78,11 +81,11 @@ class CreateRecruitCampaign extends React.Component{
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
-              {/* <RecruitTargetPartial {...{influence_score, region}}/> */}
               {<CreateMaterialsPartial {...{materials, material_ids}} />}
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
+              <RecruitTargetPartial {...{region, profession, sns_platform}}/>
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
@@ -98,9 +101,9 @@ class CreateRecruitCampaign extends React.Component{
 
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
+  fields: ["name", "description", "img_url", "url", "profession", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "task_description", 'address', "region", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "task_description", 'address', "region", "sns_platform", "hide_brand_name", "materials", "material_ids"],
   returnRejectedSubmitPromise: true,
   validate
 },

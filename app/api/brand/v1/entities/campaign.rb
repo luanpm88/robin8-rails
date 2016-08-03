@@ -95,12 +95,22 @@ module Brand
         end
 
         expose :region do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "region")
+          target = object.region_target
           target.target_content if target
         end
 
         expose :influence_score do |object, opts|
           target = object.campaign_targets.find_by(target_type: "influence_score")
+          target.target_content if target
+        end
+
+        expose :profession do |object, opts|
+          target = object.profession_target
+          target.target_content if target
+        end
+
+        expose :sns_platform do |object, opts|
+          target = object.sns_platform_target
           target.target_content if target
         end
         # ---------------------------------------------------
