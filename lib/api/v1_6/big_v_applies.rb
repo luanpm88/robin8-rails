@@ -1,25 +1,26 @@
 module API
   module V1_6
-    class KolApplies < Grape::API
+    class BigVApplies < Grape::API
       before do
         authenticate!
       end
 
-      resources :kol_applies do
+      resources :big_v_applies do
         desc '提交基本资料'
         params do
-          requires :avatar, type: Hash
-          requires :name, type: String
+          optional :avatar, type: Hash
+          optional :name, type: String
           optional :app_city, type: String
           optional :job_info, type: String
-          optional :profession_ids, type: String
-          optional :brief, type: String
+          optional :profession_names, type: String
+          optional :desc, type: String
         end
         post 'update_profile' do
           current_kol.update_columns(:name => params[:name], :app_city => params[:app_city], :job_info => params[:job_info],
-                                     :brief => params[:brief])
-          current_kol.professions  = Profession.where(:id => params[:profession_ids].split(",")) rescue nil
-          current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
+                                     :desc => params[:desc])
+          current_kol.professions  = Profession.where(:name => params[:profession_names].split(",")) rescue nil
+          current_kol.avatar = params[:avatar]  if params[:avatar].present?
+          # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
           current_kol.save
           present :error, 0
         end
@@ -27,8 +28,9 @@ module API
         desc '提交社交账号资料'
         params do
           requires :provider, type: String
-          requires :homepage, type: String
+          optional :homepage, type: String
           requires :price, type: String
+          optional :uid, type: String
           optional :repost_price, type: String
           optional :second_price, type: String
           optional :followers_count, type: String
@@ -54,7 +56,11 @@ module API
           params[:kol_shows].split(",").each do |link|
             current_kol.kol_shows.create!(:link => link)
           end if params[:kol_shows].present?
-          current_kol.role_apply_status == 'pending' if current_kol
+          if current_kol.kol_role == 'public'
+            current_kol.role_apply_status = 'pending'
+            current_kol.role_apply_time = Time.now
+            current_kol.save
+          end
           present :error, 0
         end
       end

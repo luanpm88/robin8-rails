@@ -20,7 +20,7 @@ module ImportKols
 
     def self.create_kol(row)
       kol = Kol.find_or_initialize_by(:name => row[1])
-      kol.brief = row[4]
+      kol.desc = row[4]
       kol.kol_role = 'mcn_big_v'
       kol
     end
