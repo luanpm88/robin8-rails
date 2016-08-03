@@ -13,7 +13,7 @@ import DatePartial           from './invite_campaigns/form/OfflineDate';
 import KolSelectPartial      from './invite_campaigns/form/KolSelectPartial';
 import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
-
+import CreateMaterialsPartial  from './shared/campaign_material/CreateMaterialsPartial'
 
 const initCampaign = {
   start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
@@ -28,7 +28,6 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
-  // budget: { require: true},
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }}
 })
@@ -60,7 +59,7 @@ class CreateInviteCampaign extends React.Component{
 
   render(){
     const { name, description, img_url, start_time, deadline,
-            budget, specified_kols
+            budget, specified_kols, materials, material_ids
           } = this.props.fields;
 
     const { handleSubmit, submitting, invalid, searched_kols, selected_kols, actions } = this.props;
@@ -72,8 +71,9 @@ class CreateInviteCampaign extends React.Component{
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveInvite)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url}}/>
+              <CreateMaterialsPartial {...{materials, material_ids}} />
               <DatePartial {...{ start_time, deadline }} />
-              <KolSelectPartial {...{ specified_kols, searched_kols, selected_kols, actions }} />
+              <KolSelectPartial {...{ budget, specified_kols, searched_kols, selected_kols, actions }} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button
@@ -95,7 +95,7 @@ class CreateInviteCampaign extends React.Component{
 CreateInviteCampaign = reduxForm({
   form: "invite_campaign_form",
   fields: ["name", "description", "img_url", "start_time", "deadline",
-           "budget", "specified_kols"],
+           "materials", "material_ids", "budget", "specified_kols"],
   returnRejectedSubmitPromise: true,
   validate
 },

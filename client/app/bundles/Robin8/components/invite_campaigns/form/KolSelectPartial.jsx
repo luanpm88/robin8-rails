@@ -36,7 +36,7 @@ export default class KolSelectPartial extends React.Component {
   }
 
   handleAddKol(event) {
-    const { actions, searched_kols, specified_kols } = this.props;
+    const { actions, budget, searched_kols, specified_kols } = this.props;
     const item = event.currentTarget;
     const id = $(item).closest(".kol-item").data("id");
 
@@ -46,12 +46,13 @@ export default class KolSelectPartial extends React.Component {
       });
 
       specified_kols.value.push(id);
+      budget.onChange(budget.value + kol.get("sale_price"));
       actions.addSelectedKol(kol);
     }
   }
 
   handleRemoveKol(event) {
-    const { actions, selected_kols, specified_kols } = this.props;
+    const { actions, budget, selected_kols, specified_kols } = this.props;
     const item = event.currentTarget;
     const id = $(item).closest(".kol-item").data("id");
 
@@ -63,6 +64,7 @@ export default class KolSelectPartial extends React.Component {
       _.remove(specified_kols.value, (n) => {
         return n == id;
       });
+      budget.onChange(budget.value - kol.get("sale_price"));
       actions.removeSelectedKol(kol);
     }
   }
@@ -162,7 +164,7 @@ export default class KolSelectPartial extends React.Component {
   }
 
   renderSelectedKols() {
-    const { selected_kols } = this.props;
+    const { selected_kols, budget } = this.props;
     let selectedKolsList = [],
         selectedKolsAlert,
         selectedKolsResult;
@@ -186,6 +188,7 @@ export default class KolSelectPartial extends React.Component {
           <h3 className="tit">已选KOL列表&nbsp;<span className="what" data-toggle="tooltip" title={this.renderTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
+          <div className="notice">活动预算 <em>{budget.value} 元</em></div>
           <div className="kol-list-wrap">
             { selectedKolsResult }
             { selectedKolsAlert }
