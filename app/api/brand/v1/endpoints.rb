@@ -33,6 +33,7 @@ module Brand
       represent InvoiceHistory,   with: Entities::InvoiceHistory
       represent Kol,              with: Entities::Kol
       represent Profession,       with: Entities::Profession
+      represent SocialAccount,    with: Entities::SocialAccount
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
@@ -58,6 +59,7 @@ module Brand
       mount TransactionsAPI
       mount InvoiceHistoriesAPI
       mount KolsAPI
+      mount SocialAccountsAPI
     end
   end
 end

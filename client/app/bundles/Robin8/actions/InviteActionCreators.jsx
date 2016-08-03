@@ -32,7 +32,7 @@ export function searchKolsInCondition(condition, page = 1){
   const queryString = params.join("&");
   return {
     type: actionTypes.SEARCH_KOLS_IN_CONDITION,
-    promise: fetch(`${baseUrl}/kols/search?${queryString}`, {"credentials": "include"})
+    promise: fetch(`${baseUrl}/social_accounts/search?${queryString}`, {"credentials": "include"})
   };
 }
 

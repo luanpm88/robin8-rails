@@ -641,3 +641,49 @@ div.sources-check.cpa-cpi-select{
     font-weight: 400;
   }
 }
+
+.campaign-target-group {
+  padding: 38px 0;
+  width: 100%;
+  position: relative;
+
+  .campaign-target {
+    text-align: center;
+
+    label{
+      display: block;
+      color: #9b9a9a;
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .target-result{
+      margin-top: 25px;
+    }
+
+    .target-btn{
+      width: 110px;
+      height: 36px;
+      color: #ffffff;
+      background-color: #36cdd3;
+      font-size: 14px;
+    }
+
+  }
+
+  .target-sns {
+    .target-item {
+      width: 32px;
+      height: 32px;
+      margin: -6px 3px 0 3px;
+      display: inline-block;
+    }
+  }
+
+  .target-city-label{
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+  }
+}
