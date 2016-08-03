@@ -57,6 +57,22 @@ module Brand
         expose :take_budget
         expose :remain_budget
 
+        expose :materials do |object, opts|
+          if object.campaign_materials
+            materials = []
+            object.campaign_materials.each do |material|
+              materials << {id: material.id, url_type: material.url_type, url: material.url}
+            end
+            materials.to_json
+          end
+        end
+
+        expose :material_ids do |object, opts|
+          if object.campaign_materials
+            object.campaign_materials.pluck(:id)
+          end
+        end
+
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
           target = object.campaign_targets.find_by(target_type: "age")

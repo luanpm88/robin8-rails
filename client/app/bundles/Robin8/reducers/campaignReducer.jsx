@@ -64,6 +64,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
+    case actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.mergeIn(['campaign_invites', action.index], action.result);
+      }
+      return $$state;
+
     case actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOLS:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {

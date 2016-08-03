@@ -4,7 +4,8 @@ class UpdateRecruitCampaignService
   PERMIT_PARAMS = [:name, :description, :task_description,
                    :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :influence_score, :recruit_start_time, :recruit_end_time, :hide_brand_name]
+                  :region, :influence_score, :recruit_start_time,
+                  :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -53,7 +54,8 @@ class UpdateRecruitCampaignService
       ActiveRecord::Base.transaction do
         update_recruit_region
         update_recruit_influnce_score
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
+        update_materials
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -88,6 +90,26 @@ class UpdateRecruitCampaignService
     unless campaign_target.target_content.eql? @campaign_params[:influence_score]
       campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
     end
+  end
+
+  def delete_all_materials
+    @campaign.campaign_materials.delete_all
+  end
+
+  def update_materials
+    return delete_all_materials unless @campaign_params[:material_ids].present?
+    existed_materials = []
+    new_materials = []
+    @campaign_params[:material_ids].split(",").each do |id|
+      if campaign_material = @campaign.campaign_materials.where(id: id).take
+        existed_materials << campaign_material
+      else
+        campaign_material =  CampaignMaterial.where(id: id).take
+        campaign_material.update(campaign_id: @campaign.id)
+        new_materials << campaign_material
+      end
+    end
+    (@campaign.campaign_materials - new_materials - existed_materials).each { |x| x.delete}
   end
 
   def can_edit?

@@ -23,6 +23,14 @@ module Brand
         expose :brand_passed_count do |object, opts|
           object.campaign.brand_passed_applies.count
         end
+
+        expose :kol_score do |object, opts|
+          object.campaign_invite.kol_score
+        end
+
+        expose :brand_opinion do |object, opts|
+          object.campaign_invite.brand_opinion
+        end
       end
     end
   end
