@@ -1,65 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Robin8 streams alert</title>
+<h2 class=\"tit-card\">微博（2091）</h2>
+<section class=\"card-11 unfold-state\">
+<article class=\"card-9\" data-hidebtns=\"\">
+  <div data-url=\"\" class=\"J-feed-wrap-in-card\">
+    <article class=\"wrapper-wb BgCLev5 BCLev5 J-feed\
+    " id=\"wb_4003791831705390\" data-id=\"4003791831705390\" data-uid=\"2647079397\" data-mid=\"E1ADR79Ei\"
+    data-isforward=\"0\" data-delete=\"\" data-visible=\"0\" data-top=\"0\">
+    <header class=\"tit-wb clearfix BCLev6\
+    "><a class=\"avatar-wb\" href=\"/u/2647079397\"><img src=\"http://u1.sinaimg.cn/upload/h5/img/v4/avt_def.png\" data-src=\"http://tva3.sinaimg.cn/crop.0.0.180.180.180/9dc739e5jw1e8qgp5bmzyj2050050aa8.jpg\" width=\"35\" height=\"35\" class=\"J-lazyPic\"/></a><span class=\"FCLev6 nikename-wb\">全球内衣坊</span>
+    <span class=\"origin-wb FCLev5\">
+    <time class=\"time-wb FCLev5\
+    ">08-01 22:30</time>来自iPhone客户端</span></header>
+    <section class=\"content-wb\"><p>可爱到爆</p>
 
-    <%= stylesheet_link_tag  'export_stories', media: 'all' %>
-  </head>
-  
-  <body>
-    <br>
-    <p>
-      Hi <%= @user.first_name %>,<br />
-      <br />
-      When you were away,
-      <% if @stories.count <= 10 %>
-        we recieved <%= pluralize(@stories.count, 'story') %>
-      <% else %>
-        we recieved more than 10 stories
-      <% end %>
-      from one of your Robin8's streams which is named '<%= @stream.name %>'.
-      Please log in to <%= link_to "Robin8", @link, target: "_blank" %>
-      to read more stories.
-    </p>
-    <br>
-    <h1 class="header"><%= @stream.stream_title %></h1>
-    <br>
-    <br>
-    <div class="container-fluid">
-      <% @stories.each do |story| %>
-        <% unless story[:summary].blank? %>
-          <div class="row story" 
-            style="background-color: <%= cycle('rgb(199, 195, 195)', '#fff') -%> !important">
-            <div class="col-lg-12">
-              <div>
-                <h2 class="media-heading">
-                  <%= link_to story[:title], story[:link] %>
-                </h2>
-                <h4 class="meta">
-                  <span><%= story[:blog_name] %></span> &bull; 
-                  <span style="font-weight: normal;">
-                    <i class="fa fa-clock-o"></i> 
-                    <span class="datetime">
-                      <%= Time.parse(story[:published_at]).strftime("%a, %d %B %Y %T%:z") %>
-                    </span>
-                  </span>
-                </h4>
-                <hr>
-                <h4>Summary:</h4>
-                <ul>
-                  <% story[:summary].each do |s| %>
-                    <li><%= s %></li>
-                  <% end %>
-                </ul>
-              </div>
-              <div class="text-center">
-                <%= image_tag attachments["image_#{story[:id]}.png"].url, 
-                  width: "600px" %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </body>
-</html>
+      <div class=\"img-wb J-feed-img\
+      "><a href=\"http://ww4.sinaimg.cn/woriginal/9dc739e5gw1f6em91twklj20cj1tan0x.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"style=\"height:180px\"data-src=\"http://ww4.sinaimg.cn/wap180/9dc739e5gw1f6em91twklj20cj1tan0x.jpg\" class=\"J-lazyPic\"/></a>
+  </div>
+  </section>
+  <footer class=\"action-wb L-tab BgCLev7 BCLev14\
+  "><a href=\"http://m.weibo.cn/2647079397/E1ADR79Ei?type=zf#act\" class=\"J-rt rt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">转发</span></p></a>
+  <a href=\"http://m.weibo.cn/2647079397/E1ADR79Ei?type=pl#act\" class=\"J-cmt cmt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">评论</span></p></a>
+  <a href=\"javascript:;\" class=\"J-like like-action-wb L-item-tab FCLev9 J-feed-act-like\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span class=\"like-txt\">赞</span><span data-num=\"0\"></span></p></a>
+  <a href=\"javascript:;\" class=\"J-more more-action-wb L-item-tab FCLev9 J-feed-act-more\" data-faved=\"\"
+  data-gender=\"她\" data-source=\"iPhone客户端\"><p class=\"BCLev8\"><i>&nbsp;</i></p></a></footer>
+</article></div></article>
+<article class=\"card-9\" data-hidebtns=\"\">
+  <div data-url=\"\" class=\"J-feed-wrap-in-card\">
+    <article class=\"wrapper-wb BgCLev5 BCLev5 J-feed\
+    " id=\"wb_4003076078108034\" data-id=\"4003076078108034\" data-uid=\"2647079397\" data-mid=\"E1i1py1gK\"
+    data-isforward=\"0\" data-delete=\"\" data-visible=\"0\" data-top=\"0\">
+    <header class=\"tit-wb clearfix BCLev6\
+    "><a class=\"avatar-wb\" href=\"/u/2647079397\"><img src=\"http://u1.sinaimg.cn/upload/h5/img/v4/avt_def.png\" data-src=\"http://tva3.sinaimg.cn/crop.0.0.180.180.180/9dc739e5jw1e8qgp5bmzyj2050050aa8.jpg\" width=\"35\" height=\"35\" class=\"J-lazyPic\"/></a><span class=\"FCLev6 nikename-wb\">全球内衣坊</span>
+    <span class=\"origin-wb FCLev5\">
+    <time class=\"time-wb FCLev5\
+    ">07-30 23:06</time>来自iPhone客户端</span></header>
+    <section class=\"content-wb\"><p>运动系</p>
+
+      <div class=\"img-wb J-feed-img\
+      "><a href=\"http://ww2.sinaimg.cn/woriginal/9dc739e5gw1f6cc1r0bsij20hm0gd0tq.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"style=\"height:167px\"data-src=\"http://ww2.sinaimg.cn/wap180/9dc739e5gw1f6cc1r0bsij20hm0gd0tq.jpg\" class=\"J-lazyPic\"/></a>
+  </div>
+  </section>
+  <footer class=\"action-wb L-tab BgCLev7 BCLev14\
+  "><a href=\"http://m.weibo.cn/2647079397/E1i1py1gK?type=zf#act\" class=\"J-rt rt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">转发</span></p></a>
+  <a href=\"http://m.weibo.cn/2647079397/E1i1py1gK?type=pl#act\" class=\"J-cmt cmt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">1</span></p></a>
+  <a href=\"javascript:;\" class=\"J-like like-action-wb L-item-tab FCLev9 J-feed-act-like\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span class=\"like-txt hid\">赞</span><span data-num=\"1\">1</span></p></a>
+  <a href=\"javascript:;\" class=\"J-more more-action-wb L-item-tab FCLev9 J-feed-act-more\" data-faved=\"\"
+  data-gender=\"她\" data-source=\"iPhone客户端\"><p class=\"BCLev8\"><i>&nbsp;</i></p></a></footer>
+</article></div></article>
+<article class=\"card-9\" data-hidebtns=\"\">
+  <div data-url=\"\" class=\"J-feed-wrap-in-card\">
+    <article class=\"wrapper-wb BgCLev5 BCLev5 J-feed\
+    " id=\"wb_4002728210882974\" data-id=\"4002728210882974\" data-uid=\"2647079397\" data-mid=\"E18Yl3HHw\"
+    data-isforward=\"0\" data-delete=\"\" data-visible=\"0\" data-top=\"0\">
+    <header class=\"tit-wb clearfix BCLev6\
+    "><a class=\"avatar-wb\" href=\"/u/2647079397\"><img src=\"http://u1.sinaimg.cn/upload/h5/img/v4/avt_def.png\" data-src=\"http://tva3.sinaimg.cn/crop.0.0.180.180.180/9dc739e5jw1e8qgp5bmzyj2050050aa8.jpg\" width=\"35\" height=\"35\" class=\"J-lazyPic\"/></a><span class=\"FCLev6 nikename-wb\">全球内衣坊</span>
+    <span class=\"origin-wb FCLev5\">
+    <time class=\"time-wb FCLev5\
+    ">07-30 00:03</time>来自iPhone客户端</span></header>
+    <section class=\"content-wb\"><p>今天维多利亚秘密内衣秀<i class=\"face face_2 icon_24\">[心]</i></p>
+
+      <div class=\"img-wb J-feed-img\
+      "><a href=\"http://ww1.sinaimg.cn/woriginal/9dc739e5gw1f6b83d4vf8j20qo182qbq.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"data-src=\"http://ww1.sinaimg.cn/thumb180/9dc739e5gw1f6b83d4vf8j20qo182qbq.jpg\"data-number=0 data-type=\"mul\" class=\"J-lazyPic\"/></a><a href=\"http://ww2.sinaimg.cn/woriginal/9dc739e5gw1f6b83efgz2j20qo101wmt.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"data-src=\"http://ww2.sinaimg.cn/thumb180/9dc739e5gw1f6b83efgz2j20qo101wmt.jpg\"data-number=1 data-type=\"mul\" class=\"J-lazyPic\"/></a><a href=\"http://ww2.sinaimg.cn/woriginal/9dc739e5gw1f6b83erj1cj20qo11cn5w.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"data-src=\"http://ww2.sinaimg.cn/thumb180/9dc739e5gw1f6b83erj1cj20qo11cn5w.jpg\"data-number=2 data-type=\"mul\" class=\"J-lazyPic\"/></a><br><a href=\"http://ww3.sinaimg.cn/woriginal/9dc739e5gw1f6b83g5j1tj20z70qo11r.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"data-src=\"http://ww3.sinaimg.cn/thumb180/9dc739e5gw1f6b83g5j1tj20z70qo11r.jpg\"data-number=3 data-type=\"mul\" class=\"J-lazyPic\"/></a><a href=\"http://ww1.sinaimg.cn/woriginal/9dc739e5gw1f6b83gwkgvj20qo15rdos.jpg\" title=\"点击查看大图\"><img src=\"http://u1.sinaimg.cn/upload/2013/05/16/ads-pic.png\"data-src=\"http://ww1.sinaimg.cn/thumb180/9dc739e5gw1f6b83gwkgvj20qo15rdos.jpg\"data-number=4 data-type=\"mul\" class=\"J-lazyPic\"/></a>
+  </div>
+  </section>
+  <footer class=\"action-wb L-tab BgCLev7 BCLev14\
+  "><a href=\"http://m.weibo.cn/2647079397/E18Yl3HHw?type=zf#act\" class=\"J-rt rt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">转发</span></p></a>
+  <a href=\"http://m.weibo.cn/2647079397/E18Yl3HHw?type=pl#act\" class=\"J-cmt cmt-action-wb L-item-tab FCLev9\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span data-num=\"0\">评论</span></p></a>
+  <a href=\"javascript:;\" class=\"J-like like-action-wb L-item-tab FCLev9 J-feed-act-like\">
+  <p class=\"BCLev8\"><i>&nbsp;</i><span class=\"like-txt hid\">赞</span><span data-num=\"1\">1</span></p></a>
+  <a href=\"javascript:;\" class=\"J-more more-action-wb L-item-tab FCLev9 J-feed-act-more\" data-faved=\"\"
+  data-gender=\"她\" data-source=\"iPhone客户端\"><p class=\"BCLev8\"><i>&nbsp;</i></p></a></footer>
+</article></div></article>
+<section class=\"item-card\">
+  <div class=\"card-6\"><a class=\"more-card\" href=\"javascript:;\"><span>查看更多微博</span></a></div>
+</section></section>

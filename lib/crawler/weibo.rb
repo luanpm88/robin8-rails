@@ -14,9 +14,9 @@ module Crawler
       return {} if doc.blank?
       unescape_doc =  CGI.unescapeHTML(doc.to_s)
       content = eval(unescape_doc.to_s.gsub("null", '""'))
-      return content
       info = {}
       info[:uid] = content[:stage][:page][1][:id]
+      return {} if  info[:uid].blank?
       info[:brief] = content[:stage][:page][1][:description]
       info[:username] = content[:stage][:page][1][:name]
       info[:statuses_count] = content[:stage][:page][1][:mblogNum]
@@ -35,8 +35,8 @@ module Crawler
       others = {}
       others[:verified_type] = content[:stage][:page][1][:verified_type]
       others[:verified_reason] = content[:stage][:page][1][:verified_reason]
+      others[:itemid] = content[:stage][:page].last[:card_group].last[:itemid]
       info[:others] = others
-      info[:itemid] = content[:stage][:page].last[:card_group].last[:itemid]
       info
     end
 
@@ -57,7 +57,9 @@ module Crawler
     end
 
     def self.create_kol_info(social_account)
-      homepage = social_account.homepage.gsub("https://", "http://").gsub("weibo.com", 'm.weibo.cn')
+      puts "------create_kol_info------"
+      return if social_account.others[:itemid].blank?
+      homepage = social_account.get_weibo_homepage
       url = "http://m.weibo.cn/page/card?itemid=#{social_account.others[:itemid]}"
       request = Typhoeus.get(url, followlocation: true, verbose: true,
                              :headers => {:user_agent => UserAgent,
@@ -66,16 +68,24 @@ module Crawler
       )
       body = request.response_body
       content = JSON.parse(body)["data"]
-      Nokogiri::HTML(content).css("section article").each_with_index do | article, index|
+      desc_contents = []
+      Nokogiri::HTML(content).css("section article.wrapper-wb").each_with_index do | article, index|
         return if index >= 3
         KolShow.create(:kol_id => social_account.kol_id, :provider => 'weibo',
                        :desc => article.css(".content-wb").text,
                        :link => "http://m.weibo.cn/#{social_account.uid}/#{article.attr('data-mid')}",
-                       :cover_url =>  article.css(".img-wb a")[0].attr("href"),
-                       :publish_at => article.css("header time").text,
+                       :cover_url =>  (article.css(".img-wb a")[0].attr("href") rescue nil),
+                       :publish_time => article.css("header time").text,
                        :repost_count => article.css("footer a")[0].css("span").text,
                        :comment_count => article.css("footer a")[1].css("span").text,
                        :like_count => article.css("footer a")[2].css("span").text)
+        desc_contents <<  article.css(".content-wb").text
+      end
+      puts "=====keywords===#{desc_contents.inspect}"
+      return if desc_contents.size == 0
+      keywords = NlpService.get_analyze_content(desc_contents)["wordcloud"].collect{|t| t['text']}
+      keywords.each do |keyword|
+        KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)
       end
     end
 

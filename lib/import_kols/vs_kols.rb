@@ -29,8 +29,7 @@ module ImportKols
       else
         kol.gender = 0
       end
-      kol.brief = row[7]
-      kol.profession_ids =  [get_profession(row[6]) ]
+      kol.desc = row[7]
       kol
     end
 

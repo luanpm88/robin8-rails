@@ -70,10 +70,14 @@ class Kol < ActiveRecord::Base
   has_many :big_vs, :through => :agent_kols, :source => :kol
   belongs_to :agent_kol, :foreign_key => :kol_id
 
+  has_many :kol_keywords
+
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
+  scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
+
 
   def email_required?
     false if self.provider != "signup"
@@ -533,4 +537,7 @@ class Kol < ActiveRecord::Base
     avatar.url || avatar_url
   end
 
+  def is_big_v?
+    self.kol_role == 'big_v' || self.kol_role == 'mcn_big_v'
+  end
 end

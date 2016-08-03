@@ -113,3 +113,12 @@ export function canPayCampaign(status) {
 export function isRecruitCampaign(per_budget_type){
   return per_budget_type === 'recruit' ? true : false;
 }
+
+export function campaignMaterialType(type) {
+  switch (type) {
+    case 'article':
+      return '文章'
+    case 'video':
+      return '视频'
+  }
+}
