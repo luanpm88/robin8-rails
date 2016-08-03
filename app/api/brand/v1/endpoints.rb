@@ -26,6 +26,7 @@ module Brand
       represent Campaign,         with: Entities::Campaign
       represent CampaignInvite,   with: Entities::CampaignInvite
       represent CampaignApply,    with: Entities::CampaignApply
+      represent CampaignMaterial, with: Entities::CampaignMaterial
       represent User,             with: Entities::User
       represent Transaction,      with: Entities::Transaction
       represent Invoice,          with: Entities::Invoice
@@ -52,6 +53,7 @@ module Brand
       mount CampaignsAPI
       mount CampaignInvitesApi
       mount CampaignAppliesAPI
+      mount CampaignMaterialsAPI
       mount AlipayOrdersAPI
       mount TransactionsAPI
       mount InvoiceHistoriesAPI

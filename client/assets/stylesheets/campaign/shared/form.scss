@@ -358,6 +358,63 @@
   margin-right: 20px;
 }
 
+.creat-material {
+  .content {
+    color: #fff;
+    background-color: #3e3d3e;
+    background-image: linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    background-image: -moz-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    background-image: -webkit-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    box-shadow: 5px 8.66px 18px 0px rgba(0, 0, 0, 0.3);
+    .materials {
+      .material {
+        padding-top: 20px;
+        line-height: 50px;
+        img {
+          float: left;
+        }
+        .material-type, .material-id {
+          display: none;
+        }
+        span:last-child {
+          font-size: 20px;
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+    .material-option {
+      margin-top: 10px;
+      li {
+        float: left;
+        margin-right: 20px;
+        width: 200px;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        button {
+          width: 120px;
+        }
+      }
+    }
+  }
+}
+
+.campaign-material-modal {
+  .material-url-input {
+    width: 100%;
+  }
+  .error-tip {
+    height: 0px;
+    display: none;
+    color: #ce0101;
+    margin-top: 8px;
+    font-size: 13px;
+    margin-right: 27px
+  }
+}
+
+
 .kol-message {
   padding: 30px 0px;
 }

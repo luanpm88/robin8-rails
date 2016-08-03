@@ -14,6 +14,10 @@ export function saveRecruit(campaign) {
           formData.append(`${key}`, campaign[key]);
         }
         break
+      case 'material_ids':
+        if(campaign[key] === undefined) {
+          break
+        }
       default:
         formData.append(`${key}`, campaign[key]);
     }
@@ -47,6 +51,10 @@ export function updateRecruit(campaign_id, campaign) {
           formData.append(`${key}`, campaign[key]);
         }
         break
+      case 'material_ids':
+        if(campaign[key] === undefined) {
+          break
+        }
       default:
         formData.append(`${key}`, campaign[key]);
     }
@@ -105,6 +113,32 @@ export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, statu
     type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS,
     index: index,
     promise: fetch(`${baseUrl}/campaign_applies/change_status`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+  }
+}
+
+export function fetchRecruitCampaignMaterials(campaign_id) {
+  return {
+    type: actionTypes.FETCH_RECRUIT_CAMPAIGN_MATERIALS,
+    promise: fetch(`${baseUrl}/campaign_materials?campaign_id=${campaign_id}`, { "credentials": 'same-origin' })
+  };
+}
+
+export function updateKolScoreAndBrandOpinion(campaign_id, kol_id, index, score, opinion = "") {
+  const data = {campaign_id, kol_id, score, opinion};
+
+  return {
+    type: actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION,
+    index: index,
+    promise: fetch(`${baseUrl}/campaign_applies/update_score_and_opinion`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
