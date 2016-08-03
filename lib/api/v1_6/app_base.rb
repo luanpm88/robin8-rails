@@ -5,6 +5,7 @@ module API
       mount API::V1_6::KolApplies
       mount API::V1_6::BigV
       mount API::V1_6::Professions
+      mount API::V1_6::System
     end
   end
 end
