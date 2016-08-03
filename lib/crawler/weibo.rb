@@ -16,6 +16,7 @@ module Crawler
       content = eval(unescape_doc.to_s.gsub("null", '""'))
       info = {}
       info[:uid] = content[:stage][:page][1][:id]
+      return {} if  info[:uid].blank?
       info[:brief] = content[:stage][:page][1][:description]
       info[:username] = content[:stage][:page][1][:name]
       info[:statuses_count] = content[:stage][:page][1][:mblogNum]
@@ -56,7 +57,9 @@ module Crawler
     end
 
     def self.create_kol_info(social_account)
-      homepage = social_account.homepage.gsub("https://", "http://").gsub("weibo.com", 'm.weibo.cn')
+      puts "------create_kol_info------"
+      return if social_account.others[:itemid].blank?
+      homepage = social_account.get_weibo_homepage
       url = "http://m.weibo.cn/page/card?itemid=#{social_account.others[:itemid]}"
       request = Typhoeus.get(url, followlocation: true, verbose: true,
                              :headers => {:user_agent => UserAgent,
@@ -78,6 +81,8 @@ module Crawler
                        :like_count => article.css("footer a")[2].css("span").text)
         desc_contents <<  article.css(".content-wb").text
       end
+      puts "=====keywords===#{desc_contents.inspect}"
+      return if desc_contents.size == 0
       keywords = NlpService.get_analyze_content(desc_contents)["wordcloud"].collect{|t| t['text']}
       keywords.each do |keyword|
         KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)

@@ -42,3 +42,7 @@ Starting MailCatcher
     weixin secrets
 
 #   recommend_server: '139.196.204.131'
+
+#8.15
+  1. 先导入k1,vs media .再导入 robin8 weibo public_wechat
+  2. 完善资料
