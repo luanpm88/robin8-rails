@@ -61,8 +61,6 @@ class Kol < ActiveRecord::Base
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
   has_many :kol_shows
-  has_many :kol_professions
-  has_many :professions, :through => :kol_professions
   has_many :images, :source => :referable
   has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
   has_many :social_accounts, -> {order("case provider when 'weibo' then 5 when 'meipai' then 4 when 'public_wechat' then 3 else 2 end desc")}
@@ -534,7 +532,7 @@ class Kol < ActiveRecord::Base
   end
 
   def get_avatar_url
-    avatar.url || avatar_url
+    avatar.url || read_attribute(:avatar_url)
   end
 
   def is_big_v?

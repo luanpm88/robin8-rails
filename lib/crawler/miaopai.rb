@@ -14,7 +14,6 @@ module Crawler
       info[:friends_count] =trim(doc.css('.nav_div2 .box1 ol li')[0].css("a").text).to_i rescue nil
       info[:followers_count] = trim(doc.css('.nav_div2 .box1 ol li')[2].css("a").text).to_i rescue nil
       info[:city] = doc.css('.nav_div3 h3')[0].text rescue nil
-
       others = {}
       others[:is_vip] = (doc.css('.box1 .s_v').size > 0 rescue false)
       info[:others] = others
@@ -28,7 +27,6 @@ module Crawler
       doc.css('.D_main .D_video').each_with_index do |item, index|
         binding.pry
         return if index >= 3
-        contents << item.css(".introduction p")[0].text.strip
         like_count_text =  item.css(".list li")[0].text
         if  like_count_text.include?("万")
           like_count = like_count_text.gsub(",","").match(/([\d\.]+)/)[1].to_f * 10000      rescue nil
@@ -53,6 +51,7 @@ module Crawler
                        publish_time:  ("2016-" + item.css(".D_head_name b")[0].text),
                        link: (item.css("#video")[0].attr("va") rescue nil),
                        desc: item.css(".introduction p")[0].text.strip)
+        contents << item.css(".introduction p")[0].text.strip
       end
       # 更新头像 和关键字
       keywords = NlpService.get_analyze_content(contents)["wordcloud"].collect{|t| t['text']}

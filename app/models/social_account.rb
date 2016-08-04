@@ -1,6 +1,6 @@
 class SocialAccount < ActiveRecord::Base
-  has_many :social_account_professions
-  has_many :professions, :through => :social_account_professions, :source => :profession
+  has_many :social_account_tags
+  has_many :tags, :through => :social_account_tags, :source => :tag
 
   before_save :auto_complete_info
   after_create :create_kol_shows
@@ -52,8 +52,10 @@ class SocialAccount < ActiveRecord::Base
     KolShow.delete_all
     KolKeyword.delete_all
     SocialAccount.delete_all
-    SocialAccountProfession.delete_all
-    KolProfession.delete_all
+    SocialAccountTag.delete_all
+    big_v_ids =  Kol.where(:kol_role => 'mcn_big_v').collect{|t| t.id}
+    KolTag.where(:kol_id =>big_v_ids ).delete_all
+    Kol.where(:kol_role => 'mcn_big_v').delete_all
   end
 
 end

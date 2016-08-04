@@ -12,13 +12,13 @@ module API
           optional :name, type: String
           optional :app_city, type: String
           optional :job_info, type: String
-          optional :profession_names, type: String
+          optional :tag_names, type: String
           optional :desc, type: String
         end
         post 'update_profile' do
           current_kol.update_columns(:name => params[:name], :app_city => params[:app_city], :job_info => params[:job_info],
                                      :desc => params[:desc])
-          current_kol.professions  = Profession.where(:name => params[:profession_names].split(",")) rescue nil
+          current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
           current_kol.save

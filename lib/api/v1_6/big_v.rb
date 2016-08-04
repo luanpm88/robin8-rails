@@ -1,23 +1,20 @@
 module API
   module V1_6
     class BigV < Grape::API
-      before do
-        authenticate!
-      end
-
       resources :big_v do
         desc '列表'
         params do
           optional :page, type: Integer
           optional :with_kol_announcement, type: String
-          optional :profession_name, type: Integer
+          optional :tag_name, type: Integer
+          optional :name, type: String
         end
         get '/' do
-          if params[:profession_name].blank?
-            big_vs = Kol.big_v.includes(:kol_professions => [:profession]).order_by_hot.page(params[:page]).per_page(10)
+          if params[:tag_name].blank?
+            big_vs = Kol.big_v.where("name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).order_by_hot.page(params[:page]).per_page(10)
           else
-            profession_id = Profession.find_by(:name => params[:profession_name]).id
-            big_vs = Kol.big_v.joins(:kol_professions).where("kol_professions.profession_id = #{profession_id}").
+            tag_id = Tag.find_by(:name => params[:tag_name]).id
+            big_vs = Kol.big_v.where("name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
                     order_by_hot.page(params[:page]).per_page(10)
           end
           if params[:with_kol_announcement] == 'Y'

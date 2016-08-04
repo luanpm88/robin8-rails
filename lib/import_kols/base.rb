@@ -1,15 +1,15 @@
 module  ImportKols
   class Base
-    @@professsions = nil
+    @@tags = nil
     def self.get_profession(name)
       return nil if name.nil?
-      if @@professsions.nil?
-        @@professsions = {}
-        Profession.all.each do |p|
-          @@professsions[p.label] = p.id
+      if @@tags.nil?
+        @@tags = {}
+        Tag.all.each do |p|
+          @@tags[p.label] = p.id
         end
       end
-      @@professsions[name] ||  @@professsions['综合']
+      @@tags[name] ||  @@tags['综合']
     end
 
   end

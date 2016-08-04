@@ -31,7 +31,7 @@ module ImportKols
       if row[13].present? && SocialAccount.find_by(:provider => 'public_wechat', :uid => row[9]).blank?
         kol.social_accounts.build(:provider => 'public_wechat', :uid => row[9], :username => row[8],
                                   :followers_count => get_follower_count(row[10]),
-                                  :price => row[11].to_i, :second_price => row[12].to_i, :profession_ids => [get_profession(row[13])])
+                                  :price => row[11].to_i, :second_price => row[12].to_i, :tag_ids => [get_profession(row[13])])
       end
     end
 

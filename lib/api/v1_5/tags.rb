@@ -3,7 +3,7 @@ module API
     class Tags < Grape::API
       resources :tags do
         get 'list' do
-          tags  = Tag.all.order('position desc')
+          tags  = Tag.where("cover_url is not null").order('position desc')
           present :error, 0
           present :tags, tags, with: API::V1::Entities::TagEntities::Summary
         end
