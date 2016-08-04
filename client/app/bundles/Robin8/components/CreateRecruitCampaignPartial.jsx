@@ -7,16 +7,16 @@ import moment from 'moment';
 
 import "campaign/recruit/form.scss";
 
-import BreadCrumb            from './shared/BreadCrumb';
-import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
-import CreateMaterialsPartial  from './shared/campaign_material/CreateMaterialsPartial'
-import DatePartial           from './recruit_campaigns/form/OfflineDate';
-import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
-import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
-import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
+import BreadCrumb               from './shared/BreadCrumb';
+import IntroPartial             from "./recruit_campaigns/form/IntroPartial";
+import CreateMaterialsPartial   from './shared/campaign_material/CreateMaterialsPartial'
+import DatePartial              from './recruit_campaigns/form/OfflineDate';
+import RecruitDatePartial       from './recruit_campaigns/form/RecruitDatePartial';
+import RecruitBudgetPartial     from './recruit_campaigns/form/RecruitBudgetPartial';
+import RecruitTargetPartial     from './recruit_campaigns/form/RecruitTargetPartial';
 
-import initToolTip           from './shared/InitToolTip';
-import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
+import initToolTip              from './shared/InitToolTip';
+import CampaignFormValidate     from './shared/validate/CampaignFormValidate'
 
 
 const initCampaign = {
