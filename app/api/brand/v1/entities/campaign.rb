@@ -103,6 +103,17 @@ module Brand
           target = object.campaign_targets.find_by(target_type: "influence_score")
           target.target_content if target
         end
+
+        expose :social_accounts do |object, opts|
+          target = object.social_account_targets.first
+          target.target_content.split(",").map(&:to_i) rescue []
+        end
+
+        expose :selected_social_accounts, using: Entities::SocialAccount do |object, opts|
+          target = object.social_account_targets.first
+          social_accounts = target.target_content.split(",").map(&:to_i) rescue []
+          ::SocialAccount.where(id: social_accounts)
+        end
         # ---------------------------------------------------
 
         expose :action_url do |object, opts|

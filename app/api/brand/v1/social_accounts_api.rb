@@ -8,7 +8,7 @@ module Brand
           }
 
           unless @join_state[name]
-            @kols = @kols.joins("INNER JOIN `#{name}` ON `kols`.`id` = `#{name}`.`kol_id`")
+            @social_accounts = @social_accounts.joins("INNER JOIN `#{name}` ON `social_accounts`.`id` = `#{name}`.`social_account_id`")
             @join_state[name] = true
           end
         end

@@ -19,9 +19,9 @@ const initCampaign = {
   start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 0,
-  specified_kols: [],
-  selected_kols: [],
-  searched_kols: []
+  social_accounts: [],
+  selected_social_accounts: [],
+  searched_social_accounts: []
 }
 
 const validate = new CampaignFormValidate({
@@ -43,8 +43,8 @@ const validateFailed = (errors) => {
 function select(state){
   return {
     brand: state.profileReducer.get("brand"),
-    searched_kols: state.campaignReducer.get("searched_kols"),
-    selected_kols: state.campaignReducer.get("selected_kols")
+    searched_social_accounts: state.campaignReducer.get("searched_social_accounts"),
+    selected_social_accounts: state.campaignReducer.get("selected_social_accounts")
   };
 }
 
@@ -59,10 +59,13 @@ class CreateInviteCampaign extends React.Component{
 
   render(){
     const { name, description, img_url, start_time, deadline,
-            budget, specified_kols, materials, material_ids
+            budget, social_accounts, materials, material_ids
           } = this.props.fields;
 
-    const { handleSubmit, submitting, invalid, searched_kols, selected_kols, actions } = this.props;
+    const { handleSubmit, submitting, invalid,
+            searched_social_accounts, selected_social_accounts,
+            actions } = this.props;
+
     const { saveInvite } = this.props.actions;
     return(
       <div className="page page-invite page-invite-new">
@@ -73,7 +76,7 @@ class CreateInviteCampaign extends React.Component{
               <IntroPartial {...{name, description, img_url}}/>
               <CreateMaterialsPartial {...{materials, material_ids}} />
               <DatePartial {...{ start_time, deadline }} />
-              <KolSelectPartial {...{ budget, specified_kols, searched_kols, selected_kols, actions }} />
+              <KolSelectPartial {...{ budget, social_accounts, searched_social_accounts, selected_social_accounts, actions }} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button
@@ -95,7 +98,7 @@ class CreateInviteCampaign extends React.Component{
 CreateInviteCampaign = reduxForm({
   form: "invite_campaign_form",
   fields: ["name", "description", "img_url", "start_time", "deadline",
-           "materials", "material_ids", "budget", "specified_kols"],
+           "materials", "material_ids", "budget", "social_accounts"],
   returnRejectedSubmitPromise: true,
   validate
 },

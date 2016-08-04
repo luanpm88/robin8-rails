@@ -67,6 +67,12 @@ export default (
       }, "createInviteCampaign");
     }}/>
 
+    <Route path="invites/:id/edit" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/UpdateInviteCampaignPartial').default);
+      }, "updateInviteCampaign");
+    }}/>
+
     <Route path=":id/edit" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/EditProfilePartial').default);

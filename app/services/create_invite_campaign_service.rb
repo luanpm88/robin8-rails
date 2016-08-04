@@ -2,7 +2,7 @@ class CreateInviteCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
-                  :per_action_budget, :start_time, :deadline,:specified_kols]
+                   :start_time, :deadline, :social_accounts, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -19,14 +19,15 @@ class CreateInviteCampaignService
       return false
     end
 
-    specified_kols = @campaign_params.delete(:specified_kols)
-    @campaign_params[:budget] = specified_kols.split(",").inject(0) do |sum, kol|
-      sum += 100 # need sum by kol price
-    end
-
+    @campaign_params.merge!(per_budget_type: 'invite')
     @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:social_accounts] = @campaign_params[:social_accounts].split(",").map(&:to_i) rescue []
+    @campaign_params[:budget] = @campaign_params[:social_accounts].inject(0) do |sum, id|
+      social_account = SocialAccount.find(id)
+      sum += social_account.sale_price
+    end
 
     if @errors.size > 0
       return false
@@ -34,8 +35,14 @@ class CreateInviteCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params)
-        @campaign.campaign_targets.create!({target_type: :specified_kols, target_content: specified_kols})
+        @campaign = @user.campaigns.create!(
+          @campaign_params.reject { |k,v| [ :social_accounts, :material_ids ].include? k }
+        )
+        create_campaign_materials
+        @campaign.social_account_targets.create!({
+          target_type: :social_accounts,
+          target_content: @campaign_params[:social_accounts].join(",")
+        })
       end
       return true
     rescue Exception => e
@@ -51,7 +58,13 @@ class CreateInviteCampaignService
   private
 
   def permitted_params_from params
-    params.merge!(per_budget_type: 'invite')
     params.select { |k, v| PERMIT_PARAMS.include? k }
+  end
+
+  def create_campaign_materials
+    return unless @campaign_params[:material_ids].present?
+    CampaignMaterial.where(id: @campaign_params[:material_ids].split(",")).each do |campaign_material|
+      campaign_material.update campaign_id: @campaign.id
+    end
   end
 end

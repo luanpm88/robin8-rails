@@ -281,10 +281,10 @@ module Brand
             requires :description, type: String
             requires :img_url, type: String
             # requires :budget, type: Float
-            # requires :per_action_budget, type: Float
             requires :start_time, type: DateTime
             requires :deadline, type: DateTime
-            requires :specified_kols, type: String
+            requires :social_accounts, type: String
+            optional :material_ids, type: String
           end
           post "/" do
             service = CreateInviteCampaignService.new current_user, declared(params)
@@ -293,6 +293,39 @@ module Brand
               present service.campaign
             else
               error_unprocessable! service.first_error_message
+            end
+          end
+
+          desc 'Update a invite campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :img_url, type: String
+            # optional :budget,   type: Float
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :social_accounts, type: String
+            optional :material_ids, type: String
+          end
+          put '/:id' do
+            service = UpdateInviteCampaignService.new current_user, params[:id], declared(params)
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+
+          desc "Get a invite campaign"
+          params do
+            requires :id, type: Integer
+          end
+          get '/:id' do
+            @invite_campaign = Campaign.find_by(id: declared(params)[:id])
+            if can?(:read, @invite_campaign)
+              present @invite_campaign
+            else
+              error_403! "没有查看权限"
             end
           end
         end
