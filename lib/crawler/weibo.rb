@@ -70,7 +70,7 @@ module Crawler
       content = JSON.parse(body)["data"]
       desc_contents = []
       Nokogiri::HTML(content).css("section article.wrapper-wb").each_with_index do | article, index|
-        return if index >= 3
+        break if index >= 3
         KolShow.create(:kol_id => social_account.kol_id, :provider => 'weibo',
                        :desc => article.css(".content-wb").text,
                        :link => "http://m.weibo.cn/#{social_account.uid}/#{article.attr('data-mid')}",
@@ -81,9 +81,8 @@ module Crawler
                        :like_count => article.css("footer a")[2].css("span").text)
         desc_contents <<  article.css(".content-wb").text
       end
-      puts "=====keywords===#{desc_contents.inspect}"
       return if desc_contents.size == 0
-      keywords = NlpService.get_analyze_content(desc_contents)["wordcloud"].collect{|t| t['text']}
+      keywords = NlpService.get_analyze_content(desc_contents)["wordcloud"].collect{|t| t['text']}      rescue []
       keywords.each do |keyword|
         KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)
       end

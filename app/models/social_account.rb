@@ -1,6 +1,7 @@
 class SocialAccount < ActiveRecord::Base
   has_many :social_account_tags
   has_many :tags, :through => :social_account_tags, :source => :tag
+  belongs_to :kol
 
   before_save :auto_complete_info
   after_create :create_kol_shows

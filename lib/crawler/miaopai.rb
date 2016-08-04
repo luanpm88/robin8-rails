@@ -26,7 +26,7 @@ module Crawler
       contents = []
       doc.css('.D_main .D_video').each_with_index do |item, index|
         binding.pry
-        return if index >= 3
+        break if index >= 3
         like_count_text =  item.css(".list li")[0].text
         if  like_count_text.include?("万")
           like_count = like_count_text.gsub(",","").match(/([\d\.]+)/)[1].to_f * 10000      rescue nil
@@ -54,7 +54,7 @@ module Crawler
         contents << item.css(".introduction p")[0].text.strip
       end
       # 更新头像 和关键字
-      keywords = NlpService.get_analyze_content(contents)["wordcloud"].collect{|t| t['text']}
+      keywords = NlpService.get_analyze_content(contents)["wordcloud"].collect{|t| t['text']}      rescue []
       keywords.each do |keyword|
         KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)
       end
