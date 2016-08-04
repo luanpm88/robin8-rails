@@ -11,7 +11,7 @@ class CampaignTarget < ActiveRecord::Base
   belongs_to :campaign
 
   validates_presence_of :target_type, :target_content
-  validates_inclusion_of :target_type, :in => %w(age region gender influence_score remove_campaigns remove_kols add_kols specified_kols social_accounts)
+  validates_inclusion_of :target_type, :in => %w(age region gender influence_score profession sns_platform remove_campaigns remove_kols add_kols specified_kols social_accounts)
 
   before_validation :set_target_type_by_text
 

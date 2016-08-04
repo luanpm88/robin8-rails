@@ -95,7 +95,7 @@ module Brand
         end
 
         expose :region do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "region")
+          target = object.region_target
           target.target_content if target
         end
 
@@ -113,6 +113,15 @@ module Brand
           target = object.social_account_targets.first
           social_accounts = target.target_content.split(",").map(&:to_i) rescue []
           ::SocialAccount.where(id: social_accounts)
+
+        expose :profession do |object, opts|
+          target = object.profession_target
+          target.target_content if target
+        end
+
+        expose :sns_platform do |object, opts|
+          target = object.sns_platform_target
+          target.target_content if target
         end
         # ---------------------------------------------------
 
