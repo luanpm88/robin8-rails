@@ -5,6 +5,7 @@ module API
       mount API::V1_6::BigVApplies
       mount API::V1_6::BigV
       mount API::V1_6::My
+      mount API::V1_6::System
     end
   end
 end
