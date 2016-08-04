@@ -113,6 +113,7 @@ module Brand
           target = object.social_account_targets.first
           social_accounts = target.target_content.split(",").map(&:to_i) rescue []
           ::SocialAccount.where(id: social_accounts)
+        end
 
         expose :profession do |object, opts|
           target = object.profession_target

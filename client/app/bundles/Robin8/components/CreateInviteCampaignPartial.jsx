@@ -15,15 +15,6 @@ import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 import CreateMaterialsPartial  from './shared/campaign_material/CreateMaterialsPartial'
 
-const initCampaign = {
-  start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
-  deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
-  budget: 0,
-  social_accounts: [],
-  selected_social_accounts: [],
-  searched_social_accounts: []
-}
-
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
@@ -103,7 +94,12 @@ CreateInviteCampaign = reduxForm({
   validate
 },
   state => ({
-    initialValues: initCampaign
+    initialValues: {
+      start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
+      deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
+      budget: 0,
+      social_accounts: []
+    }
   })
 )(CreateInviteCampaign);
 
