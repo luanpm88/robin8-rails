@@ -43,7 +43,6 @@ module Brand
               join_table(:kol_professions)
               @kols = @kols.where("`kol_professions`.`profession_id` IN (?)", professions)
             end
-
             if params[:sns] and params[:sns] != "全部"
               sns_params = params[:sns].split(",").reject(&:blank?)
               sns = sns_params & ["public_wechat", "weibo", "meipai", "miaopai"]
@@ -62,9 +61,7 @@ module Brand
             end
 
             if params[:just_count]
-              {
-                count: @kols.count
-              }
+              { count: @kols.count }
             else
               @kols = @kols.page(params[:page]).per_page(6)
               {

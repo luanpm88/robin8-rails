@@ -28,7 +28,7 @@ export default class SnsSelector {
       {
         id: 2,
         label: "微信",
-        name: "wechat"
+        name: "public_wechat"
       },
       {
         id: 3,

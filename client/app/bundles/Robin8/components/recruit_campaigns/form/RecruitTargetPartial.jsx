@@ -8,7 +8,7 @@ export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.kol_count = 0;
+    this.state = {kol_count: 0};
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
@@ -21,7 +21,7 @@ export default class TargetPartial extends React.Component {
     fetch(`/brand_api/v1/kols/search?${queryString}`, {"credentials": "include"})
       .then(function(response) {
         response.json().then(function(data){
-          this.kol_count = data.count;
+          this.setState({kol_count: data.count});
       }.bind(this))
     }.bind(this),
     function(error) {
@@ -109,8 +109,8 @@ export default class TargetPartial extends React.Component {
   }
 
   renderKOlCount(){
-    if (this.kol_count) {
-      <div className="notice">预计推送KOL人数 <em>{this.kol_count} 元</em></div>
+    if (this.state.kol_count) {
+      return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
     }
   }
 
@@ -122,11 +122,12 @@ export default class TargetPartial extends React.Component {
           <h3 className="tit">KOL选择&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
-          {this.renderKOlCount()}
           <div className="campaign-target-group">
 
+            {this.renderKOlCount()}
+
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="campaign-target target-region">
                   <label >地区</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -136,7 +137,7 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="campaign-target target-profession">
                   <label>分类</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -146,7 +147,7 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="campaign-target target-sns">
                   <label>平台</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -156,9 +157,7 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
