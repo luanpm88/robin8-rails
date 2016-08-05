@@ -4,7 +4,7 @@ module API
       module KolEntities
         class Summary < Grape::Entity
           expose :id, :email, :mobile_number, :gender, :date_of_birthday,
-                 :alipay_account, :alipay_name, :desc, :age, :weixin_friend_count, :id_card, :kol_role
+                 :alipay_account, :alipay_name, :desc, :age, :weixin_friend_count, :id_card, :kol_role, :role_apply_status, :role_check_remark
           expose :name do  |kol|
             kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
           end

@@ -24,7 +24,8 @@ module API
         end
 
         class My < Grape::Entity
-          expose :id, :name, :kol_role, :max_campaign_click, :max_campaign_earn_money, :campaign_total_income, :avg_campaign_credit
+          expose :id, :name, :kol_role, :role_apply_status, :role_check_remark,
+                 :max_campaign_click, :max_campaign_earn_money, :campaign_total_income, :avg_campaign_credit
           expose :avatar_url do |big_v|
             big_v.get_avatar_url
           end
