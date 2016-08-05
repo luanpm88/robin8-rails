@@ -106,9 +106,9 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
 
   render(){
-    const { name, description, img_url, profession, start_time, deadline,
+    const { name, description, img_url, professions, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
-          recruit_person_count, task_description, address, region, sns_platform,
+          recruit_person_count, task_description, address, region, sns_platforms,
           hide_brand_name, materials, material_ids
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -126,7 +126,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
-              <RecruitTargetPartial {...{region, profession, sns_platform}}/>
+              <RecruitTargetPartial {...{region, professions, sns_platforms}}/>
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 {this.renderSubmitOrRevokeBtn()}
@@ -143,9 +143,9 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
 UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "profession", "start_time",
+  fields: ["name", "description", "img_url", "url", "professions", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "task_description", 'address', "region", "sns_platform", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "task_description", 'address', "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
   returnRejectedSubmitPromise: true,
   validate
 },
