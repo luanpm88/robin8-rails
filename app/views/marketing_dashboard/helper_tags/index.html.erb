@@ -1,0 +1,26 @@
+<div>
+  <h3>问题分类列表</h3>
+  <%= link_to "新建分类", new_marketing_dashboard_helper_tag_path, :class => "btn pull-right"%>
+</div>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>分类名</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @helper_tags.each do |h| %>
+      <tr>
+        <td><%= h.id %></td>
+        <td><%= h.title %></td>
+        <td><%= link_to "编辑", edit_marketing_dashboard_helper_tag_path(h) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @helper_tags %>
