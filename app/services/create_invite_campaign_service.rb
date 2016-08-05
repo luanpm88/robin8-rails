@@ -29,6 +29,10 @@ class CreateInviteCampaignService
       sum += social_account.sale_price
     end
 
+    if @campaign_params[:budget] == 0
+      @errors << 'campaign budget can not be zero!'
+    end
+
     if @errors.size > 0
       return false
     end
@@ -43,6 +47,15 @@ class CreateInviteCampaignService
           target_type: :social_accounts,
           target_content: @campaign_params[:social_accounts].join(",")
         })
+        @campaign_params[:social_accounts].each do |id|
+          social_account = SocialAccount.find(id)
+          kol = social_account.kol
+          campaign_invite = kol.receive_campaign(@campaign.id)
+          campaign_invite.update!({
+            budget: social_account.sale_price,
+            social_account_id: social_account.id
+          })
+        end
       end
       return true
     rescue Exception => e

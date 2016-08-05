@@ -107,8 +107,6 @@ class UpdateInviteCampaignPartial extends React.Component{
             searched_social_accounts, selected_social_accounts,
             actions } = this.props;
 
-    console.log("");
-
     return(
       <div className="page page-invite page-invite-new">
         <div className="container">
@@ -142,7 +140,6 @@ UpdateInviteCampaignPartial = reduxForm({
   validate
 },
 state => {
-  console.log("ssssssssssssssssss", state.campaignReducer.get("campaign").toJSON());
   return {
     initialValues: state.campaignReducer.get("campaign").toJSON()
   };

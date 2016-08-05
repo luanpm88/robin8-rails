@@ -47,6 +47,10 @@ class UpdateInviteCampaignService
       @errors << "活动已提交, 总预算不能更改!" unless @campaign.budget == @campaign_params[:budget]
     end
 
+    if @campaign_params[:budget] == 0
+      @errors << 'campaign budget can not be zero!'
+    end
+
     if @errors.size > 0
       return false
     end
@@ -58,6 +62,16 @@ class UpdateInviteCampaignService
 
         update_materials
         @campaign.update(@campaign_params.reject {|k,v| [:social_accounts, :material_ids].include? k })
+
+        @campaign_params[:social_accounts].each do |id|
+          social_account = SocialAccount.find(id)
+          kol = social_account.kol
+          campaign_invite = kol.receive_campaign(@campaign.id)
+          campaign_invite.update!({
+            budget: social_account.sale_price,
+            social_account_id: social_account.id
+          })
+        end
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
