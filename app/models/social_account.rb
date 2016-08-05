@@ -6,6 +6,7 @@ class SocialAccount < ActiveRecord::Base
   before_save :auto_complete_info
   after_create :create_kol_shows
   serialize :others, Hash
+  mount_uploader :screenshot, ImageUploader
 
   def get_weibo_homepage
     uid = self.homepage.split("/").last.split("?").first
