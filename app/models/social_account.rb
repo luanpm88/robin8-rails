@@ -18,6 +18,23 @@ class SocialAccount < ActiveRecord::Base
     homepage
   end
 
+  def sale_price
+    (((self.price.to_i * 1.3)/10).to_i + 1) * 10
+  end
+
+  def provider_text
+    case self.provider
+    when "weibo"
+      "微博"
+    when "public_wechat"
+      "微信公众号"
+    when "meipai"
+      "美拍"
+    when "miaopai"
+      "秒拍"
+    end
+  end
+
   private
   def auto_complete_info
     return if self.followers_count.present?

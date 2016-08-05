@@ -1,43 +1,24 @@
 import React from 'react';
-import _ from 'lodash';
+import _ from "lodash";
 import { jobAreaSelect } from '../../shared/CitySelector';
 import ProfessionSelector from '../../shared/ProfessionSelector';
 import SnsSelector from '../../shared/SnsSelector';
+import PriceRangeSelector from '../../shared/PriceRangeSelector';
 
 export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {kol_count: 0};
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
-  fetchKolCountWithConditions(condition) {
-    let params = [];
-    _.forIn(condition, (value, key) => params.push(`${key}=${value}`));
-    params.push("just_count=true");
-    const queryString = params.join("&");
-
-    fetch(`/brand_api/v1/kols/search?${queryString}`, {"credentials": "include"})
-      .then(function(response) {
-        response.json().then(function(data){
-          this.setState({kol_count: data.count});
-      }.bind(this))
-    }.bind(this),
-    function(error) {
-      console.error("----------查询kol数量失败---------------")
-    })
-  }
-
   handleConditionChange(){
-
     let condition = {};
 
     const regionText = $('.target-city-label').text().trim();
     if (regionText != "全部") {
       const condstr = regionText.split("/").join(",");
       _.assignIn(condition, {region: condstr});
-      this.props.region.onChange(condstr)
     }
 
     const professionItems = this.professionSelector.activeItems;
@@ -46,7 +27,6 @@ export default class TargetPartial extends React.Component {
         return item.name;
       }).join(",");
       _.assignIn(condition, {profession: condstr});
-      this.props.profession.onChange(condstr)
     }
 
     const snsItems = this.snsSelector.activeItems;
@@ -55,10 +35,15 @@ export default class TargetPartial extends React.Component {
         return item.name;
       }).join(",");
       _.assignIn(condition, {sns: condstr});
-      this.props.sns_platform.onChange(condstr)
     }
 
-    this.fetchKolCountWithConditions(condition);
+    const { minValue, maxValue } = this.priceRangeSelector;
+    if (minValue >= 0 && maxValue > minValue) {
+      const condstr = [ minValue, maxValue ].join(",");
+      _.assignIn(condition, {price_range: condstr});
+    }
+
+    this.props.onChange(condition);
   }
 
   initConditionComponent() {
@@ -94,8 +79,22 @@ export default class TargetPartial extends React.Component {
       }
     });
 
+    this.priceRangeSelector = new PriceRangeSelector({
+      onSelectionDone: (minValue, maxValue, state=true) => {
+        let priceResult;
+
+        if (minValue >= 0 && maxValue > 0) {
+          priceResult = `${minValue} <span class="strip">-</span> ${maxValue}`;
+        }
+
+        $("#price-range-result").html(priceResult || "全部");
+        if (!!state) this.handleConditionChange();
+      }
+    });
+
     this.snsSelector.set();
     this.professionSelector.set();
+    this.priceRangeSelector.set();
   }
 
   componentDidMount(){
@@ -108,26 +107,18 @@ export default class TargetPartial extends React.Component {
     return tip
   }
 
-  renderKOlCount(){
-    if (this.state.kol_count) {
-      return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
-    }
-  }
-
   render() {
-    // const { region } = this.props;
+    const { region } = this.props;
     return (
       <div className="creat-activity-form">
         <div className="header">
-          <h3 className="tit">KOL选择&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
+          <h3 className="tit">搜索KOL&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="campaign-target-group">
 
-            {this.renderKOlCount()}
-
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="campaign-target target-region">
                   <label >地区</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -137,7 +128,7 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="campaign-target target-profession">
                   <label>分类</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -147,7 +138,7 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="campaign-target target-sns">
                   <label>平台</label>
                   <a className="btn btn-blue btn-default target-btn"
@@ -157,10 +148,21 @@ export default class TargetPartial extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-price-range">
+                  <label>价格</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { this.priceRangeSelector.show() }}>价格区间</a>
+                  <div className="target-result">
+                    <div id="price-range-result"></div>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
-    )
-  }
-}
+     )
+   }
+ }

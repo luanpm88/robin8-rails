@@ -2,14 +2,17 @@ module Campaigns
   module CampaignTargetHelper
     extend ActiveSupport::Concern
     included do
-      has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender, :influence_score])}
+      has_many :campaign_targets
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
       has_one :region_target, -> {where(:target_type => 'region')}, class_name: "CampaignTarget"
+      has_one :profession_target, -> {where(:target_type => 'profession')}, class_name: "CampaignTarget"
+      has_one :sns_platform_target, -> {where(:target_type => 'sns_platform')}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
       has_many :specified_kol_targets, -> {where(:target_type => [:specified_kols])}, class_name: "CampaignTarget"
+      has_many :social_account_targets, -> {where(:target_type => :social_accounts)}, class_name: "CampaignTarget"
     end
 
     def get_unmatched_kol_ids
@@ -39,6 +42,14 @@ module Campaigns
 
     def today_receive_three_times_kol_ids
       self.class.today_receive_three_times_kol_ids
+    end
+
+    # 针对特邀活动，指定了特定的社交账号，通过社交账号来找到KOL
+    def get_social_account_related_kol_ids
+      return nil if self.social_account_targets.blank?
+
+      account_ids = get_ids_from_target_content(self.social_account_targets.map(&:target_content))
+      SocialAccount.where(id: account_ids).map(&:kol_id).presence
     end
 
     # 获取指定kols
@@ -82,7 +93,11 @@ module Campaigns
     end
 
     def get_kol_ids
-      get_specified_kol_ids ||  get_matching_kol_ids
+      if self.per_budget_type == "invite"
+        get_social_account_related_kol_ids
+      else
+        (get_specified_kol_ids ||  get_matching_kol_ids)
+      end
     end
 
     class_methods do

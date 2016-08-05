@@ -16,6 +16,7 @@
       <th>Credits</th>
       <th>Withdraw type</th>
       <th>Real Name</th>
+      <th>身份证</th>
       <th>Alipay No.</th>
       <th>Status</th>
       <th>Total Amount</th>
@@ -32,9 +33,14 @@
             <%= check_box_tag "withdraw_id[]", w.id, false, :class => 'withdraw_checkbox' %>
           <% end %>
         </td>
-        <% %w(id kol_id credits withdraw_type real_name alipay_no status).each do |v| %>
+        <% %w(id kol_id credits withdraw_type real_name).each do |v| %>
           <td> <%= multi_send w, v %> </td>
         <% end %>
+        <td> <%= w.kol.id_card %> </td>
+        <% %w(alipay_no status).each do |v| %>
+          <td> <%= multi_send w, v %> </td>
+        <% end %>
+
         <td> <%= w.kol.amount %> </td>
         <td> <%= w.kol.frozen_amount %> </td>
         <td> <%= w.kol.avail_amount %> </td>
