@@ -914,7 +914,8 @@ ActiveRecord::Schema.define(version: 20160804104707) do
     t.datetime "role_apply_time"
     t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
-    t.string   "role_apply_remark",      limit: 255
+    t.string   "role_check_remark",      limit: 255
+    t.string   "avatar_url",             limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
