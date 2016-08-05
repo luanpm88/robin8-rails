@@ -132,7 +132,7 @@ module Concerns
 
     def max_campaign_earn_money
       self.income_transactions.where(:item_type => 'Campaign').group("item_id").
-        order("sum(credits) desc").select("sum(credits) as item_credits, item_id").first.item_credits
+        order("sum(credits) desc").select("sum(credits) as item_credits, item_id").first.item_credits    rescue 0
     end
 
     def campaign_total_income
@@ -140,7 +140,7 @@ module Concerns
     end
 
     def avg_campaign_credit
-      self.campaign_invites.settle.count
+      self.campaign_invites.settled.count
     end
   end
 end
