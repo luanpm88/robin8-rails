@@ -67,8 +67,6 @@ module API
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
-              #保存头像
-              kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?

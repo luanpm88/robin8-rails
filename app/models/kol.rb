@@ -410,9 +410,11 @@ class Kol < ActiveRecord::Base
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
-                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: Kol.hide_real_mobile_number(params[:mobile_number]),
+                        IMEI: params[:IMEI], IDFA: params[:IDFA],
+                        name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip])
+      kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
     end
     return kol
   end

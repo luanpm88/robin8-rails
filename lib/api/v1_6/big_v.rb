@@ -6,7 +6,7 @@ module API
         params do
           optional :page, type: Integer
           optional :with_kol_announcement, type: String
-          optional :tag_name, type: Integer
+          optional :tag_name, type: String
           optional :name, type: String
         end
         get '/' do

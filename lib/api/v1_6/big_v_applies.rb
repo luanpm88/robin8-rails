@@ -55,8 +55,8 @@ module API
           params[:kol_shows].split(",").each do |link|
             current_kol.kol_shows.create!(:link => link)
           end if params[:kol_shows].present?
-          if current_kol.kol_role == 'public'
-            current_kol.role_apply_status = 'pending'
+          if current_kol.kol_role == 'public' ||  current_kol.kol_role.blank?
+            current_kol.role_apply_status = 'applying'
             current_kol.role_apply_time = Time.now
             current_kol.save
           end
