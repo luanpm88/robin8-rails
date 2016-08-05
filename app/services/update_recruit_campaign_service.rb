@@ -4,8 +4,8 @@ class UpdateRecruitCampaignService
   PERMIT_PARAMS = [:name, :description, :task_description,
                    :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name, :material_ids]
+                  :region, :sns_platforms, :professions,
+                  :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -53,9 +53,10 @@ class UpdateRecruitCampaignService
     begin
       ActiveRecord::Base.transaction do
         update_recruit_region
-        update_recruit_influnce_score
+        update_recruit_professions
+        update_recruit_sns_platforms
         update_materials
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region, :material_ids].include? k })
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :professions, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -80,15 +81,24 @@ class UpdateRecruitCampaignService
 
   def update_recruit_region
     campaign_target = @campaign.campaign_targets.where(target_type: :region).first
+    @campaign_params[:region] = @campaign_params[:region].gsub("/", ",")
     unless campaign_target.target_content.eql? @campaign_params[:region]
       campaign_target.update_attributes(target_content: @campaign_params[:region])
     end
   end
 
-  def update_recruit_influnce_score
-    campaign_target = @campaign.campaign_targets.where(target_type: :influence_score).first
-    unless campaign_target.target_content.eql? @campaign_params[:influence_score]
-      campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
+  def update_recruit_sns_platforms
+    campaign_target = @campaign.campaign_targets.where(target_type: :sns_platforms).first
+    unless campaign_target.target_content.eql? @campaign_params[:sns_platforms]
+      campaign_target.update_attributes(target_content: @campaign_params[:sns_platforms])
+    end
+  end
+
+  def update_recruit_professions
+    campaign_target = @campaign.campaign_targets.where(target_type: :professions).first
+    @campaign_params[:professions] = @campaign_params[:professions].gsub("/", ",")
+    unless campaign_target.target_content.eql? @campaign_params[:professions]
+      campaign_target.update_attributes(target_content: @campaign_params[:professions])
     end
   end
 

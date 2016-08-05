@@ -17,6 +17,8 @@ export default class Campaign extends React.Component {
 
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
       return `/brand/recruits/${campaign.get("id")}`;
+    } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
+      return `/brand/invites/${campaign.get("id")}`;
     } else {
       return `/brand/campaigns/${campaign.get("id")}`;
     }
