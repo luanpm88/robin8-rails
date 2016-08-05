@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { jobAreaSelect } from '../../shared/CitySelector';
-import ProfessionSelector from '../../shared/ProfessionSelector';
+import TagSelector from '../../shared/TagSelector';
 import SnsSelector from '../../shared/SnsSelector';
 
 export default class TargetPartial extends React.Component {
@@ -64,7 +64,7 @@ export default class TargetPartial extends React.Component {
   initConditionComponent() {
     $(".target-city-label").bind("change", this.handleConditionChange)
 
-    this.professionSelector = new ProfessionSelector({
+    this.professionSelector = new TagSelector({
       onSelectionDone: (activeItems, state=true) => {
         let activeText;
 

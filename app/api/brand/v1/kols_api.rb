@@ -5,7 +5,7 @@ module Brand
         def join_table(name)
           @join_state ||= {
             social_accounts: false,
-            kol_professions: false
+            kol_tags: false
           }
 
           unless @join_state[name]
@@ -36,12 +36,12 @@ module Brand
               @kols = @kols.where(app_city: cities)
             end
 
-            if params[:profession] and params[:profession] != "全部"
-              profession_params = params[:profession].split(",").reject(&:blank?)
-              professions = Profession.where(name: profession_params).map(&:id)
+            if params[:tag] and params[:tag] != "全部"
+              tag_params = params[:tag].split(",").reject(&:blank?)
+              tags = Tag.where(name: tag_params).map(&:id)
 
-              join_table(:kol_professions)
-              @kols = @kols.where("`kol_professions`.`profession_id` IN (?)", professions)
+              join_table(:kol_tags)
+              @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
             end
             if params[:sns] and params[:sns] != "全部"
               sns_params = params[:sns].split(",").reject(&:blank?)

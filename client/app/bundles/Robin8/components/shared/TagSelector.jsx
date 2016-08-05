@@ -4,15 +4,15 @@ import ReactDOM from 'react-dom';
 
 const baseUrl = "/brand_api/v1"
 
-export default class ProfessionSelector {
+export default class TagSelector {
   constructor(opts) {
     let config = {
       activeItems: [],
-      elementClass: "profession-selector",
+      elementClass: "tag-selector",
       parentIsBody: true,
       parentElememt: null,
       onSelectionDone: null,
-      dataUrl: `${baseUrl}/util/professions`
+      dataUrl: `${baseUrl}/util/tags`
     }
 
     _.assign(config, opts);
@@ -27,7 +27,7 @@ export default class ProfessionSelector {
 
     if (!!this.parentIsBody) {
       this.parentElememt = document.createElement("div");
-      this.parentElememt.className = "profession-selector-wrapper";
+      this.parentElememt.className = "tag-selector-wrapper";
       document.body.appendChild(this.parentElememt);
     }
 
@@ -93,7 +93,7 @@ export default class ProfessionSelector {
     $("body").addClass('no-scroll');
 
     this.load(() => ReactDOM.render(
-      <ProfessionSelectorBox
+      <TagSelectorBox
         items={this.items}
         activeItems = {this.activeItems}
         elementClass={this.elementClass}
@@ -110,7 +110,7 @@ export default class ProfessionSelector {
   }
 }
 
-class ProfessionSelectorBox extends Component {
+class TagSelectorBox extends Component {
   constructor(props, context) {
     super(props, context);
     _.bindAll(this, ["handleCancel", "handleFinish", "handleSelect"])
@@ -134,7 +134,7 @@ class ProfessionSelectorBox extends Component {
 
   render() {
     const { items=[], activeItems=[], elementClass } = this.props;
-    let professionItems = [];
+    let tagItems = [];
 
     items.map((item) => {
       let state = "";
@@ -151,7 +151,7 @@ class ProfessionSelectorBox extends Component {
           data-name={item.name}>
           { item.label }
         </div>
-      professionItems.push(element);
+      tagItems.push(element);
     });
 
     return (
@@ -161,7 +161,7 @@ class ProfessionSelectorBox extends Component {
         </div>
         <div className="content">
           <div className="item-list">
-            {professionItems}
+            {tagItems}
           </div>
         </div>
         <div className="footer">

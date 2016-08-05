@@ -4,7 +4,7 @@ module Brand
       helpers do
         def join_table(name)
           @join_state ||= {
-            kol_professions: false
+            social_account_tags: false
           }
 
           unless @join_state[name]
@@ -24,7 +24,7 @@ module Brand
           desc 'Search social accounts with conditions and return accounts list'
           params do
             optional :region, type: String
-            optional :profession, type: String
+            optional :tag, type: String
             optional :sns, type: String
             optional :price_range, type: String
           end
@@ -38,12 +38,12 @@ module Brand
               @social_accounts = @social_accounts.where(city: cities)
             end
 
-            if params[:profession] and params[:profession] != "全部"
-              profession_params = params[:profession].split(",").reject(&:blank?)
-              professions = Profession.where(name: profession_params).map(&:id)
+            if params[:tag] and params[:tag] != "全部"
+              tag_params = params[:tag].split(",").reject(&:blank?)
+              tags = Tag.where(name: tag_params).map(&:id)
 
-              join_table(:social_account_professions)
-              @social_accounts = @social_accounts.where("`social_account_professions`.`profession_id` IN (?)", professions)
+              join_table(:social_account_tags)
+              @social_accounts = @social_accounts.where("`social_account_tags`.`tag_id` IN (?)", tags)
             end
 
             if params[:sns] and params[:sns] != "全部"

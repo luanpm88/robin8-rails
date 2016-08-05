@@ -14,9 +14,9 @@ module Brand
       end
 
       desc 'Get supported profession list'
-      get '/professions' do
-        professions = Profession.where(enable: true).order("position asc")
-        present professions
+      get '/tags' do
+        tags = Tag.where(enabled: true).order("position asc")
+        present tags
       end
     end
   end
