@@ -1,7 +1,7 @@
 module Brand
   module V1
     module Entities
-      class Profession < Entities::Base
+      class Tag < Entities::Base
         expose :id
         expose :name
         expose :label

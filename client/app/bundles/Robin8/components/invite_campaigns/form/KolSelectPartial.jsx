@@ -130,7 +130,7 @@ export default class KolSelectPartial extends React.Component {
         </td>
         <td>{kol.get("provider_text")}</td>
         <td>{kol.get("sale_price")}/条</td>
-        <td>{kol.get("professions").map(i => i.get("label")).join("/")}</td>
+        <td>{kol.get("tags").map(i => i.get("label")).join("/")}</td>
         <td>
           { actionBtn }
           <div className="arrow-right show-detail"></div>

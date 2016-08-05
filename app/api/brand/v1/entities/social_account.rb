@@ -5,7 +5,7 @@ module Brand
         expose :id, :username, :avatar_url, :kol_id
         expose :provider_text
         expose :sale_price
-        expose :professions, using: Entities::Profession
+        expose :tags, using: Entities::Tag
       end
     end
   end

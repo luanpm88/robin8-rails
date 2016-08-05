@@ -33,7 +33,7 @@ module Brand
       represent InvoiceReceiver,  with: Entities::InvoiceReceiver
       represent InvoiceHistory,   with: Entities::InvoiceHistory
       represent Kol,              with: Entities::Kol
-      represent Profession,       with: Entities::Profession
+      represent Tag,              with: Entities::Tag
       represent SocialAccount,    with: Entities::SocialAccount
       # namespaces
       #

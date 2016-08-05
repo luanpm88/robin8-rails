@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from "lodash";
 import { jobAreaSelect } from '../../shared/CitySelector';
-import ProfessionSelector from '../../shared/ProfessionSelector';
+import TagSelector from '../../shared/TagSelector';
 import SnsSelector from '../../shared/SnsSelector';
 import PriceRangeSelector from '../../shared/PriceRangeSelector';
 
@@ -21,12 +21,12 @@ export default class TargetPartial extends React.Component {
       _.assignIn(condition, {region: condstr});
     }
 
-    const professionItems = this.professionSelector.activeItems;
-    if (professionItems.length > 0) {
-      const condstr = professionItems.map((item) => {
+    const tagItems = this.tagSelector.activeItems;
+    if (tagItems.length > 0) {
+      const condstr = tagItems.map((item) => {
         return item.name;
       }).join(",");
-      _.assignIn(condition, {profession: condstr});
+      _.assignIn(condition, {tag: condstr});
     }
 
     const snsItems = this.snsSelector.activeItems;
@@ -49,7 +49,7 @@ export default class TargetPartial extends React.Component {
   initConditionComponent() {
     $(".target-city-label").bind("change", this.handleConditionChange)
 
-    this.professionSelector = new ProfessionSelector({
+    this.tagSelector = new TagSelector({
       onSelectionDone: (activeItems, state=true) => {
         let activeText;
 
@@ -59,7 +59,7 @@ export default class TargetPartial extends React.Component {
           }).join("/");
         }
 
-        $("#profession-result").html(activeText || "全部");
+        $("#tag-result").html(activeText || "全部");
         if (!!state) this.handleConditionChange();
       }
     });
@@ -93,7 +93,7 @@ export default class TargetPartial extends React.Component {
     });
 
     this.snsSelector.set();
-    this.professionSelector.set();
+    this.tagSelector.set();
     this.priceRangeSelector.set();
   }
 
@@ -129,12 +129,12 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
               <div className="col-md-3">
-                <div className="campaign-target target-profession">
+                <div className="campaign-target target-tag">
                   <label>分类</label>
                   <a className="btn btn-blue btn-default target-btn"
-                     onClick={ (event) => { this.professionSelector.show() }}>选择分类</a>
+                     onClick={ (event) => { this.tagSelector.show() }}>选择分类</a>
                   <div className="target-result">
-                    <div id="profession-result"></div>
+                    <div id="tag-result"></div>
                   </div>
                 </div>
               </div>
