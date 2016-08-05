@@ -23,7 +23,11 @@ module Crawler
                         publish_time: article['publish_date'], link: article['url'], desc: article['summary'])
       end
       # 更新头像 和关键字
-      social_account.update_column(:avatar_url, res['wechat'][0]['kol_avatar_url']) if res['wechat'][0]['kol_avatar_url'].present?
+      social_account.avatar_url = res['wechat'][0]['kol_avatar_url']  if res['wechat'][0]['kol_avatar_url'].present?
+      social_account.brief = res['wechat'][0]['kol_info']  if res['wechat'][0]['kol_info'].present?
+      social_account.tags = Tag.where(:label => res['wechat'][0]['kol_category'])
+      social_account.city =  res['wechat'][0]['kol_locations'].last
+      social_account.save
       res['wechat'][0]['kol_keywords'].each do |keyword|
         KolKeyword.create!(kol_id: social_account.kol_id, social_account_id: social_account.id, :keyword => keyword)
       end

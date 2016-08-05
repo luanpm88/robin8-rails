@@ -23,7 +23,8 @@ module ImportKols
     end
 
     def self.start_do_for_staging
-      Kol.last(103).each do |kol|
+      kol_ids = SocialAccount.where(:provider => 'public_wechat').collect{|t| t.kol_id }
+      Kol.where(:id => kol_ids).each do |kol|
         kol.social_accounts.each do |social_account|
           kol.name = social_account.username            if kol.name.blank?   && social_account.username.present?
           kol.avatar_url = social_account.avatar_url    if kol.avatar_url.blank?   && social_account.avatar_url.present?
@@ -39,6 +40,12 @@ module ImportKols
           kol.save!    rescue nil
         end
       end
+    end
+
+    def self.reset_public_wechat
+      kol_ids = SocialAccount.where(:provider => 'public_wechat').collect{|t| t.kol_id }
+      Kol.where(:id => kol_ids).delete_all
+      SocialAccount.where(:provider => 'public_wechat').delete_all
     end
 
   end

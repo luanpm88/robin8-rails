@@ -30,8 +30,8 @@ module API
           optional :id, type: Integer
         end
         get ':id/detail' do
-          big_v = Kol.find params[:id]
-          if big_v.is_big_v?
+          big_v = Kol.find params[:id]  rescue nil
+          if big_v
             present :error, 0
             present :big_v, big_v, with: API::V1_6::Entities::BigVEntities::Detail
             present :kol_shows, big_v.kol_shows, with: API::V1_6::Entities::KolShowEntities::Summary
@@ -39,7 +39,7 @@ module API
             present :social_accounts, big_v.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
           else
             present :error, 1
-            present :detail, '该用户不存在,或者不是网红'
+            present :detail, '该用户不存在'
           end
         end
       end

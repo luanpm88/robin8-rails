@@ -14,6 +14,8 @@ module API
           optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
+          optional :longitude, type: Float
+          optional :latitude, type: Float
         end
         put 'update_profile' do
           present :error, 0
