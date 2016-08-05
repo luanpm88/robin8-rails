@@ -9,6 +9,7 @@ export default class TargetPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {kol_count: 0};
+    this.initSelector = false;
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
@@ -25,7 +26,7 @@ export default class TargetPartial extends React.Component {
       }.bind(this))
     }.bind(this),
     function(error) {
-      console.error("----------查询kol数量失败---------------")
+      console.error("----------查询kol数量失败---------------");
     })
   }
 
@@ -41,22 +42,18 @@ export default class TargetPartial extends React.Component {
     }
 
     const professionItems = this.professionSelector.activeItems;
-    if (professionItems.length > 0) {
-      const condstr = professionItems.map((item) => {
-        return item.name;
-      }).join(",");
-      _.assignIn(condition, {profession: condstr});
-      this.props.profession.onChange(condstr)
-    }
+    let cond_array = professionItems.map((item) => {
+      return item.name;
+    });
+    _.assignIn(condition, {profession: cond_array.join(",")});
+    this.props.professions.onChange(cond_array)
 
     const snsItems = this.snsSelector.activeItems;
-    if (snsItems.length > 0) {
-      const condstr = snsItems.map((item) => {
-        return item.name;
-      }).join(",");
-      _.assignIn(condition, {sns: condstr});
-      this.props.sns_platform.onChange(condstr)
-    }
+    cond_array = snsItems.map((item) => {
+      return item.name;
+    });
+    _.assignIn(condition, {sns: cond_array.join(",")});
+    this.props.sns_platforms.onChange(cond_array);
 
     this.fetchKolCountWithConditions(condition);
   }
@@ -93,14 +90,31 @@ export default class TargetPartial extends React.Component {
         if (!!state) this.handleConditionChange();
       }
     });
-
-    this.snsSelector.set();
-    this.professionSelector.set();
   }
 
   componentDidMount(){
     this.initConditionComponent();
-    this.handleConditionChange();
+  }
+
+  componentDidUpdate() {
+    // if(!this.initSelector) {
+      this.setInitialSelector();
+      // this.initSelector = true;
+    // }
+
+  }
+
+  setInitialSelector() {
+
+
+    const { region, professions, sns_platforms } = this.props;
+    $('.target-city-label').text(region.value || "全部")
+    if (professions.value.length > 0)
+      this.professionSelector.set(professions.value);
+    if (sns_platforms.value.length > 0)
+      this.snsSelector.set(sns_platforms.value);
+
+    // this.handleConditionChange();
   }
 
   renderTargetTitle(){
@@ -109,13 +123,10 @@ export default class TargetPartial extends React.Component {
   }
 
   renderKOlCount(){
-    if (this.state.kol_count) {
-      return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
-    }
+    return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
   }
 
   render() {
-    // const { region } = this.props;
     return (
       <div className="creat-activity-form">
         <div className="header">
