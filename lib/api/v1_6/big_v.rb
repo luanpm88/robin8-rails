@@ -11,10 +11,10 @@ module API
         end
         get '/' do
           if params[:tag_name].blank?
-            big_vs = Kol.big_v.where("name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).order_by_hot.page(params[:page]).per_page(10)
+            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).order_by_hot.page(params[:page]).per_page(10)
           else
             tag_id = Tag.find_by(:name => params[:tag_name]).id
-            big_vs = Kol.big_v.where("name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
+            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
                     order_by_hot.page(params[:page]).per_page(10)
           end
           if params[:with_kol_announcement] == 'Y'
