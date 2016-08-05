@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804104707) do
+ActiveRecord::Schema.define(version: 20160805080752) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -263,6 +263,8 @@ ActiveRecord::Schema.define(version: 20160804104707) do
     t.datetime "upload_time"
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
+    t.integer  "social_account_id", limit: 4
+    t.float    "budget",            limit: 24
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -506,6 +508,16 @@ ActiveRecord::Schema.define(version: 20160804104707) do
   end
 
   add_index "followers", ["news_room_id"], name: "index_followers_on_news_room_id", using: :btree
+
+  create_table "followships", force: :cascade do |t|
+    t.integer  "follower_id", limit: 4
+    t.integer  "kol_id",      limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "followships", ["follower_id"], name: "index_followships_on_follower_id", using: :btree
+  add_index "followships", ["kol_id"], name: "index_followships_on_kol_id", using: :btree
 
   create_table "helper_docs", force: :cascade do |t|
     t.string   "img_url",       limit: 255

@@ -22,6 +22,7 @@ module API
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
           current_kol.save
+          current_ko.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
           present :error, 0
         end
 
@@ -44,6 +45,7 @@ module API
           social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
           social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
           social_account.save
+          current_ko.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
           present :error, 0
         end
 
@@ -55,11 +57,7 @@ module API
           params[:kol_shows].split(",").each do |link|
             current_kol.kol_shows.create!(:link => link)
           end if params[:kol_shows].present?
-          if current_kol.kol_role == 'public' ||  current_kol.kol_role.blank?
-            current_kol.role_apply_status = 'applying'
-            current_kol.role_apply_time = Time.now
-            current_kol.save
-          end
+          current_ko.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)
           present :error, 0
         end
       end
