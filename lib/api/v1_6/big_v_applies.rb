@@ -8,7 +8,6 @@ module API
       resources :big_v_applies do
         desc '提交基本资料'
         params do
-          optional :avatar, type: Hash
           optional :name, type: String
           optional :app_city, type: String
           optional :job_info, type: String
@@ -35,7 +34,6 @@ module API
           optional :repost_price, type: String
           optional :second_price, type: String
           optional :followers_count, type: String
-          optional :screenshot, type: Hash
         end
         post 'update_social' do
           social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => params[:provider])
