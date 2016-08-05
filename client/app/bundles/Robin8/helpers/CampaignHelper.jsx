@@ -16,6 +16,15 @@ export function showCampaignTypeText(budget_type){
   }
 }
 
+export function campaignType(budget_type) {
+  switch (budget_type) {
+    case 'recruit':
+      return "招募"
+    case 'invite':
+      return "特邀"
+  }
+}
+
 export function formatDate(date, format="YYYY-M-D H:mm"){
   return moment(date).format(format)
 }
@@ -112,6 +121,10 @@ export function canPayCampaign(status) {
 
 export function isRecruitCampaign(per_budget_type){
   return per_budget_type === 'recruit' ? true : false;
+}
+
+export function isInviteCampaign(per_budget_type){
+  return per_budget_type === 'invite' ? true : false;
 }
 
 export function campaignMaterialType(type) {

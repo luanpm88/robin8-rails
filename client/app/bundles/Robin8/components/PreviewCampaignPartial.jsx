@@ -8,6 +8,7 @@ import "campaign/preview.scss";
 
 import PreviewCommonCampaignPartial from './campaigns/preview/PreviewCommonCampaignPartial';
 import PreviewRecruitCampaignPartial from './campaigns/preview/PreviewRecruitCampaignPartial';
+import PreviewInviteCampaignPartial from './campaigns/preview/PreviewInviteCampaignPartial';
 
 
 function select(state) {
@@ -73,6 +74,8 @@ class PreviewCampaignPartial extends React.Component {
       return <Link to={`/brand/recruits/${campaign.get("id")}/edit`}>返回修改</Link>
     } else if (_.includes(['click', 'post', 'cpa', 'cpi'], campaign.get("per_budget_type"))) {
       return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`}>返回修改</Link>
+    } else if (campaign.get("per_budget_type") === 'invite') {
+      return <Link to={`/brand/invites/${campaign.get("id")}/edit`}>返回修改</Link>
     }
   }
 
@@ -82,6 +85,8 @@ class PreviewCampaignPartial extends React.Component {
       return <PreviewRecruitCampaignPartial campaign={campaign} brand={brand} />
     } else if (_.includes(['click', 'post', 'cpa', 'cpi'], campaign.get("per_budget_type"))) {
       return <PreviewCommonCampaignPartial campaign={campaign} brand={brand} />
+    } else if (campaign.get("per_budget_type") === 'invite') {
+      return <PreviewInviteCampaignPartial campaign={campaign} brand={brand} />
     }
   }
 

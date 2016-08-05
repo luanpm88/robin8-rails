@@ -1,0 +1,42 @@
+.selector-wrap {
+  position: relative;
+  width: 450px;
+  min-height: 120px;
+  margin: 0 auto;
+  top: 120px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  .header, .footer {
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+    h3 {
+      font-size: 18px;
+      margin: 0;
+      padding: 6px 15px;
+    }
+  }
+  .btn {
+    line-height: 32px;
+    padding: 0 25px;
+  }
+  .selector-done {
+    color: #fff;
+    background-color: #36CDD3;
+    
+  }
+  .selector-cancel {
+    background-color: #fff;
+    margin-left: 15px;
+  }
+  .content {
+    display: block;
+    width: 100%;
+    padding: 25px;
+    &:after {
+      display: block;
+      clear: both;
+      content: "";
+    }
+  }
+}

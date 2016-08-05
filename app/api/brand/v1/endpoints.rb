@@ -32,6 +32,9 @@ module Brand
       represent Invoice,          with: Entities::Invoice
       represent InvoiceReceiver,  with: Entities::InvoiceReceiver
       represent InvoiceHistory,   with: Entities::InvoiceHistory
+      represent Kol,              with: Entities::Kol
+      represent Profession,       with: Entities::Profession
+      represent SocialAccount,    with: Entities::SocialAccount
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
@@ -57,6 +60,8 @@ module Brand
       mount AlipayOrdersAPI
       mount TransactionsAPI
       mount InvoiceHistoriesAPI
+      mount KolsAPI
+      mount SocialAccountsAPI
     end
   end
 end

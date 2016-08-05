@@ -1,0 +1,30 @@
+.sns-selector-wrapper {
+  @include maskable;
+}
+
+.sns-selector {
+  width: 450px;
+  .content {
+    padding: 30px;
+  }
+  .item-list {
+    text-align: center;
+
+    .item {
+      width: 45px;
+      height: 45px;
+      margin: 5px;
+      display: inline-block;
+      opacity: .2;
+      cursor: pointer;
+
+      &.active {
+        opacity: 1;
+      }
+
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+}
