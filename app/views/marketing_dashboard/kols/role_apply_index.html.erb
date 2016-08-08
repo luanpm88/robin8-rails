@@ -1,3 +1,9 @@
+<div class="well">
+  <%= form_tag search_marketing_dashboard_kols_path(source_from: "role_apply") do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以name、email、mobile_number、id 搜索", class: "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
 
 <h5><%= devise_error_messages! %></h5>
 <table class='table table-bordered'>
