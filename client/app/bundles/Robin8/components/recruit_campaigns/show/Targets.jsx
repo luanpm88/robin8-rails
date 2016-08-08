@@ -42,7 +42,7 @@ export default class Targets extends React.Component {
       console.error("----------查询kol数量失败---------------");
     })
   }
-  
+
   renderTargetTitle(){
     const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
     return tip
@@ -58,12 +58,16 @@ export default class Targets extends React.Component {
     let sns;
     if(sns = campaign.get("sns_platforms")) {
       sns.map((s) => {
-        const element =
+        if(s == "全部") {
+          $("#sns-result").html("全部");
+        } else {
+          const element =
           <div
             key={`sns-${s}`}
             className={`target-item sns-icon icon-${s}`}>
           </div>
-        snsItems.push(element);
+          snsItems.push(element);
+        }
       })
     }
     return snsItems;

@@ -16,6 +16,7 @@ class Tag < ActiveRecord::Base
   # end
 
   def self.get_lable_by_name(name)
+    return "全部" if(name == "全部")
     Tag.where(name: name).take.label
   end
 end
