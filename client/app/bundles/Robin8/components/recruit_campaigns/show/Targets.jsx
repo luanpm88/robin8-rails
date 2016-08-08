@@ -5,18 +5,51 @@ export default class Targets extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    this.state = {kol_count: 0};
+    this.initSelector = false;
   }
 
-  componentDidMount(){
+  componentDidUpdate() {
+    const campaign = this.props.campaign;
+    if(!this.initSelector && campaign.size) {
+      let region_text = campaign.get("region").split("/").join(",");
+      let tag_text = campaign.get("tags").map((item) => {
+        return item;
+      }).join(",");
+
+      let sns_text = campaign.get("sns_platforms").map((item) => {
+        return item;
+      }).join(",");
+
+      this.fetchKolCountWithConditions({region: region_text, tag: tag_text, sns: sns_text});
+      this.initSelector = true;
+    }
   }
 
+  fetchKolCountWithConditions(condition) {
+    let params = [];
+    _.forIn(condition, (value, key) => params.push(`${key}=${value}`));
+    params.push("just_count=true");
+    const queryString = params.join("&");
+
+    fetch(`/brand_api/v1/kols/search?${queryString}`, {"credentials": "include"})
+      .then(function(response) {
+        response.json().then(function(data){
+          this.setState({kol_count: data.count});
+      }.bind(this))
+    }.bind(this),
+    function(error) {
+      console.error("----------查询kol数量失败---------------");
+    })
+  }
+  
   renderTargetTitle(){
     const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
     return tip
   }
 
   renderKOlCount(){
-    // return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
+    return <div className="notice">预计推送KOL人数 <em> {this.state.kol_count} 人</em></div>
   }
 
   renderSnsLogo() {

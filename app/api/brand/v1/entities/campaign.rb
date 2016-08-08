@@ -121,7 +121,7 @@ module Brand
         end
 
         expose :tag_labels do |object, opts|
-          target = object.profession_target
+          target = object.tag_target
           if target
             target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
           end

@@ -36,7 +36,7 @@ export default class TargetPartial extends React.Component {
 
     const regionText = $('.target-city-label').text().trim();
     if (regionText != "全部") {
-      const condstr = regionText.split("/").join(",");
+      let condstr = regionText.split("/").join(",");
       _.assignIn(condition, {region: condstr});
       this.props.region.onChange(condstr)
     } else {
