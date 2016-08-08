@@ -28,6 +28,7 @@
           <%= link_to '详情 or 编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
           |
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %>
+          | <%= link_to '个人展示', marketing_dashboard_kol_shows_path(:kol_id => k.id), :target => "_blank"  %>
         </td>
       </tr>
     <% end %>

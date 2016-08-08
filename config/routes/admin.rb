@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :kol_shows
+
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
