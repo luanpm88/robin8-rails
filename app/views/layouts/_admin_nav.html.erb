@@ -87,11 +87,11 @@
               <%= link_to '待处理的申请列表', marketing_dashboard_kols_path(:role_apply_status => :applying ) %>
             </li>
             <li>
-              <%= link_to '已通过的申请列表', marketing_dashboard_helper_docs_path %>
+              <%= link_to '已通过的申请列表', marketing_dashboard_kols_path(:role_apply_status => :passed ) %>
             </li>
 
             <li>
-              <%= link_to '已拒绝的申请列表', marketing_dashboard_helper_docs_path %>
+              <%= link_to '已拒绝的申请列表', marketing_dashboard_kols_path(:role_apply_status => :rejected ) %>
             </li>
           </ul>
         </li>
