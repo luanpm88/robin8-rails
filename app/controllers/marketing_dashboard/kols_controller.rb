@@ -77,7 +77,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     if params[:kol][:mobile_number].blank?
       params[:kol][:mobile_number] = nil
     end
-    @kol.update_attributes(params.require(:kol).permit(:role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :brief))
+    @kol.update_attributes(params.require(:kol).permit(:role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc))
     update_tag_ids
     update_keywords
     @kol.reload
