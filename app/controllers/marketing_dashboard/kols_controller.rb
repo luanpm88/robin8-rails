@@ -80,7 +80,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     if params[:kol][:mobile_number].blank?
       params[:kol][:mobile_number] = nil
     end
-    @kol.update_attributes(params.require(:kol).permit(:role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo))
+    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo))
     update_tag_ids
     update_keywords
     @kol.reload
@@ -130,13 +130,15 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
               elsif params[:kol_role]
                 Kol.where(kol_role: params[:kol_role])
 
+              elsif params[:is_hot]
+                Kol.where(is_hot: true).order('created_at DESC').paginate(paginate_params)
               elsif params[:role_apply_status]
                 Kol.where(role_apply_status: params[:role_apply_status]).order('created_at DESC').paginate(paginate_params)
               else
                 Kol.all
               end
             end.order('created_at DESC').paginate(paginate_params)
-    if params[:role_apply_status]
+    if params[:role_apply_status] or params[:is_hot]
         render "role_apply_index" and return
     end
   end
