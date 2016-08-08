@@ -31,6 +31,11 @@ module Brand
           get "search" do
             @social_accounts = SocialAccount.all
 
+            if params[:word].present?
+              words = params[:word].gsub(/,|，/i, " ").split(" ")
+              @social_accounts = @social_accounts.where('username REGEXP ?', words.join("|"))
+            end
+
             if params[:region] and params[:region] != "全部"
               regions = params[:region].split(",").reject(&:blank?)
               cities = City.where(name: regions).map(&:name_en)

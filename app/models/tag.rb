@@ -14,4 +14,8 @@ class Tag < ActiveRecord::Base
   #     index += 1
   #   end
   # end
+
+  def self.get_lable_by_name(name)
+    Tag.where(name: name).take.label
+  end
 end

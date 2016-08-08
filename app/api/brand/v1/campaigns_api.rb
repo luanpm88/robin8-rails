@@ -209,8 +209,8 @@ module Brand
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
           optional :region, type: String
-          optional :sns_platform, type: String
-          optional :profession, type: String
+          optional :sns_platforms, type: String
+          optional :tags, type: String
           optional :hide_brand_name, type: Boolean
           optional :material_ids, type: String
         end
@@ -231,8 +231,6 @@ module Brand
           requires :task_description, type: String
           optional :address, type: String
           requires :img_url, type: String
-          requires :region, type: String
-          requires :influence_score, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
           requires :start_time, type: DateTime
@@ -240,6 +238,9 @@ module Brand
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
+          optional :region, type: String
+          optional :sns_platforms, type: String
+          optional :tags, type: String
           optional :hide_brand_name, type: Boolean
           optional :material_ids, type: String, default: nil
         end

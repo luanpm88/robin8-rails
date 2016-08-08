@@ -9,6 +9,7 @@ import "campaign/recruit/show.scss";
 import BreadCrumb  from './shared/BreadCrumb';
 import Basic       from './recruit_campaigns/show/Basic';
 import ShowMaterialsPartial  from './shared/campaign_material/ShowMaterialsPartial'
+import Targets       from './recruit_campaigns/show/Targets';
 import Overview    from './recruit_campaigns/show/Overview';
 import ResultView  from './recruit_campaigns/show/ResultView';
 import KolList     from './recruit_campaigns/show/KolList';
@@ -107,6 +108,7 @@ class ShowRecruitCampaignPartial extends Component {
           <BreadCrumb />
           <Basic {...{campaign}} />
           <ShowMaterialsPartial {...{campaign}} />
+          <Targets {...{campaign}} />
           <Overview {...{campaign}} />
           { this.render_result_view() }
           { this.render_state_text(campaign, campaign_id, actions) }

@@ -78,7 +78,7 @@ export default class KolSelectPartial extends React.Component {
     const { searched_social_accounts } = this.props;
     const paginate = searched_social_accounts.get("paginate");
 
-    if (paginate.get("X-Page") && paginate.get("X-Total-Pages") > 1) {
+    if (paginate.get("X-Page") && paginate.get("X-Total-Pages")) {
       const pagination_options = {
         currentPage: paginate.get("X-Page"),
         totalPages: paginate.get("X-Total-Pages"),
@@ -129,7 +129,7 @@ export default class KolSelectPartial extends React.Component {
           </div>
         </td>
         <td>{kol.get("provider_text")}</td>
-        <td>{kol.get("sale_price")}/条</td>
+        <td>{kol.get("sale_price")}元/条</td>
         <td>{kol.get("tags").map(i => i.get("label")).join("/")}</td>
         <td>
           { actionBtn }
