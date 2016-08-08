@@ -178,8 +178,9 @@
   cursor: pointer;
 }
 
-.creat-activity-basic-intro.create-recruit-basic-info .cover-photo, .creat-activity-basic-intro.create-recruit-basic-info .cover-photo .inner{
-  height: 746px !important;
+.create-recruit-basic-info .cover-photo,
+.create-recruit-basic-info .cover-photo .inner{
+  height: 746px;
   background: url(~create_recruit_coverphoto.png) no-repeat center center;
 }
 

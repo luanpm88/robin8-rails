@@ -5,8 +5,8 @@ module Campaigns
       has_many :campaign_targets
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
       has_one :region_target, -> {where(:target_type => 'region')}, class_name: "CampaignTarget"
-      has_one :profession_target, -> {where(:target_type => 'profession')}, class_name: "CampaignTarget"
-      has_one :sns_platform_target, -> {where(:target_type => 'sns_platform')}, class_name: "CampaignTarget"
+      has_one :tag_target, -> {where(:target_type => 'tags')}, class_name: "CampaignTarget"
+      has_one :sns_platform_target, -> {where(:target_type => 'sns_platforms')}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"

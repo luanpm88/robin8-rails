@@ -270,7 +270,7 @@ var Drag = {
 
   init : function(o, oRoot, minX, maxX, minY, maxY, bSwapHorzRef, bSwapVertRef, fXMapper, fYMapper)
   {
-    o.onmousedown = Drag.start;
+    // o.onmousedown = Drag.start;
 
     o.hmode     = bSwapHorzRef ? false : true ;
     o.vmode     = bSwapVertRef ? false : true ;

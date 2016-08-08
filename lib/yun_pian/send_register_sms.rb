@@ -61,7 +61,9 @@ module YunPian
       Rails.cache.read(phone) rescue nil
     end
 
-    SkipVerifyPhones = ['13000000000', '13262752287','13795431288', '13979115652', '13764211748', '15221773929', '13817164646', '15618348706', '18221707548']
+    SkipVerifyPhones = ['13000000000', '13262752287','13795431288', '13979115652', '13979115653',
+                        '13764211748', '15221773929',
+                        '13817164642', '15618348706', '18221707548']
     def self.verify_code(phone, code)
       phone = phone.to_s        rescue ""
       code = code.to_s          rescue ""

@@ -22,7 +22,7 @@ module API
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
           current_kol.save
-          current_ko.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+          current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
           present :error, 0
         end
 

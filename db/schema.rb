@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808054332) do
+ActiveRecord::Schema.define(version: 20160808073152) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -928,6 +928,7 @@ ActiveRecord::Schema.define(version: 20160808054332) do
     t.boolean  "is_hot",                 limit: 1,                              default: false
     t.string   "role_check_remark",      limit: 255
     t.string   "avatar_url",             limit: 255
+    t.text     "memo",                   limit: 65535
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree

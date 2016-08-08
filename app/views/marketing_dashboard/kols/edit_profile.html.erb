@@ -1,0 +1,100 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">修改Kol</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_for(@kol, as: :kol, url: update_profile_marketing_dashboard_kol_path(@kol), method: :put) do |f| %>
+            <div class="field form-group">
+              <%= devise_error_messages! %>
+            </div>
+            <div class="field form-group">
+              <%= f.label "手机号" %><br />
+              <%= f.text_field :mobile_number, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "头像" %><br />
+              <%= f.file_field :avatar, autofocus: true, class: "form-control" %>
+              <% if @kol.avatar_url.present? %>
+                <%= image_tag @kol.avatar_url, :width => 100, :height => 100 %>
+              <% end %>
+            </div>
+            
+            <div class="field form-group">
+              <%= f.label "名字" %><br />
+              <%= f.text_field :name, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "职业" %><br />
+              <%= f.text_field :job_info, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "分类" %><br />
+              <div class="inline-div">
+              <% Tag.all.each do |tag| %>
+                <% if @kol.tags.present? and @kol.tags.map(&:id).include?(tag.id) %>
+                  <span><input name="kol[tag_ids][]" type="checkbox" value="<%= tag.id %>" style="margin-left: 5px"checked><%= tag.label %></span>
+                <% else %>
+                  <span><input name="kol[tag_ids][]" type="checkbox" value="<%= tag.id %>" style="margin-left: 5px"><%= tag.label %></span>
+                <% end %>
+              <% end %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "年龄" %><br />
+              <%= f.text_field :age, autofocus: true, class: "form-control" %>
+            </div>
+
+
+            <div class="field form-group">
+              <%= f.label "性别： 0 表示未设置, 1: 男, 2: 女"%><br />
+              <%= f.select :gender, [0, 1, 2], class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "个人简介" %><br />
+              <%= f.text_field :desc, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "个人关键词(按照逗号 进行分割)" %><br />
+              <span><input name="kol[key_word_names]" value=<%= @kol.kol_keywords.map(&:keyword).join(",") %> ></span>
+            </div>
+
+              
+            <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "大V 申请状态" %><br />
+              <%= f.select :role_apply_status, ["applying", "passed", "rejected"], class: "form-control" %>
+            </div>
+
+            <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "如果是拒绝, 请填写拒绝理由" %><br />
+              <%= f.text_field :role_check_remark, class: "form-control" %>
+            </div>
+
+              <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "kol 备注" %><br />
+              <%= f.text_field :memo, class: "form-control" %>
+            </div>
+
+
+            <div class="actions">
+              <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript">
+  $(function () {
+    $('.datetimepicker').datetimepicker();
+  });
+  </script>

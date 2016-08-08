@@ -1,0 +1,39 @@
+<div class="well">
+  友情提示:
+   1、在 app中， 问题是按照 权重进行倒排的； 如果想把一个问题 放到最前面, 权重设置高一些即可。
+</div>
+<div>
+  <h3>问题列表</h3>
+  <%= link_to "新建问题", new_marketing_dashboard_helper_doc_path, :class => "btn pull-right"%>
+</div>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>分类名</th>
+      <th>问题</th>
+      <th>答案</th>
+      <th>权重排序</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @helper_docs.each do |h| %>
+      <tr>
+        <td><%= h.id %></td>
+        <td><%= h.doc_tag %></td>
+        <td><%= h.question %></td>
+        <td><%= h.answer %></td>
+        <td><%= h.sort_weight %></td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_helper_doc_path(h) %> | 
+          <%= link_to "删除", marketing_dashboard_helper_doc_path(h), :method => :delete, "data-confirm" => "你确定要删除吗"%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @helper_tags %>

@@ -1,0 +1,37 @@
+<div class="well">
+  <%= form_tag search_marketing_dashboard_kols_path(source_from: "role_apply") do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以name、email、mobile_number、id 搜索", class: "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<h5><%= devise_error_messages! %></h5>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>昵称</th>
+      <th>手机号</th>
+      <th>审核状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr>
+        <% %w(id name mobile_number role_apply_status).each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        <td>
+          <%= link_to '详情 or 编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
+          |
+          <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @kols %>

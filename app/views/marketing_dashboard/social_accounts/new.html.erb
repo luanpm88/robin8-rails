@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <h2>
+    新建社交帐号
+    <%= link_to "返回上一页", marketing_dashboard_social_accounts_path(:kol_id => params[:kol_id]), class: "btn btn-default pull-right" %>
+  </h2>
+
+  <%= form_for([:marketing_dashboard, @social_account], url: marketing_dashboard_social_accounts_path(:kol_id => params[:kol_id]), method: :post, html: { multiple: true}) do |f| %>
+    <%= render partial: 'form', locals: { f: f}  %>
+  <% end %>
+</div>

@@ -96,7 +96,7 @@ module Brand
 
         expose :region do |object, opts|
           target = object.region_target
-          target.target_content if target
+          target.target_content.gsub(",", "/") if target
         end
 
         expose :influence_score do |object, opts|
@@ -115,14 +115,21 @@ module Brand
           ::SocialAccount.where(id: social_accounts)
         end
 
-        expose :profession do |object, opts|
-          target = object.profession_target
-          target.target_content if target
+        expose :tags do |object, opts|
+          target = object.tag_target
+          target.target_content.split(',') if target
         end
 
-        expose :sns_platform do |object, opts|
+        expose :tag_labels do |object, opts|
+          target = object.tag_target
+          if target
+            target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
+          end
+        end
+
+        expose :sns_platforms do |object, opts|
           target = object.sns_platform_target
-          target.target_content if target
+          target.target_content.split(",") if target
         end
         # ---------------------------------------------------
 

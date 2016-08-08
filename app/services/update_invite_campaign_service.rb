@@ -63,14 +63,17 @@ class UpdateInviteCampaignService
         update_materials
         @campaign.update(@campaign_params.reject {|k,v| [:social_accounts, :material_ids].include? k })
 
+        @campaign.campaign_invites.each do |campaign_invite|
+          kol = campaign_invite.kol
+          kol.delete_campaign_id @campaign.id
+          campaign_invite.destroy
+        end
+
         @campaign_params[:social_accounts].each do |id|
           social_account = SocialAccount.find(id)
           kol = social_account.kol
-          campaign_invite = kol.receive_campaign(@campaign.id)
-          campaign_invite.update!({
-            budget: social_account.sale_price,
-            social_account_id: social_account.id
-          })
+          kol.add_campaign_id @campaign.id
+          kol.approve_and_receive_invite_campaign(@campaign.id, id)
         end
       end
     rescue Exception => e

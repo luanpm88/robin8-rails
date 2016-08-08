@@ -2,7 +2,6 @@ class Kol < ActiveRecord::Base
   include Redis::Objects
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
-
   # counter :redis_new_income      #unit is cent
   list :read_message_ids, :maxlength => 2000             # 所有阅读过的
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
@@ -45,7 +44,6 @@ class Kol < ActiveRecord::Base
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 
-  mount_uploader :avatar, ImageUploader
   mount_uploader :avatar, ImageUploader
 
   has_many :withdraws

@@ -22,6 +22,7 @@ module ImportKols
       kol = Kol.find_or_initialize_by(:name => row[1])
       kol.app_city = City.where("name like '%#{row[4][-2..-1]}%'").first.name_en  rescue nil
       kol.kol_role = 'mcn_big_v'
+      kol.role_apply_status = 'passed'
       if row[2] == "女"
         kol.gender = 2
       elsif row[2] == "男"

@@ -3,12 +3,14 @@ class SocialAccount < ActiveRecord::Base
   has_many :tags, :through => :social_account_tags, :source => :tag
   belongs_to :kol
 
+  validates :homepage, :presence => {message: "主页不能为空"}
   before_save :auto_complete_info
   after_create :create_kol_shows
   serialize :others, Hash
   mount_uploader :screenshot, ImageUploader
 
   def get_weibo_homepage
+    return if self.homepage.blank?
     uid = self.homepage.split("/").last.split("?").first
     if uid.match(/^\d+$/).present?
       homepage = "http://m.weibo.cn/u/#{uid}"
@@ -37,6 +39,7 @@ class SocialAccount < ActiveRecord::Base
 
   private
   def auto_complete_info
+    return if self.homepage.blank?
     return if self.followers_count.present?
     homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'
