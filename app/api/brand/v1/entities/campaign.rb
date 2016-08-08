@@ -115,8 +115,8 @@ module Brand
           ::SocialAccount.where(id: social_accounts)
         end
 
-        expose :professions do |object, opts|
-          target = object.profession_target
+        expose :tags do |object, opts|
+          target = object.tag_target
           target.target_content.split(',') if target
         end
 

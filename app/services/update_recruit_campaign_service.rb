@@ -4,7 +4,7 @@ class UpdateRecruitCampaignService
   PERMIT_PARAMS = [:name, :description, :task_description,
                    :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :sns_platforms, :professions,
+                  :region, :sns_platforms, :tags,
                   :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -53,10 +53,10 @@ class UpdateRecruitCampaignService
     begin
       ActiveRecord::Base.transaction do
         update_recruit_region
-        update_recruit_professions
+        update_recruit_tags
         update_recruit_sns_platforms
         update_materials
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :professions, :material_ids].include? k })
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :tags, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -94,11 +94,11 @@ class UpdateRecruitCampaignService
     end
   end
 
-  def update_recruit_professions
-    campaign_target = @campaign.campaign_targets.where(target_type: :professions).first
-    @campaign_params[:professions] = @campaign_params[:professions].gsub("/", ",")
-    unless campaign_target.target_content.eql? @campaign_params[:professions]
-      campaign_target.update_attributes(target_content: @campaign_params[:professions])
+  def update_recruit_tags
+    campaign_target = @campaign.campaign_targets.where(target_type: :tags).first
+    @campaign_params[:tags] = @campaign_params[:tags].gsub("/", ",")
+    unless campaign_target.target_content.eql? @campaign_params[:tags]
+      campaign_target.update_attributes(target_content: @campaign_params[:tags])
     end
   end
 

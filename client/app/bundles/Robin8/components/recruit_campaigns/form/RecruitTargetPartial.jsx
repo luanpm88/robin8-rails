@@ -39,21 +39,31 @@ export default class TargetPartial extends React.Component {
       const condstr = regionText.split("/").join(",");
       _.assignIn(condition, {region: condstr});
       this.props.region.onChange(condstr)
+    } else {
+      this.props.region.onChange("全部");
     }
 
-    const professionItems = this.professionSelector.activeItems;
-    let cond_array = professionItems.map((item) => {
-      return item.name;
-    });
-    _.assignIn(condition, {profession: cond_array.join(",")});
-    this.props.professions.onChange(cond_array)
+    const tagItems = this.tagSelector.activeItems;
+    if (tagItems.length > 0) {
+      let condstr = tagItems.map((item) => {
+        return item.name;
+      }).join(",");
+      _.assignIn(condition, {tag: condstr});
+      this.props.tags.onChange(condstr);
+    } else {
+      this.props.tags.onChange("全部");
+    }
 
     const snsItems = this.snsSelector.activeItems;
-    cond_array = snsItems.map((item) => {
-      return item.name;
-    });
-    _.assignIn(condition, {sns: cond_array.join(",")});
-    this.props.sns_platforms.onChange(cond_array);
+    if (snsItems.length > 0) {
+      let condstr = snsItems.map((item) => {
+        return item.name;
+      }).join(",");
+      _.assignIn(condition, {sns: condstr});
+      this.props.sns_platforms.onChange(condstr);
+    } else {
+      this.props.sns_platforms.onChange("全部");
+    }
 
     this.fetchKolCountWithConditions(condition);
   }
@@ -61,7 +71,7 @@ export default class TargetPartial extends React.Component {
   initConditionComponent() {
     $(".target-city-label").bind("change", this.handleConditionChange)
 
-    this.professionSelector = new TagSelector({
+    this.tagSelector = new TagSelector({
       onSelectionDone: (activeItems, state=true) => {
         let activeText;
 
@@ -71,7 +81,7 @@ export default class TargetPartial extends React.Component {
           }).join("/");
         }
 
-        $("#profession-result").html(activeText || "全部");
+        $("#tag-result").html(activeText || "全部");
         if (!!state) this.handleConditionChange();
       }
     });
@@ -97,24 +107,25 @@ export default class TargetPartial extends React.Component {
   }
 
   componentDidUpdate() {
-    // if(!this.initSelector) {
-      this.setInitialSelector();
-      // this.initSelector = true;
-    // }
+    console.log("--------------", this.props);
+    const { region, tags, sns_platforms } = this.props;
 
+    if(!this.initSelector && this.props.stateReady) {
+      this.setInitialSelector();
+      this.initSelector = true;
+    }
   }
 
   setInitialSelector() {
+    const { region, tags, sns_platforms } = this.props;
 
-
-    const { region, professions, sns_platforms } = this.props;
     $('.target-city-label').text(region.value || "全部")
-    if (professions.value.length > 0)
-      this.professionSelector.set(professions.value);
-    if (sns_platforms.value.length > 0)
-      this.snsSelector.set(sns_platforms.value);
+    if (tags && tags.value.length > 0)
+      this.tagSelector.set(tags.value, false);
+    if (sns_platforms && sns_platforms.value.length > 0)
+      this.snsSelector.set(sns_platforms.value, false);
 
-    // this.handleConditionChange();
+    this.handleConditionChange();
   }
 
   renderTargetTitle(){
@@ -149,12 +160,12 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="campaign-target target-profession">
+                <div className="campaign-target target-tag">
                   <label>分类</label>
                   <a className="btn btn-blue btn-default target-btn"
-                     onClick={ (event) => { this.professionSelector.show() }}>选择分类</a>
+                     onClick={ (event) => { this.tagSelector.show() }}>选择分类</a>
                   <div className="target-result">
-                    <div id="profession-result"></div>
+                    <div id="tag-result"></div>
                   </div>
                 </div>
               </div>
