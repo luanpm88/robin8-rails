@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :hot_items
     resources :helper_docs
     resources :helper_tags
+    resources :social_accounts
 
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
@@ -33,6 +34,8 @@ Rails.application.routes.draw do
       match '/ban' => 'kols#ban', via: [:post, :get]
       match '/disban' => 'kols#disban', via: [:post]
       match '/withdraw' => 'kols#withdraw' , via: [:post, :get]
+
+
       collection do
         get 'search'
         post 'search'
@@ -40,6 +43,8 @@ Rails.application.routes.draw do
       member do
         match 'campaign_compensation', via: [:post, :get]
         get :transaction
+        get :edit_profile
+        put :update_profile
       end
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]

@@ -3,6 +3,7 @@ class SocialAccount < ActiveRecord::Base
   has_many :tags, :through => :social_account_tags, :source => :tag
   belongs_to :kol
 
+  validates :homepage, :presence => {message: "主页不能为空"}
   before_save :auto_complete_info
   after_create :create_kol_shows
   serialize :others, Hash

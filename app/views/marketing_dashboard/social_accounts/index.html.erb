@@ -1,0 +1,37 @@
+<%= link_to "新建社交帐号", new_marketing_dashboard_social_account_path(:kol_id => params[:kol_id]) %>
+<h5><%= devise_error_messages! %></h5>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>kol_id</th>
+      <th>平台来源</th>
+      <th>用户名</th>
+      <th>主页</th>
+      <th>头像 url</th>
+      <th>个人简介</th>
+      <th>喜欢数</th>
+      <th>关注数</th>
+      <th>好友数</th>
+      <th>转发数</th>
+      <th>文章数</th>
+      <th>是否认证</th>
+      <th>省份</th>
+      <th>城市</th>
+      <th>性别</th>
+      <th>第二条价格</th>
+      <th>转发价格</th>
+      <th>截图</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @social_accounts.each do |k| %>
+      <tr>
+        <% %w(kol_id provider username homepage avatar_url brief like_count followers_count friends_count reposts_count statuses_count verified province city gender price second_price repost_price screenshot).each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
