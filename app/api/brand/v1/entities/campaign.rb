@@ -120,6 +120,13 @@ module Brand
           target.target_content.split(',') if target
         end
 
+        expose :tag_labels do |object, opts|
+          target = object.profession_target
+          if target
+            target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
+          end
+        end
+
         expose :sns_platforms do |object, opts|
           target = object.sns_platform_target
           target.target_content.split(",") if target
