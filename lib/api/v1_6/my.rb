@@ -15,7 +15,7 @@ module API
           optional :page, type: Integer
         end
         get 'friends' do
-          current_kol.friends.page(params[:page]).per_page(10)
+          friends = current_kol.friends.page(params[:page]).per_page(10)
           present :error, 0
           present :friends, friends, with: API::V1_6::Entities::BigVEntities::Summary
         end

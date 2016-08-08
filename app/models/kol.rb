@@ -68,9 +68,11 @@ class Kol < ActiveRecord::Base
   has_many :big_vs, :through => :agent_kols, :source => :kol
   belongs_to :agent_kol, :foreign_key => :kol_id
 
-  has_many :followships
+  has_many :followships, :foreign_key => :kol_id
   has_many :followers, through: :followships,  :source => :follower
-  has_many :friends, through: :followships, :source => :kol
+
+  has_many :friendships, :foreign_key => :follower_id, :class_name => 'Followship'
+  has_many :friends, through: :friendships, :source => :kol
 
 
   has_many :kol_keywords
@@ -556,6 +558,6 @@ class Kol < ActiveRecord::Base
   end
 
   def is_follow?(big_v)
-    big_v.followship.collect{|t| t.follower_id}.include?(self.id)
+    big_v.followships.collect{|t| t.follower_id}.include?(self.id)
   end
 end

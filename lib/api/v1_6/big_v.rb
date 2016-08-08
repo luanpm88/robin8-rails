@@ -37,7 +37,7 @@ module API
             present :kol_shows, big_v.kol_shows, with: API::V1_6::Entities::KolShowEntities::Summary
             present :kol_keywords, big_v.kol_keywords, with: API::V1_6::Entities::KolKeywordEntities::Summary
             present :social_accounts, big_v.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-            present :is_follow, (current_user.is_follow?(big_v) rescue false) == true ? 1 : 0
+            present :is_follow, (current_kol.is_follow?(big_v) rescue false) == true ? 1 : 0
           else
             present :error, 1
             present :detail, '该用户不存在'
@@ -50,7 +50,7 @@ module API
         end
         post ':id/follow' do
           big_v = Kol.find params[:id]  rescue nil
-          if !current_kol
+          if current_kol.blank?
             present :error, 1
             present :detail, '请您先登录'
           elsif big_v
