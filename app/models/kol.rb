@@ -66,6 +66,13 @@ class Kol < ActiveRecord::Base
   has_many :big_vs, :through => :agent_kols, :source => :kol
   belongs_to :agent_kol, :foreign_key => :kol_id
 
+  has_many :followships, :foreign_key => :kol_id
+  has_many :followers, through: :followships,  :source => :follower
+
+  has_many :friendships, :foreign_key => :follower_id, :class_name => 'Followship'
+  has_many :friends, through: :friendships, :source => :kol
+
+
   has_many :kol_keywords
 
   scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
@@ -537,5 +544,18 @@ class Kol < ActiveRecord::Base
 
   def is_big_v?
     self.kol_role == 'big_v' || self.kol_role == 'mcn_big_v'
+  end
+
+  def follow(big_v)
+    followship = Followship.find_by(:follower_id => self.id, :kol_id => big_v.id)
+    if followship
+      followship.delete
+    else
+      Followship.create!(:follower_id => self.id, :kol_id => big_v.id)
+    end
+  end
+
+  def is_follow?(big_v)
+    big_v.followships.collect{|t| t.follower_id}.include?(self.id)
   end
 end

@@ -1,0 +1,16 @@
+<% Province.all.each do |province| %>
+  <h2>
+    <%= province.name %>
+  </h2>
+  <table class='table table-bordered'>
+    <tbody>
+      <%  City.where(:province_id => province.id).each_slice(4) do |items| %>
+        <tr>
+         <% items.each do |i| %>
+          <td><%= i.name %></td>
+         <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

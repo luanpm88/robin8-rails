@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805063150) do
+ActiveRecord::Schema.define(version: 20160808071231) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -508,6 +508,16 @@ ActiveRecord::Schema.define(version: 20160805063150) do
 
   add_index "followers", ["news_room_id"], name: "index_followers_on_news_room_id", using: :btree
 
+  create_table "followships", force: :cascade do |t|
+    t.integer  "follower_id", limit: 4
+    t.integer  "kol_id",      limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "followships", ["follower_id"], name: "index_followships_on_follower_id", using: :btree
+  add_index "followships", ["kol_id"], name: "index_followships_on_kol_id", using: :btree
+
   create_table "helper_docs", force: :cascade do |t|
     t.string   "img_url",       limit: 255
     t.string   "question",      limit: 255
@@ -919,6 +929,7 @@ ActiveRecord::Schema.define(version: 20160805063150) do
     t.datetime "role_check_time"
     t.string   "avatar_url",             limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
+    t.string   "role_check_remark",      limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1409,6 +1420,7 @@ ActiveRecord::Schema.define(version: 20160805063150) do
     t.string   "screenshot",      limit: 255
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+    t.string   "others",          limit: 255
   end
 
   add_index "social_accounts", ["uid"], name: "index_social_accounts_on_uid", using: :btree

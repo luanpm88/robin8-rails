@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     resources :hot_items
     resources :helper_docs
     resources :helper_tags
-    resources :social_accounts
+    resources :social_accounts do 
+      collection do 
+        get :cities
+      end
+    end
 
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do

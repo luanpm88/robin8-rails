@@ -33,6 +33,18 @@ module ImportKols
       kol
     end
 
+    #39、87 没有头像
+    def self.set_avatar_url
+      book = Spreadsheet.open Path
+      sheet1 = book.worksheet 0
+      sheet1.each_with_index do |row,index|
+        next if index < 4 || index == 39 + 3  ||  index == 87 + 3
+        kol = Kol.find_or_initialize_by(:name => row[1])
+        kol.avatar_url = "http://7xozqe.com1.z0.glb.clouddn.com/vs_media_#{index - 3}.jpg"
+        kol.save
+      end
+    end
+
     def self.create_social_account(kol, row)
       if row[13].present? && SocialAccount.find_by(:provider => 'meipai', :homepage => row[13]).blank?
         kol.social_accounts.build(:provider => 'meipai', :homepage => row[13], :price => row[15].to_i, :tag_ids => [get_profession(row[13])])

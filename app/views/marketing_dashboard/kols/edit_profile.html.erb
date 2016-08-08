@@ -73,6 +73,11 @@
               <%= f.select :role_apply_status, ["applying", "passed", "rejected"], class: "form-control" %>
             </div>
 
+            <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "如果是拒绝, 请填写拒绝理由" %><br />
+              <%= f.text_field :role_check_remark, class: "form-control" %>
+            </div>
+
 
             <div class="actions">
               <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
