@@ -95,11 +95,11 @@ module API
         #活动报名
         params do
           requires :id, type: Integer
-          requires :name, type: String
-          requires :phone, type: String
-          requires :weixin_no, type: String
-          requires :weixin_friend_count, type: Integer
-          requires :expect_price, type: String
+          optional :name, type: String
+          optional :phone, type: String
+          optional :weixin_no, type: String
+          optional :weixin_friend_count, type: Integer
+          optional :expect_price, type: String
           optional :remark, type: String
           optional :image_ids, type: String
         end

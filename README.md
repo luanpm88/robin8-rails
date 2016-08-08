@@ -45,4 +45,5 @@ Starting MailCatcher
 
 #8.15
   1. 先导入k1,vs media .再导入 robin8 weibo public_wechat
-  2. 完善资料
+  2. 老数据迁移
+  3. 完善资料
