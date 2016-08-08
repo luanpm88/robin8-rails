@@ -37,7 +37,7 @@ module API
             present :kol_shows, big_v.kol_shows, with: API::V1_6::Entities::KolShowEntities::Summary
             present :kol_keywords, big_v.kol_keywords, with: API::V1_6::Entities::KolKeywordEntities::Summary
             present :social_accounts, big_v.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-            present :is_follow, current_user.is_follow?(big_v) rescue false
+            present :is_follow, (current_user.is_follow?(big_v) rescue false) == true ? 1 : 0
           else
             present :error, 1
             present :detail, '该用户不存在'
