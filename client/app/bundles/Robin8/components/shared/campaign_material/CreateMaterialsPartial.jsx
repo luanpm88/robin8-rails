@@ -11,7 +11,7 @@ export default class CreateMaterialsPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.material_array = []
+    this.material_array = [];
 
     this.state = {
       showMaterialModal: false,
@@ -31,7 +31,7 @@ export default class CreateMaterialsPartial extends React.Component {
   saveRecruitCampaignMaterial(material) {
     const url_type = material.type;
     const url = material.url;
-    const data = {url_type, url}
+    const data = {url_type, url};
 
     fetch(`/brand_api/v1/campaign_materials`, {
       headers: {
@@ -44,7 +44,7 @@ export default class CreateMaterialsPartial extends React.Component {
       body: JSON.stringify(data)
     }).then(function(response) {
       response.json().then(function(data){
-        this.add(data)
+        this.add(data);
       }.bind(this))
     }.bind(this),
     function(error) {
@@ -53,20 +53,20 @@ export default class CreateMaterialsPartial extends React.Component {
   }
 
   add(material) {
-    this.material_array.push(material)
-    this.update()
+    this.material_array.push(material);
+    this.update();
   }
 
   update() {
     const { onChange } = this.props.materials;
-    onChange(JSON.stringify(this.material_array))
-    const material_ids = _.map(this.material_array, 'id')
+    onChange(JSON.stringify(this.material_array));
+    const material_ids = _.map(this.material_array, 'id');
     this.props.material_ids.onChange(material_ids);
   }
 
   remove(e) {
-    const id = $(e.target).parent().find(".material-id").text().trim()
-    const index = _.findIndex(this.material_array, function(m) { return m.id == id })
+    const id = $(e.target).parent().find(".material-id").text().trim();
+    const index = _.findIndex(this.material_array, function(m) { return m.id == id });
     if(index != -1) {
       this.material_array.splice(index, 1);
       this.update();
@@ -97,11 +97,11 @@ export default class CreateMaterialsPartial extends React.Component {
         },
         init: {
           'FileUploaded': function(up, file, info) {
-            const url = up.getOption('domain') + '/' + file.target_name
-            var material = {}
-            material['type'] = 'image'
-            material['url'] = url
-            this.saveRecruitCampaignMaterial(material)
+            const url = up.getOption('domain') + '/' + file.target_name;
+            var material = {};
+            material['type'] = 'image';
+            material['url'] = url;
+            this.saveRecruitCampaignMaterial(material);
           }.bind(this)
         }
     });
@@ -124,20 +124,20 @@ export default class CreateMaterialsPartial extends React.Component {
         auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
         init: {
           'FileUploaded': function(up, file, info) {
-            const url = up.getOption('domain') + '/' + file.target_name
-            var material = {}
-            material['type'] = 'file'
-            material['url'] = url
-            this.saveRecruitCampaignMaterial(material)
+            const url = up.getOption('domain') + '/' + file.target_name;
+            var material = {};
+            material['type'] = 'file';
+            material['url'] = url;
+            this.saveRecruitCampaignMaterial(material);
           }.bind(this)
         }
     });
   }
 
   handleUrlClick(type, url) {
-    var material = {}
-    material['type'] = type
-    material['url'] = url
+    var material = {};
+    material['type'] = type;
+    material['url'] = url;
     this.saveRecruitCampaignMaterial(material);
   }
 
@@ -153,10 +153,10 @@ export default class CreateMaterialsPartial extends React.Component {
     }
     const materailList = [];
     for(let index in this.material_array) {
-      const material = this.material_array[index]
-      const id = material.id
-      const type = material.url_type
-      const url = material.url
+      const material = this.material_array[index];
+      const id = material.id;
+      const type = material.url_type;
+      const url = material.url;
       materailList.push(
         <li className="material" key={index}>
           <MaterialType type={type} />
@@ -170,10 +170,26 @@ export default class CreateMaterialsPartial extends React.Component {
   renderMaterailButton() {
     return (
       <ul className="material-option clearfix" id="material-option">
-        <li className="upload-url"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>填写文章地址</button></li>
-        <li><button className="btn btn-blue btn-default" id="upload-img">上传图片</button></li>
-        <li className="upload-video"><button className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>填写视频地址</button></li>
-        <li><button className="btn btn-blue btn-default" id="upload-custom">上传自定义文件</button></li>
+        <li className="upload-url">
+          <span className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'article'})}}>
+            填写文章地址
+          </span>
+        </li>
+        <li>
+          <span className="btn btn-blue btn-default" id="upload-img">
+            上传图片
+          </span>
+        </li>
+        <li className="upload-video">
+          <span className="btn btn-blue btn-default" onClick={(e)=>{ e.preventDefault(); this.setState({showMaterialModal: true, materialType: 'video'})}}>
+            填写视频地址
+          </span>
+        </li>
+        <li>
+          <span className="btn btn-blue btn-default" id="upload-custom">
+            上传自定义文件
+          </span>
+        </li>
       </ul>
     )
   }

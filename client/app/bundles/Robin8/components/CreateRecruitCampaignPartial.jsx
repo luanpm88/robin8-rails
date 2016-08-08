@@ -82,7 +82,7 @@ class CreateRecruitCampaign extends React.Component{
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
-              {<CreateMaterialsPartial {...{materials, material_ids}} />}
+              <CreateMaterialsPartial {...{materials, material_ids}} />
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
