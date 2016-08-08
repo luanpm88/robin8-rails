@@ -96,7 +96,7 @@ CreateInviteCampaign = reduxForm({
   state => ({
     initialValues: {
       start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
-      deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
+      deadline: moment().add(10, "days").format("YYYY-MM-DD HH:mm"),
       budget: 0,
       social_accounts: []
     }
