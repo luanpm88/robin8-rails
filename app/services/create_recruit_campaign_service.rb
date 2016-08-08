@@ -4,7 +4,7 @@ class CreateRecruitCampaignService
   PERMIT_PARAMS = [:name, :description, :task_description,
                   :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :profession, :sns_platform, :recruit_start_time,
+                  :region, :tags, :sns_platforms, :recruit_start_time,
                   :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -38,11 +38,11 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :profession, :sns_platform, :material_ids].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :tags, :sns_platforms, :material_ids].include? k })
 
         create_campaign_materials
 
-        @campaign_params.select{ |k, v| [:region, :profession, :sns_platform].include? k }.each do |k, v|
+        @campaign_params.select{ |k, v| [:region, :tags, :sns_platforms].include? k }.each do |k, v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end

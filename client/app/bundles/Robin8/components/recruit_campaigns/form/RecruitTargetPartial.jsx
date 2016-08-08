@@ -9,6 +9,7 @@ export default class TargetPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {kol_count: 0};
+    this.initSelector = false;
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
@@ -25,7 +26,7 @@ export default class TargetPartial extends React.Component {
       }.bind(this))
     }.bind(this),
     function(error) {
-      console.error("----------查询kol数量失败---------------")
+      console.error("----------查询kol数量失败---------------");
     })
   }
 
@@ -35,27 +36,33 @@ export default class TargetPartial extends React.Component {
 
     const regionText = $('.target-city-label').text().trim();
     if (regionText != "全部") {
-      const condstr = regionText.split("/").join(",");
+      let condstr = regionText.split("/").join(",");
       _.assignIn(condition, {region: condstr});
       this.props.region.onChange(condstr)
+    } else {
+      this.props.region.onChange("全部");
     }
 
-    const professionItems = this.professionSelector.activeItems;
-    if (professionItems.length > 0) {
-      const condstr = professionItems.map((item) => {
+    const tagItems = this.tagSelector.activeItems;
+    if (tagItems.length > 0) {
+      let condstr = tagItems.map((item) => {
         return item.name;
       }).join(",");
-      _.assignIn(condition, {profession: condstr});
-      this.props.profession.onChange(condstr)
+      _.assignIn(condition, {tag: condstr});
+      this.props.tags.onChange(condstr);
+    } else {
+      this.props.tags.onChange("全部");
     }
 
     const snsItems = this.snsSelector.activeItems;
     if (snsItems.length > 0) {
-      const condstr = snsItems.map((item) => {
+      let condstr = snsItems.map((item) => {
         return item.name;
       }).join(",");
       _.assignIn(condition, {sns: condstr});
-      this.props.sns_platform.onChange(condstr)
+      this.props.sns_platforms.onChange(condstr);
+    } else {
+      this.props.sns_platforms.onChange("全部");
     }
 
     this.fetchKolCountWithConditions(condition);
@@ -64,7 +71,7 @@ export default class TargetPartial extends React.Component {
   initConditionComponent() {
     $(".target-city-label").bind("change", this.handleConditionChange)
 
-    this.professionSelector = new TagSelector({
+    this.tagSelector = new TagSelector({
       onSelectionDone: (activeItems, state=true) => {
         let activeText;
 
@@ -74,7 +81,7 @@ export default class TargetPartial extends React.Component {
           }).join("/");
         }
 
-        $("#profession-result").html(activeText || "全部");
+        $("#tag-result").html(activeText || "全部");
         if (!!state) this.handleConditionChange();
       }
     });
@@ -93,13 +100,31 @@ export default class TargetPartial extends React.Component {
         if (!!state) this.handleConditionChange();
       }
     });
-
-    this.snsSelector.set();
-    this.professionSelector.set();
   }
 
   componentDidMount(){
     this.initConditionComponent();
+  }
+
+  componentDidUpdate() {
+    console.log("--------------", this.props);
+    const { region, tags, sns_platforms } = this.props;
+
+    if(!this.initSelector && this.props.stateReady) {
+      this.setInitialSelector();
+      this.initSelector = true;
+    }
+  }
+
+  setInitialSelector() {
+    const { region, tags, sns_platforms } = this.props;
+
+    $('.target-city-label').text(region.value || "全部")
+    if (tags && tags.value.length > 0)
+      this.tagSelector.set(tags.value, false);
+    if (sns_platforms && sns_platforms.value.length > 0)
+      this.snsSelector.set(sns_platforms.value, false);
+
     this.handleConditionChange();
   }
 
@@ -109,13 +134,10 @@ export default class TargetPartial extends React.Component {
   }
 
   renderKOlCount(){
-    if (this.state.kol_count) {
-      return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
-    }
+    return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
   }
 
   render() {
-    // const { region } = this.props;
     return (
       <div className="creat-activity-form">
         <div className="header">
@@ -138,12 +160,12 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="campaign-target target-profession">
+                <div className="campaign-target target-tag">
                   <label>分类</label>
                   <a className="btn btn-blue btn-default target-btn"
-                     onClick={ (event) => { this.professionSelector.show() }}>选择分类</a>
+                     onClick={ (event) => { this.tagSelector.show() }}>选择分类</a>
                   <div className="target-result">
-                    <div id="profession-result"></div>
+                    <div id="tag-result"></div>
                   </div>
                 </div>
               </div>

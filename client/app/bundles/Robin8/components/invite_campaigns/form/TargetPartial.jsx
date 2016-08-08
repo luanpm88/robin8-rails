@@ -9,11 +9,27 @@ export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
+    _.bindAll(this, ["handleClickSearch", "handleConditionChange", "initConditionComponent"])
+  }
+
+  handleClickSearch() {
+    const searchText = this.refs.searchInput.value;
+
+    if (!!searchText.trim()) {
+      this.handleConditionChange();
+    } else {
+      this.refs.searchInput.focus();
+    }
   }
 
   handleConditionChange(){
     let condition = {};
+
+    const searchText = this.refs.searchInput.value;
+    if (!!searchText.trim()) {
+      const condstr = searchText.trim();
+      _.assignIn(condition, {word: condstr});
+    }
 
     const regionText = $('.target-city-label').text().trim();
     if (regionText != "全部") {
@@ -116,7 +132,17 @@ export default class TargetPartial extends React.Component {
         </div>
         <div className="content">
           <div className="campaign-target-group">
-
+            <div className="search-bar">
+              <div className="search-bar-inner">
+                <div className="search-input">
+                  <span className="icon-medium icon-search"></span>
+                  <input ref="searchInput" placeholder="请输入想找的自媒体名称或关键字" name="search" />
+                </div>
+                <div className="search-actions">
+                  <div className="btn btn-search" onClick={event => this.handleClickSearch(event)}>搜索</div>
+                </div>
+              </div>
+            </div>
             <div className="row">
               <div className="col-md-3">
                 <div className="campaign-target target-region">

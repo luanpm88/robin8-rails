@@ -21,6 +21,25 @@ module Concerns
       self.receive_campaign_ids.delete(campaign_id)
     end
 
+    # 自动为KOL接收特邀活动，因为特邀活动人少
+    def approve_and_receive_invite_campaign(campaign_id, social_account_id)
+      campaign = Campaign.find campaign_id  rescue nil
+      social_account = self.social_accounts.find social_account_id rescue nil
+
+      return if campaign.blank? || social_account.blank? || !(self.receive_campaign_ids.include? "#{campaign_id}")
+      campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+      if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
+        uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
+        campaign_invite.status = 'running'
+        campaign_invite.img_status = 'pending'
+        campaign_invite.uuid = uuid
+        campaign_invite.budget =  social_account.sale_price
+        campaign_invite.social_account_id = social_account.id
+        campaign_invite.save
+      end
+      campaign_invite
+    end
+
     # 成功接收接收活动for pc
     def approve_campaign(campaign_id)
       campaign = Campaign.find campaign_id  rescue nil

@@ -50,11 +50,8 @@ class CreateInviteCampaignService
         @campaign_params[:social_accounts].each do |id|
           social_account = SocialAccount.find(id)
           kol = social_account.kol
-          campaign_invite = kol.receive_campaign(@campaign.id)
-          campaign_invite.update!({
-            budget: social_account.sale_price,
-            social_account_id: social_account.id
-          })
+          kol.add_campaign_id @campaign.id
+          kol.approve_and_receive_invite_campaign(@campaign.id, id)
         end
       end
       return true
