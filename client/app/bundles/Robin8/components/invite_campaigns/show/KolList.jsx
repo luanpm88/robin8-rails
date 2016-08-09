@@ -30,9 +30,8 @@ export default class KolSelectPartial extends React.Component {
       console.error("----------获取已接受邀请invites失败---------------");
     })
   }
-  
+
   renderScreeshot(invite) {
-    debugger
     if(invite.screenshot) {
       return <td>{invite.screenshot}</td>
     } else {
@@ -98,7 +97,6 @@ export default class KolSelectPartial extends React.Component {
 
       this.total_agreed_invites.map((invite, index) => {
         const item = this.renderKolItem(invite, "selected");
-        debugger
         selectedKolsList.push(item);
       });
 

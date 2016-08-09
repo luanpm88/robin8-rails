@@ -20,7 +20,6 @@ class CreateInviteCampaignService
     end
 
     @campaign_params.merge!(per_budget_type: 'invite')
-    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
     @campaign_params[:social_accounts] = @campaign_params[:social_accounts].split(",").map(&:to_i) rescue []
@@ -28,6 +27,7 @@ class CreateInviteCampaignService
       social_account = SocialAccount.find(id)
       sum += social_account.sale_price
     end
+    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
 
     if @campaign_params[:budget] == 0
       @errors << 'campaign budget can not be zero!'
