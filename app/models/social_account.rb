@@ -26,6 +26,8 @@ class SocialAccount < ActiveRecord::Base
     case self.provider
     when "weibo"
       "微博"
+    when "wechat"
+      "微信"
     when "public_wechat"
       "微信公众号"
     when "meipai"

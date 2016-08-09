@@ -69,33 +69,38 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      kols = nil
-      self.campaign_targets.each do |target|
-        if target.target_type == 'region'
-          if self.is_recruit_type?
-            if target.target_content == '全部' || target.target_content == '全部 全部'
-              kols = Kol.active.ios.where("app_version >= '1.2.0'")
-            else
-              kols = Kol.active.ios.where(:app_city => target.get_citys).where("app_version >= '1.2.0'")
+      kols = Kol.active
+
+      if self.is_recruit_type?
+        kols = kols.where("`kols`.`app_version` >= '1.2.0'")
+
+        self.campaign_targets.each do |target|
+          if target.target_type == 'region'
+            unless target.target_content == '全部' || target.target_content == '全部 全部'
+              kols = kols.where(:app_city => target.get_citys)
             end
+          elsif target.target_type == 'tags'
+            unless target.target_content == '全部'
+              kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
+              kols = kols.where("`kol_tags`.`tag_id` IN (?)", target.get_tags)
+            end
+          elsif target.target_type == 'sns_platforms'
+            unless target.target_content == '全部'
+              kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
+              kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
+            end
+            #TODO 添加指定kols
+          # elsif target.target_type == 'age'
+          #   kols = kols.where("age > '#{target.contents}'")
+          # elsif target.target_type == 'age'
+          #   kols = kols.where("age > '#{target.contents}'")
+          # elsif target.target_type == 'gender'
+          #   kols = kols.where("gender = '#{target.contents}'")
           end
-        elsif target.target_type == 'sns_platforms'
-          
-          
-        elsif target.target_type == 'tags'
-          
-          
-          #TODO 添加指定kols
-        # elsif target.target_type == 'age'
-        #   kols = kol.where("age > '#{target.contents}'")
-        # elsif target.target_type == 'age'
-        #   kols = kol.where("age > '#{target.contents}'")
-        # elsif target.target_type == 'gender'
-        #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols ||= Kol.active
-      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue []
+
+      kols.distinct.collect{|t| t.id} - get_unmatched_kol_ids rescue []
     end
 
     def get_kol_ids
