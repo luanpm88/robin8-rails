@@ -169,6 +169,14 @@ module Brand
           object.invalid_reasons.gsub(/\n/, ' ') if object.invalid_reasons.present?
         end
 
+        expose :totoal_invite_kols_count do |object, opts| # 邀请活动: 总邀请人数
+          object.campaign_invites.count if object.per_budget_type == "invite"
+        end
+
+        expose :totoal_agreed_invite_kols_count do |object, opts| #邀请活动: 接受活动的人数
+          object.campaign_invites.where(status: 'approved').count if object.per_budget_type == "invite"
+        end
+
         with_options(format_with: :iso_timestamp) do
           expose :created_at
           expose :updated_at
