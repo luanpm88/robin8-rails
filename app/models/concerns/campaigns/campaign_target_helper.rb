@@ -79,6 +79,12 @@ module Campaigns
               kols = Kol.active.ios.where(:app_city => target.get_citys).where("app_version >= '1.2.0'")
             end
           end
+        elsif target.target_type == 'sns_platforms'
+          
+          
+        elsif target.target_type == 'tags'
+          
+          
           #TODO 添加指定kols
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")

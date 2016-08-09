@@ -72,6 +72,15 @@ module Brand
             header "X-Page", @social_accounts.current_page
             header "X-Total-Pages", @social_accounts.total_pages
           end
+
+          desc 'Get social account full data by id'
+          params do
+            requires :id, type: Integer
+          end
+          get ":id" do
+            @social_account = SocialAccount.find(params[:id])
+            present @social_account, with: Entities::SocialAccountDetail
+          end
         end
       end
     end

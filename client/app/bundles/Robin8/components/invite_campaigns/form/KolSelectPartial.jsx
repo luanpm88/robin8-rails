@@ -1,11 +1,17 @@
 import React from 'react';
 import  _ from 'lodash';
 
-import TargetPartial      from './TargetPartial';
+import TargetPartial        from './TargetPartial';
+import SocialAccountDetailModal       from '../modals/SocialAccountDetailModal';
 
 export default class KolSelectPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      showSocialAccountDetailModal: false,
+      showSocialAccountId: null
+    };
 
     this.searchCondition = {};
 
@@ -68,6 +74,21 @@ export default class KolSelectPartial extends React.Component {
       actions.removeSelectedKol(kol);
     }
   }
+
+  closeSocialAccountDetailModal() {
+    this.setState({
+      showSocialAccountDetailModal: false,
+      showSocialAccountId: null
+    });
+  }
+
+  renderSocialAccountDetailModal(socialAccountId) {
+    this.setState({
+      showSocialAccountDetailModal: true,
+      showSocialAccountId: socialAccountId
+    });
+  }
+
 
   renderTips(){
     const tips = "<p>&nbsp;根据条件搜索KOL并挑选合适的加入到此列表</p>"
@@ -133,7 +154,9 @@ export default class KolSelectPartial extends React.Component {
         <td>{kol.get("tags").map(i => i.get("label")).join("/")}</td>
         <td>
           { actionBtn }
-          <div className="arrow-right show-detail"></div>
+          <div className="arrow-right show-detail"
+               onClick={event => this.renderSocialAccountDetailModal(kol.get("id"))}>
+          </div>
         </td>
       </tr>
     );
@@ -143,8 +166,8 @@ export default class KolSelectPartial extends React.Component {
     return (
       <table>
         <colgroup width="200"></colgroup>
-        <colgroup width="180"> ></colgroup>
-        <colgroup width="180"> ></colgroup>
+        <colgroup width="180"></colgroup>
+        <colgroup width="180"></colgroup>
         <colgroup width="180"></colgroup>
         <colgroup width="180"></colgroup>
         <thead>
@@ -253,6 +276,10 @@ export default class KolSelectPartial extends React.Component {
         <div className="kol-search-list-wrap">
           { this.renderSearchedKols() }
         </div>
+        <SocialAccountDetailModal
+          socialAccountId={this.state.showSocialAccountId}
+          show={this.state.showSocialAccountDetailModal}
+          onHide={this.closeSocialAccountDetailModal.bind(this)}/>
       </div>
     );
   }
