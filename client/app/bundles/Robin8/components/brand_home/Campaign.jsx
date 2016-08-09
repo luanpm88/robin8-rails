@@ -136,10 +136,10 @@ export default class Campaign extends React.Component {
           <li id="invites-count">
             <span className="txt">预计邀请人数</span>
             <div id="cl-invites-count">
-              <strong className="stat-num">{ campaign.get("totoal_invite_kols_count") }</strong>
+              <strong className="stat-num">{ campaign.get("total_invite_kols_count") }</strong>
             </div>
           </li>
-          <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("totoal_agreed_invite_kols_count") }</strong></li>
+          <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</strong></li>
           <li id="invites-total-budget">
             <span className="txt">邀请预算</span>
             <div  className="cl-invites-total-budget">
