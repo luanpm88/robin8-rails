@@ -16,7 +16,7 @@ export default class Overview extends React.Component{
               <ul>
                 <li><span className="txt">预计邀请人数</span><small className="stat-num">{ campaign.get("total_invite_kols_count") }</small></li>
                 <li><span className="txt">已邀请人数</span><small className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</small></li>
-                <li><span className="txt">招募预算</span><small className="stat-num stat-yuan"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
+                <li><span className="txt">总预算</span><small className="stat-num stat-yuan"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
               </ul>
             </div>
           </div>
