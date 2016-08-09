@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <h2>
+    新建个人展示
+    <%= link_to "返回上一页", marketing_dashboard_kol_shows_path(:kol_id => params[:kol_id]), class: "btn btn-default pull-right" %>
+  </h2>
+
+  <%= form_for([:marketing_dashboard, @kol_show], url: marketing_dashboard_kol_shows_path(:kol_id => params[:kol_id]), method: :post, html: { multiple: true}) do |f| %>
+    <%= render partial: 'form', locals: { f: f}  %>
+  <% end %>
+</div>

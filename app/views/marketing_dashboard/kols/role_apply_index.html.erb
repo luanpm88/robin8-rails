@@ -12,6 +12,7 @@
       <th>id</th>
       <th>昵称</th>
       <th>手机号</th>
+      <th>是否是热门</th>
       <th>审核状态</th>
       <th>操作</th>
     </tr>
@@ -20,13 +21,14 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name mobile_number role_apply_status).each do |v| %>
+        <% %w(id name mobile_number role_apply_status is_hot).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <td>
           <%= link_to '详情 or 编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
           |
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %>
+          | <%= link_to '个人展示', marketing_dashboard_kol_shows_path(:kol_id => k.id), :target => "_blank"  %>
         </td>
       </tr>
     <% end %>
