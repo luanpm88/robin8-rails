@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from 'react-router';
 
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign, isInviteCampaign} from "../../../helpers/CampaignHelper";
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign} from "../../../helpers/CampaignHelper";
 
 export default class Basic extends React.Component {
   constructor(props, context){
@@ -10,27 +10,13 @@ export default class Basic extends React.Component {
 
   renderEditCampaignButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
-      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-default btn-red btn-line stop-btn">编辑</Link>
+      return <Link to={`/brand/recruits/${campaign.get("id")}/edit`} className="btn btn-default btn-red btn-line stop-btn">编辑</Link>
     } else if (canPayCampaign(campaign.get("status"))) {
       if(isRecruitCampaign(campaign.get("per_budget_type"))) {
         return (
           <div>
             <Link to={`/brand/recruits/${campaign.get("id")}/edit`} className="recruit-before-pay-stop-btn">编辑</Link>
             <Link to={`/brand/recruits/${campaign.get("id")}/preview`} className="btn recruit-pay-stop-btn">支付</Link>
-          </div>
-        )
-      } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
-        return (
-          <div>
-            <Link to={`/brand/invites/${campaign.get("id")}/edit`} className="recruit-before-pay-stop-btn">编辑</Link>
-            <Link to={`/brand/invites/${campaign.get("id")}/preview`} className="btn recruit-pay-stop-btn">支付</Link>
-          </div>
-        )
-      } else {
-        return (
-          <div>
-            <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="recruit-before-pay-stop-btn">编辑</Link>
-            <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn recruit-pay-stop-btn">支付</Link>
           </div>
         )
       }

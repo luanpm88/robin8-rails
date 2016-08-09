@@ -318,6 +318,37 @@
         }
       }
     }
+
+    ul.invite-campaign {
+      li#invites-count {
+        width: 180px;
+
+        span.txt:first-child {
+          text-align: left;
+          width: 75px;
+        }
+
+        span.txt {
+          text-align: center;
+        }
+        #cl-invites-count {
+          width: 75px;
+          text-align: center;
+        }
+      }
+
+      li#invited-count {
+        width: 195px;
+      }
+
+      li#invites-total-budget {
+        width: 130px;
+        text-align: right;
+        .cl-total-budget {
+          text-align: center;
+        }
+      }
+    }
   }
 
   &:last-child {
