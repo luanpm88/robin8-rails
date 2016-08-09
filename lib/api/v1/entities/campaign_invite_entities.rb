@@ -4,7 +4,7 @@ module API
       module CampaignInviteEntities
         class Summary < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :status, :img_status, :is_invited, :screenshot, :reject_reason , :uuid
+          expose :id, :status, :img_status, :is_invited, :screenshot, :reject_reason , :uuid, :price, :sale_price
           expose :share_url do |campaign_invite|
             campaign_invite.origin_share_url
           end
@@ -36,7 +36,9 @@ module API
             campaign_invite.get_ocr_detail
           end
           expose :invite_status
-          expose :campaign, using: API::V1::Entities::CampaignEntities::Summary    if  lambda { |instance, options| instance.campaign.present? }
+          expose :campaign do |campaign_invite, options|
+            API::V1::Entities::CampaignEntities::Summary.represent campaign_invite.campaign, options.merge({campaign_invite: campaign_invite})
+          end
         end
       end
     end

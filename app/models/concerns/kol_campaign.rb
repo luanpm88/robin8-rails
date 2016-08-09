@@ -89,6 +89,17 @@ module Concerns
       end
     end
 
+    # 拒绝活动
+    def reject_campaign_invite(campaign_invite)
+      if campaign_invite && campaign_invite.status == 'running'
+        campaign_invite.status = 'rejected'
+        campaign_invite.img_status = 'rejected'
+        campaign_invite.save
+      else
+        nil
+      end
+    end
+
     # 待接收活动列表
     def running_campaigns
       approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running' or status != 'applying'").collect{|t| t.campaign_id}

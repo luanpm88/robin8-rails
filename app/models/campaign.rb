@@ -125,11 +125,16 @@ class Campaign < ActiveRecord::Base
   end
 
   def actual_budget(from_brand = true)
-    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
+    if self.is_invite_type?
+      self.campaign_invites.sum(:price)
+    else
+      from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
+    end
   end
 
+  #返回的entity 中会根据当前用户的价格覆盖
   def get_per_action_budget(from_brand = true)
-    from_brand ? per_action_budget : (actual_per_action_budget || cal_actual_per_action_budget)
+      from_brand ? per_action_budget : (actual_per_action_budget || cal_actual_per_action_budget)
   end
 
   def get_fee_info(from_brand = true)
@@ -168,11 +173,17 @@ class Campaign < ActiveRecord::Base
       else
         (get_avail_click * per_budget).round(2)       rescue 0
       end
-    else
+    elsif self.is_post_type? || self.is_recruit_type?
       if self.status == 'settled'
         (self.settled_invites.count * per_budget).round(2) rescue 0
       else
         (self.valid_invites.count * per_budget).round(2) rescue 0
+      end
+    elsif self.is_invite_type?
+      if from_brand
+        self.campaign_invites.where(:status => ['approved', 'finished', 'settled']).sum(:sale_price)
+      else
+        self.campaign_invites.where(:status => ['approved', 'finished', 'settled']).sum(:price)
       end
     end
   end
@@ -198,7 +209,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
+  ['click', 'post', 'recruit', 'cpa', 'cpi', 'invite'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end
