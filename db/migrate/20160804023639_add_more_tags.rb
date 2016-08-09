@@ -5,6 +5,7 @@ class AddMoreTags < ActiveRecord::Migration
     Tag.unscoped.find_by(:name => 'camera').update_columns(:label => '摄影', :enabled => true)
     Tag.find_by(:name => 'internet_consumption').update_columns(:enabled => false)
     Tag.unscoped.find_by(:name => 'mobile').update_columns(:enabled => true)
+    Tag.unscoped.find_by(:name => 'game').update_columns(:name => 'games')
 
     {
       'realestate'        => '房地产',
