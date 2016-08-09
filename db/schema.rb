@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804104707) do
+ActiveRecord::Schema.define(version: 20160809030238) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -839,7 +839,7 @@ ActiveRecord::Schema.define(version: 20160804104707) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                              default: 0,        null: false
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -886,6 +886,7 @@ ActiveRecord::Schema.define(version: 20160804104707) do
     t.string   "app_version",            limit: 255
     t.string   "private_token",          limit: 80
     t.string   "device_token",           limit: 80
+    t.string   "desc",                   limit: 255
     t.string   "alipay_account",         limit: 255
     t.string   "name",                   limit: 255
     t.string   "app_country",            limit: 255
@@ -908,13 +909,10 @@ ActiveRecord::Schema.define(version: 20160804104707) do
     t.string   "kol_level",              limit: 255
     t.string   "id_card",                limit: 255
     t.string   "job_info",               limit: 255
-    t.text     "desc",                   limit: 65535
-    t.string   "kol_role",               limit: 255,                            default: "public"
-    t.datetime "role_check_time"
-    t.datetime "role_apply_time"
+    t.text     "brief",                  limit: 65535
+    t.string   "kol_role",               limit: 255
     t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
-    t.string   "role_check_remark",      limit: 255
     t.string   "avatar_url",             limit: 255
   end
 
