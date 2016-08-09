@@ -330,6 +330,16 @@ module Brand
               error_403! "没有查看权限"
             end
           end
+
+          desc "获取特约活动的campaign_invites"
+          params do
+            requires :id, type: Integer
+          end
+          get '/:id/agreed_invites' do
+            @invite_campaign = Campaign.find_by(id: declared(params)[:id])
+            present @invite_campaign.campaign_invites.verifying_or_approved
+          end
+
         end
       end
 

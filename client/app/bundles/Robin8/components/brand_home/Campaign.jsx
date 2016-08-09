@@ -132,18 +132,17 @@ export default class Campaign extends React.Component {
       )
     } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
       return (
-        <ul className="stat-info grid-4">
-          <li>
+        <ul className="stat-info invite-campaign grid-4">
+          <li id="invites-count">
             <span className="txt">预计邀请人数</span>
-            <div className="cl-recruiters-count">
-              <strong className="stat-num">{ campaign.get("budget") / campaign.get('per_action_budget') }</strong>
+            <div id="cl-invites-count">
+              <strong className="stat-num">{ campaign.get("total_invite_kols_count") }</strong>
             </div>
           </li>
-          <li><span className="txt">已邀请</span><strong className="stat-num">{ campaign.get("brand_passed_count") }</strong></li>
-          <li><span className="txt">人均奖励</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
-          <li>
+          <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</strong></li>
+          <li id="invites-total-budget">
             <span className="txt">邀请预算</span>
-            <div  className="cl-total-budget">
+            <div  className="cl-invites-total-budget">
               <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
             </div>
           </li>
