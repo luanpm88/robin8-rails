@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808073152) do
+ActiveRecord::Schema.define(version: 20160809030238) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -264,7 +264,8 @@ ActiveRecord::Schema.define(version: 20160808073152) do
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
     t.integer  "social_account_id", limit: 4
-    t.float    "budget",            limit: 24
+    t.float    "sale_price",        limit: 24
+    t.float    "price",             limit: 24
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree

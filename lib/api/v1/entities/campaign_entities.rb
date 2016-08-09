@@ -22,8 +22,12 @@ module API
           expose :url do |campaign|
             campaign.url.gsub("#rd","").gsub("#wechat_redirect","")   rescue campaign.url
           end
-          expose :per_action_budget do |campaign|
-            campaign.get_per_action_budget(false)
+          expose :per_action_budget do |campaign, options|
+            if campaign.is_invite_type?
+              options[:campaign_invite].price
+            else
+              campaign.get_per_action_budget(false)
+            end
           end
           expose :budget do |campaign|
             campaign.actual_budget(false).round(0)

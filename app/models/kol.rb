@@ -166,19 +166,6 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  # def all_score
-  #   wechat_score  = identity_score('wechat')
-  #   wechat_third_score = identity_score('wechat_third')
-  #   weibo_score = identity_score('weibo')
-  #   total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
-  #   {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
-  #    :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
-  # end
-  #
-  # def data_score
-  #   (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5)
-  # end
-
   def identity_score(provider)
     (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
   end
@@ -269,6 +256,9 @@ class Kol < ActiveRecord::Base
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
       if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
+        count += 1
+      elsif invite.is_invite_type?
+        income += invite.price
         count += 1
       end
     end
