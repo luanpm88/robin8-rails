@@ -64,6 +64,13 @@ export function fetchInvite(id) {
   };
 }
 
+export function fetchAgreedInvitesOfInviteCampaign(id) {
+  return {
+    type: actionTypes.FETCH_AGREED_INVITES_OF_INVITE_CAMPAIGN,
+    promise: fetch(`/brand_api/v1/invite_campaigns/${id}/agreed_invites`, {"credentials": "same-origin"})
+  }
+}
+
 export function searchKolsInCondition(condition, page = 1){
   let params = [ `page=${page}` ];
   _.forIn(condition, (value, key) => params.push(`${key}=${value}`));

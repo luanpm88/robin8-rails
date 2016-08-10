@@ -10,6 +10,7 @@ export const initialState = Immutable.fromJS({
   hasfetchedInvite: false,
   campaign_statistics: [],
   campaign_installs: [],
+  agreed_invites_of_invite_campaign: [],
   selected_social_accounts: [],
   searched_social_accounts: {
     items: [],
@@ -46,6 +47,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
         $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
       }
       console.log("fetchState" + fetchState);
+      return $$state;
+
+    case actionTypes.FETCH_AGREED_INVITES_OF_INVITE_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);    
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "agreed_invites_of_invite_campaign": Immutable.fromJS(action.result.items) });
+      }
       return $$state;
 
     case actionTypes.FETCH_RECRUIT:
