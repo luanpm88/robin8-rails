@@ -87,6 +87,11 @@ export default class TargetPartial extends React.Component {
     });
 
     this.snsSelector = new SnsSelector({
+      items: [{
+        id: 1,
+        label: "微信",
+        name: "wechat"
+      }],
       onSelectionDone: (activeItems, state=true) => {
         let activeText;
 

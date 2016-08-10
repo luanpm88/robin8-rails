@@ -44,6 +44,17 @@ class CampaignTarget < ActiveRecord::Base
     city_name_ens
   end
 
+  def get_tags
+    return [] if target_type != 'tags' ||  target_content.blank?
+    tag_names = target_content.split(",").reject(&:blank?)
+    Tag.where(name: tag_names).map(&:id)
+  end
+
+  def get_sns_platforms
+    return [] if target_type != 'sns_platforms' ||  target_content.blank?
+    target_content.split(",").reject(&:blank?)
+  end
+
   def get_score_value
     return 0 if target_type != 'influence_score'
     self.target_content.split("_").last.to_i rescue 0

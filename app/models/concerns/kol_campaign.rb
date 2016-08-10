@@ -33,7 +33,8 @@ module Concerns
         campaign_invite.status = 'running'
         campaign_invite.img_status = 'pending'
         campaign_invite.uuid = uuid
-        campaign_invite.budget =  social_account.sale_price
+        campaign_invite.sale_price =  social_account.sale_price
+        campaign_invite.price =  social_account.price
         campaign_invite.social_account_id = social_account.id
         campaign_invite.save
       end

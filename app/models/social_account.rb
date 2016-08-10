@@ -10,6 +10,7 @@ class SocialAccount < ActiveRecord::Base
   mount_uploader :screenshot, ImageUploader
 
   def get_weibo_homepage
+    return if self.homepage.blank?
     uid = self.homepage.split("/").last.split("?").first
     if uid.match(/^\d+$/).present?
       homepage = "http://m.weibo.cn/u/#{uid}"
@@ -27,6 +28,8 @@ class SocialAccount < ActiveRecord::Base
     case self.provider
     when "weibo"
       "微博"
+    when "wechat"
+      "微信"
     when "public_wechat"
       "微信公众号"
     when "meipai"
@@ -38,6 +41,7 @@ class SocialAccount < ActiveRecord::Base
 
   private
   def auto_complete_info
+    return if self.homepage.blank?
     return if self.followers_count.present?
     homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'

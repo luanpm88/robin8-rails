@@ -22,6 +22,7 @@ module ImportKols
       kol = Kol.find_or_initialize_by(:name => (row[1] || row[8]))
       kol.desc = row[7]
       kol.kol_role = 'mcn_big_v'
+      kol.role_apply_status = 'passed'
       kol
     end
 

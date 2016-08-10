@@ -1,12 +1,24 @@
 import React from 'react';
 import  _ from 'lodash';
 
-import TargetPartial      from './TargetPartial';
+import TargetPartial        from './TargetPartial';
+import SocialAccountDetailModal       from '../modals/SocialAccountDetailModal';
+
+const baseUrl = "/brand_api/v1"
 
 export default class KolSelectPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {
+      showSocialAccountDetailModal: false,
+      showSocialAccountId: null,
+      selectedSocialAccounts: [],
+      searchedSocialAccounts: [],
+      searchedSocialAccountPaginate: {}
+    };
+
+    this.initialized = false;
     this.searchCondition = {};
 
     _.bindAll(this, [
@@ -14,7 +26,7 @@ export default class KolSelectPartial extends React.Component {
       "renderKolItem",
       "handleConditionChange",
       "handleSearchKolsInCondition",
-      "handleAddKol", "handleRemoveKol"
+      "handleAddSocialAccount", "handleRemoveSocialAccount"
     ])
   }
 
@@ -23,11 +35,28 @@ export default class KolSelectPartial extends React.Component {
 
   componentDidUpdate() {
     this.renderPaginator();
+
+    if (!this.initialized && this.props.selected_social_accounts) {
+      if (this.props.selected_social_accounts) {
+        this.setState({selectedSocialAccounts: this.props.selected_social_accounts.toJS()});
+      }
+      this.initialized = true;
+    }
   }
 
   handleSearchKolsInCondition(page = 1) {
-    const { actions } = this.props;
-    actions.searchKolsInCondition(this.searchCondition, page);
+    let params = [ `page=${page}` ];
+    _.forIn(this.searchCondition, (value, key) => params.push(`${key}=${value}`));
+
+    const queryString = params.join("&");
+    fetch(`${baseUrl}/social_accounts/search?${queryString}`, {"credentials": "include"})
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          searchedSocialAccounts: data.items,
+          searchedSocialAccountPaginate: data.paginate
+        })
+      });
   }
 
   handleConditionChange(condition = {}) {
@@ -35,38 +64,52 @@ export default class KolSelectPartial extends React.Component {
     this.handleSearchKolsInCondition();
   }
 
-  handleAddKol(event) {
-    const { actions, budget, searched_social_accounts, social_accounts } = this.props;
+  handleAddSocialAccount(event) {
+    const { budget, social_accounts } = this.props;
     const item = event.currentTarget;
     const id = $(item).closest(".kol-item").data("id");
 
     if (!social_accounts.value.includes(id)) {
-      const kol = searched_social_accounts.get("items").find((k) => {
-        return k.get("id") == id;
-      });
+      let { selectedSocialAccounts } = this.state;
+      const kol = _.find(this.state.searchedSocialAccounts, {"id": id});
 
+      budget.onChange(budget.value + kol.sale_price);
       social_accounts.value.push(id);
-      budget.onChange(budget.value + kol.get("sale_price"));
-      actions.addSelectedKol(kol);
+      selectedSocialAccounts.push(kol);
+
+      this.setState({ selectedSocialAccounts });
     }
   }
 
-  handleRemoveKol(event) {
-    const { actions, budget, selected_social_accounts, social_accounts } = this.props;
+  handleRemoveSocialAccount(event) {
+    const { budget, social_accounts } = this.props;
     const item = event.currentTarget;
     const id = $(item).closest(".kol-item").data("id");
 
     if (social_accounts.value.includes(id)) {
-      const kol = selected_social_accounts.find((k) => {
-        return k.get("id") == id;
-      });
+      let { selectedSocialAccounts } = this.state;
+      const kol = _.find(selectedSocialAccounts, {'id': id});
 
-      _.remove(social_accounts.value, (n) => {
-        return n == id;
-      });
-      budget.onChange(budget.value - kol.get("sale_price"));
-      actions.removeSelectedKol(kol);
+      budget.onChange(budget.value - kol.sale_price);
+      _.remove(social_accounts.value, n => {return n == id});
+      _.remove(selectedSocialAccounts, k => {return k.id == id});
+
+      this.setState({ selectedSocialAccounts });
     }
+  }
+
+  closeSocialAccountDetailModal() {
+    this.setState({
+      showSocialAccountDetailModal: false,
+      showSocialAccountId: null
+    });
+  }
+
+  renderSocialAccountDetailModal(socialAccountId) {
+    this.setState({
+      showSocialAccountDetailModal: true,
+      showSocialAccountId: socialAccountId
+    });
   }
 
   renderTips(){
@@ -75,13 +118,12 @@ export default class KolSelectPartial extends React.Component {
   }
 
   renderPaginator() {
-    const { searched_social_accounts } = this.props;
-    const paginate = searched_social_accounts.get("paginate");
+    const paginate = this.state.searchedSocialAccountPaginate;
 
-    if (paginate.get("X-Page") && paginate.get("X-Total-Pages")) {
+    if (paginate["X-Page"] && paginate["X-Total-Pages"]) {
       const pagination_options = {
-        currentPage: paginate.get("X-Page"),
-        totalPages: paginate.get("X-Total-Pages"),
+        currentPage: paginate["X-Page"],
+        totalPages: paginate["X-Total-Pages"],
         onPageClicked: (e,originalEvent,type,page) => {
           this.handleSearchKolsInCondition(page);
         }
@@ -92,11 +134,12 @@ export default class KolSelectPartial extends React.Component {
 
   renderKolItem(kol, state="active") {
     let actionBtn;
+
     switch(state) {
       case "active":
         actionBtn = (
           <div className="btn btn-line btn-red add"
-            onClick={ this.handleAddKol } >
+            onClick={ this.handleAddSocialAccount } >
             邀请
           </div>
         );
@@ -104,7 +147,7 @@ export default class KolSelectPartial extends React.Component {
       case "selected":
         actionBtn = (
           <div className="btn btn-line btn-red remove"
-            onClick={ this.handleRemoveKol } >
+            onClick={ this.handleRemoveSocialAccount } >
             取消
           </div>
         );
@@ -121,19 +164,21 @@ export default class KolSelectPartial extends React.Component {
     }
 
     return(
-      <tr className={`kol-item ${state}`} data-id={kol.get("id")} key={ `kol-${kol.get("id")}` }>
+      <tr className={`kol-item ${state}`} data-id={kol.id} key={ `kol-${kol.id}` }>
         <td>
           <div className="avatar">
-            <img src={kol.get("avatar_url")} />
-            {kol.get("username")}
+            <img src={kol.avatar_url} />
+            {kol.username}
           </div>
         </td>
-        <td>{kol.get("provider_text")}</td>
-        <td>{kol.get("sale_price")}元/条</td>
-        <td>{kol.get("tags").map(i => i.get("label")).join("/")}</td>
+        <td>{kol.provider_text}</td>
+        <td>{kol.sale_price}元/条</td>
+        <td>{kol.tags.map(i => i.label).join("/")}</td>
         <td>
           { actionBtn }
-          <div className="arrow-right show-detail"></div>
+          <div className="arrow-right show-detail"
+               onClick={event => this.renderSocialAccountDetailModal(kol.id)}>
+          </div>
         </td>
       </tr>
     );
@@ -143,8 +188,8 @@ export default class KolSelectPartial extends React.Component {
     return (
       <table>
         <colgroup width="200"></colgroup>
-        <colgroup width="180"> ></colgroup>
-        <colgroup width="180"> ></colgroup>
+        <colgroup width="180"></colgroup>
+        <colgroup width="180"></colgroup>
         <colgroup width="180"></colgroup>
         <colgroup width="180"></colgroup>
         <thead>
@@ -164,12 +209,12 @@ export default class KolSelectPartial extends React.Component {
   }
 
   renderSelectedKols() {
-    const { selected_social_accounts, budget } = this.props;
+    const { budget } = this.props;
     let selectedKolsList = [],
         selectedKolsAlert,
         selectedKolsResult;
 
-    selected_social_accounts.map((kol, index) => {
+    _.forEach(this.state.selectedSocialAccounts, (kol) => {
       const item = this.renderKolItem(kol, "selected");
       selectedKolsList.push(item);
     });
@@ -199,15 +244,14 @@ export default class KolSelectPartial extends React.Component {
   }
 
   renderSearchedKols() {
-    const { searched_social_accounts, selected_social_accounts } = this.props;
     let searchedKolsList = [],
         searchedKolsAlert,
         searchedKolsResult,
         searchedkolsPaginator;
 
-    searched_social_accounts.get("items").map((kol, index) => {
+    _.forEach(this.state.searchedSocialAccounts, (kol) => {
       let item;
-      if (!selected_social_accounts.find((k) => {return k.get("id") == kol.get("id")})) {
+      if (!_.find(this.state.selectedSocialAccounts, {"id": kol.id})) {
         item = this.renderKolItem(kol);
       } else {
         item = this.renderKolItem(kol, "disabled");
@@ -253,6 +297,10 @@ export default class KolSelectPartial extends React.Component {
         <div className="kol-search-list-wrap">
           { this.renderSearchedKols() }
         </div>
+        <SocialAccountDetailModal
+          socialAccountId={this.state.showSocialAccountId}
+          show={this.state.showSocialAccountDetailModal}
+          onHide={this.closeSocialAccountDetailModal.bind(this)}/>
       </div>
     );
   }

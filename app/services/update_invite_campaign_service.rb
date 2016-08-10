@@ -41,11 +41,7 @@ class UpdateInviteCampaignService
       sum += social_account.sale_price
     end
 
-    if can_edit_budget?
-      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
-    else
-      @errors << "活动已提交, 总预算不能更改!" unless @campaign.budget == @campaign_params[:budget]
-    end
+    @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
 
     if @campaign_params[:budget] == 0
       @errors << 'campaign budget can not be zero!'
@@ -118,10 +114,6 @@ class UpdateInviteCampaignService
 
   def can_edit?
     ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
-  end
-
-  def can_edit_budget?
-    @campaign.budget_editable
   end
 
 end

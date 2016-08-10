@@ -19,7 +19,7 @@ export default class SnsSelector {
     this.parentElememt = config.parentElememt;
     this.onSelectionDone = config.onSelectionDone;
     this.activeItems = [];
-    this.items = [
+    this.items = config.items || [
       {
         id: 1,
         label: "微博",
