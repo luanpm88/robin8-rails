@@ -17,7 +17,7 @@ module Brand
 
       group do
         before do
-          # authenticate!
+          authenticate!
         end
 
         resource :kols do
@@ -27,7 +27,7 @@ module Brand
             optional :region, type: String
           end
           get "search" do
-            @kols = Kol.all
+            @kols = Kol.active.big_v
 
             if params[:region] and params[:region] != "全部"
               regions = params[:region].split(",").reject(&:blank?)
