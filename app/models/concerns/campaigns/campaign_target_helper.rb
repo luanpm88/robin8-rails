@@ -69,7 +69,7 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      kols = Kol.active
+      kols = Kol.active.big_v
 
       if self.is_recruit_type?
         kols = kols.where("`kols`.`app_version` >= '1.2.0'")
