@@ -96,8 +96,9 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       return if self.status != 'agreed'
       ActiveRecord::Base.transaction do
-        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
-        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if self.actual_per_action_budget.blank?
+        self.update_columns(:status => 'executing')
+        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i) unless self.is_invite_type?
+        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  !self.is_invite_type? && self.actual_per_action_budget.blank?
         Message.new_campaign(self, (kol_ids || get_kol_ids))
       end
     end
