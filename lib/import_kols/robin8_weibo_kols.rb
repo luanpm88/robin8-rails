@@ -13,8 +13,9 @@ module ImportKols
         next if index < 4
         kol = create_kol(row)
         create_social_account(kol, row)
+        new_kol = kol.new_record?
         kol.save
-        mcn.big_vs << kol
+        mcn.big_vs << kol  if new_kol
         return if row[1].nil?
       end
     end

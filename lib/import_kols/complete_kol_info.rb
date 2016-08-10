@@ -6,7 +6,7 @@ module ImportKols
           kol.delete
         else
           kol.social_accounts.each do |social_account|
-            kol.mobile = 100000000000 + kol.id if kol.mobile.blank?
+            kol.mobile = 10000000000 + kol.id if kol.mobile.blank?
             kol.name = social_account.username            if kol.name.blank?   && social_account.username.present?
             kol.avatar_url = social_account.avatar_url    if kol.avatar_url.blank?   && social_account.avatar_url.present?
             kol.desc = social_account.brief               if (kol.desc.blank?  rescue true)

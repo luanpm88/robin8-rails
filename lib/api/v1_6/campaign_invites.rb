@@ -10,7 +10,7 @@ module API
           requires :id, type: Integer
         end
         post ':id/reject' do
-          campaign_invite = CampaignInvites.where(:id => params[:id]).first  rescue nil
+          campaign_invite = CampaignInvite.where(:id => params[:id]).first  rescue nil
           campaign = campaign_invite.campaign
           if campaign.blank? || !campaign.is_invite_type? || campaign_invite.blank?
             return error_403!({error: 1, detail: '该活动不存在,或者该活动不能拒绝' })

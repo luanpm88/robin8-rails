@@ -13,11 +13,12 @@ module API
           optional :job_info, type: String
           optional :tag_names, type: String
           optional :desc, type: String
+          optional :age, type: String
           optional :gender, type: Integer, values: [0, 1, 2]
         end
         post 'update_profile' do
           current_kol.update_columns(:name => params[:name], :app_city => params[:app_city], :job_info => params[:job_info],
-                                     :desc => params[:desc], :gender => params[:gender])
+                                     :desc => params[:desc], :gender => params[:gender], :age => params[:age])
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]

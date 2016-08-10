@@ -97,7 +97,7 @@ module API
           optional :name, type: String
           optional :phone, type: String
           optional :weixin_no, type: String
-          optional :weixin_friend_count, type: Integer
+          optional :weixin_friend_count
           optional :expect_price, type: String
           optional :remark, type: String
           optional :image_ids, type: String

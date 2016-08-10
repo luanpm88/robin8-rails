@@ -12,8 +12,9 @@ module ImportKols
         next if index < 4
         kol = create_kol(row)
         create_social_account(kol, row)
+        kol_no_exist = kol.new_record?
         kol.save
-        mcn.big_vs << kol
+        mcn.big_vs << kol  if kol_no_exist
         return if row[1].nil?
       end
     end

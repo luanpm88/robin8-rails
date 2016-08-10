@@ -12,7 +12,9 @@ module Crawler
       body = request.response_body
       doc = Nokogiri::HTML(body).css("script").to_s.match(/.*render_data\s=\s(.*?);<\/script>/)[1]      rescue nil
       return {} if doc.blank?
-      unescape_doc =  CGI.unescapeHTML(doc.to_s)
+      # unescape_doc =  CGI.unescapeHTML(doc.to_s)
+      unescape_doc = doc.to_s
+      puts unescape_doc
       content = eval(unescape_doc.to_s.gsub("null", '""'))  rescue nil
       puts "-------import error---homepage:#{home_page}"   if  content.blank?
       info = {}

@@ -14,7 +14,7 @@ module API
         end
 
         class Detail < Grape::Entity
-          expose :id, :name, :job_info, :desc, :app_city_label, :kol_role, :role_apply_status, :role_check_remark, :gender
+          expose :id, :name, :job_info, :desc, :app_city_label, :kol_role, :role_apply_status, :role_check_remark, :gender, :age
           expose :avatar_url do |big_v|
             big_v.get_avatar_url
           end
