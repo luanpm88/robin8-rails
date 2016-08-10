@@ -29,8 +29,9 @@ module ImportKols
 
     def self.create_social_account(kol, row)
       if row[16].present? && SocialAccount.find_by(:provider => 'weibo', :homepage => row[16]).blank?
-        kol.social_accounts.build(:provider => 'weibo', :homepage => row[16], :price => row[18].to_i,
+        social_account = kol.social_accounts.build(:provider => 'weibo', :homepage => row[16], :price => row[18].to_i,
                                   :repost_price => row[19].to_i, :tag_ids => [get_profession(row[20])])
+        social_account.auto_complete_info
       end
     end
 

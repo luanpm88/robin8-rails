@@ -29,11 +29,13 @@ module ImportKols
 
     def self.create_social_account(kol, row)
       if row[17].present? && SocialAccount.find_by(:provider => 'weibo', :homepage => row[17]).blank?
-        kol.social_accounts.build(:provider => 'weibo', :homepage => row[17], :tag_ids => [get_profession(row[20])])
+        social_account = kol.social_accounts.build(:provider => 'weibo', :homepage => row[17], :tag_ids => [get_profession(row[20])])
+        social_account.auto_complete_info
       end
       if row[8].present? && SocialAccount.find_by(:provider => 'public_wechat', :uid => row[9]).blank?
-        kol.social_accounts.build(:provider => 'public_wechat', :username => row[8], :uid => row[9],
+        social_account = kol.social_accounts.build(:provider => 'public_wechat', :username => row[8], :uid => row[9],
                                   :followers_count => row[10].to_i, :tag_ids => [get_profession(row[13])])
+        social_account.auto_complete_info
       end
     end
 

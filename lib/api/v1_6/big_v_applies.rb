@@ -29,18 +29,22 @@ module API
 
         desc '提交社交账号资料'
         params do
-          requires :provider, type: String
+          requires :provider_name, type: String
           optional :homepage, type: String
           requires :price, type: String
+          optional :username, type: String
           optional :uid, type: String
           optional :repost_price, type: String
           optional :second_price, type: String
           optional :followers_count, type: String
         end
         post 'update_social' do
-          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => params[:provider])
+          return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
+          provider = SocialAccount::Providers.invert[params[:provider_name]]
+          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
           social_account.homepage = params[:homepage]
           social_account.price = params[:price]
+          social_account.username = params[:username]
           social_account.repost_price = params[:repost_price]
           social_account.second_price = params[:second_price]
           social_account.followers_count = params[:followers_count]   if params[:followers_count].present?

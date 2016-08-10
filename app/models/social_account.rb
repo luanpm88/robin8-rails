@@ -9,6 +9,11 @@ class SocialAccount < ActiveRecord::Base
   serialize :others, Hash
   mount_uploader :screenshot, ImageUploader
 
+  Providers = {"wechat" => "微信", "public_wechat" => '公众号', "qq" => 'QQ', "weibo" => "微博", "meipai" => "美拍", "miaopai" => "秒拍",
+               "zhihu" => '知乎', "douyu" => '斗鱼', "yingke" => "映客", "tieba" => '贴吧', "tianya" => "天涯", "taobao" => "淘宝",
+               "huajiao" => "花椒", "nice" => "NICE", "douban" => "豆瓣", "xiaohongshu" => "小红书", "yizhibo" => '一直播',
+               "meila" => "美啦", "other" => "其它" }
+
   def get_weibo_homepage
     return if self.homepage.blank?
     uid = self.homepage.split("/").last.split("?").first
@@ -39,7 +44,6 @@ class SocialAccount < ActiveRecord::Base
     end
   end
 
-  private
   def auto_complete_info
     return if self.homepage.blank?
     return if self.followers_count.present?
