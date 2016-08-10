@@ -43,25 +43,17 @@ module Brand
               join_table(:kol_tags)
               @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
             end
+
             if params[:sns] and params[:sns] != "全部"
               sns_params = params[:sns].split(",").reject(&:blank?)
-              sns = sns_params & ["public_wechat", "weibo", "meipai", "miaopai"]
+              sns = sns_params & ["wechat"]
 
               join_table(:social_accounts)
               @kols = @kols.where("`social_accounts`.`provider` IN (?)", sns)
             end
 
-            if params[:price_range] and params[:price_range] != "全部"
-              min_price, max_price = params[:price_range].split(",").map(&:to_i)
-              if min_price >= 0 and max_price > min_price
-
-                join_table(:social_accounts)
-                @kols = @kols.where("`social_accounts`.`price` BETWEEN ? AND ?", min_price, max_price)
-              end
-            end
-
             if params[:just_count]
-              { count: @kols.count }
+              { count: @kols.distinct.count }
             else
               @kols = @kols.page(params[:page]).per_page(6)
               {
