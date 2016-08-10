@@ -36,12 +36,12 @@ class CampaignShow < ActiveRecord::Base
 
     cpa_first_step_key = nil
     if campaign.is_cpa_type?
-      cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s 
+      cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s
       if options[:step] != 2
         if openid
           Rails.cache.write(cpa_first_step_key, openid, :expired_at => campaign.deadline)
         end
-        return [false, 'is_first_step_of_cpa_campaign'] 
+        return [false, 'is_first_step_of_cpa_campaign']
       end
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
@@ -84,10 +84,10 @@ class CampaignShow < ActiveRecord::Base
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
     # check kol's five_click_threshold
-    if kol && kol.five_click_threshold
+    if kol #&& kol.five_click_threshold
       store_key =  "five_click_threshold_#{campaign_invite.id}_#{now.min / 5}"
       current_five_click = Rails.cache.read(store_key)  || 0
-      if current_five_click >= kol.five_click_threshold
+      if current_five_click >= (kol.five_click_threshold || 30)
         return [false, "exceed_five_click_threshold"]
       else
         Rails.cache.write(store_key, current_five_click + 1, :expires_in => 5.minutes)
@@ -116,11 +116,11 @@ class CampaignShow < ActiveRecord::Base
     #   end
     # end
 
-    # check visitor ip
-    # ip_score = IpScore.fetch_ip_score(visitor_ip)
-    # if ip_score.to_i < 50
-    #   return [false, "ip_score_low"]
-    # end
+    check visitor ip
+    ip_score = IpScore.fetch_ip_score(visitor_ip)
+    if ip_score.to_i <= 50
+      return [false, "ip_score_low"]
+    end
 
       # check campaign status
     if campaign.redis_avail_click.value.to_i > campaign.max_action.to_i
