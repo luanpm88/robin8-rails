@@ -10,11 +10,6 @@ export const initialState = Immutable.fromJS({
   hasfetchedInvite: false,
   campaign_statistics: [],
   campaign_installs: [],
-  selected_social_accounts: [],
-  searched_social_accounts: {
-    items: [],
-    paginate: {}
-  },
   paginate: {},
   error: ""
 });
@@ -45,7 +40,6 @@ export default function campaignReducer($$state = initialState, action=nil) {
       if(fetchState === "failure"){
         $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
       }
-      console.log("fetchState" + fetchState);
       return $$state;
 
     case actionTypes.FETCH_RECRUIT:
@@ -91,8 +85,7 @@ export default function campaignReducer($$state = initialState, action=nil) {
       if(fetchState === 'success') {
         let campaign = Immutable.fromJS(action.result);
         $$state = $$state.merge({
-          "campaign": campaign,
-          "selected_social_accounts": campaign.get("selected_social_accounts")
+          "campaign": campaign
         });
       }
       return $$state;
@@ -151,37 +144,6 @@ export default function campaignReducer($$state = initialState, action=nil) {
       if(fetchState === "success"){
         $$state = $$state.merge({
           "campaign_installs": Immutable.fromJS(action.result.items),
-        })
-      }
-      return $$state;
-    case actionTypes.SEARCH_KOLS_IN_CONDITION:
-      $$state = $$state.set("readyState", fetchState);
-      if(fetchState === "success"){
-        if (action.result.items.length > 0) {
-          $$state = $$state.setIn(['searched_social_accounts', 'items'], Immutable.fromJS(action.result.items));
-        } else {
-          $$state = $$state.setIn(['searched_social_accounts', 'items'], Immutable.List());
-        }
-        $$state = $$state.mergeIn(['searched_social_accounts', 'paginate'], action.result.paginate);
-      }
-      return $$state;
-    case actionTypes.ADD_SELECTED_KOL:
-      if (!$$state.get("selected_social_accounts").find((k) => {
-        return k.get("id") == action.data.get("id")
-      })) {
-        $$state = $$state.merge({
-          "selected_social_accounts": $$state.get("selected_social_accounts").push(action.data)
-        })
-      }
-      return $$state;
-    case actionTypes.REMOVE_SELECTED_KOL:
-      const selectedSocialAccountIndex = $$state.get("selected_social_accounts").findIndex((k) => {
-        return k.get("id") == action.data.get("id")
-      })
-
-      if (selectedSocialAccountIndex >= 0) {
-        $$state = $$state.merge({
-          "selected_social_accounts": $$state.get("selected_social_accounts").delete(selectedSocialAccountIndex)
         })
       }
       return $$state;

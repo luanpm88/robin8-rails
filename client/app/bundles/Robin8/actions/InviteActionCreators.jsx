@@ -64,27 +64,3 @@ export function fetchInvite(id) {
   };
 }
 
-export function searchKolsInCondition(condition, page = 1){
-  let params = [ `page=${page}` ];
-  _.forIn(condition, (value, key) => params.push(`${key}=${value}`));
-
-  const queryString = params.join("&");
-  return {
-    type: actionTypes.SEARCH_KOLS_IN_CONDITION,
-    promise: fetch(`${baseUrl}/social_accounts/search?${queryString}`, {"credentials": "include"})
-  };
-}
-
-export function addSelectedKol(kol){
-  return {
-    type: actionTypes.ADD_SELECTED_KOL,
-    data: kol
-  };
-}
-
-export function removeSelectedKol(kol){
-  return {
-    type: actionTypes.REMOVE_SELECTED_KOL,
-    data: kol
-  };
-}

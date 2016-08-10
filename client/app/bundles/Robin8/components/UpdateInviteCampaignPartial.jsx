@@ -23,7 +23,7 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
-  budget: { require: true}
+  budget: { require: true }
 })
 
 const validateFailed = (errors) => {
@@ -37,9 +37,7 @@ const validateFailed = (errors) => {
 function select(state){
   return {
     brand: state.profileReducer.get("brand"),
-    campaign: state.campaignReducer.get("campaign"),
-    searched_social_accounts: state.campaignReducer.get("searched_social_accounts"),
-    selected_social_accounts: state.campaignReducer.get("selected_social_accounts")
+    campaign: state.campaignReducer.get("campaign")
   };
 }
 
@@ -103,9 +101,12 @@ class UpdateInviteCampaignPartial extends React.Component{
   render(){
     const { name, description, img_url, start_time, deadline,
             budget, social_accounts, materials, material_ids} = this.props.fields;
-    const { handleSubmit, submitting, invalid, campaign,
-            searched_social_accounts, selected_social_accounts,
-            actions } = this.props;
+    const { handleSubmit, submitting, invalid, campaign, actions } = this.props;
+
+    let selected_social_accounts;
+    if (!!campaign) {
+      selected_social_accounts = campaign.get("selected_social_accounts");
+    }
 
     return(
       <div className="page page-invite page-invite-new">
@@ -117,7 +118,7 @@ class UpdateInviteCampaignPartial extends React.Component{
               <IntroPartial {...{name, description, img_url}}/>
               <CreateMaterialsPartial {...{materials, material_ids}} />
               <DatePartial {...{ start_time, deadline }} />
-              <KolSelectPartial {...{ budget, social_accounts, searched_social_accounts, selected_social_accounts, actions }} />
+              <KolSelectPartial {...{ budget, social_accounts, selected_social_accounts }} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 {this.renderSubmitOrRevokeBtn()}
