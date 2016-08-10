@@ -116,7 +116,7 @@ class CampaignShow < ActiveRecord::Base
     #   end
     # end
 
-    check visitor ip
+    #check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)
     if ip_score.to_i <= 50
       return [false, "ip_score_low"]
