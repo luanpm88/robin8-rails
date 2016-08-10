@@ -9,6 +9,7 @@ module API
         get '/' do
           hot_items  = HotItem.all.order('publish_at desc').page(params[:page]).per_page(10)
           present :error, 0
+          to_paginate(hot_items)
           present :hot_items, hot_items, with: API::V1_5::Entities::HotItemEntities::Summary
         end
       end

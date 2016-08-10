@@ -22,6 +22,7 @@ module API
             present :kol_announcements, kol_announcements, with: API::V1_6::Entities::KolAnnouncementEntities::Summary
           end
           present :error, 0
+          to_paginate(big_vs)
           present :big_vs, big_vs, with: API::V1_6::Entities::BigVEntities::Summary
         end
 
