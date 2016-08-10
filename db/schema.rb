@@ -265,6 +265,10 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.boolean  "auto_check",        limit: 1,     default: false
     t.integer  "social_account_id", limit: 4
     t.float    "budget",            limit: 24
+    t.float    "sale_price",        limit: 24
+    t.float    "price",             limit: 24
+    t.string   "kol_score",         limit: 255
+    t.string   "brand_opinion",     limit: 255
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree

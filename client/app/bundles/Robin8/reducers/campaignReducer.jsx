@@ -10,6 +10,12 @@ export const initialState = Immutable.fromJS({
   hasfetchedInvite: false,
   campaign_statistics: [],
   campaign_installs: [],
+  agreed_invites_of_invite_campaign: [],
+  selected_social_accounts: [],
+  searched_social_accounts: {
+    items: [],
+    paginate: {}
+  },
   paginate: {},
   error: ""
 });
@@ -42,6 +48,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
+    case actionTypes.FETCH_AGREED_INVITES_OF_INVITE_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "agreed_invites_of_invite_campaign": Immutable.fromJS(action.result.items) });
+      }
+      return $$state;
+
     case actionTypes.FETCH_RECRUIT:
     case actionTypes.FETCH_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
@@ -59,7 +72,7 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
-    case actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION:
+    case actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION_OF_RECRUIT:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.mergeIn(['campaign_invites', action.index], action.result);
@@ -87,6 +100,13 @@ export default function campaignReducer($$state = initialState, action=nil) {
         $$state = $$state.merge({
           "campaign": campaign
         });
+      }
+      return $$state;
+
+    case actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION_OF_INVITE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.mergeIn(['agreed_invites_of_invite_campaign', action.index], action.result);
       }
       return $$state;
 

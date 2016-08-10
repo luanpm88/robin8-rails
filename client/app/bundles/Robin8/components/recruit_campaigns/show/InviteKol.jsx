@@ -132,7 +132,7 @@ export default class InviteKol extends React.Component {
         {this.render_screenshot_or_switchbox()}
         {this.renderScoreMarkButton()}
         <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeShowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
-        <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={this.props.index} actions={this.props.actions} campaignInvite={campaign_invite} />
+        <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={this.props.index} isRecuritCampaign={true} actions={this.props.actions} campaignInvite={campaign_invite} />
         <KolScoreInfoModal show={this.state.showKolScoreInfoModal} onHide={this.closeShowKolScoreInfoModal.bind(this)} campaignInvite={campaign_invite}  />
       </tr>
     )
