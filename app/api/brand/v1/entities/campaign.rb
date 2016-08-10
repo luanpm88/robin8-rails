@@ -3,7 +3,7 @@ module Brand
     module Entities
       class Campaign < Entities::Base
 
-        expose :id, :name, :description, :short_description, :task_description,
+        expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
                :budget_editable, :pay_way, :need_pay_amount

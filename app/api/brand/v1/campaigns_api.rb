@@ -198,8 +198,6 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
@@ -228,8 +226,6 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
