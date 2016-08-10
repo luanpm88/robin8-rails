@@ -81,6 +81,24 @@ class Kol < ActiveRecord::Base
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
   scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
 
+  before_save :set_kol_kol_role
+
+  def set_kol_kol_role
+    #role_apply_status %w{pending applying passed rejected}
+    #kol_role:  %w{public big_v mcn_big_v mcn}
+    if role_apply_status_changed?
+      if role_apply_status == "passed" and self.kol_role == "public"
+        self.kol_role = 'big_v'
+      end
+
+      if role_apply_status == "rejected"
+        if self.kol_role == "big_v"
+          self.kol_role = "public"
+        end
+      end
+    end
+  end
+
 
   def email_required?
     false if self.provider != "signup"
