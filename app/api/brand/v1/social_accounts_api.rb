@@ -16,7 +16,7 @@ module Brand
 
       group do
         before do
-          # authenticate!
+          authenticate!
         end
 
         resource :social_accounts do
@@ -29,7 +29,9 @@ module Brand
             optional :price_range, type: String
           end
           get "search" do
-            @social_accounts = SocialAccount.all
+            # @social_accounts = SocialAccount.where(kol: Kol.active.big_v)
+            kols_filter = Kol.active.big_v.where_values.map{|s|"(#{s})"}.join(" AND ")
+            @social_accounts = SocialAccount.joins("INNER JOIN `kols` ON `kols`.`id` = `social_accounts`.`kol_id`").where(kols_filter)
 
             if params[:word].present?
               words = params[:word].gsub(/,|，/i, " ").split(" ")
