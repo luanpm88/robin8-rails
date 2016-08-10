@@ -73,6 +73,7 @@ class SocialAccount < ActiveRecord::Base
   def self.clear_data
     return if Rails.env.production?
     Kol.where(:kol_role => 'mcn_big_v').delete_all
+    AgentKol.delete_all
     KolShow.delete_all
     KolKeyword.delete_all
     SocialAccount.delete_all

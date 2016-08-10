@@ -2,6 +2,7 @@ class UpgradeOriginKolToBigV < ActiveRecord::Migration
   def change
     Kol.where("name is not null and gender != 0 and app_city is not null and weixin_friend_count is not null and avatar is not null").includes(:tags).each do |kol|
       next if kol.tags.size == 0
+      next if kol.identities.size == 0
       kol.kol_role = 'big_v'
       kol.role_apply_status = 'passed'
       kol.role_check_remark = 'background_auto'
