@@ -1,10 +1,9 @@
 class UpdateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
-  PERMIT_PARAMS = [:name, :description, :task_description,
-                   :address, :img_url, :budget, :per_budget_type,
-                  :per_action_budget, :start_time, :deadline,
-                  :region, :sns_platforms, :tags,
+  PERMIT_PARAMS = [:name, :description, :img_url, :budget,
+                  :per_budget_type, :per_action_budget, :start_time,
+                  :deadline, :region, :sns_platforms, :tags,
                   :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -75,7 +74,7 @@ class UpdateRecruitCampaignService
   end
 
   def permitted_params_from params
-    params.merge!(address: nil) unless params[:address].present?
+    # params.merge!(address: nil) unless params[:address].present?
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 

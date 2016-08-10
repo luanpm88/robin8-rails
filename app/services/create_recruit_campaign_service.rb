@@ -1,8 +1,7 @@
 class CreateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
-  PERMIT_PARAMS = [:name, :description, :task_description,
-                  :address, :img_url, :budget, :per_budget_type,
+  PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
                   :region, :tags, :sns_platforms, :recruit_start_time,
                   :recruit_end_time, :hide_brand_name, :material_ids]
@@ -62,7 +61,7 @@ class CreateRecruitCampaignService
 
   def permitted_params_from params
     params.merge!(per_budget_type: 'recruit')
-    params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
+    # params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 

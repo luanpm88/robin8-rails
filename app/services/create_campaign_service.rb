@@ -83,7 +83,7 @@ class CreateCampaignService
   end
 
   def target_present?
-    @campaign_params[:target] and [:age, :region, :gender].all? {|k| @campaign_params[:target].keys.include? k }
+    @campaign_params[:target] and [:age, :region, :gender, :tags].all? {|k| @campaign_params[:target].keys.include? k }
   end
 
 end

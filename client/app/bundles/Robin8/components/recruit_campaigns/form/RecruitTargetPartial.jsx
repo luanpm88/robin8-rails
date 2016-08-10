@@ -138,7 +138,7 @@ export default class TargetPartial extends React.Component {
     return tip
   }
 
-  renderKOlCount(){
+  renderKolCount(){
     return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
   }
 
@@ -151,7 +151,7 @@ export default class TargetPartial extends React.Component {
         <div className="content">
           <div className="campaign-target-group">
 
-            {this.renderKOlCount()}
+            {this.renderKolCount()}
 
             <div className="row">
               <div className="col-md-4">
