@@ -13,14 +13,19 @@ export default class Targets extends React.Component {
     const campaign = this.props.campaign;
     if(!this.initSelector && campaign.size) {
       let region_text = campaign.get("region").split("/").join(",");
-      let tag_text = campaign.get("tags").map((item) => {
-        return item;
-      }).join(",");
+      let tag_text = null;
+      if(campaign.get("tags")) {
+        tag_text = campaign.get("tags").map((item) => {
+          return item;
+        }).join(",");
+      }
 
-      let sns_text = campaign.get("sns_platforms").map((item) => {
-        return item;
-      }).join(",");
-
+      let sns_text = null;
+      if(campaign.get("tags")) {
+        sns_text = campaign.get("sns_platforms").map((item) => {
+         return item;
+       }).join(",");
+      }
       this.fetchKolCountWithConditions({region: region_text, tag: tag_text, sns: sns_text});
       this.initSelector = true;
     }
