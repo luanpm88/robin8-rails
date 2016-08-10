@@ -48,11 +48,6 @@ export default class Targets extends React.Component {
     })
   }
 
-  renderTargetTitle(){
-    const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
-    return tip
-  }
-
   renderKOlCount(){
     return <div className="notice">预计推送KOL人数 <em> {this.state.kol_count} 人</em></div>
   }
@@ -83,7 +78,7 @@ export default class Targets extends React.Component {
     return (
       <div className="show-activity">
         <div className="header">
-          <h3 className="tit">KOL选择&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
+          <h3 className="tit">KOL选择</h3>
         </div>
         <div className="panel content">
           <div className="campaign-target-group">

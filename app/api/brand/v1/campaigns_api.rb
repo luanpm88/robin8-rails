@@ -70,6 +70,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
@@ -176,6 +177,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
