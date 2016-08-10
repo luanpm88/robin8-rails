@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 export default class Targets extends React.Component {
 
@@ -21,7 +20,7 @@ export default class Targets extends React.Component {
       }
 
       let sns_text = null;
-      if(campaign.get("tags")) {
+      if(campaign.get("sns_platforms")) {
         sns_text = campaign.get("sns_platforms").map((item) => {
          return item;
        }).join(",");
@@ -48,7 +47,7 @@ export default class Targets extends React.Component {
     })
   }
 
-  renderKOlCount(){
+  renderKolCount(){
     return <div className="notice">预计推送KOL人数 <em> {this.state.kol_count} 人</em></div>
   }
 
@@ -83,7 +82,7 @@ export default class Targets extends React.Component {
         <div className="panel content">
           <div className="campaign-target-group">
 
-            {this.renderKOlCount()}
+            {this.renderKolCount()}
 
             <div className="row">
               <div className="col-md-4">

@@ -92,6 +92,7 @@ class ShowCampaignPartial extends Component {
         <div className="container">
           <BreadCrumb />
           <Basic {...{campaign}} />
+          <Target {...{campaign}} />
           <Overview {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
