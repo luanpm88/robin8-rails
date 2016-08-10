@@ -75,7 +75,7 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_keywords
 
-  scope :active, -> {where("`kols`.`updated_at` > '#{5.weeks.ago}'").where("device_token is not null") }
+  scope :active, -> {where("`kols`.`updated_at` > '#{5.weeks.ago}'")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
