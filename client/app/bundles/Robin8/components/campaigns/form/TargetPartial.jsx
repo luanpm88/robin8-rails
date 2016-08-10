@@ -42,7 +42,7 @@ export default class TargetPartial extends React.Component {
       this.props.region.onChange("全部");
     }
     const tagItems = this.tagSelector.activeItems;
-    if (tagItems.length > 0) {
+    if (tagItems && tagItems.length > 0) {
       let condstr = tagItems.map((item) => {
         return item.name;
       }).join(",");
@@ -86,10 +86,17 @@ export default class TargetPartial extends React.Component {
 
   setInitialSelector() {
     const { region, tags } = this.props;
-
-    $('.target-city-label').text(region.value || "全部")
-    if (tags && tags.value.length > 0)
+    if(region.value === "全部 全部") {
+      $('.target-city-label').text("全部")
+    } else {
+      $('.target-city-label').text(region.value || "全部")
+    }
+    if (!tags.value) {
+      this.tagSelector.set("全部", false);
+    } else {
+      if (tags.value.length > 0)
       this.tagSelector.set(tags.value, false);
+    }
 
     this.handleConditionChange();
   }

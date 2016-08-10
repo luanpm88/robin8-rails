@@ -71,7 +71,7 @@ export default class Target extends React.Component{
                 <div className="campaign-target target-profession">
                   <label>分类</label>
                   <div className="target-result">
-                    <div id="profession-result">{campaign.get("tag_labels") ? campaign.get("tag_labels").join('/') : ''}</div>
+                    <div id="profession-result">{campaign.get("tag_labels") ? campaign.get("tag_labels").join('/') : '全部'}</div>
                   </div>
                 </div>
               </div>
