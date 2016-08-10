@@ -182,7 +182,7 @@ class FinancialRechargePartial extends React.Component {
                       <p className="must-greater-than-500">最小金额为500元</p>
                     </div>
                     <div>
-                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>
+                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票(<span className="red_color">已开具发票的金额不可以申请退款</span>)</span>
                     </div>
                     <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
                   </div>
