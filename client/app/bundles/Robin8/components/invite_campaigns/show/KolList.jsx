@@ -1,14 +1,38 @@
 import React from 'react';
 import  _ from 'lodash';
 
+import KolScoreModal  from '../../recruit_campaigns/modals/KolScoreModal';
+import KolScoreInfoModal from '../../recruit_campaigns/modals/KolScoreInfoModal';
+
 export default class KolSelectPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      showKolScoreModal: false,
+      showKolScoreInfoModal: false
+    };
 
     _.bindAll(this, [
       "renderKolItem",
       "fetchTotalAgreedInvites"
     ])
+  }
+
+  closeShowKolScoreModal() {
+    this.setState({showKolScoreModal: false});
+  }
+
+  closeShowKolScoreInfoModal() {
+    this.setState({showKolScoreInfoModal: false});
+  }
+
+  show_kol_score_modal() {
+    this.setState({showKolScoreModal: true})
+  }
+
+  show_score_info_modal() {
+    this.setState({showKolScoreInfoModal: true})
   }
 
   componentDidMount() {
@@ -28,9 +52,17 @@ export default class KolSelectPartial extends React.Component {
     }
   }
 
+  renderScoreMarkButton(invite) {
+    if (invite.get("kol_score")) {
+      return <td><button className="btn btn-blue btn-default show-score-mark-btn" onClick={this.show_score_info_modal.bind(this)}>查看评分</button></td>
+    }
+    return <td><button className="btn btn-blue btn-default score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
+  }
+
   renderKolItem(invite, state="active") {
     const kol = invite.get("kol");
     let item;
+    let index = 0;
     kol.get("social_accounts").forEach(function(account) {
       if(account.get("id") == invite.get("social_account_id")) {
         item =
@@ -45,6 +77,9 @@ export default class KolSelectPartial extends React.Component {
             <td>{account.get("sale_price")}元/条</td>
             <td>{account.get("tags").map(i => i.get("label")).join("/")}</td>
             {this.renderScreeshot(invite)}
+            {this.renderScoreMarkButton(invite)}
+            <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={index++} isInviteCampaign={true} actions={this.props.actions} campaignInvite={invite} />
+            <KolScoreInfoModal show={this.state.showKolScoreInfoModal} onHide={this.closeShowKolScoreInfoModal.bind(this)} campaignInvite={invite}  />
           </tr>
 
       }
