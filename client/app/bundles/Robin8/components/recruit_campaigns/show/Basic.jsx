@@ -34,7 +34,7 @@ export default class Basic extends React.Component {
           { this.renderEditCampaignButton(campaign) }
           <small className="duration">{ formatDate(campaign.get("start_time")) } - { formatDate(campaign.get("deadline")) }</small>
           <small className="address">{ campaign.get("address") }</small>
-          <small className="summary">{_.truncate(campaign.get("task_description"), {'length': 120})}</small>
+          {/*<small className="summary">{_.truncate(campaign.get("task_description"), {'length': 120})}</small>*/}
 
           <ul className="stat-info">
             <li>
