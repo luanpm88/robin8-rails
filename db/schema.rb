@@ -263,6 +263,11 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.datetime "upload_time"
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
+    t.integer  "social_account_id", limit: 4
+    t.float    "sale_price",        limit: 24
+    t.float    "price",             limit: 24
+    t.string   "kol_score",         limit: 255
+    t.string   "brand_opinion",     limit: 255
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -506,6 +511,16 @@ ActiveRecord::Schema.define(version: 20160809030238) do
   end
 
   add_index "followers", ["news_room_id"], name: "index_followers_on_news_room_id", using: :btree
+
+  create_table "followships", force: :cascade do |t|
+    t.integer  "follower_id", limit: 4
+    t.integer  "kol_id",      limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "followships", ["follower_id"], name: "index_followships_on_follower_id", using: :btree
+  add_index "followships", ["kol_id"], name: "index_followships_on_kol_id", using: :btree
 
   create_table "helper_docs", force: :cascade do |t|
     t.string   "img_url",       limit: 255
@@ -914,6 +929,7 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
     t.string   "avatar_url",             limit: 255
+    t.text     "memo",                   limit: 65535
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree

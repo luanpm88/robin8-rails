@@ -132,11 +132,11 @@ export function fetchRecruitCampaignMaterials(campaign_id) {
   };
 }
 
-export function updateKolScoreAndBrandOpinion(campaign_id, kol_id, index, score, opinion = "") {
+export function updateKolScoreAndBrandOpinionOfRecruit(campaign_id, kol_id, index, score, opinion = "") {
   const data = {campaign_id, kol_id, score, opinion};
 
   return {
-    type: actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION,
+    type: actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION_OF_RECRUIT,
     index: index,
     promise: fetch(`${baseUrl}/campaign_applies/update_score_and_opinion`, {
       headers: {

@@ -28,7 +28,7 @@ export default class KolScoreModal extends Component {
   }
 
   submit() {
-    const { updateKolScoreAndBrandOpinion } = this.props.actions;
+    const { updateKolScoreAndBrandOpinionOfRecruit,  updateKolScoreAndBrandOpinionOfInvite} = this.props.actions;
     const index = this.props.index;
     const campaign_id = this.props.campaignInvite.get("campaign").get("id");
     const kol_id = this.props.campaignInvite.get("kol").get("id");
@@ -46,7 +46,12 @@ export default class KolScoreModal extends Component {
       }
     }
 
-    updateKolScoreAndBrandOpinion(campaign_id, kol_id, index, score, opinion);
+    if(this.props.isRecuritCampaign) {
+      updateKolScoreAndBrandOpinionOfRecruit(campaign_id, kol_id, index, score, opinion);
+    } else if(this.props.isInviteCampaign) {
+      updateKolScoreAndBrandOpinionOfInvite(campaign_id, kol_id, index, score, opinion);
+    }
+
     this.close();
   }
 
