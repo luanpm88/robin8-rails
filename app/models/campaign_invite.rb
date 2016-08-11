@@ -238,8 +238,16 @@ class CampaignInvite < ActiveRecord::Base
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
-        self.kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
-        Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{self.kol.avail_amount}-"
+        settle_kol = nil
+        if self.kol.kol_role == "mcn_big_v"
+          settle_kol = self.kol.agent  rescue nil
+           Rails.logger.transaction.info "====invite cmapaign kol_id:#{self.kol.id} not found mcn agent"
+        else
+          settle_kol = self.kol
+        end
+        next if  settle_kol.blank?
+        settle_kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
+        Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
     end

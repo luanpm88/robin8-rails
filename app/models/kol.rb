@@ -64,7 +64,8 @@ class Kol < ActiveRecord::Base
   has_many :social_accounts, -> {order("case provider when 'weibo' then 5 when 'meipai' then 4 when 'public_wechat' then 3 else 2 end desc")}
   has_many :agent_kols, :foreign_key => :agent_id
   has_many :big_vs, :through => :agent_kols, :source => :kol
-  belongs_to :agent_kol, :foreign_key => :kol_id
+  has_one :agent_kol, :foreign_key => :kol_id
+  has_one :agent, :through => :agent_kol,  :source => :agent
 
   has_many :followships, :foreign_key => :kol_id
   has_many :followers, through: :followships,  :source => :follower
