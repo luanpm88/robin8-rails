@@ -97,7 +97,7 @@ export default class CreateMaterialsPartial extends React.Component {
         },
         init: {
           'FileUploaded': function(up, file, info) {
-            const url = up.getOption('domain') + '/' + file.target_name;
+            const url = "http://" + up.getOption('domain') + '/' + file.target_name;
             var material = {};
             material['type'] = 'image';
             material['url'] = url;
@@ -124,7 +124,7 @@ export default class CreateMaterialsPartial extends React.Component {
         auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
         init: {
           'FileUploaded': function(up, file, info) {
-            const url = up.getOption('domain') + '/' + file.target_name;
+            const url = "http://" + up.getOption('domain') + '/' + file.target_name;
             var material = {};
             material['type'] = 'file';
             material['url'] = url;
