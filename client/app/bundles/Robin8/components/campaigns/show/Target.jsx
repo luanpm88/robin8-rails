@@ -14,7 +14,7 @@ export default class Target extends React.Component{
     const campaign = this.props.campaign;
     if(!this.initSelector && campaign.size) {
       let region_text = campaign.get("region").split("/").join(",");
-      let tag_text = null;
+      let tag_text = "全部";
       if(campaign.get("tags")) {
         tag_text = campaign.get("tags").map((item) => {
           return item;
