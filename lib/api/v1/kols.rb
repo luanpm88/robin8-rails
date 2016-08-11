@@ -153,7 +153,7 @@ module API
               return error_403!({error: 1, detail: '您已经绑定了该账号!'})
             else
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
-              resent :error, 0
+              present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             end
           end
