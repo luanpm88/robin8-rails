@@ -47,7 +47,10 @@ class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
     this._fetchRecruit();
     this.bind_toggle_text();
-    console.log("---------recruit campaign show did mount--------");
+  }
+
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
   }
 
   _fetchRecruit() {

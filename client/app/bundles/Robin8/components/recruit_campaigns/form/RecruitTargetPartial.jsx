@@ -9,7 +9,6 @@ export default class TargetPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {kol_count: 0};
-    this.initSelector = false;
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
@@ -26,7 +25,7 @@ export default class TargetPartial extends React.Component {
       }.bind(this))
     }.bind(this),
     function(error) {
-      console.error("----------查询kol数量失败---------------");
+      console.error("[ERROR] 查询kol数量失败!");
     })
   }
 
@@ -107,30 +106,25 @@ export default class TargetPartial extends React.Component {
     });
   }
 
-  componentDidMount(){
-    this.initConditionComponent();
-  }
+  componentWillReceiveProps(nextProps) {
+    if (!_.get(this.props, ['region', 'value']) &&
+        _.get(nextProps, ['region', 'value'])) {
 
-  componentDidUpdate() {
-    console.log("--------------", this.props);
-    const { region, tags, sns_platforms } = this.props;
+      const { region, tags, sns_platforms:sns } = nextProps;
 
-    if(!this.initSelector && this.props.stateReady) {
-      this.setInitialSelector();
-      this.initSelector = true;
-    }
-  }
+      this.initConditionComponent();
 
-  setInitialSelector() {
-    const { region, tags, sns_platforms } = this.props;
-
-    $('.target-city-label').text(region.value || "全部")
-    if (tags && tags.value.length > 0)
+      if(region.value === "全部 全部") region.value = "全部"
+      $('.target-city-label').text(region.value);
       this.tagSelector.set(tags.value, false);
-    if (sns_platforms && sns_platforms.value.length > 0)
-      this.snsSelector.set(sns_platforms.value, false);
+      this.snsSelector.set(sns.value, false);
 
-    this.handleConditionChange();
+      this.fetchKolCountWithConditions({
+        region: _.replace(region.value, "/", ","),
+        sns: _.isArray(sns.value) ? sns.value.join(",") : sns.value,
+        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value
+      });
+    }
   }
 
   renderTargetTitle(){

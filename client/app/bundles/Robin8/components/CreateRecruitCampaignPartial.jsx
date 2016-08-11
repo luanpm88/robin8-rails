@@ -84,7 +84,7 @@ class CreateRecruitCampaign extends React.Component{
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
-              <RecruitTargetPartial {...{region, tags, sns_platforms}} stateReady={true}/>
+              <RecruitTargetPartial {...{region, tags, sns_platforms}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
