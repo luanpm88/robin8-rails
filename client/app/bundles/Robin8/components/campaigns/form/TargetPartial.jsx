@@ -83,7 +83,7 @@ export default class TargetPartial extends React.Component {
 
       this.fetchKolCountWithConditions({
         region: _.replace(region.value, "/", ","),
-        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value
+        tag: _.isArray(tags.value) ? tags.value.join(",") : '全部'
       });
     }
   }
