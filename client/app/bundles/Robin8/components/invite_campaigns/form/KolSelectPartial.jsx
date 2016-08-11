@@ -18,7 +18,6 @@ export default class KolSelectPartial extends React.Component {
       searchedSocialAccountPaginate: {}
     };
 
-    this.initialized = false;
     this.searchCondition = {};
 
     _.bindAll(this, [
@@ -35,12 +34,14 @@ export default class KolSelectPartial extends React.Component {
 
   componentDidUpdate() {
     this.renderPaginator();
+  }
 
-    if (!this.initialized && this.props.selected_social_accounts) {
-      if (this.props.selected_social_accounts) {
-        this.setState({selectedSocialAccounts: this.props.selected_social_accounts.toJS()});
-      }
-      this.initialized = true;
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.selected_social_accounts &&
+        !!nextProps.selected_social_accounts) {
+      this.setState({
+        selectedSocialAccounts: nextProps.selected_social_accounts.toJS()
+      });
     }
   }
 

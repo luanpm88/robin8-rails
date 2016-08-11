@@ -78,6 +78,10 @@ class UpdateRecruitCampaignPartial extends React.Component{
     initToolTip({placement:'bottom', html: true});
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderRejectReasons() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === 'rejected') {
@@ -114,8 +118,6 @@ class UpdateRecruitCampaignPartial extends React.Component{
     const { campaign } = this.props;
     const { saveRecruit } = this.props.actions;
 
-    console.log("===============", campaign);
-
     return(
       <div className="page page-recruit page-recruit-new">
         <div className="container">
@@ -128,7 +130,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
-              <RecruitTargetPartial {...{region, tags, sns_platforms}} stateReady={!campaign.isEmpty()}/>
+              <RecruitTargetPartial {...{region, tags, sns_platforms}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 {this.renderSubmitOrRevokeBtn()}

@@ -37,7 +37,8 @@ const validateFailed = (errors) => {
 function select(state){
   return {
     brand: state.profileReducer.get("brand"),
-    campaign: state.campaignReducer.get("campaign")
+    campaign: state.campaignReducer.get("campaign"),
+    selected_social_accounts: state.campaignReducer.getIn(["campaign", "selected_social_accounts"])
   };
 }
 
@@ -72,6 +73,10 @@ class UpdateInviteCampaignPartial extends React.Component{
     initToolTip({placement:'bottom', html: true});
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderRejectReasons() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === 'rejected') {
@@ -91,7 +96,6 @@ class UpdateInviteCampaignPartial extends React.Component{
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
           <a onClick={this._renderRevokeModal} className="btn revoke-campaign">撤销活动</a>
-
         </div>
       )
     }
@@ -101,12 +105,7 @@ class UpdateInviteCampaignPartial extends React.Component{
   render(){
     const { name, description, img_url, start_time, deadline,
             budget, social_accounts, materials, material_ids} = this.props.fields;
-    const { handleSubmit, submitting, invalid, campaign, actions } = this.props;
-
-    let selected_social_accounts;
-    if (!!campaign) {
-      selected_social_accounts = campaign.get("selected_social_accounts");
-    }
+    const { handleSubmit, submitting, invalid, campaign, actions, selected_social_accounts } = this.props;
 
     return(
       <div className="page page-invite page-invite-new">
