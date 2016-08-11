@@ -158,7 +158,7 @@ module Concerns
     end
 
     def max_campaign_click
-      self.campaign_invites.order("total_click desc").first.total_click rescue nil
+      self.campaign_invites.order("avail_click desc").first.total_click rescue nil
     end
 
     def max_campaign_earn_money
@@ -171,7 +171,7 @@ module Concerns
     end
 
     def avg_campaign_credit
-      self.campaign_invites.settled.count
+      campaign_total_income / self.campaign_invites.settled.count
     end
   end
 end

@@ -16,7 +16,7 @@ module ImportKols
               kol.app_city = city_en   if city_en.present?
             end
             ## notice 当前 一个社交账号只有个分类
-            kol.tags << social_account.tags[0] unless kol.tags.include?(social_account.tags[0])
+            kol.tags << social_account.tags[0] if social_account.tags.size > 0 && !kol.tags.include?(social_account.tags[0])
             kol.save!    rescue nil
           end
         end
