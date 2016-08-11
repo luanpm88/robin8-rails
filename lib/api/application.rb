@@ -30,7 +30,7 @@ module API
     before do
       params.permit! if params
       @log_start_t = Time.now
-      logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip}"
+      logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip} ====Authorization:#{headers['Authorization']} === decode:#{AuthToken.decode_data(headers['Authorization'])} "
       logger.info "  Parameters: #{params.to_hash.except("route_info", :password, :password_confirmation)}"
       current_kol.update_tracked_fields request      if current_kol
     end
