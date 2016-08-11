@@ -228,6 +228,8 @@ module Campaigns
         actual_per_action_budget = actual_per_action_budget.round(2)
       elsif is_recruit_type?
         actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
+      elsif is_invite_type?
+        actual_per_action_budget = nil
       else
         actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
       end

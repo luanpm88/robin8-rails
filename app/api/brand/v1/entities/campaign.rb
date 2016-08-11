@@ -3,7 +3,7 @@ module Brand
     module Entities
       class Campaign < Entities::Base
 
-        expose :id, :name, :description, :short_description, :task_description,
+        expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
                :budget_editable, :pay_way, :need_pay_amount
@@ -79,15 +79,15 @@ module Brand
           target.target_content if target
         end
 
-        expose :province do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "region")
-          target.target_content.split(" ").first if target
-        end
+        # expose :province do |object, opts|
+        #   target = object.campaign_targets.find_by(target_type: "region")
+        #   target.target_content.split(" ").first if target
+        # end
 
-        expose :city do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "region")
-          target.target_content.split(" ").last if target
-        end
+        # expose :city do |object, opts|
+        #   target = object.campaign_targets.find_by(target_type: "region")
+        #   target.target_content.split(" ").last if target
+        # end
 
         expose :gender do |object, opts|
           target = object.campaign_targets.find_by(target_type: "gender")

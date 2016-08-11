@@ -36,16 +36,13 @@ class UpdateInviteCampaignService
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
     @campaign_params[:social_accounts] = @campaign_params[:social_accounts].split(",").map(&:to_i) rescue []
-    @campaign_params[:budget] = @campaign_params[:social_accounts].inject(0) do |sum, id|
-      social_account = SocialAccount.find(id)
-      sum += social_account.sale_price
-    end
+    social_accounts = SocialAccount.where(id: @campaign_params[:social_accounts])
 
-    if can_edit_budget?
-      @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
-    else
-      @errors << "活动已提交, 总预算不能更改!" unless @campaign.budget == @campaign_params[:budget]
-    end
+    @campaign_params[:budget] = social_accounts.inject(0) do |sum, social_account|
+      sum += social_account.sale_price
+    end unless social_accounts.blank?
+
+    @campaign_params.merge!({:need_pay_amount => @campaign_params[:budget]})
 
     if @campaign_params[:budget] == 0
       @errors << 'campaign budget can not be zero!'
@@ -58,7 +55,7 @@ class UpdateInviteCampaignService
     begin
       ActiveRecord::Base.transaction do
         campaign_target = @campaign.social_account_targets.first
-        campaign_target.update!(target_content: @campaign_params[:social_accounts].join(","))
+        campaign_target.update!(target_content: social_accounts.map(&:id).join(","))
 
         update_materials
         @campaign.update(@campaign_params.reject {|k,v| [:social_accounts, :material_ids].include? k })
@@ -69,11 +66,10 @@ class UpdateInviteCampaignService
           campaign_invite.destroy
         end
 
-        @campaign_params[:social_accounts].each do |id|
-          social_account = SocialAccount.find(id)
+        social_accounts.each do |social_account|
           kol = social_account.kol
           kol.add_campaign_id @campaign.id
-          kol.approve_and_receive_invite_campaign(@campaign.id, id)
+          kol.approve_and_receive_invite_campaign(@campaign.id, social_account.id)
         end
       end
     rescue Exception => e
@@ -118,10 +114,6 @@ class UpdateInviteCampaignService
 
   def can_edit?
     ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
-  end
-
-  def can_edit_budget?
-    @campaign.budget_editable
   end
 
 end

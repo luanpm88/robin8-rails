@@ -20,6 +20,18 @@ export default class KolScoreInfoModal extends Component {
     this.close();
   }
 
+  renderOpinion() {
+    const campaign_invite = this.props.campaignInvite;
+    if(campaign_invite.get("brand_opinion")) {
+      return (
+        <div className="brand-opinion-group">
+          <p className="my-opinion">我的意见</p>
+          <p>{campaign_invite.get("brand_opinion")}</p>
+        </div>
+      )
+    }
+  }
+
   render() {
     const campaign_invite = this.props.campaignInvite;
     return (
@@ -32,10 +44,7 @@ export default class KolScoreInfoModal extends Component {
             <span className="give-score">评分</span>
             <StarRating name="star-rating" size={30} totalStars={5} rating={parseInt(campaign_invite.get("kol_score"))} />
           </div>
-          <div className="brand-opinion-group">
-            <p className="my-opinion">我的意见</p>
-            <p>{campaign_invite.get("brand_opinion")}</p>
-          </div>
+          {this.renderOpinion()}
         </Modal.Body>
       </Modal>
     );

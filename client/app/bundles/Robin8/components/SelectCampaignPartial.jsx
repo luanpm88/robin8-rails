@@ -66,7 +66,7 @@ class SelectCampaignPartial extends Component {
               </div>
               <div className="at-box-hd">
                 <div className="at-box-pic">
-                  <img src={require('icon-cup.png')} />
+                  <img src={require('icon-gift.png')} />
                 </div>
                 <h3>特邀活动</h3>
               </div>
@@ -84,7 +84,7 @@ class SelectCampaignPartial extends Component {
             </div>
           </div>
           <div className="at-s-bottom">
-            <Link to="#" className="btn service-call">
+            <Link to="/contact" className="btn service-call">
               有问题请联系客服
             </Link>
           </div>

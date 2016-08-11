@@ -19,6 +19,7 @@ function select(state){
   return {
     campaign: state.campaignReducer.get('campaign'),
     paginate: state.campaignReducer.get("paginate"),
+    agreed_invites_of_invite_campaign: state.campaignReducer.get("agreed_invites_of_invite_campaign")
   };
 }
 
@@ -75,7 +76,7 @@ class ShowRecruitCampaignPartial extends Component {
   }
 
   render() {
-    const { campaign, actions, paginate } = this.props;
+    const { campaign, actions, paginate, agreed_invites_of_invite_campaign } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
     const status = campaign.get("recruit_status");
 
@@ -86,7 +87,7 @@ class ShowRecruitCampaignPartial extends Component {
           <Basic {...{campaign}} />
           <ShowMaterialsPartial {...{campaign}} />
           <Overview {...{campaign}} />
-          <KolList {...{ campaign, actions, campaign_id }} />
+          <KolList {...{ actions, campaign_id, agreed_invites_of_invite_campaign }} />
           { this.renderRevokeBtn() }
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />

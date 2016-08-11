@@ -1,38 +1,50 @@
 import React from 'react';
 import  _ from 'lodash';
 
+import KolScoreModal  from '../../recruit_campaigns/modals/KolScoreModal';
+import KolScoreInfoModal from '../../recruit_campaigns/modals/KolScoreInfoModal';
+
 export default class KolSelectPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.searchCondition = {};
-    this.total_agreed_invites = [];
+    this.state = {
+      showKolScoreModal: false,
+      showKolScoreInfoModal: false
+    };
 
     _.bindAll(this, [
       "renderKolItem",
-      "fetchAgreedInvites"
+      "fetchTotalAgreedInvites"
     ])
   }
 
-  componentDidMount() {
-    this.fetchAgreedInvites();
+  closeShowKolScoreModal() {
+    this.setState({showKolScoreModal: false});
   }
 
-  fetchAgreedInvites() {
-    const campaign_id = this.props.campaign_id;
-    fetch(`/brand_api/v1/invite_campaigns/${campaign_id}/agreed_invites`, {"credentials": "include"})
-      .then(function(response) {
-        response.json().then(function(data){
-          this.total_agreed_invites = data.items;
-      }.bind(this))
-    }.bind(this),
-    function(error) {
-      console.error("----------获取已接受邀请invites失败---------------");
-    })
+  closeShowKolScoreInfoModal() {
+    this.setState({showKolScoreInfoModal: false});
   }
-  
+
+  show_kol_score_modal() {
+    this.setState({showKolScoreModal: true})
+  }
+
+  show_score_info_modal() {
+    this.setState({showKolScoreInfoModal: true})
+  }
+
+  componentDidMount() {
+    this.fetchTotalAgreedInvites();
+  }
+
+  fetchTotalAgreedInvites() {
+    const { fetchAgreedInvitesOfInviteCampaign } = this.props.actions;
+    fetchAgreedInvitesOfInviteCampaign(this.props.campaign_id)
+  }
+
   renderScreeshot(invite) {
-    debugger
     if(invite.screenshot) {
       return <td>{invite.screenshot}</td>
     } else {
@@ -40,23 +52,34 @@ export default class KolSelectPartial extends React.Component {
     }
   }
 
+  renderScoreMarkButton(invite) {
+    if (invite.get("kol_score")) {
+      return <td><button className="btn btn-blue btn-default show-score-mark-btn" onClick={this.show_score_info_modal.bind(this)}>查看评分</button></td>
+    }
+    return <td><button className="btn btn-blue btn-default score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
+  }
+
   renderKolItem(invite, state="active") {
-    const kol = invite.kol;
+    const kol = invite.get("kol");
     let item;
-    kol.social_accounts.forEach(function(account) {
-      if(account.id == invite.social_account_id) {
+    let index = 0;
+    kol.get("social_accounts").forEach(function(account) {
+      if(account.get("id") == invite.get("social_account_id")) {
         item =
-          <tr className={`kol-item ${state}`} data-id={account.id} key={ `kol-${account.id}` }>
+          <tr className={`kol-item ${state}`} data-id={account.get("id")} key={ `kol-${account.get("id")}` }>
             <td>
               <div className="avatar">
-                <img src={account.avatar_url} />
-                {account.username}
+                <img src={account.get("avatar_url")} />
+                {account.get("username")}
               </div>
             </td>
-            <td>{account.provider_text}</td>
-            <td>{account.sale_price}元/条</td>
-            <td>{account.tags.map(i => i.get("label")).join("/")}</td>
+            <td>{account.get("provider_text")}</td>
+            <td>{account.get("sale_price")}元/条</td>
+            <td>{account.get("tags").map(i => i.get("label")).join("/")}</td>
             {this.renderScreeshot(invite)}
+            {this.renderScoreMarkButton(invite)}
+            <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={index++} isInviteCampaign={true} actions={this.props.actions} campaignInvite={invite} />
+            <KolScoreInfoModal show={this.state.showKolScoreInfoModal} onHide={this.closeShowKolScoreInfoModal.bind(this)} campaignInvite={invite}  />
           </tr>
 
       }
@@ -91,14 +114,13 @@ export default class KolSelectPartial extends React.Component {
   }
 
   renderSelectedKols() {
-    if(this.props.campaign.size) {
+    const agreed_invites_of_invite_campaign = this.props.agreed_invites_of_invite_campaign;
+    if(agreed_invites_of_invite_campaign.size) {
       let selectedKolsList = [],
       selectedKolsAlert,
       selectedKolsResult;
-
-      this.total_agreed_invites.map((invite, index) => {
+      agreed_invites_of_invite_campaign.map((invite, index) => {
         const item = this.renderKolItem(invite, "selected");
-        debugger
         selectedKolsList.push(item);
       });
 

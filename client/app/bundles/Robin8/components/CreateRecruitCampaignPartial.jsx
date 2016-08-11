@@ -26,7 +26,6 @@ const initCampaign = {
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
-  address: "",
   recruit_person_count: 1,
   hide_brand_name: false,
   region: "全部",
@@ -42,7 +41,6 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
-  task_description: { require: true }
 })
 
 const validateFailed = (errors) => {
@@ -69,7 +67,7 @@ class CreateRecruitCampaign extends React.Component{
   render(){
     const { name, description, img_url, tags, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
-          recruit_person_count, task_description, address, region, sns_platforms,
+          recruit_person_count, region, sns_platforms,
           hide_brand_name, materials, material_ids
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -81,7 +79,7 @@ class CreateRecruitCampaign extends React.Component{
           <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
-              <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
+              <IntroPartial {...{name, description, img_url, hide_brand_name}}/>
               <CreateMaterialsPartial {...{materials, material_ids}} />
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
@@ -104,7 +102,7 @@ CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "tags", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "task_description", 'address', "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
   returnRejectedSubmitPromise: true,
   validate
 },

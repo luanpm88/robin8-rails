@@ -264,8 +264,11 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
     t.integer  "social_account_id", limit: 4
+    t.float    "budget",            limit: 24
     t.float    "sale_price",        limit: 24
     t.float    "price",             limit: 24
+    t.string   "kol_score",         limit: 255
+    t.string   "brand_opinion",     limit: 255
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -852,7 +855,7 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                              default: 0,        null: false
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -899,6 +902,7 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.string   "app_version",            limit: 255
     t.string   "private_token",          limit: 80
     t.string   "device_token",           limit: 80
+    t.string   "desc",                   limit: 255
     t.string   "alipay_account",         limit: 255
     t.string   "name",                   limit: 255
     t.string   "app_country",            limit: 255
@@ -921,13 +925,10 @@ ActiveRecord::Schema.define(version: 20160809030238) do
     t.string   "kol_level",              limit: 255
     t.string   "id_card",                limit: 255
     t.string   "job_info",               limit: 255
-    t.text     "desc",                   limit: 65535
-    t.string   "kol_role",               limit: 255,                            default: "public"
-    t.datetime "role_check_time"
-    t.datetime "role_apply_time"
+    t.text     "brief",                  limit: 65535
+    t.string   "kol_role",               limit: 255
     t.string   "role_apply_status",      limit: 255
     t.boolean  "is_hot",                 limit: 1,                              default: false
-    t.string   "role_check_remark",      limit: 255
     t.string   "avatar_url",             limit: 255
     t.text     "memo",                   limit: 65535
   end

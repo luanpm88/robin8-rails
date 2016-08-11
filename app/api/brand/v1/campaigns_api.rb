@@ -70,6 +70,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
@@ -176,6 +177,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
@@ -198,8 +200,6 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
@@ -228,8 +228,6 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime

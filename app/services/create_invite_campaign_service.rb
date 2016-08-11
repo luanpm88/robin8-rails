@@ -20,14 +20,16 @@ class CreateInviteCampaignService
     end
 
     @campaign_params.merge!(per_budget_type: 'invite')
-    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
     @campaign_params[:social_accounts] = @campaign_params[:social_accounts].split(",").map(&:to_i) rescue []
-    @campaign_params[:budget] = @campaign_params[:social_accounts].inject(0) do |sum, id|
-      social_account = SocialAccount.find(id)
+    social_accounts = SocialAccount.where(id: @campaign_params[:social_accounts])
+
+    @campaign_params[:budget] = social_accounts.inject(0) do |sum, social_account|
       sum += social_account.sale_price
-    end
+    end unless social_accounts.blank?
+
+    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
 
     if @campaign_params[:budget] == 0
       @errors << 'campaign budget can not be zero!'
@@ -45,13 +47,12 @@ class CreateInviteCampaignService
         create_campaign_materials
         @campaign.social_account_targets.create!({
           target_type: :social_accounts,
-          target_content: @campaign_params[:social_accounts].join(",")
+          target_content: social_accounts.map(&:id).join(",")
         })
-        @campaign_params[:social_accounts].each do |id|
-          social_account = SocialAccount.find(id)
+        social_accounts.each do |social_account|
           kol = social_account.kol
           kol.add_campaign_id @campaign.id
-          kol.approve_and_receive_invite_campaign(@campaign.id, id)
+          kol.approve_and_receive_invite_campaign(@campaign.id, social_account.id)
         end
       end
       return true

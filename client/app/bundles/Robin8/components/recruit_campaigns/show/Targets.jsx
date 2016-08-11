@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 export default class Targets extends React.Component {
 
@@ -13,14 +12,19 @@ export default class Targets extends React.Component {
     const campaign = this.props.campaign;
     if(!this.initSelector && campaign.size) {
       let region_text = campaign.get("region").split("/").join(",");
-      let tag_text = campaign.get("tags").map((item) => {
-        return item;
-      }).join(",");
+      let tag_text = null;
+      if(campaign.get("tags")) {
+        tag_text = campaign.get("tags").map((item) => {
+          return item;
+        }).join(",");
+      }
 
-      let sns_text = campaign.get("sns_platforms").map((item) => {
-        return item;
-      }).join(",");
-
+      let sns_text = null;
+      if(campaign.get("sns_platforms")) {
+        sns_text = campaign.get("sns_platforms").map((item) => {
+         return item;
+       }).join(",");
+      }
       this.fetchKolCountWithConditions({region: region_text, tag: tag_text, sns: sns_text});
       this.initSelector = true;
     }
@@ -43,12 +47,7 @@ export default class Targets extends React.Component {
     })
   }
 
-  renderTargetTitle(){
-    const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
-    return tip
-  }
-
-  renderKOlCount(){
+  renderKolCount(){
     return <div className="notice">预计推送KOL人数 <em> {this.state.kol_count} 人</em></div>
   }
 
@@ -78,12 +77,12 @@ export default class Targets extends React.Component {
     return (
       <div className="show-activity">
         <div className="header">
-          <h3 className="tit">KOL选择&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
+          <h3 className="tit">KOL选择</h3>
         </div>
         <div className="panel content">
           <div className="campaign-target-group">
 
-            {this.renderKOlCount()}
+            {this.renderKolCount()}
 
             <div className="row">
               <div className="col-md-4">

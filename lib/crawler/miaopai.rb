@@ -25,7 +25,6 @@ module Crawler
       doc = get_doc(social_account.homepage)
       contents = []
       doc.css('.D_main .D_video').each_with_index do |item, index|
-        binding.pry
         break if index >= 3
         like_count_text =  item.css(".list li")[0].text
         if  like_count_text.include?("万")
