@@ -4,14 +4,22 @@ import validator from 'validator';
 
 import { campaignMaterialType } from '../../../../helpers/CampaignHelper'
 
+const url_regex = /^http|https:\/\//;
+
 export default class CampaignMaterialModal extends Component {
+
 
   handleClick() {
     const onHide = this.props.onHide;
     const handleUrlClick  = this.props.handleUrlClick;
     const type = this.props.type;
-    if (validator.isURL(this.refs.materialUrlInput.value.trim(), { require_protocol: false })) {
-      handleUrlClick(type, this.refs.materialUrlInput.value.trim());
+    let url = this.refs.materialUrlInput.value.trim();
+    if (validator.isURL(url, { require_protocol: false })) {
+      if(!url_regex.test(url)) {
+        url = "http://" + url;
+      }
+      handleUrlClick(type, url);
+
       onHide();
     }
   }
@@ -21,8 +29,13 @@ export default class CampaignMaterialModal extends Component {
       const onHide = this.props.onHide;
       const handleUrlClick  = this.props.handleUrlClick;
       const type = this.props.type;
-      if (validator.isURL(this.refs.materialUrlInput.value.trim(), { require_protocol: false })) {
-        handleUrlClick(type, this.refs.materialUrlInput.value.trim());
+      let url = this.refs.materialUrlInput.value.trim();
+      if (validator.isURL(url, { require_protocol: false })) {
+        if(!url_regex.test(url)) {
+          url = "http://" + url;
+        }
+        handleUrlClick(type, url);
+
         onHide();
       }
     }
