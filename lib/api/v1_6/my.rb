@@ -17,7 +17,7 @@ module API
         get 'friends' do
           friends = current_kol.friends.page(params[:page]).per_page(10)
           present :error, 0
-          present :friends, friends, with: API::V1_6::Entities::BigVEntities::Summary
+          present :big_vs, friends, with: API::V1_6::Entities::BigVEntities::Summary
         end
       end
     end
