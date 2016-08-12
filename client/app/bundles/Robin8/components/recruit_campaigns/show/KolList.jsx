@@ -61,7 +61,6 @@ export default class KolList extends React.Component {
   render_status_header() {
     const { campaign } = this.props;
     const status = campaign.get("recruit_status");
-
     if (status === "choosing" || status === "running") {
       return (
         <th>状态</th>
@@ -69,6 +68,16 @@ export default class KolList extends React.Component {
     } else if (status === "settling" || status === "settled") {
       return (
         <th>截图</th>
+      )
+    }
+  }
+
+  render_score_and_mark() {
+    const { campaign } = this.props;
+    const status = campaign.get("recruit_status");
+    if (status === "settling" || status === "settled") {
+      return (
+        <th className="score-mark">评分</th>
       )
     }
   }
@@ -89,7 +98,7 @@ export default class KolList extends React.Component {
         <th className="location">地区</th>
         <th className="reason">详情</th>
         { this.render_status_header() }
-        <th className="score-mark">评分</th>
+        { this.render_score_and_mark() }
       </tr>
     )
   }
