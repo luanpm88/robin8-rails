@@ -18,10 +18,10 @@ import initToolTip    from './shared/InitToolTip';
 import CampaignFormValidate from './shared/validate/CampaignFormValidate'
 
 const initCampaign = {
-  age: 'all',
+  age: '全部',
   region: '全部',
   tags: "全部",
-  gender: 'all',
+  gender: '全部',
   message: '',
   budget: 100,
   per_budget_type: 'click',
@@ -35,7 +35,7 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
-  // img_url: { require_img: true },
+  img_url: { require_img: true },
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
