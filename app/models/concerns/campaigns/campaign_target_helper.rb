@@ -69,39 +69,33 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      #特邀活动   TODO big_v 正式上线后 可以把active 去掉
-      if self.is_invite_type?
-        kols = Kol.active.big_v
-      else
-        kols = Kol.active.personal_big_v
-      end
+      # TODO big_v 正式上线后 可以把 active 去掉
+      kols = Kol.active.personal_big_v
 
-      if self.is_recruit_type?
-        kols = kols.where("`kols`.`app_version` >= '1.2.0'")
+      kols = kols.where("`kols`.`app_version` >= '1.2.0'")
 
-        self.campaign_targets.each do |target|
-          if target.target_type == 'region'
-            unless target.target_content == '全部' || target.target_content == '全部 全部'
-              kols = kols.where(:app_city => target.get_citys)
-            end
-          elsif target.target_type == 'tags'
-            unless target.target_content == '全部'
-              kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
-              kols = kols.where("`kol_tags`.`tag_id` IN (?)", target.get_tags)
-            end
-          elsif target.target_type == 'sns_platforms'
-            unless target.target_content == '全部'
-              kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
-              kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
-            end
-            #TODO 添加指定kols
-          # elsif target.target_type == 'age'
-          #   kols = kols.where("age > '#{target.contents}'")
-          # elsif target.target_type == 'age'
-          #   kols = kols.where("age > '#{target.contents}'")
-          # elsif target.target_type == 'gender'
-          #   kols = kols.where("gender = '#{target.contents}'")
+      self.campaign_targets.each do |target|
+        if target.target_type == 'region'
+          unless target.target_content == '全部' || target.target_content == '全部 全部'
+            kols = kols.where(:app_city => target.get_citys)
           end
+        elsif target.target_type == 'tags'
+          unless target.target_content == '全部'
+            kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
+            kols = kols.where("`kol_tags`.`tag_id` IN (?)", target.get_tags)
+          end
+        elsif target.target_type == 'sns_platforms'
+          unless target.target_content == '全部'
+            kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
+            kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
+          end
+          #TODO 添加指定kols
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'gender'
+        #   kols = kols.where("gender = '#{target.contents}'")
         end
       end
 
@@ -109,7 +103,7 @@ module Campaigns
     end
 
     def get_kol_ids
-      if self.per_budget_type == "invite"
+      if self.is_invite_type?
         get_social_account_related_kol_ids
       else
         (get_specified_kol_ids ||  get_matching_kol_ids)
