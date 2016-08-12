@@ -69,7 +69,12 @@ module Campaigns
 
     # 获取匹配kols
     def get_matching_kol_ids
-      kols = Kol.active.big_v
+      #特邀活动   TODO big_v 正式上线后 可以把active 去掉
+      if self.is_invite_type?
+        kols = Kol.active.big_v
+      else
+        kols = Kol.active.personal_big_v
+      end
 
       if self.is_recruit_type?
         kols = kols.where("`kols`.`app_version` >= '1.2.0'")
