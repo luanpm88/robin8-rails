@@ -18,8 +18,8 @@ module API
           optional :latitude, type: Float
         end
         put 'update_profile' do
+          Kol.reg_or_sign_in(params, current_kol)
           present :error, 0
-          current_kol.reg_or_sign_in(params)
         end
 
         get 'alipay' do

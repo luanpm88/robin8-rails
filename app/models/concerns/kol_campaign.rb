@@ -146,7 +146,7 @@ module Concerns
     end
 
     def sync_campaigns
-      if Rails.env.produciton?
+      if Rails.env.production?
         return if self.kol_role == 'mcn_big_v'
       else
         return if self.kol_role != 'big_v'
