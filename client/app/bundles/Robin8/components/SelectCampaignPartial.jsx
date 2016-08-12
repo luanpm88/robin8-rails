@@ -34,59 +34,62 @@ class SelectCampaignPartial extends Component {
                 </Link>
               </div>
             </div>
-
-            <div className="at-s-box">
-              <div className="at-box-mk mk-new">
-                <div className="mk-bg"></div>
-                <i>NEW</i>
-              </div>
-              <div className="at-box-hd">
-                <div className="at-box-pic">
-                  <img src={require('icon-cup.png')} />
+            {/*
+              <div className="at-s-box">
+                <div className="at-box-mk mk-new">
+                  <div className="mk-bg"></div>
+                  <i>NEW</i>
                 </div>
-                <h3>招募活动</h3>
-              </div>
-              <div className="at-box-ct">
-                <p className="bold">支持主流社交平台自定义广告发布</p>
-                <p>广告主创建活动，KOL报名，广告主会挑选</p>
-                <p>合适的KOL接单，按照KOL完成活动</p>
-                <p>一次性付费，广告主定价</p>
-              </div>
-              <div className="at-box-bt">
-                <Link to="/brand/recruits/new" className="btn">
-                  立即创建
-                </Link>
-              </div>
-            </div>
-
-            <div className="at-s-box">
-              <div className="at-box-mk mk-new">
-                <div className="mk-bg"></div>
-                <i>NEW</i>
-              </div>
-              <div className="at-box-hd">
-                <div className="at-box-pic">
-                  <img src={require('icon-gift.png')} />
+                <div className="at-box-hd">
+                  <div className="at-box-pic">
+                    <img src={require('icon-cup.png')} />
+                  </div>
+                  <h3>招募活动</h3>
                 </div>
-                <h3>特邀活动</h3>
+                <div className="at-box-ct">
+                  <p className="bold">支持主流社交平台自定义广告发布</p>
+                  <p>广告主创建活动，KOL报名，广告主会挑选</p>
+                  <p>合适的KOL接单，按照KOL完成活动</p>
+                  <p>一次性付费，广告主定价</p>
+                </div>
+                <div className="at-box-bt">
+                  <Link to="/brand/recruits/new" className="btn">
+                    立即创建
+                  </Link>
+                </div>
               </div>
-              <div className="at-box-ct">
-                <p className="bold">支持主流社交平台自定义广告发布</p>
-                <p>广告主创建活动，邀请特定的KOL接单，</p>
-                <p>按照KOL完成活动一次性付费，</p>
-                <p>广告主需接受KOL的报价</p>
+
+              <div className="at-s-box">
+                <div className="at-box-mk mk-new">
+                  <div className="mk-bg"></div>
+                  <i>NEW</i>
+                </div>
+                <div className="at-box-hd">
+                  <div className="at-box-pic">
+                    <img src={require('icon-gift.png')} />
+                  </div>
+                  <h3>特邀活动</h3>
+                </div>
+                <div className="at-box-ct">
+                  <p className="bold">支持主流社交平台自定义广告发布</p>
+                  <p>广告主创建活动，邀请特定的KOL接单，</p>
+                  <p>按照KOL完成活动一次性付费，</p>
+                  <p>广告主需接受KOL的报价</p>
+                </div>
+                <div className="at-box-bt">
+                  <Link to="/brand/invites/new" className="btn">
+                    立即创建
+                  </Link>
+                </div>
               </div>
-              <div className="at-box-bt">
-                <Link to="/brand/invites/new" className="btn">
-                  立即创建
-                </Link>
-              </div>
-            </div>
+            */}
+
+
           </div>
           <div className="at-s-bottom">
-            <Link to="/contact" className="btn service-call">
+            <a href="/contact" target="_blank" className="btn service-call">
               有问题请联系客服
-            </Link>
+            </a>
           </div>
         </div>
       </div>
