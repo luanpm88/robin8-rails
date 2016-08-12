@@ -18,10 +18,10 @@ import initToolTip    from './shared/InitToolTip';
 import CampaignFormValidate from './shared/validate/CampaignFormValidate'
 
 const initCampaign = {
-  age: 'all',
+  age: '全部',
   region: '全部',
   tags: "全部",
-  gender: 'all',
+  gender: '全部',
   message: '',
   budget: 100,
   per_budget_type: 'click',
@@ -35,7 +35,7 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
-  // img_url: { require_img: true },
+  img_url: { require_img: true },
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
@@ -81,7 +81,7 @@ class CreateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
-              <TargetPartial {...{region, tags}} stateReady={true}/>
+              <TargetPartial {...{region, tags}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>

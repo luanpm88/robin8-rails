@@ -11,11 +11,6 @@ export const initialState = Immutable.fromJS({
   campaign_statistics: [],
   campaign_installs: [],
   agreed_invites_of_invite_campaign: [],
-  selected_social_accounts: [],
-  searched_social_accounts: {
-    items: [],
-    paginate: {}
-  },
   paginate: {},
   error: ""
 });
@@ -23,6 +18,7 @@ export const initialState = Immutable.fromJS({
 export default function campaignReducer($$state = initialState, action=nil) {
   const { type } = action;
   const fetchState = action.readyState;
+
   switch (type) {
     case actionTypes.FETCH_CAMPAIGNS:
       $$state = $$state.set("readyState", fetchState);
@@ -40,6 +36,11 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
 
       return $$state;
+
+    case actionTypes.CLEAR_CAMPAIGN:
+      $$state = $$state.set("campaign", Immutable.Map());
+      return $$state;
+
     case actionTypes.UPDATE_CAMPAIGN:
     case actionTypes.UPDATE_RECRUIT:
     case actionTypes.UPDATE_INVITE_CAMPAIGN:

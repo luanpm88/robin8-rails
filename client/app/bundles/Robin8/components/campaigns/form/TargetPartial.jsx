@@ -8,7 +8,6 @@ export default class TargetPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {kol_count: 0};
-    this.initSelector = false;
     _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
@@ -71,34 +70,22 @@ export default class TargetPartial extends React.Component {
     });
   }
 
-  componentDidMount(){
-    this.initConditionComponent();
-  }
+  componentWillReceiveProps(nextProps) {
+    if (!_.get(this.props, ['region', 'value']) &&
+        _.get(nextProps, ['region', 'value'])) {
+      const { region, tags } = nextProps;
 
-  componentDidUpdate() {
-    console.log("--------------", this.props);
-    const { region, tags } = this.props;
-    if(!this.initSelector && this.props.stateReady) {
-      this.setInitialSelector();
-      this.initSelector = true;
-    }
-  }
+      this.initConditionComponent();
 
-  setInitialSelector() {
-    const { region, tags } = this.props;
-    if(region.value === "全部 全部") {
-      $('.target-city-label').text("全部")
-    } else {
-      $('.target-city-label').text(region.value || "全部")
-    }
-    if (!tags.value) {
-      this.tagSelector.set("全部", false);
-    } else {
-      if (tags.value.length > 0)
+      if(region.value === "全部 全部") region.value = "全部"
+      $('.target-city-label').text(region.value);
       this.tagSelector.set(tags.value, false);
-    }
 
-    this.handleConditionChange();
+      this.fetchKolCountWithConditions({
+        region: _.replace(region.value, "/", ","),
+        tag: _.isArray(tags.value) ? tags.value.join(",") : '全部'
+      });
+    }
   }
 
   renderTargetTitle(){

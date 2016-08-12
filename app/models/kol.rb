@@ -96,7 +96,7 @@ class Kol < ActiveRecord::Base
     #role_apply_status %w{pending applying passed rejected}
     #kol_role:  %w{public big_v mcn_big_v mcn}
     if role_apply_status_changed?
-      if role_apply_status == "passed" and self.kol_role == "public"
+      if role_apply_status == "passed" and (self.kol_role == "public" or self.kol_role.blank?)
         self.kol_role = 'big_v'
       end
 

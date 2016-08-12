@@ -4,7 +4,7 @@ import  _ from 'lodash';
 import KolScoreModal  from '../../recruit_campaigns/modals/KolScoreModal';
 import KolScoreInfoModal from '../../recruit_campaigns/modals/KolScoreInfoModal';
 
-export default class KolSelectPartial extends React.Component {
+export default class KolList extends React.Component {
   constructor(props, context) {
     super(props, context);
 

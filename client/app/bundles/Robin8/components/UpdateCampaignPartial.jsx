@@ -24,7 +24,7 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
-  // img_url: { require_img: true },
+  img_url: { require_img: true },
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
@@ -77,6 +77,10 @@ class UpdateCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderRejectReasons() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === 'rejected') {
@@ -119,7 +123,7 @@ class UpdateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
-              <TargetPartial {...{region, tags}} stateReady={!campaign.isEmpty()} />
+              <TargetPartial {...{region, tags}} />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
                 {this.renderSubmitOrRevokeBtn()}
