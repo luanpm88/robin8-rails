@@ -115,26 +115,6 @@
               <li>
                 <%= link_to 'APP自己申请成为KOL已拒绝', marketing_dashboard_kols_path(:role_apply_status => :rejected ) %>
               </li>
-
-              <li>
-              <%= link_to 'MCN 旗下Kols', marketing_dashboard_kols_path(:kol_role => :mcn_big_v) %>
-              </li>
-              <li>
-                <%= link_to '热门大v', marketing_dashboard_kols_path(:is_hot => :true) %>
-              </li>
-              <li>
-                <%= link_to '自己申请的大V -- kols列表', marketing_dashboard_kols_path(:kol_role => :big_v) %>
-              </li>
-              <li>
-                <%= link_to '待处理的申请列表', marketing_dashboard_kols_path(:role_apply_status => :applying ) %>
-              </li>
-              <li>
-                <%= link_to '已通过的申请列表', marketing_dashboard_kols_path(:role_apply_status => :passed ) %>
-              </li>
-
-              <li>
-                <%= link_to '已拒绝的申请列表', marketing_dashboard_kols_path(:role_apply_status => :rejected ) %>
-              </li>
             </ul>
           </li>
         <li>
@@ -260,7 +240,7 @@
             </li>
           </ul>
         </li>
-        
+
       </ul>
       <br/><br/><br/>
       <!-- /.sidebar-collapse -->
