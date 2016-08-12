@@ -146,7 +146,11 @@ module Concerns
     end
 
     def sync_campaigns
-      return if self.kol_role != 'public'
+      if Rails.env.produciton?
+        return if self.kol_role == 'mcn_big_v'
+      else
+        return if self.kol_role != 'big_v'
+      end
       Campaign.where(:status => [:agreed, :executing]).each do |campaign|
         next if campaign.specified_kol_targets.size > 0
         if campaign.is_recruit_type?
