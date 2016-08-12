@@ -10,6 +10,7 @@ module ImportKols
       mcn = get_vs_mcn
       sheet1.each_with_index do |row,index|
         next if index < 4
+        puts "==========index:#{index}===name:#{row[1]}"
         kol = create_kol(row)
         create_social_account(kol, row)
         kol_no_exist = kol.new_record?

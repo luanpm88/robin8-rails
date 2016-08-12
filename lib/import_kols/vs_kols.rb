@@ -41,6 +41,7 @@ module ImportKols
       sheet1 = book.worksheet 0
       sheet1.each_with_index do |row,index|
         next if index < 4 || index == 39 + 3  ||  index == 87 + 3
+        puts "==========index:#{index}===name:#{row[1]}"
         kol = Kol.find_or_initialize_by(:name => row[1])
         kol.avatar_url = "http://7xozqe.com1.z0.glb.clouddn.com/vs_media_#{index - 3}.jpg"
         kol.save
