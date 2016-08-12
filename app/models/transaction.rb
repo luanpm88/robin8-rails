@@ -23,7 +23,7 @@ class Transaction < ActiveRecord::Base
   def get_subject
     case subject
       when 'campaign'
-        "营销活动(#{self.item.name})"
+        "营销活动(#{self.item.name rescue nil})"
       when 'manual_recharge'
         '人工充值'
       when 'manual_recharge', 'manaual_recharge'

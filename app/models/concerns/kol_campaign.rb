@@ -158,7 +158,7 @@ module Concerns
     end
 
     def max_campaign_click
-      self.campaign_invites.order("avail_click desc").first.total_click rescue nil
+      self.campaign_invites.order("avail_click desc").first.avail_click rescue nil
     end
 
     def max_campaign_earn_money

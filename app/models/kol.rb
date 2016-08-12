@@ -277,7 +277,7 @@ class Kol < ActiveRecord::Base
       if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
-      elsif invite.is_invite_type?
+      elsif invite.campaign.is_invite_type?
         income += invite.price
         count += 1
       end
