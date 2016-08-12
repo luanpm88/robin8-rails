@@ -80,8 +80,16 @@ class Kol < ActiveRecord::Base
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
-  scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
-
+  scope :order_by_created, ->{order("created_at desc")}
+  if Rails.env.production?
+    scope :big_v, ->{ }
+    # scope :mcn_big_v, -> { }
+    scope :personal_big_v, ->{ }
+  else
+    scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
+    # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
+    scope :personal_big_v, -> {where("kol_role = 'big_v'")}
+  end
   before_save :set_kol_kol_role
 
   def set_kol_kol_role
@@ -276,7 +284,7 @@ class Kol < ActiveRecord::Base
       if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
-      elsif invite.is_invite_type?
+      elsif invite.campaign.is_invite_type?
         income += invite.price
         count += 1
       end

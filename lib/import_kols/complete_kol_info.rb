@@ -1,10 +1,10 @@
 module ImportKols
   class CompleteKolInfo
     def self.start_do
-      Kol.where(:kol_role => 'mcn_big_v').each do |kol|
-        if kol.social_accounts.size == 0
-          kol.delete
-        else
+      Kol.big_v.each do |kol|
+        # if kol.kol_role == 'mcn_big_v' && kol.social_accounts.size == 0
+        #   kol.delete
+        # else
           kol.social_accounts.each do |social_account|
             kol.mobile_number = 10000000000 + kol.id if kol.mobile_number.blank?
             kol.name = social_account.username            if kol.name.blank?   && social_account.username.present?
@@ -19,7 +19,7 @@ module ImportKols
             kol.tags << social_account.tags[0] if social_account.tags.size > 0 && !kol.tags.include?(social_account.tags[0])
             kol.save!    rescue nil
           end
-        end
+        # end
       end
     end
 

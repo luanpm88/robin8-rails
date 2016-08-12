@@ -27,7 +27,7 @@ module Brand
             optional :region, type: String
           end
           get "search" do
-            @kols = Kol.active.big_v
+            @kols = Kol.active.personal_big_v
 
             if params[:region] and params[:region] != "全部"
               regions = params[:region].split(",").reject(&:blank?)

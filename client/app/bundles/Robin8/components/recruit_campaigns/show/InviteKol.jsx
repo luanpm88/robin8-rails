@@ -108,11 +108,14 @@ export default class InviteKol extends React.Component {
   }
 
   renderScoreMarkButton() {
-    const { campaign_invite } = this.props;
-    if (campaign_invite.get("kol_score")) {
-      return <td><button className="btn btn-blue btn-default show-score-mark-btn" onClick={this.show_score_info_modal.bind(this)}>查看评分</button></td>
+    const { campaign, campaign_invite } = this.props;
+    const status = campaign.get("recruit_status");
+    if (status === "settling" || status === "settled") {
+      if (campaign_invite.get("kol_score")) {
+        return <td><button className="btn btn-blue btn-default show-score-mark-btn" onClick={this.show_score_info_modal.bind(this)}>查看评分</button></td>
+      }
+      return <td><button className="btn btn-blue btn-default score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
     }
-    return <td><button className="btn btn-blue btn-default score-mark-btn" onClick={this.show_kol_score_modal.bind(this)}>评分</button></td>
   }
 
   render(){

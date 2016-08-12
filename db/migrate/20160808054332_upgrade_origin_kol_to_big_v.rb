@@ -13,11 +13,12 @@ class UpgradeOriginKolToBigV < ActiveRecord::Migration
             kol.social_accounts.build(provider: 'wechat', username: identity.name,  avatar_url: identity.avatar_url, followers_count: kol.weixin_friend_count  )
           elsif identity.provider == 'weibo'
             social_account = kol.social_accounts.build(provider: 'weibo', :homepage => "http://weibo.com/u/#{identity.uid}" )
-            social_account.auto_complete_infoq
+            social_account.auto_complete_info
           end
         end
       end
       kol.save
     end
+
   end
 end

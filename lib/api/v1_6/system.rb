@@ -7,7 +7,6 @@ module API
             {:question => doc.question, :answer => doc.answer}
           end
           present :error, 0
-          to_paginate(account_questions)
           present :notices, account_questions
         end
       end

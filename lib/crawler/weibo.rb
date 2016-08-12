@@ -21,7 +21,13 @@ module Crawler
       info[:uid] = content[:stage][:page][1][:id]
       return {} if  info[:uid].blank?
       info[:brief] = content[:stage][:page][1][:description]
+      if !info[:brief].valid_encoding?
+        info[:brief] = info[:brief].encode("UTF-16be", :invalid=>:replace, :replace=>"").encode('UTF-8')
+      end
       info[:username] = content[:stage][:page][1][:name]
+      if !info[:username].valid_encoding?
+        info[:username] = info[:username].encode("UTF-16be", :invalid=>:replace, :replace=>"").encode('UTF-8')
+      end
       info[:statuses_count] = content[:stage][:page][1][:mblogNum]
       info[:friends_count] = content[:stage][:page][1][:attNum]
       info[:followers_count] = content[:stage][:page][1][:fansNum]

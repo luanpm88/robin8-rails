@@ -8,14 +8,17 @@ module API
           optional :with_kol_announcement, type: String
           optional :tag_name, type: String
           optional :name, type: String
+          optional :order, type: String, values: ['order_by_hot', 'order_by_created']
         end
         get '/' do
+          order_by = params[:order] || 'order_by_hot'
+          per_page = order_by == 'order_by_hot' ? 10 : 40
           if params[:tag_name].blank?
-            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).order_by_hot.page(params[:page]).per_page(10)
+            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
           else
             tag_id = Tag.find_by(:name => params[:tag_name]).id
             big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
-                    order_by_hot.page(params[:page]).per_page(10)
+                       send("#{order_by}").page(params[:page]).per_page(per_page)
           end
           if params[:with_kol_announcement] == 'Y'
             kol_announcements = KolAnnouncement.enable

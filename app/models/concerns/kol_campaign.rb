@@ -146,7 +146,11 @@ module Concerns
     end
 
     def sync_campaigns
-      return if self.kol_role != 'public'
+      if Rails.env.production?
+        return if self.kol_role == 'mcn_big_v'
+      else
+        return if self.kol_role != 'big_v'
+      end
       Campaign.where(:status => [:agreed, :executing]).each do |campaign|
         next if campaign.specified_kol_targets.size > 0
         if campaign.is_recruit_type?
@@ -158,7 +162,7 @@ module Concerns
     end
 
     def max_campaign_click
-      self.campaign_invites.order("avail_click desc").first.total_click rescue nil
+      self.campaign_invites.order("avail_click desc").first.avail_click rescue nil
     end
 
     def max_campaign_earn_money

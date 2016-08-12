@@ -223,7 +223,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def settle(auto = false, transaction_time = Time.now)
     return if self.status == 'settled' || self.status == 'rejected'
-    CampaignInvite.transaction do
+    self.with_lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
@@ -238,7 +238,6 @@ class CampaignInvite < ActiveRecord::Base
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
-        settle_kol = nil
         if self.kol.kol_role == "mcn_big_v"
           settle_kol = self.kol.agent  rescue nil
            Rails.logger.transaction.info "====invite cmapaign kol_id:#{self.kol.id} not found mcn agent"
