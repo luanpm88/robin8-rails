@@ -15,6 +15,10 @@ module AuthToken
     JWT.encode(payload, Secret, Algorithm)
   end
 
+  def AuthToken.decode_data(data)
+    JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]  rescue nil
+  end
+
   #校验用户
   def AuthToken.valid?(data)
     begin
@@ -23,8 +27,8 @@ module AuthToken
         Rails.logger.info "-----origin-data:#{data}---"
         Rails.logger.info "-----before-decoded-data: #{JWT.decode(data, Secret, true, {:algorithm => Algorithm})} ---"
       end
-      if decoded_data['time'].blank? || decoded_data[Key].blank?
-        Rails.logger.info "-----decoded data: #{decoded_data} --- 格式错误"
+      if decoded_data[Key].blank?
+        Rails.logger.info "-----decoded data: #{decoded_data} --- private_token 错误"
         return [false, '格式错误' ]
       end
       if AuthToken.valid_time?(decoded_data)

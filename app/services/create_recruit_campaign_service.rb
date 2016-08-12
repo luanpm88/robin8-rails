@@ -1,11 +1,10 @@
 class CreateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
-  PERMIT_PARAMS = [:name, :description, :task_description,
-                  :address, :img_url, :budget, :per_budget_type,
+  PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :influence_score, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name]
+                  :region, :tags, :sns_platforms, :recruit_start_time,
+                  :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -38,9 +37,11 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :influence_score].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :tags, :sns_platforms, :material_ids].include? k })
 
-        @campaign_params.select{ |k, v| [:region, :influence_score].include? k }.each do |k, v|
+        create_campaign_materials
+
+        @campaign_params.select{ |k, v| [:region, :tags, :sns_platforms].include? k }.each do |k, v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end
@@ -60,8 +61,15 @@ class CreateRecruitCampaignService
 
   def permitted_params_from params
     params.merge!(per_budget_type: 'recruit')
-    params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
+    # params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
     params.select { |k, v| PERMIT_PARAMS.include? k }
+  end
+
+  def create_campaign_materials
+    return unless @campaign_params[:material_ids].present?
+    CampaignMaterial.where(id: @campaign_params[:material_ids].split(",")).each do |campaign_material|
+      campaign_material.update campaign_id: @campaign.id
+    end
   end
 
   # def enough_amount? user, budget

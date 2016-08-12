@@ -18,10 +18,10 @@ import initToolTip    from './shared/InitToolTip';
 import CampaignFormValidate from './shared/validate/CampaignFormValidate'
 
 const initCampaign = {
-  age: 'all',
-  province: '全部',
-  city: '全部',
-  gender: 'all',
+  age: '全部',
+  region: '全部',
+  tags: "全部",
+  gender: '全部',
   message: '',
   budget: 100,
   per_budget_type: 'click',
@@ -66,7 +66,7 @@ class CreateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type} = this.props.fields;
+    const { name, description, img_url, url, age, gender, region, tags, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type} = this.props.fields;
     const brand = this.props.brand
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
@@ -81,7 +81,7 @@ class CreateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
-
+              <TargetPartial {...{region, tags}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
@@ -96,7 +96,7 @@ class CreateCampaignPartial extends React.Component {
 
 CreateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
   returnRejectedSubmitPromise: true,
   validate
 },

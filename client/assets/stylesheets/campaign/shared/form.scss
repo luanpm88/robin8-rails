@@ -189,6 +189,23 @@
 .creat-activity-form .content {
   padding: 0 40px;
   background-color: #fff;
+  .notice {
+    position: absolute;
+    top: -32px;
+    right: 10px;
+    height: 32px;
+    color: #999;
+    font-size: 14px;
+    line-height: 32px;
+    em {
+      margin-left: 10px;
+      color: #333;
+      font-size: 20px;
+      text-decoration: none;
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
 }
 .creat-activity-form .form-group {
   margin-bottom: 30px;
@@ -357,6 +374,63 @@
 .creat-activity-target .target-location .province {
   margin-right: 20px;
 }
+
+.creat-material {
+  .content {
+    color: #fff;
+    background-color: #3e3d3e;
+    background-image: linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    background-image: -moz-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    background-image: -webkit-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
+    box-shadow: 5px 8.66px 18px 0px rgba(0, 0, 0, 0.3);
+    .materials {
+      .material {
+        padding-top: 20px;
+        line-height: 50px;
+        img {
+          float: left;
+        }
+        .material-type, .material-id {
+          display: none;
+        }
+        span:last-child {
+          font-size: 20px;
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+    .material-option {
+      margin-top: 10px;
+      li {
+        float: left;
+        margin-right: 20px;
+        width: 200px;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        span {
+          width: 120px;
+        }
+      }
+    }
+  }
+}
+
+.campaign-material-modal {
+  .material-url-input {
+    width: 100%;
+  }
+  .error-tip {
+    height: 0px;
+    display: none;
+    color: #ce0101;
+    margin-top: 8px;
+    font-size: 13px;
+    margin-right: 27px
+  }
+}
+
 
 .kol-message {
   padding: 30px 0px;
@@ -639,5 +713,51 @@ div.sources-check.cpa-cpi-select{
     color: #9b9a9a;
     font-size: 14px;
     font-weight: 400;
+  }
+}
+
+.campaign-target-group {
+  padding: 38px 0;
+  width: 100%;
+  position: relative;
+
+  .campaign-target {
+    text-align: center;
+
+    label{
+      display: block;
+      color: #9b9a9a;
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .target-result{
+      margin-top: 25px;
+    }
+
+    .target-btn{
+      width: 110px;
+      height: 36px;
+      color: #ffffff;
+      background-color: #36cdd3;
+      font-size: 14px;
+    }
+
+  }
+
+  .target-sns {
+    .target-item {
+      width: 32px;
+      height: 32px;
+      margin: -6px 3px 0 3px;
+      display: inline-block;
+    }
+  }
+
+  .target-city-label{
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
   }
 }

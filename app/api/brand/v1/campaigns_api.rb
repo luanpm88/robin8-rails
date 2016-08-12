@@ -70,6 +70,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
@@ -176,6 +177,7 @@ module Brand
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
+              requires :tags   , type:String
             end
             optional :campaign_action_url, type: Hash do
               optional :action_url            , type: String
@@ -198,11 +200,7 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
-          requires :region, type: String
-          requires :influence_score, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
           requires :start_time, type: DateTime
@@ -210,7 +208,11 @@ module Brand
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
+          optional :region, type: String
+          optional :sns_platforms, type: String
+          optional :tags, type: String
           optional :hide_brand_name, type: Boolean
+          optional :material_ids, type: String
         end
         post 'recruit_campaigns' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
@@ -226,11 +228,7 @@ module Brand
         params do
           requires :name, type: String
           requires :description, type: String
-          requires :task_description, type: String
-          optional :address, type: String
           requires :img_url, type: String
-          requires :region, type: String
-          requires :influence_score, type: String
           requires :recruit_start_time, type: DateTime
           requires :recruit_end_time, type: DateTime
           requires :start_time, type: DateTime
@@ -238,7 +236,11 @@ module Brand
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
+          optional :region, type: String
+          optional :sns_platforms, type: String
+          optional :tags, type: String
           optional :hide_brand_name, type: Boolean
+          optional :material_ids, type: String, default: nil
         end
         put '/recruit_campaigns/:id' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
@@ -270,6 +272,72 @@ module Brand
         put "/recruit_campaigns/:id/end_apply_check" do
           CampaignApply.end_apply_check(declared(params)[:id])
           present Campaign.find_by(id: declared(params)[:id])
+        end
+
+        resource :invite_campaigns do
+          desc 'Create a invite campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :img_url, type: String
+            # requires :budget, type: Float
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :social_accounts, type: String
+            optional :material_ids, type: String
+          end
+          post "/" do
+            service = CreateInviteCampaignService.new current_user, declared(params)
+
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+
+          desc 'Update a invite campaign'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :img_url, type: String
+            # optional :budget,   type: Float
+            requires :start_time, type: DateTime
+            requires :deadline, type: DateTime
+            requires :social_accounts, type: String
+            optional :material_ids, type: String
+          end
+          put '/:id' do
+            service = UpdateInviteCampaignService.new current_user, params[:id], declared(params)
+            if service.perform
+              present service.campaign
+            else
+              error_unprocessable! service.first_error_message
+            end
+          end
+
+          desc "Get a invite campaign"
+          params do
+            requires :id, type: Integer
+          end
+          get '/:id' do
+            @invite_campaign = Campaign.find_by(id: declared(params)[:id])
+            if can?(:read, @invite_campaign)
+              present @invite_campaign
+            else
+              error_403! "没有查看权限"
+            end
+          end
+
+          desc "获取特约活动的campaign_invites"
+          params do
+            requires :id, type: Integer
+          end
+          get '/:id/agreed_invites' do
+            @invite_campaign = Campaign.find_by(id: declared(params)[:id])
+            present @invite_campaign.campaign_invites.verifying_or_approved
+          end
+
         end
       end
 

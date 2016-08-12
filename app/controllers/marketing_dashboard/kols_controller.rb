@@ -16,6 +16,9 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
     @kols = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
 
+    if params[:source_from] == "role_apply"
+      render :role_apply_index and return
+    end
     render 'index'
   end
 
@@ -68,6 +71,23 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     @kol = Kol.find params[:id]
   end
 
+  def edit_profile
+    @kol = Kol.find params[:id]
+  end
+
+  def update_profile
+    @kol = Kol.find params[:id]
+    if params[:kol][:mobile_number].blank?
+      params[:kol][:mobile_number] = nil
+    end
+    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo))
+    update_tag_ids
+    update_keywords
+    @kol.reload
+    flash[:notice] = "保存成功"
+    render :edit_profile
+  end
+
   def update
     @kol = Kol.find params[:id]
     if params[:kol][:mobile_number].blank?
@@ -106,10 +126,40 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
                 Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
               elsif params[:kol_level] and ["A", "B"].include? params[:kol_level]
                 Kol.where(kol_level: params[:kol_level])
+
+              elsif params[:kol_role]
+                Kol.where(kol_role: params[:kol_role])
+
+              elsif params[:is_hot]
+                Kol.where(is_hot: true).order('created_at DESC').paginate(paginate_params)
+              elsif params[:role_apply_status]
+                Kol.where(role_apply_status: params[:role_apply_status]).order('created_at DESC').paginate(paginate_params)
               else
                 Kol.all
               end
             end.order('created_at DESC').paginate(paginate_params)
+    if params[:role_apply_status] or params[:is_hot]
+        render "role_apply_index" and return
+    end
+  end
+
+  def update_tag_ids
+    old_tags = @kol.tags
+    now_tags = params[:kol][:tag_ids].map(&:to_i)
+    KolTag.where(:tag_id => (old_tags-now_tags), :kol_id => @kol.id).delete_all
+    (now_tags-old_tags).each do |tag_id|
+      KolTag.find_or_create_by(:tag_id => tag_id, :kol_id => @kol.id)
+    end
+  end
+
+  def update_keywords
+    weight = 100
+     params[:kol][:key_word_names].gsub("，", ",").split(",").each_with_index do |word, index|
+        word = word.strip
+        unless KolKeyword.exists?(:kol_id => params[:id], :keyword => word)
+          KolKeyword.create(:kol_id => params[:id], :keyword => word, :weight => weight - index)
+        end
+     end
   end
 
   def set_kol

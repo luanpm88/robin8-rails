@@ -19,13 +19,14 @@ class SelectCampaignPartial extends Component {
                 <div className="at-box-pic">
                   <img src={require('icon-light.png')} />
                 </div>
-                <h3>转发活动</h3>
+                <h3>悬赏活动</h3>
               </div>
               <div className="at-box-ct">
-                <p>转发活动包括：CPC（KOL分享后按照好友有效点击数付费）</p>
-                <p>CPP（按照KOL转发一次性付费）</p>
-                <p>CPA（KOL分享后按照活动效果付费）</p>
-                <p>&nbsp;</p>
+                <p className="bold">支持朋友圈文章类广告发布</p>
+                <p>KOL分享文章到朋友圈后，</p>
+                <p>[CPC]按照好友有效点击数付费</p>
+                <p>[CPP]按照KOL转发一次性付费</p>
+                <p>[CPA]按照KOL分享后效果付费</p>
               </div>
               <div className="at-box-bt at-box-bt-left">
                 <Link to="/brand/campaigns/new" className="btn">
@@ -33,6 +34,7 @@ class SelectCampaignPartial extends Component {
                 </Link>
               </div>
             </div>
+
             <div className="at-s-box">
               <div className="at-box-mk mk-new">
                 <div className="mk-bg"></div>
@@ -44,11 +46,11 @@ class SelectCampaignPartial extends Component {
                 </div>
                 <h3>招募活动</h3>
               </div>
-
               <div className="at-box-ct">
-                <p>招募活动采用KOL报名的形式，您只需填写您需</p>
-                <p>要KOL完成的任务，这可以是一次线上活动或线</p>
-                <p>下活动，我们将为您推送最合适的KOL参加。</p>
+                <p className="bold">支持主流社交平台自定义广告发布</p>
+                <p>广告主创建活动，KOL报名，广告主会挑选</p>
+                <p>合适的KOL接单，按照KOL完成活动</p>
+                <p>一次性付费，广告主定价</p>
               </div>
               <div className="at-box-bt">
                 <Link to="/brand/recruits/new" className="btn">
@@ -56,6 +58,35 @@ class SelectCampaignPartial extends Component {
                 </Link>
               </div>
             </div>
+
+            <div className="at-s-box">
+              <div className="at-box-mk mk-new">
+                <div className="mk-bg"></div>
+                <i>NEW</i>
+              </div>
+              <div className="at-box-hd">
+                <div className="at-box-pic">
+                  <img src={require('icon-gift.png')} />
+                </div>
+                <h3>特邀活动</h3>
+              </div>
+              <div className="at-box-ct">
+                <p className="bold">支持主流社交平台自定义广告发布</p>
+                <p>广告主创建活动，邀请特定的KOL接单，</p>
+                <p>按照KOL完成活动一次性付费，</p>
+                <p>广告主需接受KOL的报价</p>
+              </div>
+              <div className="at-box-bt">
+                <Link to="/brand/invites/new" className="btn">
+                  立即创建
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="at-s-bottom">
+            <Link to="/contact" className="btn service-call">
+              有问题请联系客服
+            </Link>
           </div>
         </div>
       </div>

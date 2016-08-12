@@ -1,0 +1,37 @@
+<%= link_to "新建个人展示", new_marketing_dashboard_kol_show_path(:kol_id => params[:kol_id]) %>
+<h5><%= devise_error_messages! %></h5>
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>kol_id</th>
+      <th>平台来源</th>
+      <th>标题</th>
+      <th>描述</th>
+      <th>链接</th>
+      <th>喜欢数</th>
+      <th>阅读数</th>
+      <th>转发数</th>
+      <th>评论数</th>
+      <th>封面</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @kol_shows.each do |k| %>
+      <tr>
+        <% %w(kol_id provider title  desc link  like_count read_count repost_count comment_count).each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        <td> <%= image_tag k.cover_url, width: "100px", height: "100px"%> </td>
+        <td><%= link_to "编辑", edit_marketing_dashboard_kol_show_path(:id => k.id) %> 
+          <br/>
+          <br/>
+          <%= link_to "删除", marketing_dashboard_kol_show_path(:id => k.id), :method => "delete", "data-confirm" => "是否确认删除" %>
+        </td>  
+        
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+

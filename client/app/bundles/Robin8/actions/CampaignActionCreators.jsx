@@ -24,6 +24,8 @@ export function saveCampaign(campaign) {
         }
       case 'age':
       case 'gender':
+      case 'region':
+      case 'tags':
         formData.append(`target[${key}]`, campaign[key]);
         break;
       case 'action_url':
@@ -35,7 +37,6 @@ export function saveCampaign(campaign) {
         formData.append(`${key}`, campaign[key]);
         break;
     }
-    formData.append("target[region]", (campaign['province'] + " " + campaign['city']))
   }
 
   return {
@@ -54,6 +55,12 @@ export function saveCampaign(campaign) {
   };
 }
 
+export function clearCampaign() {
+  return {
+    type: actionTypes.CLEAR_CAMPAIGN
+  };
+}
+
 export function updateCampaign(campaign_id, campaign) {
   var formData = new FormData()
   for(let key of Object.keys(campaign)) {
@@ -68,6 +75,8 @@ export function updateCampaign(campaign_id, campaign) {
         }
       case 'age':
       case 'gender':
+      case 'region':
+      case 'tags':
         formData.append(`target[${key}]`, campaign[key]);
         break;
       case 'action_url':
@@ -79,7 +88,6 @@ export function updateCampaign(campaign_id, campaign) {
         formData.append(`${key}`, campaign[key]);
         break;
     }
-    formData.append("target[region]", (campaign['province'] + " " + campaign['city']))
   }
 
   return {

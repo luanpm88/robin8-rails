@@ -35,14 +35,11 @@
   z-index: 2001;
   width:580px;
   border:1px solid #ccc;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 #drag_h{
   line-height:36px;
   height:36px;
-  cursor:move;
   color:#fff;
   background:#36cdd3;
   padding:0 10px
@@ -62,7 +59,7 @@
 }
 
 #sublist{
-  position:absolute;
+  position:fixed;
   z-index:2100;
   background:#fff
 }
@@ -167,6 +164,7 @@
 }
 
 #sub_jobArea h4{
+  font-size: 15px;
   border-bottom:1px dashed #ccc
 }
 

@@ -11,10 +11,12 @@ class Campaign < ActiveRecord::Base
   include Campaigns::ValidationHelper
   include Campaigns::StatsHelper
 
-  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
-  validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
+  validates_presence_of :name, :description, :budget, :per_budget_type, :start_time, :deadline
+  validates_presence_of :per_action_budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
+  validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa'].include? campaign.per_budget_type }
+  validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   #Status : unpay unexecute agreed rejected  executing executed
-  #Per_budget_type click post cpa
+  #Per_budget_type click post cpa recruit invite
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
@@ -41,6 +43,7 @@ class Campaign < ActiveRecord::Base
   has_many :interested_campaigns
   belongs_to :release
   has_many :campaign_applies
+  has_many :campaign_materials
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
@@ -61,6 +64,7 @@ class Campaign < ActiveRecord::Base
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
+  ReceiveCampaignInterval = Rails.env.production? ? 3.hours : 1.second
   def email
     user.try :email
   end
@@ -122,11 +126,16 @@ class Campaign < ActiveRecord::Base
   end
 
   def actual_budget(from_brand = true)
-    from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
+    if self.is_invite_type?
+      self.campaign_invites.sum(:price)
+    else
+      from_brand ? budget :  (actual_per_action_budget * max_action).round(2)      rescue  budget
+    end
   end
 
+  #返回的entity 中会根据当前用户的价格覆盖
   def get_per_action_budget(from_brand = true)
-    from_brand ? per_action_budget : (actual_per_action_budget || cal_actual_per_action_budget)
+      from_brand ? per_action_budget : (actual_per_action_budget || cal_actual_per_action_budget)
   end
 
   def get_fee_info(from_brand = true)
@@ -165,11 +174,17 @@ class Campaign < ActiveRecord::Base
       else
         (get_avail_click * per_budget).round(2)       rescue 0
       end
-    else
+    elsif self.is_post_type? || self.is_recruit_type?
       if self.status == 'settled'
         (self.settled_invites.count * per_budget).round(2) rescue 0
       else
         (self.valid_invites.count * per_budget).round(2) rescue 0
+      end
+    elsif self.is_invite_type?
+      if from_brand
+        self.campaign_invites.where(:status => ['approved', 'finished', 'settled']).sum(:sale_price)
+      else
+        self.campaign_invites.where(:status => ['approved', 'finished', 'settled']).sum(:price)
       end
     end
   end
@@ -195,7 +210,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  ['click', 'post', 'recruit', 'cpa', 'cpi'].each do |value|
+  ['click', 'post', 'recruit', 'cpa', 'cpi', 'invite'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end

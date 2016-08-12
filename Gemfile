@@ -237,3 +237,5 @@ gem 'alipay', '~> 0.12.0'
 gem 'doorkeeper'
 # https://github.com/rails/actioncable/tree/archive
 gem 'actioncable', github: 'rails/actioncable', branch: "archive"
+gem 'mechanize'
+gem 'spreadsheet'

@@ -14,10 +14,12 @@ module API
           optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
+          optional :longitude, type: Float
+          optional :latitude, type: Float
         end
         put 'update_profile' do
+          Kol.reg_or_sign_in(params, current_kol)
           present :error, 0
-          current_kol.reg_or_sign_in(params)
         end
 
         get 'alipay' do

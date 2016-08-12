@@ -4,7 +4,7 @@
 // See https://github.com/petehunt/webpack-howto#6-feature-flags for you might turn this off for production.
 export default function logger({ getState }) {
   return next => action => {
-    console.log('will dispatch', action);
+    console.log('<DISPATCH>', action);
 
     // Call the next dispatch method in the middleware chain.
     const result = next(action);

@@ -22,7 +22,8 @@ export default props => {
   })
 
   const composeStore = compose(
-    applyMiddleware(thunkMiddleware, promiseMiddleware, loggerMiddleware)
+    applyMiddleware(thunkMiddleware, promiseMiddleware, loggerMiddleware),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
   );
 
   const storeCreator = composeStore(createStore);

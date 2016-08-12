@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, campaignType, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign, isInviteCampaign } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -17,6 +17,8 @@ export default class Campaign extends React.Component {
 
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
       return `/brand/recruits/${campaign.get("id")}`;
+    } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
+      return `/brand/invites/${campaign.get("id")}`;
     } else {
       return `/brand/campaigns/${campaign.get("id")}`;
     }
@@ -48,24 +50,23 @@ export default class Campaign extends React.Component {
   renderCampaignName(campaign) {
     const padding = canEditCampaign(campaign.get("status")) ? -3 : 0;
 
-    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+    if(isRecruitCampaign(campaign.get("per_budget_type")) || isInviteCampaign(campaign.get("per_budget_type"))) {
       if (canPayCampaign(campaign.get("status"))) {
         return (
           <h2 className="activity-title">
             { _.truncate(campaign.get("name"), {"length": 16 + padding, "omission": ".."})}
-            <span className="label label-orange">招募</span>
+            <span className="label label-orange">{campaignType(campaign.get("per_budget_type"))}</span>
           </h2>
         )
       } else {
         return (
           <h2 className="activity-title">
             { _.truncate(campaign.get("name"), {"length": 21 + padding, "omission": ".."})}
-            <span className="label label-orange">招募</span>
+            <span className="label label-orange">{campaignType(campaign.get("per_budget_type"))}</span>
           </h2>
         )
       }
-    }
-    else {
+    } else {
       if (canPayCampaign(campaign.get("status"))) {
         return (
           <h2 className="activity-title">
@@ -83,7 +84,7 @@ export default class Campaign extends React.Component {
   }
 
   renderCampaignDate(campaign) {
-    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+    if(isRecruitCampaign(campaign.get("per_budget_type")) || isInviteCampaign(campaign.get("per_budget_type"))) {
       return (
         <small className="date">
           { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
@@ -129,6 +130,24 @@ export default class Campaign extends React.Component {
           </li>
         </ul>
       )
+    } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
+      return (
+        <ul className="stat-info invite-campaign grid-4">
+          <li id="invites-count">
+            <span className="txt">预计邀请人数</span>
+            <div id="cl-invites-count">
+              <strong className="stat-num">{ campaign.get("total_invite_kols_count") }</strong>
+            </div>
+          </li>
+          <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</strong></li>
+          <li id="invites-total-budget">
+            <span className="txt">邀请预算</span>
+            <div  className="cl-invites-total-budget">
+              <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
+            </div>
+          </li>
+        </ul>
+      )
     } else {
       return (
         <ul className="stat-info grid-4">
@@ -150,7 +169,7 @@ export default class Campaign extends React.Component {
 
     const { campaign, tagColor, index } = this.props;
     const imgUrl = !!campaign.get('img_url') ? campaign.get('img_url') : require('campaign-list-pic.jpg');
-    const classes = tagColor + " " + (isRecruitCampaign(campaign.get("per_budget_type")) ? "recruit" : "");
+    const classes = tagColor + " " + ((isRecruitCampaign(campaign.get("per_budget_type")) || isInviteCampaign(campaign.get("per_budget_type")))  ? "recruit" : "");
     return (
       <div className={classes} key={index}>
         <div className="brand-activity-content">

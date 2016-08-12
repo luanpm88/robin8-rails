@@ -57,7 +57,7 @@ module API
                                 IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source], app_city: app_city)
               #保存头像
               if params[:avatar_url].present?
-                kol.remote_avatar_url =  params[:avatar_url]
+                kol.avatar_url =  params[:avatar_url]
                 kol.save
               end
               if identity.blank?

@@ -1,75 +1,150 @@
 import React from 'react';
+import _ from 'lodash';
+import { jobAreaSelect } from '../../shared/CitySelector';
+import TagSelector from '../../shared/TagSelector';
 
 export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, '_initCitySelector');
+    this.state = {kol_count: 0};
+    _.bindAll(this, ["handleConditionChange", "initConditionComponent"])
   }
 
-  _initCitySelector() {
-    $('.target-city-selector').CitySelector();
+  fetchKolCountWithConditions(condition) {
+    let params = [];
+    _.forIn(condition, (value, key) => params.push(`${key}=${value}`));
+    params.push("just_count=true");
+    const queryString = params.join("&");
+
+    fetch(`/brand_api/v1/kols/search?${queryString}`, {"credentials": "include"})
+      .then(function(response) {
+        response.json().then(function(data){
+          this.setState({kol_count: data.count});
+      }.bind(this))
+    }.bind(this),
+    function(error) {
+      console.error("----------查询kol数量失败---------------");
+    })
   }
 
-  componentDidMount() {
-    this._initCitySelector()
+  handleConditionChange(){
+
+    let condition = {};
+
+    const regionText = $('.target-city-label').text().trim();
+    if (regionText != "全部") {
+      let condstr = regionText.split("/").join(",");
+      _.assignIn(condition, {region: condstr});
+      this.props.region.onChange(condstr)
+    } else {
+      this.props.region.onChange("全部");
+    }
+    const tagItems = this.tagSelector.activeItems;
+    if (tagItems && tagItems.length > 0) {
+      let condstr = tagItems.map((item) => {
+        return item.name;
+      }).join(",");
+      _.assignIn(condition, {tag: condstr});
+      this.props.tags.onChange(condstr);
+    } else {
+      this.props.tags.onChange("全部");
+    }
+    this.fetchKolCountWithConditions(condition);
+  }
+
+  initConditionComponent() {
+    $(".target-city-label").bind("change", this.handleConditionChange)
+    this.tagSelector = new TagSelector({
+      onSelectionDone: (activeItems, state=true) => {
+        let activeText;
+        if (activeItems.length > 0) {
+          activeText = activeItems.map((item) => {
+            return item.label;
+          }).join("/");
+        }
+
+        $("#tag-result").html(activeText || "全部");
+        if (!!state) this.handleConditionChange();
+      }
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.get(this.props, ['region', 'value']) &&
+        _.get(nextProps, ['region', 'value'])) {
+      const { region, tags } = nextProps;
+
+      this.initConditionComponent();
+
+      if(region.value === "全部 全部") region.value = "全部"
+      $('.target-city-label').text(region.value);
+      this.tagSelector.set(tags.value, false);
+
+      this.fetchKolCountWithConditions({
+        region: _.replace(region.value, "/", ","),
+        tag: _.isArray(tags.value) ? tags.value.join(",") : '全部'
+      });
+    }
+  }
+
+  renderTargetTitle(){
+    const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
+    return tip
+  }
+
+  renderKolCount(){
+    return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
   }
 
   render() {
-
-    const { message, age, province, city, gender } = this.props
-
     return (
-      <div className="creat-activity-form creat-target">
+      <div className="creat-activity-form">
         <div className="header">
-          <h3 className="tit">推广目标&nbsp;<span className="what"><span className="question-sign">?</span></span></h3>
+          <h3 className="tit">KOL选择&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
-          <div className="creat-activity-target">
-            <div className="form-group">
-              <div className="target-age-range">
-                <label>年龄段</label>
-                <div className="target-age-selector">
-                  <select {...age} className="age-range">
-                    <option value = "all">全部</option>
-                    <option value = "0-5">0-5岁</option>
-                    <option value = "5-10">5-10</option>
-                    <option value = "10-20">10-20</option>
-                    <option value = "20-40">20-40</option>
-                    <option value = "40-60">40-60</option>
-                    <option value = "60以上">60以上</option>
-                  </select>
+          <div className="campaign-target-group">
+
+            {this.renderKolCount()}
+
+            <div className="row">
+              <div className="col-md-6">
+                <div className="campaign-target target-region">
+                  <label >地区</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
+                  <div className="target-result">
+                    <div id="btn_jobArea" className="target-city-label">全部</div>
+                  </div>
                 </div>
               </div>
-              <div className="target-location clearfix" >
-                <label>投放地区</label>
-                <div className="target-city-selector">
-                 <select {...province} className="province"></select>
-                 <select {...city} className="city"></select>
+              <div className="col-md-6">
+                <div className="campaign-target target-tag">
+                  <label>分类</label>
+                  <a className="btn btn-blue btn-default target-btn"
+                     onClick={ (event) => { this.tagSelector.show() }}>选择分类</a>
+                  <div className="target-result">
+                    <div id="tag-result"></div>
+                  </div>
                 </div>
               </div>
-              <div className="target-gender clearfix">
-                <label>性别</label>
-                <div className="target-gender-selector">
-                  <select {...gender} className="gender" >
-                    <option value ="all">全部</option>
-                    <option value ="male">男</option>
-                    <option value ="female">女</option>
-                  </select>
+              {/*
+                <div className="col-md-4">
+                  <div className="campaign-target target-sns">
+                    <label>平台</label>
+                    <a className="btn btn-blue btn-default target-btn"
+                       onClick={ (event) => { this.snsSelector.show() }}>社交媒体</a>
+                    <div className="target-result">
+                      <div id="sns-result"></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              */}
             </div>
           </div>
-
-          <div className="kol-message">
-            <p>KOL留言</p>
-            <div>
-              <input {...message} type="text" className="form-control" placeholder="给KOL留言 (选填)" />
-            </div>
-          </div>
-
         </div>
       </div>
-     )
-   }
- }
+    )
+  }
+}

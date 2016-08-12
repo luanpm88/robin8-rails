@@ -87,9 +87,10 @@ module API
         #联系人  已经存在的用户 更新kol_contacts,新用户更新tmp_tmp_contacts
         params do
           requires :contacts, type: String
-          requires :kol_uuid, type: String
+          optional :kol_uuid, type: String
         end
         post 'bind_contacts' do
+          return  error_403!({error: 1, detail: '请登录'})    if current_kol.blank? && params[:kol_uuid].blank?
           Rails.logger.info "-----before: #{params[:kol_uuid]}----#{params[:contacts]}"
           if Rails.env.development?
             contacts = Kol.where("mobile_number is not null").limit(50).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}

@@ -1,6 +1,7 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
-
+  # kol_role:  %w{public big_v mcn_big_v mcn}
+  # role_apply_status %w{pending applying passed rejected}
   # counter :redis_new_income      #unit is cent
   list :read_message_ids, :maxlength => 2000             # 所有阅读过的
   list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
@@ -57,9 +58,56 @@ class Kol < ActiveRecord::Base
   has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
 
-  scope :active, -> {where("updated_at > '#{5.weeks.ago}'").where("device_token is not null") }
+  has_many :kol_shows
+  has_many :images, :source => :referable
+  has_many :cover_images, -> {where(:sub_type => 'cover')}, :class => Image, :source => :referable
+  has_many :social_accounts, -> {order("case provider when 'weibo' then 5 when 'meipai' then 4 when 'public_wechat' then 3 else 2 end desc")}
+  has_many :agent_kols, :foreign_key => :agent_id
+  has_many :big_vs, :through => :agent_kols, :source => :kol
+  has_one :agent_kol, :foreign_key => :kol_id
+  has_one :agent, :through => :agent_kol,  :source => :agent
+
+  has_many :followships, :foreign_key => :kol_id
+  has_many :followers, through: :followships,  :source => :follower
+
+  has_many :friendships, :foreign_key => :follower_id, :class_name => 'Followship'
+  has_many :friends, through: :friendships, :source => :kol
+
+
+  has_many :kol_keywords
+
+  scope :active, -> {where("`kols`.`updated_at` > '#{5.weeks.ago}'")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
+  scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
+  scope :order_by_created, ->{order("created_at desc")}
+  if Rails.env.production?
+    scope :big_v, ->{ }
+    # scope :mcn_big_v, -> { }
+    scope :personal_big_v, ->{ }
+  else
+    scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
+    # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
+    scope :personal_big_v, -> {where("kol_role = 'big_v'")}
+  end
+  before_save :set_kol_kol_role
+
+  def set_kol_kol_role
+    #role_apply_status %w{pending applying passed rejected}
+    #kol_role:  %w{public big_v mcn_big_v mcn}
+    if role_apply_status_changed?
+      if role_apply_status == "passed" and (self.kol_role == "public" or self.kol_role.blank?)
+        self.kol_role = 'big_v'
+      end
+
+      if role_apply_status == "rejected"
+        if self.kol_role == "big_v"
+          self.kol_role = "public"
+        end
+      end
+    end
+  end
+
 
   def email_required?
     false if self.provider != "signup"
@@ -144,19 +192,6 @@ class Kol < ActiveRecord::Base
       return nil
     end
   end
-
-  # def all_score
-  #   wechat_score  = identity_score('wechat')
-  #   wechat_third_score = identity_score('wechat_third')
-  #   weibo_score = identity_score('weibo')
-  #   total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
-  #   {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
-  #    :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
-  # end
-  #
-  # def data_score
-  #   (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5)
-  # end
 
   def identity_score(provider)
     (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
@@ -249,6 +284,9 @@ class Kol < ActiveRecord::Base
       if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
+      elsif invite.campaign.is_invite_type?
+        income += invite.price
+        count += 1
       end
     end
     [income, count]
@@ -298,6 +336,7 @@ class Kol < ActiveRecord::Base
   end
 
   def app_city_label
+    return nil if self.app_city.blank?
     City.find_by(:name_en => app_city).name rescue nil
   end
 
@@ -393,9 +432,11 @@ class Kol < ActiveRecord::Base
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
-                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: Kol.hide_real_mobile_number(params[:mobile_number]),
+                        IMEI: params[:IMEI], IDFA: params[:IDFA],
+                        name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip])
+      kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
     end
     return kol
   end
@@ -510,12 +551,28 @@ class Kol < ActiveRecord::Base
     self.identities.group("provider")
   end
 
-  # def self.remove_device_token(device_token)
-  #   Kol.where(:device_token => device_token).update_all(:device_token => nil)
-  # end
-
   def remove_same_device_token(device_token)
       Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)
   end
 
+  def get_avatar_url
+    avatar.url || read_attribute(:avatar_url)
+  end
+
+  def is_big_v?
+    self.kol_role == 'big_v' || self.kol_role == 'mcn_big_v'
+  end
+
+  def follow(big_v)
+    followship = Followship.find_by(:follower_id => self.id, :kol_id => big_v.id)
+    if followship
+      followship.delete
+    else
+      Followship.create!(:follower_id => self.id, :kol_id => big_v.id)
+    end
+  end
+
+  def is_follow?(big_v)
+    big_v.followships.collect{|t| t.follower_id}.include?(self.id)
+  end
 end

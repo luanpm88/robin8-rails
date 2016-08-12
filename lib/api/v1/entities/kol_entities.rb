@@ -4,7 +4,7 @@ module API
       module KolEntities
         class Summary < Grape::Entity
           expose :id, :email, :mobile_number, :gender, :date_of_birthday,
-                 :alipay_account, :alipay_name, :desc, :age, :weixin_friend_count, :id_card
+                 :alipay_account, :alipay_name, :desc, :age, :weixin_friend_count, :id_card, :kol_role, :role_apply_status, :role_check_remark
           expose :name do  |kol|
             kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
           end
@@ -98,7 +98,7 @@ module API
             kol.name || Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :avatar_url do |kol|
-            kol.avatar.url(200)  rescue ''
+            (kol.avatar.url(200)  rescue nil) || kol.read_attribute(:avatar_url)
           end
           expose :rongcloud_token do |kol|
             kol.get_rongcloud_token
@@ -122,7 +122,7 @@ module API
             kol.name.present? ? kol.safe_name : Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :avatar_url do |kol|
-            kol.avatar.url(200)  rescue ''
+            (kol.avatar.url(200)  rescue nil) || kol.read_attribute(:avatar_url)
           end
         end
 
@@ -132,7 +132,7 @@ module API
             kol.name.present? ? kol.name : Kol.hide_real_mobile_number(kol.mobile_number)
           end
           expose :avatar_url do |kol|
-            kol.avatar.url(200)  rescue ''
+            (kol.avatar.url(200)  rescue nil) || kol.read_attribute(:avatar_url)
           end
           expose :tags do |kol|
             kol.tags.collect{|t|  t.label }

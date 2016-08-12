@@ -96,8 +96,9 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       return if self.status != 'agreed'
       ActiveRecord::Base.transaction do
-        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i, :status => 'executing')
-        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if self.actual_per_action_budget.blank?
+        self.update_columns(:status => 'executing')
+        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i) unless self.is_invite_type?
+        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  !self.is_invite_type? && self.actual_per_action_budget.blank?
         Message.new_campaign(self, (kol_ids || get_kol_ids))
       end
     end
@@ -164,7 +165,6 @@ module Campaigns
     def settle_accounts_for_kol
       Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
       return if self.status != 'executed'
-      # self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
       self.passed_invites.each do |invite|
         invite.settle
       end
@@ -175,12 +175,11 @@ module Campaigns
        Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
-       self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})
+       self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})      unless self.is_invite_type?
        #剩下的邀请  状态全设置为拒绝
        self.campaign_invites.should_reject.update_all({:status => 'rejected', :img_status => 'rejected', :auto_check => true})
        settle_accounts_for_kol
        self.update_column(:status, 'settled')
-       # self.user.unfrozen(self.budget, 'campaign', self)
        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
        if is_click_type?  || is_cpa_type? || is_cpi_type?
          pay_total_click = self.settled_invites.sum(:avail_click)
@@ -189,6 +188,14 @@ module Campaigns
            self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
          end
          Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+       elsif is_invite_type?
+         user_payout = self.campaign_invites.settled.sum(:sale_price)
+         kol_income_amount = self.campaign_invites.settled.sum(:price)
+         platform_income_amount = user_payout -  kol_income_amount
+         User.get_platform_account.income(platform_income_amount, 'campaign_tax', self)
+         if self.budget > user_payout
+           self.user.income(self.budget - user_payout , 'campaign_refund', self )
+         end
        else
          settled_invite_size = self.settled_invites.size
          User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
@@ -221,6 +228,8 @@ module Campaigns
         actual_per_action_budget = actual_per_action_budget.round(2)
       elsif is_recruit_type?
         actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
+      elsif is_invite_type?
+        actual_per_action_budget = nil
       else
         actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
       end

@@ -270,7 +270,7 @@ var Drag = {
 
   init : function(o, oRoot, minX, maxX, minY, maxY, bSwapHorzRef, bSwapVertRef, fXMapper, fYMapper)
   {
-    o.onmousedown = Drag.start;
+    // o.onmousedown = Drag.start;
 
     o.hmode     = bSwapHorzRef ? false : true ;
     o.vmode     = bSwapVertRef ? false : true ;
@@ -465,7 +465,7 @@ global.jobArea = {
         }
         output+='</dd></dl>';
       }
-      
+
       $('#'+Div[k]).html(output);
       k++;
     }
@@ -474,10 +474,15 @@ global.jobArea = {
     $('#jobAreaAlpha li').hover(function(){$(this).addClass('over')},function(){$(this).removeClass('over')});
     // 点击弹出子菜单
     $('#allProv2 li').click(function(e){
-      $("#sublist").css({top:e.pageY-4,left:e.pageX-4}).hover(function(){
+      $("#sublist").css({
+        top: e.clientY - 5,
+        left: e.clientX - 5
+      }).hover(function(){
         $(this).show()
-      }, function(){$(this).hide()}
-      )})
+      }, function(){
+        $(this).hide()
+      })
+    })
   },
   // 所有省份 下拉 城市菜单
   SubLayer : function(id){
@@ -485,8 +490,7 @@ global.jobArea = {
     select_ed=in_array(id,jobArea_Arr)?' chkON':'';
     var arr=getAreaIDs(id);
       width=Math.ceil(Math.sqrt(arr.length-1))*60;
-    output+='<ul style="width:'+width+'px"><h4 onclick="jobArea.Chk(\''+id+'\')">';
-    output+='<a href="javascript:" class="jobArea' + id + select_ed +'">'+ja[id]+'</a></h4>';
+    output+='<ul style="width:'+width+'px">';
 
     for (var i=1;i<arr.length;i++){
       key=arr[i];

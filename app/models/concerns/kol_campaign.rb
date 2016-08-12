@@ -21,6 +21,26 @@ module Concerns
       self.receive_campaign_ids.delete(campaign_id)
     end
 
+    # 自动为KOL接收特邀活动，因为特邀活动人少
+    def approve_and_receive_invite_campaign(campaign_id, social_account_id)
+      campaign = Campaign.find campaign_id  rescue nil
+      social_account = self.social_accounts.find social_account_id rescue nil
+
+      return if campaign.blank? || social_account.blank? || !(self.receive_campaign_ids.include? "#{campaign_id}")
+      campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+      if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
+        uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
+        campaign_invite.status = 'running'
+        campaign_invite.img_status = 'pending'
+        campaign_invite.uuid = uuid
+        campaign_invite.sale_price =  social_account.sale_price
+        campaign_invite.price =  social_account.price
+        campaign_invite.social_account_id = social_account.id
+        campaign_invite.save
+      end
+      campaign_invite
+    end
+
     # 成功接收接收活动for pc
     def approve_campaign(campaign_id)
       campaign = Campaign.find campaign_id  rescue nil
@@ -64,6 +84,17 @@ module Concerns
         campaign_invite.approved_at = Time.now
         campaign_invite.save
         campaign_invite.reload
+      else
+        nil
+      end
+    end
+
+    # 拒绝活动
+    def reject_campaign_invite(campaign_invite)
+      if campaign_invite && campaign_invite.status == 'running'
+        campaign_invite.status = 'rejected'
+        campaign_invite.img_status = 'rejected'
+        campaign_invite.save
       else
         nil
       end
@@ -115,6 +146,11 @@ module Concerns
     end
 
     def sync_campaigns
+      if Rails.env.production?
+        return if self.kol_role == 'mcn_big_v'
+      else
+        return if self.kol_role != 'big_v'
+      end
       Campaign.where(:status => [:agreed, :executing]).each do |campaign|
         next if campaign.specified_kol_targets.size > 0
         if campaign.is_recruit_type?
@@ -123,6 +159,23 @@ module Concerns
           self.add_campaign_id campaign.id
         end
       end
+    end
+
+    def max_campaign_click
+      self.campaign_invites.order("avail_click desc").first.avail_click rescue nil
+    end
+
+    def max_campaign_earn_money
+      self.income_transactions.where(:item_type => 'Campaign').group("item_id").
+        order("sum(credits) desc").select("sum(credits) as item_credits, item_id").first.item_credits    rescue 0
+    end
+
+    def campaign_total_income
+      self.income_transactions.where(:item_type => 'Campaign').sum(:credits)
+    end
+
+    def avg_campaign_credit
+      campaign_total_income / self.campaign_invites.settled.count
     end
   end
 end

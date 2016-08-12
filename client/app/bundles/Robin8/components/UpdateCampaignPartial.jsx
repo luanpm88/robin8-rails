@@ -77,6 +77,10 @@ class UpdateCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderRejectReasons() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === 'rejected') {
@@ -102,7 +106,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type } = this.props.fields;
+    const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -119,6 +123,7 @@ class UpdateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
+              <TargetPartial {...{region, tags}} />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
                 {this.renderSubmitOrRevokeBtn()}
@@ -134,7 +139,7 @@ class UpdateCampaignPartial extends React.Component {
 
 UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
   returnRejectedSubmitPromise: true,
   validate
 },

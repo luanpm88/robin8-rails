@@ -31,7 +31,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved, -> {where(:status => 'approved').where("screenshot is null ")}
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying_or_approved,  -> {where("status = 'finished' or status = 'approved'")}
-  scope :should_reject, -> {where("status = 'finished' and (img_status = 'rejected' or screenshot is null)")}
+  scope :should_reject, -> {where("img_status != 'passed'")}
   scope :verifying, -> {where("(status = 'finished' and img_status != 'passed') or (status = 'approved' and screenshot is not null)")}
   scope :settled, -> {where(:status => 'settled')}
   # 已完成的概念改成  已审核通过（活动没结束 状态还是finished）或已结算（含结算失败）
@@ -223,7 +223,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def settle(auto = false, transaction_time = Time.now)
     return if self.status == 'settled' || self.status == 'rejected'
-    CampaignInvite.transaction do
+    self.with_lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
@@ -237,6 +237,16 @@ class CampaignInvite < ActiveRecord::Base
       elsif ['recruit', 'post'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
+      elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
+        if self.kol.kol_role == "mcn_big_v"
+          settle_kol = self.kol.agent  rescue nil
+           Rails.logger.transaction.info "====invite cmapaign kol_id:#{self.kol.id} not found mcn agent"
+        else
+          settle_kol = self.kol
+        end
+        next if  settle_kol.blank?
+        settle_kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
+        Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
     end

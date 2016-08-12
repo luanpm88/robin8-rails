@@ -42,3 +42,11 @@ Starting MailCatcher
     weixin secrets
 
 #   recommend_server: '139.196.204.131'
+
+#8.15
+  rake database:cov....
+  去除big_v scope
+  1. 先导入k1,vs media .再导入 robin8 weibo public_wechat
+  姓名含电话
+  complete_info
+

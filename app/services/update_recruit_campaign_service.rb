@@ -1,10 +1,10 @@
 class UpdateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
-  PERMIT_PARAMS = [:name, :description, :task_description,
-                   :address, :img_url, :budget, :per_budget_type,
-                  :per_action_budget, :start_time, :deadline,
-                  :region, :influence_score, :recruit_start_time, :recruit_end_time, :hide_brand_name]
+  PERMIT_PARAMS = [:name, :description, :img_url, :budget,
+                  :per_budget_type, :per_action_budget, :start_time,
+                  :deadline, :region, :sns_platforms, :tags,
+                  :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
 
@@ -52,8 +52,10 @@ class UpdateRecruitCampaignService
     begin
       ActiveRecord::Base.transaction do
         update_recruit_region
-        update_recruit_influnce_score
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
+        update_recruit_tags
+        update_recruit_sns_platforms
+        update_materials
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :tags, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -72,22 +74,51 @@ class UpdateRecruitCampaignService
   end
 
   def permitted_params_from params
-    params.merge!(address: nil) unless params[:address].present?
+    # params.merge!(address: nil) unless params[:address].present?
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 
   def update_recruit_region
     campaign_target = @campaign.campaign_targets.where(target_type: :region).first
+    @campaign_params[:region] = @campaign_params[:region].gsub("/", ",")
     unless campaign_target.target_content.eql? @campaign_params[:region]
       campaign_target.update_attributes(target_content: @campaign_params[:region])
     end
   end
 
-  def update_recruit_influnce_score
-    campaign_target = @campaign.campaign_targets.where(target_type: :influence_score).first
-    unless campaign_target.target_content.eql? @campaign_params[:influence_score]
-      campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
+  def update_recruit_sns_platforms
+    campaign_target = @campaign.campaign_targets.where(target_type: :sns_platforms).first
+    unless campaign_target.target_content.eql? @campaign_params[:sns_platforms]
+      campaign_target.update_attributes(target_content: @campaign_params[:sns_platforms])
     end
+  end
+
+  def update_recruit_tags
+    campaign_target = @campaign.campaign_targets.where(target_type: :tags).first
+    @campaign_params[:tags] = @campaign_params[:tags].gsub("/", ",")
+    unless campaign_target.target_content.eql? @campaign_params[:tags]
+      campaign_target.update_attributes(target_content: @campaign_params[:tags])
+    end
+  end
+
+  def delete_all_materials
+    @campaign.campaign_materials.delete_all
+  end
+
+  def update_materials
+    return delete_all_materials unless @campaign_params[:material_ids].present?
+    existed_materials = []
+    new_materials = []
+    @campaign_params[:material_ids].split(",").each do |id|
+      if campaign_material = @campaign.campaign_materials.where(id: id).take
+        existed_materials << campaign_material
+      else
+        campaign_material =  CampaignMaterial.where(id: id).take
+        campaign_material.update(campaign_id: @campaign.id)
+        new_materials << campaign_material
+      end
+    end
+    (@campaign.campaign_materials - new_materials - existed_materials).each { |x| x.delete}
   end
 
   def can_edit?

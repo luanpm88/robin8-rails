@@ -3,7 +3,7 @@ module Brand
     module Entities
       class Campaign < Entities::Base
 
-        expose :id, :name, :description, :short_description, :task_description,
+        expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
                :budget_editable, :pay_way, :need_pay_amount
@@ -56,42 +56,82 @@ module Brand
         end
         expose :take_budget
         expose :remain_budget
-        # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
-        expose :age do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
-          else
-            nil
-          end
-        end
-        expose :province do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "region").target_content.split(" ").first : nil
-          else
-            nil
-          end
-        end
-        expose :city do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "region").target_content.split(" ").last : nil
-          else
-            nil
-          end
-        end
-        expose :gender do |object, opts|
-          if object.per_budget_type != 'recruit'
-            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "gender").target_content : nil
-          else
-            nil
+
+        expose :materials do |object, opts|
+          if object.campaign_materials
+            materials = []
+            object.campaign_materials.each do |material|
+              materials << {id: material.id, url_type: material.url_type, url: material.url}
+            end
+            materials.to_json
           end
         end
 
+        expose :material_ids do |object, opts|
+          if object.campaign_materials
+            object.campaign_materials.pluck(:id)
+          end
+        end
+
+        # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
+        expose :age do |object, opts|
+          target = object.campaign_targets.find_by(target_type: "age")
+          target.target_content if target
+        end
+
+        # expose :province do |object, opts|
+        #   target = object.campaign_targets.find_by(target_type: "region")
+        #   target.target_content.split(" ").first if target
+        # end
+
+        # expose :city do |object, opts|
+        #   target = object.campaign_targets.find_by(target_type: "region")
+        #   target.target_content.split(" ").last if target
+        # end
+
+        expose :gender do |object, opts|
+          target = object.campaign_targets.find_by(target_type: "gender")
+          target.target_content if target
+        end
+
         expose :region do |object, opts|
-          object.campaign_targets.where(target_type: :region).present? ? object.campaign_targets.find_by(target_type: "region").target_content : nil
+          target = object.region_target
+          target.target_content.gsub(",", "/") if target
         end
+
         expose :influence_score do |object, opts|
-          object.campaign_targets.where(target_type: :influence_score).present? ? object.campaign_targets.find_by(target_type: 'influence_score').target_content : nil
+          target = object.campaign_targets.find_by(target_type: "influence_score")
+          target.target_content if target
         end
+
+        expose :social_accounts do |object, opts|
+          target = object.social_account_targets.first
+          target.target_content.split(",").map(&:to_i) rescue []
+        end
+
+        expose :selected_social_accounts, using: Entities::SocialAccount do |object, opts|
+          target = object.social_account_targets.first
+          social_accounts = target.target_content.split(",").map(&:to_i) rescue []
+          ::SocialAccount.where(id: social_accounts)
+        end
+
+        expose :tags do |object, opts|
+          target = object.tag_target
+          target.target_content.split(',') if target
+        end
+
+        expose :tag_labels do |object, opts|
+          target = object.tag_target
+          if target
+            target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
+          end
+        end
+
+        expose :sns_platforms do |object, opts|
+          target = object.sns_platform_target
+          target.target_content.split(",") if target
+        end
+        # ---------------------------------------------------
 
         expose :action_url do |object, opts|
           object.campaign_action_urls.present? ? object.campaign_action_urls.first.action_url : ""
@@ -127,6 +167,14 @@ module Brand
 
         expose :invalid_reasons do |object, opts|
           object.invalid_reasons.gsub(/\n/, ' ') if object.invalid_reasons.present?
+        end
+
+        expose :total_invite_kols_count do |object, opts| # 邀请活动: 总邀请人数
+          object.campaign_invites.count if object.per_budget_type == "invite"
+        end
+
+        expose :total_agreed_invite_kols_count do |object, opts| #邀请活动: 接受活动的人数
+          object.campaign_invites.verifying_or_approved.count if object.per_budget_type == "invite"
         end
 
         with_options(format_with: :iso_timestamp) do

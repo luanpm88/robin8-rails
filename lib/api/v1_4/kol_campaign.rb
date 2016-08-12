@@ -13,7 +13,6 @@ module API
           requires :description, type: String
           requires :url, type: String
           requires :budget, type: Float
-          requires :img, type: Hash
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime

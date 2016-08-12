@@ -126,7 +126,7 @@ $(function(){
         if (!(mobileNumber && mobileNumber.length > 0))
             return formAlert.once("没有正确填写手机号", "danger");
 
-        if (captchaImage.size() > 0) {
+        if (captchaImage.length > 0) {
             captchaCode = $('.captcha-code').val().trim();
             if(!(captchaCode && captchaCode.length > 0))
                 return formAlert.once("没有填写图片验证码", "danger");

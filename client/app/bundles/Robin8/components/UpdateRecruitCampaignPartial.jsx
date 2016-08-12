@@ -7,17 +7,18 @@ import moment from 'moment';
 
 import "campaign/recruit/form.scss";
 
-import BreadCrumb            from './shared/BreadCrumb';
-import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
-import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
-import DatePartial           from './recruit_campaigns/form/OfflineDate';
-import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
-import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
-import RevokeConfirmModal      from './campaigns/modals/RevokeConfirmModal';
+import BreadCrumb               from './shared/BreadCrumb';
+import IntroPartial             from "./recruit_campaigns/form/IntroPartial";
+import CreateMaterialsPartial   from './shared/campaign_material/CreateMaterialsPartial'
+import DatePartial              from './recruit_campaigns/form/OfflineDate';
+import RecruitDatePartial       from './recruit_campaigns/form/RecruitDatePartial';
+import RecruitBudgetPartial     from './recruit_campaigns/form/RecruitBudgetPartial';
+import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
+import RecruitTargetPartial     from './recruit_campaigns/form/RecruitTargetPartial';
 
-import initToolTip           from './shared/InitToolTip';
-import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
-import CampaignRejectReasons from './shared/CampaignRejectReasons'
+import initToolTip              from './shared/InitToolTip';
+import CampaignFormValidate     from './shared/validate/CampaignFormValidate'
+import CampaignRejectReasons    from './shared/CampaignRejectReasons'
 
 import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
@@ -29,7 +30,6 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
-  task_description: { require: true }
 })
 
 const validateFailed = (errors) => {
@@ -78,6 +78,10 @@ class UpdateRecruitCampaignPartial extends React.Component{
     initToolTip({placement:'bottom', html: true});
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderRejectReasons() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === 'rejected') {
@@ -105,11 +109,15 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
 
   render(){
-    const { name, description, img_url, influence_score, start_time, deadline,
-          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
+    const { name, description, img_url, tags, start_time, deadline,
+          recruit_start_time, recruit_end_time, budget, per_action_budget,
+          recruit_person_count, region, sns_platforms,
+          hide_brand_name, materials, material_ids
+        } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { campaign } = this.props;
     const { saveRecruit } = this.props.actions;
+
     return(
       <div className="page page-recruit page-recruit-new">
         <div className="container">
@@ -117,11 +125,12 @@ class UpdateRecruitCampaignPartial extends React.Component{
           {this.renderRejectReasons()}
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
-              <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
-              <RecruitTargetPartial {...{influence_score, region}}/>
+              <IntroPartial {...{name, description, img_url, hide_brand_name}}/>
+              <CreateMaterialsPartial {...{materials, material_ids}} />
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
+              <RecruitTargetPartial {...{region, tags, sns_platforms}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 {this.renderSubmitOrRevokeBtn()}
@@ -138,8 +147,9 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
 UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
-         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region", "hide_brand_name"],
+  fields: ["name", "description", "img_url", "url", "tags", "start_time",
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
+         "recruit_person_count", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
   returnRejectedSubmitPromise: true,
   validate
 },
