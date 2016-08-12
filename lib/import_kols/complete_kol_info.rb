@@ -1,7 +1,7 @@
 module ImportKols
   class CompleteKolInfo
     def self.start_do
-      Kol.where(:kol_role => 'mcn_big_v').each do |kol|
+      Kol.big_v.each do |kol|
         if kol.social_accounts.size == 0
           kol.delete
         else

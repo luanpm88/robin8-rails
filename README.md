@@ -45,6 +45,8 @@ Starting MailCatcher
 
 #8.15
   rake database:cov....
+  去除big_v scope
   1. 先导入k1,vs media .再导入 robin8 weibo public_wechat
-  2. 老数据迁移
-  3. 完善资料
+  姓名含电话
+  complete_info
+
