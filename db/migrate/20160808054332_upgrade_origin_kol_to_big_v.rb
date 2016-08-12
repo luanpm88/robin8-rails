@@ -7,17 +7,41 @@ class UpgradeOriginKolToBigV < ActiveRecord::Migration
       kol.role_check_remark = 'background_auto'
       if kol.identities.size == 0
         kol.social_accounts.build(provider: 'wechat', username: kol.name, avatar_url: kol.avatar.url , followers_count: kol.weixin_friend_count)
-      else
+      elsif kol.social_accounts.size == 0
         kol.identities.each do |identity|
           if identity.provider == 'wechat'
-            kol.social_accounts.build(provider: 'wechat', username: identity.name,  avatar_url: identity.avatar_url, followers_count: kol.weixin_friend_count  )
+            kol.social_accounts.build(provider: 'wechat', username: identity.name,  avatar_url: identity.avatar_url )
+          elsif identity.provider == 'qq'
+              kol.social_accounts.build(provider: 'qq', username: identity.name,  avatar_url: identity.avatar_url, followers_count: kol.weixin_friend_count  )
           elsif identity.provider == 'weibo'
             social_account = kol.social_accounts.build(provider: 'weibo', :homepage => "http://weibo.com/u/#{identity.uid}" )
             social_account.auto_complete_info
           end
         end
       end
-      kol.save
+      kol.save!
+    end
+
+    Kol.where(:id => 59464).includes(:tags).each do |kol|
+      next if kol.tags.size == 0
+      kol.kol_role = 'big_v'
+      kol.role_apply_status = 'passed'
+      kol.role_check_remark = 'background_auto'
+      if kol.identities.size == 0
+        kol.social_accounts.build(provider: 'wechat', username: kol.name, avatar_url: kol.avatar.url , followers_count: kol.weixin_friend_count)
+      elsif kol.social_accounts.size == 0
+        kol.identities.each do |identity|
+          if identity.provider == 'wechat'
+            kol.social_accounts.build(provider: 'wechat', username: identity.name,  avatar_url: identity.avatar_url )
+          elsif identity.provider == 'qq'
+            kol.social_accounts.build(provider: 'qq', username: identity.name,  avatar_url: identity.avatar_url, followers_count: kol.weixin_friend_count  )
+          elsif identity.provider == 'weibo'
+            social_account = kol.social_accounts.build(provider: 'weibo', :homepage => "http://weibo.com/u/#{identity.uid}" )
+            social_account.auto_complete_info
+          end
+        end
+      end
+      kol.save!
     end
 
   end

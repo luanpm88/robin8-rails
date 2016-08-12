@@ -14,10 +14,10 @@ module API
           order_by = params[:order] || 'order_by_hot'
           per_page = order_by == 'order_by_hot' ? 10 : 40
           if params[:tag_name].blank?
-            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
+            big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
           else
             tag_id = Tag.find_by(:name => params[:tag_name]).id
-            big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
+            big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
                        send("#{order_by}").page(params[:page]).per_page(per_page)
           end
           if params[:with_kol_announcement] == 'Y'

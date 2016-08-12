@@ -10,6 +10,7 @@ namespace :database do
 
     # Change all tables
     connection.tables.each do |table|
+      next if ['kol_influence_value_histories', 'kol_contacts', 'tmp_kol_contacts', 'campaign_shows', 'campaign_invites', 'kol_keywords'].include? table.to_s
       connection.columns(table).each do |column|
         if column.sql_type == "varchar(255)"
           puts "#{column.name} is varchar(255)"
