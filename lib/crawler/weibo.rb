@@ -8,6 +8,7 @@ module Crawler
                               :headers => {:user_agent => UserAgent,
                                            :Referer => "http://weibo.com"
                               },
+                             timeout: 3
       )
       body = request.response_body
       doc = Nokogiri::HTML(body).css("script").to_s.match(/.*render_data\s=\s(.*?);<\/script>/)[1]      rescue nil
@@ -55,6 +56,7 @@ module Crawler
                              :headers => {:user_agent => UserAgent,
                                           :Referer => homepage
                              },
+                             timeout: 3
       )
       body = request.response_body
       content = JSON.parse(body)["data"]

@@ -62,7 +62,7 @@ class SocialAccount < ActiveRecord::Base
 
 
   def create_kol_shows
-    return if self.homepage.blank?
+    return if self.homepage.blank?  && self.provider != 'public_wechat'
     if self.provider == 'weibo'
       Crawler::Weibo.create_kol_info(self)
     elsif self.provider == 'meipai'

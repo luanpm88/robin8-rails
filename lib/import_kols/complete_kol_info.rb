@@ -1,10 +1,8 @@
 module ImportKols
   class CompleteKolInfo
+    #  TODO filter
     def self.start_do
-      Kol.big_v.each do |kol|
-        # if kol.kol_role == 'mcn_big_v' && kol.social_accounts.size == 0
-        #   kol.delete
-        # else
+      Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("mobile_number is null").each do |kol|
           kol.social_accounts.each do |social_account|
             kol.mobile_number = 10000000000 + kol.id if kol.mobile_number.blank?
             kol.name = social_account.username            if kol.name.blank?   && social_account.username.present?
@@ -19,7 +17,6 @@ module ImportKols
             kol.tags << social_account.tags[0] if social_account.tags.size > 0 && !kol.tags.include?(social_account.tags[0])
             kol.save!    rescue nil
           end
-        # end
       end
     end
 
@@ -49,5 +46,16 @@ module ImportKols
       SocialAccount.where(:provider => 'public_wechat').delete_all
     end
 
+    def self.complete_tags
+      tags = Tag.all
+      Kol.joins(:kol_tags).
+         where("kols.kol_role = 'big_v'").
+         group("kol_tags.kol_id").
+         having("count('kols.id') < 5").each do |kol|
+        kol_tag_size = kol.tags.size
+        return if kol_tag_size >= 5
+        kol.tags << (tags - kol.tags).sample(5 - kol_tag_size)
+      end
+    end
   end
 end
