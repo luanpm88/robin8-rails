@@ -9,17 +9,35 @@ export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ["handleClickSearch", "handleConditionChange", "initConditionComponent"])
+    _.bindAll(this, [
+      "handleClickSearch",
+      "handleClickClear",
+      "handleInputChange",
+      "handleConditionChange",
+      "initConditionComponent"
+    ])
+  }
+
+  handleInputChange() {
+    const searchText = this.refs.searchInput.value;
+
+    if(searchText.length > 0)
+      $(this.refs.searchClear).show();
+    else
+      $(this.refs.searchClear).hide();
   }
 
   handleClickSearch() {
     const searchText = this.refs.searchInput.value;
 
-    if (!!searchText.trim()) {
-      this.handleConditionChange();
-    } else {
-      this.refs.searchInput.focus();
-    }
+    this.handleConditionChange();
+  }
+
+  handleClickClear() {
+    this.refs.searchInput.value = "";
+    $(this.refs.searchClear).hide();
+
+    this.handleConditionChange();
   }
 
   handleConditionChange(){
@@ -136,7 +154,8 @@ export default class TargetPartial extends React.Component {
               <div className="search-bar-inner">
                 <div className="search-input">
                   <span className="icon-medium icon-search"></span>
-                  <input ref="searchInput" placeholder="请输入想找的自媒体名称或关键字" name="search" />
+                  <input ref="searchInput" placeholder="请输入想找的自媒体名称或关键字" name="search" onChange={event => this.handleInputChange(event) } />
+                  <span ref="searchClear" className="clear right" onClick={event => this.handleClickClear(event)}>&times;</span>
                 </div>
                 <div className="search-actions">
                   <div className="btn btn-search" onClick={event => this.handleClickSearch(event)}>搜索</div>
