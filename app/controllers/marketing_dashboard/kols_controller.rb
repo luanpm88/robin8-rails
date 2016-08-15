@@ -138,7 +138,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
                 Kol.all
               end
             end.order('created_at DESC').paginate(paginate_params)
-    if params[:role_apply_status] or params[:is_hot]
+    if params[:role_apply_status] or params[:is_hot] or ["mcn_big_v", "big_v"].include?(params[:kol_role])
         render "role_apply_index" and return
     end
   end

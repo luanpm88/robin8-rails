@@ -575,4 +575,15 @@ class Kol < ActiveRecord::Base
   def is_follow?(big_v)
     big_v.followships.collect{|t| t.follower_id}.include?(self.id)
   end
+
+  def is_hot_text
+    case self.is_hot
+    when 1
+      "热门"
+    when 0
+      "普通"
+    when -1
+      "不热门"
+    end
+  end
 end

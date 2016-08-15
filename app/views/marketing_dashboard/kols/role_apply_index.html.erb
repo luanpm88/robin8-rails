@@ -23,7 +23,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name mobile_number kol_role is_hot role_apply_status).each do |v| %>
+        <% %w(id name mobile_number kol_role is_hot_text role_apply_status).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <% if k.agent.present? %>

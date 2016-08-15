@@ -23,7 +23,7 @@ const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
-  budget: { require: true }
+  budget: { require: false }
 })
 
 const validateFailed = (errors) => {

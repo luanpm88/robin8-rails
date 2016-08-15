@@ -70,6 +70,11 @@ export default class KolSelectPartial extends React.Component {
     const item = event.currentTarget;
     const id = $(item).closest(".kol-item").data("id");
 
+    if (social_accounts.value.length > 0) {
+      alert("抱歉，目前只支持选择一位KOL");
+      return;
+    }
+
     if (!social_accounts.value.includes(id)) {
       let { selectedSocialAccounts } = this.state;
       const kol = _.find(this.state.searchedSocialAccounts, {"id": id});
@@ -173,7 +178,7 @@ export default class KolSelectPartial extends React.Component {
           </div>
         </td>
         <td>{kol.provider_text}</td>
-        <td>{kol.sale_price}元/条</td>
+        <td>{ kol.sale_price > 0 ? `${kol.sale_price}元/条` : "待询价"}</td>
         <td>{kol.tags.map(i => i.label).join("/")}</td>
         <td>
           { actionBtn }
@@ -234,7 +239,7 @@ export default class KolSelectPartial extends React.Component {
           <h3 className="tit">已选KOL列表&nbsp;<span className="what" data-toggle="tooltip" title={this.renderTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
-          <div className="notice">活动预算 <em>{budget.value} 元</em></div>
+          <div className="notice">活动预算 <em>{`${budget.value} 元`}</em></div>
           <div className="kol-list-wrap">
             { selectedKolsResult }
             { selectedKolsAlert }

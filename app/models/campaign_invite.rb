@@ -222,6 +222,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def settle(auto = false, transaction_time = Time.now)
+    Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'settled' || self.status == 'rejected'
     self.with_lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type

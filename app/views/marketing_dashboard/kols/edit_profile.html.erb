@@ -80,7 +80,7 @@
 
             <div class="field form-group datetime" style="position: relative;">
               <%= f.label "是否是热门" %><br />
-              <%= f.check_box :is_hot, class: "form-control" %>
+              <%= f.select :is_hot, [["热门", 1], ["普通", 0], ["不热门", -1]], class: "form-control" %>
             </div>
 
             <div class="field form-group datetime" style="position: relative;">

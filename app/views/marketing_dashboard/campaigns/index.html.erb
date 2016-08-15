@@ -123,6 +123,10 @@
             <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank", class: "btn btn-default" %>
             <%= link_to '编辑', get_edit_brand_campaign_show_url(c), :target => "_blank", class: "btn btn-default" %>
 
+            <% if c.status == 'unpay' and c.is_invite_type? %>
+              <%= link_to '允许付款', refresh_budget_marketing_dashboard_campaign_path(c), method: "POST", class: "btn btn-primary", :"data-confirm" => "注意：确认价格后，用户将可以付款支付，付款后将不再方便修改价格，确定价格并允许支付吗？" %>
+            <% end %>
+
             <% if c.status == 'unexecute' %>
               <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
                 <a href="" onclick="return false;" class="btn btn-warning reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>

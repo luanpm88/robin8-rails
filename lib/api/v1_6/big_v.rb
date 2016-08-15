@@ -12,7 +12,7 @@ module API
         end
         get '/' do
           order_by = params[:order] || 'order_by_hot'
-          per_page = order_by == 'order_by_hot' ? 10 : 40
+          per_page = order_by == 'order_by_hot' ? 20 : 40
           if params[:tag_name].blank?
             big_vs = Kol.big_v.where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
           else
