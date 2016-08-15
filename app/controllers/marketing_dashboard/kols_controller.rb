@@ -12,9 +12,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   def search
     render 'search' and return if request.method.eql? 'GET'
 
-    search_by = params[:search_key]
+    search_by = "%params[:search_key]%"
 
-    @kols = Kol.where("id LIKE ? OR name LIKE %?% OR mobile_number LIKE %?% OR email LIKE %?%", search_by, search_by, search_by, search_by).paginate(paginate_params)
+
+
+    @kols = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
 
     if params[:source_from] == "role_apply"
       render :role_apply_index and return
