@@ -149,8 +149,10 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     old_tags = @kol.tags
     now_tags = params[:kol][:tag_ids].map(&:to_i)
     KolTag.where(:tag_id => (old_tags-now_tags), :kol_id => @kol.id).delete_all
-    (now_tags-old_tags).each do |tag_id|
-      KolTag.find_or_create_by(:tag_id => tag_id, :kol_id => @kol.id)
+    if(now_tags-old_tags).present?
+      (now_tags-old_tags).each do |tag_id|
+        KolTag.find_or_create_by(:tag_id => tag_id, :kol_id => @kol.id)
+      end
     end
   end
 
