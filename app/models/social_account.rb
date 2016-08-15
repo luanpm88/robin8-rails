@@ -46,9 +46,10 @@ class SocialAccount < ActiveRecord::Base
 
   def auto_complete_info
     return if self.homepage.blank?
-    return if self.followers_count.present?
+    return if self.followers_count.present?  &&  self.followers_count > 0
     homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'
+      puts  "======#{get_weibo_homepage}"
       info = Crawler::Weibo.get_content(get_weibo_homepage)
     elsif self.provider == 'meipai'
       info = Crawler::Meipai.get_content(homepage)
@@ -62,7 +63,7 @@ class SocialAccount < ActiveRecord::Base
 
 
   def create_kol_shows
-    return if self.homepage.blank?
+    return if self.homepage.blank?  && self.provider != 'public_wechat'
     if self.provider == 'weibo'
       Crawler::Weibo.create_kol_info(self)
     elsif self.provider == 'meipai'
