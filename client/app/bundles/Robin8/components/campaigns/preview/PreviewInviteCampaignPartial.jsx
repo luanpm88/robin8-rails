@@ -5,13 +5,22 @@ class PreviewInviteCampaignPartial extends React.Component {
   renderAmount() {
     const campaign = this.props.campaign;
     if (campaign.get("status") == 'unpay') {
-      return (
-        <div className="acitvity-amount-group">
-          <span className="acitvity-amount-text">支付总额:&nbsp;</span>
-          <span className="yuan">￥</span>
-          <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
-        </div>
-      )
+      if (!!campaign.get("need_pay_amount")) {
+        return (
+          <div className="acitvity-amount-group">
+            <span className="acitvity-amount-text">支付总额:&nbsp;</span>
+            <span className="yuan">￥</span>
+            <span className="acitvity-amount">{campaign.get("need_pay_amount")}</span>
+          </div>
+        )
+      } else {
+        return (
+          <div className="acitvity-amount-group">
+            <span className="acitvity-amount-text">支付总额:&nbsp;</span>
+            <span>等待客服确认价格</span>
+          </div>
+        )
+      }
     }
   }
 

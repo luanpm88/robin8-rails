@@ -11,8 +11,8 @@ class Campaign < ActiveRecord::Base
   include Campaigns::ValidationHelper
   include Campaigns::StatsHelper
 
-  validates_presence_of :name, :description, :budget, :per_budget_type, :start_time, :deadline
-  validates_presence_of :per_action_budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
+  validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
+  validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
   validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   #Status : unpay unexecute agreed rejected  executing executed

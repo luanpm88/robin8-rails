@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
+        get 'asking'
         get 'agreed'
         get 'testable'
       end
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
+        post :refresh_budget
       end
       collection do
         put :reject
