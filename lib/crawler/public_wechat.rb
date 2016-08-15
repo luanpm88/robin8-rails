@@ -5,6 +5,7 @@ module Crawler
     ArticleUrl = "139.196.204.131:5001/search/v1.1/wechat/articles"
     TimeOut = 20000
     def self.create_kol_info(social_account)
+      return if social_account.uid.blank?
       params = {
         'filters': {
           'biz_code': social_account.uid,   # 指定公众号
@@ -24,6 +25,7 @@ module Crawler
       end
       # 更新头像 和关键字
       social_account.avatar_url = res['wechat'][0]['kol_avatar_url']  if res['wechat'][0]['kol_avatar_url'].present?
+      social_account.username = res['wechat'][0]['kol_name']  if res['wechat'][0]['kol_name'].present?
       social_account.brief = res['wechat'][0]['kol_info']  if res['wechat'][0]['kol_info'].present?
       social_account.tags = Tag.where(:label => res['wechat'][0]['kol_category'])
       social_account.city =  res['wechat'][0]['kol_locations'].last

@@ -56,11 +56,11 @@ module ImportKols
     def self.create_social_account(kol, row)
       if row[13].present? && SocialAccount.find_by(:provider => 'meipai', :homepage => row[13]).blank?
         social_account = kol.social_accounts.build(:provider => 'meipai', :homepage => row[13], :price => row[15].to_i, :tag_ids => [get_profession(row[13])])
-        social_account.auto_complete_info
+        # social_account.auto_complete_info
       end
       if row[16].present? && SocialAccount.find_by(:provider => 'weibo', :homepage => row[16]).blank?
         social_account = kol.social_accounts.build(:provider => 'weibo', :homepage => row[16], :tag_ids => [get_profession(row[13])])
-        social_account.auto_complete_info
+        # social_account.auto_complete_info
       end
     end
 
