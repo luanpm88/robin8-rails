@@ -133,7 +133,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
                 Kol.where(kol_role: params[:kol_role])
 
               elsif params[:is_hot]
-                Kol.where(is_hot: true).order('created_at DESC').paginate(paginate_params)
+                Kol.where('is_hot > 0').order('created_at DESC').paginate(paginate_params)
               elsif params[:role_apply_status]
                 Kol.where(role_apply_status: params[:role_apply_status]).order('created_at DESC').paginate(paginate_params)
               else
