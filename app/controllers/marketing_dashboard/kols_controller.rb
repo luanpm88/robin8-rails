@@ -12,7 +12,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   def search
     render 'search' and return if request.method.eql? 'GET'
 
-    search_by = "%params[:search_key]%"
+    search_by = "%#{params[:search_key]}%"
 
 
 
