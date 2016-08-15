@@ -163,16 +163,18 @@ module Concerns
     end
 
     def max_campaign_click
-      self.campaign_invites.order("avail_click desc").first.avail_click rescue nil
+      self.campaign_invites.settled.order("avail_click desc").first.avail_click rescue nil
     end
 
     def max_campaign_earn_money
-      self.income_transactions.where(:item_type => 'Campaign').group("item_id").
+      campaign_ids = self.campaign_invites.settled.collect{|t| t.campaign_id}
+      self.income_transactions.where(:item_type => 'Campaign', :item_id => campaign_ids).group("item_id").
         order("sum(credits) desc").select("sum(credits) as item_credits, item_id").first.item_credits    rescue 0
     end
 
     def campaign_total_income
-      self.income_transactions.where(:item_type => 'Campaign').sum(:credits)
+      campaign_ids = self.campaign_invites.settled.collect{|t| t.campaign_id}
+      self.income_transactions.where(:item_type => 'Campaign', :item_id => campaign_ids).sum(:credits)
     end
 
     def avg_campaign_credit
