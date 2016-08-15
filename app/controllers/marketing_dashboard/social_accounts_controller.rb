@@ -12,7 +12,7 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   def create
     @social_account = SocialAccount.new(permit_params)
     @social_account.kol_id = params[:kol_id]
-    @social_account.auto_complete_info
+    # @social_account.auto_complete_info
     if @social_account.save
       flash[:notice] = "创建成功"
       redirect_to marketing_dashboard_social_accounts_path(:kol_id => params[:kol_id])
@@ -40,7 +40,7 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   end
 
   def cities
-    
+
   end
 
   def destroy
