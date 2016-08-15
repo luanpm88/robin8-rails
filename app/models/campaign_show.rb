@@ -106,7 +106,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # # check kol's total_click_threshold
-    if kol && kol.total_click_threshold
+    if kol# && kol.total_click_threshold
       store_key =  "total_click_threshold_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
       if current_total_click >= (kol.total_click_threshold  || 150)
