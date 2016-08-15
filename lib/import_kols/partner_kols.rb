@@ -48,11 +48,23 @@ module ImportKols
       end
       if row[8].present? && kol.social_accounts.find_by(:provider => 'weibo', :homepage => row[8]).blank?
         social_account = kol.social_accounts.build(:provider => 'weibo', :homepage => row[8], :price => row[14].to_i)
-        social_account.auto_complete_info
+        # social_account.auto_complete_info
       end
       if row[6].blank? && row[7].blank? && row[8].blank?
         social_account = kol.social_accounts.build(:provider => 'wechat', :username => row[0])
       end
+    end
+
+    def self.get_mobile_numbers
+      book = Spreadsheet.open Path
+      sheet1 = book.worksheet 0
+      phones = []
+      sheet1.each_with_index do |row,index|
+        next if index < 1
+        phones << row[15].to_s.to_i if row[15].present?
+        return if row[0].nil?
+      end
+      puts phones.join(",")
     end
   end
 end

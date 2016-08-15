@@ -4,7 +4,7 @@ class SocialAccount < ActiveRecord::Base
   belongs_to :kol
 
   # validates :homepage, :presence => {message: "主页不能为空"}
-  # before_save :auto_complete_info
+  before_create :auto_complete_info
   after_create :create_kol_shows
   serialize :others, Hash
   mount_uploader :screenshot, ImageUploader
@@ -48,7 +48,6 @@ class SocialAccount < ActiveRecord::Base
 
   def auto_complete_info
     return if self.homepage.blank?
-    return if self.followers_count.present?  &&  self.followers_count > 0
     homepage = self.homepage.gsub("https://", "http://")
     if self.provider == 'weibo'
       puts  "======#{get_weibo_homepage}"
