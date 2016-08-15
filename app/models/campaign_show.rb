@@ -106,15 +106,15 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # # check kol's total_click_threshold
-    # if kol && kol.total_click_threshold
-    #   store_key =  "total_click_threshold_#{campaign_invite.id}"
-    #   current_total_click = Rails.cache.read(store_key)  || 0
-    #   if current_total_click >= kol.total_click_threshold
-    #     return [false, "exceed_total_click_threshold"]
-    #   else
-    #     Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
-    #   end
-    # end
+    if kol# && kol.total_click_threshold
+      store_key =  "total_click_threshold_#{campaign_invite.id}"
+      current_total_click = Rails.cache.read(store_key)  || 0
+      if current_total_click >= (kol.total_click_threshold  || 150)
+        return [false, "exceed_total_click_threshold"]
+      else
+        Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
+      end
+    end
 
     #check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)

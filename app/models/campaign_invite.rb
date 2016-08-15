@@ -126,6 +126,8 @@ class CampaignInvite < ActiveRecord::Base
     return 0.0 if campaign.blank?
     if campaign.is_click_type? or campaign.is_cpa_type? || campaign.is_cpi_type?
       (get_avail_click * campaign.get_per_action_budget(false)).round(2)       rescue 0
+    elsif campaign.is_invite_type?
+      self.price
     else
       campaign.get_per_action_budget(false).round(2) rescue 0
     end
@@ -226,6 +228,7 @@ class CampaignInvite < ActiveRecord::Base
     return if self.status == 'settled' || self.status == 'rejected'
     self.with_lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
+        next if (self.observer_status == 2 || self.get_avail_click > 100) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)

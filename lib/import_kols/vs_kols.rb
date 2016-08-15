@@ -2,7 +2,11 @@ require 'rubygems'
 require "spreadsheet"
 module ImportKols
   class VsKols < Base
-    Path = '/Users/huxl/VS.xls'
+    if Rails.env.production?
+      Path = '/home/deployer/VS.xls'
+    else
+      Path = '/Users/huxl/VS.xls'
+    end
     Spreadsheet.client_encoding = "UTF-8"
     def self.import_sheet
       book = Spreadsheet.open Path
@@ -10,6 +14,7 @@ module ImportKols
       mcn = get_vs_mcn
       sheet1.each_with_index do |row,index|
         next if index < 4
+        puts "==========index:#{index}===name:#{row[1]}"
         kol = create_kol(row)
         create_social_account(kol, row)
         kol_no_exist = kol.new_record?

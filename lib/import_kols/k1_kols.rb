@@ -2,7 +2,11 @@ require 'rubygems'
 require "spreadsheet"
 module ImportKols
   class K1Kols < Base
-    Path = '/Users/huxl/k1_kols.xls'
+    if Rails.env.production?
+      Path = '/home/deployer/k1_kols.xls'
+    else
+      Path = '/Users/huxl/k1_kols.xls'
+    end
     Spreadsheet.client_encoding = "UTF-8"
     def self.import_sheet
       book = Spreadsheet.open Path
