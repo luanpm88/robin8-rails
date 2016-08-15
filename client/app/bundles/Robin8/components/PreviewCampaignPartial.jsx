@@ -53,13 +53,21 @@ class PreviewCampaignPartial extends React.Component {
   renderSubmitButton() {
     const campaign = this.props.campaign;
     if (campaign.get('status') === "unpay") {
-      return (
-        <div className="submit-group">
-          <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
-        </div>
-      )
-    }
-    if (campaign.get('status') === 'unexecute') {
+      if (!!campaign.get('need_pay_amount')) {
+        return (
+          <div className="submit-group">
+            <button onClick={this._goPayCampaign} type="submit" className="btn btn-blue btn-lg payCampaignSubmit">立即支付</button>
+          </div>
+        )
+      } else {
+        return (
+          <div className="return-back-group">
+            <p>客服确认KOL报价后会与您取得联系，请您耐心等待</p>
+            <Link to={'/brand/'} className="btn btn-blue btn-lg returnBackBtn"> 返回主页 </Link>
+          </div>
+        )
+      }
+    } else if (campaign.get('status') === 'unexecute') {
       return (
         <div className="return-back-group">
           <Link to={'/brand/'} className="btn btn-blue btn-lg returnBackBtn"> 修改成功，返回主页</Link>

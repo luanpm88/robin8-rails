@@ -26,6 +26,8 @@ class SocialAccount < ActiveRecord::Base
   end
 
   def sale_price
+    return 0 if self.price.to_i.zero?
+
     (((self.price.to_i * 1.3)/10).to_i + 1) * 10
   end
 
