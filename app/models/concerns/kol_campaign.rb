@@ -95,6 +95,7 @@ module Concerns
         campaign_invite.status = 'rejected'
         campaign_invite.img_status = 'rejected'
         campaign_invite.save
+        campaign_invite
       else
         nil
       end
