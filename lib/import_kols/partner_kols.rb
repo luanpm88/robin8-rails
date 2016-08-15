@@ -45,6 +45,9 @@ module ImportKols
         social_account = kol.social_accounts.build(:provider => 'weibo', :homepage => row[8], :price => row[14].to_i)
         social_account.auto_complete_info
       end
+      if row[6].blank? && row[7].blank? && row[8].blank?
+        social_account = kol.social_accounts.build(:provider => 'wechat', :username => row[1])
+      end
     end
   end
 end

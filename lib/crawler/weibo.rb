@@ -8,9 +8,9 @@ module Crawler
                               :headers => {:user_agent => UserAgent,
                                            :Referer => "http://weibo.com"
                               },
-                             timeout: 3
+                             timeout: 5
       )
-      body = request.response_body
+      body = request.response_body    rescue nil
       doc = Nokogiri::HTML(body).css("script").to_s.match(/.*render_data\s=\s(.*?);<\/script>/)[1]      rescue nil
       return {} if doc.blank?
       # unescape_doc =  CGI.unescapeHTML(doc.to_s)
@@ -56,9 +56,9 @@ module Crawler
                              :headers => {:user_agent => UserAgent,
                                           :Referer => homepage
                              },
-                             timeout: 3
+                             timeout: 5
       )
-      body = request.response_body
+      body = request.response_body   rescue nil
       content = JSON.parse(body)["data"]
       doc = Nokogiri::HTML(content).css("section article").each_with_index do | article, index|
         return if index >= 3
@@ -75,9 +75,11 @@ module Crawler
       request = Typhoeus.get(url, followlocation: true, verbose: true,
                              :headers => {:user_agent => UserAgent,
                                           :Referer => homepage
-                             }
+                             },
+                             timeout: 5
       )
-      body = request.response_body
+      body = request.response_body       rescue nil
+      return if body.blank?
       content = JSON.parse(body)["data"]
       desc_contents = []
       Nokogiri::HTML(content).css("section article.wrapper-wb").each_with_index do | article, index|
