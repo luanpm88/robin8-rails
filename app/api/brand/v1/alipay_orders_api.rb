@@ -14,10 +14,11 @@ module Brand
             credits = params[:credits]
             tax = params[:tax]
             actual_credits = credits + tax
+            invite_code = params[:invite_code]
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
             notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/alipay_orders/alipay_notify"
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax, need_invoice: params[:need_invoice]})
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax, need_invoice: params[:need_invoice], invite_code: invite_code})
             if @alipay_order.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
