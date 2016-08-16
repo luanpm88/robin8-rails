@@ -41,6 +41,10 @@ class PreviewCampaignPartial extends React.Component {
     this._fetchCampaign();
   }
 
+  componentWillUnmount() {
+    this.props.actions.clearCampaign();
+  }
+
   renderHeader() {
     const campaign = this.props.campaign;
     if (campaign.get('status') == 'unpay') {
