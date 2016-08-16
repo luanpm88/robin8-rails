@@ -148,7 +148,7 @@ export default class DetailPartial extends React.Component {
               <div className="sources-check cpa-cpi-select radio">
                 <label>
                     <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
-                  按链接点击次数付费
+                  按链接点击次数付费(仅支持链接类型)
                 </label>
                 <label>
                     <input {...per_budget_type} type="radio" name="action_type" value="cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpi"} />
