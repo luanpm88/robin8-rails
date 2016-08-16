@@ -79,8 +79,8 @@
             </div>
 
             <div class="field form-group datetime" style="position: relative;">
-              <%= f.label "是否是热门" %><br />
-              <%= f.select :is_hot, [["热门", 1], ["普通", 0], ["不热门", -1]], class: "form-control" %>
+              <%= f.label "是否是热门(数字越大 排名越高)" %><br />
+              <%= f.text_field :is_hot, class: "form-control" %>
             </div>
 
             <div class="field form-group datetime" style="position: relative;">
