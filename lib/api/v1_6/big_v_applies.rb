@@ -17,7 +17,8 @@ module API
           optional :gender, type: Integer, values: [0, 1, 2]
         end
         post 'update_profile' do
-          current_kol.update_columns(:name => params[:name], :app_city => params[:app_city], :job_info => params[:job_info],
+          app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+          current_kol.update_columns(:name => params[:name], :app_city => app_city, :job_info => params[:job_info],
                                      :desc => params[:desc], :gender => params[:gender], :age => params[:age])
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
