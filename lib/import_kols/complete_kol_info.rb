@@ -76,5 +76,15 @@ module ImportKols
         end
       end
     end
+
+    def self.complete_keywords
+      Kol.find_by_sql("select kols.* from kols left join kol_keywords on kols.id=kol_keywords.kol_id where kol_keywords.id is null and kols.desc is not null").each do |kol|
+        keywords = NlpService.get_keywords(kol.desc)  rescue []
+        puts keywords
+        keywords.each do |keyword|
+          KolKeyword.create!(kol_id: kol.id, :keyword => keyword)
+        end
+      end
+    end
   end
 end
