@@ -29,7 +29,7 @@ class CreateInviteCampaignService
       sum += social_account.sale_price
     end unless social_accounts.blank?
 
-    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
+    @campaign_params.merge!({:status => :unpay})
 
     # if @campaign_params[:budget] == 0
     #   @errors << 'campaign budget can not be zero!'

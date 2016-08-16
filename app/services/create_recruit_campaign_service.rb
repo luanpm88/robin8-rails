@@ -29,7 +29,7 @@ class CreateRecruitCampaignService
     # end
 
     validate_recruit_time
-    @campaign_params.merge!({:status => :unpay})
+    @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
 
     if @errors.size > 0
       return false
