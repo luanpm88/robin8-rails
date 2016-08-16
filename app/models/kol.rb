@@ -556,7 +556,7 @@ class Kol < ActiveRecord::Base
   end
 
   def get_avatar_url
-    avatar.url || read_attribute(:avatar_url)
+    avatar.url(:avatar) || read_attribute(:avatar_url)
   end
 
   def is_big_v?
