@@ -19,6 +19,13 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def asking
+    @campaigns = Campaign.where(per_budget_type: "invite", status: 'unpay').realable
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.where("deadline >?", (Time.now-30.days)).order('created_at DESC').paginate(paginate_params)
+    render 'index'
+  end
+
   def agreed
     @campaigns = Campaign.where.not(status: ['unexecute', "unpay"]).realable
     @q = @campaigns.ransack(params[:q])
@@ -37,6 +44,19 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def show
     @campaign = Campaign.find params[:id]
+  end
+
+  def refresh_budget
+    @campaign = Campaign.find params[:id]
+
+    if @campaign.budget == 0
+      flash[:alert] = "活动(#{@campaign.id})总价格为０，请先修改KOL社交账号的价格，再编辑活动提交修改"
+    elsif @campaign.update(need_pay_amount: @campaign.budget)
+      flash[:notice] = "活动(#{@campaign.id})价格确认成功，可以联系用户支付了"
+    else
+      flash[:alert] = "活动(#{@campaign.id})价格确认失败，重试无效后请找技术支持"
+    end
+    redirect_to :action => :asking
   end
 
   def add_target
