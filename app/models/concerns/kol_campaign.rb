@@ -147,11 +147,11 @@ module Concerns
     end
 
     def sync_campaigns
-      if Rails.env.production?
-        return if self.kol_role == 'mcn_big_v'
-      else
-        return if self.kol_role != 'big_v'
-      end
+      # if Rails.env.production?
+      #   return if self.kol_role == 'mcn_big_v'
+      # else
+      #   return if self.kol_role != 'big_v'
+      # end
       Campaign.where(:status => [:agreed, :executing]).each do |campaign|
         next if campaign.specified_kol_targets.size > 0
         self.add_campaign_id(campaign.id)  if campaign.newbie_kol_target.present?
