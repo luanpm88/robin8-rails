@@ -87,7 +87,7 @@ class CampaignShow < ActiveRecord::Base
     if kol #&& kol.five_click_threshold
       store_key =  "five_click_threshold_#{campaign_invite.id}_#{now.min / 5}"
       current_five_click = Rails.cache.read(store_key)  || 0
-      if current_five_click >= (kol.five_click_threshold || 30)
+      if current_five_click >= (kol.five_click_threshold || 20)
         return [false, "exceed_five_click_threshold"]
       else
         Rails.cache.write(store_key, current_five_click + 1, :expires_in => 5.minutes)
@@ -109,7 +109,7 @@ class CampaignShow < ActiveRecord::Base
     if kol# && kol.total_click_threshold
       store_key =  "total_click_threshold_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-      if current_total_click >= (kol.total_click_threshold  || 150)
+      if current_total_click >= (kol.total_click_threshold  || 120)
         return [false, "exceed_total_click_threshold"]
       else
         Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
