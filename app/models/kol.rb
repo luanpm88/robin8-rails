@@ -588,4 +588,8 @@ class Kol < ActiveRecord::Base
       "不热门"
     end
   end
+
+  def is_forbid?
+    self.forbid_campaign_time.present? && self.forbid_campaign_time > Time.now
+  end
 end
