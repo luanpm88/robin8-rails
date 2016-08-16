@@ -24,6 +24,10 @@ module CampaignObserver
 
     shows = CampaignShow.where(:campaign_id => campaign_id, :kol_id => kol_id).order("created_at asc")
 
+    if shows.where(:status => "1").count > MaxValidClickCount
+      invalid_reasons << "有效点击 大于 #{MaxValidClickCount}"
+    end
+    
     if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.1
       invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
     end
@@ -146,7 +150,7 @@ module CampaignObserver
   def observer_text
     texts = []
     texts << "总点击量不能超过: #{MaxTotalClickCount}次, 有效点击比 小于 10%"
-    # texts << "有效点击量不能超过: #{MaxValidClickCount}次"
+    texts << "有效点击量不能超过: #{MaxValidClickCount}次"
     # texts << "单一cookie 不能超过:  #{MaxUniqCookieVisitCount}次"
     # texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
     # texts << "访问者ip 不能超过#{IpScoreLess50Count}次"
