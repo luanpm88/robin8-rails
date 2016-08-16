@@ -20,6 +20,7 @@
       <th>ID</th>
       <th>用户id</th>
       <th>品牌名称</th>
+      <th>邀请码</th>
       <th>下单时间</th>
       <th>订单号</th>
       <th>支付宝订单号</th>
@@ -37,6 +38,7 @@
         <% end %>
         <td> <%= link_to a.user_id, marketing_dashboard_user_path(:id => a.user_id), :target => "_blank" %></td>
         <td> <%= a.user.name %></td>
+        <td><%= a.invite_code %></td>
         <td><%= a.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
         <% %w(trade_no alipay_trade_no credits).each do |v| %>
           <td> <%= multi_send a, v %> </td>
