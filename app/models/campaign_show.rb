@@ -7,9 +7,9 @@ class CampaignShow < ActiveRecord::Base
   IpMaxCount = Rails.env.production? ? 20 : 2
 
   if Rails.env.production?
-    KolCreditLevels = {'A' => 100, 'B' => 10}
+    KolCreditLevels = {'A' => 100, 'B' => 10, 'S' => 1000000}
   else
-    KolCreditLevels = {'A' => 4, 'B' => 1}
+    KolCreditLevels = {'A' => 4, 'B' => 1, 'S' => 1000000}
   end
 
   belongs_to :campaign
@@ -95,10 +95,15 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check kol's max_click depend on kol credits level
-    if kol && kol.kol_level.present?
+    if kol
       store_key =  "kol_level_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-      if current_total_click >= KolCreditLevels["#{kol.kol_level}"]
+      if kol.kol_level.present?
+        level_threshold  = KolCreditLevels["#{kol.kol_level}"]
+      else
+        level_threshold = 120
+      end
+      if current_total_click >= level_threshold
         return [false, "exceed_kol_level_threshold"]
       else
         Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
@@ -106,15 +111,15 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # # check kol's total_click_threshold
-    if kol# && kol.total_click_threshold
-      store_key =  "total_click_threshold_#{campaign_invite.id}"
-      current_total_click = Rails.cache.read(store_key)  || 0
-      if current_total_click >= (kol.total_click_threshold  || 120)
-        return [false, "exceed_total_click_threshold"]
-      else
-        Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
-      end
-    end
+    # if kol# && kol.total_click_threshold
+    #   store_key =  "total_click_threshold_#{campaign_invite.id}"
+    #   current_total_click = Rails.cache.read(store_key)  || 0
+    #   if current_total_click >= (kol.total_click_threshold  || 120)
+    #     return [false, "exceed_total_click_threshold"]
+    #   else
+    #     Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
+    #   end
+    # end
 
     #check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)

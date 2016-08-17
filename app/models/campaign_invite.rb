@@ -228,7 +228,7 @@ class CampaignInvite < ActiveRecord::Base
     return if self.status == 'settled' || self.status == 'rejected'
     self.with_lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
-        next if (self.observer_status == 2 || self.get_avail_click > 100) && auto == true
+        next if (self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
