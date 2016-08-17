@@ -97,8 +97,9 @@
         <label>活动类型: <%= @campaign_invites[i].campaign_type %></label>
       </div>
       <div>
-        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%> 
+        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%>
         </label>
+        <label><%= link_to "点击数据流", "/marketing_dashboard/campaign_invites/#{@campaign_invites[i].id}/campaign_shows", :target => "_blank"%></label>
         <% if @campaign_invites[i].observer_status == 2%>
           <button class="show-reject-reason btn btn-success" data-observer-text="<%=  @campaign_invites[i].observer_text %>">详情</button>
         <% end %>
