@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160816091619) do
+ActiveRecord::Schema.define(version: 20160817040953) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -59,6 +59,13 @@ ActiveRecord::Schema.define(version: 20160816091619) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "admin_users_roles", id: false, force: :cascade do |t|
+    t.integer "admin_user_id", limit: 4
+    t.integer "role_id",       limit: 4
+  end
+
+  add_index "admin_users_roles", ["admin_user_id", "role_id"], name: "index_admin_users_roles_on_admin_user_id_and_role_id", using: :btree
 
   create_table "agent_kols", force: :cascade do |t|
     t.integer  "agent_id",   limit: 4
@@ -1379,6 +1386,17 @@ ActiveRecord::Schema.define(version: 20160816091619) do
   end
 
   add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "social_account_professions", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
