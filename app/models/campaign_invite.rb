@@ -107,6 +107,14 @@ class CampaignInvite < ActiveRecord::Base
         avail_kol_ids = CampaignInvite.where(:campaign_id => self.campaign_id, :status => ['finished', 'settled']).collect{|t| t.kol_id}
         wait_restore_shows = CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => avail_kol_ids, :status => 0, :remark => CampaignShow::CampaignExecuted).order("id asc").limit(kol_avail_click)
         wait_restore_shows.update_all(:status => 1, :remark => 'restore')
+       #TODO group by
+        wait_restore_shows.each do |wait_restore_show|
+          invite = CampaignInvite.find_by(:campaign_id => wait_restore_show.campaign_id, :kol_id => wait_restore_show.kol_id)
+          if invite
+            invite.redis_avail_click.increment
+            invite.increment!
+          end
+        end
         self.campaign.redis_avail_click.increment(wait_restore_shows.size)
       end
     end
