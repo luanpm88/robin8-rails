@@ -8,7 +8,7 @@ class CampaignInvite < ActiveRecord::Base
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
-  CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果", "系统检测到有作弊嫌疑"]
+  CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果", "系统检测到有作弊嫌疑", "一次点击都没有"]
   # observer_status 0 表示 未计算, 1 表示 正常, 2 表示 存在作弊嫌疑
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']

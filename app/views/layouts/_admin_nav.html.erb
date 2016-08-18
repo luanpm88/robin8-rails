@@ -62,6 +62,11 @@
             </li>
             <li>
               <%= link_to '有作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
+
+            </li>
+            <li>
+              <%= link_to '总点击为0 的 待审核截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 1) %>
+              
             </li>
             <li>
               <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
