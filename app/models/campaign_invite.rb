@@ -112,7 +112,7 @@ class CampaignInvite < ActiveRecord::Base
           invite = CampaignInvite.find_by(:campaign_id => wait_restore_show.campaign_id, :kol_id => wait_restore_show.kol_id)
           if invite
             invite.redis_avail_click.increment
-            invite.increment!
+            invite.increment!(:avail_click, 1)
           end
         end
         self.campaign.redis_avail_click.increment(wait_restore_shows.size)
