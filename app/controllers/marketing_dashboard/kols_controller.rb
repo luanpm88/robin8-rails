@@ -25,6 +25,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def ban
+    authorize! :write, Kol
     render 'ban' and return if request.method.eql? 'GET'
 
     @kol.update(forbid_campaign_time: params[:forbid_time])
@@ -37,6 +38,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def disban
+    authorize! :write, Kol
     @kol.update(forbid_campaign_time: Time.now)
 
     respond_to do |format|
@@ -47,6 +49,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
 
   def withdraw
+    authorize! :write, Kol
     render 'withdraw' and return if request.method.eql? 'GET'
 
     if @kol.avail_amount.to_f > params[:credits].to_f
@@ -78,6 +81,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def update_profile
+    authorize! :write, Kol
     @kol = Kol.find params[:id]
     if params[:kol][:mobile_number].blank?
       params[:kol][:mobile_number] = nil
@@ -91,6 +95,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def update
+    authorize! :write, Kol
     @kol = Kol.find params[:id]
     if params[:kol][:mobile_number].blank?
       params[:kol][:mobile_number] = nil
@@ -101,6 +106,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def campaign_compensation
+    authorize! :write, Kol
     @kol = Kol.find params[:id]
     if request.get?
       @rejected_campaign_invite_arr = CampaignInvite.where(:kol_id => @kol.id, :status => 'rejected').order("id desc").includes(:campaign).collect{|t| [ "【campaign_id】: #{t.campaign_id}, 【campaign_name】: #{t.campaign.name}, 【credits】: #{t.avail_click * t.campaign.actual_per_action_budget}", t.id]}

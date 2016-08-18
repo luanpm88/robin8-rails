@@ -10,6 +10,7 @@ class MarketingDashboard::KolAnnouncementsController < MarketingDashboard::BaseC
   end
 
   def create
+    authorize! :write, Kol
     params.permit!
     @kol_announcement =  KolAnnouncement.new(params[:kol_announcement])
     if @kol_announcement.save
@@ -18,6 +19,7 @@ class MarketingDashboard::KolAnnouncementsController < MarketingDashboard::BaseC
   end
 
   def destroy
+    authorize! :write, Kol
     @kol_announcement = KolAnnouncement.find params[:id]
     @kol_announcement.destroy
     redirect_to :action => :index
@@ -30,4 +32,3 @@ class MarketingDashboard::KolAnnouncementsController < MarketingDashboard::BaseC
   end
 
 end
-
