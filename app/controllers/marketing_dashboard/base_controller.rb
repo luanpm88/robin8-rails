@@ -3,12 +3,16 @@ class MarketingDashboard::BaseController < ApplicationController
   before_action :current_admin_ability
   layout 'admin'
 
-  def authorize!(*args)
-    current_admin_ability.authorize!(*args)
-  end
-
   def current_admin_ability
     current_ability ||= AdminAbility.new(current_admin_user)
+  end
+
+  def can?(*args)
+    current_admin_ability.can?(*args)
+  end
+
+  def authorize!(*args)
+    current_admin_ability.authorize!(*args)
   end
 
   rescue_from CanCan::AccessDenied do |exception|

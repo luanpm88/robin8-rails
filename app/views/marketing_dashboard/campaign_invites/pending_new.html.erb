@@ -14,6 +14,7 @@
 </div>
 
 <div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+<div class="error-no-auth" style="display:none; font-size: 35px; color: red">没有此操作权限，请找Sally开通</div>
 <div class="modal admin-campaign-invite-modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -50,6 +51,7 @@
         <h4 class="modal-title">请填写拒绝理由</h4>
       </div>
       <div class="modal-body admin-reject-modal-body">
+          <div class="modal-error-no-auth" style="display:none; font-size: 35px; color: red">没有此操作权限，请找Sally开通</div>
           <h3>请输入拒绝理由（非必填）</h3>
           <div class="col-sm-4">
             <div>
@@ -97,7 +99,7 @@
         <label>活动类型: <%= @campaign_invites[i].campaign_type %></label>
       </div>
       <div>
-        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%> 
+        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%>
         </label>
         <% if @campaign_invites[i].observer_status == 2%>
           <button class="show-reject-reason btn btn-success" data-observer-text="<%=  @campaign_invites[i].observer_text %>">详情</button>
@@ -173,7 +175,7 @@ $(function(){
 
     $.ajax({
       method: "POST",
-      url: "/campaign_invite/change_multi_img_status",
+      url: "/marketing_dashboard/campaign_invites/change_multi_img_status",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
@@ -182,9 +184,10 @@ $(function(){
       .done(function(data) {
         if(data['result'] == 'agree'){
           location.reload();
-        }
-        else {
+        } else if(data['result'] == 'error'){
           $(".error-flash").css("display", "block");
+        } else {
+          $(".error-no-auth").css("display", "block");
         }
       });
   });
@@ -198,7 +201,7 @@ $(function(){
     agree_ids.push($(this).attr("data-invite-id"))
     $.ajax({
       method: "POST",
-      url: "/campaign_invite/change_multi_img_status",
+      url: "/marketing_dashboard/campaign_invites/change_multi_img_status",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
@@ -207,9 +210,10 @@ $(function(){
       .done(function(data) {
         if(data['result'] == 'agree'){
           location.reload();
-        }
-        else {
+        } else if(data['result'] == 'error'){
           $(".error-flash").css("display", "block");
+        } else {
+          $(".error-no-auth").css("display", "block");
         }
       });
   });
@@ -238,7 +242,7 @@ $(function(){
 
     $.ajax({
       method: "POST",
-      url: "/campaign_invite/change_multi_img_status",
+      url: "/marketing_dashboard/campaign_invites/change_multi_img_status",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
@@ -247,9 +251,11 @@ $(function(){
       .done(function(data) {
         if(data['result'] == 'reject'){
           location.reload();
-        }
-        else {
+        } else if(data['result'] == 'error'){
           $(".error-flash").css("display", "block");
+        } else {
+          $(".error-no-auth").css("display", "block");
+          $(".modal-error-no-auth").css("display", "block");
         }
       });
   });
@@ -262,7 +268,7 @@ $(function(){
 
     $.ajax({
       method: "POST",
-      url: "/campaign_invite/change_multi_img_status",
+      url: "/marketing_dashboard/campaign_invites/change_multi_img_status",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
@@ -271,9 +277,11 @@ $(function(){
       .done(function(data) {
         if(data['result'] == 'reject'){
           location.reload();
-        }
-        else {
+        } else if(data['result'] == 'error'){
           $(".error-flash").css("display", "block");
+        } else {
+          $(".error-no-auth").css("display", "block");
+          $(".modal-error-no-auth").css("display", "block");
         }
       });
   });

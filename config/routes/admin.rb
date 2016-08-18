@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     resources :hot_items
     resources :helper_docs
     resources :helper_tags
-    resources :social_accounts do 
-      collection do 
+    resources :social_accounts do
+      collection do
         get :cities
       end
     end
@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'passed'
         get 'rejected'
+        post 'change_multi_img_status'
       end
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post, :get]
@@ -154,6 +155,6 @@ Rails.application.routes.draw do
 
     resources :lottery_activities
     resources :lottery_expresses
-    
+
   end
 end
