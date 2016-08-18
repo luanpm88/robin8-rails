@@ -99,7 +99,7 @@ class CampaignInvite < ActiveRecord::Base
     return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
     self.with_lock do
       kol_avail_click = self.get_avail_click
-      self.update_columns(:avail_click => 0, :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      self.update_columns(:avail_click => 0, :status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
       self.redis_avail_click.reset
       CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => self.kol_id, :status => 1).update_all(:status => 0, :remark => 'permanent_reject')
       self.campaign.redis_avail_click.decrement(kol_avail_click.to_i)
