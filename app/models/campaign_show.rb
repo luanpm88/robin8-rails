@@ -1,9 +1,9 @@
 class CampaignShow < ActiveRecord::Base
   include Concerns::CampaignShowForCpi
-  CookieTimeout = Rails.env.production? ? 45.minutes : 10.seconds
+  CookieTimeout = Rails.env.production? ? 45.minutes : 5.seconds
   OpenidMaxCount = Rails.env.production? ? 1 : 10
-  IpTimeout = Rails.env.production? ? 1.seconds : 10.seconds
-  IpMaxCount = Rails.env.production? ? 20 : 2
+  IpTimeout = Rails.env.production? ? 1.seconds : 5.seconds
+  IpMaxCount = Rails.env.production? ? 20 : 40
   CampaignExecuted = 'campaign_had_executed'
 
   if Rails.env.production?
