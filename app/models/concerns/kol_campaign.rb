@@ -147,18 +147,10 @@ module Concerns
     end
 
     def sync_campaigns
-      if Rails.env.production?
-        return if self.kol_role == 'mcn_big_v'
-      else
-        return if self.kol_role != 'big_v'
-      end
+      return if self.kol_role == 'mcn_big_v'
       Campaign.where(:status => [:agreed, :executing]).each do |campaign|
         next if campaign.specified_kol_targets.size > 0
-        if campaign.is_recruit_type?
-          self.add_campaign_id campaign.id   if self.app_platform == 'IOS'  #if  campaign.region_target.blank? ||  campaign.region_target.get_citys.include?(kol.app_city)
-        else
-          self.add_campaign_id campaign.id
-        end
+        self.add_campaign_id(campaign.id)  if campaign.newbie_kol_target.present?
       end
     end
 
