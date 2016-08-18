@@ -128,6 +128,17 @@ class CampaignInviteController < ApplicationController
       end
 
       return render json: { result: 'reject' }
+    elsif params[:status] == "permanent_reject"
+      if params[:reject_reason].present?
+        reject_reason = params[:reject_reason]
+      else
+        reject_reason = params[:common_reject_reason]
+      end
+      @campaign_invites.each do |c|
+        c.permanent_reject reject_reason
+      end
+
+      return render json: { result: 'reject' }
     end
     return render json: { result: 'error' }
   end
