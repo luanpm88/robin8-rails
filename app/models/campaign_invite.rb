@@ -106,16 +106,21 @@ class CampaignInvite < ActiveRecord::Base
       if self.campaign.status == 'executed' && self.campaign.finish_remark == 'fee_end' && ['cpi', 'cpa', 'click'].include?(self.campaign.per_budget_type)
         avail_kol_ids = CampaignInvite.where(:campaign_id => self.campaign_id, :status => ['finished', 'settled']).collect{|t| t.kol_id}
         wait_restore_shows = CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => avail_kol_ids, :status => 0, :remark => CampaignShow::CampaignExecuted).order("id asc").limit(kol_avail_click)
-        wait_restore_shows.update_all(:status => 1, :remark => 'restore')
+        Rails.logger.transaction.info "=======aaa===size:#{wait_restore_shows.size}"
        #TODO group by
         wait_restore_shows.each do |wait_restore_show|
+          Rails.logger.transaction.info wait_restore_show.inspect
           invite = CampaignInvite.find_by(:campaign_id => wait_restore_show.campaign_id, :kol_id => wait_restore_show.kol_id)
+          Rails.logger.transaction.info invite.inspect
           if invite
             invite.redis_avail_click.increment
             invite.increment!(:avail_click, 1)
           end
         end
+        Rails.logger.transaction.info "=======campaign.redis_avail_click"
         self.campaign.redis_avail_click.increment(wait_restore_shows.size)
+         Rails.logger.transaction.info "=======bbb===size:#{wait_restore_shows.size}"
+        wait_restore_shows.update_all(:status => 1, :remark => 'restore')
       end
     end
   end
