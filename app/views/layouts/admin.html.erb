@@ -9,6 +9,7 @@
       <%= javascript_include_tag 'admin' %>
     <% end %>
     <%= csrf_meta_tag %>
+    <%= favicon_link_tag 'favicon.ico' %>
   </head>
   <body>
     <% if params[:controller].include? 'sessions' %>
