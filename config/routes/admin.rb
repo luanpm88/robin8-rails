@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
+    get 'edit_password' => 'dashboard#edit_password'
+    patch 'update_password' => 'dashboard#update_password'
     resources :track_urls
     resources :hot_items
     resources :helper_docs
@@ -64,7 +66,18 @@ Rails.application.routes.draw do
         post 'search'
       end
     end
-    resources :admin_users, except: [:destroy, :new, :create]
+
+    resources :admin_users do
+      collection do
+        get :auth
+      end
+
+      member  do
+        get :edit_auth
+        patch :update_auth
+      end
+    end
+
     resources :campaign_invites, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
