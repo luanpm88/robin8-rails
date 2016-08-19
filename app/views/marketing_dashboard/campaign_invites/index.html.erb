@@ -38,6 +38,14 @@
         <td><%= link_to image_tag(c.screenshot, :width => "100px"), c.screenshot, :target => "_blank"%></td>
         <td>
           <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id), :target => "_blank" %>
+
+          <% if k.forbid_campaign_time.present? and k.forbid_campaign_time > Time.now %>
+          |
+          <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post, :target => "_blank"  %>
+          <% else %>
+          |
+          <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id), :target => "_blank"  %>
+          <% end %>
         </td>
       </tr>
     <% end %>
