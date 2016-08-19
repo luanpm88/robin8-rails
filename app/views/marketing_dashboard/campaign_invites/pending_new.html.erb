@@ -109,6 +109,7 @@
       </div>
       <button class="agree-one btn btn-success" data-invite-id="<%=  @campaign_invites[i].id%>">通过</button>
       <button class="reject-modal-one btn btn-danger" data-invite-id="<%=  @campaign_invites[i].id%>">拒绝</button>
+      <button class="reject-modal-one btn btn-danger" data-invite-id="<%=  @campaign_invites[i].id%>" data-reject-status="permanent_reject">永久拒绝</button>
     </div>
   <% end %>
 </div>
@@ -228,22 +229,26 @@ $(function(){
   })
 
    $(".reject-modal-one").click(function(){
-    $(".admin-campaign-invite-modal-one").attr("data-invite-id", $(this).attr("data-invite-id"))
-    $('.admin-campaign-invite-modal-one').modal("show")
+     $(".admin-campaign-invite-modal-one").attr("data-invite-id", $(this).attr("data-invite-id"));
+     $(".admin-campaign-invite-modal-one").attr("data-reject-status", $(this).attr("data-reject-status"));
+     $('.admin-campaign-invite-modal-one').modal("show")
    })
 
 
    $(".reject-one").click(function(){
     var reject_ids = new Array();
-    reject_ids.push($(".admin-campaign-invite-modal-one").attr("data-invite-id"))
-
+    reject_ids.push($(".admin-campaign-invite-modal-one").attr("data-invite-id"));
+    var status = 'reject';
+    if($(".admin-campaign-invite-modal-one").attr("data-reject-status")){
+      status = $(".admin-campaign-invite-modal-one").attr("data-reject-status")
+    }
     $.ajax({
       method: "POST",
       url: "/campaign_invite/change_multi_img_status",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
-      data: { "status": "reject", "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason": $('.common_reject_reason-one').val()}
+      data: { "status": status, "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason": $('.common_reject_reason-one').val()}
     })
       .done(function(data) {
         if(data['result'] == 'reject'){

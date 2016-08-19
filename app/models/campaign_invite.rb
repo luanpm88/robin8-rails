@@ -5,6 +5,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_total_click        #所有点击
   counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
+  lock :settle
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
@@ -95,6 +96,36 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  def permanent_reject rejected_reason=nil
+    return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
+    self.with_lock do
+      kol_avail_click = self.get_avail_click
+      self.update_columns(:avail_click => 0, :status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      self.redis_avail_click.reset
+      CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => self.kol_id, :status => 1).update_all(:status => 0, :remark => 'permanent_reject')
+      self.campaign.redis_avail_click.decrement(kol_avail_click.to_i)
+      if self.campaign.status == 'executed' && self.campaign.finish_remark == 'fee_end' && ['cpi', 'cpa', 'click'].include?(self.campaign.per_budget_type)
+        avail_kol_ids = CampaignInvite.where(:campaign_id => self.campaign_id, :status => ['finished', 'settled']).collect{|t| t.kol_id}
+        wait_restore_shows = CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => avail_kol_ids, :status => 0, :remark => CampaignShow::CampaignExecuted).order("id asc").limit(kol_avail_click)
+        Rails.logger.transaction.info "=======aaa===size:#{wait_restore_shows.size}"
+       #TODO group by
+        wait_restore_shows.each do |wait_restore_show|
+          Rails.logger.transaction.info wait_restore_show.inspect
+          invite = CampaignInvite.find_by(:campaign_id => wait_restore_show.campaign_id, :kol_id => wait_restore_show.kol_id)
+          Rails.logger.transaction.info invite.inspect
+          if invite
+            invite.redis_avail_click.increment
+            invite.increment!(:avail_click, 1)
+          end
+        end
+        Rails.logger.transaction.info "=======campaign.redis_avail_click"
+        self.campaign.redis_avail_click.increment(wait_restore_shows.size)
+         Rails.logger.transaction.info "=======bbb===size:#{wait_restore_shows.size}"
+        wait_restore_shows.update_all(:status => 1, :remark => 'restore')
+      end
+    end
+  end
+
   def reupload_screenshot(img_url)
     self.update_attributes(:img_status => 'pending', :screenshot => img_url, :reject_reason => nil, :upload_time => Time.now )
   end
@@ -135,7 +166,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def add_click(valid, remark = nil, only_increment_avail = false)
     self.redis_avail_click.increment if valid
-    self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
+    self.redis_real_click.increment if valid || remark == CampaignShow::CampaignExecuted
     self.redis_total_click.increment   if only_increment_avail == false
     return true
   end
@@ -225,8 +256,8 @@ class CampaignInvite < ActiveRecord::Base
 
   def settle(auto = false, transaction_time = Time.now)
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
-    return if self.status == 'settled' || self.status == 'rejected'
-    self.with_lock  do
+    return if self.status == 'rejected'
+    self.settle_lock.lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         next if (self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
         #1. 先自动审核通过
