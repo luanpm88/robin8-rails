@@ -48,6 +48,10 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
       @campaign_invites = base_invites.where(:observer_status => 2).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
     elsif params[:observer_status].to_i == 1
       @campaign_invites = base_invites.where(:observer_status => 1).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+    elsif params[:total_click]
+      campaign_ids = Campaign.where(:status => "executed").map(&:id)
+      base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending).where(:campaign_id => campaign_ids)
+      @campaign_invites = base_invites.where(:total_click => 0).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
     else
       @campaign_invites = base_invites.where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
     end

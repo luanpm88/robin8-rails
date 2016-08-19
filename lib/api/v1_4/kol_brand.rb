@@ -71,6 +71,7 @@ module API
           declared_params = declared(params).reject do |i| params[i].blank?  end
           if alipay_order.status == "pending" && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
             alipay_order.pay
+            alipay_order.save_alipay_trade_no(params[:trade_no])
             body "success"
             return
           end

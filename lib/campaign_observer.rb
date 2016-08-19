@@ -2,7 +2,7 @@
 module CampaignObserver
   extend self
   MaxTotalClickCount = 100
-  MaxValidClickCount = 50
+  MaxValidClickCount = 30
   MaxUniqCookieVisitCount = 20
   MaxUniqUserAgentCount = 40
   MaxMorningVisitCount = 20 # 1点-6点
@@ -28,8 +28,9 @@ module CampaignObserver
       invalid_reasons << "有效点击 大于 #{MaxValidClickCount}"
     end
     
-    if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.1
-      invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
+    if shows.count > MaxTotalClickCount
+      #invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
+      invalid_reasons << "总点击量大于#{MaxTotalClickCount}"
     end
 
     shows.each do |show|

@@ -26,6 +26,7 @@
       <th>支付宝订单号</th>
       <th>充值金额</th>
       <th>税费</th>
+      <th>来源</th>
       <th>充值状态</th>
       <th>查看流水(若未付款则为空)</th>
     </tr>
@@ -50,6 +51,7 @@
             <%= a.tax %>
           <% end %>
         </td>
+        <td><%= a.recharge_from %></td>
 
         <td>
           <% if a.status == 'pending' %>
