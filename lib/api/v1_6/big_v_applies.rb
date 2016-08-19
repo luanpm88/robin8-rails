@@ -43,9 +43,14 @@ module API
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
           social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
-          social_account.homepage = params[:homepage]
-          social_account.price = params[:price]
-          social_account.username = params[:username]
+          social_account.homepage = params[:homepage]  if params[:homepage].present?
+          if provider == 'weibo' && social_account.homepage.blank?
+            uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+            social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+          end
+          social_account.price = params[:price]           if params[:price].present?
+          social_account.username = params[:username]     if params[:username].present?
+          social_account.uid = params[:uid]               if params[:uid].present?
           social_account.repost_price = params[:repost_price]
           social_account.second_price = params[:second_price]
           social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
