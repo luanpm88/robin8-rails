@@ -1,9 +1,11 @@
+<h3>管理员列表</h3>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
       <th>ID</th>
       <th>Email</th>
-      <th>Last sign in</th>
+      <th>最后登录时间</th>
     </tr>
   </thead>
 
@@ -19,4 +21,4 @@
 
 </table>
 
-<%= will_paginate @admin_users %>
+<%= will_paginate @admin_users, renderer: BootstrapPagination::Rails  %>

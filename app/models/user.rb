@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_many :private_kols
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
+  has_many :recharge_transactions, -> {where("subject='manual_recharge' or subject='alipay_recharge'")}, class_name: 'Transaction', as: :account
   belongs_to :kol
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
@@ -162,6 +163,10 @@ class User < ActiveRecord::Base
 
   def email_changed?
     false
+  end
+
+  def total_recharge
+    self.recharge_transactions.sum(:credits)
   end
 
   def self.find_for_database_authentication(warden_conditions)

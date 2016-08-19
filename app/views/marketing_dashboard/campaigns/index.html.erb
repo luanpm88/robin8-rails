@@ -3,6 +3,220 @@
     margin-bottom: 0;
   }
 </style>
+
+
+<div class="container-fluid" style="padding: 20px 0;">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <a data-toggle="collapse" href="#searchPanel"  >
+        搜索过滤
+        <%= link_to "<清除全部>", request.path, class: "pull-right" if params[:q] %>
+      </a>
+    </div>
+    <div id="searchPanel" class="panel-body collapse">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动ID</label>
+              <%= f.search_field :id_eq, class: "form-control", placeholder: "活动ID" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动名称</label>
+              <%= f.search_field :name_cont, class: "form-control", placeholder: "活动名称" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动预算</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.number_field :budget_gt, step: 'any', class: "form-control", placeholder: "最小值" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.number_field :budget_lt, step: 'any', class: "form-control", placeholder: "最大值" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动创建人ID</label>
+              <%= f.search_field :user_id_eq, class: "form-control", placeholder: "活动创建人ID" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动创建人名称/手机号</label>
+              <%= f.search_field :user_name_or_user_mobile_number_cont, class: "form-control", placeholder: "活动创建人名称/手机号" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动单价</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.number_field :per_action_budget_gt, step: 'any', class: "form-control", placeholder: "最小值" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.number_field :per_action_budget_lt, step: 'any', class: "form-control", placeholder: "最大值" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动类型</label>
+              <%= f.select :per_budget_type_eq, [ :click, :post, :cpa, :recruit, :invite ], { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动状态</label>
+              <%= f.select :status_eq, [ :unexecute, :unpay, :agreed, :rejected, :executing, :revoked, :settled ], { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动来源</label>
+              <%= f.select :campaign_from_eq, [ :pc, :app ], { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>活动开始时间</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.search_field :start_time_gt, class: "form-control datetime", placeholder: "最小时间" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.search_field :start_time_lt, class: "form-control datetime", placeholder: "最大时间" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>活动结束时间</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.search_field :deadline_gt, class: "form-control datetime", placeholder: "最小时间" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.search_field :deadline_lt, class: "form-control datetime", placeholder: "最大时间" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>活动创建时间</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.search_field :created_at_gt, class: "form-control datetime", placeholder: "最小时间" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.search_field :created_at_lt, class: "form-control datetime", placeholder: "最大时间" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%= f.submit "搜索", class: "btn btn-primary" %>
+        <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>活动ID</th>
+          <th>活动名称</th>
+          <th>创建人ID</th>
+          <th>创建人名称</th>
+          <th>活动状态</th>
+          <th>活动类型</th>
+          <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
+          <th><%= sort_link(@q, :budget, "活动预算") %></th>
+          <th><%= sort_link(@q, :start_time, "活动开始时间") %></th>
+          <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
+          <th><%= sort_link(@q, :created_at, "活动创建时间") %></th>
+          <th>活动来源</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @campaigns.each do |c| %>
+        <tr>
+          <td><%= link_to c.id, marketing_dashboard_campaign_path(c), target: "_blank" %></td>
+          <td><%= c.name %></td>
+          <td><%= link_to c.user_id, marketing_dashboard_user_path(c.user_id), target: "_blank" rescue "未知" %></td>
+          <td><%= c.user.name rescue "未知" %></td>
+          <td><%= c.status %></td>
+          <td><%= c.per_budget_type %></td>
+          <td><%= c.per_action_budget %></td>
+          <td><%= c.budget %></td>
+          <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+          <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+          <td><%= c.created_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+          <td><%= c.campaign_from %></td>
+          <td>
+            <%= link_to '详情', marketing_dashboard_campaign_path(c), target: "_blank" %> /
+            <%= link_to '编辑', get_edit_brand_campaign_show_url(c), target: "_blank" %> /
+            <div class="option-group" role="group">
+              <a data-toggle="dropdown">
+                更多
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><%= link_to '活动参与数据', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %></li>
+                <li><%= link_to '活动点击数据', marketing_dashboard_campaign_campaign_shows_path(c), target: "_blank" %></li>
+                <li><%= link_to '活动统计数据', get_brand_campaign_show_url(c), target: "_blank" %></li>
+
+                <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
+                <li><%= link_to 'KOL招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
+                <% end %>
+
+                <% if c.status == 'executing' %>
+                <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="option-group" role="group">
+              <% if c.status == 'unpay' and c.is_invite_type? %>
+                <%= link_to '允许付款', refresh_budget_marketing_dashboard_campaign_path(c), method: "POST", class: "btn btn-primary", :"data-confirm" => "注意：确认价格后，用户将可以付款支付，付款后将不再方便修改价格，确定价格并允许支付吗？" %>
+              <% end %>
+            </div>
+            <div class="option-group" role="group">
+              <% if c.status == 'unexecute' %>
+                <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <a href="" onclick="return false;" class="btn btn-warning reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>
+
 <div class="modal admin-campaign-modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -26,139 +240,6 @@
     </div>
   </div>
 </div>
-
-<div class="container-fluid" style="padding: 20px 0;">
-  <%= search_form_for @q, url: request.path, class: "form-inline pull-right" do |f| %>
-    <div class="form-group">
-      <%= f.search_field :id_eq, class: "form-control", placeholder: "活动ID" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.search_field :name_or_per_budget_type_or_status_cont, class: "form-control", placeholder: "活动名称/类型/状态" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.search_field :user_name_or_user_mobile_number_cont, class: "form-control", placeholder: "用户名/手机号" %>
-    </div>
-
-    <%= f.submit "搜索", class: "btn btn-primary" %>
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        排序
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li>
-          <%= sort_link(@q, :start_time, "Start Time") %>
-        </li>
-        <li>
-          <%= sort_link(@q, :deadline, "Deadline") %>
-        </li>
-        <li>
-          <%= sort_link(@q, :actual_deadline_time, "Actual Deadline") %>
-        </li>
-      </ul>
-    </div>
-    <%= link_to "清除", request.path, class: "btn btn-default" %>
-  <% end %>
-</div>
-
-<table class='table'>
-  <thead>
-    <tr>
-      <th>活动</th>
-      <th>Ops</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @campaigns.each do |c| %>
-      <tr>
-      <td>
-          <div class="table-responsive">
-            <table class="table table-field">
-              <tr class="active">
-                <td width="15%"><i>ID:</i> <%= c.id %></td>
-                <td width="15%"><i>状态:</i> <%= c.status %></td>
-                <td><i>活动名:</i> <%= c.name %></td>
-              </tr>
-            </table>
-            <table class="table table-bordered table-condensed table-field">
-              <colgroup>
-                <col width="25%"/>
-                <col width="25%"/>
-                <col width="25%"/>
-                <col width="25%"/>
-              </colgroup>
-              <tr>
-                <td><i>Type:</i> <%= c.per_budget_type %></td>
-                <td><i>Max Action:</i> <%= c.max_action.to_i %></td>
-                <td><i>真实单次预算/广告主设置的单次预算:</i> <%= c.get_per_action_budget(false) %> / <%= c.per_action_budget %></td>
-                <td><i>Budget:</i> <%= c.budget %></td>
-              </tr>
-              <tr>
-                <td><i>Avail:</i> <%= c.get_avail_click %></td>
-                <td><i>Total:</i> <%= c.get_total_click %></td>
-                <td><i>Accepted Count:</i> <%= c.campaign_invites.count %></td>
-                <td><i>Spent:</i> <%= c.take_budget %></td>
-              </tr>
-              <tr>
-                <td colspan="2"><i>Start Time:</i> <%= c.start_time.to_s(:date_time) %></td>
-                <td colspan="2"><i>Deadline:</i> <%= c.deadline.to_s(:date_time)%></td>
-              </tr>
-              <tr>
-                <td colspan="2"><i>Actual Deadline:</i> <%= c.actual_deadline_time.to_s(:date_time)  rescue nil %></td>
-                <td><i>From:</i> <%= c.campaign_from %></td>
-                <td>
-                  <i>用户:</i>
-                  <%= link_to c.user.name, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>
-                  [<%= link_to c.user_id, marketing_dashboard_campaigns_path(:user_id => c.user_id)%>]
-                </td>
-              </tr>
-            </table>
-          </div>
-        </td>
-
-        <td width="85px">
-          <div class="btn-group-vertical" role="group" aria-label="...">
-            <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank", class: "btn btn-default" %>
-            <%= link_to '编辑', get_edit_brand_campaign_show_url(c), :target => "_blank", class: "btn btn-default" %>
-
-            <% if c.status == 'unpay' and c.is_invite_type? %>
-              <%= link_to '允许付款', refresh_budget_marketing_dashboard_campaign_path(c), method: "POST", class: "btn btn-primary", :"data-confirm" => "注意：确认价格后，用户将可以付款支付，付款后将不再方便修改价格，确定价格并允许支付吗？" %>
-            <% end %>
-
-            <% if c.status == 'unexecute' %>
-              <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
-                <a href="" onclick="return false;" class="btn btn-warning reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
-            <% end %>
-
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                更多
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %></li>
-                <li><%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %></li>
-                <li><%= link_to '统计', get_brand_campaign_show_url(c), :target => "_blank" %></li>
-
-                <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
-                <li><%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
-                <% end %>
-
-                <% if c.status == 'executing' %>
-                <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>
 
 <script>
   $(".reject-campaign").click(function(){
