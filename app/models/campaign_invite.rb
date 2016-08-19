@@ -5,6 +5,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_total_click        #所有点击
   counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
+  lock :settle
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
@@ -256,7 +257,7 @@ class CampaignInvite < ActiveRecord::Base
   def settle(auto = false, transaction_time = Time.now)
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'rejected'
-    self.with_lock  do
+    self.settle_lock.lock  do
       if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
         next if (self.observer_status == 2 || self.get_avail_click > 100) && auto == true
         #1. 先自动审核通过
