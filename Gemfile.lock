@@ -872,7 +872,7 @@ DEPENDENCIES
   igetui-ruby
   imgkit
   jbuilder (~> 2.0)
-  jquery-rails
+  jquery-rails (= 4.0.4)
   jquery-ui-rails
   json_expressions
   jwt
