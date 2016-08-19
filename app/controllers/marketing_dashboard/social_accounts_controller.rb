@@ -54,6 +54,6 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   def permit_params
     params.require(:social_account).permit(:kol_id, :provider, :username,
          :homepage, :avatar_url, :brief, :like_count, :followers_count, :friends_count,
-          :reposts_count, :statuses_count, :verified, :province, :city, :gender, :price, :second_price, :repost_price)
+          :reposts_count, :statuses_count, :verified, :province, :city, :gender, :price, :second_price, :repost_price, :uid)
   end
 end
