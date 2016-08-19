@@ -54,6 +54,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
       @campaign_invites = base_invites.where(:total_click => 0).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
     elsif params[:total_click]  and params[:total_click].to_i == 100
       @campaign_invites = CampaignInvite.where("total_click > 100").where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+      render :index
     else
       @campaign_invites = base_invites.where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
     end
