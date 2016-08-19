@@ -1,18 +1,20 @@
-<h3>Kol Banner</h3>
+<h3>
+  APP首页滚动栏
+  <%= link_to '新增滚动图', new_marketing_dashboard_kol_announcement_path, :class => 'btn btn-primary pull-right' %>
+</h3>
 
-<div style="float:right"><%= link_to '新增Banner', new_marketing_dashboard_kol_announcement_path, :class => 'btn btn-primary' %></div>
-
-<table class="table table-striped">
+<hr/>
+<table class="table">
   <thead>
     <tr>
       <th>排序</th>
       <th>标题</th>
       <th>类型</th>
-      <th>封面URL</th>
-      <th>link</th>
-      <th>kol_id</th>
+      <th>封面</th>
+      <th>链接</th>
+      <th>KOL ID</th>
       <th>状态</th>
-      <th>Ops</th>
+      <th>操作</th>
     </tr>
   </thead>
 
@@ -25,10 +27,12 @@
         <td><%= image_tag announcement.cover.url('200') %></td>
         <td><%= announcement.link %></td>
         <td><%= announcement.kol_id %></td>
-        <td><%= announcement.enable == true ? 'Y' : 'N' %></td>
+        <td><%= announcement.enable == true ? '已开启' : '已停用' %></td>
         <td>
-          <%= link_to 'Destroy', marketing_dashboard_kol_announcement_path(announcement), method: :delete, data: { confirm: 'Are you sure?' } %>
-          <%= link_to 'switch', switch_marketing_dashboard_kol_announcement_path(announcement) %>
+          <%= link_to '删除', marketing_dashboard_kol_announcement_path(announcement), method: :delete, data: { confirm: '确定要删除码?' } %>
+          <%= link_to switch_marketing_dashboard_kol_announcement_path(announcement) do %>
+            <%= announcement.enable ? "暂停" : "开启" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

@@ -1,38 +1,68 @@
 <h3>发票列表</h3>
-<div class="well">
-  <%= form_tag search_marketing_dashboard_alipay_orders_path do %>
-    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
-    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
-  <% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主ID</label>
+            <%= f.search_field :user_id_eq, class: "form-control", placeholder: "品牌主ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主手机</label>
+            <%= f.search_field :user_mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主昵称</label>
+            <%= f.search_field :user_name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <table class='table table-bordered'>
-
   <thead>
     <tr>
-      <th>ID</th>
-      <th>用户ID</th>
-      <th>品牌主名称</th>
-      <th>创建时间</th>
+      <th width="40px">ID</th>
+      <th>品牌主ID</th>
+      <th>品牌主昵称</th>
+      <th>品牌主手机</th>
+      <th><%= sort_link(@q, :created_at, "创建时间") %></th>
       <th>发票类型</th>
-      <th>发票金额</th>
+      <th><%= sort_link(@q, :credits, "发票金额") %></th>
       <th>公司抬头</th>
       <th>收件地址</th>
       <th>收件人姓名</th>
       <th>收件人电话</th>
       <th>快递单号</th>
-      <th>Ops</th>
+      <th width="50px">操作</th>
     </tr>
   </thead>
   <tbody>
     <% @invoice_histories.each do |i| %>
       <tr>
-        <% %w(id).each do |v| %>
-          <td> <%= multi_send i, v %> </td>
-        <% end %>
-        <td> <%= link_to i.user_id, marketing_dashboard_user_path(:id => i.user_id), :target => "_blank" %></td>
-        <td> <%= i.user.name %></td>
-        <td><%= i.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= i.id %></td>
+        <td><%= link_to i.user_id, marketing_dashboard_user_path(:id => i.user_id), :target => "_blank" %></td>
+        <td><%= i.user.name rescue "" %></td>
+        <td><%= i.user.mobile_number rescue "" %></td>
+        <td><%= i.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
         <td>
           <% if i.invoice_type == 'common' %>
             普通增值税发票
@@ -40,24 +70,18 @@
             增值税专用发票
           <% end %>
         </td>
-        <% %w(credits title address name phone_number).each do |v| %>
-          <td> <%= multi_send i, v %> </td>
-        <% end %>
-        <% if i.tracking_number %>
-          <td><%= i.tracking_number %></td>
-        <% else %>
-          <td></td>
-        <% end %>
+        <td><%= i.credits %></td>
+        <td><%= i.title %></td>
+        <td><%= i.address %></td>
+        <td><%= i.name %></td>
+        <td><%= i.phone_number %></td>
+        <td><%= i.tracking_number %></td>
         <td>
-          <% if i.tracking_number %>
-            <%= link_to '修改', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
-          <% else %>
-            <%= link_to '添加快递单号', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
-          <% end %>
+          <%= link_to "编辑", send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= will_paginate @invoice_histories %>
+<%= will_paginate @invoice_histories, renderer: BootstrapPagination::Rails  %>
