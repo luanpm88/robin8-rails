@@ -28,7 +28,7 @@
 
 this.App = {};
 
-$(window).load(function() {
+(function() {
   okUrl = $("#ok_url").val();
   App.cable = Cable.createConsumer("<%= smart_root_url("passport/scan/cable", protocol: "ws", subdomain: false) %>");
   return App.cable.subscriptions.create({
@@ -41,6 +41,6 @@ $(window).load(function() {
       return window.location = "/login/scan/submit?token=" + data["token"] + "&id=" + data["id"] + "&ok_url=" + okUrl;
     }
   });
-});
+})();
 
 </script>
