@@ -30,6 +30,7 @@ class Message < ActiveRecord::Base
 
   # new campaign  to all  or list
   def self.new_campaign(campaign, kol_ids = [], unmatch_kol_id = [])
+    return if kol_ids.size == 0 && unmatch_kol_id.size == 0
     if campaign.is_recruit_type?
       title = '你有一个新的招募活动'
     else
@@ -50,9 +51,9 @@ class Message < ActiveRecord::Base
       if message.save
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
-    else
-      message.receiver_type = "All"
-      message.save
+    # else
+    #   message.receiver_type = "All"
+    #   message.save
     end
     generate_push_message(message) if Campaign.can_push_message(campaign)
   end
