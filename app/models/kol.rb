@@ -595,7 +595,9 @@ class Kol < ActiveRecord::Base
 
   def send_to_be_big_v_notify
     if self.kol_role == 'big_v' && self.kol_role_changed?
-      PushMessage.push_to_be_big_v_message(self)
+      content = "恭喜！您的KOL资质审核通过了，速去打开Robin8 APP查看详情！"
+      PushMessage.push_to_be_big_v_message(self, content)
+      Emay::SendSms.to(self.mobile_number, content)
     end
   end
 

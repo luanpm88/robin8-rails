@@ -38,8 +38,8 @@ module API
           if big_v
             if big_v.kol_keywords.size == 0
               kol_keywords = []
-              big.tags.each do |tag|
-                kol_keywords << KolKeyword.build(:keywords => tag.label)
+              big_v.tags.each do |tag|
+                kol_keywords << KolKeyword.new(:keyword => tag.label)
               end
             else
               kol_keywords = big_v.kol_keywords

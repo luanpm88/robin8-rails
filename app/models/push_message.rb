@@ -98,8 +98,7 @@ class PushMessage < ActiveRecord::Base
     }
   end
 
-  def self.push_to_be_big_v_message(receiver)
-    title = "恭喜！您的KOL资质审核通过了，速去打开Robin8 APP查看详情！"
+  def self.push_to_be_big_v_message(receiver, title)
     push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                             :title => title, :receiver_cids => [receiver.device_token] )
     push_message.template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => 'KOL资质审核通过'}
