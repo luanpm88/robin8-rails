@@ -42,7 +42,7 @@ class Kol < ActiveRecord::Base
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
   after_create :create_campaign_invites_after_signup
-  after_save :update_click_threshold
+  after_save :update_click_threshold, :send_to_be_big_v_notify
 
   mount_uploader :avatar, ImageUploader
 
@@ -592,4 +592,13 @@ class Kol < ActiveRecord::Base
   def is_forbid?
     self.forbid_campaign_time.present? && self.forbid_campaign_time > Time.now
   end
+
+  def send_to_be_big_v_notify
+    if self.kol_role == 'big_v' && self.kol_role_changed?
+      content = "恭喜！您的KOL资质审核通过了，速去打开Robin8 APP查看详情！"
+      PushMessage.push_to_be_big_v_message(self, content)
+      Emay::SendSms.to(self.mobile_number, content)
+    end
+  end
+
 end

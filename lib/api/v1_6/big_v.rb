@@ -36,10 +36,18 @@ module API
         get ':id/detail' do
           big_v = Kol.find params[:id]  rescue nil
           if big_v
+            if big_v.kol_keywords.size == 0
+              kol_keywords = []
+              big_v.tags.each do |tag|
+                kol_keywords << KolKeyword.new(:keyword => tag.label)
+              end
+            else
+              kol_keywords = big_v.kol_keywords
+            end
             present :error, 0
             present :big_v, big_v, with: API::V1_6::Entities::BigVEntities::Detail
             present :kol_shows, big_v.kol_shows, with: API::V1_6::Entities::KolShowEntities::Summary
-            present :kol_keywords, big_v.kol_keywords, with: API::V1_6::Entities::KolKeywordEntities::Summary
+            present :kol_keywords, kol_keywords, with: API::V1_6::Entities::KolKeywordEntities::Summary
             present :social_accounts, big_v.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
             present :is_follow, (current_kol.is_follow?(big_v) rescue false) == true ? 1 : 0
           else

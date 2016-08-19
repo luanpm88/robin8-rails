@@ -64,6 +64,11 @@ module API
             current_kol.kol_shows.create!(:link => link)
           end if params[:kol_shows].present?
           current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)
+          # if current_kol.kol_keywords.size == 0  && current_kol.tags.size > 0
+          #   current_kol.tags.each do |tag|
+          #     KolKeyword.create!(:kol_id => current_kol.id, :keyword => tag.label)
+          #   end
+          # end
           present :error, 0
         end
       end
