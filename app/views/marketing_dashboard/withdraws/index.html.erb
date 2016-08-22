@@ -19,6 +19,8 @@
       <th>身份证</th>
       <th>Alipay No.</th>
       <th>Status</th>
+      <th>支付宝关联的用户</th>
+      <th>提现次数</th>
       <th>Total Amount</th>
       <th>Frozen Amount</th>
       <th>Avail Amount</th>
@@ -40,6 +42,12 @@
         <% %w(alipay_no status).each do |v| %>
           <td> <%= multi_send w, v %> </td>
         <% end %>
+        <td>
+          <% Withdraw.where(:alipay_no => w.alipay_no).map(&:kol_id).each do |kol_id|%>
+            <%= link_to kol_id, "/marketing_dashboard/kols/#{kol_id}", :target => "_blank" %>&nbsp;&nbsp;&nbsp;
+          <% end %>
+        </td>
+        <td><%= Withdraw.where(:alipay_no =>w.alipay_no).count %></td>
 
         <td> <%= w.kol.amount %> </td>
         <td> <%= w.kol.frozen_amount %> </td>
