@@ -1,10 +1,10 @@
 class CampaignShow < ActiveRecord::Base
   include Concerns::CampaignShowForCpi
-  CookieTimeout = Rails.env.production? ? 45.minutes : 20.seconds
-  OpenidTimeout = Rails.env.production? ? 45.minutes : 20.seconds
-  OpenidMaxCount = 1
-  IpTimeout = Rails.env.production? ? 30.seconds : 10.seconds
-  IpMaxCount = Rails.env.production? ? 20 : 2
+  CookieTimeout = Rails.env.production? ? 45.minutes : 5.seconds
+  OpenidMaxCount = Rails.env.production? ? 1 : 10
+  IpTimeout = Rails.env.production? ? 30.seconds : 5.seconds
+  IpMaxCount = Rails.env.production? ? 20 : 40
+  CampaignExecuted = 'campaign_had_executed'
 
   if Rails.env.production?
     KolCreditLevels = {'A' => 100, 'B' => 10, 'S' => 1000000}
@@ -128,13 +128,9 @@ class CampaignShow < ActiveRecord::Base
     end
 
       # check campaign status
-    if campaign.redis_avail_click.value.to_i > campaign.max_action.to_i
-      return [false, 'campaign_fee_end']
-    end
-
-
-    if campaign.status == 'executed'  ||  campaign.status == 'settled'
-      return [false, 'campaign_had_executed']
+    if campaign.status == 'executed'  ||  campaign.status == 'settled' ||
+      (['cpi', 'cpa', 'click'].include?(campaign.per_budget_type) && campaign.redis_avail_click.value.to_i > campaign.max_action.to_i)
+      return [false, CampaignExecuted]
     end
 
     return [true,nil]

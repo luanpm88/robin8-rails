@@ -66,7 +66,7 @@ module API
         end
         post 'submit_apply' do
           params[:kol_shows].split(",").each do |link|
-            current_kol.kol_shows.create!(:link => link)
+            current_kol.kol_shows.find_or_create_by(:link => link)
           end if params[:kol_shows].present?
           current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)
           # if current_kol.kol_keywords.size == 0  && current_kol.tags.size > 0
