@@ -49,6 +49,11 @@ every 5.minutes do
   runner "CampaignInvite.schedule_day_settle", :environment => 'staging'
 end
 
+every 1.hours do
+  runner "CampaignObserver.notify_operational_staff", :environment => 'production'
+end
+
+
 every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
 end

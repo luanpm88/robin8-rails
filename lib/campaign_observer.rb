@@ -11,6 +11,36 @@ module CampaignObserver
   MinAverageSecondTotalClickCount = 10
 
 
+  def notify_operational_staff
+    return if Time.now.hour < 8
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending)
+    post_count = base_invites.joins(:campaign).where("per_budget_type='post'").count
+    lines = []
+    if post_count > 0
+      lines << "待审核转发类型的截图有 #{post_count}个"
+    end
+
+
+    campaign_ids = Campaign.where(:status => "executed").map(&:id)
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending).where(:campaign_id => campaign_ids)
+    zero_click_count = base_invites.where(:total_click => 0).where("screenshot is not NULL").order('created_at DESC').count
+
+    if zero_click_count > 0
+      lines << "点击量为0 的待审核截图有 #{zero_click_count}个"
+    end
+
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending)
+    suspected_count = base_invites.where(:observer_status => 2).where("screenshot is not NULL").order('created_at DESC').count
+    if suspected_count > 0
+      lines << "有嫌疑的 待审核截图有 #{suspected_count}个"
+    end
+    if lines.present?
+      ["15300731907", "15221773929", "18917797087", "13817164642"].each do |tel|
+        Emay::SendSms.to tel, lines.join(";\n")
+      end
+    end
+  end
+
   def observer_campaign_and_kol campaign_id, kol_id
     campaign = Campaign.where(:id => campaign_id).first
     invalid_reasons = []
