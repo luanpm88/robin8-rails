@@ -1,6 +1,7 @@
 class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::BaseController
 
   def index
+    authorize! :read, LotteryActivity
     if params[:status]
       @lottery_activities = LotteryActivity.where(status: params[:status])
     else
@@ -25,10 +26,12 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
   # end
 
   def show
+    authorize! :read, LotteryActivity
     @lottery_activity = LotteryActivity.find(params[:id])
   end
 
   def destroy
+    authorize! :update, LotteryActivity
     @lottery_activity = LotteryActivity.find params[:id]
     @lottery_activity.destroy
     redirect_to action: :index

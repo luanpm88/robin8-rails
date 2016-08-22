@@ -2,6 +2,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   # before_action :set_campaign_invite, only: [:pass, :reject]
 
   def index
+    authorize! :read, CampaignInvite
     base_invites = CampaignInvite.where.not(:screenshot => '')
     if search_key
       if params[:search_helper][:item_type] == "kol"
@@ -66,7 +67,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   end
 
   def change_multi_img_status
-    unless can?(:write, CampaignInvite)
+    unless can?(:update, CampaignInvite)
       return render json: {result: 'no_auth'}
     end
     ids = params[:ids]

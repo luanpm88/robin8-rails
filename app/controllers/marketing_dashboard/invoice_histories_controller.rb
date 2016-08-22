@@ -1,5 +1,6 @@
 class MarketingDashboard::InvoiceHistoriesController < MarketingDashboard::BaseController
   def index
+    authorize! :read, Invoice
     @invoice_histories = InvoiceHistory.all
 
     if params[:pending]
@@ -13,6 +14,7 @@ class MarketingDashboard::InvoiceHistoriesController < MarketingDashboard::BaseC
   end
 
   def send_express
+    authorize! :update, Invoice
     tracking_no = params[:tracking_no]
     unless tracking_no.present?
       flash.now[:alert] = "快递单号不能为空, 请重新输入"

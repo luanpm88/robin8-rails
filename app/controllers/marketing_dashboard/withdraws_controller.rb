@@ -2,30 +2,36 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   before_action :set_withdraw, only: [:agree, :reject, :permanent_frozen]
 
   def index
+    authorize! :read, Withdraw
+
     @withdraws = Withdraw.all
 
     formated_response "全部"
   end
 
   def pending
+    authorize! :read, Withdraw
     @withdraws = Withdraw.where(status: 'pending')
 
     formated_response "待处理的"
   end
 
   def agreed
+    authorize! :read, Withdraw
     @withdraws = Withdraw.where(status: 'paid')
 
     formated_response "通过的"
   end
 
   def rejected
+    authorize! :read, Withdraw
     @withdraws = Withdraw.where(status: 'rejected')
 
     formated_response "拒绝的"
   end
 
   def agree
+    authorize! :update, Withdraw
     if @withdraw.kol.avail_amount.to_f > params[:credits].to_f
       @withdraw.update_attributes(:status => 'paid')
 
@@ -41,6 +47,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def reject
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'rejected')
 
     respond_to do |format|
@@ -50,6 +57,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def permanent_frozen
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'permanent_frozen')
     respond_to do |format|
       format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
@@ -58,6 +66,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def batch_handle
+    authorize! :update, Withdraw
     @withdraws = Withdraw.where(:id => params[:batch_ids].split(","))
     if @withdraws.all?{|t| t.status == 'pending' }
       if params[:handle_action] == 'batch_agree'

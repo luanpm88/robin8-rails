@@ -1,4 +1,10 @@
-<%- all_roles = %w(campaign_read campaign_write campaign_invite_read campaign_invite_write) %>
+<%- all_roles = %w(campaign_read campaign_update campaign_invite_read campaign_invite_update
+                  kol_read kol_update withdraw_read withdraw_update hot_item_read hot_item_update
+                  kol_announcement_read kol_announcement_update helper_tag_read helper_tag_update
+                  lottery_activity_read lottery_activity_update user_read user_update
+                  alipay_order_read alipay_order_update invoice_read invoice_update
+                  feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update)
+%>
 
 <h1>普通管理员</h1>
 <%= form_for(@admin_user, url: update_auth_marketing_dashboard_admin_user_path(@admin_user), html: { class: "form-horizontal", multiple: true}) do |f| %>
@@ -6,11 +12,13 @@
   <div class="form-group">
     <div class="col-sm-10">
       <% all_roles.each do |role| %>
-        <% if @admin_user.has_role? role %>
-          <input name="admin_user[roles][]" class="admin_checkbox" type="checkbox" value="<%= role %>" style="margin-left: 5px" checked><%= Role.chinese_name(role) %>
-        <% else %>
-          <input name="admin_user[roles][]" type="checkbox" value="<%= role %>" style="margin-left: 5px"><%= Role.chinese_name(role) %>
-        <% end %>
+        <div>
+          <% if @admin_user.has_role? role %>
+            <input name="admin_user[roles][]" class="admin_checkbox" type="checkbox" value="<%= role %>" style="margin-left: 5px" checked><%= Role.chinese_name(role) %>
+          <% else %>
+            <input name="admin_user[roles][]" type="checkbox" value="<%= role %>" style="margin-left: 5px"><%= Role.chinese_name(role) %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>

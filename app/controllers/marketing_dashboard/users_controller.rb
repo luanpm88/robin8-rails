@@ -2,16 +2,20 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   before_action :set_user, only: [:recharge, :withdraw]
 
   def index
+    authorize! :read, User
+
     @users = User.where(:is_active => true)
     @q = @users.ransack(params[:q])
     @users = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def show
+    authorize! :read, User
     @user = User.find params[:id]
   end
 
   def recharge
+    authorize! :update, User
 
     render 'recharge' and return if request.method.eql? 'GET'
     if params[:need_invoice] && params[:credits].present?

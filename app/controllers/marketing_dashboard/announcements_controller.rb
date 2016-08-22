@@ -2,14 +2,17 @@ class MarketingDashboard::AnnouncementsController < MarketingDashboard::BaseCont
 
 
   def index
+    authorize! :read, Announcement
     @announcements  = Announcement.order_by_position
   end
 
   def new
+    authorize! :read, Announcement
     @announcement = Announcement.new
   end
 
   def create
+    authorize! :update, Announcement
     params.permit!
     @announcement =  Announcement.new(params[:announcement])
     if @announcement.save
@@ -18,6 +21,7 @@ class MarketingDashboard::AnnouncementsController < MarketingDashboard::BaseCont
   end
 
   def destroy
+    authorize! :update, Announcement
     @announcement = Announcement.find params[:id]
     @announcement.destroy
     redirect_to :action => :index
@@ -29,4 +33,3 @@ class MarketingDashboard::AnnouncementsController < MarketingDashboard::BaseCont
       params.require(:announcement).permit()
     end
 end
-

@@ -1,13 +1,17 @@
 class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseController
   def index
+    authorize! :write, AdminUser
+
     @admin_users = AdminUser.all.order('created_at DESC').paginate(paginate_params)
   end
 
   def new
+    authorize! :update, AdminUser
     @admin_user = AdminUser.new
   end
 
   def create
+    authorize! :update, AdminUser
     @admin_user = AdminUser.new(params.require(:admin_user).permit(:email, :password))
     if @admin_user.save
       flash[:notice] = "创建成功"
@@ -19,10 +23,12 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
   end
 
   def edit
+    authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
   end
 
   def update
+    authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
     @admin_user.update_attributes!(params.require(:admin_user).permit(:email))
     @admin_user.reset_password(params.require(:admin_user)[:password], params.require(:admin_user)[:password])
@@ -36,6 +42,7 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
   end
 
   def destroy
+    authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
     @admin_user.try(:delete)
     if @admin_user.destroyed?
@@ -47,14 +54,17 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
   end
 
   def auth
+    authorize! :update, AdminUser
     @admin_users = AdminUser.all.order('created_at DESC').paginate(paginate_params)
   end
 
   def edit_auth
+    authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
   end
 
   def update_auth
+    authorize! :update, AdminUser 
     @admin_user = AdminUser.find(params[:id])
     @admin_user.roles.delete_all
     params[:admin_user][:roles].each do |role|
