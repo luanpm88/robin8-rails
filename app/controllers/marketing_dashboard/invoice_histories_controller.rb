@@ -1,20 +1,15 @@
 class MarketingDashboard::InvoiceHistoriesController < MarketingDashboard::BaseController
   def index
+    @invoice_histories = InvoiceHistory.all
+
     if params[:pending]
-      @invoice_histories = InvoiceHistory.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
+      @invoice_histories = @invoice_histories.where(status: 'pending')
     elsif params[:sent]
-      @invoice_histories = InvoiceHistory.where(status: 'sent').order('created_at DESC').paginate(paginate_params)
-    else
-      @invoice_histories = InvoiceHistory.all.order('created_at DESC').paginate(paginate_params)
+      @invoice_histories = @invoice_histories.where(status: 'sent')
     end
-  end
 
-  def search
-    search_by = params[:search_key]
-    @user = User.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
-    @invoice_histories = @user.invoice_histories.order('created_at DESC').paginate(paginate_params)
-
-    render 'index' and return
+    @q = @invoice_histories.ransack(params[:q])
+    @invoice_histories = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def send_express

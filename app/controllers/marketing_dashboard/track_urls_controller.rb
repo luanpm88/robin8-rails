@@ -1,6 +1,7 @@
 class MarketingDashboard::TrackUrlsController < MarketingDashboard::BaseController
   def index
-    @track_urls = TrackUrl.all.order("created_at desc").paginate(paginate_params)
+    @q = TrackUrl.ransack(params[:q])
+    @track_urls = @q.result.order("created_at desc").paginate(paginate_params)
   end
 
   def new

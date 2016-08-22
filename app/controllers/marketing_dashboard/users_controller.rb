@@ -2,21 +2,13 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   before_action :set_user, only: [:recharge, :withdraw]
 
   def index
-    @users = User.where(:is_active => true).order('created_at DESC').paginate(paginate_params)
+    @users = User.where(:is_active => true)
+    @q = @users.ransack(params[:q])
+    @users = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def show
     @user = User.find params[:id]
-  end
-
-  def search
-    render 'search' and return if request.method.eql? 'GET'
-
-    search_by = params[:search_key]
-
-    @users = User.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
-
-    render 'index'
   end
 
   def recharge

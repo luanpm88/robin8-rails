@@ -2,34 +2,25 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   before_action :set_withdraw, only: [:agree, :reject, :permanent_frozen]
 
   def index
-    @withdraws = Withdraw.all.order('created_at DESC').includes(:kol)
+    @withdraws = Withdraw.all
 
-    formated_response "全部"
-  end
-
-  def search
-    search_by = params[:search_key]
-    kol = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
-    if kol
-      @withdraws = Withdraw.where(:kol_id => kol.id).order('created_at DESC').includes(:kol)
-    end
     formated_response "全部"
   end
 
   def pending
-    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC')
+    @withdraws = Withdraw.where(status: 'pending')
 
     formated_response "待处理的"
   end
 
   def agreed
-    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC')
+    @withdraws = Withdraw.where(status: 'paid')
 
     formated_response "通过的"
   end
 
   def rejected
-    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC')
+    @withdraws = Withdraw.where(status: 'rejected')
 
     formated_response "拒绝的"
   end
@@ -104,6 +95,9 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def formated_response(name)
+    @q = @withdraws.ransack(params[:q])
+    @withdraws = @q.result.order('created_at DESC').includes(:kol)
+
     respond_to do |format|
       format.html do
         @withdraws = @withdraws.paginate(paginate_params) unless @withdraw

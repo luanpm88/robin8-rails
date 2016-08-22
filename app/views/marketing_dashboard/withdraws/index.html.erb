@@ -1,28 +1,94 @@
 <h3>提现列表</h3>
-<div class="well">
-  <%= form_tag search_marketing_dashboard_withdraws_path do %>
-    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
-    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
-  <% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL手机</label>
+            <%= f.search_field :kol_mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL昵称</label>
+            <%= f.search_field :kol_name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>身份证号码</label>
+            <%= f.search_field :kol_id_card_cont, class: "form-control", placeholder: "身份证号码" %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>支付宝账号</label>
+            <%= f.search_field :alipay_no_cont, class: "form-control", placeholder: "支付宝账号" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>支付宝姓名</label>
+            <%= f.search_field :real_name_cont, class: "form-control", placeholder: "支付宝姓名" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>提现金额</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.number_field :credits_gt, step: 'any', class: "form-control", placeholder: "最小值" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.number_field :credits_lt, step: 'any', class: "form-control", placeholder: "最大值" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>Chose</th>
-      <th>ID</th>
-      <th>Kol ID</th>
-      <th>Credits</th>
-      <th>Withdraw type</th>
-      <th>Real Name</th>
-      <th>身份证</th>
-      <th>Alipay No.</th>
-      <th>Status</th>
-      <th>Total Amount</th>
-      <th>Frozen Amount</th>
-      <th>Avail Amount</th>
-      <th>Ops</th>
+      <th></th>
+      <th width="50px">ID</th>
+      <th width="60px">KOL ID</th>
+      <th>KOL昵称</th>
+      <th>KOL手机</th>
+      <th>提现金额</th>
+      <th>提现状态</th>
+      <th>拉黑时间</th>
+      <th>来源</th>
+      <th>支付宝账号</th>
+      <th>支付宝姓名</th>
+      <th>身份证号码</th>
+      <th>可提现金额</th>
+      <th>历史收益</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
@@ -33,22 +99,24 @@
             <%= check_box_tag "withdraw_id[]", w.id, false, :class => 'withdraw_checkbox' %>
           <% end %>
         </td>
-        <% %w(id kol_id credits withdraw_type real_name).each do |v| %>
-          <td> <%= multi_send w, v %> </td>
-        <% end %>
-        <td> <%= w.kol.id_card %> </td>
-        <% %w(alipay_no status).each do |v| %>
-          <td> <%= multi_send w, v %> </td>
-        <% end %>
-
-        <td> <%= w.kol.amount %> </td>
-        <td> <%= w.kol.frozen_amount %> </td>
-        <td> <%= w.kol.avail_amount %> </td>
+        <td><%= w.id %></td>
+        <td><%= link_to w.kol_id, marketing_dashboard_kol_path(:id => w.kol_id), :target => "_blank" %></td>
+        <td><%= w.kol.name %></td>
+        <td><%= w.kol.mobile_number %></td>
+        <td><%= w.credits %></td>
+        <td><%= w.status %></td>
+        <td><%= w.kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= w.kol.app_platform %></td>
+        <td><%= w.alipay_no %></td>
+        <td><%= w.real_name %></td>
+        <td><%= w.kol.id_card %></td>
+        <td><%= w.kol.avail_amount %></td>
+        <td><%= w.kol.total_income %></td>
         <td>
           <% if w.status == 'pending' %>
-            <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
-            <%= link_to 'Reject', marketing_dashboard_withdraw_reject_path(w.id), method: :post %>|
-            <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post %>
+            <%= link_to '通过', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
+            <%= link_to '拒绝', marketing_dashboard_withdraw_reject_path(w.id), method: :post %> /
+            <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post %> /
           <% end %>
           <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
         </td>
@@ -56,10 +124,10 @@
     <% end %>
   </tbody>
 </table>
+
 <%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', :confirm => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
 <%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', :confirm => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
 <%= link_to '导出CSV', request.path + ".csv", :class => 'btn btn-default' %>
-
 <div class="pull-right">
   <%= will_paginate @withdraws, renderer: BootstrapPagination::Rails %>
 </div>

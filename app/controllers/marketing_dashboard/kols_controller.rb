@@ -134,20 +134,22 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
                 Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
               elsif params[:kol_level] and ["A", "B"].include? params[:kol_level]
                 Kol.where(kol_level: params[:kol_level])
-
               elsif params[:kol_role]
                 Kol.where(kol_role: params[:kol_role])
-
               elsif params[:is_hot]
-                Kol.where('is_hot > 0').order('created_at DESC').paginate(paginate_params)
+                Kol.where(is_hot: true)
               elsif params[:role_apply_status]
-                Kol.where(role_apply_status: params[:role_apply_status]).order('created_at DESC').paginate(paginate_params)
+                Kol.where(role_apply_status: params[:role_apply_status])
               else
                 Kol.all
               end
-            end.order('created_at DESC').paginate(paginate_params)
+            end
+
+    @q = @kols.ransack(params[:q])
+    @kols = @q.result.order('created_at DESC').paginate(paginate_params)
+
     if params[:role_apply_status] or params[:is_hot] or ["mcn_big_v", "big_v"].include?(params[:kol_role])
-        render "role_apply_index" and return
+      render "role_apply_index" and return
     end
   end
 

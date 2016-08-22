@@ -1,6 +1,8 @@
 <div class="well">
   <%= link_to "创建管理员", new_marketing_dashboard_admin_user_path, class: "btn btn-primary pull-right" %>
 </div>
+<h3>管理员列表</h3>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
@@ -28,4 +30,4 @@
 
 </table>
 
-<%= will_paginate @admin_users %>
+<%= will_paginate @admin_users, renderer: BootstrapPagination::Rails  %>

@@ -1,63 +1,104 @@
-<h1>Kol列表</h1>
-<div class="well">
- <span>
-   等级[等级A的用户 campaign 有效点击 上限是100
-   等级B用户 有效点击 点击上限是10]
-   被拉黑的用户 不能接活动
- </span>
+<h5><%= devise_error_messages! %></h5>
+
+<h1>KOL列表</h1>
+<div class="well well-sm">
+  <ul>
+    <li>等级A的用户，活动有效点击上限是 100</li>
+    <li>等级B的用户，活动有效点击点击上限是 10</li>
+    <li>被拉黑的用户，不能接活动</li>
+  </ul>
 </div>
 
-<div class="well">
-  <%= form_tag search_marketing_dashboard_kols_path do %>
-    <%= text_field_tag :search_key, nil, :placeholder => "以name、email、mobile_number、id 搜索", class: "search_input" %>
-    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
-  <% end %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL手机</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "KOL昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
-<h5><%= devise_error_messages! %></h5>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>MobileNumber</th>
-      <th>Province</th>
-      <th>Amount</th>
-      <th>Avail Amount</th>
-      <th>Source</th>
-      <th>用户等级</th>
-      <th>Forbid Campaign Time</th>
-      <th>Ops</th>
+      <th>KOL ID</th>
+      <th>昵称</th>
+      <th>手机</th>
+      <th>来源</th>
+      <th>等级</th>
+      <th>角色</th>
+      <th>审核状态</th>
+      <th>是否热门</th>
+      <th><%= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>
+      <th>可提现金额</th>
+      <th>历史收益</th>
+      <th>操作</th>
     </tr>
   </thead>
 
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name email mobile_number province amount avail_amount utm_source kol_level forbid_campaign_time).each do |v| %>
-          <td> <%= k.send v %> </td>
-        <% end %>
+        <td><%= k.id %></td>
+        <td><%= k.name %></td>
+        <td><%= k.mobile_number %></td>
+        <td><%= k.utm_source %></td>
+        <td><%= k.kol_level %></td>
+        <td><%= k.kol_role %></td>
+        <td><%= k.role_apply_status %></td>
+        <td><%= k.is_hot %></td>
+        <td><%= k.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= k.avail_amount %></td>
+        <td><%= k.total_income %></td>
         <td>
           <%= link_to '详情', marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
+          /
+          <%= link_to "资料编辑", edit_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
           <% if k.forbid_campaign_time.present? and k.forbid_campaign_time > Time.now %>
-          |
+          /
           <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post, :target => "_blank"  %>
           <% else %>
-          |
+          /
           <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id), :target => "_blank"  %>
           <% end %>
-          |
+          /
           <%= link_to '提现', marketing_dashboard_kol_withdraw_path(k.id), :target => "_blank"  %>
-          |
+          /
           <%= link_to '点击数据', marketing_dashboard_kol_campaign_shows_path(k.id), :target => "_blank"  %>
-          |
+          /
           <%= link_to '接受的活动', marketing_dashboard_kol_campaigns_path(k.id), :target => "_blank"  %>
-          |
-          <%= link_to "修改", edit_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
-          |
+          /
           <%= link_to "活动补偿", campaign_compensation_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
-          |
-          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
+          /
+          <%= link_to "收益流水", transaction_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
         </td>
       </tr>
     <% end %>
@@ -65,4 +106,5 @@
 
 </table>
 
-<%= will_paginate @kols %>
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>
+
