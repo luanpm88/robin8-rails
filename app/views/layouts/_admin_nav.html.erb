@@ -55,23 +55,7 @@
               <%= link_to '所有截图', marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '所有待审核截图', pending_marketing_dashboard_campaign_invites_path %>
-            </li>
-            <li>
-              <%= link_to '所有转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(:per_action_type => "post") %>
-            </li>
-            <li>
-              <%= link_to '有作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
-
-            </li>
-            <li>
-              <%= link_to '活动结束后, 总点击为0 的 待审核截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 1) %>
-            </li>
-            <li>
-              <%= link_to '活动结束后, 总点击 大于100的截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 100) %>
-            </li>
-            <li>
-              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
+              <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
               <%= link_to '已通过截图', passed_marketing_dashboard_campaign_invites_path %>
@@ -79,44 +63,48 @@
             <li>
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
+            <li>
+              <%= link_to '活动结束后, 总点击为0 的 待审核截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 1) %>
+            </li>
+            <li>
+              <%= link_to '活动结束后, 总点击 大于100的截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 100) %>
+            <li>
+              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
+            </li>
+            <li>
+              <%= link_to '转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(:per_action_type => "post") %>
+            </li>
+            <li>
+              <%= link_to '作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
+            </li>
           </ul>
         </li>
         <li>
           <a href="#">KOL 管理 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有级别KOLs', marketing_dashboard_kols_path %>
+              <%= link_to '所有级别KOL', marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'A级别的KOLs', marketing_dashboard_kols_path(:kol_level => "A") %>
+              <%= link_to '拉黑的KOL', banned_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'B级别的KOLs', marketing_dashboard_kols_path(:kol_level => "B") %>
+              <%= link_to 'APP热门KOL', hot_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to '黑名单的KOLs', marketing_dashboard_kols_path(:ban => 1) %>
-            </li>
-
-            <li>
-              <%= link_to 'APP首页热门KOLs', marketing_dashboard_kols_path(:is_hot => :true) %>
-            </li>
-
-            <li>
-            <%= link_to 'APP首页MCN旗下KOLs', marketing_dashboard_kols_path(:kol_role => :mcn_big_v) %>
+              <%= link_to 'APP MCN的KOL', from_mcn_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'APP首页自己申请的KOLs', marketing_dashboard_kols_path(:kol_role => :big_v) %>
+              <%= link_to 'APP自主申请的KOL', from_app_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'APP自己申请成为KOL待处理', marketing_dashboard_kols_path(:role_apply_status => :applying ) %>
+              <%= link_to 'APP待审核KOL', applying_marketing_dashboard_kols_path %>
             </li>
-
             <li>
-              <%= link_to 'APP自己申请成为KOL已通过', marketing_dashboard_kols_path(:role_apply_status => :passed ) %>
+              <%= link_to 'APP审核通过KOL', passed_marketing_dashboard_kols_path %>
             </li>
-
             <li>
-              <%= link_to 'APP自己申请成为KOL已拒绝', marketing_dashboard_kols_path(:role_apply_status => :rejected ) %>
+              <%= link_to 'APP审核拒绝KOL', rejected_marketing_dashboard_kols_path %>
             </li>
           </ul>
         </li>
@@ -137,8 +125,6 @@
             </li>
           </ul>
         </li>
-        
-
         <li>
           <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
         </li>

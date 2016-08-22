@@ -45,8 +45,13 @@ Rails.application.routes.draw do
 
 
       collection do
-        get 'search'
-        post 'search'
+        get 'banned'
+        get 'hot'
+        get 'from_mcn'
+        get 'from_app'
+        get 'applying'
+        get 'passed'
+        get 'rejected'
       end
       member do
         match 'campaign_compensation', via: [:post, :get]

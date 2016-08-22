@@ -2,6 +2,42 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   before_action :set_kol, only: [:ban, :disban, :withdraw, :tracks]
 
   def index
+    @kols = Kol.all
+    load_kols
+  end
+
+  def banned
+    @kols = Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+    load_kols
+  end
+
+  def hot
+    @kols = Kol.where("is_hot > 0")
+    load_kols
+  end
+
+  def from_mcn
+    @kols = Kol.where(kol_role: "mcn_big_v")
+    load_kols
+  end
+
+  def from_app
+    @kols = Kol.where(kol_role: "big_v")
+    load_kols
+  end
+
+  def applying
+    @kols = Kol.where(role_apply_status: "applying")
+    load_kols
+  end
+
+  def passed
+    @kols = Kol.where(role_apply_status: "passed")
+    load_kols
+  end
+
+  def rejected
+    @kols = Kol.where(role_apply_status: "rejected")
     load_kols
   end
 
@@ -30,21 +66,19 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     @kol.update(forbid_campaign_time: params[:forbid_time])
 
     respond_to do |format|
-      format.html { redirect_to marketing_dashboard_kols_path, notice: 'Ban successfully!' }
+      format.html { redirect_to banned_marketing_dashboard_kols_path, notice: 'Ban successfully!' }
       format.json { head :no_content }
     end
-
   end
 
   def disban
     @kol.update(forbid_campaign_time: Time.now)
 
     respond_to do |format|
-      format.html { redirect_to marketing_dashboard_kols_path, notice: 'Disban successfully!' }
+      format.html { redirect_to banned_marketing_dashboard_kols_path, notice: 'Disban successfully!' }
       format.json { head :no_content }
     end
   end
-
 
   def withdraw
     render 'withdraw' and return if request.method.eql? 'GET'
@@ -121,30 +155,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   private
   def load_kols
-    @kols = if params[:campaign_id]
-              Campaign.find(params[:campaign_id]).kols
-            else
-              if params[:ban]
-                Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
-              elsif params[:kol_level] and ["A", "B"].include? params[:kol_level]
-                Kol.where(kol_level: params[:kol_level])
-              elsif params[:kol_role]
-                Kol.where(kol_role: params[:kol_role])
-              elsif params[:is_hot]
-                Kol.where('is_hot > 0')
-              elsif params[:role_apply_status]
-                Kol.where(role_apply_status: params[:role_apply_status])
-              else
-                Kol.all
-              end
-            end
+    @kols = Campaign.find(params[:campaign_id]).kols if params[:campaign_id]
 
     @q = @kols.ransack(params[:q])
     @kols = @q.result.order('created_at DESC').paginate(paginate_params)
-
-    if params[:role_apply_status] or params[:is_hot] or ["mcn_big_v", "big_v"].include?(params[:kol_role])
-      render "role_apply_index" and return
-    end
+    render "index"
   end
 
   def update_tag_ids
