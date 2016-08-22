@@ -64,18 +64,18 @@
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '活动结束后, 总点击为0 的 待审核截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 1) %>
+              <%= link_to '活动结束点击为0的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "executed", total_click_lt: 1 }) %>
             </li>
             <li>
-              <%= link_to '活动结束后, 总点击 大于100的截图', pending_marketing_dashboard_campaign_invites_path(:total_click => 100) %>
+              <%= link_to '点击大于100的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
             <li>
-              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
+              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 1 }) %>
             </li>
             <li>
-              <%= link_to '转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(:per_action_type => "post") %>
+              <%= link_to '作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
             </li>
             <li>
-              <%= link_to '作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
+              <%= link_to '转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
           </ul>
         </li>
@@ -83,7 +83,7 @@
           <a href="#">KOL 管理 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有级别KOL', marketing_dashboard_kols_path %>
+              <%= link_to '所有的KOL', marketing_dashboard_kols_path %>
             </li>
             <li>
               <%= link_to '拉黑的KOL', banned_marketing_dashboard_kols_path %>
