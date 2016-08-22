@@ -58,17 +58,18 @@ class ChangeDefaultValuesOfTables < ActiveRecord::Migration
     change_column_default :kol_contacts, :exist, false
     change_column_default :kol_contacts, :invite_status, false
 
-    change_column_default :kol_influence_value_histories, :share_times, 0
-    change_column_default :kol_influence_value_histories, :read_times,  0
-    change_column_default :kol_influence_value_histories, :base_score, 500
-    change_column_default :kol_influence_value_histories, :follower_score, 0
-    change_column_default :kol_influence_value_histories, :status_score, 0
-    change_column_default :kol_influence_value_histories, :register_score, 0
-    change_column_default :kol_influence_value_histories, :verify_score, 0
-    change_column_default :kol_influence_value_histories, :campaign_total_click_score, 0
-    change_column_default :kol_influence_value_histories, :campaign_avg_click_score, 0
-    change_column_default :kol_influence_value_histories, :article_total_click_score, 0
-    change_column_default :kol_influence_value_histories, :article_avg_click_score, 0
+
+    change_column_default :kol_influence_values, :share_times, 0
+    change_column_default :kol_influence_values, :read_times,  0
+    change_column_default :kol_influence_values, :base_score, 500
+    change_column_default :kol_influence_values, :follower_score, 0
+    change_column_default :kol_influence_values, :status_score, 0
+    change_column_default :kol_influence_values, :register_score, 0
+    change_column_default :kol_influence_values, :verify_score, 0
+    change_column_default :kol_influence_values, :campaign_total_click_score, 0
+    change_column_default :kol_influence_values, :campaign_avg_click_score, 0
+    change_column_default :kol_influence_values, :article_total_click_score, 0
+    change_column_default :kol_influence_values, :article_avg_click_score, 0
 
     change_column_default :kols, :sign_in_count, 0
     change_column_default :kols, :is_public, true
