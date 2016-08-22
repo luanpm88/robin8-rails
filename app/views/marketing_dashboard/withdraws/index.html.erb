@@ -43,7 +43,7 @@
           <td> <%= multi_send w, v %> </td>
         <% end %>
         <td>
-          <% Withdraw.where(:alipay_no => w.alipay_no).map(&:kol_id).each do |kol_id|%>
+          <% Withdraw.where(:alipay_no => w.alipay_no).map(&:kol_id).uniq.each do |kol_id|%>
             <%= link_to kol_id, "/marketing_dashboard/kols/#{kol_id}", :target => "_blank" %>&nbsp;&nbsp;&nbsp;
           <% end %>
         </td>
