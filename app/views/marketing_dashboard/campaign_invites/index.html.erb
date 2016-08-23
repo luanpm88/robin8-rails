@@ -1,50 +1,187 @@
-<div class="row">
-  <div class="panel-body">
-    <%= form_for(@search_helper || SearchHelper.new, url: "/marketing_dashboard/campaign_invites", method: :get) do |f| %>
-      <div class="field form-group search_form">
-        <%= f.text_field :key, autofocus: true, class: "form-control", placeholder: "通过活动id 或者 kol id 或者 kol 手机号搜索" %>
-        <div class="field form-group">
-          <%= f.label "搜索范围" %><br />
-          <%= f.select :item_type, ["kol", "campaign"], class: "form-control" %>
+<h3>截图审核</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading" style="padding: 0;">
+    <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
+      搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
+    </a>
+  </div>
+  <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
         </div>
-        <%= f.submit "搜索", class: "btn btn-lg btn-success search_button" %>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL手机</label>
+            <%= f.search_field :kol_mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL昵称</label>
+            <%= f.search_field :kol_name_cont, class: "form-control", placeholder: "KOL昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL等级</label>
+            <%= f.select :kol_kol_level_eq, [ "A", "B", "S" ], { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>活动ID</label>
+            <%= f.search_field :campaign_id_eq, class: "form-control", placeholder: "活动ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>活动名称</label>
+            <%= f.search_field :campaign_name_eq, class: "form-control", placeholder: "活动名称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>活动状态</label>
+            <%= f.select :campaign_status_eq, ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"], { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>活动类型</label>
+            <%= f.select :campaign_per_budget_type_eq, ["click", "post", "cpa", "recruit", "invite"], { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>有效点击</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.number_field :avail_click_gt, step: 'any', class: "form-control", placeholder: "最小值" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.number_field :avail_click_lt, step: 'any', class: "form-control", placeholder: "最大值" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>总点击</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.number_field :total_click_gt, step: 'any', class: "form-control", placeholder: "最小值" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.number_field :total_click_lt, step: 'any', class: "form-control", placeholder: "最大值" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>活动结束时间</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.search_field :campaign_deadline_gt, class: "form-control datetime", placeholder: "最小时间" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.search_field :campaign_deadline_lt, class: "form-control datetime", placeholder: "最大时间" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>是否作弊</label>
+            <%= f.select :observer_status_eq, [["未检测", 0], ["正常", 1], ["作弊", 2]], { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-offset-6 col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
       </div>
     <% end %>
   </div>
 </div>
-<table class='table table-bordered'>
+
+<div class="alert alert-danger" style="display:none;">操作失败，请重试</div>
+
+<div class="contianer-fluid">
+  <h4 class="pull-right">截图总数: <%= @campaign_invites.count %></h4>
+  <% if @batch_visible %>
+    <button class="choose-all btn btn-default">全选</button>
+    <button class="revert-all btn btn-default">反选</button>
+    <button class="agree btn btn-success">批量通过</button>
+    <button class="reject-modal btn btn-danger">批量拒绝</button>
+  <% end %>
+</div>
+
+
+<table class='table table-bordered table-striped'>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Kol ID</th>
-      <th>Campaign ID</th>
-      <th>Total Click</th>
-      <th>Avail Click</th>
-      <th>Img Status</th>
-      <th>Reject Reason</th>
-      <th>是否被拉黑</th>
-      <th>Img</th>
-      <th>Ops</th>
+      <%= raw '<th></th>' if @batch_visible %>
+      <th>截图</th>
+      <th>截图状态</th>
+      <th>活动ID</th>
+      <th>活动名称</th>
+      <th>活动类型</th>
+      <th><%= sort_link(@q, :campaign_deadline, "活动结束时间") %></th>
+      <th>KOL ID</th>
+      <th>KOL名称</th>
+      <th>KOL等级</th>
+      <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
+      <th><%= sort_link(@q, :total_click, "总点击") %></th>
+      <th><%= sort_link(@q, :approved_at, "接单时间") %></th>
+      <th>是否作弊</th>
+      <th>拒绝理由</th>
+      <th>操作</th>
     </tr>
   </thead>
-
   <tbody>
     <% @campaign_invites.each do |c| %>
       <tr>
-        <% %w(id kol_id campaign_id get_total_click get_avail_click img_status reject_reason).each do |v| %>
-          <td> <%= multi_send c, v %> </td>
+        <% if @batch_visible %>
+          <td><%= check_box_tag "campaign_invites_ids[]", c.id %></td>
         <% end %>
-        <td><%= (c.kol.forbid_campaign_time.present? and c.kol.forbid_campaign_time > Time.now) ? "是" : "否"%></td>
         <td><%= link_to image_tag(c.screenshot, :width => "100px"), c.screenshot, :target => "_blank"%></td>
+        <td><%= c.img_status %></td>
+        <td><%= c.campaign_id %></td>
+        <td><%= c.campaign.name rescue "" %></td>
+        <td><%= c.campaign.per_budget_type rescue "" %></td>
+        <td><%= c.campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
+        <td><%= c.kol.name rescue "" %></td>
+        <td><%= c.kol.kol_level rescue "" %></td>
+        <td><%= c.get_avail_click %></td>
+        <td><%= c.get_total_click %></td>
+        <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= c.campaign_observer_status %><%= c.observer_text %></td>
+        <td><%= c.reject_reason %></td>
         <td>
-          <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id), :target => "_blank" %>
-
-          <% if c.kol.forbid_campaign_time.present? and c.kol.forbid_campaign_time > Time.now %>
-          |
-          <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(c.kol.id), method: :post, :target => "_blank"  %>
+          <%= link_to '编辑KOL', edit_profile_marketing_dashboard_kol_path(c.kol_id), :target => "_blank"  %> /
+          <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id), :target => "_blank" %> /
+          <% if c.kol.present? and c.kol.forbid_campaign_time and c.kol.forbid_campaign_time > Time.now %>
+            <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(c.kol.id), method: :post, :target => "_blank"  %>
           <% else %>
-          |
-          <%= link_to '拉黑', marketing_dashboard_kol_ban_path(c.kol.id), :target => "_blank"  %>
+            <%= link_to '拉黑', marketing_dashboard_kol_ban_path(c.kol_id), :target => "_blank"  %>
+          <% end %>
+          <% if c.img_status == "pending" %>
+          <div>
+            <button class="agree-one btn btn-success btn-block" data-invite-id="<%= c.id %>">通过</button>
+            <button class="reject-modal-one btn btn-danger btn-block" data-invite-id="<%= c.id %>">拒绝</button>
+            <button class="reject-modal-one btn btn-danger btn-block" data-invite-id="<%= c.id %>" data-reject-status="permanent_reject">永久拒绝</button>
+          </div>
           <% end %>
         </td>
       </tr>
@@ -53,4 +190,175 @@
 
 </table>
 
-<%= will_paginate @campaign_invites %>
+<%= will_paginate @campaign_invites, renderer: BootstrapPagination::Rails  %>
+
+<div class="modal admin-campaign-invite-modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+              <p>友情提示: 系统会优先考虑 你填的自定义的 拒绝理由</p>
+              <div class="form-group"><%= select_tag :common_reject_reason, options_for_select(CampaignInvite::CommonRejectedReason), :class => "common_reject_reason  form-control" %>
+              </div>
+              <div class="form-group">
+                <input type="text" name='reject_reason' class='reject_reason form-control', placeholder="以上理由都不是, 请输入其他的理由">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject-one btn-danger">确认拒绝</button>
+        <button type="button" class="btn reject btn-danger">确认批量拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function(){
+
+  $('.choose-all').click(function(){
+    $(':checkbox').each(function(){
+      this.checked = true;
+    });
+  })
+
+  $('.revert-all').click(function(){
+    $(':checkbox').each(function(){
+      if(this.checked == true) {
+        this.checked = false;
+      } else {
+        this.checked = true;
+      }
+    });
+  })
+
+  $(".agree").click(function(){
+    var agree_ids = [];
+
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      agree_ids.push($(this).val())
+    });
+
+    if(!agree_ids.length) {
+      alert("请至少选择一张图片");
+      return;
+    }
+
+    doAgreeImage(agree_ids);
+  });
+
+  $(".agree-one").click(function(){
+    var agree_ids = [];
+    agree_ids.push($(this).attr("data-invite-id"))
+
+    doAgreeImage(agree_ids);
+  });
+
+  function doAgreeImage(ids) {
+    var data = { "status": "agree", "ids": ids };
+
+    doAjaxRequest(data, function(data) {
+      if(data['result'] == 'agree') {
+        location.reload();
+      } else {
+        $(".error-flash").css("display", "block");
+      }
+    });
+  }
+
+  $(".reject-modal").click(function(){
+    var reject_ids = [];
+    var model = $('.admin-campaign-invite-modal');
+
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      reject_ids.push($(this).val())
+    })
+
+    if(!reject_ids.length) {
+      return alert("请至少选择一张图片");
+    }
+
+    model.find(".reject").show();
+    model.find(".reject-one").hide();
+    model.modal("show");
+  });
+
+  $(".reject-modal-one").click(function(){
+    var model = $('.admin-campaign-invite-modal');
+
+    model.attr("data-invite-id", $(this).attr("data-invite-id"));
+    model.attr("data-reject-status", $(this).attr("data-reject-status"));
+    model.find(".reject").hide();
+    model.find(".reject-one").show();
+    model.modal("show");
+  });
+
+  $(".reject-one").click(function(){
+    var reject_ids = [];
+    reject_ids.push($(".admin-campaign-invite-modal").attr("data-invite-id"));
+
+    var status = 'reject',
+        reason = $('.reject_reason').val(),
+        common_reason = $('.common_reject_reason').val();
+    if($(".admin-campaign-invite-modal").attr("data-reject-status")){
+      status = $(".admin-campaign-invite-modal").attr("data-reject-status")
+    }
+
+    doRejectImage(reject_ids, status, reason, common_reason);
+  });
+
+
+  $(".reject").click(function(){
+    var reject_ids = [];
+
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      reject_ids.push($(this).val())
+    })
+
+    var status = 'reject',
+        reason = $('.reject_reason').val(),
+        common_reason = $('.common_reject_reason').val();
+
+    doRejectImage(reject_ids, status, reason, common_reason);
+  });
+
+  function doRejectImage(ids, status, reason, common_reason) {
+    var data = {
+      "status": status,
+      "ids": ids,
+      "reject_reason": reason,
+      "common_reject_reason": common_reason
+    };
+
+    doAjaxRequest(data, function(data) {
+      if(data['result'] == 'reject') {
+        location.reload();
+      } else {
+        $(".error-flash").css("display", "block");
+      }
+    });
+  }
+
+  function doAjaxRequest(data, callback) {
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: data
+    }).done(callback);
+  }
+});
+
+
+</script>

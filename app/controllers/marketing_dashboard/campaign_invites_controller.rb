@@ -1,99 +1,101 @@
 class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseController
-  before_action :set_campaign_invite, only: [:pass, :reject]
+  # before_action :set_campaign_invite, only: [:pass, :reject]
 
   def index
-    base_invites = CampaignInvite.where.not(:screenshot => '')
-    if search_key
-      if params[:search_helper][:item_type] == "kol"
-        kol = Kol.where("id=? or mobile_number=?", params[:search_helper][:key], params[:search_helper][:key]).first
-        if kol
-          base_invites = base_invites.where(:kol_id => kol.id)
-        end
-      elsif params[:search_helper][:item_type] == "campaign"
-        base_invites = base_invites.where(:campaign_id => params[:search_helper][:key])
-      end
-    end
-    
-    if params[:campaign_id]
-      @campaign_invites = Campaign.find(params[:campaign_id]).campaign_invites.order('created_at DESC').paginate(paginate_params)
-    else
-      @campaign_invites = base_invites.order('created_at DESC').paginate(paginate_params)
-    end
+    authorize! :read, CampaignInvite
+    @campaign_invites = CampaignInvite.where.not(:screenshot => '')
+    @campaign_invites = @campaign_invites.where(campaign_id: params[:campaign_id]) if params[:campaign_id]
+
+    @q = @campaign_invites.ransack(params[:q])
+    @campaign_invites = @q.result.order('created_at DESC').paginate(paginate_params)
   end
 
   def pending
+    @campaign_invites = CampaignInvite.where("screenshot is not NULL").where(:img_status => :pending)
     # valid_period = Campaign::SettleWaitTimeForBrand
-    # @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
-    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending)
-    if search_key
-      if params[:search_helper][:item_type] == "kol"
-        kol = Kol.where("id=? or mobile_number=?", params[:search_helper][:key], params[:search_helper][:key]).first
-        if kol
-          base_invites = base_invites.where(:kol_id => kol.id)
-        end
-      elsif params[:search_helper][:item_type] == "campaign"
-        base_invites = base_invites.where(:campaign_id => params[:search_helper][:key])
-      end
-    end
+    # @campaign_invites = CampaignInvite.joins(:campaign, :kol)
+    #   .where.not(:screenshot => "").where(:img_status => :pending)
+    #   .where(:status => ['approved', 'finished'])
+    #   .where("campaigns.deadline > ?", Time.now-valid_period)
+    #   .paginate(paginate_params)
+    @campaign_invites = @campaign_invites.where(:kol_id => params[:kol_id]) if params[:kol_id]
 
-    if params[:kol_id]
-      base_invites = base_invites.where(:kol_id => params[:kol_id])
-    end
-    params[:per_page] = 12
-    if params[:per_action_type] == "post"
-      base_invites = base_invites.joins(:campaign).where("per_budget_type='post'")
-    end
+    @q = @campaign_invites.ransack(params[:q])
+    @campaign_invites = @q.result.order('created_at DESC').paginate(paginate_params)
 
-    if params[:observer_status].to_i == 2
-      @campaign_invites = base_invites.where(:observer_status => 2).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
-    elsif params[:observer_status].to_i == 1
-      @campaign_invites = base_invites.where(:observer_status => 1).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
-    elsif params[:total_click]  and params[:total_click].to_i == 1 
-      campaign_ids = Campaign.where(:status => "executed").map(&:id)
-      base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending).where(:campaign_id => campaign_ids)
-      @campaign_invites = base_invites.where(:total_click => 0).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
-    elsif params[:total_click]  and params[:total_click].to_i == 100
-      @campaign_invites = CampaignInvite.where("total_click > 100").where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
-      render :index and return
-    else
-      @campaign_invites = base_invites.where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
-    end
-    render :pending_new
+    @batch_visible = true
+
+    render :index
   end
 
   def passed
-    @campaign_invites = CampaignInvite.where(:img_status => 'passed').order('created_at DESC').paginate(paginate_params)
+    @campaign_invites = CampaignInvite.where(:img_status => 'passed')
+    @q = @campaign_invites.ransack(params[:q])
+    @campaign_invites = @q.result.order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
 
   def rejected
-    @campaign_invites = CampaignInvite.where(:img_status => 'rejected').order('created_at DESC').paginate(paginate_params)
+    @campaign_invites = CampaignInvite.where(:img_status => 'rejected')
+    @q = @campaign_invites.ransack(params[:q])
+    @campaign_invites = @q.result.order('created_at DESC').paginate(paginate_params)
+
     render 'index'
   end
 
-  def pass
-    @campaign_invite.screenshot_pass
-
-    respond_to do |format|
-      format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Pass successfully!'}
-      format.json { head :no_content }
+  def change_multi_img_status
+    unless can?(:update, CampaignInvite)
+      return render json: {result: 'no_auth'}
     end
+    ids = params[:ids]
+
+    @campaign_invites = CampaignInvite.where :id => ids
+    if params[:status] == "agree"
+      @campaign_invites.each { |c| c.screenshot_pass }
+      return render json: { result: 'agree' }
+    end
+
+
+    if params[:status] == "reject"
+      if params[:reject_reason].present?
+        reject_reason = params[:reject_reason]
+      else
+        reject_reason = params[:common_reject_reason]
+      end
+      @campaign_invites.each do |c|
+        c.screenshot_reject reject_reason
+      end
+
+      return render json: { result: 'reject' }
+    end
+    return render json: { result: 'error' }
   end
 
-  def reject
-    render 'reject' and return if request.method.eql? 'GET'
-    @campaign_invite.screenshot_reject(params[:reject_reason].present? ? params[:reject_reason] : params[:common_reject_reason])
-    respond_to do |format|
-      format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}
-      format.json { head :no_content }
-    end
-  end
+  # def pass
+  #   authorize! :write, CampaignInvite
+  #   @campaign_invite.screenshot_pass
+  #
+  #   respond_to do |format|
+  #     format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Pass successfully!'}
+  #     format.json { head :no_content }
+  #   end
+  # end
+  #
+  # def reject
+  #   authorize! :write, CampaignInvite
+  #   render 'reject' and return if request.method.eql? 'GET'
+  #   @campaign_invite.screenshot_reject(params[:reject_reason].present? ? params[:reject_reason] : params[:common_reject_reason])
+  #   respond_to do |format|
+  #     format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
-  def set_campaign_invite
-    @campaign_invite = CampaignInvite.find params[:campaign_invite_id]
-  end
+  # def set_campaign_invite
+  #   @campaign_invite = CampaignInvite.find params[:campaign_invite_id]
+  # end
 
   def search_key
     if params[:search_helper]
