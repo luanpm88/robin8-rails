@@ -103,8 +103,8 @@
         </td>
         <td><%= w.id %></td>
         <td><%= link_to w.kol_id, marketing_dashboard_kol_path(:id => w.kol_id), :target => "_blank" %></td>
-        <td><%= w.kol.name %></td>
-        <td><%= w.kol.mobile_number %></td>
+        <td><%= w.kol.name rescue "" %></td>
+        <td><%= w.kol.mobile_number rescue "" %></td>
         <td><%= w.credits %></td>
         <td><%= w.status %></td>
         <td>
@@ -114,12 +114,12 @@
         </td>
         <td><%= Withdraw.where(:alipay_no =>w.alipay_no).count %></td>
         <td><%= w.kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
-        <td><%= w.kol.app_platform %></td>
+        <td><%= w.kol.app_platform rescue "" %></td>
         <td><%= w.alipay_no %></td>
         <td><%= w.real_name %></td>
-        <td><%= w.kol.id_card %></td>
-        <td><%= w.kol.avail_amount %></td>
-        <td><%= w.kol.total_income %></td>
+        <td><%= w.kol.id_card rescue "" %></td>
+        <td><%= w.kol.avail_amount rescue "" %></td>
+        <td><%= w.kol.total_income rescue "" %></td>
         <td>
           <% if w.status == 'pending' %>
             <%= link_to '通过', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /

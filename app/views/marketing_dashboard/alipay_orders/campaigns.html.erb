@@ -108,8 +108,8 @@
       <tr>
         <td><%= campaign.id %></td>
         <td><%= campaign.name %></td>
-        <td><%= campaign.user.id %></td>
-        <td><%= campaign.user.name %></td>
+        <td><%= campaign.user.id if campaign.user %></td>
+        <td><%= campaign.user.name if campaign.user %></td>
         <td><%= campaign.trade_number %></td>
         <td><%= campaign.alipay_trade_no %></td>
         <td><%= campaign.alipay_amount %></td>
