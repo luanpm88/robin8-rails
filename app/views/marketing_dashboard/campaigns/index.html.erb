@@ -9,7 +9,7 @@
   <div class="panel panel-default">
     <div class="panel-heading" style="padding: 0;">
       <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
-        <%= link_to "<清除全部>", request.path, class: "pull-right" if params[:q] %>
+        搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
       </a>
     </div>
     <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">

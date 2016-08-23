@@ -1,10 +1,12 @@
 <h3>截图审核</h3>
 
 <div class="panel panel-default">
-  <div class="panel-heading">
-    搜索过滤
+  <div class="panel-heading" style="padding: 0;">
+    <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
+      搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
+    </a>
   </div>
-  <div id="searchPanel" class="panel-body">
+  <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
     <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
         <div class="col-md-3">
