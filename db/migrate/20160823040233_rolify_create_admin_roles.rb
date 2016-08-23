@@ -1,9 +1,9 @@
 class RolifyCreateAdminRoles < ActiveRecord::Migration
   def change
     create_table(:admin_roles) do |t|
-      t.string :name, :limit => 100
-      t.references :resource, :polymorphic => true
-
+      t.string   :name, limit: 100
+      t.integer  :resource_id
+      t.string   :resource_type, limit: 100
       t.timestamps
     end
 
