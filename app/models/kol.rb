@@ -586,4 +586,14 @@ class Kol < ActiveRecord::Base
       "不热门"
     end
   end
+
+  def self.device_bind_over_3(imei,idfa)
+    if imei.present?
+      return Kol.where(:IMEI => imei).size >= 3
+    elsif idfa.present?
+      return Kol.where(:IDFA => idfa).size >= 3
+    else
+      return false
+    end
+  end
 end
