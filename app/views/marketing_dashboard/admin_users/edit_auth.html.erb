@@ -1,0 +1,70 @@
+<%- all_roles = %w(campaign_read campaign_update campaign_invite_read campaign_invite_update
+                  kol_read kol_update withdraw_read withdraw_update hot_item_read hot_item_update
+                  kol_announcement_read kol_announcement_update helper_tag_read helper_tag_update
+                  lottery_activity_read lottery_activity_update user_read user_update
+                  alipay_order_read alipay_order_update invoice_read invoice_update
+                  feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update)
+%>
+
+<h1>普通管理员</h1>
+<%= form_for(@admin_user, url: update_auth_marketing_dashboard_admin_user_path(@admin_user), html: { class: "form-horizontal", multiple: true}) do |f| %>
+
+  <div class="form-group">
+    <div class="col-sm-10">
+      <% all_roles.each do |role| %>
+        <div>
+          <% if @admin_user.has_role? role %>
+            <input name="admin_user[roles][]" class="admin_checkbox" type="checkbox" value="<%= role %>" style="margin-left: 5px" checked><%= Role.chinese_name(role) %>
+          <% else %>
+            <input name="admin_user[roles][]" type="checkbox" value="<%= role %>" style="margin-left: 5px"><%= Role.chinese_name(role) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-10">
+      <%= f.submit '提交', :class => 'btn btn-primary submit-admin' %>
+    </div>
+  </div>
+
+<% end %>
+
+
+
+<h1 style="margin-top: 100px">超级管理员(拥有所有权限)</h1>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  设置超级管理员
+</button>
+<div class="collapse" id="collapseExample">
+  <div class="well">
+    <%= form_for(@admin_user, url: update_auth_marketing_dashboard_admin_user_path(@admin_user), html: { class: "form-horizontal", multiple: true}) do |f| %>
+
+      <div class="form-group">
+        <div class="col-sm-10">
+          <% if @admin_user.has_role? "super_admin" %>
+            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px" checked><%= Role.chinese_name("super_admin") %>
+          <% else %>
+            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px"><%= Role.chinese_name("super_admin") %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-10">
+          <%= f.submit '提交', :class => 'btn btn-primary submit-super-admin' %>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+
+<script>
+  $(".submit-admin").click(function(e){
+    if($("input[type='checkbox']:checked").length === 0){
+      e.preventDefault()
+      alert("请至少选择一个权限")
+    }
+  })
+</script>

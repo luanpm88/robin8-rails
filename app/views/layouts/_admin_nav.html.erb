@@ -11,43 +11,61 @@
 
   <ul class="nav navbar-top-links navbar-right">
     <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-      <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-    </a>
-    <ul class="dropdown-menu dropdown-user">
-      <li><a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-      </li>
-    </ul>
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-user fa-fw"></i> <%= current_admin_user.email %>  <i class="fa fa-caret-down"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-user">
+        <li>
+          <%= link_to "修改密码", marketing_dashboard_edit_password_path %>
+        </li>
+        <li>
+          <a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </li>
+      </ul>
     </li>
   </ul>
 
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
       <ul class="nav" id="side-menu">
-        <li>
-          <%= link_to '管理员列表', marketing_dashboard_admin_users_path %>
-        </li>
-        <li>
-          <a href="#"> 活动管理 <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li>
-              <%= link_to "活动列表", marketing_dashboard_campaigns_path %>
-            </li>
-            <li>
-              <%= link_to '待询价活动', asking_marketing_dashboard_campaigns_path %>
-            </li>
-            <li>
-              <%= link_to '待审核活动', pending_marketing_dashboard_campaigns_path %>
-            </li>
-            <li>
-              <%= link_to '已通过活动', agreed_marketing_dashboard_campaigns_path %>
-            </li>
-            <li>
-              <%= link_to '测试的活动', testable_marketing_dashboard_campaigns_path %>
-            </li>
-          </ul>
+        <% if can?(:write, AdminUser) %>
+          <li>
+            <a href="#"> 管理员列表 <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to "查看所有管理员", marketing_dashboard_admin_users_path %>
+              </li>
+              <li>
+                <%= link_to '管理员权限管理', auth_marketing_dashboard_admin_users_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+        <% if can?(:read, Campaign) %>
+          <li>
+            <a href="#"> 活动管理 <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to "活动列表", marketing_dashboard_campaigns_path %>
+              </li>
+              <li>
+                <%= link_to '待询价活动', asking_marketing_dashboard_campaigns_path %>
+              </li>
+              <li>
+                <%= link_to '待审核活动', pending_marketing_dashboard_campaigns_path %>
+              </li>
+              <li>
+                <%= link_to '已通过活动', agreed_marketing_dashboard_campaigns_path %>
+              </li>
+              <li>
+                <%= link_to '测试的活动', testable_marketing_dashboard_campaigns_path %>
+              </li>
+            </ul>
         <!-- /.nav-second-level -->
-        </li>
+          </li>
+        <% end %>
+
+        <% if can?(:read, CampaignInvite) %>
         <li>
           <a href="#">截图管理 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
@@ -79,6 +97,9 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, Kol) %>
         <li>
           <a href="#">KOL 管理 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
@@ -108,6 +129,9 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, Withdraw) %>
         <li>
           <a href="#">提现管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
@@ -125,12 +149,18 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, HotItem) %>
         <li>
           <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
         </li>
         <li>
           <%= link_to 'APP首页滚动栏', marketing_dashboard_kol_announcements_path(:ban => 1) %>
         </li>
+        <% end %>
+
+        <% if can?(:read, HelperTag) %>
         <li>
           <a href="#">APP帮助文档 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
@@ -142,6 +172,9 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, LotteryActivity) %>
         <li>
           <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
@@ -159,9 +192,15 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, User) %>
         <li>
           <%= link_to "品牌主管理", marketing_dashboard_users_path %>
         </li>
+        <% end %>
+
+        <% if can?(:read, AlipayOrder) %>
         <li>
           <a href="#">充值管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
@@ -182,6 +221,9 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, Invoice) %>
         <li>
           <a href="#">发票管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
@@ -196,12 +238,21 @@
             </li>
           </ul>
         </li>
+        <% end %>
+
+        <% if can?(:read, Feedback) %>
         <li>
           <%= link_to '反馈管理', marketing_dashboard_feedbacks_path %>
         </li>
+        <% end %>
+
+        <% if can?(:read, TrackUrl) %>
         <li>
           <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
         </li>
+        <% end %>
+
+        <% if can?(:read, StasticData) %>
         <li>
           <a href="#">统计报表 <span class='fa arrow'></span> </a>
           <ul class="nav nav-second-level">
@@ -234,6 +285,7 @@
             </li>
           </ul>
         </li>
+        <% end %>
 
 
       </ul>

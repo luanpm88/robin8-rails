@@ -2,14 +2,18 @@ require 'csv'
 
 class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseController
   def index
+    authorize! :read, StasticData
+
     @stastic_datas = StasticData.all.order('id DESC').paginate(paginate_params)
   end
 
   def new
+    authorize! :read, StasticData
     @stastic_data = StasticData.new
   end
 
   def create
+    authorize! :update, StasticData
     @stastic_data = StasticData.new stastic_data_params
 
     respond_to do |format|
@@ -22,6 +26,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   end
 
   def from_source
+    authorize! :read, StasticData
     @source_statics = StasticData.from_source
   end
 

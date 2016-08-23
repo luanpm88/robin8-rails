@@ -1,3 +1,6 @@
+<div class="well">
+  <%= link_to "创建管理员", new_marketing_dashboard_admin_user_path, class: "btn btn-primary pull-right" %>
+</div>
 <h3>管理员列表</h3>
 
 <table class='table table-bordered'>
@@ -5,16 +8,22 @@
     <tr>
       <th>ID</th>
       <th>Email</th>
-      <th>最后登录时间</th>
+      <th>上次登录时间</th>
+      <th>操作</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @admin_users.each do |a| %>
+    <% @admin_users.each do |user| %>
       <tr>
         <% %w(id email last_sign_in_at).each do |v| %>
-          <td> <%= a.send v %> </td>
+          <td> <%= user.send v %> </td>
         <% end %>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_admin_user_path(user), :style => "margin-right: 20px" %>
+          <%= link_to "删除", marketing_dashboard_admin_user_path(user), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
+        </td>
+
       </tr>
     <% end %>
   </tbody>

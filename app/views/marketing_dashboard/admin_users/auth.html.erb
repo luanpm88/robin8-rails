@@ -1,0 +1,37 @@
+<h3>管理员权限列表</h3>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>拥有权限</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_users.each do |user| %>
+      <tr>
+        <% %w(id email).each do |v| %>
+          <td> <%= user.send v %> </td>
+        <% end %>
+        <td>
+        <% user.roles.each do |role| %>
+          <% if role.name == "super_admin"%>
+            <p><span class="label label-success"><%= Role.chinese_name(role.name) %></span></p>
+          <% else %>
+            <p><%= Role.chinese_name(role.name) %></p>
+          <% end %>
+        <% end %>
+        </td>
+        <td>
+          <%= link_to "管理权限", edit_auth_marketing_dashboard_admin_user_path(user), :style => "margin-right: 20px" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @admin_users %>

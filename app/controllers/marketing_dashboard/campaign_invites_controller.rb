@@ -1,7 +1,8 @@
 class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseController
-  before_action :set_campaign_invite, only: [:pass, :reject]
+  # before_action :set_campaign_invite, only: [:pass, :reject]
 
   def index
+    authorize! :read, CampaignInvite
     @campaign_invites = CampaignInvite.where.not(:screenshot => '')
     @campaign_invites = @campaign_invites.where(campaign_id: params[:campaign_id]) if params[:campaign_id]
 
@@ -41,28 +42,58 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
     render 'index'
   end
 
-  def pass
-    @campaign_invite.screenshot_pass
-
-    respond_to do |format|
-      format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Pass successfully!'}
-      format.json { head :no_content }
+  def change_multi_img_status
+    unless can?(:update, CampaignInvite)
+      return render json: {result: 'no_auth'}
     end
+    ids = params[:ids]
+
+    @campaign_invites = CampaignInvite.where :id => ids
+    if params[:status] == "agree"
+      @campaign_invites.each { |c| c.screenshot_pass }
+      return render json: { result: 'agree' }
+    end
+
+
+    if params[:status] == "reject"
+      if params[:reject_reason].present?
+        reject_reason = params[:reject_reason]
+      else
+        reject_reason = params[:common_reject_reason]
+      end
+      @campaign_invites.each do |c|
+        c.screenshot_reject reject_reason
+      end
+
+      return render json: { result: 'reject' }
+    end
+    return render json: { result: 'error' }
   end
 
-  def reject
-    render 'reject' and return if request.method.eql? 'GET'
-    @campaign_invite.screenshot_reject(params[:reject_reason].present? ? params[:reject_reason] : params[:common_reject_reason])
-    respond_to do |format|
-      format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}
-      format.json { head :no_content }
-    end
-  end
+  # def pass
+  #   authorize! :write, CampaignInvite
+  #   @campaign_invite.screenshot_pass
+  #
+  #   respond_to do |format|
+  #     format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Pass successfully!'}
+  #     format.json { head :no_content }
+  #   end
+  # end
+  #
+  # def reject
+  #   authorize! :write, CampaignInvite
+  #   render 'reject' and return if request.method.eql? 'GET'
+  #   @campaign_invite.screenshot_reject(params[:reject_reason].present? ? params[:reject_reason] : params[:common_reject_reason])
+  #   respond_to do |format|
+  #     format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
-  def set_campaign_invite
-    @campaign_invite = CampaignInvite.find params[:campaign_invite_id]
-  end
+  # def set_campaign_invite
+  #   @campaign_invite = CampaignInvite.find params[:campaign_invite_id]
+  # end
 
   def search_key
     if params[:search_helper]
