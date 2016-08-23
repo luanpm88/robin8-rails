@@ -1,9 +1,19 @@
-<%- all_roles = %w(campaign_read campaign_update campaign_invite_read campaign_invite_update
-                  kol_read kol_update withdraw_read withdraw_update hot_item_read hot_item_update
-                  kol_announcement_read kol_announcement_update helper_tag_read helper_tag_update
-                  lottery_activity_read lottery_activity_update user_read user_update
-                  alipay_order_read alipay_order_update invoice_read invoice_update
-                  feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update)
+<% if false %>
+  <%- all_roles = %w(campaign_read campaign_update campaign_invite_read campaign_invite_update
+                     kol_read kol_update withdraw_read withdraw_update hot_item_read hot_item_update
+                     kol_announcement_read kol_announcement_update helper_tag_read helper_tag_update
+                     lottery_activity_read lottery_activity_update user_read user_update
+                     alipay_order_read alipay_order_update invoice_read invoice_update
+                     feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update)
+  %>
+<% end %>
+
+<%- all_roles = %w( campaign_update  campaign_invite_update
+                   kol_update  withdraw_update  hot_item_update
+                   kol_announcement_update  helper_tag_update
+                   lottery_activity_update  user_update
+                   alipay_order_update  invoice_update
+                   feedback_update  track_update  statistic_data_update)
 %>
 
 <h1>普通管理员</h1>
