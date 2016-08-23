@@ -75,7 +75,7 @@ module Campaigns
       # TODO big_v 正式上线后 可以把 active 去掉
       kols = Kol.active.personal_big_v
 
-      kols = kols.where("`kols`.`app_version` >= '1.2.0'")    if campaign.is_recruit_type?
+      kols = kols.where("`kols`.`app_version` >= '1.2.0'")    if self.is_recruit_type?
 
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
