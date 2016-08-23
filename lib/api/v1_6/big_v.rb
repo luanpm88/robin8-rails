@@ -34,7 +34,7 @@ module API
           optional :id, type: Integer
         end
         get ':id/detail' do
-          big_v = Kol.find params[:id]  rescue nil
+          big_v = (Kol.find params[:id]  rescue nil)  || current_kol
           if big_v
             if big_v.kol_keywords.size == 0
               kol_keywords = []
