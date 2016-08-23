@@ -30,15 +30,7 @@
       <ul class="nav" id="side-menu">
         <% if can?(:write, AdminUser) %>
           <li>
-            <a href="#"> 管理员列表 <span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <%= link_to "查看所有管理员", marketing_dashboard_admin_users_path %>
-              </li>
-              <li>
-                <%= link_to '管理员权限管理', auth_marketing_dashboard_admin_users_path %>
-              </li>
-            </ul>
+            <%= link_to "管理员管理", marketing_dashboard_admin_users_path %>
           </li>
         <% end %>
         <% if can?(:read, Campaign) %>
@@ -46,7 +38,7 @@
             <a href="#"> 活动管理 <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
-                <%= link_to "活动列表", marketing_dashboard_campaigns_path %>
+                <%= link_to "所有的活动", marketing_dashboard_campaigns_path %>
               </li>
               <li>
                 <%= link_to '待询价活动', asking_marketing_dashboard_campaigns_path %>
@@ -56,6 +48,9 @@
               </li>
               <li>
                 <%= link_to '已通过活动', agreed_marketing_dashboard_campaigns_path %>
+              </li>
+              <li>
+                <%= link_to '已拒绝活动', rejected_marketing_dashboard_campaigns_path %>
               </li>
               <li>
                 <%= link_to '测试的活动', testable_marketing_dashboard_campaigns_path %>
@@ -70,7 +65,7 @@
           <a href="#">截图管理 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有截图', marketing_dashboard_campaign_invites_path %>
+              <%= link_to '所有的截图', marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
               <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
@@ -81,19 +76,19 @@
             <li>
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
+            <!--
+              <li>
+                <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
+              </li>
+              <li>
+                <%= link_to '点击大于100待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
+              </li>
+            -->
             <li>
-              <%= link_to '活动结束点击为0的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "executed", total_click_lt: 1 }) %>
+              <%= link_to '转发类型待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
             <li>
-              <%= link_to '点击大于100的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
-            <li>
-              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 1 }) %>
-            </li>
-            <li>
-              <%= link_to '作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
-            </li>
-            <li>
-              <%= link_to '转发类型的待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
+              <%= link_to '作弊嫌疑待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
             </li>
           </ul>
         </li>
@@ -113,10 +108,10 @@
               <%= link_to 'APP热门KOL', hot_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'APP MCN的KOL', from_mcn_marketing_dashboard_kols_path %>
+              <%= link_to 'APP-MCN-KOL', from_mcn_marketing_dashboard_kols_path %>
             </li>
             <li>
-              <%= link_to 'APP自主申请的KOL', from_app_marketing_dashboard_kols_path %>
+              <%= link_to 'APP-Robin8-KOL', from_app_marketing_dashboard_kols_path %>
             </li>
             <li>
               <%= link_to 'APP待审核KOL', applying_marketing_dashboard_kols_path %>
@@ -240,15 +235,15 @@
         </li>
         <% end %>
 
-        <% if can?(:read, Feedback) %>
-        <li>
-          <%= link_to '反馈管理', marketing_dashboard_feedbacks_path %>
-        </li>
-        <% end %>
-
         <% if can?(:read, TrackUrl) %>
         <li>
           <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
+        </li>
+        <% end %>
+
+        <% if can?(:read, Feedback) %>
+        <li>
+          <%= link_to '反馈管理', marketing_dashboard_feedbacks_path %>
         </li>
         <% end %>
 

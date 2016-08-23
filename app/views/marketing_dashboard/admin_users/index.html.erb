@@ -8,6 +8,7 @@
     <tr>
       <th>ID</th>
       <th>Email</th>
+      <th>拥有权限</th>
       <th>上次登录时间</th>
       <th>操作</th>
     </tr>
@@ -16,11 +17,23 @@
   <tbody>
     <% @admin_users.each do |user| %>
       <tr>
-        <% %w(id email last_sign_in_at).each do |v| %>
-          <td> <%= user.send v %> </td>
-        <% end %>
+        <td> <%= user.id %> </td>
+        <td> <%= user.email %> </td>
         <td>
-          <%= link_to "编辑", edit_marketing_dashboard_admin_user_path(user), :style => "margin-right: 20px" %>
+        <% user.roles.each do |role| %>
+          <% if role.name == "super_admin"%>
+            <span class="label label-success">
+              <%= AdminRole.chinese_name(role.name) %>
+            </span>
+          <% else %>
+            <%= AdminRole.chinese_name(role.name) %>
+          <% end %>
+        <% end %>
+        </td>
+        <td> <%= user.last_sign_in_at %> </td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_admin_user_path(user) %> /
+          <%= link_to "管理权限", edit_auth_marketing_dashboard_admin_user_path(user) %> /
           <%= link_to "删除", marketing_dashboard_admin_user_path(user), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
         </td>
 

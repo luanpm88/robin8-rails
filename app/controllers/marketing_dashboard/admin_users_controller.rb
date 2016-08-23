@@ -53,11 +53,6 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
     end
   end
 
-  def auth
-    authorize! :update, AdminUser
-    @admin_users = AdminUser.all.order('created_at DESC').paginate(paginate_params)
-  end
-
   def edit_auth
     authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
@@ -72,7 +67,7 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
     end
     if @admin_user.roles.any?
       flash[:notice] = "为 #{@admin_user.email} 修改权限成功"
-      redirect_to action: :auth
+      redirect_to action: :index
     end
   end
 end

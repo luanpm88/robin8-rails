@@ -23,6 +23,8 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
     @q = @campaign_invites.ransack(params[:q])
     @campaign_invites = @q.result.order('created_at DESC').paginate(paginate_params)
 
+    @batch_visible = true
+
     render :index
   end
 

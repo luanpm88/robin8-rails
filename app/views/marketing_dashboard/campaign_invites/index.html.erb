@@ -30,7 +30,7 @@
         <div class="col-md-3">
           <div class="form-group">
             <label>KOL等级</label>
-            <%= f.select :kol_kol_level_eq, [ "A", "B" ], { include_blank: true }, class: "form-control" %>
+            <%= f.select :kol_kol_level_eq, [ "A", "B", "S" ], { include_blank: true }, class: "form-control" %>
           </div>
         </div>
         <div class="col-md-3">
@@ -118,17 +118,19 @@
 
 <div class="contianer-fluid">
   <h4 class="pull-right">截图总数: <%= @campaign_invites.count %></h4>
-  <button class="choose-all btn btn-default">全选</button>
-  <button class="revert-all btn btn-default">反选</button>
-  <button class="agree btn btn-success">批量通过</button>
-  <button class="reject-modal btn btn-danger">批量拒绝</button>
+  <% if @batch_visible %>
+    <button class="choose-all btn btn-default">全选</button>
+    <button class="revert-all btn btn-default">反选</button>
+    <button class="agree btn btn-success">批量通过</button>
+    <button class="reject-modal btn btn-danger">批量拒绝</button>
+  <% end %>
 </div>
 
 
 <table class='table table-bordered table-striped'>
   <thead>
     <tr>
-      <th></th>
+      <%= raw '<th></th>' if @batch_visible %>
       <th>截图</th>
       <th>截图状态</th>
       <th>活动ID</th>
@@ -138,7 +140,6 @@
       <th>KOL ID</th>
       <th>KOL名称</th>
       <th>KOL等级</th>
-
       <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
       <th><%= sort_link(@q, :total_click, "总点击") %></th>
       <th><%= sort_link(@q, :approved_at, "接单时间") %></th>
@@ -150,28 +151,30 @@
   <tbody>
     <% @campaign_invites.each do |c| %>
       <tr>
-        <td><%= check_box_tag "campaign_invites_ids[]", c.id %></td>
+        <% if @batch_visible %>
+          <td><%= check_box_tag "campaign_invites_ids[]", c.id %></td>
+        <% end %>
         <td><%= link_to image_tag(c.screenshot, :width => "100px"), c.screenshot, :target => "_blank"%></td>
         <td><%= c.img_status %></td>
         <td><%= c.campaign_id %></td>
-        <td><%= c.campaign.name if c.campaign %></td>
-        <td><%= c.campaign.per_budget_type if c.campaign %></td>
-        <td><%= c.campaign.deadline.strftime("%Y-%m-%d %H:%M") if c.campaign %></td>
+        <td><%= c.campaign.name rescue "" %></td>
+        <td><%= c.campaign.per_budget_type rescue "" %></td>
+        <td><%= c.campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
-        <td><%= c.kol.name if c.kol %></td>
-        <td><%= c.kol.kol_level if c.kol %></td>
+        <td><%= c.kol.name rescue "" %></td>
+        <td><%= c.kol.kol_level rescue "" %></td>
         <td><%= c.get_avail_click %></td>
         <td><%= c.get_total_click %></td>
-        <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= c.campaign_observer_status %><%= c.observer_text %></td>
         <td><%= c.reject_reason %></td>
         <td>
           <%= link_to '编辑KOL', edit_profile_marketing_dashboard_kol_path(c.kol_id), :target => "_blank"  %> /
           <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id), :target => "_blank" %> /
-          <% if c.kol.forbid_campaign_time.present? and c.kol.forbid_campaign_time > Time.now %>
+          <% if c.kol.present? and c.kol.forbid_campaign_time and c.kol.forbid_campaign_time > Time.now %>
             <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(c.kol.id), method: :post, :target => "_blank"  %>
           <% else %>
-            <%= link_to '拉黑', marketing_dashboard_kol_ban_path(c.kol.id), :target => "_blank"  %>
+            <%= link_to '拉黑', marketing_dashboard_kol_ban_path(c.kol_id), :target => "_blank"  %>
           <% end %>
           <% if c.img_status == "pending" %>
           <div>

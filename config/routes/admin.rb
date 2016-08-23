@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'asking'
         get 'agreed'
+        get 'rejected'
         get 'testable'
       end
       member do
@@ -73,10 +74,6 @@ Rails.application.routes.draw do
     end
 
     resources :admin_users do
-      collection do
-        get :auth
-      end
-
       member  do
         get :edit_auth
         patch :update_auth

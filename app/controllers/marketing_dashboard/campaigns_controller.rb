@@ -29,7 +29,15 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agreed
-    @campaigns = Campaign.where.not(status: ['unexecute', "unpay"]).realable
+    @campaigns = Campaign.where(status: ['agreed', 'executing', "revoked", "settled"]).realable
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
+
+    render 'index'
+  end
+
+  def rejected
+    @campaigns = Campaign.where(status: 'rejected').realable
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
