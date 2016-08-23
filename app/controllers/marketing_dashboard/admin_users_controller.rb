@@ -64,7 +64,7 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
   end
 
   def update_auth
-    authorize! :update, AdminUser 
+    authorize! :update, AdminUser
     @admin_user = AdminUser.find(params[:id])
     @admin_user.roles.delete_all
     params[:admin_user][:roles].each do |role|

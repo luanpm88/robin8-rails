@@ -19,9 +19,9 @@
         <td>
         <% user.roles.each do |role| %>
           <% if role.name == "super_admin"%>
-            <p><span class="label label-success"><%= Role.chinese_name(role.name) %></span></p>
+            <p><span class="label label-success"><%= AdminRole.chinese_name(role.name) %></span></p>
           <% else %>
-            <p><%= Role.chinese_name(role.name) %></p>
+            <p><%= AdminRole.chinese_name(role.name) %></p>
           <% end %>
         <% end %>
         </td>

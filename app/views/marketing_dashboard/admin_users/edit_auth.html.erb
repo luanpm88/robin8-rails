@@ -24,9 +24,9 @@
       <% all_roles.each do |role| %>
         <div>
           <% if @admin_user.has_role? role %>
-            <input name="admin_user[roles][]" class="admin_checkbox" type="checkbox" value="<%= role %>" style="margin-left: 5px" checked><%= Role.chinese_name(role) %>
+            <input name="admin_user[roles][]" class="admin_checkbox" type="checkbox" value="<%= role %>" style="margin-left: 5px" checked><%= AdminRole.chinese_name(role) %>
           <% else %>
-            <input name="admin_user[roles][]" type="checkbox" value="<%= role %>" style="margin-left: 5px"><%= Role.chinese_name(role) %>
+            <input name="admin_user[roles][]" type="checkbox" value="<%= role %>" style="margin-left: 5px"><%= AdminRole.chinese_name(role) %>
           <% end %>
         </div>
       <% end %>
@@ -53,9 +53,9 @@
       <div class="form-group">
         <div class="col-sm-10">
           <% if @admin_user.has_role? "super_admin" %>
-            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px" checked><%= Role.chinese_name("super_admin") %>
+            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px" checked><%= AdminRole.chinese_name("super_admin") %>
           <% else %>
-            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px"><%= Role.chinese_name("super_admin") %>
+            <input name="admin_user[roles][]" type="checkbox" value="super_admin" style="margin-left: 5px"><%= AdminRole.chinese_name("super_admin") %>
           <% end %>
         </div>
       </div>
