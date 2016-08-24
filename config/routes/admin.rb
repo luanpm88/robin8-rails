@@ -116,11 +116,13 @@ Rails.application.routes.draw do
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
+        get 'checked'
         get 'agreed'
         get 'rejected'
         post 'search'
         match 'batch_handle', via: [:post]
       end
+      match '/check' => 'withdraws#check', via: [:post]
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]

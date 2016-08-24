@@ -137,10 +137,13 @@
               <%= link_to '待审核提现', pending_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核通过提现', agreed_marketing_dashboard_withdraws_path %>
+              <%= link_to '已通过待付款', checked_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核拒绝提现', rejected_marketing_dashboard_withdraws_path %>
+              <%= link_to '已付款', agreed_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
             </li>
           </ul>
         </li>
