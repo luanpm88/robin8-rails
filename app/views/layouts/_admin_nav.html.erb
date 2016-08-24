@@ -146,49 +146,6 @@
         </li>
         <% end %>
 
-        <% if can?(:read, HotItem) %>
-        <li>
-          <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
-        </li>
-        <li>
-          <%= link_to 'APP首页滚动栏', marketing_dashboard_kol_announcements_path(:ban => 1) %>
-        </li>
-        <% end %>
-
-        <% if can?(:read, HelperTag) %>
-        <li>
-          <a href="#">APP帮助文档 <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li>
-              <%= link_to '问题分类', marketing_dashboard_helper_tags_path %>
-            </li>
-            <li>
-              <%= link_to '问题列表', marketing_dashboard_helper_docs_path %>
-            </li>
-          </ul>
-        </li>
-        <% end %>
-
-        <% if can?(:read, LotteryActivity) %>
-        <li>
-          <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li>
-              <%= link_to '创建商品', new_marketing_dashboard_lottery_product_path %>
-            </li>
-            <li>
-              <%= link_to '管理商品', marketing_dashboard_lottery_products_path %>
-            </li>
-            <li>
-              <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
-            </li>
-            <li>
-              <%= link_to '中奖名单', marketing_dashboard_lottery_expresses_path %>
-            </li>
-          </ul>
-        </li>
-        <% end %>
-
         <% if can?(:read, User) %>
         <li>
           <%= link_to "品牌主管理", marketing_dashboard_users_path %>
@@ -237,7 +194,7 @@
 
         <% if can?(:read, TrackUrl) %>
         <li>
-          <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
+          <%= link_to '追踪链接管理', marketing_dashboard_track_urls_path %>
         </li>
         <% end %>
 
@@ -281,7 +238,51 @@
           </ul>
         </li>
         <% end %>
+        <% if can?(:read, HotItem) %>
+        <li>
+          <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
+        </li>
+        <li>
+          <%= link_to 'APP首页滚动栏', marketing_dashboard_kol_announcements_path(:ban => 1) %>
+        </li>
+        <% end %>
 
+        <% if can?(:read, HelperTag) %>
+        <li>
+          <%= link_to 'APP帮助文档', marketing_dashboard_helper_docs_path %>
+          <!--
+          <a href="#">APP帮助文档 <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '问题分类', marketing_dashboard_helper_tags_path %>
+            </li>
+            <li>
+              <%= link_to '问题列表', marketing_dashboard_helper_docs_path %>
+            </li>
+          </ul>
+          -->
+        </li>
+        <% end %>
+
+        <% if can?(:read, LotteryActivity) %>
+        <li>
+          <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '创建商品', new_marketing_dashboard_lottery_product_path %>
+            </li>
+            <li>
+              <%= link_to '管理商品', marketing_dashboard_lottery_products_path %>
+            </li>
+            <li>
+              <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
+            </li>
+            <li>
+              <%= link_to '中奖名单', marketing_dashboard_lottery_expresses_path %>
+            </li>
+          </ul>
+        </li>
+        <% end %>
 
       </ul>
       <br/><br/><br/>

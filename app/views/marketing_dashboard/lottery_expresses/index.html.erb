@@ -1,24 +1,51 @@
 <h3>一元夺宝 中奖名单</h3>
 
-<div class="pull-right">
-  <%= search_form_for @q, url: marketing_dashboard_lottery_expresses_path do |f| %>
-    <%= f.search_field :name_or_code_cont, placeholder: "活动名称或者活动编号" %>
-    <%= f.submit %>
-    <%= link_to "清除过滤", marketing_dashboard_lottery_expresses_path %>
-  <% end %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>活动名称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "活动名称" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>活动编号</label>
+            <%= f.search_field :code_cont, class: "form-control", placeholder: "活动编号" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>编号</th>
+      <th>ID</th>
       <th>活动名称</th>
       <th><%= sort_link(@q, :draw_at, "开奖时间") %></th>
+      <th>KOL昵称</th>
+      <th>KOL等级</th>
+      <th>历史收益</th>
+      <th>拉黑时间</th>
       <th>姓名</th>
       <th>电话</th>
       <th><%= sort_link(@q, :delivered, "已发货") %></th>
       <th><%= sort_link(@q, :delivered_at, "发货时间") %></th>
-      <th>Ops</th>
+      <th>操作</th>
     </tr>
   </thead>
 
@@ -29,6 +56,10 @@
         <td><%= lottery_activity.code %></td>
         <td><%= lottery_activity.name %></td>
         <td><%= lottery_activity.draw_at.strftime "%Y-%m-%d %H:%M" rescue "无" %></td>
+        <td><%= lottery_activity.lucky_kol.name %></td>
+        <td><%= lottery_activity.lucky_kol.kol_level %></td>
+        <td><%= lottery_activity.lucky_kol.total_income %></td>
+        <td><%= lottery_activity.lucky_kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= addr.name || lottery_activity.lucky_kol.name %></td>
         <td><%= addr.phone || lottery_activity.lucky_kol.mobile_number %></td>
         <td>
