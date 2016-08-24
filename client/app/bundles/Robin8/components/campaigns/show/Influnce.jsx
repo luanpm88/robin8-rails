@@ -107,12 +107,13 @@ export default class Influnce extends React.Component{
             <div className="influence-charts-area">
               { do
                 {
-                  if(campaign.get("total_click") === 0){
+                  if(campaign.get("total_click") === 0) {
                     <div className="panel-body showMiddleTip">
                       暂时没有Kol点击
                     </div>
-                  }else{
-                    <ReactEcharts height={500} option={options}  showLoading={false}/>
+                  } else {
+                    if(options.series)
+                      <ReactEcharts height={500} option={options}  showLoading={false}/>
                   }
                 }
               }
