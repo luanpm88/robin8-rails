@@ -112,8 +112,13 @@ export default class Influnce extends React.Component{
                       暂时没有Kol点击
                     </div>
                   } else {
-                    if(options.series)
+                    if(options.series) {
                       <ReactEcharts height={500} option={options}  showLoading={false}/>
+                    } else {
+                      <div className="panel-body showMiddleTip">
+                        数据加载中...
+                      </div>
+                    }
                   }
                 }
               }
