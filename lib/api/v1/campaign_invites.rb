@@ -62,8 +62,7 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            invitee_ids = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").collect{|t| t.kol_id}
-            invitees  = Kol.where(:id => invitee_ids)
+            invitees = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").order("id desc").includes(:kol).collect{|t| t.kol}
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
             present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary

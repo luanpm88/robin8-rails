@@ -1,22 +1,46 @@
+<h3>
+  管理员列表
+  <%= link_to "创建管理员", new_marketing_dashboard_admin_user_path, class: "btn btn-primary pull-right" %>
+</h3>
+<hr />
 <table class='table table-bordered'>
   <thead>
     <tr>
       <th>ID</th>
       <th>Email</th>
-      <th>Last sign in</th>
+      <th>拥有权限</th>
+      <th>上次登录时间</th>
+      <th>操作</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @admin_users.each do |a| %>
+    <% @admin_users.each do |user| %>
       <tr>
-        <% %w(id email last_sign_in_at).each do |v| %>
-          <td> <%= a.send v %> </td>
+        <td> <%= user.id %> </td>
+        <td> <%= user.email %> </td>
+        <td>
+        <% user.roles.each do |role| %>
+          <% if role.name == "super_admin"%>
+            <span class="label label-success">
+              <%= AdminRole.chinese_name(role.name) %>
+            </span>
+          <% else %>
+            <%= AdminRole.chinese_name(role.name) %>
+          <% end %>
         <% end %>
+        </td>
+        <td> <%= user.last_sign_in_at %> </td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_admin_user_path(user) %> /
+          <%= link_to "管理权限", edit_auth_marketing_dashboard_admin_user_path(user) %> /
+          <%= link_to "删除", marketing_dashboard_admin_user_path(user), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
+        </td>
+
       </tr>
     <% end %>
   </tbody>
 
 </table>
 
-<%= will_paginate @admin_users %>
+<%= will_paginate @admin_users, renderer: BootstrapPagination::Rails  %>

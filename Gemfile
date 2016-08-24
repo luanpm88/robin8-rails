@@ -239,3 +239,6 @@ gem 'doorkeeper'
 gem 'actioncable', github: 'rails/actioncable', branch: "archive"
 gem 'mechanize'
 gem 'spreadsheet'
+
+# https://github.com/RolifyCommunity/rolify
+gem "rolify"
