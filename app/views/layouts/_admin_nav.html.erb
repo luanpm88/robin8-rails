@@ -19,7 +19,7 @@
           <%= link_to "修改密码", marketing_dashboard_edit_password_path %>
         </li>
         <li>
-          <a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+          <a href="/admin_users/sign_out"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
       </ul>
     </li>
@@ -137,10 +137,13 @@
               <%= link_to '待审核提现', pending_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核通过提现', agreed_marketing_dashboard_withdraws_path %>
+              <%= link_to '已通过待付款', checked_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核拒绝提现', rejected_marketing_dashboard_withdraws_path %>
+              <%= link_to '已付款', agreed_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
             </li>
           </ul>
         </li>
@@ -238,6 +241,11 @@
           </ul>
         </li>
         <% end %>
+        <% if can?(:read, Withdraw) %>
+        <li>
+          <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
+        </li>
+        <% end %>
         <% if can?(:read, HotItem) %>
         <li>
           <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
@@ -283,7 +291,6 @@
           </ul>
         </li>
         <% end %>
-
       </ul>
       <br/><br/><br/>
       <!-- /.sidebar-collapse -->

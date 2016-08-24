@@ -1,0 +1,51 @@
+<h3>支付宝黑名单列表</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>支付宝帐号</label>
+            <%= f.search_field :account_eq, class: "form-control", placeholder: "支付宝帐号" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th width="50px;">ID</th>
+      <th>帐号</th>
+      <th>加入黑名单时间</th>
+      <th width="90px;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alipay_accounts.each do |a| %>
+      <tr>
+        <td><%= a.id %></td>
+        <td><%= a.account %></td>
+        <td><%= a.created_at %></td>
+        <td>
+          <%= link_to "把此帐号移出黑名单", disban_marketing_dashboard_alipay_account_blacklist_path(a) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @alipay_accounts, renderer: BootstrapPagination::Rails  %>
