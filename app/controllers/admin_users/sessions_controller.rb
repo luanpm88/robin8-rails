@@ -3,21 +3,21 @@ class AdminUsers::SessionsController < Devise::SessionsController
 # before_filter :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
-  # def new
-  #   super
-  # end
+  def new
+    super
+  end
 
   # POST /resource/sign_in
   def create
     super do
-      respond_with resource, location: marketing_dashboard_path and return 
+      respond_with resource, location: marketing_dashboard_path and return
     end
   end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    super
+  end
 
   # protected
 
