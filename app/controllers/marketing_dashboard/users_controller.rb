@@ -18,17 +18,47 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     authorize! :update, User
 
     render 'recharge' and return if request.method.eql? 'GET'
-    if params[:need_invoice] && params[:credits].present?
-      credits = params[:credits].to_i / 1.06
-      tax = params[:credits].to_i - credits
-      @user.income credits.to_f, 'manual_recharge'
-      @user.increment!(:appliable_credits, (tax+credits))
+
+    if params[:credits].to_f.zero?
+      flash[:alert] = "金额不能为空"
+      return render 'recharge'
+    end
+
+    credits = params[:credits].to_f
+    tax = 0
+
+    if params[:need_invoice]
+      tax = credits * 0.06
+      credits = credits - tax
+    end
+
+    recharge_record = RechargeRecord.create(
+      credits: credits,
+      tax: tax,
+      status: "pending",
+      receiver_name: params[:receiver_name],
+      receiver: @user,
+      operator: current_admin_user.email,
+      admin_user: current_admin_user,
+      need_invoice: params[:need_invoice],
+      remark: params[:remark]
+    )
+
+    if @user.income(credits, 'manual_recharge', recharge_record)
+      recharge_record.update(status: "success")
+      if params[:need_invoice]
+        @user.increment!(:appliable_credits, (tax + credits))
+      end
+
+      flash[:notice] = '为品牌主充值成功'
     else
-      @user.income params[:credits].to_f, 'manual_recharge'
+      recharge_record.update(status: "failed")
+
+      flash[:alert] = '为品牌主充值失败，请联系技术支持'
     end
 
     respond_to do |format|
-      format.html { redirect_to marketing_dashboard_users_path, notice: 'Recharge successfully!' }
+      format.html { redirect_to marketing_dashboard_users_path }
       format.json { head :no_content }
     end
   end

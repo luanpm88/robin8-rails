@@ -2,7 +2,6 @@
   追踪链接管理
   <%= link_to "新建追踪链接", new_marketing_dashboard_track_url_path, class: "btn btn-primary pull-right" %>
 </h3>
-<h5><%= devise_error_messages! %></h5>
 <hr />
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -52,7 +51,10 @@
         <td><%= link_to url.short_url_text, url.short_url_text, :target => "_blank" %> </td>
         <td><%= url.desc %> </td>
         <td><%= url.click_count %> </td>
-        <td><%= link_to "修改", edit_marketing_dashboard_track_url_path(url)%></td>
+        <td>
+          <%= link_to "修改", edit_marketing_dashboard_track_url_path(url)%>
+          <%= link_to '移除', marketing_dashboard_track_url_path(url), method: "DELETE", :"data-confirm" => "注意：移除此链接将隐藏此链接，但并不会删除数据库记录，确定移除吗？" %>
+        </td>
       </tr>
     <% end %>
   </tbody>

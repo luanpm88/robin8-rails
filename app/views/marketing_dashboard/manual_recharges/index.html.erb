@@ -40,13 +40,17 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>广告主ID</th>
-      <th>广告主名称</th>
+      <th>品牌主ID</th>
+      <th>品牌主名称</th>
       <th>流水ID</th>
       <th>充值方式</th>
       <th><%= sort_link(@q, :credits, "充值金额") %></th>
-      <th>充值税费(0.6%)</th>
+      <th>税费(6%)</th>
       <th><%= sort_link(@q, :created_at, "创建时间") %></th>
+      <th>品牌主公司</th>
+      <th>操作人</th>
+      <th>状态</th>
+      <th>备注</th>
     </tr>
   </thead>
   <tbody>
@@ -63,6 +67,10 @@
       <td><%= c.credits.to_f %></td>
       <td><%= c.tax.to_f %></td>
       <td><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
+      <td><%= c.item.receiver_name if c.item %></td>
+      <td><%= c.item.operator || c.item.admin_user.email if c.item %></td>
+      <td><%= c.item.status if c.item %></td>
+      <td><%= c.item.remark if c.item %></td>
     </tr>
     <% end %>
   </tbody>
