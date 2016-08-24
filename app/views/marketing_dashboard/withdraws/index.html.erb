@@ -124,11 +124,13 @@
           <% if w.status == 'pending' %>
             <%= link_to '通过审核', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
             <%= link_to '拒绝', marketing_dashboard_withdraw_reject_path(w.id), method: :post %> /
-            <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post %> /
+            <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post, "data-confirm" => "你确定要冻结吗" %> /
+            <%= link_to '永久冻结此支付宝帐号', marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id), method: :post, "data-confirm" => "你确定要冻结此支付宝帐号吗" %> /
           <% elsif w.status == 'checked' %>
           <%= link_to '同意付款', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
           <%= link_to '拒绝付款', marketing_dashboard_withdraw_reject_path(w.id), method: :post %> /
           <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post %> /
+          <%= link_to '永久冻结此支付宝帐号', marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id), method: :post, "data-confirm" => "你确定要冻结此支付宝帐号吗" %> /
           <% end %>
           <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
         </td>
@@ -137,11 +139,11 @@
   </tbody>
 </table>
 <% if params[:action] == 'pending' %>
-<%= link_to '批量审核', 'javascript:void(0)', "data-action" => 'batch_check', :confirm => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
+<%= link_to '批量审核', 'javascript:void(0)', "data-action" => 'batch_check', "data-confirm" => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
 <% elsif params[:action] == 'checked' %>
-<%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', :confirm => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
+<%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', "data-confirm" => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
 <% end %>
-<%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', :confirm => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
+<%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', "data-confirm" => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
 <%= link_to '导出CSV', request.path + ".csv", :class => 'btn btn-default' %>
 <div class="pull-right">
   <%= will_paginate @withdraws, renderer: BootstrapPagination::Rails %>

@@ -1,5 +1,5 @@
 class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseController
-  before_action :set_withdraw, only: [:check, :agree, :reject, :permanent_frozen]
+  before_action :set_withdraw, only: [:check, :agree, :reject, :permanent_frozen, :permanent_frozen_alipay]
 
   def index
     authorize! :read, Withdraw
@@ -84,6 +84,13 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
       format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
       format.json { head :no_content }
     end
+  end
+
+  def permanent_frozen_alipay
+    authorize! :update, Withdraw
+    AlipayAccountBlacklist.create!(account: @withdraw.alipay_no)
+    @withdraw.update_attributes(status: :rejected)
+    redirect_to :back, notice: '冻结支付宝帐号成功!'
   end
 
   def batch_handle
