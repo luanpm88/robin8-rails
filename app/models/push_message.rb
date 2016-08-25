@@ -98,6 +98,13 @@ class PushMessage < ActiveRecord::Base
     }
   end
 
+  def self.push_to_be_big_v_message(receiver, title)
+    push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
+                            :title => title, :receiver_cids => [receiver.device_token] )
+    push_message.template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => 'KOL资质审核通过'}
+    push_message.save
+  end
+
   def async_send_to_client
     puts "====async_send_to_client"
     if Rails.env.development?

@@ -17,8 +17,16 @@ module API
           optional :gender, type: Integer, values: [0, 1, 2]
         end
         post 'update_profile' do
-          current_kol.update_columns(:name => params[:name], :app_city => params[:app_city], :job_info => params[:job_info],
-                                     :desc => params[:desc], :gender => params[:gender], :age => params[:age])
+          if params[:gender] == 'Female'
+            gender = 2
+          elsif params[:gender] == 'Male'
+            gender = 1
+          else
+            gender = params[:gender].to_i
+          end
+          app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+          current_kol.update_columns(:name => params[:name], :app_city => app_city, :job_info => params[:job_info],
+                                     :desc => params[:desc], :gender => gender, :age => params[:age])
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
@@ -42,9 +50,14 @@ module API
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
           social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
-          social_account.homepage = params[:homepage]
-          social_account.price = params[:price]
-          social_account.username = params[:username]
+          social_account.homepage = params[:homepage]  if params[:homepage].present?
+          if provider == 'weibo' && social_account.homepage.blank?
+            uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+            social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+          end
+          social_account.price = params[:price]           if params[:price].present?
+          social_account.username = params[:username]     if params[:username].present?
+          social_account.uid = params[:uid]               if params[:uid].present?
           social_account.repost_price = params[:repost_price]
           social_account.second_price = params[:second_price]
           social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
@@ -60,9 +73,14 @@ module API
         end
         post 'submit_apply' do
           params[:kol_shows].split(",").each do |link|
-            current_kol.kol_shows.create!(:link => link)
+            current_kol.kol_shows.find_or_create_by(:link => link)
           end if params[:kol_shows].present?
           current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)
+          # if current_kol.kol_keywords.size == 0  && current_kol.tags.size > 0
+          #   current_kol.tags.each do |tag|
+          #     KolKeyword.create!(:kol_id => current_kol.id, :keyword => tag.label)
+          #   end
+          # end
           present :error, 0
         end
       end

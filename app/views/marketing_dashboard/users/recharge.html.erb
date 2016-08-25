@@ -1,23 +1,38 @@
-<h1>用户充值</h1>
-<%= form_tag marketing_dashboard_user_recharge_path do %>
-  <%= text_field_tag :credits, nil, :placeholder => "输入充值金额" %>
-  <%= check_box_tag :need_invoice, true, false, class: 'invoice-checkbox' %> <span class="invoice-text">是否需要发票</span>
-  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
-<% end %>
+<h3>品牌主充值</h3>
+<hr />
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <%= form_tag marketing_dashboard_user_recharge_path, class: "form" do %>
+        <div class="form-group">
+          <label>充值金额</label>
+          <%= text_field_tag :credits, nil, required: true, class: "form-control", :placeholder => "输入充值金额" %>
+        </div>
+        <div class="form-group">
+          <label>品牌主公司全名</label>
+          <%= text_field_tag :receiver_name, nil, required: true, class: "form-control", :placeholder => "输入品牌主公司全名" %>
+        </div>
+        <div class="form-group">
+          <label>操作人员名称</label>
+          <%= text_field_tag :operator, nil, required: true, class: "form-control", :placeholder => "输入操作人员名称", html: {} %>
+        </div>
+        <div class="form-group">
+          <label>备注</label>
+          <%= text_field_tag :remark, nil, class: "form-control", :placeholder => "输入备注" %>
+        </div>
+        <div class="form-group">
+          <label>是否需要发票</label>
+          <div class="checkbox">
+            <label>
+              <%= check_box_tag :need_invoice, true, false, class: 'checkbox' %>
+              如果需要发票请勾选
+            </label>
+          </div>
+        </div>
 
-<style>
-  .invoice-checkbox {
-    display: block;
-    margin-top: 15px;
-  }
-  .invoice-text {
-    position: absolute;
-    top: 147px;
-    margin-left: 22px;
-  }
-
-  .btn {
-    margin-top: 20px;
-  }
-</style>
+        <%= submit_tag '确认并充值', :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>

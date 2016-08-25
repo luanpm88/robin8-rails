@@ -1,36 +1,63 @@
-<div class="row">
-  <h5><%= devise_error_messages! %></h5>
-  <div class="well">
-    <%= link_to "新建追踪链接", new_marketing_dashboard_track_url_path, class: "btn btn-primary pull-right" %>
+<h3>
+  追踪链接管理
+  <%= link_to "新建追踪链接", new_marketing_dashboard_track_url_path, class: "btn btn-primary pull-right" %>
+</h3>
+<hr />
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
   </div>
-  <div class="panel panel-default">
-
-    <div class="panel-body">
-      <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>原链接</th>
-              <th>短链</th>
-              <th>备注</th>
-              <th>点击数</th>
-              <th>修改</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @track_urls.each do |url| %>
-              <tr>
-                <td><%= url.origin_url %> </td>
-                <td><%= link_to url.short_url_text, url.short_url_text, :target => "_blank" %> </td>
-                <td><%= url.desc %> </td>
-                <td><%= url.click_count %> </td>
-                <td><%= link_to "修改", edit_marketing_dashboard_track_url_path(url)%></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>原链接</label>
+            <%= f.search_field :origin_url_cont, class: "form-control", placeholder: "原链接" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>备注</label>
+            <%= f.search_field :desc_cont, class: "form-control", placeholder: "备注" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>
-<%= will_paginate @track_urls %>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>原链接</th>
+      <th>短链</th>
+      <th>备注</th>
+      <th>点击数</th>
+      <th>修改</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @track_urls.each do |url| %>
+      <tr>
+        <td><%= url.origin_url %> </td>
+        <td><%= link_to url.short_url_text, url.short_url_text, :target => "_blank" %> </td>
+        <td><%= url.desc %> </td>
+        <td><%= url.click_count %> </td>
+        <td>
+          <%= link_to "修改", edit_marketing_dashboard_track_url_path(url)%>
+          <%= link_to '移除', marketing_dashboard_track_url_path(url), method: "DELETE", :"data-confirm" => "注意：移除此链接将隐藏此链接，但并不会删除数据库记录，确定移除吗？" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @track_urls, renderer: BootstrapPagination::Rails  %>

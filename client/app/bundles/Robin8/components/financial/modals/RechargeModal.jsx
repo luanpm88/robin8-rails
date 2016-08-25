@@ -13,14 +13,18 @@ export default class RechargeModal extends Component {
     const { alipayRecharge } = this.props.actions;
     const credits = parseInt(this.props.credits);
     const tax = this.props.checkInvoice ? credits*0.06 : 0;
-
-
-    // const credits = parseFloat(this.props.credits);
-    // const tax = this.props.checkInvoice ? credits*1 : 0;
+    const invite_code = this.props.inviteCode;
     const need_invoice = this.props.checkInvoice
 
-    alipayRecharge(credits, tax, need_invoice);
+    alipayRecharge(credits, tax, need_invoice, invite_code);
     this.close();
+  }
+
+  render_invite_code() {
+    const inviteCode = this.props.inviteCode;
+    if(inviteCode) {
+      return <p className="invite-code">邀请码: {inviteCode}</p>
+    }
   }
 
   render_pay_detail() {
@@ -59,9 +63,6 @@ export default class RechargeModal extends Component {
     const credits = parseInt(this.props.credits);
     const tax = this.props.checkInvoice ? credits*0.06 : 0;
 
-    // const credits = parseFloat(this.props.credits);
-    // const tax = this.props.checkInvoice ? credits*1 : 0;
-
     return (
       <Modal {...this.props} className="recharge-modal">
         <Modal.Header closeButton>
@@ -69,6 +70,7 @@ export default class RechargeModal extends Component {
         </Modal.Header>
         <Modal.Body>
           {this.render_pay_detail()}
+          {this.render_invite_code()}
         </Modal.Body>
         <div className="total-amount">
           <span>支付总计: </span><span className="price">{ credits + tax }元</span>

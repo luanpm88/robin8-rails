@@ -13,7 +13,10 @@ export default class Target extends React.Component{
   componentDidUpdate() {
     const campaign = this.props.campaign;
     if(!this.initSelector && campaign.size) {
-      let region_text = campaign.get("region").split("/").join(",");
+      let region_text = "全部";
+      if(campaign.get("region")) {
+        region_text = campaign.get("region").split("/").join(",");
+      }
       let tag_text = "全部";
       if(campaign.get("tags")) {
         tag_text = campaign.get("tags").map((item) => {
@@ -63,7 +66,7 @@ export default class Target extends React.Component{
                 <div className="campaign-target target-region">
                   <label >地区</label>
                   <div className="target-result">
-                    <div id="btn_jobArea" className="target-city-label">{campaign.get("region")}</div>
+                    <div id="btn_jobArea" className="target-city-label">{campaign.get("region") ? campaign.get("region") : '全部'}</div>
                   </div>
                 </div>
               </div>

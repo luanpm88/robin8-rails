@@ -42,7 +42,7 @@ class Kol < ActiveRecord::Base
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
   after_create :create_campaign_invites_after_signup
-  after_save :update_click_threshold
+  after_save :update_click_threshold, :send_to_be_big_v_notify
 
   mount_uploader :avatar, ImageUploader
 
@@ -76,16 +76,17 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_keywords
 
-  scope :active, -> {where("`kols`.`updated_at` > '#{5.weeks.ago}'")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
   else
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")}
     scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
@@ -428,14 +429,16 @@ class Kol < ActiveRecord::Base
     if kol.present?
       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
                             device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
-                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city)
+                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
+                            longitude: params[:longitude], latitude: params[:latitude])
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA],
                         name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
-                        device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip])
+                        device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
+                        longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
     end
     return kol
@@ -556,7 +559,7 @@ class Kol < ActiveRecord::Base
   end
 
   def get_avatar_url
-    avatar.url || read_attribute(:avatar_url)
+    avatar.url(:avatar) || read_attribute(:avatar_url)
   end
 
   def is_big_v?
@@ -596,4 +599,17 @@ class Kol < ActiveRecord::Base
       return false
     end
   end
+
+  def is_forbid?
+    self.forbid_campaign_time.present? && self.forbid_campaign_time > Time.now
+  end
+
+  def send_to_be_big_v_notify
+    if self.kol_role == 'big_v' && self.kol_role_changed?
+      content = "恭喜！您的KOL资质审核通过了，速去打开Robin8 APP查看详情！"
+      PushMessage.push_to_be_big_v_message(self, content)
+      Emay::SendSms.to(self.mobile_number, content)
+    end
+  end
+
 end

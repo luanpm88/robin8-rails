@@ -2,7 +2,7 @@
 module CampaignObserver
   extend self
   MaxTotalClickCount = 100
-  MaxValidClickCount = 50
+  MaxValidClickCount = 30
   MaxUniqCookieVisitCount = 20
   MaxUniqUserAgentCount = 40
   MaxMorningVisitCount = 20 # 1点-6点
@@ -10,6 +10,36 @@ module CampaignObserver
   MinAverageSecond       = 60
   MinAverageSecondTotalClickCount = 10
 
+
+  def notify_operational_staff
+    return if Time.now.hour < 8
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending)
+    post_count = base_invites.joins(:campaign).where("per_budget_type='post'").count
+    lines = []
+    if post_count > 0
+      lines << "待审核转发类型的截图有 #{post_count}个"
+    end
+
+
+    campaign_ids = Campaign.where(:status => "executed").map(&:id)
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending).where(:campaign_id => campaign_ids)
+    zero_click_count = base_invites.where(:total_click => 0).where("screenshot is not NULL").order('created_at DESC').count
+
+    if zero_click_count > 0
+      lines << "点击量为0 的待审核截图有 #{zero_click_count}个"
+    end
+
+    base_invites = CampaignInvite.where.not(:screenshot => '').where(:img_status => :pending)
+    suspected_count = base_invites.where(:observer_status => 2).where("screenshot is not NULL").order('created_at DESC').count
+    if suspected_count > 0
+      lines << "有嫌疑的 待审核截图有 #{suspected_count}个"
+    end
+    if lines.present?
+      ["15300731907", "15221773929", "18917797087", "13817164642"].each do |tel|
+        Emay::SendSms.to tel, lines.join(";\n")
+      end
+    end
+  end
 
   def observer_campaign_and_kol campaign_id, kol_id
     campaign = Campaign.where(:id => campaign_id).first
@@ -24,8 +54,13 @@ module CampaignObserver
 
     shows = CampaignShow.where(:campaign_id => campaign_id, :kol_id => kol_id).order("created_at asc")
 
-    if shows.count > MaxTotalClickCount and (shows.where(:status => "1").count * 1.0 / shows.count) < 0.1
-      invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
+    if shows.where(:status => "1").count > MaxValidClickCount
+      invalid_reasons << "有效点击 大于 #{MaxValidClickCount}"
+    end
+    
+    if shows.count > MaxTotalClickCount
+      #invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
+      invalid_reasons << "总点击量大于#{MaxTotalClickCount}"
     end
 
     shows.each do |show|
@@ -146,7 +181,7 @@ module CampaignObserver
   def observer_text
     texts = []
     texts << "总点击量不能超过: #{MaxTotalClickCount}次, 有效点击比 小于 10%"
-    # texts << "有效点击量不能超过: #{MaxValidClickCount}次"
+    texts << "有效点击量不能超过: #{MaxValidClickCount}次"
     # texts << "单一cookie 不能超过:  #{MaxUniqCookieVisitCount}次"
     # texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
     # texts << "访问者ip 不能超过#{IpScoreLess50Count}次"

@@ -2,8 +2,8 @@ import actionTypes from '../constants/brandConstants';
 
 const baseUrl = "/brand_api/v1"
 
-export function alipayRecharge(credits, tax, need_invoice) {
-  const data = { credits, tax, need_invoice };
+export function alipayRecharge(credits, tax, need_invoice, invite_code) {
+  const data = { credits, tax, need_invoice, invite_code};
   return {
     type: actionTypes.ALIPAY_RECHARGE,
     promise: fetch(`${baseUrl}/alipay_orders`, {

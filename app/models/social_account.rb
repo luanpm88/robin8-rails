@@ -32,18 +32,7 @@ class SocialAccount < ActiveRecord::Base
   end
 
   def provider_text
-    case self.provider
-    when "weibo"
-      "微博"
-    when "wechat"
-      "微信"
-    when "public_wechat"
-      "微信公众号"
-    when "meipai"
-      "美拍"
-    when "miaopai"
-      "秒拍"
-    end
+    Providers[self.provider]
   end
 
   def auto_complete_info

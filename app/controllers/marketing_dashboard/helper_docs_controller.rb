@@ -1,6 +1,6 @@
 class MarketingDashboard::HelperDocsController < MarketingDashboard::BaseController
   def index
-    @helper_docs = HelperDoc.all.order('sort_weight DESC').paginate(paginate_params)
+    @helper_docs = HelperDoc.all.order('sort_weight ASC').paginate(paginate_params)
   end
 
   def new
@@ -45,6 +45,6 @@ class MarketingDashboard::HelperDocsController < MarketingDashboard::BaseControl
 
   private
   def permit_params
-    params.require(:helper_tag).permit(:question, :answer, :doc_tag, :sort_weight)
+    params.require(:helper_tag).permit(:question, :answer, :sort_weight)
   end
 end

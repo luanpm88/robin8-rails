@@ -16,6 +16,7 @@ class FinancialRechargePartial extends React.Component {
     this.state = {
       showRechargeModal: false,
       credits: "",
+      inviteCode: "",
       checkInvoice: false
     };
   }
@@ -72,6 +73,7 @@ class FinancialRechargePartial extends React.Component {
 
 
     const price = this.refs.priceInput.value;
+    const invite_code = this.refs.marketingInviteCode.value;
     // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
     let checked_price = "";
     let credits = "";
@@ -104,6 +106,7 @@ class FinancialRechargePartial extends React.Component {
       this.setState({checkInvoice: false})
     }
     this.setState({credits: credits});
+    this.setState({inviteCode: invite_code});
     this.setState({showRechargeModal: true});
 
   }
@@ -184,17 +187,19 @@ class FinancialRechargePartial extends React.Component {
                     <div>
                       <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票(<span className="red_color">已开具发票的金额不可以申请退款</span>)</span>
                     </div>
+                    <div className="invite-code">
+                      <span>邀请码(选填):</span>
+                      <input ref='marketingInviteCode' type="text" className="form-control" placeholder="请输入邀请码(选填)" />
+                    </div>
                     <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
 
-        <RechargeModal show={this.state.showRechargeModal} onHide={this.closeRechargeModal.bind(this)} actions={this.props.actions} credits={this.state.credits} checkInvoice={this.state.checkInvoice} />
+        <RechargeModal show={this.state.showRechargeModal} onHide={this.closeRechargeModal.bind(this)} actions={this.props.actions} credits={this.state.credits} checkInvoice={this.state.checkInvoice} inviteCode={this.state.inviteCode} />
       </div>
     )
   }

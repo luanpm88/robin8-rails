@@ -9,7 +9,12 @@
 
     <div class="form-group">
       <label>平台来源</label>
-      <%= f.select :provider, ["weibo", "public_wechat", "meipai", "miaopai"],class: "form-control" %>
+      <%= f.select :provider, SocialAccount::Providers.to_a.map(&:reverse),class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>uid</label>
+      <%= f.text_field :uid,class: "form-control", :placeholder => "微博帐号 或者 微信帐号的 id" %>
     </div>
 
     <div class="form-group">
@@ -37,11 +42,12 @@
       <%= f.text_field :like_count, class: "form-control" %>
     </div>
     <div class="form-group">
-      <label>关注数</label>
+      <label>粉丝数</label>
       <%= f.text_field :followers_count, class: "form-control" %>
     </div>
+
     <div class="form-group">
-      <label>好友数</label>
+      <label>关注数</label>
       <%= f.text_field :friends_count, class: "form-control" %>
     </div>
 

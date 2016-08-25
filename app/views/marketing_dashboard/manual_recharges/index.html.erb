@@ -1,22 +1,56 @@
-<h3>线下付款列表</h3>
-<div class="well">
-  <%= form_tag search_marketing_dashboard_manual_recharges_path do %>
-    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
-    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
-  <% end %>
+<h3>线下充值列表</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主ID</label>
+            <%= f.search_field :account_of_User_type_id_eq, class: "form-control", placeholder: "品牌主ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主手机</label>
+            <%= f.search_field :account_of_User_type_mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主昵称</label>
+            <%= f.search_field :account_of_User_type_name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <table class='table table-bordered'>
-
   <thead>
     <tr>
-      <th>广告主ID</th>
-      <th>广告主名称</th>
+      <th>品牌主ID</th>
+      <th>品牌主名称</th>
       <th>流水ID</th>
       <th>充值方式</th>
-      <th>充值金额</th>
-      <th>充值税费(0.6%)</th>
-      <th>创建时间</th>
+      <th><%= sort_link(@q, :credits, "充值金额") %></th>
+      <th>税费(6%)</th>
+      <th><%= sort_link(@q, :created_at, "创建时间") %></th>
+      <th>品牌主公司</th>
+      <th>操作人</th>
+      <th>状态</th>
+      <th>备注</th>
     </tr>
   </thead>
   <tbody>
@@ -32,10 +66,14 @@
       <% end %>
       <td><%= c.credits.to_f %></td>
       <td><%= c.tax.to_f %></td>
-      <td><%= c.created_at.strftime("%Y-%m-%d-%H:%M:%S")%></td>
+      <td><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
+      <td><%= c.item.receiver_name if c.item %></td>
+      <td><%= c.item.operator || c.item.admin_user.email if c.item %></td>
+      <td><%= c.item.status if c.item %></td>
+      <td><%= c.item.remark if c.item %></td>
     </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= will_paginate @transactions %>
+<%= will_paginate @transactions, renderer: BootstrapPagination::Rails  %>

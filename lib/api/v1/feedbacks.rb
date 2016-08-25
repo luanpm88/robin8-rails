@@ -2,10 +2,6 @@ module API
   module V1
     class Feedbacks < Grape::API
       resources :feedbacks do
-        before do
-          authenticate!
-        end
-
         params do
           requires :app_version, type: String
           requires :app_platform, type: String
@@ -19,13 +15,18 @@ module API
           feedback = Feedback.new
           feedback.attributes = attrs
           feedback.screenshot = params[:screenshot] if params[:screenshot]
-          feedback.kol_id = current_kol.id
+          if params[:app_key] == 'robin8_feedbacks' && params[:kol_id].present?
+            feedback.kol_id = params[:kol_id]
+          elsif current_kol.present?
+            feedback.kol_id = current_kol.id
+          else
+            return error_403!({error: 1, detail: '校验失败'})
+          end
           if feedback.save
             present :error, 0
-            present :detail, 0
           else
             present :error, 1
-            error_403!({error: 1, detail: errors_message(feedback)})
+            return error_403!({error: 1, detail: errors_message(feedback)})
           end
         end
       end

@@ -1,18 +1,26 @@
 class MarketingDashboard::LotteryProductsController < MarketingDashboard::BaseController
 
   def index
+    authorize! :read, LotteryActivity
+
     @lottery_products = LotteryProduct.order('created_at DESC').paginate(paginate_params)
   end
 
   def new
+    authorize! :read, LotteryActivity
+
     @lottery_product = LotteryProduct.new
   end
 
   def edit
+    authorize! :read, LotteryActivity
+
     @lottery_product = LotteryProduct.find(params[:id])
   end
 
   def create
+    authorize! :update, LotteryActivity
+
     @lottery_product = LotteryProduct.new(lottery_product_params)
 
     params[:lottery_product][:posters].each do |picture|
@@ -31,6 +39,8 @@ class MarketingDashboard::LotteryProductsController < MarketingDashboard::BaseCo
   end
 
   def update
+    authorize! :update, LotteryActivity
+
     @lottery_product = LotteryProduct.find(params[:id])
 
     if params[:poster_id]
@@ -63,6 +73,8 @@ class MarketingDashboard::LotteryProductsController < MarketingDashboard::BaseCo
   end
 
   def show
+    authorize! :read, LotteryActivity
+
     @lottery_product = LotteryProduct.find(params[:id])
   end
 

@@ -1,55 +1,74 @@
 class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseController
-  before_action :set_withdraw, only: [:agree, :reject, :permanent_frozen]
+  before_action :set_withdraw, only: [:check, :agree, :reject, :permanent_frozen, :permanent_frozen_alipay]
 
   def index
-    @withdraws = Withdraw.all.order('created_at DESC').includes(:kol)
-
-    formated_response "全部"
-  end
-
-  def search
-    search_by = params[:search_key]
-    kol = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
-    if kol
-      @withdraws = Withdraw.where(:kol_id => kol.id).order('created_at DESC').includes(:kol)
-    end
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.all
     formated_response "全部"
   end
 
   def pending
-    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'pending')
 
     formated_response "待处理的"
   end
 
+  def checked
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.checked
+
+    formated_response "已审核待付款的"
+  end
+
   def agreed
-    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'paid')
 
     formated_response "通过的"
   end
 
   def rejected
-    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'rejected')
 
     formated_response "拒绝的"
   end
 
-  def agree
-    if @withdraw.kol.avail_amount.to_f > params[:credits].to_f
-      @withdraw.update_attributes(:status => 'paid')
+  def check
+    authorize! :update, Withdraw
+    if @withdraw.kol.avail_amount.to_f >= @withdraw.credits.to_f
+      @withdraw.update_attributes(:status => 'checked')
 
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'Deal withdraw successfully!' }
+        format.html { redirect_to :back, notice: '审核通过, 已进入待付款列表' }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to :back, alert: 'No enouth amount!' }
+        format.html { redirect_to :back, alert: '此kol账户余额不小于当前提现金额，未能通过审核!' }
+      end
+    end
+  end
+
+  def agree
+    authorize! :update, Withdraw
+    if @withdraw.kol.avail_amount.to_f >= @withdraw.credits.to_f
+      @withdraw.update_attributes(:status => 'paid')
+
+      respond_to do |format|
+        format.html { redirect_to :back, notice: '同意提现成功' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to :back, alert: '此kol账户余额不小于当前提现金额，提现失败!' }
       end
     end
   end
 
   def reject
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'rejected')
 
     respond_to do |format|
@@ -59,6 +78,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def permanent_frozen
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'permanent_frozen')
     respond_to do |format|
       format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
@@ -66,12 +86,24 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
     end
   end
 
+  def permanent_frozen_alipay
+    authorize! :update, Withdraw
+    AlipayAccountBlacklist.create!(account: @withdraw.alipay_no)
+    @withdraw.update_attributes(status: :rejected)
+    redirect_to :back, notice: '冻结支付宝帐号成功!'
+  end
+
   def batch_handle
+    authorize! :update, Withdraw
     @withdraws = Withdraw.where(:id => params[:batch_ids].split(","))
-    if @withdraws.all?{|t| t.status == 'pending' }
-      if params[:handle_action] == 'batch_agree'
+    if @withdraws.all?{|t| t.status == 'pending'} or @withdraws.all?{|t| t.status == 'checked'}
+      if params[:handle_action] == 'batch_check'
         @withdraws.each do |withdraw|
-          withdraw.update_attributes(:status => 'paid') if withdraw.kol.frozen_amount.to_f > withdraw.credits.to_f
+          withdraw.update_attributes(:status => "checked") if withdraw.kol.frozen_amount.to_f >= withdraw.credits.to_f
+        end
+      elsif params[:handle_action] == 'batch_agree'
+        @withdraws.each do |withdraw|
+          withdraw.update_attributes(:status => 'paid') if withdraw.kol.frozen_amount.to_f >= withdraw.credits.to_f
         end
       elsif params[:handle_action] == 'batch_reject'
         @withdraws.each do |withdraw|
@@ -104,6 +136,9 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def formated_response(name)
+    @q = @withdraws.ransack(params[:q])
+    @withdraws = @q.result.order('created_at DESC').includes(:kol)
+
     respond_to do |format|
       format.html do
         @withdraws = @withdraws.paginate(paginate_params) unless @withdraw

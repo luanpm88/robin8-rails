@@ -1,45 +1,74 @@
 <h3>品牌主列表</h3>
-<div class="well">
-  <%= form_tag search_marketing_dashboard_users_path do %>
-    <%= text_field_tag :search_key, nil, :placeholder => "以名称、手机号、ID、email 进行搜索", :class => "search_input" %>
-    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
-  <% end %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主ID</label>
+            <%= f.search_field :id_eq, class: "form-control", placeholder: "品牌主ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主手机</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>品牌主昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
-<table class="table table-bordered">
+<table class="table">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>MobileNumber</th>
+      <th>品牌主 ID</th>
+      <th>品牌主昵称</th>
+      <th>手机</th>
       <th>来源</th>
-      <th>Company</th>
-      <th>Amount</th>
-      <th>Avail Amount</th>
-      <th>Created at</th>
-      <th>Ops</th>
+      <th>可用余额</th>
+      <th>总充值金额</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |u| %>
       <tr>
-        <% %w(id name email mobile_number utm_source company amount avail_amount).each do |v| %>
-          <td> <%= u.send v %> </td>
-        <% end %>
-        <td> <%= u.created_at.to_s(:date_time) %> </td>
+        <td><%= u.id %></td>
+        <td><%= u.name %></td>
+        <td><%= u.mobile_number %></td>
+        <td><%= u.utm_source %></td>
+        <td><%= u.avail_amount %></td>
+        <td><%= u.total_recharge %></td>
         <td>
           <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
-          </br>
-          |
+          /
           <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
-          </br>
-          |
-          <%= link_to '以品牌主身份查看', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %>
+          /
+          <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= will_paginate @users %>
+<%= will_paginate @users, renderer: BootstrapPagination::Rails  %>
+

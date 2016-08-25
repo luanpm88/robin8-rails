@@ -12,6 +12,7 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   def create
     @social_account = SocialAccount.new(permit_params)
     @social_account.kol_id = params[:kol_id]
+    # @social_account.auto_complete_info
     if @social_account.save
       flash[:notice] = "创建成功"
       redirect_to marketing_dashboard_social_accounts_path(:kol_id => params[:kol_id])
@@ -39,7 +40,7 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   end
 
   def cities
-    
+
   end
 
   def destroy
@@ -53,6 +54,6 @@ class MarketingDashboard::SocialAccountsController < MarketingDashboard::BaseCon
   def permit_params
     params.require(:social_account).permit(:kol_id, :provider, :username,
          :homepage, :avatar_url, :brief, :like_count, :followers_count, :friends_count,
-          :reposts_count, :statuses_count, :verified, :province, :city, :gender, :price, :second_price, :repost_price)
+          :reposts_count, :statuses_count, :verified, :province, :city, :gender, :price, :second_price, :repost_price, :uid)
   end
 end

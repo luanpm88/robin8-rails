@@ -1,24 +1,36 @@
-<table class='table table-bordered'>
+<h3>反馈管理</h3>
+
+<table class='table table-bordered table-striped'>
   <thead>
     <tr>
       <th>ID</th>
-      <th>App Version</th>
-      <th>Platform</th>
-      <th>OS Version</th>
-      <th>Device Model</th>
-      <th>Content</th>
-      <th>Screenshot</th>
-      <th>状态<th>
+      <th>KOL ID</th>
+      <th>KOL昵称</th>
+      <th>App版本</th>
+      <th>平台</th>
+      <th>OS版本</th>
+      <th>设备类型</th>
+      <th>内容</th>
+      <th>截图</th>
+      <th>状态</th>
     </tr>
   </thead>
-
   <tbody>
     <% @feedbacks.each do |f| %>
       <tr>
-        <% %w(id app_version app_platform os_version device_model content).each do |v| %>
-          <td> <%= f.send v %> </td>
-        <% end %>
-        <td> <img src="<%= f.screenshot.url(200) %>" alt=""> </td>
+        <td><%= f.id %></td>
+        <td><%= link_to f.kol_id, marketing_dashboard_kol_path(f.kol_id), target: "_blank" %></td>
+        <td><%= f.kol.name rescue "" %></td>
+        <td><%= f.app_version %></td>
+        <td><%= f.app_platform %></td>
+        <td><%= f.os_version %></td>
+        <td><%= f.device_model %></td>
+        <td><%= f.content %></td>
+        <td class="text-center">
+          <%= link_to f.screenshot.url, target: "_blank" do %>
+            <%= image_tag f.screenshot.url(200), class: "img-thumbnail" %>
+          <% end %>
+        </td>
         <td id="feedback_<%= f.id %>">
           <%= link_to 'KOL详情', "/marketing_dashboard/kols/#{f.kol_id}" %></br>
           <% if f.status == 'pending' %>
@@ -30,7 +42,6 @@
       </tr>
     <% end %>
   </tbody>
-
 </table>
 
-<%= will_paginate @feedbacks %>
+<%= will_paginate @feedbacks, renderer: BootstrapPagination::Rails  %>

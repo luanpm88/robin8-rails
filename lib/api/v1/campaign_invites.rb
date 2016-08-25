@@ -62,8 +62,7 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            invitee_ids = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").collect{|t| t.kol_id}
-            invitees  = Kol.where(:id => invitee_ids)
+            invitees = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").order("id desc").includes(:kol).collect{|t| t.kol}
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
             present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary
@@ -99,6 +98,7 @@ module API
           # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
+          return error_403!({error: 1, detail: '该账户存在异常,请联系客服!' }) if current_kol.is_forbid?
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
           campaign = campaign_invite.campaign  rescue nil
