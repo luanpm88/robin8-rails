@@ -90,6 +90,14 @@ class Kol < ActiveRecord::Base
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
+
+  ransacker :avail_amount do |parent|
+    Arel.sql('(`kols`.`amount` - `kols`.`frozen_amount`)')
+  end
+
+  scope :total_income_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS kol_id, SUM(`transactions`.`credits`) AS total_income FROM `transactions` WHERE `transactions`.`account_type` = 'Kol' AND `transactions`.`direct` = 'income' GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `kols`.`id` = `cte_tables`.`kol_id`") }
+  scope :sort_by_total_income, ->(dir) { total_income_of_transactions.order("total_income #{dir}") }
+
   before_save :set_kol_kol_role
 
   def set_kol_kol_role
@@ -547,6 +555,10 @@ class Kol < ActiveRecord::Base
     else
       'xxx'
     end
+  end
+
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_total_income )
   end
 
   def get_uniq_identities
