@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824065920) do
+ActiveRecord::Schema.define(version: 20160824084519) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -1351,6 +1351,23 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.integer  "item_id",             limit: 4
   end
 
+  create_table "recharge_records", force: :cascade do |t|
+    t.float    "credits",       limit: 24,  default: 0.0
+    t.float    "tax",           limit: 24,  default: 0.0
+    t.string   "receiver_name", limit: 255
+    t.string   "receiver_type", limit: 100
+    t.integer  "receiver_id",   limit: 4
+    t.string   "operator",      limit: 255
+    t.string   "status",        limit: 255, default: "pending"
+    t.string   "admin_user_id", limit: 255
+    t.boolean  "need_invoice",  limit: 1,   default: false
+    t.string   "remark",        limit: 255
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "recharge_records", ["receiver_type", "receiver_id"], name: "index_recharge_records_on_receiver_type_and_receiver_id", using: :btree
+
   create_table "releases", force: :cascade do |t|
     t.string   "title",                   limit: 255
     t.text     "text",                    limit: 16777215
@@ -1601,8 +1618,9 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.string   "short_url",   limit: 255
     t.string   "desc",        limit: 255
     t.integer  "click_count", limit: 4,   default: 0
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "enabled",     limit: 1,   default: true
   end
 
   create_table "transactions", force: :cascade do |t|

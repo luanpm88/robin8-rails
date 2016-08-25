@@ -103,7 +103,7 @@ export default class DetailPartial extends React.Component {
   renderDetailTips(){
     const tip = "<p>1.&nbsp;按照转发奖励KOL: 按照KOL转发一次性付费。\
                  <p>2.&nbsp;按照点击奖励KOL: KOL分享后按照好友有效点击数付费。\
-                 <p>2.&nbsp;按照活动效果奖励KOL: KOL分享后按照活动效果付费。\
+                 <p>3.&nbsp;按照活动效果奖励KOL: KOL分享后按照活动效果付费。\
                  "
                  //<p>3.&nbsp;按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。
     return tip
@@ -131,17 +131,15 @@ export default class DetailPartial extends React.Component {
                 <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照转发奖励KOL
               </label>
-              {
-                do{
-                <label>
-                  <input {...per_budget_collect_type} type="radio" className="cap_cpi-collect-action_type" name="cap_cpi-collect-action_type" value="cpa_cpi" onChange={per_budget_collect_type.onChange} checked={(per_budget_type.value === "cpa" || per_budget_type.value === "cpi" || per_budget_collect_type.value === "cpa_cpi")} />
-                  按照活动效果奖励KOL
-                </label>
-              }
-            }
+
+              <label>
+                <input {...per_budget_collect_type} type="radio" className="cap_cpi-collect-action_type" name="cap_cpi-collect-action_type" value="cpa_cpi" onChange={per_budget_collect_type.onChange} checked={(per_budget_type.value === "cpa" || per_budget_type.value === "simple_cpi" || per_budget_collect_type.value === "cpa_cpi")} />
+                按照活动效果奖励KOL
+              </label>
+
             </div>
 
-            <div className="action-url-group" style={ (per_budget_collect_type.value == "cpa_cpi" || (per_budget_type && (per_budget_type.value == 'cpi' || per_budget_type.value == 'cpa'))) ? {display: 'block'} : {display: 'none'} }>
+            <div className="action-url-group" style={ (per_budget_collect_type.value == "cpa_cpi" || (per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpa'))) ? {display: 'block'} : {display: 'none'} }>
               <div className="cpa-cpi-select-img">
                 <img src={require("cpa-cpi-background.png")} />
               </div>
@@ -151,7 +149,7 @@ export default class DetailPartial extends React.Component {
                   按链接点击次数付费(仅支持链接类型)
                 </label>
                 <label>
-                    <input {...per_budget_type} type="radio" name="action_type" value="cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpi"} />
+                    <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
                   按下载次数付费(用于APP推广)
                 </label>
               </div>
@@ -181,7 +179,7 @@ export default class DetailPartial extends React.Component {
                     </div>
                   }else{
                     <div className="cpi-tip-label">
-                      <label>活动支付成功后, 我们的工作人员会联系您安装相关SDK</label>
+                      <label>请把下载链接填入上方活动链接处</label>
                     </div>
                   }
                 }
@@ -201,7 +199,7 @@ export default class DetailPartial extends React.Component {
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
-                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                   </div>
                 </div>
               </div>
