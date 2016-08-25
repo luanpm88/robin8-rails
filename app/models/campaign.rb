@@ -56,7 +56,7 @@ class Campaign < ActiveRecord::Base
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
-  scope :agreed, -> {where(status: ["agreed", "executing", "executed", "revoked", "settled"])}
+  scope :agreed, -> {where(status: ["agreed", "executing", "executed", "settled"])}
   before_validation :format_url
   after_save :create_job
   before_create :genereate_campaign_number
