@@ -27,7 +27,6 @@ module Campaigns
       get_ids_from_target_content self.remove_kol_targets.map(&:target_content)
     end
 
-
     def get_black_list_kols
       self.class.get_black_list_kols
     end
@@ -92,7 +91,7 @@ module Campaigns
             kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
             kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
           end
-          #TODO 添加指定kols
+        #TODO 添加指定kols
         # elsif target.target_type == 'age'
         #   kols = kols.where("age > '#{target.contents}'")
         # elsif target.target_type == 'age'
@@ -103,6 +102,10 @@ module Campaigns
       end
 
       kols.distinct.collect{|t| t.id} - get_unmatched_kol_ids rescue []
+    end
+
+    def get_append_kol_ids
+      Kol.active.map(&:id) - self.get_matching_kol_ids - self.get_unmatched_kol_ids rescue []
     end
 
     def get_kol_ids

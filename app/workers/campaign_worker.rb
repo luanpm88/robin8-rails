@@ -34,6 +34,8 @@ class CampaignWorker
       campaign.finish('fee_end') if campaign.status != 'executed'
     elsif job_type == 'remind_upload'
       campaign.remind_upload
+    elsif job_type == "append_kols"
+      campaign.append_kols
     end
   end
 
