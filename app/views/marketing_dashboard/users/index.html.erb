@@ -44,8 +44,8 @@
       <th>品牌主昵称</th>
       <th>手机</th>
       <th>来源</th>
-      <th>可用余额</th>
-      <th>总充值金额</th>
+      <th><%= sort_link(@q, :avail_amount, "可用余额") %></th>
+      <th><%= sort_link(@q, :total_recharge, "总充值金额") %></th>
       <th>操作</th>
     </tr>
   </thead>

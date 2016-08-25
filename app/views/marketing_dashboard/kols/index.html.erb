@@ -72,8 +72,8 @@
       <th>审核状态</th>
       <th>是否热门</th>
       <th><%= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>
-      <th>可提现金额</th>
-      <th>历史收益</th>
+      <th><%= sort_link(@q, :avail_amount, "可提现金额") %></th>
+      <th><%= sort_link(@q, :total_income, "历史收益") %></th>
       <th>操作</th>
     </tr>
   </thead>

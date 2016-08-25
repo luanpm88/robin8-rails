@@ -29,7 +29,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agreed
-    @campaigns = Campaign.where(status: ['agreed', 'executing', "revoked", "settled"]).realable
+    @campaigns = Campaign.agreed.realable
     @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
 
