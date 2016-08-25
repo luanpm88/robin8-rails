@@ -17,6 +17,8 @@ class CreateMaterials < ActiveRecord::Migration
       t.integer :shop_id
       t.datetime :last_sync_at
 
+      t.boolean :enabled, :default => true
+
       t.timestamps null: false
     end
 
