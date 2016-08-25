@@ -13,6 +13,7 @@ module API
           article = Carticle.new(:body => params[:content])
           article.save
           present :article, article, with: API::V1_7::Entities::Carticles::Detail
+          present :error, 0
         end
       end
     end
