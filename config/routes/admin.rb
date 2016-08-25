@@ -116,14 +116,17 @@ Rails.application.routes.draw do
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
+        get 'checked'
         get 'agreed'
         get 'rejected'
         post 'search'
         match 'batch_handle', via: [:post]
       end
+      match '/check' => 'withdraws#check', via: [:post]
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
+      match '/permanent_frozen_alipay' => 'withdraws#permanent_frozen_alipay', via: [:post]
     end
     resources :announcements, except: [:destroy]
     resources :kol_announcements do
@@ -171,5 +174,10 @@ Rails.application.routes.draw do
     resources :lottery_activities
     resources :lottery_expresses
 
+    resources :alipay_account_blacklists do
+      member do
+        get :disban
+      end
+    end
   end
 end

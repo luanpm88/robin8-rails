@@ -1,4 +1,5 @@
 <%
+  # 文档标题
   cols = [
     'id',
     'kol_id',
@@ -6,6 +7,7 @@
     'credits',
     'withdraw_type',
     'alipay_no',
+    'id_card',
     'bank_name',
     'bank_no',
     'status',
@@ -17,15 +19,20 @@
   CSV.generate do |csv|
     csv << cols
     @withdraws.each do |withdraw|
-      values = withdraw.attributes.values_at(*cols).map do |value|
-        if value.is_a? Time
-          value.strftime("%Y-%m-%d %H:%M:%S")
-        else
-          value
-        end
-      end
-
-      csv << values
+      csv << [
+        withdraw.id,
+        withdraw.kol_id,
+        withdraw.real_name,
+        withdraw.credits,
+        withdraw.withdraw_type,
+        withdraw.alipay_no,
+        (withdraw.kol ? withdraw.kol.id_card : ""),
+        withdraw.bank_name,
+        withdraw.bank_no,
+        withdraw.status,
+        withdraw.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        withdraw.remark
+      ]
     end
-  end.encode('gb2312', :invalid => :replace, :undef => :replace, :replace => "?")
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
 -%>

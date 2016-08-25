@@ -3,6 +3,7 @@ module API
     module Entities
       module CampaignInviteEntities
         class JoinKolsEntity < Grape::Entity
+          expose :kol_id
           expose :avatar_url do |invite|
             invite.kol.avatar_url
           end

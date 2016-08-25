@@ -4,6 +4,8 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>KOL ID</th>
+      <th>KOL昵称</th>
       <th>App版本</th>
       <th>平台</th>
       <th>OS版本</th>
@@ -16,9 +18,14 @@
   <tbody>
     <% @feedbacks.each do |f| %>
       <tr>
-        <% %w(id app_version app_platform os_version device_model content).each do |v| %>
-          <td> <%= f.send v %> </td>
-        <% end %>
+        <td><%= f.id %></td>
+        <td><%= link_to f.kol_id, marketing_dashboard_kol_path(f.kol_id), target: "_blank" %></td>
+        <td><%= f.kol.name rescue "" %></td>
+        <td><%= f.app_version %></td>
+        <td><%= f.app_platform %></td>
+        <td><%= f.os_version %></td>
+        <td><%= f.device_model %></td>
+        <td><%= f.content %></td>
         <td class="text-center">
           <%= link_to f.screenshot.url, target: "_blank" do %>
             <%= image_tag f.screenshot.url(200), class: "img-thumbnail" %>
