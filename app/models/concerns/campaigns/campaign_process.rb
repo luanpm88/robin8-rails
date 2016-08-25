@@ -122,7 +122,7 @@ module Campaigns
       kol_ids = self.get_append_kol_ids
       if kol_ids.present?
         Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id campaign_id, true
+          kol.add_campaign_id self.id, true
         end
         Message.new_campaign(self, kol_ids)
       end
