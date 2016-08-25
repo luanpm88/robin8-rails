@@ -64,7 +64,7 @@ class Campaign < ActiveRecord::Base
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
-  ReceiveCampaignInterval = Rails.env.production? ? 3.hours : 1.second
+  ReceiveCampaignInterval = Rails.env.production? ? 3.hours : 0.second
   def email
     user.try :email
   end
