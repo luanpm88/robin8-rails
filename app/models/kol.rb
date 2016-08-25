@@ -590,11 +590,12 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     if imei.present?
-      return Kol.where(:IMEI => imei).size >= 3
+      return Kol.where(:IMEI => imei).size >= BindMaxCount
     elsif idfa.present?
-      return Kol.where(:IDFA => idfa).size >= 3
+      return Kol.where(:IDFA => idfa).size >= BindMaxCount
     else
       return false
     end
