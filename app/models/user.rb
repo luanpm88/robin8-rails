@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   has_many :private_kols
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
-  has_many :recharge_transactions, -> {where("subject='manual_recharge' or subject='alipay_recharge'")}, class_name: 'Transaction', as: :account
+  has_many :recharge_transactions, -> {where(subject: ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay'])}, class_name: 'Transaction', as: :account
   belongs_to :kol
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
     Arel.sql('(`users`.`amount` - `users`.`frozen_amount`)')
   end
 
-  scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
+  scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge' OR `transactions`.`subject` = 'campaign_pay_by_alipay') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
   scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
 
   # class EmailValidator < ActiveModel::Validator
