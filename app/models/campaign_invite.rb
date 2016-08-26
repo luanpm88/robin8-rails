@@ -62,7 +62,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def start_upload_screenshot
-    Time.now >=  upload_start_at  rescue false
+    if  campaign.is_recruit_type? || campaign.is_post_type?
+      return true
+    else
+      return (Time.now >=  upload_start_at  rescue false)
+    end
   end
 
   def can_upload_screenshot
