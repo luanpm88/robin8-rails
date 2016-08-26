@@ -37,7 +37,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def check
     authorize! :update, Withdraw
-    if @withdraw.kol.avail_amount.to_f >= @withdraw.credits.to_f
+    if @withdraw.kol.frozen_amount.to_f >= @withdraw.credits.to_f
       @withdraw.update_attributes(:status => 'checked')
 
       respond_to do |format|
@@ -53,7 +53,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def agree
     authorize! :update, Withdraw
-    if @withdraw.kol.avail_amount.to_f >= @withdraw.credits.to_f
+    if @withdraw.kol.frozen_amount.to_f >= @withdraw.credits.to_f
       @withdraw.update_attributes(:status => 'paid')
 
       respond_to do |format|
@@ -69,8 +69,8 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def reject
     authorize! :update, Withdraw
-    @withdraw.update_attributes(:status => 'rejected')
-
+    @withdraw.update_attributes(:status => 'rejected', :reject_reason => params[:reject_reason])
+    flash[:notice] = "拒绝成功, 已移到拒绝列表"
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Reject sucessfully!' }
       format.json { head :no_content }
@@ -79,7 +79,8 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def permanent_frozen
     authorize! :update, Withdraw
-    @withdraw.update_attributes(:status => 'permanent_frozen')
+    @withdraw.update_attributes(:status => 'permanent_frozen', :reject_reason => params[:reject_reason])
+    flash[:notice] = "永久拒绝成功, 已移到拒绝列表"
     respond_to do |format|
       format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
       format.json { head :no_content }
@@ -89,7 +90,8 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   def permanent_frozen_alipay
     authorize! :update, Withdraw
     AlipayAccountBlacklist.create!(account: @withdraw.alipay_no)
-    @withdraw.update_attributes(status: :rejected)
+    flash[:notice] = "冻结支付宝帐号成功, 已移到拒绝列表"
+    @withdraw.update_attributes(status: :rejected, :reject_reason => params[:reject_reason])
     redirect_to :back, notice: '冻结支付宝帐号成功!'
   end
 
