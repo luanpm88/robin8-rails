@@ -58,7 +58,7 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   scope :agreed, -> {where(status: ["agreed", "executing", "executed", "settled"])}
 
-  scope :valid_invites, -> { joins("LEFT JOIN (SELECT `campaign_invites`.`campaign_id` AS campaign_id, COUNT(*) AS valid_invite_count FROM `campaign_invites` WHERE `campaign_invites`.`status` = 'approved' OR `campaign_invites`.`status` = 'finished' OR `campaign_invites`.`status` = 'settled') AS `cte_tables` ON `campaigns`.`id` = `cte_tables`.`campaign_id`") }
+  scope :valid_invites, -> { joins("LEFT JOIN (SELECT `campaign_invites`.`campaign_id` AS campaign_id, COUNT(*) AS valid_invite_count FROM `campaign_invites` WHERE `campaign_invites`.`status` = 'approved' OR `campaign_invites`.`status` = 'finished' OR `campaign_invites`.`status` = 'settled' GROUP BY `campaign_invites`.`campaign_id`) AS `cte_tables` ON `campaigns`.`id` = `cte_tables`.`campaign_id`") }
   scope :sort_by_valid_invite_count, ->(dir) { valid_invites.order("valid_invite_count #{dir}") }
 
   before_validation :format_url
