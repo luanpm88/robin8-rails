@@ -2,39 +2,34 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   before_action :set_withdraw, only: [:agree, :reject, :permanent_frozen]
 
   def index
-    @withdraws = Withdraw.all.order('created_at DESC').includes(:kol)
-
-    formated_response "全部"
-  end
-
-  def search
-    search_by = params[:search_key]
-    kol = Kol.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params).first
-    if kol
-      @withdraws = Withdraw.where(:kol_id => kol.id).order('created_at DESC').includes(:kol)
-    end
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.all
     formated_response "全部"
   end
 
   def pending
-    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'pending')
 
     formated_response "待处理的"
   end
 
   def agreed
-    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'paid')
 
     formated_response "通过的"
   end
 
   def rejected
-    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC')
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'rejected')
 
     formated_response "拒绝的"
   end
 
   def agree
+    authorize! :update, Withdraw
     if @withdraw.kol.avail_amount.to_f > params[:credits].to_f
       @withdraw.update_attributes(:status => 'paid')
 
@@ -50,6 +45,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def reject
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'rejected')
 
     respond_to do |format|
@@ -59,6 +55,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def permanent_frozen
+    authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'permanent_frozen')
     respond_to do |format|
       format.html { redirect_to :back, notice: 'permanent frozen sucessfully!' }
@@ -67,6 +64,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def batch_handle
+    authorize! :update, Withdraw
     @withdraws = Withdraw.where(:id => params[:batch_ids].split(","))
     if @withdraws.all?{|t| t.status == 'pending' }
       if params[:handle_action] == 'batch_agree'
@@ -104,6 +102,9 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   end
 
   def formated_response(name)
+    @q = @withdraws.ransack(params[:q])
+    @withdraws = @q.result.order('created_at DESC').includes(:kol)
+
     respond_to do |format|
       format.html do
         @withdraws = @withdraws.paginate(paginate_params) unless @withdraw

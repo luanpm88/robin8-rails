@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
+    get 'edit_password' => 'dashboard#edit_password'
+    patch 'update_password' => 'dashboard#update_password'
     resources :track_urls
     resources :hot_items
     resources :helper_docs
     resources :helper_tags
-    resources :social_accounts do 
-      collection do 
+    resources :social_accounts do
+      collection do
         get :cities
       end
     end
@@ -18,6 +20,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'asking'
         get 'agreed'
+        get 'rejected'
         get 'testable'
       end
       member do
@@ -45,8 +48,13 @@ Rails.application.routes.draw do
 
 
       collection do
-        get 'search'
-        post 'search'
+        get 'banned'
+        get 'hot'
+        get 'from_mcn'
+        get 'from_app'
+        get 'applying'
+        get 'passed'
+        get 'rejected'
       end
       member do
         match 'campaign_compensation', via: [:post, :get]
@@ -64,12 +72,20 @@ Rails.application.routes.draw do
         post 'search'
       end
     end
-    resources :admin_users, except: [:destroy, :new, :create]
+
+    resources :admin_users do
+      member  do
+        get :edit_auth
+        patch :update_auth
+      end
+    end
+
     resources :campaign_invites, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
         get 'passed'
         get 'rejected'
+        post 'change_multi_img_status'
       end
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post, :get]
@@ -154,6 +170,6 @@ Rails.application.routes.draw do
 
     resources :lottery_activities
     resources :lottery_expresses
-    
+
   end
 end
