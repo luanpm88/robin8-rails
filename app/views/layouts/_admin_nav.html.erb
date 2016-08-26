@@ -77,10 +77,10 @@
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
+              <%= link_to '点击大于100的所有截图', marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
             </li>
             <li>
-              <%= link_to '点击大于100待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
+              <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
             </li>
             <li>
               <%= link_to '转发类型待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>

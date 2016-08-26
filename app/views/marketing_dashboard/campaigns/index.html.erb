@@ -162,6 +162,9 @@
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :created_at, "活动创建时间") %></th>
           <th>活动来源</th>
+          <th>总接单人数</th>
+          <th><%= sort_link(@q, :avail_click, "总有效点击") %></th>
+          <th><%= sort_link(@q, :total_click, "总点击") %></th>
           <th>操作</th>
         </tr>
       </thead>
@@ -180,6 +183,9 @@
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.created_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.campaign_from %></td>
+          <td><%= c.valid_invites.count %></td>
+          <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
+          <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click  %></td>
           <td>
             <%= link_to '详情', marketing_dashboard_campaign_path(c), target: "_blank" %> /
             <%= link_to '编辑', get_edit_brand_campaign_show_url(c), target: "_blank" %> /
