@@ -1,4 +1,4 @@
-class Material < ActiveRecord::Base
+class CpsMaterial < ActiveRecord::Base
   validates_uniqueness_of :sku_id
 
   before_create :cal_commision
@@ -16,13 +16,13 @@ class Material < ActiveRecord::Base
       sku_id = url.split("/").last.split(".").first rescue nil
       sku_ids << sku_id if sku_id.present?
     end
-    exist_sku_ids = Material.where(:sku_id => sku_ids).collect{|t| t.sku_id}
+    exist_sku_ids = CpsMaterial.where(:sku_id => sku_ids).collect{|t| t.sku_id}
     res = Jd::Service.get_goodsInfo(sku_ids - exist_sku_ids)
     if res['successed'] == true
       res['result'].each do |item|
-        Material.create!(sku_id: item['skuId'], img_url: item['imageUrl'], material_url: item['materialUrl'], shop_id: item['shopId'], unit_price: item['unitPrice'],
-                    start_date: get_time(item['startDate']), end_date: get_time(item['endDate']),goods_name: item['goodsName'],
-                    commision_ration_pc: item['commisionRatioPc'], commision_ration_wl: item['commisionRatioWl'],last_sync_at: Time.now )
+        CpsMaterial.create!(sku_id: item['skuId'], img_url: item['imageUrl'], material_url: item['materialUrl'], shop_id: item['shopId'], unit_price: item['unitPrice'],
+                            start_date: get_time(item['startDate']), end_date: get_time(item['endDate']), goods_name: item['goodsName'],
+                            commision_ration_pc: item['commisionRatioPc'], commision_ration_wl: item['commisionRatioWl'], last_sync_at: Time.now )
       end
     else
       Rails.logger.info "======sync_info_from_api----not successful"

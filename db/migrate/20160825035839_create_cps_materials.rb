@@ -1,6 +1,6 @@
-class CreateMaterials < ActiveRecord::Migration
+class CreateCpsMaterials < ActiveRecord::Migration
   def change
-    create_table :materials do |t|
+    create_table :cps_materials do |t|
       t.string :sku_id, :limit => 20, :uniq => true
       t.string :img_url
       t.string :material_url
@@ -22,6 +22,6 @@ class CreateMaterials < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :materials, :sku_id
+    add_index :cps_materials, :sku_id
   end
 end
