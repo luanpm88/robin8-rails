@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
+        get :push_all
         post :refresh_budget
       end
       collection do

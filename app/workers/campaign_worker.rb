@@ -36,6 +36,8 @@ class CampaignWorker
       campaign.remind_upload
     elsif job_type == "append_kols"
       campaign.append_kols
+    elsif job_type == "push_all_kols"
+      campaign.push_all_kols
     end
   end
 
