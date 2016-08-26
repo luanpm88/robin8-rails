@@ -161,19 +161,28 @@
           <a href="#">充值管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有支付宝充值', marketing_dashboard_alipay_orders_path %>
+              <%= link_to 'PC所有的充值', from_pc_marketing_dashboard_alipay_orders_path %>
             </li>
             <li>
-              <%= link_to '待付款订单', marketing_dashboard_alipay_orders_path(pending: true) %>
+              <%= link_to 'PC待付款充值', from_pc_marketing_dashboard_alipay_orders_path(q: {status_eq: "pending"}) %>
             </li>
             <li>
-              <%= link_to '已付款订单', marketing_dashboard_alipay_orders_path(paid: true) %>
+              <%= link_to 'PC已付款充值', from_pc_marketing_dashboard_alipay_orders_path(q: {status_eq: "paid"}) %>
             </li>
             <li>
-              <%= link_to '直接付款发起活动', campaigns_marketing_dashboard_alipay_orders_path %>
+              <%= link_to "PC线下的充值", marketing_dashboard_manual_recharges_path %>
             </li>
             <li>
-              <%= link_to "线下充值", marketing_dashboard_manual_recharges_path %>
+              <%= link_to 'APP所有的充值', from_app_marketing_dashboard_alipay_orders_path %>
+            </li>
+            <li>
+              <%= link_to 'APP待付款充值', from_app_marketing_dashboard_alipay_orders_path(q: {status_eq: "pending"}) %>
+            </li>
+            <li>
+              <%= link_to 'APP已付款充值', from_app_marketing_dashboard_alipay_orders_path(q: {status_eq: "paid"}) %>
+            </li>
+            <li>
+              <%= link_to 'APP发活动时直接付款', campaigns_marketing_dashboard_alipay_orders_path %>
             </li>
           </ul>
         </li>
