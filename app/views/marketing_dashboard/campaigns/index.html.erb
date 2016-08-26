@@ -158,6 +158,7 @@
           <th>活动类型</th>
           <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
           <th><%= sort_link(@q, :budget, "活动预算") %></th>
+          <th>剩余预算</th>
           <th><%= sort_link(@q, :start_time, "活动开始时间") %></th>
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :created_at, "活动创建时间") %></th>
@@ -179,6 +180,7 @@
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
+          <td><%= c.remain_budget %></td>
           <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.created_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
