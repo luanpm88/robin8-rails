@@ -163,7 +163,7 @@
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :created_at, "活动创建时间") %></th>
           <th>活动来源</th>
-          <th>总接单人数</th>
+          <th><%= sort_link(@q, :valid_invite_count, "总接单人数") %></th>
           <th><%= sort_link(@q, :avail_click, "总有效点击") %></th>
           <th><%= sort_link(@q, :total_click, "总点击") %></th>
           <th>操作</th>
