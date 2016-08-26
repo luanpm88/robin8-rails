@@ -76,14 +76,12 @@
             <li>
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
-            <!--
-              <li>
-                <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
-              </li>
-              <li>
-                <%= link_to '点击大于100待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
-              </li>
-            -->
+            <li>
+              <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
+            </li>
+            <li>
+              <%= link_to '点击大于100待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
+            </li>
             <li>
               <%= link_to '转发类型待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
@@ -144,6 +142,9 @@
             </li>
             <li>
               <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
             </li>
           </ul>
         </li>
@@ -239,11 +240,6 @@
               <%= link_to '按时段统计kol提现', kol_withdraw_statistics_in_time_range_marketing_dashboard_stastic_datas_path %>
             </li>
           </ul>
-        </li>
-        <% end %>
-        <% if can?(:read, Withdraw) %>
-        <li>
-          <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
         </li>
         <% end %>
         <% if can?(:read, HotItem) %>

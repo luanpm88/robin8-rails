@@ -8,6 +8,8 @@ module API
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           params[:current_sign_in_ip] = request.ip
+          kol_exist = Kol.find_by(mobile_number: params[:mobile_number]).present?
+          return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
           kol = Kol.reg_or_sign_in(params)
           kol.remove_same_device_token(params[:device_token])
           if params[:kol_uuid].present?
@@ -64,6 +66,7 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           kol = identity.kol   rescue nil
           if !kol
+            return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)

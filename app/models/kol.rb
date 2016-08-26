@@ -76,20 +76,29 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_keywords
 
-  scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
   else
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")}
     scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
+
+  ransacker :avail_amount do |parent|
+    Arel.sql('(`kols`.`amount` - `kols`.`frozen_amount`)')
+  end
+
+  scope :total_income_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS kol_id, SUM(`transactions`.`credits`) AS total_income FROM `transactions` WHERE `transactions`.`account_type` = 'Kol' AND `transactions`.`direct` = 'income' GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `kols`.`id` = `cte_tables`.`kol_id`") }
+  scope :sort_by_total_income, ->(dir) { total_income_of_transactions.order("total_income #{dir}") }
+
   before_save :set_kol_kol_role
 
   def set_kol_kol_role
@@ -549,6 +558,10 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_total_income )
+  end
+
   def get_uniq_identities
     self.identities.group("provider")
   end
@@ -586,6 +599,17 @@ class Kol < ActiveRecord::Base
       "普通"
     when -1
       "不热门"
+    end
+  end
+
+  BindMaxCount = Rails.env.production? ? 3 : 300
+  def self.device_bind_over_3(imei,idfa)
+    if imei.present?
+      return Kol.where(:IMEI => imei).size >= BindMaxCount
+    elsif idfa.present?
+      return Kol.where(:IDFA => idfa).size >= BindMaxCount
+    else
+      return false
     end
   end
 

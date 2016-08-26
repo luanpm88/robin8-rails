@@ -48,6 +48,13 @@ class User < ActiveRecord::Base
 
   include Models::Identities
 
+  ransacker :avail_amount do |parent|
+    Arel.sql('(`users`.`amount` - `users`.`frozen_amount`)')
+  end
+
+  scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
+  scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
+
   # class EmailValidator < ActiveModel::Validator
   #   def validate(record)
   #     if record.new_record? and Kol.exists?(:email=>record.email) and (record.email != nil or record.email != '')
@@ -176,6 +183,10 @@ class User < ActiveRecord::Base
     elsif conditions.has_key?(:mobile_number) || conditions.has_key?(:email)
       where(conditions.to_hash).first
     end
+  end
+
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_total_recharge )
   end
 
   def init_appid
