@@ -75,6 +75,10 @@
     <td>最近操作时间</td>
     <td><%= @kol.updated_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
   </tr>
+  <tr>
+    <td>注册创建时间</td>
+    <td><%= @kol.created_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+  </tr>
 </table>
 
 <table class="table table-bordered table-striped">
