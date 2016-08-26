@@ -136,6 +136,7 @@
       <th>活动ID</th>
       <th>活动名称</th>
       <th>活动类型</th>
+      <th>活动状态</th>
       <th><%= sort_link(@q, :campaign_deadline, "活动结束时间") %></th>
       <th>KOL ID</th>
       <th>KOL名称</th>
@@ -159,12 +160,13 @@
         <td><%= c.campaign_id %></td>
         <td><%= c.campaign.name rescue "" %></td>
         <td><%= c.campaign.per_budget_type rescue "" %></td>
+        <th><%= c.campaign.status rescue "" %></th>
         <td><%= c.campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
         <td><%= c.kol.name rescue "" %></td>
         <td><%= c.kol.kol_level rescue "" %></td>
-        <td><%= c.get_avail_click %></td>
-        <td><%= c.get_total_click %></td>
+        <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
+        <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click %></td>
         <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= c.campaign_observer_status %><%= c.observer_text %></td>
         <td><%= c.reject_reason %></td>

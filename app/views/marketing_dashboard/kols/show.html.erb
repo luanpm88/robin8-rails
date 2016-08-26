@@ -1,9 +1,137 @@
-<table class="table table-striped">
-  <% @kol.attributes.except(*sensitivity_list).each do |k, v| %>
-    <tr>
-      <td> <%= k.classify %></td>
-      <td> <%= v %> </td>
-    </tr>
-
-  <% end %>
+<h3>KOL基本信息</h3>
+  <%# @kol.attributes.except(*sensitivity_list).each do |k, v| %>
+<!--     <tr>
+      <td> <%#= k.classify %></td>
+      <td> <%#= v %> </td>
+    </tr> -->
+  <%# end %>
+<table class="table table-bordered table-striped">
+  <col width="200px" />
+  <tr>
+    <td>KOL ID</td>
+    <td><%= @kol.id %></td>
+  </tr>
+  <tr>
+    <td>KOL头像</td>
+    <td><%= image_tag @kol.avatar_url, class: "img-rounded", style: "max-width: 200px; max-height: 200px;" %></td>
+  </tr>
+  <tr>
+    <td>KOL昵称</td>
+    <td><%= @kol.name %></td>
+  </tr>
+  <tr>
+    <td>KOL手机</td>
+    <td><%= @kol.mobile_number %></td>
+  </tr>
+  <tr>
+    <td>身份证号</td>
+    <td><%= @kol.id_card %></td>
+  </tr>
+  <tr>
+    <td>KOL城市</td>
+    <td><%= @kol.app_city %></td>
+  </tr>
+  <tr>
+    <td>来源</td>
+    <td><%= @kol.utm_source %></td>
+  </tr>
+  <tr>
+    <td>Device Token</td>
+    <td><%= @kol.device_token %></td>
+  </tr>
+  <tr>
+    <td>APP平台</td>
+    <td><%= @kol.app_platform %></td>
+  </tr>
+  <tr>
+    <td>APP版本</td>
+    <td><%= @kol.app_version %></td>
+  </tr>
+  <tr>
+    <td>KOL等级</td>
+    <td><%= @kol.kol_level %></td>
+  </tr>
+  <tr>
+    <td>KOL角色</td>
+    <td><%= @kol.kol_role %></td>
+  </tr>
+  <tr>
+    <td>KOL标签</td>
+    <td><%= @kol.tags.map{|t| t.label }.join(" / ") if @kol.tags %></td>
+  </tr>
+  <tr>
+    <td>KOL大V审核状态</td>
+    <td><%= @kol.role_apply_status %></td>
+  </tr>
+  <tr>
+    <td>是否热门</td>
+    <td><%= @kol.is_hot_text %></td>
+  </tr>
+  <tr>
+    <td>拉黑时间</td>
+    <td><%= @kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+  </tr>
+  <tr>
+    <td>最近操作时间</td>
+    <td><%= @kol.updated_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+  </tr>
 </table>
+
+<table class="table table-bordered table-striped">
+  <col width="200px" />
+  <tr>
+    <td>支付宝账号</td>
+    <td><%= @kol.alipay_account %></td>
+  </tr>
+  <tr>
+    <td>冻结金额</td>
+    <td><%= @kol.frozen_amount %></td>
+  </tr>
+  <tr>
+    <td>可提现金额</td>
+    <td><%= @kol.avail_amount %></td>
+  </tr>
+  <tr>
+    <td>历史收益</td>
+    <td><%= @kol.total_income %></td>
+  </tr>
+</table>
+
+<h3>KOL统计信息</h3>
+<table class="table table-bordered table-striped">
+  <col width="200px" />
+  <tr>
+    <td>KOL历史提现记录</td>
+    <td>
+      共 <%= @kol.withdraws.count %> 次提现申请，<%= @kol.withdraws.approved.count %> 次提现成功，共提现 <%= @kol.withdraws.approved.sum(:credits) %> 元
+      <%= link_to "查看所有提现记录", marketing_dashboard_withdraws_path(q: { kol_id_eq: @kol.id }), target: "_blank" %>
+    </td>
+  </tr>
+  <tr>
+    <td>KOL参与的夺宝</td>
+    <td>
+      共参与 <%= @kol.paied_lottery_activity_orders.count %> 次 ，
+      花费 <%= @kol.paied_lottery_activity_orders.sum(:credits) %>元
+    </td>
+  </tr>
+  <tr>
+    <td>KOL的所有截图</td>
+    <td>
+      共 <%= CampaignInvite.where(kol_id: @kol).count %> 次截图上传
+      <%= link_to "查看所有截图", marketing_dashboard_campaign_invites_path(q: { kol_id_eq: @kol.id }), target: "_blank" %>
+    </td>
+  </tr>
+  <tr>
+    <td>KOL参与的所有活动</td>
+    <td>
+      共 <%= @kol.campaigns.count %> 个活动
+      <ul>
+        <% @kol.campaigns.each do |campaign|%>
+          <li><%= link_to campaign.name, marketing_dashboard_campaigns_path(q: { id_eq: 823 }), target: "_blank" %></li>
+        <% end %>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
