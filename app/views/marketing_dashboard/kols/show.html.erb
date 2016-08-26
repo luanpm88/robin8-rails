@@ -13,7 +13,7 @@
   </tr>
   <tr>
     <td>KOL头像</td>
-    <td><%= image_tag @kol.avatar_url, class: "img-rounded"%></td>
+    <td><%= image_tag @kol.avatar_url, class: "img-rounded", style: "max-width: 200px; max-height: 200px;" %></td>
   </tr>
   <tr>
     <td>KOL昵称</td>
@@ -22,6 +22,10 @@
   <tr>
     <td>KOL手机</td>
     <td><%= @kol.mobile_number %></td>
+  </tr>
+  <tr>
+    <td>身份证号</td>
+    <td><%= @kol.id_card %></td>
   </tr>
   <tr>
     <td>KOL城市</td>
@@ -76,20 +80,20 @@
 <table class="table table-bordered table-striped">
   <col width="200px" />
   <tr>
+    <td>支付宝账号</td>
+    <td><%= @kol.alipay_account %></td>
+  </tr>
+  <tr>
+    <td>冻结金额</td>
+    <td><%= @kol.frozen_amount %></td>
+  </tr>
+  <tr>
     <td>可提现金额</td>
     <td><%= @kol.avail_amount %></td>
   </tr>
   <tr>
     <td>历史收益</td>
     <td><%= @kol.total_income %></td>
-  </tr>
-  <tr>
-    <td>身份证号</td>
-    <td><%= @kol.id_card %></td>
-  </tr>
-  <tr>
-    <td>支付宝账号</td>
-    <td><%= @kol.alipay_account %></td>
   </tr>
 </table>
 
@@ -99,8 +103,15 @@
   <tr>
     <td>KOL历史提现记录</td>
     <td>
-      共 <%= @kol.withdraws.count %> 次提现申请，<%= @kol.withdraw_transactions.count %> 次提现成功
+      共 <%= @kol.withdraws.count %> 次提现申请，<%= @kol.withdraws.approved.count %> 次提现成功，共提现 <%= @kol.withdraws.approved.sum(:credits) %> 元
       <%= link_to "查看所有提现记录", marketing_dashboard_withdraws_path(q: { kol_id_eq: @kol.id }), target: "_blank" %>
+    </td>
+  </tr>
+  <tr>
+    <td>KOL参与的夺宝</td>
+    <td>
+      共参与 <%= @kol.paied_lottery_activity_orders.count %> 次 ，
+      花费 <%= @kol.paied_lottery_activity_orders.sum(:credits) %>元
     </td>
   </tr>
   <tr>
@@ -119,13 +130,6 @@
           <li><%= link_to campaign.name, marketing_dashboard_campaigns_path(q: { id_eq: 823 }), target: "_blank" %></li>
         <% end %>
       </ul>
-    </td>
-  </tr>
-  <tr>
-    <td>KOL参与的夺宝</td>
-    <td>
-      共参与 <%= @kol.paied_lottery_activity_orders.count %> 次 ，
-      花费 <%= @kol.paied_lottery_activity_orders.sum(:credits) %>元
     </td>
   </tr>
 </table>
