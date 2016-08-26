@@ -179,7 +179,7 @@ export default class DetailPartial extends React.Component {
                     </div>
                   }else{
                     <div className="cpi-tip-label">
-                      <label>请把下载链接填入上方活动链接处</label>
+                      <label>请把下载链接填入上方<a href="#campaign-link">活动链接</a>处</label>
                     </div>
                   }
                 }
