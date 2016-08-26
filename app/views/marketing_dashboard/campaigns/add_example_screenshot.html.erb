@@ -1,0 +1,44 @@
+<div class="container-fluid" style="padding: 100px 50px;">
+  <h1>请上传截图示例，并且添加备注</h1>
+  <%= form_for @campaign, url: save_example_screenshot_and_remark_marketing_dashboard_campaign_path(@campaign), html: { class: "form-horizontal", id: "form-horizontal", multiple: true } do |f| %>
+    <div>
+      <img src="<%= @campaign.cpi_example_screenshot %>"></img>
+    </div>
+    <span class="btn btn-primary" id="upload-img" style='margin-top:20px'>上传图片</span>
+    <%= f.hidden_field :cpi_example_screenshot, class: "form-control screenshot-input", required: true %>
+    <%= f.text_area :remark, class: "form-control", placeholder: '请填写关于截图要求的具体说明', required: true, rows: "5", style: 'width:400px; margin-top:20px' %>
+    <%= f.submit '提交', :class => 'btn btn-primary submit-admin', style: 'margin-top:20px' %>
+  <% end %>
+</div>
+
+<script>
+  var uploader = Qiniu.uploader({
+      runtimes: 'html5,flash,html4',      // 上传模式,依次退化
+      browse_button: 'upload-img',      // 上传选择的点选按钮，**必需**
+      uptoken_url: '/brand_api/v1/util/qiniu_token', // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
+      get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
+      unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
+      domain: '7xozqe.com1.z0.glb.clouddn.com',                   // bucket 域名，下载资源时用到，**必需**
+      container: 'form-horizontal',             // 上传区域DOM ID，默认是browser_button的父元素
+      max_file_size: '20mb',             // 最大文件体积限制
+      flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
+      max_retries: 3,                     // 上传失败最大重试次数
+      chunk_size: '4mb',                  // 分块上传时，每块的体积
+      multi_selection: false,
+      auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+      filters : {
+        prevent_duplicates: true,
+        //Specify what files to browse for
+        mime_types: [
+          {title : "Image files", extensions : "jpg,gif,png,jpeg"}, //限定jpg,gif,png,jpeg后缀上传
+        ]
+      },
+      init: {
+        'FileUploaded': function(up, file, info) {
+          const url = "http://" + up.getOption('domain') + '/' + file.target_name;
+          $("img").prop('src', url)
+          $(".screenshot-input").val(url)
+        }.bind(this)
+      }
+  });
+</script>

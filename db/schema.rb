@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824084519) do
+ActiveRecord::Schema.define(version: 20160825093350) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -392,6 +392,8 @@ ActiveRecord::Schema.define(version: 20160824084519) do
     t.string   "appid",                    limit: 255
     t.datetime "revoke_time"
     t.string   "admin_desc",               limit: 255
+    t.string   "cpi_example_screenshot",   limit: 255
+    t.string   "remark",                   limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree

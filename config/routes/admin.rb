@@ -25,12 +25,14 @@ Rails.application.routes.draw do
       end
       member do
         get :targets
+        get :add_example_screenshot
         get :recruit_targets
         post :add_target
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
         post :refresh_budget
+        patch :save_example_screenshot_and_remark
       end
       collection do
         put :reject
