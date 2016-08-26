@@ -62,14 +62,18 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def start_upload_screenshot
-    Time.now >  upload_start_at  rescue false
+    if campaign.is_recruit_type? || campaign.is_post_type?
+      return (Time.now >=  upload_start_at  rescue false)
+    else
+      return true
+    end
   end
 
   def can_upload_screenshot
     if campaign.is_recruit_type?
-      status == 'finished' && img_status != 'passed' && Time.now >= self.campaign.start_time  &&  Time.now < self.upload_end_at
+      status == 'finished' && img_status != 'passed' && Time.now >= self.campaign.start_time  &&  Time.now <= self.upload_end_at
     else
-      (status == 'approved' || status == 'finished') && img_status != 'passed' &&  Time.now > self.upload_start_at &&  Time.now < self.upload_end_at
+      (status == 'approved' || status == 'finished') && img_status != 'passed' &&  Time.now >= self.upload_start_at &&  Time.now <= self.upload_end_at
     end
   end
 
