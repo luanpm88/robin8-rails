@@ -113,7 +113,7 @@
         <td><%= campaign.trade_number %></td>
         <td><%= campaign.alipay_trade_no %></td>
         <td><%= campaign.alipay_amount %></td>
-        <td><%= campaign.alipay_status %></td>
+        <td><%= campaign.alipay_status.zero? ? "未付款" : "已付款" %></td>
         <td><%= campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= campaign.admin_desc %></td>
         <td><a href="" onclick="return false;" class="btn btn-warning change-campaign-desc" data-campaign-id=<%= campaign.id %> >修改备注</a></td>

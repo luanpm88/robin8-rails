@@ -7,39 +7,58 @@
   <div id="searchPanel" class="panel-body">
     <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>品牌主ID</label>
             <%= f.search_field :user_id_eq, class: "form-control", placeholder: "品牌主ID" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>品牌主手机</label>
             <%= f.search_field :user_mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>品牌主昵称</label>
             <%= f.search_field :user_name_cont, class: "form-control", placeholder: "品牌主昵称" %>
           </div>
         </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>充值金额</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.number_field :credits_gteq, step: 'any', class: "form-control", placeholder: "最小值" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.number_field :credits_lteq, step: 'any', class: "form-control", placeholder: "最大值" %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>订单号</label>
             <%= f.search_field :trade_no_cont, class: "form-control", placeholder: "订单号" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>订单状态</label>
+            <%= f.select :status_eq, AlipayOrder::STATUS, { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
           <div class="form-group">
             <label>支付宝订单号</label>
             <%= f.search_field :alipay_trade_no_cont, class: "form-control", placeholder: "支付宝订单号" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -61,9 +80,8 @@
       <th>邀请码</th>
       <th>下单时间</th>
       <th>订单号</th>
-      <th>充值方式</th>
       <th>支付宝订单号</th>
-      <th>充值金额</th>
+      <th><%= sort_link(@q, :credits, "充值金额") %></th>
       <th>税费</th>
       <th>充值状态</th>
       <th width="90px;">查看流水 (若未付款则为空)</th>
@@ -79,7 +97,6 @@
         <td><%= a.invite_code %></td>
         <td><%= a.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
         <td><%= a.trade_no %></td>
-        <td><%= a.recharge_from %></td>
         <td><%= a.alipay_trade_no %></td>
         <td><%= a.credits %></td>
         <td>
