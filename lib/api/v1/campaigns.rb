@@ -60,8 +60,8 @@ module API
           elsif campaign.need_finish
             CampaignWorker.perform_async(campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
-          elsif last_approved_invite.present? && last_approved_invite.approved_at < (Time.now - 30.minutes)
-            return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟,一次接多个会影响效果!' })
+          elsif last_approved_invite.present? && last_approved_invite.approved_at > (Time.now - 30.minutes)
+            return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' })
           else
             campaign_invite = current_kol.receive_campaign(params[:id])
             campaign_invite = campaign_invite.reload
