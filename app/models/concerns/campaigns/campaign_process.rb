@@ -128,6 +128,15 @@ module Campaigns
       end
     end
 
+    def push_all_kols
+      Kol.active.where("forbid_campaign_time is null or forbid_campaign_time <'#{Time.now}'").each do |kol|
+        kol.add_campaign_id self.id, true
+        unless kol.receive_campaign_ids.include?(kol.id.to_s)
+          Message.new_campaign(self, [kol.id])
+        end
+      end
+    end
+
     #finish_remark:  expired or fee_end
     def finish(finish_remark)
       self.reload

@@ -28,6 +28,13 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def push_all
+    key = "campaign_id_#{params[:id]}_push_all"
+    Rails.cache.write(key, 1, :expires_id => 10.days)
+    CampaignWorker.perform_async params[:id], "push_all_kols"
+    redirect_to request.referer
+  end
+
   def agreed
     @campaigns = Campaign.agreed.realable
     @q = @campaigns.ransack(params[:q])

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
+        get :push_all
         post :refresh_budget
       end
       collection do
@@ -136,7 +137,8 @@ Rails.application.routes.draw do
     end
     resources :alipay_orders do
       collection do
-        post 'search'
+        get "from_pc"
+        get "from_app"
         get "campaigns"
         post "search_campaigns"
         put "change_campaign_desc"
