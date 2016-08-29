@@ -4,7 +4,12 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   def index
     authorize! :read, User
 
-    @users = User.where(:is_active => true)
+    @users = User.all
+
+    if !params[:q] or params[:q][:is_active_eq].blank?
+      params[:q] = { is_active_eq: true }
+    end
+
     @q = @users.ransack(params[:q])
     @users = @q.result.order('created_at DESC').paginate(paginate_params)
   end
