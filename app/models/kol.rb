@@ -281,7 +281,7 @@ class Kol < ActiveRecord::Base
     income = 0
     count = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type || invite.campaign.is_recruit_type?)
+      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
       elsif invite.campaign.is_invite_type?
