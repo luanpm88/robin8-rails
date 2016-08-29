@@ -211,6 +211,8 @@
               <% if c.status == 'unexecute' %>
                 <% if c.per_budget_type == 'simple_cpi' && c.cpi_example_screenshot.blank? %>
                 <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <% elsif c.per_budget_type == 'cpa' && c.remark.blank? %>
+                <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
                 <% else %>
                 <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
                 <% end %>
