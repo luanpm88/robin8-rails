@@ -574,6 +574,13 @@ class Kol < ActiveRecord::Base
     avatar.url(:avatar) || read_attribute(:avatar_url)
   end
 
+  def avatar_url
+    if self.attributes[:avatar]
+      return avatar.url(:avatar)
+    end
+    get_avatar_url
+  end
+
   def is_big_v?
     self.kol_role == 'big_v' || self.kol_role == 'mcn_big_v'
   end
