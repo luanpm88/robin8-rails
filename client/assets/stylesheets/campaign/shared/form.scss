@@ -450,7 +450,12 @@
 }
 
 .creat-content-sources .sources-check label {
-  margin-right: 90px;
+  margin-right: 100px;
+}
+
+.creat-content-sources .sources-check .cpa-label {
+  position: relative;
+  left: -32px;
 }
 
 .creat-content-sources .sources-check label:first-child {
@@ -559,7 +564,6 @@
 }
 .creat-content-sources .sources-check {
   margin-top: 0;
-  margin-bottom: 25px;
 }
 .creat-content-sources .sources-check:last-child {
   margin-bottom: 0;
