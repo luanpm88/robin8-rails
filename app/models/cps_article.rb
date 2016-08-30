@@ -1,4 +1,8 @@
-class Carticle < ActiveRecord::Base
+class CpsArticle < ActiveRecord::Base
+  has_many :cps_article_materials
+  belongs_to :author, :foreign_key => :kol_id, :class_name => 'User'
+  has_many :cps_materials, :through => :cps_article_materials
+
   after_save :create_article
   def create_article
     unless self.body_changed?

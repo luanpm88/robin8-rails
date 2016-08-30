@@ -12,6 +12,8 @@ class CreateCpsMaterials < ActiveRecord::Migration
       t.float :commision_ration_wl
       t.float :commision_pc
       t.float :commision_wl
+      t.float :kol_commision_pc
+      t.float :kol_commision_wl
       t.string :goods_name
       t.string :category
       t.integer :shop_id

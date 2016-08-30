@@ -1,5 +1,6 @@
 module Jd
   class Service
+    #TODO  pagesize current is 1000. we must paginate   depend on hasMore column
     AppKey = Rails.application.secrets[:jd][:app_key]
     AppSecret = Rails.application.secrets[:jd][:app_secret]
     AccessToken = Rails.application.secrets[:jd][:access_token]
@@ -7,19 +8,19 @@ module Jd
     WebId = Rails.application.secrets[:jd][:web_id]
     ServerUrl = Rails.application.secrets[:jd][:server_url]
 
-    def self.get_code(sub_uniond_id = '123', material_url = 'http://item.m.jd.com/product/10125558111.html')
+    def self.get_code(sub_uniond_id = '123', material_url = 'http://item.m.jd.com/product/10125558111.html', channel = 'WL')
       info = {
         :promotionType => 7,
         :materialId => material_url,
         :unionId => UnionId,
         :subUnionId => sub_uniond_id,
-        :channel => 'WL',
+        :channel => channel,
         :webId => WebId
       }
       res = send_request('jingdong.service.promotion.getcode', info)
       queryjs_result = res["jingdong_service_promotion_getcode_responce"]["queryjs_result"]
       url = JSON.parse(queryjs_result)["url"]
-      puts url
+      return url
     end
 
     def self.get_batch_code(sub_union_id = '123', ids =[10125558111,10000099135], urls = ['http://item.jd.com/10125558111.html', 'http://item.jd.com/10000099135.html'] )
@@ -45,17 +46,20 @@ module Jd
       return res
     end
 
-    def self.query_commisions(page_index = 1, page_size  = 20, time =Time.now.strftime("%Y%m%d%H") )
+    def self.query_commisions(time =Time.now.strftime("%Y%m%d%H"), page_index = 1, page_size  = 1000)
       info = {
         :unionId => UnionId,
         :pageIndex => page_index,
         :pageSize => page_size,
         :time => time
       }
-      send_request('jingdong.UnionOrderService.queryCommisions', info)
+      res = send_request('jingdong.UnionOrderService.queryCommisions', info)
+      queryorders_result = res["jingdong_UnionOrderService_queryCommisions_responce"]["querycommisions_result"]
+      data = JSON.parse(queryorders_result)
+      return data
     end
 
-    def self.query_orders(page_index = 1, page_size  = 20, time =Time.now.strftime("%Y%m%d%H") )
+    def self.query_orders(time =Time.now.strftime("%Y%m%d%H"), page_index = 1, page_size  = 1000 )
       info = {
         :unionId => UnionId,
         :pageIndex => page_index,
@@ -65,7 +69,7 @@ module Jd
       res = send_request('jingdong.UnionOrderService.queryOrders', info)
       queryorders_result = res["jingdong_UnionOrderService_queryOrders_responce"]["queryorders_result"]
       data = JSON.parse(queryorders_result)
-      puts data
+      return data
     end
 
     def self.send_request(method, params)

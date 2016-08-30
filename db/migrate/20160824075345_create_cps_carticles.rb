@@ -1,6 +1,6 @@
-class CreateCarticles < ActiveRecord::Migration
+class CreateCpsCarticles < ActiveRecord::Migration
   def change
-    create_table   :carticles do |t|
+    create_table   :cps_carticles do |t|
       t.references :kol_id
       t.text       :body
       t.timestamps null: false

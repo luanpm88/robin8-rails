@@ -1,26 +1,25 @@
 class CpsMaterial < ActiveRecord::Base
   validates_uniqueness_of :sku_id
 
-  before_create :cal_commision
+  before_create :cal_commision, :cal_kol_commision
 
   BaseTax = 0.3
   # 根据url 自动同步信息从
   def self.sync_info_from_api(urls)
     url_arr = urls.split(",")
-    if url_arr.size >= 100
-      Rails.logger.info "======size can not over 100"
-      return
-    end
+    Rails.logger.info "======size can not over 100" && return  if url_arr.size >= 100
     sku_ids = []
     urls.each do |url|
       sku_id = url.split("/").last.split(".").first rescue nil
       sku_ids << sku_id if sku_id.present?
     end
     exist_sku_ids = CpsMaterial.where(:sku_id => sku_ids).collect{|t| t.sku_id}
-    res = Jd::Service.get_goodsInfo(sku_ids - exist_sku_ids)
-    if res['successed'] == true
+    need_sync_sku_ids =   sku_ids - exist_sku_ids
+    return if need_sync_sku_ids.size == 0
+    res = Jd::Service.get_goods_info(need_sync_sku_ids)
+    if res['sucessed'] == true
       res['result'].each do |item|
-        CpsMaterial.create!(sku_id: item['skuId'], img_url: item['imageUrl'], material_url: item['materialUrl'], shop_id: item['shopId'], unit_price: item['unitPrice'],
+        CpsMaterial.create!(sku_id: item['skuId'], img_url: item['imgUrl'], material_url: item['materialUrl'], shop_id: item['shopId'], unit_price: item['unitPrice'],
                             start_date: get_time(item['startDate']), end_date: get_time(item['endDate']), goods_name: item['goodsName'],
                             commision_ration_pc: item['commisionRatioPc'], commision_ration_wl: item['commisionRatioWl'], last_sync_at: Time.now )
       end
@@ -45,7 +44,12 @@ class CpsMaterial < ActiveRecord::Base
   end
 
   def cal_commision
-    self.commision_pc = (self.unit_price *  commision_ration_pc * (1 - BaseTax) * 0.01).round(1)
-    self.commision_wl = (self.unit_price *  commision_ration_wl * (1 - BaseTax) * 0.01).round(1)
+    self.commision_pc = (self.unit_price *  commision_ration_pc * 0.01).round(2)
+    self.commision_wl = (self.unit_price *  commision_ration_wl * 0.01).round(2)
+  end
+
+  def cal_kol_commision
+    self.kol_commision_pc = (self.unit_price *  commision_ration_pc * (1 - BaseTax) * 0.01).round(2)
+    self.kol_commision_wl = (self.unit_price *  commision_ration_wl * (1 - BaseTax) * 0.01).round(2)
   end
 end

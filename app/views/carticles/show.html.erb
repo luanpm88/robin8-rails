@@ -11,7 +11,7 @@
       好用不贵的14支韩系口红
     </title>
 
-    
+
     <%= stylesheet_link_tag    'cpses/app-webview-v2', media: 'all', 'data-turbolinks-track' => true %>
   </head>
   <body class="">
@@ -21,7 +21,7 @@
         </div>
 
         <%= render "carticles/header_partial" %>
-        <% Carticle.last.get_formated_content.each do |item| %>
+        <% CpsArticle.last.get_formated_content.each do |item| %>
           <% if item[0] == "text" %>
             <%= render "carticles/text_partial", :text => item[1] %>
           <% end %>
