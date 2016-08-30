@@ -17,6 +17,11 @@ module API
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
+
+          optional :age, type: String, default: '全部'
+          optional :gender, type:String, default: '全部'
+          optional :region, type: String, default: '全部'
+          optional :tags, type: String, default: '全部'
         end
         post "/" do
           brand_user = current_kol.find_or_create_brand_user
@@ -70,6 +75,11 @@ module API
           optional :start_time, type: DateTime
           optional :deadline, type: DateTime
           optional :budget, type: Float
+
+          optional :age, type: String, default: '全部'
+          optional :gender, type:String, default: '全部'
+          optional :region, type: String, default: '全部'
+          optional :tags, type: String, default: '全部'
         end
         put '/update' do
           brand_user = current_kol.find_or_create_brand_user

@@ -5,7 +5,7 @@ class KolUpdateCampaignService
     @user                   = user
     @campaign               = campaign
     @campaign_params = permited_params_from args
-    
+
     @errors                 = []
   end
 
@@ -28,13 +28,14 @@ class KolUpdateCampaignService
 
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
-    
+
     if @errors.size > 0
       return false
     end
     begin
       ActiveRecord::Base.transaction do
-        @campaign.update_attributes(@campaign_params)
+        @campaign.update_attributes @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
+        update_campaign_targets
       end
     rescue Exception => e
       @errors.concat e.record.errors.messages.map(&:last).flatten
@@ -53,7 +54,7 @@ class KolUpdateCampaignService
   end
 
   def permited_params_from params
-    params.nil? ? {} : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
+    params.nil? ? {} : params.select { |k,v| KolCreateCampaignService::PERMIT_PARAMS.include? k }
   end
 
   def is_cpa_campaign?
@@ -87,10 +88,9 @@ class KolUpdateCampaignService
   def update_campaign_targets
     @campaign.campaign_targets.destroy_all
 
-    @campaign_params[:target].each do |k,v|
-      @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
+    ['age', 'region', 'gender', 'tags'].each do |target_type|
+      @campaign.campaign_targets.create!({target_type: target_type, target_content: @campaign_params[target_type.to_sym]})
     end
   end
 
 end
-
