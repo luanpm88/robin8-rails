@@ -181,5 +181,11 @@ Rails.application.routes.draw do
         get :disban
       end
     end
+
+    resources :verify_codes do
+      collection do
+        post 'get_verify_code'
+      end
+    end
   end
 end
