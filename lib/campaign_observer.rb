@@ -35,7 +35,7 @@ module CampaignObserver
       lines << "有嫌疑的 待审核截图有 #{suspected_count}个"
     end
     if lines.present?
-      ["15300731907", "15221773929", "18917797087", "13817164642"].each do |tel|
+      ["15300731907", "15221773929", "18917797087", "13817164642", "13917397090"].each do |tel|
         Emay::SendSms.to tel, lines.join(";\n")
       end
     end
