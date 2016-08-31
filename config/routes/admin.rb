@@ -3,6 +3,13 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
+    resources :cps_materials do
+
+    end
+    resources :cps_articles
+    resources :cps_article_shares
+    resources :cps_promotion_orders
+
     resources :track_urls
     resources :hot_items
     resources :helper_docs

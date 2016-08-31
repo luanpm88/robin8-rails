@@ -4,6 +4,12 @@ class CpsArticle < ActiveRecord::Base
   has_many :cps_materials, :through => :cps_article_materials
 
   after_save :create_article
+  mount :cover, ImageUploader
+
+  def show_url
+
+  end
+
   def create_article
     unless self.body_changed?
       return
@@ -43,12 +49,4 @@ class CpsArticle < ActiveRecord::Base
     "cps_content_key_#{self.id}"
   end
 
-  def get_formated_content
-    formated_content = Rails.cache.fetch cps_content_key
-    if formated_content.blank?
-      create_article
-      formated_content = Rails.cache.fetch cps_content_key
-    end
-    formated_content
-  end
 end

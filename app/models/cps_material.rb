@@ -1,13 +1,14 @@
 class CpsMaterial < ActiveRecord::Base
   validates_uniqueness_of :sku_id
-
   before_create :cal_commision, :cal_kol_commision
 
+  scope :enabled, -> {where(:enabled => true)}
+
+  #TODO
+  Categories = {food: '美食', clothing: '服饰', beauty: '美妆', digital: '数码', books: '图书'}
   BaseTax = 0.3
   # 根据url 自动同步信息从
-  def self.sync_info_from_api(urls)
-    url_arr = urls.split(",")
-    Rails.logger.info "======size can not over 100" && return  if url_arr.size >= 100
+  def self.sync_info_from_api(urls = [])
     sku_ids = []
     urls.each do |url|
       sku_id = url.split("/").last.split(".").first rescue nil

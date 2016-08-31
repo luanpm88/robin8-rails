@@ -1,9 +1,9 @@
 module API
   module V1_7
     module Entities
-      module Carticles
-        class Detail < Grape::Entity
-          expose :id, :body
+      module CpsArticles
+        class Summary < Grape::Entity
+          expose :id, :title, :cover_url, :text
           expose :url do |carticle|
             "/carticles/#{carticle.id}"
           end

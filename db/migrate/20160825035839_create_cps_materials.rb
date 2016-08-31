@@ -20,6 +20,7 @@ class CreateCpsMaterials < ActiveRecord::Migration
       t.datetime :last_sync_at
 
       t.boolean :enabled, :default => true
+      t.integer :position, :default => 0
 
       t.timestamps null: false
     end

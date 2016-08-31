@@ -1,0 +1,25 @@
+/*
+ *= require mobile/cps_articles
+*/
+
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei",sans-serif;
+  font-weight: normal;
+}
+
+html{
+  background: #666;
+}
+
+body {
+  max-width: 640px;
+  margin: 0 auto;
+  background: #f0f3f5;
+}
+
+
