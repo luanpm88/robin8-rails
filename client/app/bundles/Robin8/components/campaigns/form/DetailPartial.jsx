@@ -66,6 +66,9 @@ export default class DetailPartial extends React.Component {
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
       }
+      if(per_budget_type.value == 'cpa') {
+        per_action_budget.onChange("1.0")
+      }
       per_action_budget.onFocus();
       per_action_budget.onBlur();
     }.bind(this))
@@ -148,7 +151,7 @@ export default class DetailPartial extends React.Component {
                       <div className="clearfix">
                         <p className="generate-short-url-text">生成链接</p>
                         <div className="action-short-url_section">
-                          <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
+                          <input {...short_url} type="text" className="action-short-url" readOnly></input>
                           <ShowError field={short_url} />
                           <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
                         </div>
