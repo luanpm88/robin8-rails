@@ -248,7 +248,7 @@ module Campaigns
       else
         kol_budget_rate = KolBudgetRate
       end
-      if is_click_type?
+      if is_click_type?  || is_cpi_type? || is_cpa_type?
         actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
         point1, point2 = actual_per_budget.divmod(0.1)
         point2 = point2.round(2)

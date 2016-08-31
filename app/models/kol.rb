@@ -213,9 +213,10 @@ class Kol < ActiveRecord::Base
 
 
   def self.fetch_kol(kol_id)
-    Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
-      Kol.find(kol_id)
-    end    rescue nil
+    Kol.find(kol_id)
+    # Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
+    #   Kol.find(kol_id)
+    # end    rescue nil
   end
 
   def update_click_threshold
