@@ -107,6 +107,18 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
 
+  def add_example_screenshot
+    @campaign = Campaign.find(params[:id])
+  end
+
+  def save_example_screenshot_and_remark
+    @campaign = Campaign.find(params[:id])
+    @campaign.update_attributes(cpi_example_screenshot: params[:campaign][:cpi_example_screenshot],
+      remark: params[:campaign][:remark])
+    flash[:notice] = "保存成功"
+    render :add_example_screenshot
+  end
+
   def delete_target
     authorize! :update, Campaign
     @campaign_target = CampaignTarget.find params[:id]
@@ -149,7 +161,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def add_or_remove_recruit_kol
     authorize! :update, Campaign
-    
+
     kol_id = params[:kol_id]
     campaign_id = params[:campaign_id]
     agree_reason = params[:agree_reason]

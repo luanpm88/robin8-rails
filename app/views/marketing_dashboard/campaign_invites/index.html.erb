@@ -132,6 +132,7 @@
     <tr>
       <%= raw '<th></th>' if @batch_visible %>
       <th>截图</th>
+      <th>正确截图示例</th>
       <th>截图状态</th>
       <th>活动ID</th>
       <th>活动名称</th>
@@ -156,6 +157,7 @@
           <td><%= check_box_tag "campaign_invites_ids[]", c.id %></td>
         <% end %>
         <td><%= link_to image_tag(c.screenshot, :width => "100px"), c.screenshot, :target => "_blank"%></td>
+        <td><%= link_to image_tag(c.campaign.cpi_example_screenshot, :width => "100px"), c.campaign.cpi_example_screenshot, :target => "_blank"%></td>
         <td><%= c.img_status %></td>
         <td><%= c.campaign_id %></td>
         <td><%= c.campaign.name rescue "" %></td>

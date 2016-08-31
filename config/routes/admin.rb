@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       end
       member do
         get :targets
+        get :add_example_screenshot
         get :recruit_targets
         post :add_target
         post :add_or_remove_recruit_kol
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
         get :stop
         get :push_all
         post :refresh_budget
+        patch :save_example_screenshot_and_remark
       end
       collection do
         put :reject
@@ -179,6 +181,12 @@ Rails.application.routes.draw do
     resources :alipay_account_blacklists do
       member do
         get :disban
+      end
+    end
+
+    resources :verify_codes do
+      collection do
+        post 'get_verify_code'
       end
     end
   end

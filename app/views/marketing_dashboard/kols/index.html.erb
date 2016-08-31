@@ -73,7 +73,7 @@
       <th>是否热门</th>
       <th><%= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>
       <th><%= sort_link(@q, :avail_amount, "可提现金额") %></th>
-      <th><%= sort_link(@q, :total_income, "历史收益") %></th>
+      <th><%= sort_link(@q, :historical_income, "历史收益") %></th>
       <th>操作</th>
     </tr>
   </thead>
@@ -93,7 +93,7 @@
         <td><%= k.is_hot_text %></td>
         <td><%= k.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= k.avail_amount %></td>
-        <td><%= k.total_income %></td>
+        <td><%= k.historical_income %></td>
         <td>
           <%= link_to '资料编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %> /
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %> /
