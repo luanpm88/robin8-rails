@@ -52,15 +52,10 @@ body{
   font-size: 13px;
   color: #666;
 }
-.topic-info .author .avatar{
-  display: block;
+.topic-info .author .avatar img{
   float: left;
   width: 18px;
   height: 18px;
-  border-radius: 18px;
-  margin-right: 7px;
-  background: #f4f4f4 center no-repeat;
-  background-size: cover;
 }
 .topic-info .author span{
   float: right;

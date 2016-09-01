@@ -23,7 +23,8 @@ Rails.application.routes.draw do
   get 'campaign_share' => "campaign_show#share"
   get 'read_hot_item' => 'commons#read_hot_item'
 
-  get "carticles/:id" => "pages#carticles"
+  get "cps_articles/:id" => "cps_articles#show"
+  get "cps_article_shares/:id" => "cps_articles#share_show"
 
   resources :identities do
     member do

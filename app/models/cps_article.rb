@@ -1,18 +1,25 @@
 class CpsArticle < ActiveRecord::Base
+  include Redis::Objects
   has_many :cps_article_materials
   belongs_to :author, :foreign_key => :kol_id, :class_name => 'User'
+  belongs_to :kol
   has_many :cps_materials, :through => :cps_article_materials
-  count :read_count
+  counter :read_count
 
   before_save :build_article_materials
   mount_uploader :cover, ImageUploader
 
+  # status  pending, passed, rejected
+  scope :pending, -> {where(:status => 'pending')}
+  scope :passed, -> {where(:status => 'passed')}
+  scope :rejected, -> {where(:status => 'rejected')}
+
   def show_url
-    "#{Rails.application.secrets[:host]}/mobile/cps_materials/#{self.id}"
+    "#{Rails.application.secrets[:host]}/cps_articles/#{self.id}"
   end
 
   def content_arr
-    self.content.split(/(<text>)|(<img>)|(<product>)/)       rescue []
+    self.content.split(/(<text>)|(<img>)|(<product>)/).compact       rescue []
   end
 
   def parse_content

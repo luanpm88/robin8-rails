@@ -23,7 +23,7 @@ module Jd
       return url
     end
 
-    def self.get_batch_code(sub_union_id = '123', ids =[10125558111,10000099135], urls = ['http://item.jd.com/10125558111.html', 'http://item.jd.com/10000099135.html'] )
+    def self.get_batch_code(sub_union_id = '123', ids =[10125558111,1626258570], urls = ['http://item.m.jd.com/product/10125558111.html', 'http://item.m.jd.com/product/1626258570.html'] )
       info = {
         :id => ids.collect{|t| t.to_s}.join(","),
         :url => urls.join(","),
@@ -32,7 +32,9 @@ module Jd
         :channel => 'WL',
         :webId => WebId
       }
-      send_request('jingdong.service.promotion.batch.getcode', info)
+      res = send_request('jingdong.service.promotion.batch.getcode', info)
+      batch_result = res["jingdong_service_promotion_batch_getcode_responce"]["querybatch_result"]
+      return JSON.parse(queryjs_result)["urlList"]
     end
 
     def self.get_goods_info(sku_ids = [10125558111,10000099135])
