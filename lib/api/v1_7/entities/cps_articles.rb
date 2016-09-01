@@ -3,10 +3,7 @@ module API
     module Entities
       module CpsArticles
         class Summary < Grape::Entity
-          expose :id, :title, :cover_url, :text
-          expose :url do |carticle|
-            "/carticles/#{carticle.id}"
-          end
+          expose :id, :title, :cover_url, :content, :show_url, :status, :check_remark
         end
       end
     end

@@ -34,16 +34,16 @@ module API
           cps_article.title = params[:title]
           cps_article.content = params[:content]
           cps_article.cover = params[:cover] if params[:cover].present?
-          cps_article.save
+          cps_article.save!
           present :error, 0
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticle::Summary
+          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
         end
 
         get ':id/show' do
           cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticle::Summary
+          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
         end
       end
     end

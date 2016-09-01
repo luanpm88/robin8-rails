@@ -1,0 +1,78 @@
+*{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+  font: inherit;
+  vertical-align: baseline;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-text-size-adjust:none;
+}
+
+body{
+  line-height: 1;
+  font-family: "helvetica neue",arial,sans-serif,"Microsoft Yahei";
+  color: #666666;
+  font-size: 14px;
+  background-color: #f0f0f0;
+}
+
+.wrapper{
+  background-color: #fff;
+  padding-top: 0;
+  margin: 0 auto;
+  max-width: 640px;
+  position: relative;
+  width: 100%;
+  min-width: 320px;
+}
+.cover{
+  background: #f4f4f4 center no-repeat;
+  background-size: cover;
+  height: 176px;
+}
+@media screen and (min-width: 321px) {
+  .cover{height: 206px;}
+}
+@media screen and (min-width: 376px) {
+  .cover{height: 227px;}
+}
+.topic-info{
+  padding: 0 20px 15px;
+}
+.topic-info .title{
+  font-size: 18px;
+  color: #555;
+  line-height: 1.6;
+  padding: 15px 0;
+}
+.topic-info .author{
+  height: 18px;
+  line-height: 18px;
+  font-size: 13px;
+  color: #666;
+}
+.topic-info .author .avatar{
+  display: block;
+  float: left;
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  margin-right: 7px;
+  background: #f4f4f4 center no-repeat;
+  background-size: cover;
+}
+.topic-info .author span{
+  float: right;
+  font-size: 12px;
+  color: #999;
+}
+.topic-info .author span i.uv{
+  float: left;
+  display: inline-block;
+  width: 13px;
+  height: 10px;
+  margin: 4px 5px 0 0;
+  background: url('http://7xlxny.com2.z0.glb.qiniucdn.com/appview/v2/uv.png') center no-repeat;
+  background-size: 13px 10px;
+}

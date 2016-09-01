@@ -1,5 +1,4 @@
 /*
- *= require mobile/cps_articles
 */
 
 
@@ -12,14 +11,13 @@
   font-weight: normal;
 }
 
-html{
-  background: #666;
+body{
+  line-height: 1;
+  font-family: "helvetica neue",arial,sans-serif,"Microsoft Yahei";
+  color: #666666;
+  font-size: 14px;
+  background-color: #f0f0f0;
 }
 
-body {
-  max-width: 640px;
-  margin: 0 auto;
-  background: #f0f3f5;
-}
 
 
