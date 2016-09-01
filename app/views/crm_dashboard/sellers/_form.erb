@@ -1,0 +1,21 @@
+<%= form_for([:crm_dashboard, @seller], html: { class: "form-horizontal", multiple: true}) do |f| %>
+
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">销售人员手机号码</label>
+    <div class="col-sm-10">
+      <%= f.text_field :mobile_number, :placeholder => '请输入手机号码', :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+    <div class="col-sm-10">
+      <%= f.password_field :password, :placeholder => '请输入密码(大于6位)', :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit '提交', :class => 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>

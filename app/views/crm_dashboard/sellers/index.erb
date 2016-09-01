@@ -1,0 +1,30 @@
+<h3>
+  管理员列表
+  <%= link_to "创建销售帐号", new_crm_dashboard_seller_path, class: "btn btn-primary pull-right" %>
+</h3>
+<hr />
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>电话号码</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sellers.each do |seller| %>
+      <tr>
+        <td> <%= seller.id %> </td>
+        <td> <%= seller.mobile_number %> </td>
+        <td>
+          <%= link_to "编辑", edit_crm_dashboard_seller_path(seller) %> /
+          <%= link_to "删除", crm_dashboard_seller_path(seller), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @sellers, renderer: BootstrapPagination::Rails  %>

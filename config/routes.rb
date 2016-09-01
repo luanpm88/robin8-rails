@@ -1,6 +1,6 @@
 require 'sidekiq/web'
 
-%w(admin).each do |route_name|
+%w(admin crm).each do |route_name|
   load "#{Rails.root}/config/routes/#{route_name}.rb"
 end
 
