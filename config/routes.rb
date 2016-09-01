@@ -5,6 +5,7 @@ require 'sidekiq/web'
 end
 
 Rails.application.routes.draw do
+  mount Crm::Engine, at: "crm"
   mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'

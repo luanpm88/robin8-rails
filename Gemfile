@@ -242,3 +242,5 @@ gem 'spreadsheet'
 
 # https://github.com/RolifyCommunity/rolify
 gem "rolify"
+
+gem 'crm', path: 'crm'
