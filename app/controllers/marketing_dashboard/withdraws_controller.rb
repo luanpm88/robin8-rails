@@ -91,7 +91,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
     authorize! :update, Withdraw
     AlipayAccountBlacklist.create!(account: @withdraw.alipay_no)
     flash[:notice] = "冻结支付宝帐号成功, 已移到拒绝列表"
-    @withdraw.update_attributes(status: :rejected, :reject_reason => params[:reject_reason])
+    @withdraw.update_attributes(status: :permanent_frozen, :reject_reason => params[:reject_reason])
     redirect_to :back, notice: '冻结支付宝帐号成功!'
   end
 

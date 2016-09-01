@@ -3,7 +3,7 @@ class AlipayOrder < ActiveRecord::Base
 
   validates :trade_no, presence: true, uniqueness: true
   validates :credits, presence: true
-  validates :credits, numericality: { greater_than_or_equal_to: 500 }
+  validates :credits, numericality: { greater_than_or_equal_to: 100 }
 
   validates_inclusion_of :status, :in => STATUS
 

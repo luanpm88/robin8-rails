@@ -22,10 +22,9 @@
         <div class="field form-group" style="position: relative;">
           <%= f.label "Kol等级" %>
           <ul>
-            <li>等级A的用户 campaign 有效点击 上限是100</li>
-            <li>等级B用户 有效点击 点击上限是10</li>
+            Kol 等级[[S级别的用户 是 5000,有效点击上限是100；B级别的用户,有效点击上限是50, C是10]
           </ul>
-          <%= f.select :kol_level, ["A", "B", "S"], {}, { class: "form-control" } %>
+          <%= f.select :kol_level, ["A", "B", "C", "S"], {}, { class: "form-control" } %>
         </div>
         <div class="actions">
           <%= f.submit "确定", class: "btn btn-warning btn-block" %>
