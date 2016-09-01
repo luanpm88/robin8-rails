@@ -26,6 +26,7 @@ class SelectCampaignPartial extends Component {
                 <p>KOL分享文章到朋友圈后，</p>
                 <p>[CPC]按照好友有效点击数付费</p>
                 <p>[CPP]按照KOL转发一次性付费</p>
+                <p>[CPI]按照KOL下载一次性付费</p>
                 <p>[CPA]按照KOL分享后效果付费</p>
               </div>
               <div className="at-box-bt at-box-bt-left">
