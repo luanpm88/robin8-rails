@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
 
     resources :sellers
+    resources :customers
   end
 end
