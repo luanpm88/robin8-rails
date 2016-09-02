@@ -1,13 +1,12 @@
 module Crm
   class ApplicationController < ActionController::Base
-    # skip_before_action :verify_authenticity_token
 
     def error_403!(message)
       render json: { error: 1, message: message }
     end
 
     def current_seller
-      @current_seller = Seller.find_by(private_token: '123456')
+      @current_seller = Seller.find_by(private_token: request.headers["Authorization"])
     end
 
     def authenticate!
