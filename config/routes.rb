@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   mount Crm::Engine, at: "/crm"
   mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
+  scope :subdomain => 'open' do
+      mount OpenAPI => '/api'
+  end
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
   mount BrandAPI => '/brand_api'
