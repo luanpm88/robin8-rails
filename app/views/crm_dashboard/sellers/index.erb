@@ -1,5 +1,5 @@
 <h3>
-  管理员列表
+  销售人员列表
   <%= link_to "创建销售帐号", new_crm_dashboard_seller_path, class: "btn btn-primary pull-right" %>
 </h3>
 <hr />
@@ -7,7 +7,10 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>姓名</th>
+      <th>头像</th>
       <th>电话号码</th>
+      <th>部门</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -16,8 +19,10 @@
     <% @sellers.each do |seller| %>
       <tr>
         <td> <%= seller.id %> </td>
+        <td><%= link_to image_tag(seller.avatar_url, :width => "50px"), seller.avatar_url, :target => "_blank"%></td>
         <td> <%= seller.mobile_number %> </td>
         <td>
+          <%= link_to "所联系的客户", customers_crm_dashboard_seller_path(seller), target: "_blank"%> /
           <%= link_to "编辑", edit_crm_dashboard_seller_path(seller) %> /
           <%= link_to "删除", crm_dashboard_seller_path(seller), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
         </td>
@@ -27,4 +32,4 @@
 
 </table>
 
-<%= will_paginate @sellers, renderer: BootstrapPagination::Rails  %>
+<%= will_paginate @sellers, renderer: BootstrapPagination::Rails %>

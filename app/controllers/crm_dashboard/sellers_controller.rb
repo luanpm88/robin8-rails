@@ -9,7 +9,7 @@ class CrmDashboard::SellersController < CrmDashboard::BaseController
   end
 
   def create
-    @seller = Crm::Seller.new(params.require(:seller).permit(:mobile_number, :password).merge(password_confirmation: params[:seller][:password], private_token: SecureRandom.hex))
+    @seller = Crm::Seller.new(seller_params.merge(password_confirmation: params[:seller][:password], private_token: SecureRandom.hex))
     if @seller.save
       flash[:notice] = "创建成功"
       redirect_to action: :index
@@ -25,7 +25,7 @@ class CrmDashboard::SellersController < CrmDashboard::BaseController
 
   def update
     @seller = Crm::Seller.find(params[:id])
-    @seller.update_attributes(params.require(:seller).permit(:mobile_number, :password).merge(password_confirmation: params[:seller][:password], private_token: SecureRandom.hex))
+    @seller.update_attributes(seller_params.merge(password_confirmation: params[:seller][:password], private_token: SecureRandom.hex))
     if @seller.errors.empty?
       flash[:notice] = "修改成功"
       redirect_to action: :index
@@ -44,5 +44,16 @@ class CrmDashboard::SellersController < CrmDashboard::BaseController
     else
       flash[:alert] = "删除失败，请重试"
     end
+  end
+
+  def customers
+    @seller = Crm::Seller.find(params[:id])
+    @customers = @seller.customers.order('created_at DESC').paginate(paginate_params)
+  end
+
+  private
+
+  def seller_params
+    params.require(:seller).permit(:mobile_number, :name, :department, :avatar, :invite_code, :password)
   end
 end
