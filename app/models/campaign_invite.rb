@@ -139,7 +139,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def get_avail_click
-    status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
+    if ['post', 'simple_cpi'].include?(self.campaign.per_budget_type)
+      get_total_click
+    else
+      status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
+    end
   end
 
   def self.origin_share_url(uuid)
