@@ -4,7 +4,8 @@ class MarketingDashboard::BaseController < ApplicationController
   layout 'admin'
 
   def current_admin_ability
-    current_ability ||= AdminAbility.new(current_admin_user)
+    #TODO cache current_ability
+    @current_ability ||= AdminAbility.new(current_admin_user)
   end
 
   def can?(*args)
