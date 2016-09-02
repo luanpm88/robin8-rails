@@ -137,6 +137,11 @@ Rails.application.routes.draw do
         get :switch
       end
     end
+    resources :app_upgrades do
+      member do
+        get :switch
+      end
+    end
     resources :alipay_orders do
       collection do
         get "from_pc"
