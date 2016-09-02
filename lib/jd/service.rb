@@ -34,7 +34,7 @@ module Jd
       }
       res = send_request('jingdong.service.promotion.batch.getcode', info)
       batch_result = res["jingdong_service_promotion_batch_getcode_responce"]["querybatch_result"]
-      return JSON.parse(queryjs_result)["urlList"]
+      return JSON.parse(batch_result)["urlList"]
     end
 
     def self.get_goods_info(sku_ids = [10125558111,10000099135])

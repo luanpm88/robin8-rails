@@ -64,7 +64,7 @@ module API
         post 'share_article' do
           cps_article = CpsArticle.find params[:cps_article_id]   rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank? || cps_article.status != 'passed'
-          cps_article_share = CpsArticleShare.where(:kol_id => current_kol.id, :cps_article_id => params[:cps_article_id]).first   rescue nil
+          cps_article_share = CpsArticleShare.find_or_create_by(:kol_id => current_kol.id, :cps_article_id => params[:cps_article_id]).first   rescue nil
           present :error, 0
           present :cps_article_share, cps_article_share, with: API::V1_7::Entities::CpsArticleShares::Summary
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
