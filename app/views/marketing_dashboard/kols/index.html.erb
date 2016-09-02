@@ -70,7 +70,7 @@
       <th>等级</th>
       <th>角色</th>
       <th>审核状态</th>
-      <th>热门等级</th>
+      <th><%= sort_link(@q, :is_hot, "热门等级") %></th>
       <th><%= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>
       <th><%= sort_link(@q, :avail_amount, "可提现金额") %></th>
       <th><%= sort_link(@q, :historical_income, "历史收益") %></th>
