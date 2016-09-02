@@ -107,6 +107,7 @@
       <th>提现状态</th>
       <th>支付宝关联用户</th>
       <th>提现次数</th>
+      <th>KOL等级</th>
       <th>拉黑时间</th>
       <th>来源</th>
       <th>支付宝账号</th>
@@ -138,6 +139,7 @@
           <% end %>
         </td>
         <td><%= Withdraw.where(:alipay_no =>w.alipay_no).count %></td>
+        <td><%= w.kol.kol_level rescue "" %></td>
         <td><%= w.kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= w.kol.app_platform rescue "" %></td>
         <td><%= w.alipay_no %></td>

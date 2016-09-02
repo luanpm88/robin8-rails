@@ -1,11 +1,14 @@
-<h3>KOL基本信息</h3>
+<h3>
+  KOL基本信息
+  <%= link_to '拉黑当前KOL', marketing_dashboard_kol_ban_path(@kol.id), :target => "_blank", class: "btn btn-warning pull-right"  %>
+</h3>
   <%# @kol.attributes.except(*sensitivity_list).each do |k, v| %>
 <!--     <tr>
       <td> <%#= k.classify %></td>
       <td> <%#= v %> </td>
     </tr> -->
   <%# end %>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" style="margin-top: 15px;">
   <col width="200px" />
   <tr>
     <td>KOL ID</td>
