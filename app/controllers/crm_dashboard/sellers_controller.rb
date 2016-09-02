@@ -51,6 +51,11 @@ class CrmDashboard::SellersController < CrmDashboard::BaseController
     @customers = @seller.customers.order('created_at DESC').paginate(paginate_params)
   end
 
+  def orders
+    @seller = Crm::Seller.find(params[:id])
+    @orders = AlipayOrder.where(invite_code: @seller.invite_code).order('created_at DESC').paginate(paginate_params)
+  end
+
   private
 
   def seller_params

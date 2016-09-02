@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :sellers do
       member do
         get :customers
+        get :orders
       end
     end
     resources :customers
