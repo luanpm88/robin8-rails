@@ -1,7 +1,7 @@
 (function($){
 	$.fn.jqueryzoom = function(options){
 	var settings = {
-		xzoom: 400,		//zoomed width default width
+		xzoom: 600,		//zoomed width default width
 		yzoom: 400,		//zoomed div default width
 		offset: 10,		//zoomed div default offset
 		position: "right"  //zoomed div default position,offset position is to the right of the image
@@ -10,7 +10,6 @@
 		$.extend(settings, options);
 	}
 	$(this).hover(function(){
-		debugger
 		var imageLeft = $(this).get(0).offsetLeft;
 		var imageRight = $(this).get(0).offsetRight;
 		var imageTop =  $(this).get(0).offsetTop;
@@ -18,14 +17,17 @@
 		var imageHeight = $(this).get(0).offsetHeight;
 		var bigimage = $(this).parent().attr("href");
 		if($("span.zxx_image_zoom_div").get().length == 0){
-			$(this).after("<span class='zxx_image_zoom_div'><img class='bigimg' src='"+bigimage+"'/></span>");
+			example_img_src = $(this).first().parents('tbody').find('.screenshot-example-img').attr('src')
+			var img = "<img class='bigimg' style='width: 50%' src='"+bigimage+"'/>";
+			var example_img = "<img class='bigimg' style='width: 50%' src='"+example_img_src+"'/>";
+			$(this).after("<span class='zxx_image_zoom_div'>"+img + example_img+ "</span>");
 		}
 		if(settings.position == "right"){
 			leftpos = 500 + settings.offset;
 		}else{
 			leftpos = imageLeft - settings.xzoom - settings.offset;
 		}
-		$("span.zxx_image_zoom_div").css({ top: imageTop,left: leftpos, position: 'fixed'});
+		$("span.zxx_image_zoom_div").css({top: imageTop,left: leftpos, position: 'fixed'});
 		$("span.zxx_image_zoom_div").width(settings.xzoom);
 		$("span.zxx_image_zoom_div").height(settings.yzoom);
 		$("span.zxx_image_zoom_div").show();
