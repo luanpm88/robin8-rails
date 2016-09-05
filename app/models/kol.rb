@@ -611,6 +611,17 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def gender_text
+    case self.gender
+    when 1
+      "男"
+    when 2
+      "女"
+    else
+      "未知"
+    end
+  end
+
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     if imei.present?

@@ -105,7 +105,9 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def transaction
     @kol = Kol.find(params[:id])
-    @transactions = Transaction.where(:account_type => 'Kol', :account_id => params[:id] ).order('id desc').paginate(paginate_params)
+    @transactions = Transaction.where(:account_type => 'Kol', :account_id => params[:id] )
+    @q = @transactions.ransack(params[:q])
+    @transactions = @q.result.order('id DESC').paginate(paginate_params)
   end
 
   def edit
