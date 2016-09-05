@@ -59,6 +59,13 @@
     <td><%= @kol.kol_role %></td>
   </tr>
   <tr>
+    <td>KOL社交账号</td>
+    <td>
+      共 <%= @kol.social_accounts.count %> 个社交账号，
+      <%= link_to "查看所有社交账号", marketing_dashboard_social_accounts_path(kol_id: @kol.id), target: "_blank" %>
+    </td>
+  </tr>
+  <tr>
     <td>KOL标签</td>
     <td><%= @kol.tags.map{|t| t.label }.join(" / ") if @kol.tags %></td>
   </tr>

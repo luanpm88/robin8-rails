@@ -18,9 +18,11 @@ module Brand
         expose :images do |object|
           object.images.map(&:avatar_url)
         end
-        expose :weixin_friend_count
+        expose :weixin_friend_count do |object, opts|
+          object.kol.social_accounts.where(provider: 'wechat').maximum("followers_count")
+        end
         expose :weibo_friend_count do |object, opts|
-          object.kol.identities.where(provider: 'weibo').maximum("followers_count")
+          object.kol.social_accounts.where(provider: 'weibo').maximum("followers_count")
         end
         expose :brand_passed_count do |object, opts|
           object.campaign.brand_passed_applies.count
