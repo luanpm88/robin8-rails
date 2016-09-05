@@ -1,6 +1,10 @@
 class CpsArticleShare < ActiveRecord::Base
+  include Redis::Objects
+  counter :read_count
+
   has_many :cps_promotion_materials
   belongs_to :cps_article
+  belongs_to :kol
 
   after_commit :create_promotion_materials
 

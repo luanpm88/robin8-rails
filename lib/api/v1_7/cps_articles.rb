@@ -34,18 +34,20 @@ module API
           optional :id, type: Integer
           requires :title, type: String
           requires :content, type: String
-          requires :cover, type: Hash
+          requires :cover, type: String
         end
         post 'create' do
           if params[:id].present?
             cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
             return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
+            return error_403!({error: 1, detail: '该文章已通过,不能被修改！' })  if cps_article.status == 'passed'
           else
             cps_article = current_kol.cps_articles.build
           end
           cps_article.title = params[:title]
           cps_article.content = params[:content]
-          cps_article.cover = params[:cover] if params[:cover].present?
+          cps_article.cover = params[:cover]
+          cps_article.status = 'pending'
           cps_article.save!
           present :error, 0
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary

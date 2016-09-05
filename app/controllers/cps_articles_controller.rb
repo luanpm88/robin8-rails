@@ -12,6 +12,7 @@ class CpsArticlesController < Mobile::BaseController
     @cps_article = @cps_share.cps_article         rescue nil
     return render :text => 'article not found'    if @cps_article.blank?
     @cps_article.read_count.increment
+    @cps_article_share.read_count.increment
     render :action => :show
   end
 

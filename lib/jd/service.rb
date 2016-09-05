@@ -75,7 +75,7 @@ module Jd
     end
 
     def self.send_request(method, params)
-      Rails.logger.info "--------jd-----send_request: #{method}---params:#{params.inspect}"
+      Rails.logger.jd.info "--------jd-----send_request: #{method}---params:#{params.inspect}"
       app_params = {
         :'360buy_param_json' => params.to_json,
         :access_token => AccessToken,
@@ -88,7 +88,7 @@ module Jd
       res = RestClient.get(ServerUrl, {:accept => :json, :params => app_params})
       res = JSON.parse res
       puts res
-      Rails.logger.info "--------jd-----response: #{res.inspect}"
+      Rails.logger.jd.info "--------jd-----response: #{res.inspect}"
       return res
     end
 

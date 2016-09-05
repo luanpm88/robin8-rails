@@ -6,7 +6,12 @@ Rails.application.routes.draw do
     resources :cps_materials do
 
     end
-    resources :cps_articles
+    resources :cps_articles do
+      member do
+        get :cps_materials
+        get :cps_article_shares
+      end
+    end
     resources :cps_article_shares
     resources :cps_promotion_orders
 

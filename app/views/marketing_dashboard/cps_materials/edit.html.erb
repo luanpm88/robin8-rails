@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-2">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">设置分类</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_for(@cps_material, as: :cps_material, url: marketing_dashboard_cps_material_path(@cps_material), method: :put) do |f| %>
+            <div class="field form-group">
+              <%= f.label "分类" %><br />
+              <%= f.select :category, options_for_select(CpsMaterial.get_category_field), autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "排序(越大)" %><br />
+              <%= f.text_field :position, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

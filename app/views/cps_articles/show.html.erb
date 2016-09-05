@@ -1,10 +1,13 @@
 <div class="cps_article">
-  <div class="cover" style="background-image: url('<%= @cps_article.cover.url %>')"></div>
+  <!--<div class="cover" style="background-image: url('<%#= @cps_article.cover %>')"></div>-->
   <div class="topic-info">
     <p class="title"><%= @cps_article.title %></p>
     <p class="author">
-      <i class="avatar"><%= image_tag @cps_article.kol.get_avatar_url %></i><%= @cps_article.kol.name %>
-      <span>阅读: <%= @cps_article.read_count.value %></span>
+      <span class="avatar">
+        <%= image_tag @cps_article.kol.get_avatar_url %>
+        <span class="name"><%= @cps_article.kol.name %></span>
+      </span>
+      <span class="read-count">阅读: <%= @cps_article.read_count.value %></span>
     </p>
   </div>
   <div class="section-content">

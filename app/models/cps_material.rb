@@ -5,8 +5,12 @@ class CpsMaterial < ActiveRecord::Base
   scope :enabled, -> {where(:enabled => true)}
 
   #TODO
-  Categories = {food: '美食', clothing: '服饰', beauty: '美妆', digital: '数码', books: '图书'}
-  BaseTax = 0.3
+  Categories = {'food' => '美食', 'clothing' => '服饰', 'beauty' => '美妆', 'digital' => '数码', 'books' => '图书'}
+
+  def self.get_category_field
+    Categories.collect{|key, value| [ value, key]}
+  end
+
   # 根据url 自动同步信息从
   def self.sync_info_from_api(urls = [])
     sku_ids = []
@@ -50,7 +54,7 @@ class CpsMaterial < ActiveRecord::Base
   end
 
   def cal_kol_commision
-    self.kol_commision_pc = (self.unit_price *  commision_ration_pc * (1 - BaseTax) * 0.01).round(2)
-    self.kol_commision_wl = (self.unit_price *  commision_ration_wl * (1 - BaseTax) * 0.01).round(2)
+    self.kol_commision_pc = (self.unit_price *  commision_ration_pc * (1 - Jd::Settle::PlatformTax) * 0.01).round(2)
+    self.kol_commision_wl = (self.unit_price *  commision_ration_wl * (1 - Jd::Settle::PlatformTax) * 0.01).round(2)
   end
 end
