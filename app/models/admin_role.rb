@@ -71,6 +71,10 @@ class AdminRole < ActiveRecord::Base
       '统计报表(只读)'
     when 'statistic_data_update'
       '统计报表(读写)'
+    when 'app_upgrade_read'
+      'APP管理(只读)'
+    when 'app_upgrade_update'
+      'APP管理(读写)'
     end
   end
 end

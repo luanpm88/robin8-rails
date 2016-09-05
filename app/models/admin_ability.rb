@@ -2,7 +2,7 @@ class AdminAbility
   include CanCan::Ability
 
   def initialize(admin)
-    if admin.has_role? :admin
+    if admin.has_any_role? :super_admin, :admin
       can :manage, :all
     else
       can [:read, :update], AdminUser if admin.has_role?(:admin)
@@ -36,6 +36,8 @@ class AdminAbility
       can [:read, :update], TrackUrl if admin.has_role?(:track_update)
       can :read, StasticData if admin.has_role?(:statistic_data_read)
       can [:read, :update], StasticData if admin.has_role?(:statistic_data_update)
+      can [:read], AppUpgrade if admin.has_role?(:app_upgrade_read)
+      can [:read, :update], AppUpgrade if admin.has_role?(:app_upgrade_update)
     end
   end
 end

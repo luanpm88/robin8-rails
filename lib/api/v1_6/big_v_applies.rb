@@ -14,12 +14,19 @@ module API
           optional :tag_names, type: String
           optional :desc, type: String
           optional :age, type: String
-          optional :gender, type: Integer, values: [0, 1, 2]
+          optional :gender, type: String
         end
         post 'update_profile' do
+          if params[:gender] == 'Female'
+            gender = 2
+          elsif params[:gender] == 'Male'
+            gender = 1
+          else
+            gender = params[:gender].to_i
+          end
           app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
           current_kol.update_columns(:name => params[:name], :app_city => app_city, :job_info => params[:job_info],
-                                     :desc => params[:desc], :gender => params[:gender], :age => params[:age])
+                                     :desc => params[:desc], :gender => gender, :age => params[:age])
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]

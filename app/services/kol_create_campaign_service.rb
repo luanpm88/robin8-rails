@@ -39,6 +39,7 @@ class KolCreateCampaignService
     end
     begin
       @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :target].include? k }
+      create_default_targets
       return true
     rescue Exception => e
       @errors.concat e.record.errors.messages.map(&:last).flatten
@@ -55,6 +56,12 @@ class KolCreateCampaignService
   end
 
   private
+
+  def create_default_targets
+    ['age', 'region', 'gender', 'tags'].each do |target_type|
+      @campaign.campaign_targets.create!({target_type: target_type, target_content: '全部'})
+    end
+  end
 
   def enough_amount? user, budget
     avail_amout = user.avail_amount

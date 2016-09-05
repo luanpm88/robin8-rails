@@ -5,7 +5,7 @@ module Concerns
       has_many :task_records
       has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account, :class_name => 'Transaction'
       # after_create :generate_invite_code
-      after_commit :generate_invite_task_record, :on => :create
+      after_create :generate_invite_task_record
     end
 
     class_methods do

@@ -8,11 +8,13 @@ class Withdraw < ActiveRecord::Base
   validate :check_avail_amount, :on => :create
 
   after_create :frozen_withdraw_amount
+  after_create :check_alipay_account
   after_save :deal_withdraw
 
   belongs_to :kol
   scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
+  scope :checked, -> { where(:status => 'checked').order('created_at desc') }
   scope :approved, -> {where(:status => 'paid').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
 
@@ -20,6 +22,12 @@ class Withdraw < ActiveRecord::Base
     avail_amount = Kol.find(kol_id).avail_amount rescue 0
     if avail_amount.to_f < credits.to_f
       self.errors.add(:credits, "超出账户可用金额")
+    end
+  end
+
+  def check_alipay_account
+    if AlipayAccountBlacklist.where(account: self.alipay_no).present?
+      self.update_attributes(status: :rejected)
     end
   end
 
@@ -36,8 +44,14 @@ class Withdraw < ActiveRecord::Base
       # 解冻并提现
         self.kol.unfrozen(self.credits,'withdraw', self, nil)
         self.kol.payout(self.credits, 'withdraw',self,nil)
+        if self.kol.mobile_number.present?
+          Emay::SendSms.to self.kol.mobile_number, "恭喜您！你在Robin8的提现已到账！速去支付宝查看！"
+        end
     elsif self.status_changed? && self.status == 'rejected'
       # 解冻
+      if self.kol.mobile_number.present?
+        Emay::SendSms.to self.kol.mobile_number, "你在Robin8的提现审核拒绝，#{self.reject_reason}原因，速去APP查看！"
+      end
       self.kol.unfrozen(self.credits,'withdraw', self, nil)
     end
   end

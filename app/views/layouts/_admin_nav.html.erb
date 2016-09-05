@@ -19,7 +19,7 @@
           <%= link_to "修改密码", marketing_dashboard_edit_password_path %>
         </li>
         <li>
-          <a href="/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+          <a href="/admin_users/sign_out"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
       </ul>
     </li>
@@ -76,14 +76,12 @@
             <li>
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
-            <!--
-              <li>
-                <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "settled", total_click_lt: 1 }) %>
-              </li>
-              <li>
-                <%= link_to '点击大于100待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
-              </li>
-            -->
+            <li>
+              <%= link_to '点击大于100的所有截图', marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
+            </li>
+            <li>
+              <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "executed", total_click_lt: 1 }) %>
+            </li>
             <li>
               <%= link_to '转发类型待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
@@ -137,53 +135,16 @@
               <%= link_to '待审核提现', pending_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核通过提现', agreed_marketing_dashboard_withdraws_path %>
+              <%= link_to '已通过待付款', checked_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '审核拒绝提现', rejected_marketing_dashboard_withdraws_path %>
-            </li>
-          </ul>
-        </li>
-        <% end %>
-
-        <% if can?(:read, HotItem) %>
-        <li>
-          <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
-        </li>
-        <li>
-          <%= link_to 'APP首页滚动栏', marketing_dashboard_kol_announcements_path(:ban => 1) %>
-        </li>
-        <% end %>
-
-        <% if can?(:read, HelperTag) %>
-        <li>
-          <a href="#">APP帮助文档 <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li>
-              <%= link_to '问题分类', marketing_dashboard_helper_tags_path %>
+              <%= link_to '已付款', agreed_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '问题列表', marketing_dashboard_helper_docs_path %>
-            </li>
-          </ul>
-        </li>
-        <% end %>
-
-        <% if can?(:read, LotteryActivity) %>
-        <li>
-          <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level">
-            <li>
-              <%= link_to '创建商品', new_marketing_dashboard_lottery_product_path %>
+              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '管理商品', marketing_dashboard_lottery_products_path %>
-            </li>
-            <li>
-              <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
-            </li>
-            <li>
-              <%= link_to '中奖名单', marketing_dashboard_lottery_expresses_path %>
+              <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
             </li>
           </ul>
         </li>
@@ -200,19 +161,28 @@
           <a href="#">充值管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有支付宝充值', marketing_dashboard_alipay_orders_path %>
+              <%= link_to 'PC所有的充值', from_pc_marketing_dashboard_alipay_orders_path %>
             </li>
             <li>
-              <%= link_to '待付款订单', marketing_dashboard_alipay_orders_path(pending: true) %>
+              <%= link_to 'PC待付款充值', from_pc_marketing_dashboard_alipay_orders_path(q: {status_eq: "pending"}) %>
             </li>
             <li>
-              <%= link_to '已付款订单', marketing_dashboard_alipay_orders_path(paid: true) %>
+              <%= link_to 'PC已付款充值', from_pc_marketing_dashboard_alipay_orders_path(q: {status_eq: "paid"}) %>
             </li>
             <li>
-              <%= link_to '直接付款发起活动', campaigns_marketing_dashboard_alipay_orders_path %>
+              <%= link_to "PC线下的充值", marketing_dashboard_manual_recharges_path %>
             </li>
             <li>
-              <%= link_to "线下充值", marketing_dashboard_manual_recharges_path %>
+              <%= link_to 'APP所有的充值', from_app_marketing_dashboard_alipay_orders_path %>
+            </li>
+            <li>
+              <%= link_to 'APP待付款充值', from_app_marketing_dashboard_alipay_orders_path(q: {status_eq: "pending"}) %>
+            </li>
+            <li>
+              <%= link_to 'APP已付款充值', from_app_marketing_dashboard_alipay_orders_path(q: {status_eq: "paid"}) %>
+            </li>
+            <li>
+              <%= link_to 'APP发活动时直接付款', campaigns_marketing_dashboard_alipay_orders_path %>
             </li>
           </ul>
         </li>
@@ -237,7 +207,7 @@
 
         <% if can?(:read, TrackUrl) %>
         <li>
-          <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
+          <%= link_to '追踪链接管理', marketing_dashboard_track_urls_path %>
         </li>
         <% end %>
 
@@ -281,25 +251,81 @@
           </ul>
         </li>
         <% end %>
-
+        <% if can?(:read, HotItem) %>
         <li>
-          <a href="#">CPS <span class='fa arrow'></span> </a>
+          <%= link_to 'APP热门榜单', marketing_dashboard_hot_items_path %>
+        </li>
+        <li>
+          <%= link_to 'APP首页滚动栏', marketing_dashboard_kol_announcements_path(:ban => 1) %>
+        </li>
+        <% end %>
+
+        <% if can?(:read, HelperTag) %>
+        <li>
+          <%= link_to 'APP帮助文档', marketing_dashboard_helper_docs_path %>
+          <!--
+          <a href="#">APP帮助文档 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to 'cps商品', marketing_dashboard_cps_materials_path %>
+              <%= link_to '问题分类', marketing_dashboard_helper_tags_path %>
             </li>
             <li>
-              <%= link_to 'cps文章', marketing_dashboard_cps_articles_path %>
+              <%= link_to '问题列表', marketing_dashboard_helper_docs_path %>
+            </li>
+          </ul>
+          -->
+        </li>
+        <% end %>
+
+        <% if can?(:read, CpsManage) %>
+          <li>
+            <a href="#">CPS管理 <span class='fa arrow'></span> </a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to 'cps商品', marketing_dashboard_cps_materials_path %>
+              </li>
+              <li>
+                <%= link_to 'cps文章', marketing_dashboard_cps_articles_path %>
+              </li>
+              <li>
+                <%= link_to 'cps分享', marketing_dashboard_cps_article_shares_path %>
+              </li>
+              <li>
+                <%= link_to 'cps订单', marketing_dashboard_cps_promotion_orders_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if can?(:read, LotteryActivity) %>
+        <li>
+          <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '创建商品', new_marketing_dashboard_lottery_product_path %>
             </li>
             <li>
-              <%= link_to 'cps分享', marketing_dashboard_cps_article_shares_path %>
+              <%= link_to '管理商品', marketing_dashboard_lottery_products_path %>
             </li>
             <li>
-              <%= link_to 'cps订单', marketing_dashboard_cps_promotion_orders_path %>
+              <%= link_to '管理活动', marketing_dashboard_lottery_activities_path %>
+            </li>
+            <li>
+              <%= link_to '中奖名单', marketing_dashboard_lottery_expresses_path %>
             </li>
           </ul>
         </li>
+        <% end %>
 
+        <% if can?(:read, AppUpgrade) %>
+        <li>
+          <%= link_to 'APP版本管理', marketing_dashboard_app_upgrades_path %>
+        </li>
+        <% end %>
+
+        <li>
+          <%= link_to '获取手机注册验证码', new_marketing_dashboard_verify_code_path %>
+        </li>
       </ul>
       <br/><br/><br/>
       <!-- /.sidebar-collapse -->

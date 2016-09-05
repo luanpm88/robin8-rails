@@ -1,0 +1,52 @@
+<h3>
+  APP版本管理
+  <%= link_to '新增版本', new_marketing_dashboard_app_upgrade_path, :class => 'btn btn-primary pull-right' %>
+</h3>
+
+<hr/>
+<table class="table">
+  <thead>
+    <tr>
+      <th>平台</th>
+      <th>版本号</th>
+      <th>发布说明</th>
+      <th>下载地址</th>
+      <th>强制升级</th>
+      <th>发布时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @app_upgrades.each do |upgrade| %>
+      <tr>
+        <td>
+          <% if upgrade.app_platform == 'IOS' %>
+            <span class="label label-info">IOS</span>
+          <% else %>
+            <span class="label label-success">Android</span>
+          <%  end %>
+        <td><%= upgrade.app_version %></td>
+        <td><%= upgrade.release_note %></td>
+        <td><%= link_to upgrade.download_url,upgrade.download_url, :target => '_blank' %></td>
+        <td>
+          <% if  upgrade.force_upgrade == true  %>
+            <span class="label label-warning">是</span>
+          <% else %>
+            否
+          <% end %>
+        </td>
+        <td><%= upgrade.release_at.to_s(:date_time) %></td>
+        <td>
+          <%= link_to '删除', marketing_dashboard_app_upgrade_path(upgrade), method: :delete, data: { confirm: '确定要删除码?' } %>  /
+          <%= link_to '编辑', edit_marketing_dashboard_app_upgrade_path(upgrade) %> </br>
+          <%= link_to switch_marketing_dashboard_app_upgrade_path(upgrade) do %>
+            <%= upgrade.force_upgrade ? "关闭强制升级" : "开启强制升级" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

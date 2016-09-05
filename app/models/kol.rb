@@ -36,8 +36,8 @@ class Kol < ActiveRecord::Base
   has_many :campaign_shows
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
-  has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
-  has_many :withdraw_transactions, -> {where(:direct => 'payout')}, :as => :account, :class => Transaction
+  has_many :income_transactions, -> {income_transaction}, :as => :account, :class => Transaction
+  has_many :withdraw_transactions, -> {payout_transaction}, :as => :account, :class => Transaction
 
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
@@ -82,17 +82,28 @@ class Kol < ActiveRecord::Base
   scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
-  scope :order_by_hot, ->{order("is_hot desc, created_at desc")}
+  scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
   else
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")}
     scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
+  AdminKolIds = [79,48587]
+
+  ransacker :avail_amount do |parent|
+    Arel.sql('(`kols`.`amount` - `kols`.`frozen_amount`)')
+  end
+
+  # scope :total_income_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS kol_id, SUM(`transactions`.`credits`) AS total_income FROM `transactions` WHERE `transactions`.`account_type` = 'Kol' AND `transactions`.`direct` = 'income' GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `kols`.`id` = `cte_tables`.`kol_id`") }
+  # scope :sort_by_total_income, ->(dir) { total_income_of_transactions.order("total_income #{dir}") }
+
   before_save :set_kol_kol_role
 
   def set_kol_kol_role
@@ -207,9 +218,10 @@ class Kol < ActiveRecord::Base
 
 
   def self.fetch_kol(kol_id)
-    Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
-      Kol.find(kol_id)
-    end    rescue nil
+    Kol.find(kol_id)
+    # Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
+    #   Kol.find(kol_id)
+    # end    rescue nil
   end
 
   def update_click_threshold
@@ -251,7 +263,7 @@ class Kol < ActiveRecord::Base
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
       if invite.campaign &&  invite.campaign.actual_per_action_budget
-        if invite.campaign.is_post_type?  || invite.campaign.is_recruit_type?
+        if invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type?
           income += invite.campaign.actual_per_action_budget
         else
           income += invite.campaign.actual_per_action_budget * invite.get_avail_click  rescue 0
@@ -284,7 +296,7 @@ class Kol < ActiveRecord::Base
     income = 0
     count = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type?)
+      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
       elsif invite.campaign.is_invite_type?
@@ -552,6 +564,10 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  # def self.ransortable_attributes(auth_object = nil)
+  #   ransackable_attributes(auth_object) + %w( sort_by_total_income )
+  # end
+
   def get_uniq_identities
     self.identities.group("provider")
   end
@@ -562,6 +578,13 @@ class Kol < ActiveRecord::Base
 
   def get_avatar_url
     avatar.url(:avatar) || read_attribute(:avatar_url)
+  end
+
+  def avatar_url
+    if self.attributes[:avatar]
+      return avatar.url(:avatar)
+    end
+    get_avatar_url
   end
 
   def is_big_v?
@@ -589,6 +612,17 @@ class Kol < ActiveRecord::Base
       "普通"
     when -1
       "不热门"
+    end
+  end
+
+  BindMaxCount = Rails.env.production? ? 3 : 300
+  def self.device_bind_over_3(imei,idfa)
+    if imei.present?
+      return Kol.where(:IMEI => imei).size >= BindMaxCount
+    elsif idfa.present?
+      return Kol.where(:IDFA => idfa).size >= BindMaxCount
+    else
+      return false
     end
   end
 

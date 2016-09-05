@@ -11,12 +11,12 @@ export default class PhonePreviewCampaignPartial extends React.Component {
     const { campaign } = this.props;
     if (campaign.get('per_budget_type') == 'click') {
       return <p>分享后好友点击此文章即可获得报酬</p>
-    }
-    else if (campaign.get("per_budget_type") == 'post' ) {
+    } else if (campaign.get("per_budget_type") == 'post' ) {
       return <p>转发此文章 立即获得报酬</p>
-    }
-    else if (campaign.get("per_budget_type") == 'recruit') {
+    } else if (campaign.get("per_budget_type") == 'recruit') {
       return <p>参与招募活动获得奖励</p>
+    } else if (campaign.get("per_budget_type") == 'simple_cpi') {
+      return <p>下载APP, 立即获取报酬</p>
     } else if (campaign.get("per_budget_type") == 'cpi') {
       return <p>邀请好友下载APP立即获得奖励</p>
     } else if (campaign.get("per_budget_type") == 'cpa') {

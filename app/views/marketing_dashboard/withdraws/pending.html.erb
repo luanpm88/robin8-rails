@@ -1,3 +1,5 @@
+
+
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -20,7 +22,7 @@
           <td> <%= multi_send w, v %> </td>
         <% end %>
         <td>
-          <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
+          <%= link_to 'Agree', marketing_dashboard_withdraw_check_path(w.id), method: :post %> |
           <%= link_to 'Reject', marketing_dashboard_withdraw_reject_path(w.id), method: :post %>
         </td>
       </tr>
@@ -28,4 +30,6 @@
   </tbody>
 </table>
 
+
 <%= will_paginate @withdraws %>
+

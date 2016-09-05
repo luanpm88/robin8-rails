@@ -7,9 +7,9 @@ class CampaignShow < ActiveRecord::Base
   CampaignExecuted = 'campaign_had_executed'
 
   if Rails.env.production?
-    KolCreditLevels = {'A' => 100, 'B' => 10, 'S' => 1000000}
+    KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
   else
-    KolCreditLevels = {'A' => 4, 'B' => 1, 'S' => 1000000}
+    KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
   end
 
   belongs_to :campaign

@@ -2,6 +2,7 @@ class AppUpgrade < ActiveRecord::Base
   scope :Andriod, ->{where(:app_platform => 'Andriod')}
   scope :Android, ->{where(:app_platform => 'Android')}
   scope :IOS, -> {where(:app_platform => 'IOS')}
+  validates_uniqueness_of :app_version, :scope => [:app_platform]
 
   def self.newest_version(platform)
     # fix v1 spell wrong

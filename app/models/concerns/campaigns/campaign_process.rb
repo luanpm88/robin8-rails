@@ -106,6 +106,35 @@ module Campaigns
         self.update_columns(:status => 'executing')
         Message.new_campaign(self, (kol_ids || get_kol_ids))
       end
+      add_queue_to_add_kols_when_tag_or_region_is_special
+    end
+
+    # 当指定区域 或者 地区 不是全部 的时候 执行
+    def add_queue_to_add_kols_when_tag_or_region_is_special
+      if self.is_click_type? or self.is_post_type?
+        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) )
+          CampaignWorker.perform_at(Time.now+5.hours, self.id, 'append_kols')
+        end
+      end
+    end
+
+    def append_kols
+      kol_ids = self.get_append_kol_ids
+      if kol_ids.present?
+        Kol.where(:id => kol_ids).each do |kol|
+          kol.add_campaign_id self.id, true
+        end
+        Message.new_campaign(self, kol_ids)
+      end
+    end
+
+    def push_all_kols
+      Kol.active.where("forbid_campaign_time is null or forbid_campaign_time <'#{Time.now}'").each do |kol|
+        kol.add_campaign_id self.id, true
+        unless kol.receive_campaign_ids.include?(kol.id.to_s)
+          Message.new_campaign(self, [kol.id])
+        end
+      end
     end
 
     #finish_remark:  expired or fee_end
@@ -219,7 +248,7 @@ module Campaigns
       else
         kol_budget_rate = KolBudgetRate
       end
-      if is_click_type?
+      if is_click_type?  || is_cpi_type? || is_cpa_type?
         actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
         point1, point2 = actual_per_budget.divmod(0.1)
         point2 = point2.round(2)

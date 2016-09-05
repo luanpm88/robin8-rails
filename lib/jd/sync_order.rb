@@ -41,7 +41,7 @@ module Jd
             end
           end
           order.yn = order_data["yn"]
-          if order["yn"].to_i == 1
+          if order_data["yn"] == 1
             order.status = 'pending'
           else
             order.status = 'canceled'

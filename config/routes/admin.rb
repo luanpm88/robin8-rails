@@ -32,12 +32,15 @@ Rails.application.routes.draw do
       end
       member do
         get :targets
+        get :add_example_screenshot
         get :recruit_targets
         post :add_target
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
+        get :push_all
         post :refresh_budget
+        patch :save_example_screenshot_and_remark
       end
       collection do
         put :reject
@@ -123,14 +126,17 @@ Rails.application.routes.draw do
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
+        get 'checked'
         get 'agreed'
         get 'rejected'
         post 'search'
         match 'batch_handle', via: [:post]
       end
+      match '/check' => 'withdraws#check', via: [:post]
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
+      match '/permanent_frozen_alipay' => 'withdraws#permanent_frozen_alipay', via: [:post]
     end
     resources :announcements, except: [:destroy]
     resources :kol_announcements do
@@ -138,9 +144,15 @@ Rails.application.routes.draw do
         get :switch
       end
     end
+    resources :app_upgrades do
+      member do
+        get :switch
+      end
+    end
     resources :alipay_orders do
       collection do
-        post 'search'
+        get "from_pc"
+        get "from_app"
         get "campaigns"
         post "search_campaigns"
         put "change_campaign_desc"
@@ -178,5 +190,16 @@ Rails.application.routes.draw do
     resources :lottery_activities
     resources :lottery_expresses
 
+    resources :alipay_account_blacklists do
+      member do
+        get :disban
+      end
+    end
+
+    resources :verify_codes do
+      collection do
+        post 'get_verify_code'
+      end
+    end
   end
 end

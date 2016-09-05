@@ -13,10 +13,10 @@ class Campaign < ActiveRecord::Base
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
-  validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa'].include? campaign.per_budget_type }
+  validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   #Status : unpay unexecute agreed rejected  executing executed
-  #Per_budget_type click post cpa recruit invite
+  #Per_budget_type click post cpa simple_cpi cpi recruit invite
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
@@ -56,6 +56,11 @@ class Campaign < ActiveRecord::Base
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
+  scope :agreed, -> {where(status: ["agreed", "executing", "executed", "settled"])}
+
+  scope :valid_invites, -> { joins("LEFT JOIN (SELECT `campaign_invites`.`campaign_id` AS campaign_id, COUNT(*) AS valid_invite_count FROM `campaign_invites` WHERE `campaign_invites`.`status` = 'approved' OR `campaign_invites`.`status` = 'finished' OR `campaign_invites`.`status` = 'settled' GROUP BY `campaign_invites`.`campaign_id`) AS `cte_tables` ON `campaigns`.`id` = `cte_tables`.`campaign_id`") }
+  scope :sort_by_valid_invite_count, ->(dir) { valid_invites.order("valid_invite_count #{dir}") }
+
   before_validation :format_url
   after_save :create_job
   before_create :genereate_campaign_number
@@ -99,13 +104,13 @@ class Campaign < ActiveRecord::Base
   def get_stats_for_app
     if self.per_budget_type == "click" or self.per_budget_type == "cpa"
       get_stats('app')[1..-1]
-    elsif self.per_budget_type == "post"
+    elsif self.per_budget_type.in?(["post", "simple_cpi"])
       get_stats('app')[1...-1]
     end
   end
 
   def need_finish
-    self.per_budget_type == 'post' && self.valid_invites.size >= self.max_action && self.status == 'executing'
+    self.per_budget_type.in?(["post", "simple_cpi"]) && self.valid_invites.size >= self.max_action && self.status == 'executing'
   end
 
   #统计信息
@@ -174,7 +179,7 @@ class Campaign < ActiveRecord::Base
       else
         (get_avail_click * per_budget).round(2)       rescue 0
       end
-    elsif self.is_post_type? || self.is_recruit_type?
+    elsif self.is_post_type? || self.is_simple_cpi_type? || self.is_recruit_type?
       if self.status == 'settled'
         (self.settled_invites.count * per_budget).round(2) rescue 0
       else
@@ -210,7 +215,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  ['click', 'post', 'recruit', 'cpa', 'cpi', 'invite'].each do |value|
+  ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end
@@ -329,6 +334,10 @@ class Campaign < ActiveRecord::Base
       puts ip_count
     end;nil
     puts "-"*60
+  end
+
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_valid_invite_count )
   end
 
   def format_url

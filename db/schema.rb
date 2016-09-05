@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160829074310) do
+=======
+ActiveRecord::Schema.define(version: 20160831062913) do
+>>>>>>> master_cn
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -332,7 +336,11 @@ ActiveRecord::Schema.define(version: 20160829074310) do
     t.integer  "transaction_id",  limit: 4
   end
 
+<<<<<<< HEAD
   add_index "campaign_shows", ["appid"], name: "index_campaign_shows_on_appid", using: :btree
+=======
+  add_index "campaign_shows", ["appid"], name: "index_campaign_shows_on_appid", length: {"appid"=>191}, using: :btree
+>>>>>>> master_cn
   add_index "campaign_shows", ["campaign_id"], name: "index_campaign_shows_on_campaign_id", using: :btree
   add_index "campaign_shows", ["created_at"], name: "index_campaign_shows_on_created_at", using: :btree
   add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
@@ -402,6 +410,13 @@ ActiveRecord::Schema.define(version: 20160829074310) do
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
+
+  create_table "carticles", force: :cascade do |t|
+    t.integer  "kol_id_id",  limit: 4
+    t.text     "body",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -1059,6 +1074,7 @@ ActiveRecord::Schema.define(version: 20160829074310) do
     t.float    "latitude",               limit: 24
     t.integer  "is_hot",                 limit: 4,                              default: 0
     t.text     "memo",                   limit: 65535
+    t.float    "historical_income",      limit: 24,                             default: 0.0
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1513,6 +1529,16 @@ ActiveRecord::Schema.define(version: 20160829074310) do
 
   add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
 
+<<<<<<< HEAD
+=======
+  create_table "social_account_professions", force: :cascade do |t|
+    t.integer  "social_account_id", limit: 4
+    t.integer  "profession_id",     limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+>>>>>>> master_cn
   create_table "social_account_tags", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
     t.integer  "tag_id",            limit: 4
@@ -1718,10 +1744,10 @@ ActiveRecord::Schema.define(version: 20160829074310) do
     t.string   "item_type",     limit: 255
     t.string   "direct",        limit: 255
     t.string   "subject",       limit: 255
-    t.decimal  "credits",                   precision: 8,  scale: 2
-    t.decimal  "amount",                    precision: 8,  scale: 2
-    t.decimal  "avail_amount",              precision: 8,  scale: 2
-    t.decimal  "frozen_amount",             precision: 8,  scale: 2
+    t.decimal  "credits",                   precision: 12, scale: 2
+    t.decimal  "amount",                    precision: 12, scale: 2
+    t.decimal  "avail_amount",              precision: 12, scale: 2
+    t.decimal  "frozen_amount",             precision: 12, scale: 2
     t.integer  "opposite_id",   limit: 4
     t.string   "opposite_type", limit: 255
     t.datetime "created_at",                                                       null: false
@@ -1831,6 +1857,8 @@ ActiveRecord::Schema.define(version: 20160829074310) do
     t.integer  "kol_id",                 limit: 4
     t.string   "appid",                  limit: 255
     t.boolean  "is_active",              limit: 1,                            default: true
+    t.float    "historical_payout",      limit: 24,                           default: 0.0
+    t.float    "historical_recharge",    limit: 24,                           default: 0.0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -1890,8 +1918,11 @@ ActiveRecord::Schema.define(version: 20160829074310) do
     t.string   "remark",        limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+<<<<<<< HEAD
     t.string   "check_remark",  limit: 255
     t.datetime "check_time"
+=======
+>>>>>>> master_cn
     t.string   "reject_reason", limit: 255
   end
 

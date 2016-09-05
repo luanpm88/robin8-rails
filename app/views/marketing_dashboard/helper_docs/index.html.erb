@@ -1,16 +1,18 @@
-<div class="well">
-  友情提示:
-   1、在 app中， 问题是按照 权重进行倒排的； 如果想把一个问题 放到最前面, 权重设置高一些即可。
+<br />
+<div class="well well-sm">
+  提示: 在APP中，问题是按照<b>权重进行顺排</b>；如果想把一个问题<b>放到最前面</b>，权重设置高一些即可。
 </div>
-<div>
-  <h3>问题列表</h3>
-  <%= link_to "新建问题", new_marketing_dashboard_helper_doc_path, :class => "btn pull-right"%>
-</div>
+
+<h3>
+  问题列表
+  <%= link_to "新建问题", new_marketing_dashboard_helper_doc_path, :class => "btn btn-primary pull-right"%>
+</h3>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
       <th>编号</th>
-      <th>分类名</th>
+      <!-- <th>分类名</th> -->
       <th>问题</th>
       <th>答案</th>
       <th>权重排序</th>
@@ -22,7 +24,7 @@
     <% @helper_docs.each do |h| %>
       <tr>
         <td><%= h.id %></td>
-        <td><%= h.doc_tag %></td>
+        <!-- <td><%#= h.doc_tag %></td> -->
         <td><%= h.question %></td>
         <td><%= h.answer.gsub("\n", "<br/>").html_safe %></td>
         <td><%= h.sort_weight %></td>

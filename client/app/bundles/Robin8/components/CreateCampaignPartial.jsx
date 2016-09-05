@@ -74,7 +74,7 @@ class CreateCampaignPartial extends React.Component {
     return (
       <div className="page page-activity page-activity-new">
         <div className="container">
-         <BreadCrumb />
+          <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
@@ -88,6 +88,7 @@ class CreateCampaignPartial extends React.Component {
               </div>
             </form>
           </div>
+          <div id="sublist"></div>
         </div>
       </div>
     )
