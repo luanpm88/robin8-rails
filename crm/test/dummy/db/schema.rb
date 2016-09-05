@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901080359) do
+ActiveRecord::Schema.define(version: 20160905023516) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -490,6 +490,7 @@ ActiveRecord::Schema.define(version: 20160901080359) do
     t.string   "private_token",   limit: 255
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "ch_name",         limit: 255
   end
 
   create_table "discounts", force: :cascade do |t|

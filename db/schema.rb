@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160831062913) do
+ActiveRecord::Schema.define(version: 20160901080359) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -451,6 +451,46 @@ ActiveRecord::Schema.define(version: 20160831062913) do
   end
 
   add_index "cpi_regs", ["device_uuid"], name: "index_cpi_regs_on_device_uuid", using: :btree
+
+  create_table "crm_cases", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "crm_customers", force: :cascade do |t|
+    t.string   "name",            limit: 255
+    t.string   "mobile_number",   limit: 255
+    t.string   "company_name",    limit: 255
+    t.text     "visit_detail",    limit: 65535
+    t.string   "company_address", limit: 255
+    t.decimal  "lat",                           precision: 10, scale: 6
+    t.decimal  "lng",                           precision: 10, scale: 6
+    t.integer  "seller_id",       limit: 4
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+  end
+
+  create_table "crm_notes", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.text     "content",    limit: 65535
+    t.integer  "case_id",    limit: 4
+    t.integer  "seller_id",  limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "crm_sellers", force: :cascade do |t|
+    t.string   "mobile_number",   limit: 255
+    t.string   "password_digest", limit: 255
+    t.string   "name",            limit: 255
+    t.string   "department",      limit: 255
+    t.string   "avatar",          limit: 255
+    t.string   "invite_code",     limit: 255
+    t.string   "private_token",   limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255

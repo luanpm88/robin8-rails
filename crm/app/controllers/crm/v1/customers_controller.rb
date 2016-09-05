@@ -32,6 +32,19 @@ module Crm
         end
       end
 
+      def search
+        if params[:id]
+          @customers = current_seller.customers.find(params[:id])
+          return render json: { error: 0, customers: @customers }
+        elsif params[:name]
+          @customers = current_seller.customers.where(name: params[:name])
+          return render json: { error: 0, customers: @customers }
+        elsif params[:company_name]
+          @customers = current_seller.customers.where(company_name: params[:company_name])
+          return render json: { error: 0, customers: @customers }
+        end
+      end
+
       private
 
       def customer_params
