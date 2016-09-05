@@ -15,8 +15,8 @@
       <% kol = campaign_apply.kol %>
       <% weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
       <% wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
-      <tr class=<%= kol.id %>>
-        <td class="kol_id">
+      <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
+        <td>
           <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank"  %>
         </td>
         <td>
@@ -53,15 +53,15 @@
       </tr>
     <% end %>
   </tbody>
-
 </table>
 
 <script>
 $(function() {
   $('.agree-btn').click(function(){
-    var kol_id = $(this).parents('tr').find('.kol_id').text().trim()
-    var campaign_id = $(this).parents('tr').find('.campaign_id').text().trim()
-    var agree_reason = $(this).parents('tr').find('.agree_reason').val()
+    var row = $(this).parents('tr');
+    var kol_id = row.data("kol-id");
+    var campaign_id = row.data("campaign-id");
+    var agree_reason = row.find('.agree_reason').val();
     if ($(this).val() == 'cancel') {
       if (agree_reason.length) {
         var operate = $(this).val('agree').val()
@@ -75,7 +75,7 @@ $(function() {
 
     $.ajax({
       method: "POST",
-      url: "/marketing_dashboard/campaigns/${campaign_id}/add_or_remove_recruit_kol",
+      url: "/marketing_dashboard/campaigns/"+ campaign_id +"/add_or_remove_recruit_kol",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
