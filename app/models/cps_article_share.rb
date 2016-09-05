@@ -12,7 +12,7 @@ class CpsArticleShare < ActiveRecord::Base
     "#{kol_id}_#{article_share_id}"
   end
 
-  # 用户分享文章,自动生成推广链接
+  # 用户分享文章,自动生成推广链接   for test
   def self.kol_share_article(kol = Kol.last, article = CpsArticle.last)
     return if kol.blank? || article.blank?
     CpsArticleShare.transaction do

@@ -1,0 +1,39 @@
+<div class="cps_article">
+  <div class="cover" style="background-image: url('<%= @cps_article.cover.url %>')"></div>
+  <div class="topic-info">
+    <p class="title"><%= @cps_article.title %></p>
+    <p class="author">
+      <i class="avatar"><%= image_tag @cps_article.kol.get_avatar_url %></i><%= @cps_article.kol.name %>
+      <span><%= @cps_article.read_count.value %></span>
+    </p>
+  </div>
+  <div class="section-content">
+    <%
+       content_arr = @cps_article.content_arr
+       index = 0
+       while index < content_arr.size
+        if content_arr[index] == '<text>'
+      %>
+        <div class="text-box box"><%= content_arr[index + 1] %></div>
+      <% elsif content_arr[index] == '<img>'  %>
+        <div class="img-box box"><%= image_tag content_arr[index + 1] %></div>
+      <% elsif content_arr[index] == '<product>'
+        product = CpsMaterial.find(content_arr[index + 1]) rescue nil
+        promotion_url = product.material_url
+        next if product.blank?
+        promotion_url = CpsPromotionMaterial.get_promotion_url(@cps_share.id, product.id)   if @cps_share.present?
+      %>
+        <div class="product-box box">
+          <%= link_to promotion_url do  %>
+            <div class="avatar"><%= image_tag product.img_url %></div>
+            <div class="info">
+              <p class="pro-title"><%= product.goods_name %></p>
+              <p class="price">&yen;<span class="number-font"><%= product.unit_price %></span></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <% index += 2 %>
+    <% end %>
+  </div>
+</div>

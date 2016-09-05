@@ -71,3 +71,28 @@ body{
   background: url('http://7xlxny.com2.z0.glb.qiniucdn.com/appview/v2/uv.png') center no-repeat;
   background-size: 13px 10px;
 }
+
+.section-content{
+  .box{
+    padding: 10px 5px;
+  }
+  .img-box img{
+    width: 100%;
+  }
+  .product-box{
+    width: 100%;
+    overflow: auto;
+    .avatar{
+      float: left;
+      width: 20%;
+      img{
+        width: 100%;
+      }
+    }
+    .info{
+      margin-left: 5%;
+      width: 75%;
+      float: right
+    }
+  }
+}

@@ -70,7 +70,7 @@ every 1.day, :at => '17:30 pm' do
 end
 
 #================cps===================
-every 15.minutes do
+every 5.minutes do
   runner "Jd::SyncOrder.schedule_sync"
   runner "Jd::SyncCommision.schedule_sync"
 end

@@ -19,7 +19,7 @@ class CpsArticle < ActiveRecord::Base
   end
 
   def content_arr
-    self.content.split(/(<text>)|(<img>)|(<product>)/).compact       rescue []
+    self.content.split(/(<text>)|(<img>)|(<product>)/)[1..-1]       rescue []
   end
 
   def parse_content
