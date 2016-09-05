@@ -9,10 +9,10 @@ Rails.application.routes.draw do
     resources :cps_articles do
       member do
         get :cps_materials
-        get :cps_article_shares
+        get :cps_promotion_orders
       end
     end
-    resources :cps_article_shares
+    resources :cps_promotion_orders
     resources :cps_promotion_orders
 
     resources :track_urls

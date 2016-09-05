@@ -2,7 +2,7 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
   def index
     authorize! :read, CpsArticle
     @q = CpsArticle.ransack(params[:q])
-    @cps_articles = @q.result.includes(:kol, :cps_article_shares, :cps_materials).order('created_at desc').paginate(paginate_params)
+    @cps_articles = @q.result.includes(:kol, :cps_promotion_orders, :cps_materials).order('created_at desc').paginate(paginate_params)
   end
 
   def create

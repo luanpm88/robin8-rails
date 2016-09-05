@@ -14,7 +14,7 @@ module Jd
       if res["success"] == 1
         res["data"].each do |order_data|
           order = CpsPromotionOrder.find_or_initialize_by(:order_id => order_data["orderId"])
-          next if !order.new_record? && order.yn == 0
+          next if !order.new_record?  && order.yn == 0
           if order.new_record?
             order.sub_union = order_data["subUnion"]
             sub_union_arr = order.sub_union.split("_")
@@ -28,6 +28,12 @@ module Jd
             order.source_emt = order_data["sourceEmt"]
             order.total_money = order_data["totalMoney"]
             order.cos_price = order_data["cosPrice"]
+            order.yn = order_data["yn"]
+            if order_data["yn"] == 1
+              order.status = 'pending'
+            else
+              order.status = 'canceled'
+            end
             order_data["details"].each do |item|
               order.cps_promotion_order_items.build(first_level: item["firstLevle"],
                                                    second_level: item["secondLevel"],
@@ -39,12 +45,12 @@ module Jd
                                                    product_id: item["productId"]
               )
             end
-          end
-          order.yn = order_data["yn"]
-          if order_data["yn"] == 1
-            order.status = 'pending'
           else
-            order.status = 'canceled'
+            order.yn = order_data["yn"]
+            if order.status == 'pending' &&  order_data["yn"] != 1
+              order.status = 'canceled'
+              order.cancel_query_time = query_time
+            end
           end
           order.save!
         end

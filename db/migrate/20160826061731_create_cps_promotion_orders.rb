@@ -15,6 +15,7 @@ class CreateCpsPromotionOrders < ActiveRecord::Migration
       t.string :sub_union, :limit => 40
       t.string :order_query_time, :limit => 40
       t.string :receipt_query_time, :limit => 40           # from commision
+      t.string :cancel_query_time, :limit => 40
       t.float :cos_price                                  # update from commision
       t.float :commision_fee                               # from commision
 
