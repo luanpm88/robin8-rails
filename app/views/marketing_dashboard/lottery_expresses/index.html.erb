@@ -37,6 +37,7 @@
       <th>ID</th>
       <th>活动名称</th>
       <th><%= sort_link(@q, :draw_at, "开奖时间") %></th>
+      <th>KOL ID</th>
       <th>KOL昵称</th>
       <th>KOL等级</th>
       <th>历史收益</th>
@@ -56,6 +57,7 @@
         <td><%= lottery_activity.code %></td>
         <td><%= lottery_activity.name %></td>
         <td><%= lottery_activity.draw_at.strftime "%Y-%m-%d %H:%M" rescue "无" %></td>
+        <td><%= link_to lottery_activity.lucky_kol.id, marketing_dashboard_kol_path(lottery_activity.lucky_kol.id), target: "_blank" %></td>
         <td><%= lottery_activity.lucky_kol.name %></td>
         <td><%= lottery_activity.lucky_kol.kol_level %></td>
         <td><%= lottery_activity.lucky_kol.total_income %></td>
