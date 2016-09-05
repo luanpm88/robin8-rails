@@ -4,7 +4,7 @@
     <p class="title"><%= @cps_article.title %></p>
     <p class="author">
       <i class="avatar"><%= image_tag @cps_article.kol.get_avatar_url %></i><%= @cps_article.kol.name %>
-      <span><%= @cps_article.read_count.value %></span>
+      <span>阅读: <%= @cps_article.read_count.value %></span>
     </p>
   </div>
   <div class="section-content">
@@ -27,7 +27,7 @@
           <%= link_to promotion_url do  %>
             <div class="avatar"><%= image_tag product.img_url %></div>
             <div class="info">
-              <p class="pro-title"><%= product.goods_name %></p>
+              <p class="pro-title"><%= truncate product.goods_name, :length => 40, :separator => "..." %></p>
               <p class="price">&yen;<span class="number-font"><%= product.unit_price %></span></p>
             </div>
           <% end %>

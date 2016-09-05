@@ -38,7 +38,7 @@ body{
   .cover{height: 227px;}
 }
 .topic-info{
-  padding: 0 20px 15px;
+  padding: 0 15px 15px;
 }
 .topic-info .title{
   font-size: 18px;
@@ -51,11 +51,13 @@ body{
   line-height: 18px;
   font-size: 13px;
   color: #666;
+  padding-right: 5px;
 }
 .topic-info .author .avatar img{
   float: left;
   width: 18px;
   height: 18px;
+  border: 5px;
 }
 .topic-info .author span{
   float: right;
@@ -74,25 +76,33 @@ body{
 
 .section-content{
   .box{
-    padding: 10px 5px;
+    padding: 8px 15px ;
   }
   .img-box img{
+    border: 8px;
     width: 100%;
   }
   .product-box{
-    width: 100%;
     overflow: auto;
-    .avatar{
-      float: left;
-      width: 20%;
-      img{
-        width: 100%;
+    a{
+      display: block;
+      overflow: auto;
+      position: relative;
+      .avatar{
+        float: left;
+        display: inline-block;
+        width: 20%;
+        img{
+          width: 100%;
+          border: 10px;
+        }
       }
-    }
-    .info{
-      margin-left: 5%;
-      width: 75%;
-      float: right
+      .info{
+        display: inline-block;
+        padding-left: 4%;
+        width: 75%;
+        float: left
+      }
     }
   }
 }

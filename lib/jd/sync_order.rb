@@ -17,7 +17,7 @@ module Jd
           next if !order.new_record? && order.yn == 0
           if order.new_record?
             order.sub_union = order_data["subUnion"]
-            sub_union_arr = order.sub_union.split("/")
+            sub_union_arr = order.sub_union.split("_")
             order.kol_id = sub_union_arr[0]
             order.cps_article_share_id = sub_union_arr[1]
             order.order_query_time =  query_time
@@ -41,7 +41,7 @@ module Jd
             end
           end
           order.yn = order_data["yn"]
-          if order["yn"] == 1
+          if order["yn"].to_i == 1
             order.status = 'pending'
           else
             order.status = 'canceled'
