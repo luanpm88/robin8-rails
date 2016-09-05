@@ -7,6 +7,7 @@
 //= require momentjs
 //= require momentjs/locale/zh-cn
 //= require eonasdan-bootstrap-datetimepicker
+//= require marketing_dashboard/jqzoom
 
 if (!jQuery.fn.size) {
   jQuery.fn.extend({
