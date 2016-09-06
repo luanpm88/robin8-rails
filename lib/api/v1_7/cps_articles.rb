@@ -53,13 +53,24 @@ module API
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
         end
 
+        # 文章详情
         get ':id/show' do
           cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
+          present :cps_article_shares, cps_article.cps_article_shares, with: API::V1_7::Entities::CpsArticleShares::Summary
         end
 
+        # 文章中所含商品
+        get ':id/materials' do
+          cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
+          return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
+          present :error, 0
+          present :cps_materials, cps_article.cps_materials, with: API::V1_7::Entities::CpsMaterials::Summary
+        end
+
+        # 分享文章
         params do
           optional :cps_article_id, type: Integer
         end
