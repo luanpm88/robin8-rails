@@ -46,10 +46,11 @@ module Brand
 
             if params[:sns] and params[:sns] != "全部"
               sns_params = params[:sns].split(",").reject(&:blank?)
-              sns = sns_params & ["wechat"]
+              sns = sns_params & ["wechat", "weibo"]
 
-              join_table(:social_accounts)
-              @kols = @kols.where("`social_accounts`.`provider` IN (?)", sns)
+              # todo
+              # join_table(:social_accounts)
+              # @kols = @kols.where("`social_accounts`.`provider` IN (?)", sns)
             end
 
             if params[:just_count]

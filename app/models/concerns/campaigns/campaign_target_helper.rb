@@ -86,7 +86,7 @@ module Campaigns
             kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
             kols = kols.where("`kol_tags`.`tag_id` IN (?)", target.get_tags)
           end
-        elsif target.target_type == 'sns_platforms'
+        elsif target.target_type == 'sns_platforms' and !self.is_recruit_type?
           unless target.target_content == '全部'
             kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
             kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)

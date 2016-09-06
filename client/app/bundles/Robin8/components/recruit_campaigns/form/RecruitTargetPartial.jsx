@@ -88,6 +88,10 @@ export default class TargetPartial extends React.Component {
     this.snsSelector = new SnsSelector({
       items: [{
         id: 1,
+        label: "微博",
+        name: "weibo"
+      },{
+        id: 2,
         label: "微信",
         name: "wechat"
       }],
