@@ -168,7 +168,7 @@ module Campaigns
       title = "您参与的Robin8招募活动，已经开始啦。复制活动素材转发到朋友圈，即可获得#{self.actual_per_action_budget}元奖励。"
       kol_ids = self.campaign_invites.collect{|i| i.kol_id }
       kols = Kol.where(:id => kol_ids)
-      Rail.logger.sms.info "-----kols size:##{kols.size} --- #{kols.collect{|k| k.mobile_number}.join(',')}"
+      Rails.logger.sms.info "-----kols size:##{kols.size} --- #{kols.collect{|k| k.mobile_number}.inspect rescue nil}"
       return if kols.size == 0
       # 发送短信通知
       Emay::SendSms.to(kols.collect{|k| k.mobile_number}.compact, title)
