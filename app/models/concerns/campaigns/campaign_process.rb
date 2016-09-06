@@ -83,7 +83,7 @@ module Campaigns
       if  is_recruit_type?
         _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
         CampaignWorker.perform_at(_start_time, self.id, 'start')
-        CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
+        CampaignWorker.perform_at(self.start_time - 1.minutes, self.id, 'end_apply_check')
       else
         _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
         CampaignWorker.perform_at(_start_time, self.id, 'start')
