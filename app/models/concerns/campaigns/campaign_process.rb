@@ -91,7 +91,6 @@ module Campaigns
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     end
 
-    # 开始进行  此时需要更改invite状态
     def go_start(kol_ids = nil)
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       return if self.status != 'agreed'
@@ -165,8 +164,8 @@ module Campaigns
     #招募活动开始时 发送通知
     def push_start_notify
       title = "您参与的Robin8招募活动，已经开始啦。复制活动素材转发到朋友圈，即可获得#{self.actual_per_action_budget}元奖励。"
-      kol_ids = self.campaign_invite.collect{|i| i.kol_id }
-      kols = Kol.where(:kol_id => kol_ids)
+      kol_ids = self.campaign_invites.collect{|i| i.kol_id }
+      kols = Kol.where(:id => kol_ids)
       # 发送短信通知
       Emay::SendSms.to(kols.collect{|k| k.mobile_number}.compact, title)
       #发送通知
