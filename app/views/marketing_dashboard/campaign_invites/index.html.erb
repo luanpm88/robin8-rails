@@ -157,9 +157,8 @@
           <td><%= check_box_tag "campaign_invites_ids[]", c.id %></td>
         <% end %>
         <td>
-          <%= link_to image_tag(c.screenshot, :width => "100px", class: 'screenshot-img'), c.screenshot, :target => "_blank", class: 'screenshot-td'%>
+          <%= link_to image_tag(c.screenshot, :width => "100px", class: 'screenshot-img'), c.screenshot, :target => "_blank", class: 'screenshot-td', data: {example: c.campaign.cpi_example_screenshot.to_s } %>
         </td>
-        <td><%= link_to image_tag(c.campaign.cpi_example_screenshot, :width => "100px", class: 'screenshot-example-img', style: 'display: none'), c.campaign.cpi_example_screenshot, :target => "_blank"%></td>
         <td><%= c.img_status %></td>
         <td><%= c.campaign_id %></td>
         <td><%= c.campaign.name rescue "" %></td>
