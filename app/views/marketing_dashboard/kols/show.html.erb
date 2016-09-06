@@ -136,9 +136,28 @@
     </td>
   </tr>
   <tr>
+    <td>KOL活动表现</td>
+    <td>
+      <table>
+        <tr>
+          <td width="180px;">参与活动总数</td>
+          <td><%= @kol.campaigns.count %></td>
+        </tr>
+        <tr>
+          <td>平均有效点击</td>
+          <td><%= @kol.average_click_of_campaigns %> 次/活动</td>
+        </tr>
+        <tr>
+          <td>单次活动最高有效点击</td>
+          <td> <%= @kol.maximum_click_of_campaigns %> 次</td>
+        </tr>
+      </ul>
+      </table>
+    </td>
+  </tr>
+  <tr>
     <td>KOL参与的所有活动</td>
     <td>
-      共 <%= @kol.campaigns.count %> 个活动
       <ul>
         <% @kol.campaigns.each do |campaign|%>
           <li><%= link_to campaign.name, marketing_dashboard_campaigns_path(q: { id_eq: 823 }), target: "_blank" %></li>
