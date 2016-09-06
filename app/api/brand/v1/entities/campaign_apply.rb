@@ -18,6 +18,9 @@ module Brand
         expose :images do |object|
           object.images.map(&:avatar_url)
         end
+        expose :get_avail_click do |object, opts|
+          object.campaign_invite.get_avail_click
+        end
         expose :weixin_friend_count do |object, opts|
           object.kol.social_accounts.where(provider: 'wechat').maximum("followers_count")
         end

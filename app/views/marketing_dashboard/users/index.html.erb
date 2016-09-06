@@ -80,11 +80,11 @@
         <td><%= link_to campaign.id, marketing_dashboard_campaign_path(campaign), target: "_blank" rescue "" %></td>
         <td><%= u.seller.try(:name) %></td>
         <td>
-          <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
+          <%= link_to '详情', marketing_dashboard_user_path(u.id), :target => "_blank" %>
           /
-          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
+          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id), :target => "_blank" %>
           /
-          <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %>
+          <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "_blank" %>
         </td>
       </tr>
     <% end %>

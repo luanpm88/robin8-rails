@@ -156,6 +156,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def smart_name
+    self.name.presence || self.kol.try(:name)
+  end
+
   def can_export
     user_product = self.active_subscription
     return false if user_product.blank?
