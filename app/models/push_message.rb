@@ -34,8 +34,9 @@ class PushMessage < ActiveRecord::Base
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
     elsif message.message_type == 'campaign'
+      title =  '又有新活动发布啦，速去转发赚钱！'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                              :title => message.title)
+                              :title => title)
       if message.receiver_type == 'All'
         push_message.receiver_type = 'App'
         push_message.receiver_list = {:app_id_list => [GeTui::Dispatcher::AppId] }
@@ -48,7 +49,7 @@ class PushMessage < ActiveRecord::Base
         device_tokens =  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
         device_tokens.in_groups_of(1000,false){|group_device_tokens|
           push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                                  :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
+                                  :title => title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
           push_message.message_id = message.id
           push_message.item_id = message.item_id
           push_message.item_type = message.item_type
