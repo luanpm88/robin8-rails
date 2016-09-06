@@ -165,7 +165,7 @@ module Campaigns
     #招募活动开始时 发送通知
     def push_start_notify
       title = "您参与的Robin8招募活动，已经开始啦。复制活动素材转发到朋友圈，即可获得#{self.actual_per_action_budget}元奖励。"
-      kol_ids = self.campaign_invites.collect{|i| i.kol_id }
+      kol_ids = self.valid_invites.collect{|i| i.kol_id }
       kols = Kol.where(:id => kol_ids)
       Rails.logger.sms.info "-----kols size:##{kols.size} --- #{kols.collect{|k| k.mobile_number}.inspect rescue nil}"
       return if kols.size == 0
