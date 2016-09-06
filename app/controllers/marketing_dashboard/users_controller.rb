@@ -69,6 +69,9 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
         @user.increment!(:appliable_credits, (tax + credits))
       end
 
+      if params[:seller_id]
+        @user.update(seller_id: params[:seller_id])
+      end
       flash[:notice] = '为品牌主充值成功'
     else
       recharge_record.update(status: "failed")
