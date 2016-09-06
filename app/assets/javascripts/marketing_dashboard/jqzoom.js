@@ -18,7 +18,7 @@
 		var bigimage = $(this).parent().attr("href");
 		if($("span.zxx_image_zoom_div").get().length == 0){
 			var example_img = null;
-			var example_img_src = $(this).first().parents('tbody').find('.screenshot-example-img').attr('src')
+			var example_img_src = $(this).closest('a').data("example");
 			var img = "<img class='bigimg' style='width: 45%; border: 5px solid red;' src='"+bigimage+"'/>";
 			if(example_img_src.length) {
 				var example_img = "<img class='bigimg' style='width: 45%; margin-left: 20px; border: 5px solid green' src='"+example_img_src+"'/>";

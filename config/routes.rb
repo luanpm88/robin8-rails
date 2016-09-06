@@ -1,10 +1,11 @@
 require 'sidekiq/web'
 
-%w(admin).each do |route_name|
+%w(admin crm).each do |route_name|
   load "#{Rails.root}/config/routes/#{route_name}.rb"
 end
 
 Rails.application.routes.draw do
+  mount Crm::Engine, at: "/crm"
   mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'

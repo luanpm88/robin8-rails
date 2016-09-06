@@ -37,4 +37,13 @@ module MarketingDashboard::CampaignsHelper
       "/brand/campaigns/#{c.id}/edit?super_visitor_token=#{get_super_visitor_token}&user_id=#{c.user_id}"
     end
   end
+
+  def get_campaign_seller(c)
+    if c.seller_invite_code.present?
+      Crm::Seller.find_by(invite_code: c.seller_invite_code)
+    else
+      alipay_order = c.user.alipay_orders.where.not(invite_code: nil).take
+      Crm::Seller.find_by(invite_code: alipay_order.invite_code) if alipay_order
+    end
+  end
 end
