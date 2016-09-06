@@ -12,7 +12,11 @@ class CommonsController < ApplicationController
     puts uuid_params
     invite_id = uuid_params['campaign_invite_id']
     material_url = uuid_params['material_url']
-    CampaignInvite.find(invite_id).redis_avail_click.increment      rescue nil
+    campaign_invite =  CampaignInvite.find(invite_id)               rescue nil
+    if campaign_invite
+      campaign_invite.redis_avail_click.increment
+      campaign_invite.campaign.redis_avail_click.increment
+    end
     redirect_to material_url
   end
 end
