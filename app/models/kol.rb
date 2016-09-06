@@ -81,7 +81,7 @@ class Kol < ActiveRecord::Base
   scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
-    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")} #.where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
