@@ -87,7 +87,7 @@ class PushMessage < ActiveRecord::Base
                              .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
     push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
     # 个推限定list 最大为1000
-    title =  '你有新的特邀转发活动'
+    title =  '又有新活动发布啦，速去转发赚钱！'
     device_tokens =  Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}.uniq
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
     device_tokens.in_groups_of(1000,false){|group_device_tokens|
