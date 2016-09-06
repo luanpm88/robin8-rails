@@ -10,8 +10,22 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       params[:q] = { is_active_eq: true }
     end
 
-    @q = @users.ransack(params[:q])
-    @users = @q.result.order('created_at DESC').paginate(paginate_params)
+    @users = @users.order('created_at DESC')
+
+    respond_to do |format|
+      format.html do
+        @q = @users.ransack(params[:q])
+        @users = @q.result.paginate(paginate_params)
+        render 'index'
+      end
+
+      format.csv do
+        @users = @users.joins(:campaigns).distinct
+        headers['Content-Disposition'] = "attachment; filename=\"发单品牌主记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
   end
 
   def show
