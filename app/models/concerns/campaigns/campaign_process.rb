@@ -102,6 +102,7 @@ module Campaigns
         else
           self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
           self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
+          self.push_start_notify       if self.is_recruit_type?
         end
         self.update_columns(:status => 'executing')
         Message.new_campaign(self, (kol_ids || get_kol_ids))
@@ -159,6 +160,17 @@ module Campaigns
           end
         end
       end
+    end
+
+    #招募活动开始时 发送通知
+    def push_start_notify
+      title = "您参与的Robin8招募活动，已经开始啦。复制活动素材转发到朋友圈，即可获得#{self.actual_per_action_budget}元奖励。"
+      kol_ids = self.campaign_invite.collect{|i| i.kol_id }
+      kols = Kol.where(:kol_id => kol_ids)
+      # 发送短信通知
+      Emay::SendSms.to(kols.collect{|k| k.mobile_number}.compact, title)
+      #发送通知
+      PushMessage.campaign_start(kols, title, self)
     end
 
     def cal_settle_time(end_time = nil)

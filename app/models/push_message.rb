@@ -105,6 +105,17 @@ class PushMessage < ActiveRecord::Base
     push_message.save
   end
 
+  def self.campaign_start(receivers, title, campaign)
+    content = {:action => 'common', :title => title, :sender => 'robin8', :name =>'您参与的招募活动已经开始啦!'}
+    push_message = self.new(:template_type => 'transmission', :template_content => content,
+                            :title => title, :receiver_type => 'List' )
+    push_message.receiver_ids = receivers.collect{|t| t.id }
+    push_message.receiver_cids = receivers.collect{|t| t.device_token}.uniq
+    push_message.item_id = campaign.id
+    push_message.item_type = 'Campaign'
+    push_message.save
+  end
+
   def async_send_to_client
     puts "====async_send_to_client"
     if Rails.env.development?
