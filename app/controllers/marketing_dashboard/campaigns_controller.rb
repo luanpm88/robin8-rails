@@ -149,7 +149,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def add_or_remove_recruit_kol
     authorize! :update, Campaign
-    
+
     kol_id = params[:kol_id]
     campaign_id = params[:campaign_id]
     agree_reason = params[:agree_reason]
@@ -172,6 +172,16 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       rescue
         return render json: {result: 'save status and reason failed'}
       end
+    end
+  end
+
+  def add_seller
+    @campaign = Campaign.find(params[:id])
+    if request.get?
+      render :add_seller
+    else
+      @campaign.update_attributes(seller_invite_code: params[:campaign][:seller_invite_code])
+      redirect_to :back, notice: '添加成功'
     end
   end
 end

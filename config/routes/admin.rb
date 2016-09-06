@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         get :stop
         get :push_all
         post :refresh_budget
+        match 'add_seller', via: [:patch, :get]
+
       end
       collection do
         put :reject
