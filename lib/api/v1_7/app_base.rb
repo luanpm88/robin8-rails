@@ -5,6 +5,7 @@ module API
       mount API::V1_7::CpsArticles
       # mount API::V1_7::CpsArticleShares
       mount API::V1_7::CpsMaterials
+      mount API::V1_7::Images
     end
   end
 end
