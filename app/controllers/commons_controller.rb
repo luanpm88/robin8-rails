@@ -6,4 +6,13 @@ class CommonsController < ApplicationController
     @hot_item.redis_read_count.increment
     redirect_to @hot_item.origin_url
   end
+
+  def material
+    uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
+    puts uuid_params
+    invite_id = uuid_params['campaign_invite_id']
+    material_url = uuid_params['material_url']
+    CampaignInvite.find(invite_id).redis_avail_click.increment      rescue nil
+    redirect_to material_url
+  end
 end

@@ -1,6 +1,10 @@
 module API
   module V1_6
     class Campaigns < Grape::API
+      before do
+        authenticate!
+      end
+
       resources :campaigns do
         #获取活动素材
         params do
@@ -18,7 +22,7 @@ module API
           else
             campaign_materials = campaign.campaign_materials
             present :error, 0
-            present :campaign_materials, campaign_materials, with: API::V1_6::Entities::CampaignMaterialEntities::Summary
+            present :campaign_materials, campaign_materials, with: API::V1_6::Entities::CampaignMaterialEntities::Summary, kol: current_kol
           end
         end
       end
