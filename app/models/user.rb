@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one  :invoice
   has_one  :invoice_receiver
   has_many :invoice_histories
+  belongs_to  :seller, class_name: "Crm::Seller"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

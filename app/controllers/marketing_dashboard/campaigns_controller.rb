@@ -192,7 +192,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     if request.get?
       render :add_seller
     else
-      @campaign.update_attributes(seller_invite_code: params[:campaign][:seller_invite_code])
+      @campaign.user.update(seller_id: params[:seller_id])
       redirect_to :back, notice: '添加成功'
     end
   end

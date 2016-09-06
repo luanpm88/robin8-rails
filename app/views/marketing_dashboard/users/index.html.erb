@@ -53,6 +53,7 @@
       <th><%= sort_link(@q, :avail_amount, "可用余额") %></th>
       <th><%= sort_link(@q, :historical_payout, "历史花费") %></th>
       <th><%= sort_link(@q, :historical_recharge, "总充值金额") %></th>
+      <th>销售人员</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -66,6 +67,7 @@
         <td><%= u.avail_amount %></td>
         <td><%= u.historical_payout %></td>
         <td><%= u.historical_recharge %></td>
+        <td><%= u.seller.try(:name) %></td>
         <td>
           <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
           /
@@ -79,4 +81,3 @@
 </table>
 
 <%= will_paginate @users, renderer: BootstrapPagination::Rails  %>
-

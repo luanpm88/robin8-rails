@@ -39,11 +39,6 @@ module MarketingDashboard::CampaignsHelper
   end
 
   def get_campaign_seller(c)
-    if c.seller_invite_code.present?
-      Crm::Seller.find_by(invite_code: c.seller_invite_code)
-    else
-      alipay_order = c.user.alipay_orders.where.not(invite_code: nil).take
-      Crm::Seller.find_by(invite_code: alipay_order.invite_code) if alipay_order
-    end
+    c.user.seller
   end
 end

@@ -9,6 +9,7 @@ class AlipayOrder < ActiveRecord::Base
 
   belongs_to :user
   after_create :update_user_status
+  after_create :save_seller, if: Proc.new { |alipay_order| alipay_order.invite_code.present? }
 
   STATUS.each do |status|
     define_method "#{status}?" do
@@ -60,5 +61,12 @@ class AlipayOrder < ActiveRecord::Base
     Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 成功获取到对应transaction  --------------"
     @transaction.account.increment!(:appliable_credits, (tax + credits))
     Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 添加可提现金额成功  --------------"
+  end
+
+  def save_seller
+    seller = Crm::Seller.find_by(invite_code: invite_code)
+    if seller.present? && !self.user.seller
+      self.user.update_attributes(seller_id: seller.id)
+    end
   end
 end
