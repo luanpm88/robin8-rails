@@ -20,7 +20,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       end
 
       format.csv do
-        @users = @users.joins(:campaigns).distinct
+        @users = @users.is_live.joins(:campaigns).distinct
         headers['Content-Disposition'] = "attachment; filename=\"发单品牌主记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
         headers['Content-Type'] ||= 'text/csv; charset=utf-8'
         render 'index'
@@ -31,6 +31,13 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   def show
     authorize! :read, User
     @user = User.find params[:id]
+  end
+
+  def live
+    authorize! :read, User
+    @user = User.find params[:id]
+    @user.update(is_live: !@user.is_live)
+    redirect_to marketing_dashboard_user_path(@user)
   end
 
   def recharge

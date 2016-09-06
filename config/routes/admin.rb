@@ -71,6 +71,9 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
+      member do
+        put 'live'
+      end
       collection do
         get 'search'
         post 'search'

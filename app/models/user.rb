@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
     Arel.sql('(`users`.`amount` - `users`.`frozen_amount`)')
   end
 
+  scope :is_live, -> { where(is_live: true) }
   # scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge' OR `transactions`.`subject` = 'campaign_pay_by_alipay') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
   # scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
 

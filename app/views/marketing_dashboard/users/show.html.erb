@@ -1,3 +1,18 @@
+<h3>品牌主：<%= @user.name %>
+
+<%
+if @user.is_live
+  btn_txt = "指定为实验数据"
+  btn_clz = "btn-danger"
+else
+  btn_txt = "指定为真实数据"
+  btn_clz = "btn-success"
+end
+%>
+
+<%= link_to btn_txt, live_marketing_dashboard_user_path(@user), class: "btn #{btn_clz} pull-right", method: :put %>
+</h3>
+
 <table class="table table-striped">
   <% @user.attributes.except(*sensitivity_list).each do |k, v| %>
     <tr>
