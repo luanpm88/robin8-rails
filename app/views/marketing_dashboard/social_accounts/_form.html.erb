@@ -1,19 +1,21 @@
 <div class="row">
   <div class="col-md-6">
     <div class="form-group">
-      <label>kol_id</label>
-      <%= f.object.kol_id %>(<%= f.object.kol.name %>)
+      <label>KOL ID：</label>
+      <%= f.object.kol_id %>
     </div>
-    
-
+    <div class="form-group">
+      <label>KOL名称：</label>
+      <%= f.object.kol.name %>
+    </div>
 
     <div class="form-group">
       <label>平台来源</label>
-      <%= f.select :provider, SocialAccount::Providers.to_a.map(&:reverse),class: "form-control" %>
+      <%= f.select :provider, SocialAccount::Providers.to_a.map(&:reverse), {}, { class: "form-control" } %>
     </div>
 
     <div class="form-group">
-      <label>uid</label>
+      <label>UID</label>
       <%= f.text_field :uid,class: "form-control", :placeholder => "微博帐号 或者 微信帐号的 id" %>
     </div>
 
@@ -61,22 +63,22 @@
     </div>
     <div class="form-group">
       <label>是否认证(0: 未认证, 1: 认证)</label>
-      <%= f.select :verified, [0, 1], class: "form-control" %>
+      <%= f.select :verified, [0, 1], {}, { class: "form-control" } %>
     </div>
 
     <div class="form-group">
-      <label>province</label>
-      <%= f.select :province, Province.all.map(&:name), class: "form-control" %>
+      <label>省</label>
+      <%= f.select :province, Province.all.map(&:name), {}, { class: "form-control" } %>
     </div>
 
     <div class="form-group">
-      <label>city(由于 城市关联查询有点麻烦， city 暂时需要手动输入 <%= link_to "城市列表",  cities_marketing_dashboard_social_accounts_path, :target => "_blank" %>)</label>
+      <label>城市 (由于 城市关联查询有点麻烦， city 暂时需要手动输入 <%= link_to "城市列表",  cities_marketing_dashboard_social_accounts_path, :target => "_blank" %>)</label>
       <%= f.text_field :city, class: "form-control" %>
     </div>
 
     <div class="form-group">
-      <label>性别(0: 未设置, 1: 男, 2: 女)</label>
-      <%= f.select :gender, [0, 1, 2],  class: "form-control" %>
+      <label>性别</label>
+      <%= f.select :gender, [["未设置", 0], ["男", 1], ["女", 2]],  {}, { class: "form-control" } %>
     </div>
 
     <div class="form-group">

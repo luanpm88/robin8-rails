@@ -94,7 +94,7 @@ export default class KolList extends React.Component {
       <tr>
         { this.render_super_vistor_header() }
         <th className="profiles"><h4>报名列表</h4></th>
-        <th className="fans">微博/微信粉丝量</th>
+        <th className="fans">微信粉丝量</th>
         <th className="location">地区</th>
         <th className="reason">详情</th>
         { this.render_status_header() }

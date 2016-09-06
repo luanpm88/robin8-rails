@@ -1,16 +1,17 @@
 class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseController
   def index
-    authorize! :read, AlipayOrder
     @alipay_orders = AlipayOrder.all
+    get_alipay_orders
+  end
 
-    if params[:pending]
-      @alipay_orders = @alipay_orders.where(status: 'pending')
-    elsif params[:paid]
-      @alipay_orders = @alipay_orders.where(status: 'paid')
-    end
+  def from_pc
+    @alipay_orders = AlipayOrder.where(recharge_from: ["pc", nil])
+    get_alipay_orders
+  end
 
-    @q = @alipay_orders.ransack(params[:q])
-    @alipay_orders = @q.result.order('created_at DESC').paginate(paginate_params)
+  def from_app
+    @alipay_orders = AlipayOrder.where(recharge_from: "app")
+    get_alipay_orders
   end
 
   def campaigns
@@ -26,5 +27,24 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:admin_desc => params[:admin_desc])
     render :json => {:status => "ok"}
+  end
+
+  def add_seller
+    @alipay_order = AlipayOrder.find(params[:id])
+    if request.get?
+      render :add_seller
+    else
+      @alipay_order.update_attributes(invite_code: params[:alipay_order][:invite_code])
+      redirect_to :back, notice: '添加成功'
+    end
+  end
+
+private
+  def get_alipay_orders
+    authorize! :read, AlipayOrder
+
+    @q = @alipay_orders.ransack(params[:q])
+    @alipay_orders = @q.result.order('created_at DESC').paginate(paginate_params)
+    render :index
   end
 end

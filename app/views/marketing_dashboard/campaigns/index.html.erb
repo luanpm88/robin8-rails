@@ -158,10 +158,15 @@
           <th>活动类型</th>
           <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
           <th><%= sort_link(@q, :budget, "活动预算") %></th>
+          <th>剩余预算</th>
           <th><%= sort_link(@q, :start_time, "活动开始时间") %></th>
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :created_at, "活动创建时间") %></th>
           <th>活动来源</th>
+          <th><%= sort_link(@q, :valid_invite_count, "总接单人数") %></th>
+          <th><%= sort_link(@q, :avail_click, "总有效点击") %></th>
+          <th><%= sort_link(@q, :total_click, "总点击") %></th>
+          <th>销售人员</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -176,10 +181,22 @@
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
+          <td><%= c.remain_budget %></td>
           <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.created_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.campaign_from %></td>
+          <td><%= c.valid_invites.count %></td>
+          <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
+          <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click  %></td>
+          <td>
+            <% if seller = get_campaign_seller(c) %>
+              <%= seller.name %> |
+              <%= link_to '编辑', add_seller_marketing_dashboard_campaign_path(c) %>
+            <% else %>
+              <%= link_to '添加', add_seller_marketing_dashboard_campaign_path(c) %>
+            <% end %>
+          </td>
           <td>
             <%= link_to '详情', marketing_dashboard_campaign_path(c), target: "_blank" %> /
             <%= link_to '编辑', get_edit_brand_campaign_show_url(c), target: "_blank" %> /
@@ -199,6 +216,9 @@
 
                 <% if c.status == 'executing' %>
                 <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
+                <% if not Rails.cache.fetch("campaign_id_#{c.id}_push_all")%>
+                  <li><%= link_to '补推给所有人',push_all_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
+                <% end %>
                 <% end %>
               </ul>
             </div>
@@ -209,7 +229,13 @@
             </div>
             <div class="option-group" role="group">
               <% if c.status == 'unexecute' %>
+                <% if c.per_budget_type == 'simple_cpi' && c.cpi_example_screenshot.blank? %>
+                <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <% elsif c.per_budget_type == 'cpa' && c.remark.blank? %>
+                <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <% else %>
                 <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <% end %>
                 <a href="" onclick="return false;" class="btn btn-warning reject-campaign" data-campaign-id=<%= c.id %> >不通过</a>
               <% end %>
             </div>

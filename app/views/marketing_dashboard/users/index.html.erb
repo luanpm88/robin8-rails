@@ -7,25 +7,31 @@
   <div id="searchPanel" class="panel-body">
     <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="form-group">
             <label>品牌主ID</label>
             <%= f.search_field :id_eq, class: "form-control", placeholder: "品牌主ID" %>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="form-group">
             <label>品牌主手机</label>
             <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="form-group">
             <label>品牌主昵称</label>
             <%= f.search_field :name_cont, class: "form-control", placeholder: "品牌主昵称" %>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>品牌主状态</label>
+            <%= f.select :is_active_eq, [["已激活", true], ["未激活", false]], {}, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-offset-4 col-md-4">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -44,8 +50,9 @@
       <th>品牌主昵称</th>
       <th>手机</th>
       <th>来源</th>
-      <th>可用余额</th>
-      <th>总充值金额</th>
+      <th><%= sort_link(@q, :avail_amount, "可用余额") %></th>
+      <th><%= sort_link(@q, :historical_payout, "历史花费") %></th>
+      <th><%= sort_link(@q, :historical_recharge, "总充值金额") %></th>
       <th>操作</th>
     </tr>
   </thead>
@@ -57,7 +64,8 @@
         <td><%= u.mobile_number %></td>
         <td><%= u.utm_source %></td>
         <td><%= u.avail_amount %></td>
-        <td><%= u.total_recharge %></td>
+        <td><%= u.historical_payout %></td>
+        <td><%= u.historical_recharge %></td>
         <td>
           <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
           /

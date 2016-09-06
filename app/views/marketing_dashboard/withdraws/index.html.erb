@@ -1,3 +1,27 @@
+<div class="modal admin-withdraw-modal fade" tabindex="-1" role="dialog">
+  <h5><%= devise_error_messages! %></h5>  
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <h3>请输入拒绝理由（非必填）</h3>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input type="text" name='reject_reason' class='reject_reason form-control'>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn check_reject btn-primary">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h3>提现列表</h3>
 
 <div class="panel panel-default">
@@ -83,6 +107,7 @@
       <th>提现状态</th>
       <th>支付宝关联用户</th>
       <th>提现次数</th>
+      <th>KOL等级</th>
       <th>拉黑时间</th>
       <th>来源</th>
       <th>支付宝账号</th>
@@ -90,6 +115,7 @@
       <th>身份证号码</th>
       <th>可提现金额</th>
       <th>历史收益</th>
+      <th>拒绝理由</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -113,6 +139,7 @@
           <% end %>
         </td>
         <td><%= Withdraw.where(:alipay_no =>w.alipay_no).count %></td>
+        <td><%= w.kol.kol_level rescue "" %></td>
         <td><%= w.kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= w.kol.app_platform rescue "" %></td>
         <td><%= w.alipay_no %></td>
@@ -120,17 +147,18 @@
         <td><%= w.kol.id_card rescue "" %></td>
         <td><%= w.kol.avail_amount rescue "" %></td>
         <td><%= w.kol.total_income rescue "" %></td>
+        <td><%= w.reject_reason %></td>
         <td>
           <% if w.status == 'pending' %>
             <%= link_to '通过审核', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
-            <%= link_to '拒绝', marketing_dashboard_withdraw_reject_path(w.id), method: :post %> /
-            <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post, "data-confirm" => "你确定要冻结吗" %> /
-            <%= link_to '永久冻结此支付宝帐号', marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id), method: :post, "data-confirm" => "你确定要冻结此支付宝帐号吗" %> /
+            <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
+            <%= link_to '永久冻结', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_permanent_frozen_path(w.id)  %> /
+            <%= link_to '永久冻结此支付宝帐号', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% elsif w.status == 'checked' %>
           <%= link_to '同意付款', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
-          <%= link_to '拒绝付款', marketing_dashboard_withdraw_reject_path(w.id), method: :post %> /
-          <%= link_to '永久冻结', marketing_dashboard_withdraw_permanent_frozen_path(w.id), method: :post %> /
-          <%= link_to '永久冻结此支付宝帐号', marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id), method: :post, "data-confirm" => "你确定要冻结此支付宝帐号吗" %> /
+          <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
+          <%= link_to '永久冻结', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_permanent_frozen_path(w.id)  %> /
+          <%= link_to '永久冻结此支付宝帐号', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% end %>
           <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
         </td>
@@ -145,7 +173,7 @@
 <%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', "data-confirm" => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary ' %>
 <% end %>
 
-<%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', "data-confirm" => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
+<% link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', "data-confirm" => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
 <%= link_to '导出CSV', request.path + ".csv", :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
 
 <div class="pull-right">
@@ -177,4 +205,28 @@
       }
     })
   })
+
+  $(".reject_withdraw").click(function(event){
+     $('.admin-withdraw-modal').modal("show")
+     $('.admin-withdraw-modal').attr("data-url", $(this).attr("data-url"))
+     event.stopPropagation()
+   })
+
+
+  $(".check_reject").click(function(){
+    if( ! $('.reject_reason').val()){
+      alert("拒绝理由不能为空")
+    }
+    $.ajax({
+      method: "POST",
+      url: $('.admin-withdraw-modal').attr("data-url"),
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "reject_reason":  $('.reject_reason').val()}
+    })
+      .done(function(data) {
+        location.reload();
+      });
+  });
 </script>

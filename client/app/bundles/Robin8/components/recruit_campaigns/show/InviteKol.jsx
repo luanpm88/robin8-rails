@@ -126,8 +126,6 @@ export default class InviteKol extends React.Component {
         {this.render_kol_id()}
         {this.render_profile(campaign_invite)}
         <td>
-          {campaign_invite.get("weibo_friend_count") || "-"}
-          <i className="slash">/</i>
           {campaign_invite.get("weixin_friend_count") || "-"}
         </td>
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>

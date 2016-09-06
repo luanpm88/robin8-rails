@@ -99,6 +99,7 @@
       <th>支付金额</th>
       <th>支付状态</th>
       <th>下单时间</th>
+      <th>销售人员</th>
       <th>备注</th>
       <th>修改备注</th>
     </tr>
@@ -113,8 +114,16 @@
         <td><%= campaign.trade_number %></td>
         <td><%= campaign.alipay_trade_no %></td>
         <td><%= campaign.alipay_amount %></td>
-        <td><%= campaign.alipay_status %></td>
+        <td><%= campaign.alipay_status.zero? ? "未付款" : "已付款" %></td>
         <td><%= campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td>
+          <% if seller = get_campaign_seller(campaign) %>
+            <%= seller.name %> |
+            <%= link_to '编辑', add_seller_marketing_dashboard_campaign_path(campaign) %></p>
+          <% else %>
+            <%= link_to '添加', add_seller_marketing_dashboard_campaign_path(campaign) %>
+          <% end %>
+        </td>
         <td><%= campaign.admin_desc %></td>
         <td><a href="" onclick="return false;" class="btn btn-warning change-campaign-desc" data-campaign-id=<%= campaign.id %> >修改备注</a></td>
       </tr>

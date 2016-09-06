@@ -1,18 +1,20 @@
 <h3>资金流水</h3>
-kol id: <%= @kol.id %></br>
-kol name: <%= @kol.name %></br>
-kol mobile_number: <%= @kol.mobile_number %>
+<ul>
+  <li>KOL ID: <%= link_to @kol.id, marketing_dashboard_kol_path(@kol.id) %></li>
+  <li>KOL 姓名: <%= @kol.name %></li>
+  <li>KOL 手机号: <%= @kol.mobile_number %></li>
+</ul>
 
 <table class="table table-bordered">
   <thead>
   <tr>
-    <th>Date</th>
-    <th>Direct</th>
-    <th>Subject</th>
-    <th>Credits</th>
-    <th>Avail Amount</th>
-    <th>Amount</th>
-    <th>Frozen Amount</th>
+    <th><%= sort_link(@q, :created_at, "日期") %></th>
+    <th>流动方向</th>
+    <th>项目</th>
+    <th><%= sort_link(@q, :credits, "金额") %></th>
+    <th>可用余额</th>
+    <th>余额</th>
+    <th>冻结余额</th>
   </tr>
   </thead>
   <tbody>

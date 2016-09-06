@@ -64,6 +64,12 @@ GIT
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
+PATH
+  remote: crm
+  specs:
+    crm (0.0.1)
+      rails (~> 4.2.0)
+
 GEM
   remote: https://gems.ruby-china.org/
   remote: http://rails-assets.org/
@@ -845,6 +851,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   countries
   country_select!
+  crm!
   csv_shaper
   database_cleaner
   devise

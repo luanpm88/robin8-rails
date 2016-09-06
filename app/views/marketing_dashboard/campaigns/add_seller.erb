@@ -1,0 +1,15 @@
+<div>
+  <%= form_for(@campaign, url: request.path, html: { class: 'form-horizontal' }) do |f| %>
+
+    <div class="form-group">
+      <%= f.label '销售人员名称', class: 'col-sm-1 control-label' %>
+      <div class="col-sm-3">
+        <%= f.select :seller_invite_code, options_for_select(Crm::Seller.all.map { |x| [x.name, x.invite_code] }, @campaign[:seller_invite_code]) ,class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit '保存', class: 'col-sm-1 btn btn-primary', style: 'margin-left: 100px;' %>
+    </div>
+  <% end %>
+</div>

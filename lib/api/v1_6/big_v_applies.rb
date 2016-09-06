@@ -14,7 +14,7 @@ module API
           optional :tag_names, type: String
           optional :desc, type: String
           optional :age, type: String
-          optional :gender, type: Integer, values: [0, 1, 2]
+          optional :gender, type: String
         end
         post 'update_profile' do
           if params[:gender] == 'Female'

@@ -91,7 +91,6 @@ module Campaigns
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     end
 
-    # 开始进行  此时需要更改invite状态
     def go_start(kol_ids = nil)
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
       return if self.status != 'agreed'
@@ -102,10 +101,42 @@ module Campaigns
         else
           self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
           self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
+          self.push_start_notify       if self.is_recruit_type?
         end
         self.update_columns(:status => 'executing')
         Message.new_campaign(self, (kol_ids || get_kol_ids))
       end
+      add_queue_to_add_kols_when_tag_or_region_is_special
+    end
+
+    # 当指定区域 或者 地区 不是全部 的时候 执行
+    def add_queue_to_add_kols_when_tag_or_region_is_special
+      if self.is_click_type? or self.is_post_type?
+        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) )
+          CampaignWorker.perform_at(Time.now+5.hours, self.id, 'append_kols')
+        end
+      end
+    end
+
+    def append_kols
+      kol_ids = self.get_append_kol_ids
+      if kol_ids.present?
+        Kol.where(:id => kol_ids).each do |kol|
+          kol.add_campaign_id self.id, true
+        end
+        Message.new_campaign(self, kol_ids)
+      end
+    end
+
+    def push_all_kols
+      should_push_kol_is = []
+      Kol.active.where("forbid_campaign_time is null or forbid_campaign_time <'#{Time.now}'").each do |kol|
+        unless kol.receive_campaign_ids.include?(kol.id.to_s)
+          kol.add_campaign_id self.id, false
+          should_push_kol_is << kol.id
+        end
+      end
+      Message.new_campaign(self, should_push_kol_is)  if should_push_kol_is.size > 0
     end
 
     #finish_remark:  expired or fee_end
@@ -130,6 +161,17 @@ module Campaigns
           end
         end
       end
+    end
+
+    #招募活动开始时 发送通知
+    def push_start_notify
+      title = "您参与的Robin8招募活动，已经开始啦。复制活动素材转发到朋友圈，即可获得#{self.actual_per_action_budget}元奖励。"
+      kol_ids = self.campaign_invites.collect{|i| i.kol_id }
+      kols = Kol.where(:id => kol_ids)
+      # 发送短信通知
+      Emay::SendSms.to(kols.collect{|k| k.mobile_number}.compact, title)
+      #发送通知
+      PushMessage.campaign_start(kols, title, self)
     end
 
     def cal_settle_time(end_time = nil)

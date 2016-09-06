@@ -130,6 +130,7 @@ class UpdateCampaignPartial extends React.Component {
               </div>
             </form>
           </div>
+          <div id="sublist"></div>
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>

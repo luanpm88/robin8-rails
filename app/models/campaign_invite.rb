@@ -9,7 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
-  CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果", "系统检测到有作弊嫌疑", "一次点击都没有"]
+  CommonRejectedReason = ["朋友圈截图错误", "朋友圈截图不完整", "活动保留时间不足30分钟", "活动评论有诱导嫌疑", "活动含诱导点击文字", "活动被设置分组了","朋友圈过多活动影响效果","系统检测到有作弊嫌疑","活动一次点击都没有"]
   # observer_status 0 表示 未计算, 1 表示 正常, 2 表示 存在作弊嫌疑
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
@@ -139,7 +139,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def get_avail_click
-    status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
+    if ['post', 'simple_cpi'].include?(self.campaign.per_budget_type)
+      get_total_click
+    else
+      status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
+    end
   end
 
   def self.origin_share_url(uuid)
@@ -195,15 +199,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def get_ocr_detail
-    return nil if self.ocr_detail.blank?
-    details = []
-    self.ocr_detail.split(",").each do |item_key|
-      details << OcrDetails[item_key]
-    end
-    details.join(",")
-  end
-
   def self.get_click_info(kol_id)
     invites =  CampaignInvite.where(:kol_id => kol_id).where("status != 'running' and status != 'applying'")
     invite_count = invites.count
@@ -221,6 +216,8 @@ class CampaignInvite < ActiveRecord::Base
       return "招募"
     when 'cpa'
       return 'cpa'
+    when 'simple_cpi'
+      return '下载'
     end
     return self.campaign.per_budget_type
   end
@@ -273,7 +270,7 @@ class CampaignInvite < ActiveRecord::Base
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
-      elsif ['recruit', 'post'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
+      elsif ['recruit', 'post', 'simple_cpi'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'

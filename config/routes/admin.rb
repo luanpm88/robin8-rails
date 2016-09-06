@@ -25,12 +25,16 @@ Rails.application.routes.draw do
       end
       member do
         get :targets
+        get :add_example_screenshot
         get :recruit_targets
         post :add_target
         post :add_or_remove_recruit_kol
         delete :delete_target
         get :stop
+        get :push_all
         post :refresh_budget
+        patch :save_example_screenshot_and_remark
+        match 'add_seller', via: [:patch, :get]
       end
       collection do
         put :reject
@@ -134,12 +138,21 @@ Rails.application.routes.draw do
         get :switch
       end
     end
+    resources :app_upgrades do
+      member do
+        get :switch
+      end
+    end
     resources :alipay_orders do
       collection do
-        post 'search'
+        get "from_pc"
+        get "from_app"
         get "campaigns"
         post "search_campaigns"
         put "change_campaign_desc"
+      end
+      member do
+        match 'add_seller', via: [:patch, :get]
       end
     end
 
@@ -177,6 +190,12 @@ Rails.application.routes.draw do
     resources :alipay_account_blacklists do
       member do
         get :disban
+      end
+    end
+
+    resources :verify_codes do
+      collection do
+        post 'get_verify_code'
       end
     end
   end

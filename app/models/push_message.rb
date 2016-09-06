@@ -87,7 +87,7 @@ class PushMessage < ActiveRecord::Base
                              .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
     push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
     # 个推限定list 最大为1000
-    title =  '你有新的特邀转发活动'
+    title =  '又有新活动发布啦，速去转发赚钱！'
     device_tokens =  Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}.uniq
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
     device_tokens.in_groups_of(1000,false){|group_device_tokens|
@@ -102,6 +102,17 @@ class PushMessage < ActiveRecord::Base
     push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                             :title => title, :receiver_cids => [receiver.device_token] )
     push_message.template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => 'KOL资质审核通过'}
+    push_message.save
+  end
+
+  def self.campaign_start(receivers, title, campaign)
+    content = {:action => 'common', :title => title, :sender => 'robin8', :name =>'您参与的招募活动已经开始啦!'}
+    push_message = self.new(:template_type => 'transmission', :template_content => content,
+                            :title => title, :receiver_type => 'List' )
+    push_message.receiver_ids = receivers.collect{|t| t.id }
+    push_message.receiver_cids = receivers.collect{|t| t.device_token}.uniq
+    push_message.item_id = campaign.id
+    push_message.item_type = 'Campaign'
     push_message.save
   end
 

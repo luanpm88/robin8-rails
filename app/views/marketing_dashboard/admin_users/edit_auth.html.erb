@@ -4,7 +4,8 @@
                      kol_announcement_read kol_announcement_update helper_tag_read helper_tag_update
                      lottery_activity_read lottery_activity_update user_read user_update
                      alipay_order_read alipay_order_update invoice_read invoice_update
-                     feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update)
+                     feedback_read feedback_update track_read track_update statistic_data_read statistic_data_update
+                     app_upgrade_read app_upgrade_update)
   %>
 <% end %>
 
@@ -13,7 +14,7 @@
                    kol_announcement_update  helper_tag_update
                    lottery_activity_update  user_update
                    alipay_order_update  invoice_update
-                   feedback_update  track_update  statistic_data_update)
+                   feedback_update  track_update  statistic_data_update app_upgrade_update)
 %>
 
 <h3>管理员 &lt;<%= @admin_user.email %>&gt;</h3>

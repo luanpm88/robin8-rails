@@ -1,5 +1,5 @@
 <h2><%= @title %></h2>
-<% attrs = %w(id kol名称 电话号码 微博粉丝数 微博链接 微信号 微信粉丝数 性别 地区 头像 推荐理由 操作) %>
+<% attrs = %w(id 头像 KOL名称 电话号码 微博号 微博粉丝数 微信号 微信粉丝数 性别 城市 推荐理由 操作) %>
 <table class='table table-bordered'>
   <thead>
 
@@ -12,33 +12,30 @@
 
   <tbody>
     <% @campaign_applies.each do |campaign_apply| %>
-      <tr class=<%= campaign_apply.kol.id %>>
-        <td class="kol_id"> <%= campaign_apply.kol.send :id %> </td>
-        <td class="campaign_id" style="display: none"> <%= @campaign.id %> </td>
-        <td> <%= campaign_apply.kol.send :name %> </td>
-        <td> <%= campaign_apply.send :phone %> </td>
-        <td> <%= campaign_apply.kol.identities.where(provider: 'weibo').maximum("followers_count") %> </td>
+      <% kol = campaign_apply.kol %>
+      <% weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
+      <% wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
+      <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
         <td>
-           <% campaign_apply.kol.identities.where(:provider => "weibo").each do |weibo| %>
-             <%= link_to weibo.name, weibo.get_weibo_url, :target => "_blank" %>
-             </br>
-           <% end %>
+          <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank"  %>
         </td>
-        <td> <%= campaign_apply.weixin_no %> </td>
-        <td> <%= campaign_apply.send :weixin_friend_count %> </td>
-        <% if campaign_apply.kol.gender == 1 %>
-          <td> 男 </td>
-        <% elsif campaign_apply.kol.gender == 2 %>
-          <td> 女</td>
-        <% else %>
-          <td></td>
-        <% end %>
-        <td> <%= campaign_apply.kol.city %> </td>
-        <% if campaign_apply.kol.avatar.present? %>
-          <td> <img src="<%= campaign_apply.kol.avatar %>" style="width: 40px; height: 40px;"></img> </td>
-        <% else %>
-          <td></td>
-        <% end %>
+        <td>
+          <%= image_tag kol.avatar, style: "width: 40px; height: 40px;" rescue "" %>
+        </td>
+        <td> <%= kol.name %> </td>
+        <td> <%= kol.mobile_number %> </td>
+        <td>
+          <% if weibo %>
+            <a href="<%= weibo.homepage %>" target="_blank"> <%= weibo.username %></a>
+          <% end %>
+        </td>
+        <td><%= weibo.followers_count if weibo %></td>
+        <td> <%= wechat.username if wechat %> </td>
+        <td> <%= wechat.followers_count if wechat %></td>
+        <td>
+          <%= kol.gender_text %>
+        </td>
+        <td> <%= kol.app_city_label %> </td>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
              <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>">
@@ -56,15 +53,15 @@
       </tr>
     <% end %>
   </tbody>
-
 </table>
 
 <script>
 $(function() {
   $('.agree-btn').click(function(){
-    var kol_id = $(this).parents('tr').find('.kol_id').text().trim()
-    var campaign_id = $(this).parents('tr').find('.campaign_id').text().trim()
-    var agree_reason = $(this).parents('tr').find('.agree_reason').val()
+    var row = $(this).parents('tr');
+    var kol_id = row.data("kol-id");
+    var campaign_id = row.data("campaign-id");
+    var agree_reason = row.find('.agree_reason').val();
     if ($(this).val() == 'cancel') {
       if (agree_reason.length) {
         var operate = $(this).val('agree').val()
@@ -78,7 +75,7 @@ $(function() {
 
     $.ajax({
       method: "POST",
-      url: "/marketing_dashboard/campaigns/${campaign_id}/add_or_remove_recruit_kol",
+      url: "/marketing_dashboard/campaigns/"+ campaign_id +"/add_or_remove_recruit_kol",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },

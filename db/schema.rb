@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824065920) do
+ActiveRecord::Schema.define(version: 20160906013500) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -330,6 +330,8 @@ ActiveRecord::Schema.define(version: 20160824065920) do
   end
 
   add_index "campaign_shows", ["appid"], name: "index_campaign_shows_on_appid", length: {"appid"=>191}, using: :btree
+  add_index "campaign_shows", ["campaign_id"], name: "index_campaign_shows_on_campaign_id", using: :btree
+  add_index "campaign_shows", ["created_at"], name: "index_campaign_shows_on_created_at", using: :btree
   add_index "campaign_shows", ["kol_id"], name: "index_campaign_shows_on_kol_id", using: :btree
 
   create_table "campaign_targets", force: :cascade do |t|
@@ -392,9 +394,19 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.string   "appid",                    limit: 255
     t.datetime "revoke_time"
     t.string   "admin_desc",               limit: 255
+    t.string   "cpi_example_screenshot",   limit: 255
+    t.string   "remark",                   limit: 255
+    t.string   "seller_invite_code",       limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
+
+  create_table "carticles", force: :cascade do |t|
+    t.integer  "kol_id_id",  limit: 4
+    t.text     "body",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -440,6 +452,145 @@ ActiveRecord::Schema.define(version: 20160824065920) do
   end
 
   add_index "cpi_regs", ["device_uuid"], name: "index_cpi_regs_on_device_uuid", using: :btree
+
+  create_table "cps_article_materials", force: :cascade do |t|
+    t.integer  "cps_article_id",  limit: 4
+    t.integer  "cps_material_id", limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "cps_article_shares", force: :cascade do |t|
+    t.integer  "kol_id",         limit: 4
+    t.integer  "cps_article_id", limit: 4
+    t.integer  "share_count",    limit: 4, default: 0
+    t.integer  "read_count",     limit: 4, default: 0
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "cps_article_shares", ["cps_article_id"], name: "index_cps_article_shares_on_cps_article_id", using: :btree
+  add_index "cps_article_shares", ["kol_id"], name: "index_cps_article_shares_on_kol_id", using: :btree
+
+  create_table "cps_materials", force: :cascade do |t|
+    t.string   "sku_id",              limit: 20
+    t.string   "img_url",             limit: 255
+    t.string   "material_url",        limit: 255
+    t.integer  "shop_id",             limit: 4
+    t.float    "unit_price",          limit: 24
+    t.date     "start_date"
+    t.date     "end_date"
+    t.float    "commision_ration_pc", limit: 24
+    t.float    "commision_ration_wl", limit: 24
+    t.float    "commision_pc",        limit: 24
+    t.float    "commision_wl",        limit: 24
+    t.float    "kol_commision_pc",    limit: 24
+    t.float    "kol_commision_wl",    limit: 24
+    t.string   "goods_name",          limit: 255
+    t.string   "category",            limit: 255
+    t.datetime "last_sync_at"
+    t.boolean  "enabled",             limit: 1,   default: true
+    t.integer  "position",            limit: 4,   default: 0
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "cps_materials", ["sku_id"], name: "index_cps_materials_on_sku_id", using: :btree
+
+  create_table "cps_promotion_materials", force: :cascade do |t|
+    t.integer  "kol_id",               limit: 4
+    t.integer  "cps_article_share_id", limit: 4
+    t.integer  "cps_material_id",      limit: 4
+    t.text     "wl_promotion_url",     limit: 65535
+    t.text     "pc_promotion_url",     limit: 65535
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "cps_promotion_order_items", force: :cascade do |t|
+    t.integer  "cps_promotion_order_id", limit: 4
+    t.integer  "first_level",            limit: 4
+    t.integer  "second_level",           limit: 4
+    t.integer  "third_level",            limit: 4
+    t.string   "product_id",             limit: 255
+    t.integer  "quantity",               limit: 4
+    t.float    "total_price",            limit: 24
+    t.string   "ware_id",                limit: 255
+    t.float    "yg_cos_fee",             limit: 24
+    t.float    "cos_fee",                limit: 24
+    t.integer  "return_num",             limit: 4
+    t.string   "status",                 limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "cps_promotion_orders", force: :cascade do |t|
+    t.integer  "kol_id",               limit: 4
+    t.integer  "cps_article_share_id", limit: 4
+    t.integer  "split_type",           limit: 4
+    t.string   "order_id",             limit: 20
+    t.datetime "order_time"
+    t.string   "parent_id",            limit: 255
+    t.integer  "pop_id",               limit: 4
+    t.string   "source_emt",           limit: 255
+    t.float    "total_money",          limit: 24
+    t.boolean  "yn",                   limit: 1
+    t.string   "status",               limit: 255, default: "pending"
+    t.string   "sub_union",            limit: 40
+    t.string   "order_query_time",     limit: 40
+    t.string   "receipt_query_time",   limit: 40
+    t.float    "cos_price",            limit: 24
+    t.float    "commision_fee",        limit: 24
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+  end
+
+  add_index "cps_promotion_orders", ["cps_article_share_id"], name: "index_cps_promotion_orders_on_cps_article_share_id", using: :btree
+  add_index "cps_promotion_orders", ["kol_id"], name: "index_cps_promotion_orders_on_kol_id", using: :btree
+  add_index "cps_promotion_orders", ["order_id"], name: "index_cps_promotion_orders_on_order_id", using: :btree
+  add_index "cps_promotion_orders", ["order_query_time"], name: "index_cps_promotion_orders_on_order_query_time", using: :btree
+  add_index "cps_promotion_orders", ["receipt_query_time"], name: "index_cps_promotion_orders_on_receipt_query_time", using: :btree
+
+  create_table "crm_cases", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "crm_customers", force: :cascade do |t|
+    t.string   "name",            limit: 255
+    t.string   "mobile_number",   limit: 255
+    t.string   "company_name",    limit: 255
+    t.text     "visit_detail",    limit: 65535
+    t.string   "company_address", limit: 255
+    t.decimal  "lat",                           precision: 10, scale: 6
+    t.decimal  "lng",                           precision: 10, scale: 6
+    t.integer  "seller_id",       limit: 4
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+  end
+
+  create_table "crm_notes", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.text     "content",    limit: 65535
+    t.integer  "case_id",    limit: 4
+    t.integer  "seller_id",  limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "crm_sellers", force: :cascade do |t|
+    t.string   "mobile_number",   limit: 255
+    t.string   "password_digest", limit: 255
+    t.string   "name",            limit: 255
+    t.string   "department",      limit: 255
+    t.string   "avatar",          limit: 255
+    t.string   "invite_code",     limit: 255
+    t.string   "private_token",   limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "ch_name",         limit: 255
+  end
 
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255
@@ -957,6 +1108,7 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.float    "latitude",               limit: 24
     t.integer  "is_hot",                 limit: 4,                              default: 0
     t.text     "memo",                   limit: 65535
+    t.float    "historical_income",      limit: 24,                             default: 0.0
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1351,6 +1503,23 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.integer  "item_id",             limit: 4
   end
 
+  create_table "recharge_records", force: :cascade do |t|
+    t.float    "credits",       limit: 24,  default: 0.0
+    t.float    "tax",           limit: 24,  default: 0.0
+    t.string   "receiver_name", limit: 255
+    t.string   "receiver_type", limit: 100
+    t.integer  "receiver_id",   limit: 4
+    t.string   "operator",      limit: 255
+    t.string   "status",        limit: 255, default: "pending"
+    t.string   "admin_user_id", limit: 255
+    t.boolean  "need_invoice",  limit: 1,   default: false
+    t.string   "remark",        limit: 255
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "recharge_records", ["receiver_type", "receiver_id"], name: "index_recharge_records_on_receiver_type_and_receiver_id", using: :btree
+
   create_table "releases", force: :cascade do |t|
     t.string   "title",                   limit: 255
     t.text     "text",                    limit: 16777215
@@ -1601,8 +1770,9 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.string   "short_url",   limit: 255
     t.string   "desc",        limit: 255
     t.integer  "click_count", limit: 4,   default: 0
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "enabled",     limit: 1,   default: true
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -1612,10 +1782,10 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.string   "item_type",     limit: 255
     t.string   "direct",        limit: 255
     t.string   "subject",       limit: 255
-    t.decimal  "credits",                   precision: 8,  scale: 2
-    t.decimal  "amount",                    precision: 8,  scale: 2
-    t.decimal  "avail_amount",              precision: 8,  scale: 2
-    t.decimal  "frozen_amount",             precision: 8,  scale: 2
+    t.decimal  "credits",                   precision: 12, scale: 2
+    t.decimal  "amount",                    precision: 12, scale: 2
+    t.decimal  "avail_amount",              precision: 12, scale: 2
+    t.decimal  "frozen_amount",             precision: 12, scale: 2
     t.integer  "opposite_id",   limit: 4
     t.string   "opposite_type", limit: 255
     t.datetime "created_at",                                                       null: false
@@ -1725,6 +1895,8 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.integer  "kol_id",                 limit: 4
     t.string   "appid",                  limit: 255
     t.boolean  "is_active",              limit: 1,                            default: true
+    t.float    "historical_payout",      limit: 24,                           default: 0.0
+    t.float    "historical_recharge",    limit: 24,                           default: 0.0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -1784,6 +1956,7 @@ ActiveRecord::Schema.define(version: 20160824065920) do
     t.string   "remark",        limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "reject_reason", limit: 255
   end
 
   add_foreign_key "campaign_targets", "campaigns"

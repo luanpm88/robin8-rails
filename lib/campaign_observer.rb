@@ -35,7 +35,7 @@ module CampaignObserver
       lines << "有嫌疑的 待审核截图有 #{suspected_count}个"
     end
     if lines.present?
-      ["15300731907", "15221773929", "18917797087", "13817164642"].each do |tel|
+      ["15221773929", "18917797087", "13817164642", "13917397090"].each do |tel|
         Emay::SendSms.to tel, lines.join(";\n")
       end
     end
@@ -57,7 +57,7 @@ module CampaignObserver
     if shows.where(:status => "1").count > MaxValidClickCount
       invalid_reasons << "有效点击 大于 #{MaxValidClickCount}"
     end
-    
+
     if shows.count > MaxTotalClickCount
       #invalid_reasons << "总点击量大于#{MaxTotalClickCount} 且有效点击比为: #{shows.where(:status => "1").count * 100.0 / shows.count}% 低于设定的 10% "
       invalid_reasons << "总点击量大于#{MaxTotalClickCount}"
@@ -130,7 +130,7 @@ module CampaignObserver
         averageClickTime << (total_space/(values.count-1))
       end
     end;nil
-    
+
     if averageClickTime.size > 10
       cleanAverageClickTime = averageClickTime - averageClickTime.min(3) - averageClickTime.max(3)
       if cleanAverageClickTime.count > 3
@@ -145,7 +145,7 @@ module CampaignObserver
     end
     puts kol_id, "kol_id"
     puts campaign_id
-    
+
     kol = Kol.find_by(:id => kol_id)
     if kol
       campaign_ids = kol.campaigns.where(:status => ['executed','settled']).map(&:id)
