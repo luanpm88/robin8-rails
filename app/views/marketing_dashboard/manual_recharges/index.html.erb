@@ -58,7 +58,7 @@
     <% @transactions.each do |c| %>
     <tr>
       <td><%= c.account.id %></td>
-      <td><%= c.account.name %></td>
+      <td><%= c.account.smart_name %></td>
       <td><%= c.id %></td>
       <% if c.subject.in? ["manual_recharge", "manaual_recharge"] %>
         <td>线下充值</td>

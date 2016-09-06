@@ -70,7 +70,7 @@
       <% campaign = u.campaigns.order("created_at DESC").first  %>
       <tr>
         <td><%= u.id %></td>
-        <td><%= u.name %></td>
+        <td><%= u.smart_name %></td>
         <td><%= u.mobile_number %></td>
         <!-- <td><%= u.utm_source %></td> -->
         <td><%= u.avail_amount %></td>
