@@ -129,12 +129,14 @@ module Campaigns
     end
 
     def push_all_kols
+      should_push_kol_is = []
       Kol.active.where("forbid_campaign_time is null or forbid_campaign_time <'#{Time.now}'").each do |kol|
-        kol.add_campaign_id self.id, true
         unless kol.receive_campaign_ids.include?(kol.id.to_s)
-          Message.new_campaign(self, [kol.id])
+          kol.add_campaign_id self.id, false
+          should_push_kol_is << kol.id
         end
       end
+      Message.new_campaign(self, should_push_kol_is)  if should_push_kol_is.size > 0
     end
 
     #finish_remark:  expired or fee_end
