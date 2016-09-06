@@ -35,6 +35,13 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
     formated_response "拒绝的"
   end
 
+  def permanent_prohibited
+    authorize! :read, Withdraw
+    @withdraws = Withdraw.where(status: 'permanent_frozen')
+
+    formated_response "永久冻结的"
+  end
+
   def check
     authorize! :update, Withdraw
     if @withdraw.kol.frozen_amount.to_f >= @withdraw.credits.to_f
@@ -143,7 +150,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
     respond_to do |format|
       format.html do
-        @withdraws = @withdraws.paginate(paginate_params) unless @withdraw
+        @withdraws = @withdraws.paginate(paginate_params)
         render 'index'
       end
 

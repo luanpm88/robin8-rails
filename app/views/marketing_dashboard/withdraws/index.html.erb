@@ -83,6 +83,12 @@
           </div>
         </div>
         <div class="col-md-3">
+          <div class="form-group">
+            <label>提现状态</label>
+            <%= f.select :status_eq, Withdraw::STATUS , { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-offset-9 col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
