@@ -34,7 +34,7 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
     if request.get?
       render :add_seller
     else
-      @alipay_order.update_attributes(invite_code: params[:alipay_order][:invite_code])
+      @alipay_order.user.update_attributes(seller_id: params[:seller_id])
       redirect_to :back, notice: '添加成功'
     end
   end

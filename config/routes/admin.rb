@@ -34,7 +34,7 @@ Rails.application.routes.draw do
         get :push_all
         post :refresh_budget
         patch :save_example_screenshot_and_remark
-        match 'add_seller', via: [:patch, :get]
+        match 'add_seller', via: [:post, :get]
       end
       collection do
         put :reject
@@ -152,7 +152,7 @@ Rails.application.routes.draw do
         put "change_campaign_desc"
       end
       member do
-        match 'add_seller', via: [:patch, :get]
+        match 'add_seller', via: [:post, :get]
       end
     end
 

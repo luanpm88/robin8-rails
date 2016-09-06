@@ -6,6 +6,7 @@ module Crm
 
     has_many :customers
     has_many :notes
+    has_many :users, class_name: 'User'
 
     has_one :picture, as: :imageable, dependent: :destroy
   end

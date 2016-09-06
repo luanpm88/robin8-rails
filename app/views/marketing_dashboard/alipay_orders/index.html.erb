@@ -95,11 +95,11 @@
         <td><%= a.user.name if a.user %></td>
         <td><%= a.user.mobile_number if a.user %></td>
         <td>
-          <% if a.invite_code.present? %>
-            <%= Crm::Seller.find_by(invite_code: a.invite_code).name rescue nil %> |
-            <%= link_to '编辑', add_seller_marketing_dashboard_alipay_order_path(a) %>
+          <% if a.user.seller.present? %>
+            <%= a.user.seller.name rescue nil %> |
+            <%= link_to '编辑', add_seller_marketing_dashboard_alipay_order_path(a, edit: true) %>
           <% else %>
-            <%= link_to '添加', add_seller_marketing_dashboard_alipay_order_path(a) %>
+            <%= link_to '添加', add_seller_marketing_dashboard_alipay_order_path(a, new: true) %>
           <% end %>
         </td>
 
