@@ -17,22 +17,32 @@
       <th>转发数</th>
       <th>文章数</th>
       <th>是否认证</th>
-      <th>省份</th>
-      <th>城市</th>
       <th>性别</th>
       <th>价格</th>
-      <th>第二条价格</th>
-      <th>转发价格</th>
-      <th>截图</th>
+      <th>省份-城市</th>
+      <th>引擎KOL_ID</th>
+      <!--<th>第二条价格</th>-->
+      <!--<th>转发价格</th>-->
+      <!--<th>截图</th>-->
       <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <% @social_accounts.each do |k| %>
       <tr>
-        <% %w(kol_id provider_text username homepage avatar_url brief like_count followers_count friends_count reposts_count statuses_count verified province city gender price second_price repost_price screenshot).each do |v| %>
+        <% %w(kol_id provider_text username homepage avatar_url brief like_count followers_count friends_count reposts_count statuses_count verified gender price).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
+        <td><%= k.province %>-<%= k.city %></td>
+        <td>
+          <% if k.username.present? || k.search_kol_id.present? %>
+            <% if k.provider == 'public_wechat' %>
+              <%= link_to (k.search_kol_id || "http://robin8.net/search/query?term=#{k.username}&kol_type=wechat") , "http://robin8.net/search/query?term=#{k.username}&kol_type=wechat" %>
+            <% elsif k.provider == 'weibo' || k.provider == 'meipai' || k.provider == 'miaopai' || k.provider == '知乎' %>
+              <%= link_to (k.search_kol_id || "http://robin8.net/search/query?term=#{k.username}&kol_type=#{k.provider}") , "http://robin8.net/search/query?term=#{k.username}&kol_type=#{k.provider}" %>
+            <% end %>
+          <% end %>
+        </td>
         <td>
           <%= link_to "编辑", edit_marketing_dashboard_social_account_path(:id => k.id) %>
           <br/>

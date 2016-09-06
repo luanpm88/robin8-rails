@@ -1,5 +1,9 @@
 <h2><%= @title %></h2>
 <p class="pull-right">按报名先后顺序</p>
+<div class="check_info">
+  <span class="platform_passed_count">平台通过人数(不含品牌通过人数): <span class="label label-info"><%= @platform_passed_count %></span></span>
+  <span class="brand_passed_count" style="margin-left: 30px;">品牌通过人数:  <span class="label label-success"><%= @brand_passed_count %></span></span>
+</div>
 <table class='table table-bordered'>
   <thead>
     <tr>
