@@ -83,7 +83,7 @@ module Campaigns
       if  is_recruit_type?
         _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
         CampaignWorker.perform_at(_start_time, self.id, 'start')
-        CampaignWorker.perform_at(self.start_time - 1.minutes, self.id, 'end_apply_check')
+        CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
       else
         _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
         CampaignWorker.perform_at(_start_time, self.id, 'start')
@@ -101,7 +101,6 @@ module Campaigns
         else
           self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
           self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
-          self.push_start_notify       if self.is_recruit_type?
         end
         self.update_columns(:status => 'executing')
         Message.new_campaign(self, (kol_ids || get_kol_ids))
