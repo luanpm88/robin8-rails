@@ -199,15 +199,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def get_ocr_detail
-    return nil if self.ocr_detail.blank?
-    details = []
-    self.ocr_detail.split(",").each do |item_key|
-      details << OcrDetails[item_key]
-    end
-    details.join(",")
-  end
-
   def self.get_click_info(kol_id)
     invites =  CampaignInvite.where(:kol_id => kol_id).where("status != 'running' and status != 'applying'")
     invite_count = invites.count

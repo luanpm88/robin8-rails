@@ -33,7 +33,7 @@ module API
             # end
           end
           expose :ocr_detail do |campaign_invite|
-            campaign_invite.get_ocr_detail
+            ''
           end
           expose :invite_status
           expose :campaign do |campaign_invite, options|
