@@ -256,8 +256,11 @@
         li {
           margin-left: 122px;
           text-align: center;
-          span {
-            display: block;
+          .glyphicon {
+            font-size: 12px;
+          }
+          a {
+            color: #fff;
           }
         }
 
