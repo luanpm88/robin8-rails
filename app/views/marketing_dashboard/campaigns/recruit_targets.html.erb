@@ -1,17 +1,27 @@
 <h2><%= @title %></h2>
-<% attrs = %w(id 头像 KOL名称 电话号码 微博号 微博粉丝数 微信号 微信粉丝数 性别 城市 推荐理由 操作) %>
 <table class='table table-bordered'>
   <thead>
 
     <tr>
-      <% attrs.each do |attr| %>
-        <th><%= attr.camelcase %></th>
-      <% end %>
+      <th>KOL ID</th>
+      <th>头像</th>
+      <th>KOL名称</th>
+      <th>电话号码</th>
+      <th>微博号</th>
+      <th>微博粉丝数</th>
+      <th>微信号</th>
+      <th>微信粉丝数</th>
+      <th>平均点击</th>
+      <th>最高点击</th>
+      <th>性别</th>
+      <th>城市</th>
+      <th>推荐理由</th>
+      <th>操作</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @campaign_applies.each do |campaign_apply| %>
+    <% @campaign_applies.includes(:kol).each do |campaign_apply| %>
       <% kol = campaign_apply.kol %>
       <% weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
       <% wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
@@ -32,9 +42,9 @@
         <td><%= weibo.followers_count if weibo %></td>
         <td> <%= wechat.username if wechat %> </td>
         <td> <%= wechat.followers_count if wechat %></td>
-        <td>
-          <%= kol.gender_text %>
-        </td>
+        <td> <%= kol.average_click_of_campaigns %></td>
+        <td> <%= kol.maximum_click_of_campaigns %></td>
+        <td> <%= kol.gender_text %></td>
         <td> <%= kol.app_city_label %> </td>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>

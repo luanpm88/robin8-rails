@@ -11,6 +11,7 @@ class Kol < ActiveRecord::Base
   include Concerns::KolCampaign
   include Concerns::KolTask
   include Kols::BrandUserHelper
+  include Kols::StatisticHelper
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -245,14 +246,6 @@ class Kol < ActiveRecord::Base
 
   def self.app_auth(private_token)
     Kol.find_by :private_token => private_token    rescue nil
-  end
-
-  def total_income
-    self.income_transactions.sum(:credits)
-  end
-
-  def total_withdraw
-    self.withdraw_transactions.sum(:credits)
   end
 
   def verifying_income
