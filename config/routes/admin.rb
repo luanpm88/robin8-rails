@@ -145,6 +145,9 @@ Rails.application.routes.draw do
         post "search_campaigns"
         put "change_campaign_desc"
       end
+      member do
+        match 'add_seller', via: [:patch, :get]
+      end
     end
 
     resources :manual_recharges, only:[:index] do
