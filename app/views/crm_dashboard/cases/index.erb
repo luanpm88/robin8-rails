@@ -1,0 +1,31 @@
+<h3>
+  案例列表
+  <%= link_to "创建新案例", new_crm_dashboard_case_path, class: "btn btn-primary pull-right" %>
+</h3>
+<hr />
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>案例名称</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cases.each do |c| %>
+      <tr>
+        <td> <%= c.id %> </td>
+        <td> <%= c.name %> </td>
+        <td>
+          <%= link_to "查看", crm_dashboard_case_path(c), target: "_blank"%> /
+          <%= link_to "编辑", edit_crm_dashboard_case_path(c) %> /
+          <%= link_to "删除", crm_dashboard_case_path(c), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @sellers, renderer: BootstrapPagination::Rails  %>

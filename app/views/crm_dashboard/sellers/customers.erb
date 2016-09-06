@@ -1,0 +1,38 @@
+<h3>所有客户</h3>
+
+<div class="contianer-fluid">
+  <h4 class="pull-right">客户总数: <%= @customers.count %></h4>
+</div>
+
+<table class='table table-bordered table-striped'>
+  <thead>
+    <tr>
+      <th>客户id</th>
+      <th>客户名称</th>
+      <th>手机号码</th>
+      <th>公司名称</th>
+      <th>公司地址</th>
+      <th>详细记录</th>
+      <th>销售人员</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @customers.each do |c| %>
+      <tr>
+        <td><%= c.id %></td>
+        <td><%= c.name %></td>
+        <td><%= c.mobile_number %></td>
+        <td><%= c.company_name %></td>
+        <td><%= c.company_address %></td>
+        <th><%= c.visit_detail %></th>
+        <th><%= c.seller.name %></th>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @customers, renderer: BootstrapPagination::Rails  %>

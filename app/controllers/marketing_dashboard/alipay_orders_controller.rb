@@ -29,6 +29,16 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
     render :json => {:status => "ok"}
   end
 
+  def add_seller
+    @alipay_order = AlipayOrder.find(params[:id])
+    if request.get?
+      render :add_seller
+    else
+      @alipay_order.update_attributes(invite_code: params[:alipay_order][:invite_code])
+      redirect_to :back, notice: '添加成功'
+    end
+  end
+
 private
   def get_alipay_orders
     authorize! :read, AlipayOrder

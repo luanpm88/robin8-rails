@@ -34,6 +34,7 @@ Rails.application.routes.draw do
         get :push_all
         post :refresh_budget
         patch :save_example_screenshot_and_remark
+        match 'add_seller', via: [:patch, :get]
       end
       collection do
         put :reject
@@ -149,6 +150,9 @@ Rails.application.routes.draw do
         get "campaigns"
         post "search_campaigns"
         put "change_campaign_desc"
+      end
+      member do
+        match 'add_seller', via: [:patch, :get]
       end
     end
 
