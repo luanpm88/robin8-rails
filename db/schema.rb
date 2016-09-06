@@ -396,7 +396,6 @@ ActiveRecord::Schema.define(version: 20160906063215) do
     t.string   "admin_desc",               limit: 255
     t.string   "cpi_example_screenshot",   limit: 255
     t.string   "remark",                   limit: 255
-    t.string   "seller_invite_code",       limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
