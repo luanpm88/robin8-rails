@@ -59,6 +59,10 @@ module Concerns
     def payout(credits,  subject, item = nil, opposite = nil)
       ActiveRecord::Base.transaction do
         self.lock!
+        if item.present? && item.is_a?(Campaign)
+          item.reload
+          return if item.status != 'unpay'
+        end
         self.decrement!(:amount, credits)
         self.increment!(:historical_payout, credits)   if self.is_a? User and subject == "campaign"
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
