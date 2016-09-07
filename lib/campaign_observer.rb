@@ -34,6 +34,12 @@ module CampaignObserver
     if suspected_count > 0
       lines << "有嫌疑的 待审核截图有 #{suspected_count}个"
     end
+
+    pending_campaigns_count = Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count
+    if pending_campaigns_count > 0
+      lines << "待审核的活动有 #{pending_campaigns_count}个"
+    end
+
     if lines.present?
       ["15221773929", "18917797087", "13817164642", "13917397090"].each do |tel|
         Emay::SendSms.to tel, lines.join(";\n")
