@@ -34,7 +34,7 @@ Rails.application.routes.draw do
         get :push_all
         post :refresh_budget
         patch :save_example_screenshot_and_remark
-        match 'add_seller', via: [:patch, :get]
+        match 'add_seller', via: [:post, :get]
       end
       collection do
         put :reject
@@ -71,6 +71,9 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
+      member do
+        put 'live'
+      end
       collection do
         get 'search'
         post 'search'
@@ -152,7 +155,7 @@ Rails.application.routes.draw do
         put "change_campaign_desc"
       end
       member do
-        match 'add_seller', via: [:patch, :get]
+        match 'add_seller', via: [:post, :get]
       end
     end
 

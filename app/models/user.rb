@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one  :invoice
   has_one  :invoice_receiver
   has_many :invoice_histories
+  belongs_to  :seller, class_name: "Crm::Seller"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -52,6 +53,7 @@ class User < ActiveRecord::Base
     Arel.sql('(`users`.`amount` - `users`.`frozen_amount`)')
   end
 
+  scope :is_live, -> { where(is_live: true) }
   # scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge' OR `transactions`.`subject` = 'campaign_pay_by_alipay') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
   # scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
 
@@ -152,6 +154,10 @@ class User < ActiveRecord::Base
     else
       "Robin8"
     end
+  end
+
+  def smart_name
+    self.name.presence || self.kol.try(:name)
   end
 
   def can_export

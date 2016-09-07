@@ -6,7 +6,8 @@
     'Available amount',
     'Historical payout',
     'Historical recharge',
-    'Last campaign time'
+    'Last campaign time',
+    'Saleman'
   ]
 %>
 <%=
@@ -19,7 +20,8 @@
         user.avail_amount,
         user.historical_payout,
         user.historical_recharge,
-        user.campaigns.maximum("created_at").strftime("%Y-%m-%d %H:%M")
+        user.campaigns.maximum("created_at").strftime("%Y-%m-%d %H:%M"),
+        user.seller.try(:name)
       ]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")

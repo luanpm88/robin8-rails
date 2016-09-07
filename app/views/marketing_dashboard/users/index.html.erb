@@ -31,7 +31,13 @@
             <%= f.select :is_active_eq, [["已激活", true], ["未激活", false]], {}, class: "form-control" %>
           </div>
         </div>
-        <div class="col-md-offset-4 col-md-4">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>是否真实数据</label>
+            <%= f.select :is_live_eq, [["真实", true], ["实验", false]], {}, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-4">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -49,31 +55,36 @@
       <th>品牌主 ID</th>
       <th>品牌主昵称</th>
       <th>手机</th>
-      <th>来源</th>
+      <!-- <th>来源</th> -->
       <th><%= sort_link(@q, :avail_amount, "可用余额") %></th>
       <th><%= sort_link(@q, :historical_payout, "历史花费") %></th>
       <th><%= sort_link(@q, :historical_recharge, "总充值金额") %></th>
       <th>最近发单时间</th>
+      <th>最近活动ID</th>
+      <th>销售人员</th>
       <th>操作</th>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |u| %>
+      <% campaign = u.campaigns.order("created_at DESC").first  %>
       <tr>
         <td><%= u.id %></td>
         <td><%= u.name %></td>
         <td><%= u.mobile_number %></td>
-        <td><%= u.utm_source %></td>
+        <!-- <td><%= u.utm_source %></td> -->
         <td><%= u.avail_amount %></td>
         <td><%= u.historical_payout %></td>
         <td><%= u.historical_recharge %></td>
-        <td><%= u.campaigns.maximum("created_at").strftime("%Y-%m-%d %H:%M") rescue nil %></td>
+        <td><%= campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
+        <td><%= link_to campaign.id, marketing_dashboard_campaign_path(campaign), target: "_blank" rescue "" %></td>
+        <td><%= u.seller.try(:name) %></td>
         <td>
-          <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
+          <%= link_to '详情', marketing_dashboard_user_path(u.id), :target => "_blank" %>
           /
-          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
+          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id), :target => "_blank" %>
           /
-          <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %>
+          <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "_blank" %>
         </td>
       </tr>
     <% end %>

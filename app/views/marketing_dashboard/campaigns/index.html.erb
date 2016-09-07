@@ -191,10 +191,7 @@
           <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click  %></td>
           <td>
             <% if seller = get_campaign_seller(c) %>
-              <%= seller.name %> |
-              <%= link_to '编辑', add_seller_marketing_dashboard_campaign_path(c) %>
-            <% else %>
-              <%= link_to '添加', add_seller_marketing_dashboard_campaign_path(c) %>
+              <%= seller.name %>
             <% end %>
           </td>
           <td>

@@ -125,10 +125,9 @@ export default class InviteKol extends React.Component {
       <tr>
         {this.render_kol_id()}
         {this.render_profile(campaign_invite)}
-        <td>
-          {campaign_invite.get("weixin_friend_count") || "-"}
-        </td>
+        {/* <td>campaign_invite.get("weixin_friend_count") || "-"</td> */}
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
+        <td>{campaign_invite.get("get_avail_click") || "-"}</td>
         {this.render_remark_and_pictures()}
         {this.render_screenshot_or_switchbox()}
         {this.renderScoreMarkButton()}

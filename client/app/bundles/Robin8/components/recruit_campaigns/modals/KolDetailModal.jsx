@@ -55,16 +55,18 @@ export default class KolDetailModal extends Component {
           </div>
           <ul className="list-inline info">
             <li className="weibo">
-              <span className="weibo-count-text">微博粉丝量</span>
-              <span className="weibo-count">{campaign_invite.get("weibo_friend_count") || "-"}</span>
+              <div className="weibo-count-text">
+                <a href={campaign_invite.get("weibo_homepage")} target="_blank"><Glyphicon glyph="link" /> 微博粉丝量</a>
+              </div>
+              <div className="weibo-count">{campaign_invite.get("weibo_friend_count") || "-"}</div>
             </li>
             <li className="wechat">
-              <span className="wechat-count-text">微信粉丝量</span>
-              <span className="wechat-count">{campaign_invite.get("weixin_friend_count") || "-"}</span>
+              <div className="wechat-count-text">微信粉丝量</div>
+              <div className="wechat-count">{campaign_invite.get("weixin_friend_count") || "-"}</div>
             </li>
             <li className="location">
-              <span className="location-text">地区</span>
-              <span className="location-city">{campaign_invite.get("kol").get("city") || "-"}</span>
+              <div className="location-text">地区</div>
+              <div className="location-city">{campaign_invite.get("kol").get("city") || "-"}</div>
             </li>
           </ul>
         </Modal.Header>

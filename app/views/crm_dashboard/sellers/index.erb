@@ -7,6 +7,7 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>邀请码</td>
       <th>姓名</th>
       <th>头像</th>
       <th>电话号码</th>
@@ -19,6 +20,7 @@
     <% @sellers.each do |seller| %>
       <tr>
         <td><%= seller.id %></td>
+        <td><%= seller.invite_code %></td>
         <td><%= seller.name %></td>
         <td><%= link_to image_tag(seller.avatar_url, :width => "50px"), seller.avatar_url, :target => "_blank"%></td>
         <td><%= seller.mobile_number %> </td>

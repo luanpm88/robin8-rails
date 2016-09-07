@@ -1,8 +1,66 @@
+<h3>
+  品牌主名：<%= @user.smart_name %> / 手机号：<%= @user.mobile_number %>
+  <div class="pull-right">
+    <%= link_to_switch_user_live @user %>
+  </div>
+</h3>
+
 <table class="table table-striped">
-  <% @user.attributes.except(*sensitivity_list).each do |k, v| %>
-    <tr>
-      <th> <%= k.classify %> </th>
-      <th> <%= v %> </th>
-    </tr>
-  <% end %>
+  <tr>
+    <td width="250px">姓名</td>
+    <td><%= raw @user.name.presence || "(未填写)" %></td>
+  </tr>
+  <tr>
+    <td>手机号</td>
+    <td><%= @user.mobile_number %></td>
+  </tr>
+  <tr>
+    <td>是否真实</td>
+    <td><%= raw(@user.is_live ? "<span class='label label-success'>真实数据</span>" : "<span class='label label-danger'>实验数据</span>") %></td>
+  </tr>
+  <tr>
+    <td>是否激活品牌住账号</td>
+    <td><%= raw(@user.is_active ? "<span class='label label-success'>已激活</span>" : "<span class='label label-danger'>未激活</span>") %></td>
+  </tr>
+  <tr>
+    <td>绑定的KOL账号</td>
+    <td><%= link_to @user.kol_id, marketing_dashboard_kol_path(@user.kol_id), target: "_blank" %></td>
+  </tr>
+  <tr>
+    <td>绑定的KOL账号名称</td>
+    <td><%= @user.kol.try(:name) %></td>
+  </tr>
+  <tr>
+    <td>可用余额</td>
+    <td><%= @user.avail_amount %></td>
+  </tr>
+  <tr>
+    <td>历史花费</td>
+    <td><%= @user.historical_payout %></td>
+  </tr>
+  <tr>
+    <td>总充值金额</td>
+    <td><%= @user.historical_recharge %></td>
+  </tr>
+  <tr>
+    <% last_campaign = @user.campaigns.order("created_at DESC").first  %>
+    <td>最近发单时间</td>
+    <td><%= last_campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
+  </tr>
+  <tr>
+    <td>
+      最近发的活动ID
+    </td>
+    <td>
+      <%= link_to last_campaign.id, marketing_dashboard_campaign_path(last_campaign), target: "_blank" rescue "无活动" %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      最近发的活动名称
+    </td>
+    <td>
+      <%= last_campaign.try(:name) %>
+    </td>
+  </tr>
 </table>
