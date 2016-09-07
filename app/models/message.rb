@@ -34,7 +34,7 @@ class Message < ActiveRecord::Base
     if campaign.is_recruit_type?
       title = '你有一个新的招募活动'
     else
-      title =  '你有一个新的特邀转发活动'
+      title =  '又有新活动发布啦，速去转发赚钱！'
     end
     message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => title, :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
@@ -51,9 +51,6 @@ class Message < ActiveRecord::Base
       if message.save
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
-    # else
-    #   message.receiver_type = "All"
-    #   message.save
     end
     generate_push_message(message) if Campaign.can_push_message(campaign)
   end
@@ -74,7 +71,6 @@ class Message < ActiveRecord::Base
     elsif message_type == 'screenshot_rejected'
       message.title = "截图未通过审核，请尽快重新上传"
     end
-    message.logo_url = campaign.img_url
     message.sender = campaign.user.company || campaign.user.name  rescue nil
     message.name = campaign.name
     message.logo_url = campaign.img_url rescue nil
@@ -102,7 +98,6 @@ class Message < ActiveRecord::Base
   # create or update
   def self.new_campaign_compensation(invite, campaign)
     message = Message.new(:message_type => 'common', :receiver => invite.kol, :item => campaign, :sender => 'Robin8')
-    message.sender = 'Robin8'
     message.name = campaign.name
     message.logo_url = campaign.img_url rescue nil
     message.is_read = false
@@ -110,20 +105,6 @@ class Message < ActiveRecord::Base
     message.save
 
     generate_push_message(message)
-  end
-
-
-  def self.test_income(kol_id = 84)
-    kol = Kol.find kol_id
-    campaign_invite = kol.campaign_invites.last
-    new_income(campaign_invite,campaign_invite.campaign)
-  end
-
-
-  def self.test_campaign(kol_id = 84)
-    kol = Kol.find kol_id
-    campaign_invite = kol.campaign_invites.last
-    self.new_campaign(campaign_invite.campaign, [kol.id])
   end
 
 
