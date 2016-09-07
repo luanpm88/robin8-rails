@@ -34,9 +34,8 @@ class PushMessage < ActiveRecord::Base
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
     elsif message.message_type == 'campaign'
-      title =  '又有新活动发布啦，速去转发赚钱！'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                              :title => title)
+                              :title => message.title)
       if message.receiver_type == 'All'
         push_message.receiver_type = 'App'
         push_message.receiver_list = {:app_id_list => [GeTui::Dispatcher::AppId] }
@@ -88,7 +87,7 @@ class PushMessage < ActiveRecord::Base
                              .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
     push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
     # 个推限定list 最大为1000
-    title =  '又有新活动发布啦，速去转发赚钱！'
+    title =  '你还有未参与的活动，速去转发赚钱！'
     device_tokens =  Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}.uniq
     template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '新活动消息'}
     device_tokens.in_groups_of(1000,false){|group_device_tokens|
