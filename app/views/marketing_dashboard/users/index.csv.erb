@@ -15,7 +15,7 @@
     csv << cols
     @users.each do |user|
       csv << [
-        user.name,
+        user.smart_name,
         user.mobile_number,
         user.avail_amount,
         user.historical_payout,
