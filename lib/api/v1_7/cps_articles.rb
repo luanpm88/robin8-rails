@@ -17,12 +17,23 @@ module API
           present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
         end
 
-        #我的文章列表
+        #我的创作列表
         params do
           optional :page, type: Integer
           requires :status, type: String
         end
-        get 'my' do
+        get 'my_articles' do
+          cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+          present :error, 0
+          to_paginate(cps_articles)
+          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
+        end
+
+        #我的转发列表
+        params do
+          optional :page, type: Integer
+        end
+        get 'my_shares' do
           cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
           present :error, 0
           to_paginate(cps_articles)
