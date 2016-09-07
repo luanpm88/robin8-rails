@@ -9,9 +9,7 @@ module Users
     def create
       @kol = Kol.where(mobile_number: user_params[:mobile_number]).first
       return render json: { error: "没找到绑定此手机号的注册用户，请先注册" }, status: :bad_request unless @kol
-
-      sms_code = Rails.cache.fetch(user_params[:mobile_number])
-      return render json: { error: "短信验证码错误" }, status: :forbidden unless sms_code.present? && sms_code == params["user"]["sms_code"]
+      return render json: { error: "短信验证码错误" }, status: :forbidden unless YunPian::SendRegisterSms.verify_code(user_params[:mobile_number], params["user"]["sms_code"])
 
       if @kol.update(password: user_params[:password])
         flash[:notice] = "重置密码成功，请您重新登录"

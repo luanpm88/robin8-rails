@@ -5,18 +5,21 @@ module Kols
       unless self.mobile_number
         user = User.where(:kol_id => self.id).first
         unless user
-          user = User.create(:kol_id => self.id, :is_active => false)
+          user = User.create(:kol_id => self.id, name: self.name, :is_active => false)
         end
         return user
       end
 
       user = User.where(:mobile_number => self.mobile_number).first
       if user and not user.kol_id
-        user.update(:kol_id => self.id)
+        user.update({
+          kol_id: self.id,
+          name: user.name.presence || self.name
+        })
       end
 
       unless user
-        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, :is_active => false)
+        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, name: self.name, :is_active => false)
       end
       user
     end
