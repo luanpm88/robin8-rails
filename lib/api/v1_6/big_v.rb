@@ -21,7 +21,7 @@ module API
                        send("#{order_by}").page(params[:page]).per_page(per_page)
           end
           if params[:with_kol_announcement] == 'Y'
-            kol_announcements = KolAnnouncement.enable
+            kol_announcements = KolAnnouncement.enable.order_by_position
             present :kol_announcements, kol_announcements, with: API::V1_6::Entities::KolAnnouncementEntities::Summary
           end
           present :error, 0
