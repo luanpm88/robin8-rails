@@ -172,7 +172,7 @@ module Campaigns
       # 发送短信通知
       Emay::SendSms.to(kols.collect{|k| k.mobile_number}.compact, title)
       #发送通知
-      PushMessage.campaign_start(kols, title, self)
+      PushMessage.push_common_message(kols, title, '您参与的招募活动已经开始啦!', self)
     end
 
     def cal_settle_time(end_time = nil)

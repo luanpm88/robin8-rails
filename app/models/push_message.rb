@@ -98,25 +98,8 @@ class PushMessage < ActiveRecord::Base
     }
   end
 
-  def self.push_to_be_big_v_message(receiver, title)
-    push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
-                            :title => title, :receiver_cids => [receiver.device_token] )
-    push_message.template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => 'KOL资质审核通过'}
-    push_message.save
-  end
-
-  def self.campaign_start(receivers, title, campaign)
-    content = {:action => 'common', :title => title, :sender => 'robin8', :name =>'您参与的招募活动已经开始啦!'}
-    push_message = self.new(:template_type => 'transmission', :template_content => content,
-                            :title => title, :receiver_type => 'List' )
-    push_message.receiver_ids = receivers.collect{|t| t.id }
-    push_message.receiver_cids = receivers.collect{|t| t.device_token}.uniq
-    push_message.item_id = campaign.id
-    push_message.item_type = 'Campaign'
-    push_message.save
-  end
-
-
+  #Notice receivers 长度不能超过1000
+  # receivers:接受kols,  title: 主要内容, name: 通知栏标题,  item: 关联对象
   def self.push_common_message(receivers,  title, name = "你有一条新的消息", item = nil)
     content = {:action => 'common', :title => title, :sender => 'robin8', :name => name}
     push_message = self.new(:template_type => 'transmission', :template_content => content,
