@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   include Concerns::PayTransaction
 
   include Users::AlipayHelper
+  include Users::PromotionHelper
   attr_accessor :login
 
   has_many :transactions, :as => :account
