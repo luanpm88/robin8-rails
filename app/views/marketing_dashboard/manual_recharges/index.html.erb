@@ -70,7 +70,14 @@
       <td><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
       <td><%= c.item.receiver_name if c.item %></td>
       <td><%= c.item.operator || c.item.admin_user.email if c.item %></td>
-      <td><%= c.account.seller.try(:name) %></td>
+      <td>
+        <% if c.account.seller.present? %>
+          <%= c.account.seller.name rescue nil %> |
+          <%= link_to '编辑', add_seller_marketing_dashboard_manual_recharge_path(c) %>
+        <% else %>
+          <%= link_to '添加', add_seller_marketing_dashboard_manual_recharge_path(c) %>
+        <% end %>
+      </td>
       <td><%= c.item.status if c.item %></td>
       <td><%= c.item.remark if c.item %></td>
     </tr>
