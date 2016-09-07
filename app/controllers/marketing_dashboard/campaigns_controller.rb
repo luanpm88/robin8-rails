@@ -80,13 +80,13 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def add_target
-    authorize! :update, Campaign
+    authorize! :manage, Campaign
     CampaignTarget.create(params.require(:campaign_target).permit(:target_type_text, :target_content).merge(:campaign_id => params[:id]))
     redirect_to targets_marketing_dashboard_campaign_path(:id => params[:id])
   end
 
   def stop
-    authorize! :update, Campaign
+    authorize! :manage, Campaign
     @campaign = Campaign.find params[:id]
     @campaign.finish("stop by admin")
     redirect_to :action => :index
@@ -120,7 +120,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def delete_target
-    authorize! :update, Campaign
+    authorize! :manage, Campaign
     @campaign_target = CampaignTarget.find params[:id]
     @campaign_target.destroy
     render :js => "alert('删除成功');$('#target_#{params[:id]}').remove()"
@@ -135,7 +135,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agree
-    authorize! :update, Campaign
+    authorize! :manage, Campaign
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:status => :agreed)
     respond_to do |format|
@@ -145,7 +145,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def reject
-    authorize! :update, Campaign
+    authorize! :manage, Campaign
     @campaign = Campaign.find_by :id => params[:campaign_id]
     if @campaign.status != "unexecute"
       render :json => {:status => "error", :message => "活动不是待审核状态， 不能审核拒绝"} and return

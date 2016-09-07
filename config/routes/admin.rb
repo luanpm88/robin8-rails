@@ -126,6 +126,7 @@ Rails.application.routes.draw do
         get 'checked'
         get 'agreed'
         get 'rejected'
+        get 'permanent_prohibited'
         post 'search'
         match 'batch_handle', via: [:post]
       end

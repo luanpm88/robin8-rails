@@ -59,7 +59,9 @@ class Campaign < ActiveRecord::Base
   scope :agreed, -> {where(status: ["agreed", "executing", "executed", "settled"])}
 
   scope :valid_invites, -> { joins("LEFT JOIN (SELECT `campaign_invites`.`campaign_id` AS campaign_id, COUNT(*) AS valid_invite_count FROM `campaign_invites` WHERE `campaign_invites`.`status` = 'approved' OR `campaign_invites`.`status` = 'finished' OR `campaign_invites`.`status` = 'settled' GROUP BY `campaign_invites`.`campaign_id`) AS `cte_tables` ON `campaigns`.`id` = `cte_tables`.`campaign_id`") }
+  scope :total_invites, -> { joins("LEFT JOIN (SELECT `campaign_invites`.`campaign_id` AS campaign_id, COUNT(*) AS total_invite_count FROM `campaign_invites` GROUP BY `campaign_invites`.`campaign_id`) AS `cte_tables` ON `campaigns`.`id` = `cte_tables`.`campaign_id`") }
   scope :sort_by_valid_invite_count, ->(dir) { valid_invites.order("valid_invite_count #{dir}") }
+  scope :sort_by_total_invite_count, ->(dir) { total_invites.order("total_invite_count #{dir}") }
 
   before_validation :format_url
   after_save :create_job
@@ -337,7 +339,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def self.ransortable_attributes(auth_object = nil)
-    ransackable_attributes(auth_object) + %w( sort_by_valid_invite_count )
+    ransackable_attributes(auth_object) + %w( sort_by_valid_invite_count sort_by_total_invite_count )
   end
 
   def format_url

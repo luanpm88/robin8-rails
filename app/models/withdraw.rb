@@ -12,6 +12,9 @@ class Withdraw < ActiveRecord::Base
   after_save :deal_withdraw
 
   belongs_to :kol
+
+  STATUS = %w(pending paid rejected checked permanent_frozen)
+
   scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
   scope :checked, -> { where(:status => 'checked').order('created_at desc') }

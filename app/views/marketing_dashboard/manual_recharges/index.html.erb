@@ -58,7 +58,7 @@
     <% @transactions.each do |c| %>
     <tr>
       <td><%= c.account.id %></td>
-      <td><%= c.account.name %></td>
+      <td><%= c.account.smart_name %></td>
       <td><%= c.id %></td>
       <% if c.subject.in? ["manual_recharge", "manaual_recharge"] %>
         <td>线下充值</td>
@@ -70,7 +70,7 @@
       <td><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
       <td><%= c.item.receiver_name if c.item %></td>
       <td><%= c.item.operator || c.item.admin_user.email if c.item %></td>
-      <td><%= c.account.seller.name if c.item %></td>
+      <td><%= c.account.seller.try(:name) %></td>
       <td><%= c.item.status if c.item %></td>
       <td><%= c.item.remark if c.item %></td>
     </tr>
