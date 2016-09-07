@@ -73,9 +73,10 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
       return if self.status != 'agreed'
       self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
-      Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
       campaign_id = self.id
-      Kol.where(:id => (kol_ids ||get_kol_ids)).each do |kol|
+      kol_ids ||=  get_kol_ids
+      Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
+      Kol.where(:id => kol_ids).each do |kol|
         kol.add_campaign_id campaign_id
       end
       # make sure those execute late (after invite create)
