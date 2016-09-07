@@ -117,10 +117,10 @@ class PushMessage < ActiveRecord::Base
   end
 
 
-  def self.push_common_message(receivers,  content, name = "你有一条新的消息", item = nil)
-    content = {:action => 'common', :title => content, :sender => 'robin8', :name => name}
+  def self.push_common_message(receivers,  title, name = "你有一条新的消息", item = nil)
+    content = {:action => 'common', :title => title, :sender => 'robin8', :name => name}
     push_message = self.new(:template_type => 'transmission', :template_content => content,
-                            :title => content, :receiver_type => 'List' )
+                            :title => title, :receiver_type => 'List' )
     push_message.receiver_ids = receivers.collect{|t| t.id }
     push_message.receiver_cids = receivers.collect{|t| t.device_token}.uniq
     push_message.item =  item if item.present?
