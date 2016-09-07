@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160906063215) do
+ActiveRecord::Schema.define(version: 20160907072111) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -833,11 +833,17 @@ ActiveRecord::Schema.define(version: 20160906063215) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.string   "title",        limit: 255
-    t.string   "invoice_type", limit: 255, default: "common"
-    t.integer  "user_id",      limit: 4
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.string   "title",           limit: 255
+    t.string   "invoice_type",    limit: 255, default: "common"
+    t.integer  "user_id",         limit: 4
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.string   "taxpayer_id",     limit: 255
+    t.string   "company_name",    limit: 255
+    t.string   "company_address", limit: 255
+    t.string   "company_mobile",  limit: 255
+    t.string   "bank_name",       limit: 255
+    t.string   "bank_account",    limit: 255
   end
 
   create_table "ip_scores", force: :cascade do |t|
@@ -1897,6 +1903,7 @@ ActiveRecord::Schema.define(version: 20160906063215) do
     t.float    "historical_payout",      limit: 24,                           default: 0.0
     t.float    "historical_recharge",    limit: 24,                           default: 0.0
     t.integer  "seller_id",              limit: 4
+    t.boolean  "is_live",                limit: 1,                            default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

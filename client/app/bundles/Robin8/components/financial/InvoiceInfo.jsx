@@ -1,6 +1,7 @@
 import React from 'react';
 
 import InvoiceInfoModal from './modals/InvoiceInfoModal';
+import SpecialInvoiceInfoModal from './modals/SpecialInvoiceInfoModal';
 import InvoiceReceiverInfoModal from './modals/InvoiceReceiverInfoModal'
 
 export default class InvoiceInfo extends React.Component {
@@ -10,13 +11,15 @@ export default class InvoiceInfo extends React.Component {
 
     this.state = {
       showInvoiceInfoModal: false,
+      showSpecialInvoiceInfoModal: false,
       showInvoiceReceiverInfoModal: false,
     };
   }
 
   componentDidMount() {
-    const { fetchInvoice, fetchInvoiceReceiver } = this.props.actions;
-    fetchInvoice();
+    const { fetchCommonInvoice, fetchSpecialInvoice, fetchInvoiceReceiver } = this.props.actions;
+    fetchCommonInvoice();
+    fetchSpecialInvoice();
     fetchInvoiceReceiver();
   }
 
@@ -24,11 +27,15 @@ export default class InvoiceInfo extends React.Component {
     this.setState({showInvoiceInfoModal: false});
   }
 
+  closeSpecialInvoiceInfoModal() {
+    this.setState({showSpecialInvoiceInfoModal: false});
+  }
+
   closeInvoiceReceiverModal() {
     this.setState({showInvoiceReceiverInfoModal: false});
   }
 
-  render_title() {
+  render_common_invoice_title() {
     const invoice = this.props.invoice
     if (invoice.get('title'))
       return <p>发票抬头: {invoice.get('title')}</p>
@@ -59,11 +66,19 @@ export default class InvoiceInfo extends React.Component {
 
   render_save_or_edit_invoice_button() {
     const invoice = this.props.invoice
-    if (invoice.get('title'))
+    if (invoice && invoice.get('title'))
       return <button className="btn edit" onClick={()=>this.setState({showInvoiceInfoModal: true})}>修改</button>
     else
       return <button className="btn save" onClick={()=>this.setState({showInvoiceInfoModal: true})}>创建</button>
 
+  }
+
+  render_save_or_edit_special_invoice_button() {
+    const special_invoice = this.props.specialInvoice;
+    if (special_invoice && special_invoice.get('title'))
+      return <button className="btn edit" onClick={()=>this.setState({showSpecialInvoiceInfoModal: true})}>修改</button>
+    else
+      return <button className="btn save" onClick={()=>this.setState({showSpecialInvoiceInfoModal: true})}>创建</button>
   }
 
   render_save_or_edit_invoice_receiver_button() {
@@ -79,44 +94,98 @@ export default class InvoiceInfo extends React.Component {
     return (
       <div>
         <div className="invoice_img">
-          <img src={require("financial_invoice_bg.png")} />
+        {/* <img src={require("financial_invoice_bg.png")} /> */}
         </div>
-        <div className="invoice-table">
-          <span className="title" >申请发票</span>
-          <table>
-            <tbody>
-              <tr align="center">
-                <td className="invoice-info row-1">
-                  发票信息
-                </td>
-                <td className="invoice-detail row-1" >
-                  <div className="inside-invoice-detail-td">
-                    { this.render_title() }
-                    <p>发票类型: 普通增值税发票</p>
-                  </div>
-                </td>
-                <td className="action row-1">
-                  { this.render_save_or_edit_invoice_button() }
-                </td>
-              </tr>
-              <tr align="center">
-                <td className="express-address row-2">
-                  <div>邮寄地址</div>
-                </td>
-                <td className="receiver-info row-2">
-                  <div className="inside-receiver-info-td">
-                    { this.render_receiver_info() }
-                  </div>
-                </td>
-                <td className="action row-2">
-                  { this.render_save_or_edit_invoice_receiver_button() }
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="invoice-nav" data-example-id="togglable-tabs">
+          <ul className="nav nav-tabs" id="invoice-tabs" role="tablist">
+            <li role="presentation" className="active">
+              <a href="#common-invoice" id="common-invoice-tab" role="tab" data-toggle="tab" aria-controls="common_invoice" aria-expanded="false">普通增值税发票</a>
+            </li>
+            <li role="presentation">
+              <a href="#special-invoice" id="special-invoice-tab" role="tab" data-toggle="tab" aria-controls="special_invoice" aria-expanded="false">专用增值税发票</a>
+            </li>
+          </ul>
         </div>
 
+        <div className="tab-content">
+          <div className="tab-pane fade in active" id="common-invoice" aria-labelledby="common-invoice-tab">
+            <div className="invoice-table">
+              <table>
+                <tbody>
+                  <tr align="center">
+                    <td className="invoice-info row-1">
+                      发票信息
+                    </td>
+                    <td className="invoice-detail row-1" >
+                      <div className="inside-invoice-detail-td">
+                        { this.render_common_invoice_title() }
+                        <p>发票类型: 普通增值税发票</p>
+                      </div>
+                    </td>
+                    <td className="action row-1">
+                      { this.render_save_or_edit_invoice_button() }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="tab-pane fade" id="special-invoice" aria-labelledby="special-invoice-tab">
+            <div className="invoice-table">
+              <table>
+                <tbody>
+                  <tr align="center">
+                    <td className="invoice-info row-1">
+                      发票信息
+                    </td>
+                    <td className="invoice-detail row-1" >
+                      <div className="inside-invoice-detail-td">
+                        <p>公司名称: <span className="no-info">请填写公司名称</span></p>
+                        <p>纳税人识别号: <span className="no-info">请填写纳税人识别号</span></p>
+                        <p>公司地址: <span className="no-info">请填写公司地址</span></p>
+                        <p>公司电话: <span className="no-info">请填写公司电话</span></p>
+                        <p>开户行: <span className="no-info">请填写开户行</span></p>
+                        <p>开户行帐号: <span className="no-info">请填写开户行帐号</span></p>
+                        <p>发票类型: 专用增值税发票</p>
+                      </div>
+                    </td>
+                    <td className="action row-1">
+                      { this.render_save_or_edit_special_invoice_button() }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+          {/*
+            <div className="invoice-table">
+              <table>
+                <tbody>
+                  <tr align="center">
+                    <td className="express-address row-2">
+                      <div>邮寄地址</div>
+                    </td>
+                    <td className="receiver-info row-2">
+                      <div className="inside-receiver-info-td">
+                        { this.render_receiver_info() }
+                      </div>
+                    </td>
+                    <td className="action row-2">
+                      { this.render_save_or_edit_invoice_receiver_button() }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          */}
+
+
         <InvoiceInfoModal show={this.state.showInvoiceInfoModal} onHide={this.closeInvoiceInfoModal.bind(this)} actions={this.props.actions}  invoice={this.props.invoice} />
+        <SpecialInvoiceInfoModal show={this.state.showSpecialInvoiceInfoModal} onHide={this.closeSpecialInvoiceInfoModal.bind(this)} actions={this.props.actions}  specialInvoice={this.props.specialInvoice} />
         <InvoiceReceiverInfoModal show={this.state.showInvoiceReceiverInfoModal} onHide={this.closeInvoiceReceiverModal.bind(this)} actions={this.props.actions}  invoiceReceiver={this.props.invoiceReceiver} />
 
       </div>

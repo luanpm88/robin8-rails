@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :transactions, :as => :account
   has_many :alipay_orders
-  has_one  :invoice
+  has_many  :invoices
   has_one  :invoice_receiver
   has_many :invoice_histories
   belongs_to  :seller, class_name: "Crm::Seller"

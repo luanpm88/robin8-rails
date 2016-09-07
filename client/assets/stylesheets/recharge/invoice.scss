@@ -42,6 +42,8 @@
     }
 
     .invoice-table {
+      width: 750px;
+      height: 400px;
       .title {
         position: absolute;
         top: 242px;
@@ -244,19 +246,21 @@
 .invoice-info-modal {
   margin-top: 173px;
   .modal-content {
-    .invoice-title {
-      float: left;
+    .invoice-label {
       margin-left: 35px;
       margin-right: 15px;
+      line-height: 30px;
     }
-    .invoice-title-input {
+    .invoice-input {
       width: 380px;
+      float: right;
+      margin-right: 38px;
     }
     .error-tip {
       color: #ce0101;
       margin-top: 8px;
       font-size: 12px;
-      margin-left: 115px;
+      margin-left: 150px;
     }
   }
 }

@@ -14,6 +14,7 @@ import 'recharge/invoice.scss'
 function select(state) {
   return {
     invoice: state.financialReducer.get('invoice'),
+    specialInvoice: state.financialReducer.get('specialInvoice'),
     invoiceReceiver: state.financialReducer.get('invoiceReceiver'),
     invoiceHistories: state.financialReducer.get('invoiceHistories'),
     appliableCredits: state.financialReducer.get('appliableCredits'),

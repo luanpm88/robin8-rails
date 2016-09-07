@@ -26,18 +26,18 @@ export function fetchTransactions(current_page) {
   };
 }
 
-export function fetchInvoice() {
+export function fetchCommonInvoice() {
   return {
-    type: actionTypes.FETCH_INVOICE,
-    promise: fetch(`${baseUrl}/invoice`, { credentials: 'same-origin' })
+    type: actionTypes.FETCH_COMMON_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/common`, { credentials: 'same-origin' })
   }
 }
 
-export function saveInvoice(title) {
+export function saveCommonInvoice(title) {
   const data = { title };
   return {
-    type: actionTypes.SAVE_INVOICE,
-    promise: fetch(`${baseUrl}/invoice`, {
+    type: actionTypes.SAVE_COMMON_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/common`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -50,11 +50,53 @@ export function saveInvoice(title) {
   }
 }
 
-export function updateInvoice(title) {
+export function updateCommonInvoice(title) {
   const data = { title };
   return {
-    type: actionTypes.UPDATE_INVOICE,
-    promise: fetch(`${baseUrl}/invoice`, {
+    type: actionTypes.UPDATE_COMMON_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/common`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'put',
+      body: JSON.stringify(data)
+    })
+  }
+}
+
+
+export function fetchSpecialInvoice() {
+  return {
+    type: actionTypes.FETCH_SPECIAL_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/special`, { credentials: 'same-origin' })
+  }
+}
+
+export function saveSpecialInvoice(title) {
+  const data = { title };
+  return {
+    type: actionTypes.SAVE_SPECIAL_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/special`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
+}
+
+export function updateSpecialInvoice(title) {
+  const data = { title };
+  return {
+    type: actionTypes.UPDATE_SPECIAL_INVOICE,
+    promise: fetch(`${baseUrl}/invoices/special`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
