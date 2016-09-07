@@ -164,6 +164,9 @@ Rails.application.routes.draw do
       collection do
         post 'search'
       end
+      member do
+        match 'add_seller', via: [:post, :get]
+      end
     end
 
     resources :transactions do
