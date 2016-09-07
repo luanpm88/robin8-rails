@@ -19,7 +19,7 @@ module Kols
       end
 
       unless user
-        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, name: self.name :is_active => false)
+        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, name: self.name, :is_active => false)
       end
       user
     end
