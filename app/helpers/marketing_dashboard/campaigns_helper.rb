@@ -1,5 +1,5 @@
 module MarketingDashboard::CampaignsHelper
-  def filter_kol_reason kol_id, remove_kol_ids, black_list_ids, receive_campaign_kol_ids, today_receive_three_times_kol_ids
+  def filter_kol_reason kol_id, remove_kol_ids, black_list_ids, receive_campaign_kol_ids, today_receive_three_times_kol_ids, three_hours_had_receive_kol_ids
     reasons = []
     if remove_kol_ids.include?(kol_id)
       reasons << "指定去掉该kol"
@@ -15,6 +15,11 @@ module MarketingDashboard::CampaignsHelper
     if today_receive_three_times_kol_ids.include?(kol_id)
       reasons << "今天接过了3次campaign"
     end
+
+    if three_hours_had_receive_kol_ids.include? kol_id
+      reasons << "3小时内接过活动"
+    end
+
     reasons.join("、")
   end
 
