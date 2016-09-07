@@ -17,11 +17,12 @@ module Users
 
     def create
       user_params[:mobile_number].strip! rescue nil
+      return render json: { error: "手机号已经被注册，请直接登陆" }, status: :unprocessable_entity if Kol.where(mobile_number: user_params[:mobile_number]).exists?
+
       @kol = Kol.new(user_params)
       @kol.name = Kol.hide_real_mobile_number(user_params[:mobile_number]) if @kol.name.blank?
 
-      sms_code = Rails.cache.fetch(user_params[:mobile_number])
-      return render json: { error: "短信验证码错误" }, status: :forbidden unless sms_code.present? && sms_code == params["user"]["sms_code"]
+      return render json: { error: "短信验证码错误" }, status: :forbidden unless YunPian::SendRegisterSms.verify_code(user_params[:mobile_number], params["user"]["sms_code"])
       return render json: { error: "无效的手机号或密码" }, status: :bad_request unless @kol.valid?
 
       if @kol.save
@@ -55,8 +56,7 @@ module Users
 
       if @kol.mobile_number.blank?
         user_params = params.require(:user).permit(:mobile_number)
-        sms_code = Rails.cache.fetch(user_params[:mobile_number])
-        return render json: { error: "短信验证码错误" }, status: :forbidden unless sms_code.present? && sms_code == params["user"]["sms_code"]
+        return render json: { error: "短信验证码错误" }, status: :forbidden unless YunPian::SendRegisterSms.verify_code(user_params[:mobile_number], params["user"]["sms_code"])
       elsif @kol.encrypted_password.blank?
         user_params = params.require(:user).permit(:password)
       else
