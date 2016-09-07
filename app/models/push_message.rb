@@ -1,6 +1,8 @@
 class PushMessage < ActiveRecord::Base
   include GeTui::Dispatcher
 
+  belongs_to :item, :polymorphic => true
+
   serialize :receiver_ids, Array
   serialize :receiver_cids, Array
   serialize :template_content, Hash
