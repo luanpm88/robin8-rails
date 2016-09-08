@@ -60,7 +60,7 @@
       <tr>
         <td><%= i.id %></td>
         <td><%= link_to i.user_id, marketing_dashboard_user_path(:id => i.user_id), :target => "_blank" %></td>
-        <td><%= i.user.name rescue "" %></td>
+        <td><%= i.user.smart_name rescue "" %></td>
         <td><%= i.user.mobile_number rescue "" %></td>
         <td><%= i.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
         <td>

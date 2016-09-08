@@ -177,7 +177,7 @@
           <td><%= link_to c.id, marketing_dashboard_campaign_path(c), target: "_blank" %></td>
           <td><%= c.name %></td>
           <td><%= link_to c.user_id, marketing_dashboard_user_path(c.user_id), target: "_blank" rescue "未知" %></td>
-          <td><%= c.user.name rescue "未知" %></td>
+          <td><%= c.user.smart_name rescue "未知" %></td>
           <td><%= c.status %></td>
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
