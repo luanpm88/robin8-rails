@@ -14,8 +14,8 @@ class CpsArticleShare < ActiveRecord::Base
 
   after_commit :create_promotion_materials
 
-  def show_url
-    "#{Rails.application.secrets[:host]}/cps_article_shares/#{self.id}"
+  def share_url
+    "#{Rails.application.secrets.domain}/cps_article_shares/#{self.id}"
   end
 
   def self.get_sub_uniond_id(kol_id, article_share_id)

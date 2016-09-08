@@ -18,7 +18,7 @@ class CpsArticle < ActiveRecord::Base
   Statuses = {'pending' => '待审核', 'passed' => '审核通过', 'rejected' => '审核拒绝'}
 
   def show_url
-    "#{Rails.application.secrets[:host]}/cps_articles/#{self.id}"
+    "#{Rails.application.secrets.domain}/cps_articles/#{self.id}"
   end
 
   def content_arr
