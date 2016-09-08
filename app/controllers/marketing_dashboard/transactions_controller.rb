@@ -1,6 +1,9 @@
 class MarketingDashboard::TransactionsController < MarketingDashboard::BaseController
   def index
+  end
 
+  def discount
+    @transactions = Transaction.where(subject: "limited_discount").paginate(paginate_params)
   end
 
   def search

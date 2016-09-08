@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :transactions, :as => :account
   has_many :alipay_orders
+  has_many :alipay_orders_from_app, -> { where(recharge_from: "app") }, class_name: "AlipayOrder"
+  has_many :alipay_orders_from_pc, -> { where(recharge_from: nil) }, class_name: "AlipayOrder"
   has_one  :invoice
   has_one  :invoice_receiver
   has_many :invoice_histories

@@ -171,6 +171,7 @@ Rails.application.routes.draw do
 
     resources :transactions do
       collection do
+        get 'discount'
         get 'search'
       end
     end
