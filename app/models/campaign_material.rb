@@ -6,7 +6,8 @@ class CampaignMaterial < ActiveRecord::Base
     return material.url   if  invite.blank?
     if material.url_type == 'article' || material.url_type == 'video'
       uuid = Base64.encode64({:material_url => material.url, :campaign_invite_id => invite.id}.to_json).gsub("\n","")
-      return "#{Rails.application.secrets.domain}/commons/material?uuid=#{uuid}"
+      url = "#{Rails.application.secrets.domain}/commons/material?uuid=#{uuid}"
+      return ShortUrl.convert(url)
     end
     return material.url
   end

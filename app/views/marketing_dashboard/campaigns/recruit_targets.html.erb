@@ -1,5 +1,5 @@
 <h2><%= @title %></h2>
-<% attrs = %w(id 头像 KOL名称 电话号码 微博号 微博粉丝数 微信号 微信粉丝数 性别 城市 推荐理由 操作) %>
+<% attrs = %w(id 头像 KOL名称 电话号码 微博号 微博粉丝数 微信号 微信粉丝数 性别 城市 推荐理由-素材 操作) %>
 <table class='table table-bordered'>
   <thead>
 
@@ -38,7 +38,10 @@
         <td> <%= kol.app_city_label %> </td>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
-             <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>">
+             <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>"> <br>
+             <% @campiagn_materials.each do |material| %>
+               <div><%= CampaignMaterial.get_track_url(material, campaign_apply.kol) %></div>
+             <% end %>
           <% else %>
             <input class="agree_reason <%= campaign_apply.kol.id %>" type='text'>
           <% end %>

@@ -129,6 +129,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def recruit_targets
     @campaign = Campaign.find params[:id]
     @campaign_applies = @campaign.campaign_applies
+    @campiagn_materials = @campaign.campaign_materials
     @title = "符合要求的招募人数为 #{@campaign_applies.count}人"
   end
 
