@@ -15,7 +15,7 @@ module Kols
     end
 
     def average_click_of_campaigns
-      self.campaign_invites.average(:avail_click)
+      self.campaign_invites.average(:avail_click).to_f
     end
   end
 end

@@ -2,10 +2,10 @@ class AdminAbility
   include CanCan::Ability
 
   def initialize(admin)
-    if admin.has_any_role? :super_admin, :admin
+    if admin.has_any_role? :super_admin
       can :manage, :all
     else
-      can [:read, :update], AdminUser if admin.has_role?(:admin)
+      can [:read, :update], AdminUser if admin.has_role?(:super_admin)
       can :read, Campaign if admin.has_role?(:campaign_read)
       can [:read, :update], Campaign if admin.has_role?(:campaign_update)
       can :read, CampaignInvite if admin.has_role?(:campaign_invite_read)
