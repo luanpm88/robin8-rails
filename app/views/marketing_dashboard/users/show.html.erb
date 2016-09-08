@@ -43,6 +43,17 @@
     <td><%= @user.historical_recharge %></td>
   </tr>
   <tr>
+    <td>创建时间</td>
+    <td><%= @user.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
+  </tr>
+  <tr>
+    <td>所发活动</td>
+    <td>共发 <%= @user.campaigns.count %> 个活动，<br/>
+        未支付： <%= @user.campaigns.where(status: "unpay").count %> 个，<br/>
+        被拒绝： <%= @user.campaigns.where(status: "rejected").count %> 个，<br/>
+        <%= link_to "查看全部", marketing_dashboard_campaigns_path(q: {user_id_eq: @user.id}), target: "_blank" %></td>
+  </tr>
+  <tr>
     <% last_campaign = @user.campaigns.order("created_at DESC").first  %>
     <td>最近发单时间</td>
     <td><%= last_campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
@@ -64,3 +75,21 @@
     </td>
   </tr>
 </table>
+
+
+<h3>充值记录</h3>
+<%
+  manual_recharges = @user.transactions.where(subject: "manual_recharge")
+  alipay_orders = @user.alipay_orders
+  campaign_orders = @user.campaigns.where(pay_way: "alipay")
+%>
+<p>共 <%= manual_recharges.count + alipay_orders.count + campaign_orders.count %> 次成功充值</p>
+
+<p>支付宝APP充值有 <%= @user.alipay_orders_from_app.count %> 次，成功 <%= @user.alipay_orders_from_app.where(status: "paid").count %>次，<%= link_to "查看全部", from_app_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
+
+<p>支付宝PC充值有 <%= @user.alipay_orders_from_pc.count %> 次，成功 <%= @user.alipay_orders_from_pc.where(status: "paid").count %>次，<%= link_to "查看全部", from_pc_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
+
+<p>PC手动充值有 <%= manual_recharges.count %> 次，<%= link_to "查看全部", marketing_dashboard_manual_recharges_path(q: {account_of_User_type_id_eq: @user.id}), target: "_blank" %></p>
+
+<p>直接付款发活动有 <%= campaign_orders.count %> 次，成功 <%= campaign_orders.where(alipay_status: 1).count %> 次，<%= link_to "查看全部", campaigns_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
+
