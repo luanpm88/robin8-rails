@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {income_or_payout_transaction}, class_name: 'Transaction', as: :account
   has_many :recharge_transactions, -> {recharge_transaction}, class_name: 'Transaction', as: :account
-  belongs_to :kol
+  belongs_to :kol, inverse_of: :user
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
   after_create :init_appid

@@ -92,7 +92,7 @@
       <tr>
         <td><%= a.id %></td>
         <td><%= link_to a.user_id, marketing_dashboard_user_path(:id => a.user_id), :target => "_blank" %></td>
-        <td><%= a.user.name if a.user %></td>
+        <td><%= a.user.smart_name if a.user %></td>
         <td><%= a.user.mobile_number if a.user %></td>
         <td>
           <% if a.user.seller.present? %>
