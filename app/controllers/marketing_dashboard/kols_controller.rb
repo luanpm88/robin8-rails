@@ -7,7 +7,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def banned
-    @kols = Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+    @kols = Kol.where("forbid_campaign_time is not null")
     load_kols
   end
 

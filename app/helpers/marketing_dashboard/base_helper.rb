@@ -28,6 +28,12 @@ module MarketingDashboard::BaseHelper
     link_to btn_txt, live_marketing_dashboard_user_path(user), class: "btn #{btn_clz}", method: :put
   end
 
+  def color_time(time)
+    return unless time
+    cls = Time.now > time ? "text-success" : "text-default"
+    content_tag(:span, time.strftime("%Y-%m-%d %H:%M"), class: cls)
+  end
+
   private
   def parse_and_send r, x
     if x.include? '_id'

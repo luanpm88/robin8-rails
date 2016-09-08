@@ -61,7 +61,7 @@
         <td><%= lottery_activity.lucky_kol.name %></td>
         <td><%= lottery_activity.lucky_kol.kol_level %></td>
         <td><%= lottery_activity.lucky_kol.total_income %></td>
-        <td><%= lottery_activity.lucky_kol.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= color_time(lottery_activity.lucky_kol.forbid_campaign_time) %></td>
         <td><%= addr.name || lottery_activity.lucky_kol.name %></td>
         <td><%= addr.phone || lottery_activity.lucky_kol.mobile_number %></td>
         <td>
