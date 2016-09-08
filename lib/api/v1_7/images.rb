@@ -12,7 +12,7 @@ module API
           uploader = AvatarUploader.new
           uploader.store!(params[:file])
           present :error, 0
-          present :url, uploader.url
+          present :url, uploader.url(:cover2)
         end
       end
     end

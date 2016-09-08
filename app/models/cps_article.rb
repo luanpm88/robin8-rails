@@ -2,7 +2,7 @@ class CpsArticle < ActiveRecord::Base
   include Redis::Objects
   has_many :cps_article_materials
   has_many :cps_article_shares
-  belongs_to :author, :foreign_key => :kol_id, :class_name => 'User'
+  belongs_to :author, :foreign_key => :kol_id, :class_name => 'Kol'
   belongs_to :kol
   has_many :cps_materials, :through => :cps_article_materials
   counter :read_count
