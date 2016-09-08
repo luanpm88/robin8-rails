@@ -50,7 +50,7 @@ class PushMessage < ActiveRecord::Base
         device_tokens =  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
         device_tokens.in_groups_of(1000,false){|group_device_tokens|
           push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                                  :title => title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
+                                  :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
           push_message.message_id = message.id
           push_message.item_id = message.item_id
           push_message.item_type = message.item_type
