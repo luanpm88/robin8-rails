@@ -9,9 +9,9 @@ module Jd
          order.with_lock do
            next if ['settled', 'canceled', 'full_return'].include?(order.status) || order.commision_fee.blank? ||  order.commision_fee == 0
            # 文章分享者  佣金
-           order.kol.income(order.commision_fee * (1 -  ArticleTax - PlatformTax), 'cps_commision', order)
+           order.kol.income(order.commision_fee * (1 -  ArticleTax - PlatformTax), 'cps_share_commission', order)
            # 文章创作者 佣金
-           order.cps_article_share.get_article_author.income(order.commision_fee * ArticleTax, 'cps_article_tax', order)
+           order.cps_article_share.get_article_author.income(order.commision_fee * ArticleTax, 'cps_writing_commission', order)
            # 系统佣金
            User.get_platform_account.income(order.commision_fee * PlatformTax, 'cps_tax', order)
            # 更改系统登记

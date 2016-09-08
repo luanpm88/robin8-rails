@@ -51,6 +51,13 @@ class CpsArticle < ActiveRecord::Base
     end
   end
 
+  # 获取文章写作佣金
+  def writing_commission
+    self.cps_article_shares.collect{|t| t.cps_promotion_valid_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
+  end
+
+
+  # 审核结果发送通知
   def send_notify_to_author
     if status_changed?
       if status == 'passed'

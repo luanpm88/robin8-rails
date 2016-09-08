@@ -1,5 +1,5 @@
 module Jd
-  class SyncCommision
+  class SyncCommission
     def self.schedule_sync
       Rails.logger.jd.info "------SyncCommision.schedule_sync"
       last_query_time = (Time.now - 20.minutes).strftime("%Y%m%d%H")

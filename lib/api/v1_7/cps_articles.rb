@@ -24,9 +24,9 @@ module API
         end
         get 'my_articles' do
           if params[:status] == 'shares'
-            cps_articles = current_kol.cps.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+            cps_articles = current_kol.cps_article_shares.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
           else
-            cps_articles = current_kol.cps_article_shares.includes(:kol).order("created desc").page(params[:page]).per_page(10)
+            cps_articles = current_kol.cps_article.send("#{params[:status]}").includes(:kol).order("created desc").page(params[:page]).per_page(10)
           end
           present :error, 0
           to_paginate(cps_articles)

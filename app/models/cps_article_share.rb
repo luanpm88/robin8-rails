@@ -6,7 +6,9 @@ class CpsArticleShare < ActiveRecord::Base
   has_many :cps_promotion_orders
   has_many :cps_promotion_order_items, :through => :cps_promotion_orders
   # 预计收入
-  has_many :cps_promotion_valid_orders, -> {where(:status => ['pending', 'finished', 'part_return'])}, :class_name => 'C'
+  has_many :cps_promotion_valid_orders, -> {where(:status => ['pending', 'finished', 'part_return'])}, :class_name => 'CpsPromotionOrder'
+  has_many :cps_promotion_valid_order_items, :through => :cps_promotion_valid_orders, :source => 'cps_promotion_order_items'
+
   belongs_to :cps_article
   belongs_to :kol
 
@@ -61,7 +63,7 @@ class CpsArticleShare < ActiveRecord::Base
     end
   end
 
-  def get_order_commion_fee
-    self.cps_p
+  def share_commission
+    self.cps_promotion_valid_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
   end
 end

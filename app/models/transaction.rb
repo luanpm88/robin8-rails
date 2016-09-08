@@ -26,7 +26,7 @@ class Transaction < ActiveRecord::Base
   validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw
                         check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
-                        cps_commision cps_tax cps_article_tax)
+                        cps_share_commission cps_tax cps_writing_commission)
 
   # subject
   # manual_recharge manual_withdraw
@@ -69,11 +69,11 @@ class Transaction < ActiveRecord::Base
         "营销活动(#{self.item.name}) 退款"
       when 'campaign_compensation'
         "活动补偿红包(#{self.item.name})"
-      when 'cps_commision'
+      when 'cps_share_commission'
         "CPS佣金"
       when 'cps_tax'
         "CPS税费"
-      when 'cps_article_tax'
+      when 'cps_writing_commission'
         "CPS文章税费"
     end
   end
