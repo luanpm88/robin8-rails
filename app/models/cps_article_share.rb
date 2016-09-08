@@ -3,6 +3,10 @@ class CpsArticleShare < ActiveRecord::Base
   counter :read_count
 
   has_many :cps_promotion_materials
+  has_many :cps_promotion_orders
+  has_many :cps_promotion_order_items, :through => :cps_promotion_orders
+  # 预计收入
+  has_many :cps_promotion_valid_orders, -> {where(:status => ['pending', 'finished', 'part_return'])}, :class_name => 'C'
   belongs_to :cps_article
   belongs_to :kol
 
@@ -55,5 +59,9 @@ class CpsArticleShare < ActiveRecord::Base
       CpsPromotionMaterial.create(:kol_id => cps_article_share.kol_id, :cps_article_share_id => cps_article_share.id,
                                   :cps_material_id =>  cps_materials[index].id, :wx_promotion_url => promotion_url)
     end
+  end
+
+  def get_order_commion_fee
+    self.cps_p
   end
 end

@@ -23,18 +23,11 @@ module API
           requires :status, type: String
         end
         get 'my_articles' do
-          cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
-          present :error, 0
-          to_paginate(cps_articles)
-          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
-        end
-
-        #我的转发列表
-        params do
-          optional :page, type: Integer
-        end
-        get 'my_shares' do
-          cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+          if params[:status] == 'shares'
+            cps_articles = current_kol.cps.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+          else
+            cps_articles = current_kol.cps_article_shares.includes(:kol).order("created desc").page(params[:page]).per_page(10)
+          end
           present :error, 0
           to_paginate(cps_articles)
           present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
@@ -70,7 +63,6 @@ module API
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
-          present :cps_article_shares, cps_article.cps_article_shares, with: API::V1_7::Entities::CpsArticleShares::Summary
         end
 
         # 文章中所含商品

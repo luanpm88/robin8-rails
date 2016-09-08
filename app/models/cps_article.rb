@@ -45,6 +45,12 @@ class CpsArticle < ActiveRecord::Base
     end
   end
 
+  def material_total_price
+    Rails.cache.fetch("cps_article_material_totle_price_#{self.id}") do
+      self.cps_materials.sum(:kol_commision_wl)
+    end
+  end
+
   def send_notify_to_author
     if status_changed?
       if status == 'passed'

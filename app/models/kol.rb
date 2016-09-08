@@ -78,6 +78,8 @@ class Kol < ActiveRecord::Base
 
   #cps
   has_many :cps_articles
+  has_many :cps_article_shares
+
 
   scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
