@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160906013500) do
+ActiveRecord::Schema.define(version: 20160906103115) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -399,7 +399,6 @@ ActiveRecord::Schema.define(version: 20160906013500) do
     t.string   "admin_desc",               limit: 255
     t.string   "cpi_example_screenshot",   limit: 255
     t.string   "remark",                   limit: 255
-    t.string   "seller_invite_code",       limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -475,7 +474,7 @@ ActiveRecord::Schema.define(version: 20160906013500) do
     t.datetime "updated_at",                                     null: false
     t.string   "title",        limit: 255
     t.string   "cover",        limit: 255
-    t.integer  "enabled",      limit: 1,     default: 1
+    t.boolean  "enabled",      limit: 1,     default: true
     t.string   "status",       limit: 255,   default: "pending"
     t.string   "check_remark", limit: 255
   end
@@ -1600,6 +1599,7 @@ ActiveRecord::Schema.define(version: 20160906013500) do
     t.text     "others",          limit: 65535
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+    t.string   "search_kol_id",   limit: 255
   end
 
   add_index "social_accounts", ["provider"], name: "index_social_accounts_on_provider", using: :btree
@@ -1886,6 +1886,8 @@ ActiveRecord::Schema.define(version: 20160906013500) do
     t.boolean  "is_active",              limit: 1,                            default: true
     t.float    "historical_payout",      limit: 24,                           default: 0.0
     t.float    "historical_recharge",    limit: 24,                           default: 0.0
+    t.integer  "seller_id",              limit: 4
+    t.boolean  "is_live",                limit: 1,                            default: true
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

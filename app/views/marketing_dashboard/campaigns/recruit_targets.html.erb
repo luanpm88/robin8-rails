@@ -39,7 +39,7 @@
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
              <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>"> <br>
-             <% @campiagn_materials.each do |material| %>
+             <% @campaign_materials.each do |material| %>
                <div><%= CampaignMaterial.get_track_url(material, campaign_apply.kol) %></div>
              <% end %>
           <% else %>
