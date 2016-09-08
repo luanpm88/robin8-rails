@@ -91,7 +91,7 @@
         <td><%= k.kol_role %></td>
         <td><%= k.role_apply_status %></td>
         <td><%= k.is_hot %></td>
-        <td><%= k.forbid_campaign_time.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= color_time(k.forbid_campaign_time) %></td>
         <td><%= k.avail_amount %></td>
         <td><%= k.historical_income %></td>
         <td>
