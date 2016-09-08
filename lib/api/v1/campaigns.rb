@@ -53,6 +53,7 @@ module API
           campaign = Campaign.find(params[:id]) rescue nil
           campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
           last_approved_invite = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at is not null").order("approved_at desc").first      rescue nil
+          today_approved_invite_count = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at > '#{Date.today}'").count
           if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
@@ -62,12 +63,13 @@ module API
             return error_403!({error: 1, detail: '该活动已经结束！' })
           elsif Rails.env.production? && !Kol::AdminKolIds.include?(current_kol.id) && last_approved_invite.present? && last_approved_invite.approved_at > (Time.now - 30.minutes)
             return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' })
+          elsif !current_kol.is_big_v? && today_approved_invite_count >= 3
+            return error_403!({error: 1, detail: '未申请成为KOL,每天只能接3个活动!' })
+          elsif current_kol.is_big_v? && today_approved_invite_count >= 5
+            return error_403!({error: 1, detail: '为了提高广告质量,每天限制接5个活动!' })
           else
             campaign_invite = current_kol.receive_campaign(params[:id])
             campaign_invite = campaign_invite.reload
-            if current_kol.app_platform == "IOS"  && current_kol.app_version < '1.2.0'
-              campaign_invite.campaign.url = campaign_invite.origin_share_url
-            end
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
