@@ -176,7 +176,7 @@ class FinancialInvoicePartial extends React.Component {
           <div className="page-invoice">
             <FinancialMenu />
           <div className="main-content">
-            <InvoiceInfo invoice={this.props.invoice} invoiceReceiver={this.props.invoiceReceiver} actions={this.props.actions} />
+            <InvoiceInfo invoice={this.props.invoice} specialInvoice={this.props.specialInvoice}  invoiceReceiver={this.props.invoiceReceiver} actions={this.props.actions} />
             <div className='apply-invoice'>
               { this.render_appliable_credits() }
 

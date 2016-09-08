@@ -55,7 +55,7 @@ export default function financialReducer($$state = initialState, action=nil) {
     case actionTypes.UPDATE_COMMON_INVOICE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
-        $$state = $$state.merge({"specialInvoice": Immutable.fromJS(action.result)});
+        $$state = $$state.merge({"invoice": Immutable.fromJS(action.result)});
       }
       return $$state;
 
@@ -78,7 +78,7 @@ export default function financialReducer($$state = initialState, action=nil) {
     case actionTypes.UPDATE_SPECIAL_INVOICE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
-        $$state = $$state.merge({"invoice": Immutable.fromJS(action.result)});
+        $$state = $$state.merge({"specialInvoice": Immutable.fromJS(action.result)});
       }
       return $$state;
 

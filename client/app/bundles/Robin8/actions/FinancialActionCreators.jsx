@@ -75,8 +75,8 @@ export function fetchSpecialInvoice() {
   }
 }
 
-export function saveSpecialInvoice(title) {
-  const data = { title };
+export function saveSpecialInvoice(title, taxpayer_id, company_address, company_mobile, bank_name, bank_account) {
+  const data = { title, taxpayer_id, company_address, company_mobile, bank_name, bank_account };
   return {
     type: actionTypes.SAVE_SPECIAL_INVOICE,
     promise: fetch(`${baseUrl}/invoices/special`, {
@@ -92,8 +92,8 @@ export function saveSpecialInvoice(title) {
   }
 }
 
-export function updateSpecialInvoice(title) {
-  const data = { title };
+export function updateSpecialInvoice(title, taxpayer_id, company_address, company_mobile, bank_name, bank_account) {
+  const data = { title, taxpayer_id, company_address, company_mobile, bank_name, bank_account };
   return {
     type: actionTypes.UPDATE_SPECIAL_INVOICE,
     promise: fetch(`${baseUrl}/invoices/special`, {

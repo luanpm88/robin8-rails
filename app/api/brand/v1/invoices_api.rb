@@ -41,8 +41,8 @@ module Brand
           @invoice = current_user.invoices.where(invoice_type: 'special').take
           if @invoice
             present @invoice
-          # else
-          #   { no_invoice: true }
+          else
+            { no_invoice: true }
           end
         end
 
@@ -50,7 +50,6 @@ module Brand
           requires :title, type: String
           optional :invoice_type, type: String, default: 'special'
           requires :taxpayer_id, type: String
-          requires :company_name, type: String
           requires :company_address, type: String
           requires :company_mobile, type:String
           requires :bank_name, type:String
@@ -69,7 +68,6 @@ module Brand
           requires :title, type: String
           optional :invoice_type, type: String, default: 'special'
           requires :taxpayer_id, type: String
-          requires :company_name, type: String
           requires :company_address, type: String
           requires :company_mobile, type:String
           requires :bank_name, type:String

@@ -42,24 +42,13 @@
     }
 
     .invoice-table {
-      width: 750px;
-      height: 400px;
-      .title {
-        position: absolute;
-        top: 242px;
-        left: 50%;
-        right: 50%;
-        transform: translate(-50%, -50%);
-        width: 100px;
-      }
-
+      // width: 750px;
+      padding: 0px 101px;
+      padding-top: 65px;
+      // height: 400px;
       table {
-        width: 551px;
-        position: absolute;
-        top: 382px;
-        left: 50%;
-        right: 50%;
-        transform: translate(-50%, -50%);
+        width: 100%;
+        position: relative;
         table-layout:fixed !important;
         td {
           overflow: auto;
@@ -82,12 +71,12 @@
           height: 120px;
         }
 
-        .invoice-info, .express-address {
+        .invoice-info {
           width: 109px;
           font-size: 18px !important;
         }
-        .invoice-detail, .receiver-info {
-          width: 300px;
+        .invoice-detail {
+          // width: 300px;
           font-size: 14px;
           text-align: left;
           padding-left: 15px;
@@ -124,6 +113,76 @@
         }
       }
     }
+
+
+    .invoice-receiver-table {
+      position: relative;
+      padding: 0px 101px;
+      table {
+        width: 100%;
+        position: relative;
+        table-layout:fixed !important;
+        td {
+          overflow: auto;
+          white-space: nowrap !important;
+          &:first-child {
+            font-size: 14px;
+            color: #181616;
+          }
+        }
+        td {
+          border: solid 1px #ddd;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .row-2 {
+          height: 120px;
+        }
+
+        .express-address {
+          width: 109px;
+          font-size: 18px !important;
+        }
+        .receiver-info {
+          width: 300px;
+          font-size: 14px;
+          text-align: left;
+          padding-left: 15px;
+
+          span.no-info {
+            color: #aaa;
+          }
+        }
+
+        // .invoice-detail {
+        //   .inside-invoice-detail-td {
+        //     width: 100%;
+        //     overflow: auto;
+        //   }
+        // }
+
+        .receiver-info {
+          .inside-receiver-info-td {
+            width: 100%;
+            overflow: auto;
+          }
+        }
+        .action {
+          width: 142px;
+
+          .edit, .save {
+            border-color: #36cdd3;
+            background-color: transparent;
+            color: #36cdd3;
+            width: 88px;
+            height: 36px;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
 
     .apply-invoice {
       margin-top: 15px;
