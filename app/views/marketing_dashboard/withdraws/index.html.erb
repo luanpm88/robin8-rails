@@ -121,6 +121,8 @@
       <th>身份证号码</th>
       <th>可提现金额</th>
       <th>历史收益</th>
+      <th>平均点击</th>
+      <th>最高点击</th>
       <th>拒绝理由</th>
       <th>操作</th>
     </tr>
@@ -153,6 +155,8 @@
         <td><%= w.kol.id_card rescue "" %></td>
         <td><%= w.kol.avail_amount rescue "" %></td>
         <td><%= w.kol.total_income rescue "" %></td>
+        <td> <%= w.kol.average_click_of_campaigns rescue "" %></td>
+        <td> <%= w.kol.maximum_click_of_campaigns rescue "" %></td>
         <td><%= w.reject_reason %></td>
         <td>
           <% if w.status == 'pending' %>
