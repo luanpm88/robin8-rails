@@ -16,7 +16,7 @@ module Campaigns
           Rails.logger.transaction.info "-------- 执行user payout: ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
         elsif self.pay_way == 'alipay'
           self.user.payout_by_alipay(self.need_pay_amount, 'campaign_pay_by_alipay', self)
-          self.alipay_status = 1
+          alipay_status_tmp = 1
           Rails.logger.transaction.info "-------- 执行user pay_by_alipay: ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
         end
         if self.used_voucher
@@ -27,6 +27,7 @@ module Campaigns
         end
         self.need_pay_amount = 0
         self.status = 'unexecute'
+        self.alipay_status = alipay_status_tmp
         self.save!
       end
     end
