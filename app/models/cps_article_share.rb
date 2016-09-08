@@ -64,6 +64,7 @@ class CpsArticleShare < ActiveRecord::Base
   end
 
   def share_commission
-    self.cps_promotion_valid_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
+    commission = self.cps_promotion_valid_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
+    commission.round(2)
   end
 end

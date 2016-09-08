@@ -25,9 +25,6 @@ class CpsArticle < ActiveRecord::Base
     self.content.split(/(<text>)|(<img>)|(<product>)/)[1..-1]       rescue []
   end
 
-  def parse_content
-  end
-
   def build_article_materials
     if  self.content_changed?
       arr = self.content.split(/(<product>)/)
@@ -47,13 +44,14 @@ class CpsArticle < ActiveRecord::Base
 
   def material_total_price
     Rails.cache.fetch("cps_article_material_totle_price_#{self.id}") do
-      self.cps_materials.sum(:kol_commision_wl)
+      self.cps_materials.sum(:kol_commision_wl).round(2)
     end
   end
 
   # 获取文章写作佣金
   def writing_commission
-    self.cps_article_shares.collect{|t| t.cps_promotion_valid_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
+    commission = self.cps_article_shares.collect{|t| t.cps_promotion_valid_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
+    commission.round(2)
   end
 
 
