@@ -133,6 +133,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @campaign_applies = @campaign.campaign_applies.order("created_at asc")
     @platform_passed_count = @campaign_applies.where(:status => 'platform_passed').count
     @brand_passed_count = @campaign_applies.where(:status => 'brand_passed').count
+    @campaign_materials = @campaign.campaign_materials
     @title = "符合要求的招募人数为 #{@campaign_applies.count}人"
   end
 
