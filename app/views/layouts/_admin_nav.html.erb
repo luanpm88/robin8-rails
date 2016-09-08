@@ -71,6 +71,9 @@
               <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
+              <%= link_to '待审核招募活动截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'recruit' }) %>
+            </li>
+            <li>
               <%= link_to '已通过截图', passed_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
