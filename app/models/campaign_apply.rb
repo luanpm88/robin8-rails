@@ -44,6 +44,7 @@ class CampaignApply < ActiveRecord::Base
       CampaignApply.brand_not_passed.where(:campaign_id => campaign_id).update_all(:status => 'brand_rejected')
       rejected_kol_ids =  CampaignApply.brand_not_passed.where(:campaign_id => campaign_id).collect{|t| t.kol_id}
       CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => rejected_kol_ids).update_all(:status => 'rejected')
+      campaign.push_start_notify
     end
   end
 
