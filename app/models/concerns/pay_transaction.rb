@@ -60,8 +60,10 @@ module Concerns
       ActiveRecord::Base.transaction do
         self.lock!
         if item.present? && item.is_a?(Campaign)
-          item.reload
-          return if item.status != 'unpay'
+          if item.status != 'unpay'
+            Rails.logger.transaction.info "-------- 重复支付: #{item.inspect} -----------}"
+            raise Exception.new("\n重复支付: #{item.inspect}\n")
+          end
         end
         self.decrement!(:amount, credits)
         self.increment!(:historical_payout, credits)   if self.is_a? User and subject == "campaign"
