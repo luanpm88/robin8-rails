@@ -134,7 +134,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @platform_passed_count = @campaign_applies.where(:status => 'platform_passed').count
     @brand_passed_count = @campaign_applies.where(:status => 'brand_passed').count
     @campaign_materials = @campaign.campaign_materials
-    @title = "符合要求的招募人数为 #{@campaign_applies.count}人"
   end
 
   def agree
