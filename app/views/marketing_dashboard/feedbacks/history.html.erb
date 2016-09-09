@@ -24,9 +24,14 @@
             消息类型：<%= message.mode %>
           </div>
           <div>
-            回复时间：<%= message.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
-            管理员：<%= message.admin_user.try(:email) %> |
+            回复时间：<%= message.created_at.strftime("%Y-%m-%d %H:%M:%S") %> |
+            管理员：<%= message.admin_user.try(:email) %>
           </div>
+          <% if message.remark %>
+          <div>
+            备注：<%= message.remark %>
+          </div>
+          <% end %>
           <div class="alert alert-success well-sm"><%= message.content %></div>
         </div>
       <% end %>
