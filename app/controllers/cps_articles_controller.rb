@@ -3,7 +3,6 @@ class CpsArticlesController < Mobile::BaseController
 
   def show
     @cps_article = CpsArticle.find params[:id]
-    3 + "3"
     return render :text => 'article not found'   if @cps_article.blank?
     @cps_article.read_count.increment
   end
