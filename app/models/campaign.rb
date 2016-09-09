@@ -15,6 +15,7 @@ class Campaign < ActiveRecord::Base
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
   validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
+  validates :sub_type, :inclusion => { :in => ["wechat", "qq", "weibo"] }, :allow_nil => true
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa simple_cpi cpi recruit invite
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
