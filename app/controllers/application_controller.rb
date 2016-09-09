@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_kol
   helper_method :current_token
 
-  protect_from_forgery with: :exception
-  rescue_from Exception, with: :handle_exception
+  # protect_from_forgery with: :exception
+  # rescue_from Exception, with: :handle_exception
   force_ssl if: :ssl_configured?
 
   after_filter :set_csrf_headers
