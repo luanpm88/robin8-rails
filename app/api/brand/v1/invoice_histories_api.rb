@@ -40,7 +40,7 @@ module Brand
                                      current_user.invoice_receiver.slice(:name, :phone_number, :address).merge(
                                      {credits: params[:credits]} ))
           elsif params[:type] == 'special'
-            invoice_history_params = current_user.special_invoice.slice(:invoice_type, :title, :taxpayer_id, :company_name, :company_address, :company_mobile, :bank_name, :bank_account).merge(
+            invoice_history_params = current_user.special_invoice.slice(:invoice_type, :title, :taxpayer_id, :company_address, :company_mobile, :bank_name, :bank_account).merge(
                                      current_user.invoice_receiver.slice(:name, :phone_number, :address).merge(
                                      {credits: params[:credits]} ))
           end
