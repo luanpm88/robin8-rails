@@ -8,8 +8,9 @@ Rails.application.routes.draw do
     end
     resources :cps_articles do
       member do
-        get :cps_materials
-        get :cps_promotion_orders
+        get :materials
+        get :promotion_orders
+        get :article_shares
       end
     end
     resources :cps_promotion_orders

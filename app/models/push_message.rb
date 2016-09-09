@@ -105,7 +105,7 @@ class PushMessage < ActiveRecord::Base
     push_message.save
   end
 
-  def self.push_check_to_author(title)
+  def self.push_check_to_author(receiver, title)
     push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                             :title => title, :receiver_cids => [receiver.device_token] )
     push_message.template_content = {:action => 'common', :title => title, :sender => 'robin8', :name => '文章审核结果'}

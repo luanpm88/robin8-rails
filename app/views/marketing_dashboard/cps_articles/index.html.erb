@@ -41,6 +41,8 @@
     <th>封面图</th>
     <th>作者</th>
     <th>状态</th>
+    <th>审核备注</th>
+    <th>创作时间</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -58,10 +60,13 @@
         <% elsif c.status == 'rejected' %>
           <span class="label label-warning"><%= CpsArticle::Statuses[c.status] %></span>
         <% end %>
+      </td>
+      <td><%= c.check_remark %></td>
+      <td><%= c.created_at.to_s(:date_time) %></td>
       <td>
         <%= link_to '审核', edit_marketing_dashboard_cps_article_path(c) if c.status == 'pending' %></br>
-        <%= link_to "商品列表 [#{c.cps_materials.size}]", cps_materials_marketing_dashboard_cps_article_path(c)  %></br>
-        <%= link_to "分享列表 [#{c.cps_article_shares.size}]", cps_article_shares_marketing_dashboard_cps_article_path(c) if c.status == 'passed' %>
+        <%= link_to "商品列表 [#{c.cps_materials.size}]", materials_marketing_dashboard_cps_article_path(c)  %></br>
+        <%= link_to "分享列表 [#{c.cps_article_shares.size}]", article_shares_marketing_dashboard_cps_article_path(c) if c.status == 'passed' %>
       </td>
     </tr>
   <% end %>
