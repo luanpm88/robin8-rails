@@ -59,9 +59,9 @@ class CpsArticle < ActiveRecord::Base
   def send_notify_to_author
     if status_changed?
       if status == 'passed'
-        PushMessage.push_check_to_author("文章[#{self.title}],审核通过")
+        PushMessage.push_check_to_author(self.author, "文章[#{self.title}],审核通过")
       else
-        PushMessage.push_check_to_author("文章[#{self.title}],审核拒绝")
+        PushMessage.push_check_to_author(self.author, "文章[#{self.title}],审核拒绝,请进入APP查看原因!")
       end
     end
   end
