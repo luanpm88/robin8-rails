@@ -845,7 +845,6 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
     t.string   "taxpayer_id",     limit: 255
-    t.string   "company_name",    limit: 255
     t.string   "company_address", limit: 255
     t.string   "company_mobile",  limit: 255
     t.string   "bank_name",       limit: 255
