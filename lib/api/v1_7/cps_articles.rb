@@ -83,7 +83,6 @@ module API
           cps_article_share = CpsArticleShare.find_or_create_by!(:kol_id => current_kol.id, :cps_article_id => params[:cps_article_id])
           present :error, 0
           present :cps_article_share, cps_article_share, with: API::V1_7::Entities::CpsArticleShares::Summary
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
         end
       end
     end
