@@ -164,8 +164,8 @@ export function fetchInvoiceHistories(current_page) {
   }
 }
 
-export function saveInvoiceHistory(credits) {
-  const data = { credits };
+export function saveInvoiceHistory(credits, type) {
+  const data = { credits, type };
   return {
     type: actionTypes.SAVE_INVOICE_HISTORY,
     promise: fetch(`${baseUrl}/invoice_histories`, {

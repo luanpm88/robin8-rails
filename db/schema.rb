@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907072111) do
+ActiveRecord::Schema.define(version: 20160909035345) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -821,6 +821,12 @@ ActiveRecord::Schema.define(version: 20160907072111) do
     t.integer  "user_id",         limit: 4
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.string   "taxpayer_id",     limit: 255
+    t.string   "company_name",    limit: 255
+    t.string   "company_address", limit: 255
+    t.string   "company_mobile",  limit: 255
+    t.string   "bank_name",       limit: 255
+    t.string   "bank_account",    limit: 255
   end
 
   create_table "invoice_receivers", force: :cascade do |t|
@@ -1619,6 +1625,7 @@ ActiveRecord::Schema.define(version: 20160907072111) do
     t.string   "repost_price",    limit: 255
     t.string   "second_price",    limit: 255
     t.text     "others",          limit: 65535
+    t.string   "search_kol_id",   limit: 255
   end
 
   create_table "stastic_data", force: :cascade do |t|

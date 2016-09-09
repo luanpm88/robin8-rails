@@ -8,7 +8,7 @@ module Brand
       resource :invoices do
         get "common" do
 
-          @invoice = current_user.invoices.where(invoice_type: 'common').take
+          @invoice = current_user.common_invoice
           if @invoice
             present @invoice
           else
@@ -32,13 +32,13 @@ module Brand
           requires :title, type: String
         end
         put "common" do
-          @invoice = current_user.invoices.where(invoice_type: 'common').take
+          @invoice = current_user.common_invoice
           @invoice.update_attributes(title: declared(params)[:title])
           present @invoice
         end
 
         get "special" do
-          @invoice = current_user.invoices.where(invoice_type: 'special').take
+          @invoice = current_user.special_invoice
           if @invoice
             present @invoice
           else
@@ -74,7 +74,7 @@ module Brand
           requires :bank_account, type:String
         end
         put "special" do
-          @invoice = current_user.invoices.where(invoice_type: 'special').take
+          @invoice = current_user.special_invoice
           @invoice.update_attributes(declared(params))
           present @invoice
         end

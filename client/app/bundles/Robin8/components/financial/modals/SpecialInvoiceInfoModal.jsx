@@ -42,7 +42,7 @@ export default class SpecialInvoiceInfoModal extends Component {
     return (
       <Modal {...this.props} className="invoice-info-modal">
         <Modal.Header closeButton>
-          <Modal.Title>普通增值税发票</Modal.Title>
+          <Modal.Title>增值税专用发票</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
