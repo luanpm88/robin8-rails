@@ -9,20 +9,32 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group">
-              <label>商品名</label>
-              <%= f.search_field :goods_name_cont, class: "form-control", placeholder: "商品名" %>
+              <label>kol id</label>
+              <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label>sku id</label>
-              <%= f.search_field :sku_id_cont, class: "form-control", placeholder: "SKU ID" %>
+              <label>Kol名字</label>
+              <%= f.search_field :kol_name_cont, class: "form-control", placeholder: "KOL NAME" %>
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label>分类</label>
-              <%= f.select :category_eq, CpsMaterial.get_category_field, {:prompt => "全部"}, class: "form-control", placeholder: "SKU ID" %>
+              <label>Cps标题</label>
+              <%= f.search_field :cps_article_title_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>订单号</label>
+              <%= f.search_field :order_id_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>状态</label>
+              <%= f.select :status_eq, CpsPromotionOrder.get_statuses_field, {:prompt => "全部"}, class: "form-control", placeholder: "SKU ID" %>
             </div>
           </div>
           <div class="col-md-3">
@@ -40,39 +52,32 @@
 <table class="table table-bordered">
   <thead>
   <tr>
-    <th>sku id</th>
-    <th>图片</th>
-    <th>名称</th>
-    <th>单价</th>
-    <th>开始结束日期</th>
-    <th>
-      总佣金</br>
-      Kol佣金
-    </th>
-    <th>类别</th>
-    <th>状态</th>
+    <th>kol</th>
+    <th>文章</th>
+    <th>订单号</th>
+    <th>下单时间</th>
+    <th>yn</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>查询时间</th>
+    <th>佣金</th>
     <th>操作</th>
   </tr>
   </thead>
   <tbody>
-  <% @cps_materials.each do |c| %>
+  <% @cps_promotion_orders.each do |order| %>
     <tr>
-      <td><%= c.sku_id %></td>
-      <td><%= image_tag c.img_url, :size => '100x100' %></td>
-      <td><%= link_to c.goods_name, c.material_url, :target => "_blank" %></td>
-      <td><%= c.unit_price %></td>
+      <td><%= link_to order.kol.name, marketing_dashboard_kol_path(order.kol) rescue nil %></td>
+      <td><%= link_to order.cps_article.title, marketing_dashboard_cps_article_path(order.cps_article) rescue nil %></td>
+      <td><%= order.order_id %></td>
+      <td><%= order.order_time.to_s(:date_time) %></td>
+      <td><%= order.yn %></td>
+      <td><%= order.total_money %></td>
+      <td><%= order.status %></td>
+      <td><%= order.order_query_time %></td>
+      <td><%= order.commision_fee %></td>
       <td>
-        <%= c.start_date %></br>
-        <%= c.end_date %>
-      </td>
-      <td>
-        <%= c.commision_wl %></br>
-        <%= c.kol_commision_wl %></td>
-      <td><%= CpsMaterial::Categories[c.category] %></td>
-      <td><%= c.enabled ? '出售中' : '已下架' %></td>
-      <td>
-        <%= link_to c.enabled ? '下架' : '上架' %> </br>
-        <%= link_to '设置', edit_marketing_dashboard_cps_material_path(c) %>
+        <%= link_to '订单详情', items_marketing_dashboard_cps_promotion_orders_path("q[cps_promotion_order_id_eq]" => order.id) %>
       </td>
     </tr>
   <% end %>
@@ -80,5 +85,5 @@
 </table>
 
   <div class="pull-right">
-    <%= will_paginate @cps_materials, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @cps_promotion_orders, renderer: BootstrapPagination::Rails %>
   </div>

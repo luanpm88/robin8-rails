@@ -24,12 +24,14 @@ module API
         end
         get 'my_articles' do
           if params[:status] == 'shares'
-            cps_articles = current_kol.cps_article_shares.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+            cps_article_shares = current_kol.cps_article_shares.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+            to_paginate(cps_article_shares)
+            cps_articles = cps_article_shares.collect{|share| share.cps_article}
           else
             cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("created_at desc").page(params[:page]).per_page(10)
+            to_paginate(cps_articles)
           end
           present :error, 0
-          to_paginate(cps_articles)
           present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
         end
 
@@ -67,7 +69,7 @@ module API
 
         # 文章中所含商品
         get ':id/materials' do
-          cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
+          cps_article = CpsArticle.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
           present :cps_materials, cps_article.cps_materials, with: API::V1_7::Entities::CpsMaterials::Summary
@@ -83,7 +85,6 @@ module API
           cps_article_share = CpsArticleShare.find_or_create_by!(:kol_id => current_kol.id, :cps_article_id => params[:cps_article_id])
           present :error, 0
           present :cps_article_share, cps_article_share, with: API::V1_7::Entities::CpsArticleShares::Summary
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::Summary
         end
       end
     end

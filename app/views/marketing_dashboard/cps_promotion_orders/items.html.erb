@@ -1,0 +1,66 @@
+<h3>Cps订单商品列表</h3>
+
+  <div class="panel panel-default">
+    <!--<div class="panel-heading">-->
+      <!--搜索过滤-->
+    <!--</div>-->
+    <div id="searchPanel" class="panel-body">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Cps标题</label>
+              <%= f.search_field :cps_promotion_order_cps_article_title_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>订单号</label>
+              <%= f.search_field :cps_promotion_order_order_id_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label>&nbsp;</label>
+            <div>
+              <%= f.submit "搜索", class: "btn btn-primary" %>
+              <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>订单号</th>
+    <th>商品名称</th>
+    <th>订单数量</th>
+    <th>退货数量</th>
+    <th>总价</th>
+    <th>商品佣金</th>
+    <th>确认佣金</th>
+    <th>创建时间</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @cps_promotion_order_items.each do |item| %>
+    <tr>
+      <!--<td><%#= link_to item.cps_promotion_order.cps_article.title, marketing_dashboard_cps_article_path(item.cps_promotion_order.cps_article) rescue nil %></td>-->
+      <td><%= link_to item.cps_promotion_order.order_id, marketing_dashboard_cps_promotion_order_path(item.cps_promotion_order) rescue nil %></td>
+      <td><%= link_to item.cps_material.name, marketing_dashboard_cps_material_path(item.cps_material) rescue nil %></td>
+      <td><%= item.quantity %></td>
+      <td><%= item.return_num %></td>
+      <td><%= item.total_price %></td>
+      <td><%= item.yg_cos_fee %></td>
+      <td><%= item.cos_fee %></td>
+      <td><%= item.created_at.to_s(:date_time) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+  <div class="pull-right">
+    <%= will_paginate @cps_promotion_order_items, renderer: BootstrapPagination::Rails %>
+  </div>

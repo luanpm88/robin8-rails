@@ -26,20 +26,18 @@ class CpsArticle < ActiveRecord::Base
   end
 
   def build_article_materials
-    if  self.content_changed?
-      arr = self.content.split(/(<product>)/)
-      index = 0
-      product_ids = []
-      while index < arr.length
-        if arr[index] == "<product>"
-          product_ids <<  arr[index + 1]
-          index = index + 2
-        else
-          index = index + 1
-        end
+    arr = self.content.split(/(<product>)/)
+    index = 0
+    product_ids = []
+    while index < arr.length
+      if arr[index] == "<product>"
+        product_ids <<  arr[index + 1]
+        index = index + 2
+      else
+        index = index + 1
       end
-      self.cps_material_ids = product_ids
     end
+    self.cps_material_ids = product_ids
   end
 
   def material_total_price
@@ -48,9 +46,15 @@ class CpsArticle < ActiveRecord::Base
     end
   end
 
-  # 获取文章写作佣金
-  def writing_commission
+  # 获取文章写作 预计佣金
+  def writing_forecast_commission
     commission = self.cps_article_shares.collect{|t| t.cps_promotion_valid_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
+    commission.round(2)
+  end
+
+  # 获取文章写作 已结算佣金
+  def writing_settled_commission
+    commission = self.cps_article_shares.collect{|t| t.cps_promotion_settled_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
     commission.round(2)
   end
 

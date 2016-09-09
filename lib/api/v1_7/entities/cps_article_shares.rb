@@ -12,7 +12,7 @@ module API
         end
 
         class Summary < ForList
-          expose :share_commission
+          expose :share_forecast_commission, :share_settled_commission
         end
       end
     end
