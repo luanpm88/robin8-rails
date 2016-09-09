@@ -6,6 +6,7 @@ export const initialState = Immutable.fromJS({
   readyState: 'init',
   transactions: [],
   invoice: {},
+  specialInvoice: {},
   invoiceReceiver: {},
   appliableCredits: {},
   invoiceHistories: [],
@@ -35,14 +36,14 @@ export default function financialReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
-    case actionTypes.FETCH_INVOICE:
+    case actionTypes.FETCH_COMMON_INVOICE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({"invoice": Immutable.fromJS(action.result)});
       }
       return $$state;
 
-    case actionTypes.SAVE_INVOICE:
+    case actionTypes.SAVE_COMMON_INVOICE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({"invoice": Immutable.fromJS(action.result)});
@@ -51,10 +52,33 @@ export default function financialReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
-    case actionTypes.UPDATE_INVOICE:
+    case actionTypes.UPDATE_COMMON_INVOICE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({"invoice": Immutable.fromJS(action.result)});
+      }
+      return $$state;
+
+    case actionTypes.FETCH_SPECIAL_INVOICE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({"specialInvoice": Immutable.fromJS(action.result)});
+      }
+      return $$state;
+
+    case actionTypes.SAVE_SPECIAL_INVOICE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({"specialInvoice": Immutable.fromJS(action.result)});
+      } else if (fetchState === "failure"){
+        $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
+      }
+      return $$state;
+
+    case actionTypes.UPDATE_SPECIAL_INVOICE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({"specialInvoice": Immutable.fromJS(action.result)});
       }
       return $$state;
 
