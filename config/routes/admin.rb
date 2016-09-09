@@ -13,9 +13,11 @@ Rails.application.routes.draw do
         get :article_shares
       end
     end
-    resources :cps_promotion_orders
-    resources :cps_promotion_orders
-
+    resources :cps_promotion_orders do
+      collection do
+        get :items
+      end
+    end
     resources :track_urls
     resources :hot_items
     resources :helper_docs

@@ -5,6 +5,11 @@ class CpsPromotionOrder < ActiveRecord::Base
   has_one :cps_article, :through => :cps_article_share
 
   # after_save :update_status
+  Statuses = {:pending => '待收货', :finished => '已收货待确认', :part_return => '部分退货', :full_return => '全部退货', :settled => '已结算'}
+  def self.get_statuses_field
+    Statuses.collect{|key, value| [ value, key]}
+  end
+
 
   def update_status
     if self.previous_changes["yn"] ||  self.previous_changes["cos_price"]

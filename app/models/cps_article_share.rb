@@ -59,7 +59,7 @@ class CpsArticleShare < ActiveRecord::Base
     urls = cps_materials.collect{|t| t.get_wl_url }
     Jd::Service.get_batch_code(sub_uniond_id, ids, urls).each_with_index do |promotion_url, index|
       CpsPromotionMaterial.create(:kol_id => cps_article_share.kol_id, :cps_article_share_id => cps_article_share.id,
-                                  :cps_material_id =>  cps_materials[index].id, :wx_promotion_url => promotion_url)
+                                  :cps_material_id =>  cps_materials[index].id, :wl_promotion_url => promotion_url)
     end
   end
 
