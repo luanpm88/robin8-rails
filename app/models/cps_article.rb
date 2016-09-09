@@ -26,20 +26,18 @@ class CpsArticle < ActiveRecord::Base
   end
 
   def build_article_materials
-    if  self.content_changed?
-      arr = self.content.split(/(<product>)/)
-      index = 0
-      product_ids = []
-      while index < arr.length
-        if arr[index] == "<product>"
-          product_ids <<  arr[index + 1]
-          index = index + 2
-        else
-          index = index + 1
-        end
+    arr = self.content.split(/(<product>)/)
+    index = 0
+    product_ids = []
+    while index < arr.length
+      if arr[index] == "<product>"
+        product_ids <<  arr[index + 1]
+        index = index + 2
+      else
+        index = index + 1
       end
-      self.cps_material_ids = product_ids
     end
+    self.cps_material_ids = product_ids
   end
 
   def material_total_price
