@@ -8,6 +8,9 @@ class CpsArticleShare < ActiveRecord::Base
   # 预计收入
   has_many :cps_promotion_valid_orders, -> {where(:status => ['pending', 'finished', 'part_return'])}, :class_name => 'CpsPromotionOrder'
   has_many :cps_promotion_valid_order_items, :through => :cps_promotion_valid_orders, :source => 'cps_promotion_order_items'
+  # 确认收入
+  has_many :cps_promotion_settled_orders, -> {where(:status => 'settled')}, :class_name => 'CpsPromotionOrder'
+  has_many :cps_promotion_settled_order_items, :through => :cps_promotion_valid_orders, :source => 'cps_promotion_order_items'
 
   belongs_to :cps_article
   belongs_to :kol
@@ -58,14 +61,22 @@ class CpsArticleShare < ActiveRecord::Base
     sub_uniond_id = CpsArticleShare.get_sub_uniond_id(self.kol_id, self.id)
     ids = cps_materials.collect{|t| t.sku_id}
     urls = cps_materials.collect{|t| t.get_wl_url }
-    Jd::Service.get_batch_code(sub_uniond_id, ids, urls).each_with_index do |promotion_url, index|
+    Jd::Service.get_batch_code(sub_uniond_id, ids, urls).each_with_index do |info, index|
       CpsPromotionMaterial.create(:kol_id => cps_article_share.kol_id, :cps_article_share_id => cps_article_share.id,
-                                  :cps_material_id =>  cps_materials[index].id, :wl_promotion_url => promotion_url)
+                                  :cps_material_id =>  info["id"], :wl_promotion_url => info["url"])
     end
   end
 
-  def share_commission
+  # 获取文章分享 预计佣金
+  def share_forecast_commission
     commission = self.cps_promotion_valid_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
     commission.round(2)
   end
+
+  # 获取文章分享 预计佣金
+  def share_settle_commission
+    commission = self.cps_promotion_settled_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
+    commission.round(2)
+  end
+
 end
