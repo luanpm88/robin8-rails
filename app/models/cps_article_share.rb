@@ -54,6 +54,7 @@ class CpsArticleShare < ActiveRecord::Base
   def create_promotion_materials
     cps_article_share = self
     cps_materials = self.cps_article.cps_materials
+    return if  cps_materials.size == 0
     sub_uniond_id = CpsArticleShare.get_sub_uniond_id(self.kol_id, self.id)
     ids = cps_materials.collect{|t| t.sku_id}
     urls = cps_materials.collect{|t| t.get_wl_url }
