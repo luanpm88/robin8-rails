@@ -42,12 +42,11 @@ class SmsMessage < ActiveRecord::Base
 
   def send_now
     if Rails.env.development?
-      res = {success: true}
+      res = {success: true, code: 0}
     else
       res = Emay::SendSms::to(self.phone, self.content)
     end
-
-    if res.try(:success)
+    if res.try(:code).to_i == 0
       self.update(status: :success)
     else
       self.update(status: :failed)
