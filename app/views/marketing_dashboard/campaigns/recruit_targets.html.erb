@@ -70,6 +70,8 @@
             <span class="label label-success">品牌确认</span>
           <% elsif campaign_apply.status == "platform_passed" %>
             <span class="label label-info">平台选中</span>
+          <% elsif campaign_apply.status = "brand_rejected" %>
+            <span class="label label-warning">品牌拒绝</span>
           <% else %>
             <span class="label label-default">未选中</span>
           <% end %>
