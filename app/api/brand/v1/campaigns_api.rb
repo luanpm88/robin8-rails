@@ -213,6 +213,8 @@ module Brand
           optional :tags, type: String
           optional :hide_brand_name, type: Boolean
           optional :material_ids, type: String
+          optional :url, type: String
+          optional :sub_type, type: String
         end
         post 'recruit_campaigns' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
@@ -241,6 +243,8 @@ module Brand
           optional :tags, type: String
           optional :hide_brand_name, type: Boolean
           optional :material_ids, type: String, default: nil
+          optional :url, type: String
+          optional :sub_type, type: String
         end
         put '/recruit_campaigns/:id' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
