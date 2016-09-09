@@ -40,7 +40,7 @@ export default class InvoiceInfoModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
-            <p className='invoice-label'>发票抬头</p>
+            <span className='invoice-label'>发票抬头</span>
             <input ref='invoiceTitleInput' onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} className='invoice-input' type="text" defaultValue={ this.props.invoice ? this.props.invoice.get('title') : ''} />
             <p className="error-tip" style={{display: 'none'}}>发票抬头不能为空</p>
           </div>

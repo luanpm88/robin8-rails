@@ -103,7 +103,7 @@ export default class InvoiceInfo extends React.Component {
               <a href="#common-invoice" id="common-invoice-tab" role="tab" data-toggle="tab" aria-controls="common_invoice" aria-expanded="false">普通增值税发票</a>
             </li>
             <li role="presentation">
-              <a href="#special-invoice" id="special-invoice-tab" role="tab" data-toggle="tab" aria-controls="special_invoice" aria-expanded="false">专用增值税发票</a>
+              <a href="#special-invoice" id="special-invoice-tab" role="tab" data-toggle="tab" aria-controls="special_invoice" aria-expanded="false">增值税专用发票</a>
             </li>
           </ul>
 
@@ -119,7 +119,6 @@ export default class InvoiceInfo extends React.Component {
                       <td className="invoice-detail row-1" >
                         <div className="inside-invoice-detail-td">
                           { this.render_common_invoice_title() }
-                          <p>发票类型: 普通增值税发票</p>
                         </div>
                       </td>
                       <td className="action row-1">

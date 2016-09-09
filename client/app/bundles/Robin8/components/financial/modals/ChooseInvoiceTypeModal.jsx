@@ -71,10 +71,7 @@ export default class ChooseInvoiceTypeModal extends Component {
             </div>
           </div>
         </Modal.Body>
-        <div className="total-amount">
-          <span>支付总计: </span><span className="price">{  }元</span>
-        </div>
-        <Button className="pay btn-blue btn-default" onClick={this.handleClick.bind(this)}>立即支付</Button>
+        <Button className="submit btn-blue btn-default" onClick={this.handleClick.bind(this)}>确定</Button>
       </Modal>
     );
   }
