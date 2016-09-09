@@ -55,10 +55,6 @@ module Robin8
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
 
-    #echo "export china_instance='Y'" >> ~/.bashrc
-    config.china_instance = (ENV['china_instance'] == 'Y' ? true : false)
-    puts "Start China Instance ....  value: #{config.china_instance} "
-
     # echo 'export redis_host="localhost"/"#{ip}" >> /etc/enviroment
     config.cache_store = :redis_store, { :host => ENV['redis_host'],
                                          :port => 6379,
