@@ -286,6 +286,23 @@
         </li>
         <% end %>
 
+        <% if can?(:read, CpsArticle) %>
+          <li>
+            <a href="#">CPS管理 <span class='fa arrow'></span> </a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to 'cps商品', marketing_dashboard_cps_materials_path %>
+              </li>
+              <li>
+                <%= link_to 'cps文章', marketing_dashboard_cps_articles_path %>
+              </li>
+              <li>
+                <%= link_to 'cps订单', marketing_dashboard_cps_promotion_orders_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+
         <% if can?(:read, LotteryActivity) %>
         <li>
           <a href="#">APP一元夺宝 <span class="fa arrow"></span></a>

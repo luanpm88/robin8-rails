@@ -68,3 +68,16 @@ end
 every 1.day, :at => '17:30 pm' do
   runner "PushMessage.push_campaign_message"
 end
+
+#================cps===================
+every 5.minutes do
+  runner "Jd::SyncOrder.schedule_sync"
+  runner "Jd::SyncCommission.schedule_sync"
+end
+
+every 1.day, :at => '0:40 am' do
+  runner "Jd::SyncOrder.schedule_sync_history"
+  runner "Jd::SyncCommission.schedule_sync_history"
+  runner "Jd::Settle.schedule_settle"
+end
+

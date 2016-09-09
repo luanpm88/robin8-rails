@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   get 'commons/material' =>  'commons#material'
 
 
+  get "cps_articles/:id" => "cps_articles#show"
+  get "cps_article_shares/:id" => "cps_articles#share_show"
+
   resources :identities do
     member do
       get 'current_categories'
