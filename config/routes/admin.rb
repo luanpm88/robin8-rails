@@ -62,7 +62,6 @@ Rails.application.routes.draw do
       match '/disban' => 'kols#disban', via: [:post]
       match '/withdraw' => 'kols#withdraw' , via: [:post, :get]
 
-
       collection do
         get 'banned'
         get 'hot'
@@ -78,6 +77,7 @@ Rails.application.routes.draw do
         get :edit_profile
         put :update_profile
       end
+      resources :feedbacks
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
     end
@@ -128,6 +128,9 @@ Rails.application.routes.draw do
       end
     end
     resources :feedbacks, except: [:destroy, :new, :create]  do
+      collection do
+        post :reply
+      end
       member  do
         get :processed
       end
