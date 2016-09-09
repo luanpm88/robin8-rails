@@ -41,10 +41,6 @@ module Brand
         mount UserAPI
       end
 
-      namespace 'invoice', desc: 'invoice' do
-        mount InvoiceAPI
-      end
-
       namespace 'invoice_receiver', desc: 'invoice receiver' do
         mount InvoiceReceiverAPI
       end
@@ -62,6 +58,7 @@ module Brand
       mount InvoiceHistoriesAPI
       mount KolsAPI
       mount SocialAccountsAPI
+      mount InvoicesAPI
     end
   end
 end
