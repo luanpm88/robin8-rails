@@ -46,9 +46,15 @@ class CpsArticle < ActiveRecord::Base
     end
   end
 
-  # 获取文章写作佣金
-  def writing_commission
+  # 获取文章写作 预计佣金
+  def writing_forecast_commission
     commission = self.cps_article_shares.collect{|t| t.cps_promotion_valid_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
+    commission.round(2)
+  end
+
+  # 获取文章写作 已结算佣金
+  def writing_settled_commission
+    commission = self.cps_article_shares.collect{|t| t.cps_promotion_settled_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
     commission.round(2)
   end
 
