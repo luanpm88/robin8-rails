@@ -115,12 +115,13 @@
     }
 
     $(this).addClass("disabled");
+    var self = this;
     doAjaxRequest(data, function(result) {
-      alert(result["msg"]);
-      $(this).removeClass("disabled");
+      $(self).removeClass("disabled");
       if(result.error == 0) {
         model.modal("hide");
       }
+      alert(result["msg"]);
     });
   });
 
