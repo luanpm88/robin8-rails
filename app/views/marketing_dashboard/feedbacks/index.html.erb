@@ -37,8 +37,10 @@
           <% else %>
             已处理
           <% end %>
+          <% if f.kol_id > 0 %>
           / <a class="reply" data-feedback-id="<%= f.id %>">回复</a>
           / <%= link_to "历史反馈", marketing_dashboard_kol_feedbacks_path(f.kol_id), target: "_blank" %>
+          <% end %>
         </td>
       </tr>
     <% end %>
