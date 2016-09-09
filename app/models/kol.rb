@@ -55,6 +55,8 @@ class Kol < ActiveRecord::Base
   has_one  :address, as: :addressable
   has_one :user
 
+  has_many :feedbacks
+
   has_many :lottery_activity_orders
   has_many :paied_lottery_activity_orders, -> {where("lottery_activity_orders.status != 'pending'")}, :class => LotteryActivityOrder
   has_many :lottery_activities, -> { distinct }, through: :paied_lottery_activity_orders
