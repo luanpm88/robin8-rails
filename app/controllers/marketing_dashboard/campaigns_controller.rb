@@ -130,7 +130,9 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def recruit_targets
     @campaign = Campaign.find params[:id]
-    @campaign_applies = @campaign.campaign_applies.order("created_at asc")
+    @campaign_applies = @campaign.campaign_applies
+    @q = @campaign_applies.ransack(params[:q])
+    @campaign_applies = @q.result.order("created_at asc")
     @platform_passed_count = @campaign_applies.where(:status => 'platform_passed').count
     @brand_passed_count = @campaign_applies.where(:status => 'brand_passed').count
     @campaign_materials = @campaign.campaign_materials
