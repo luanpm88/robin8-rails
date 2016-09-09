@@ -2,7 +2,7 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
   def index
     authorize! :read, CpsArticle
     @q = CpsArticle.ransack(params[:q])
-    @cps_articles = @q.result.includes(:kol, :cps_promotion_orders, :cps_materials).order('created_at desc').paginate(paginate_params)
+    @cps_articles = @q.result.includes(:kol, :cps_materials).order('created_at desc').paginate(paginate_params)
   end
 
   def create
@@ -15,14 +15,14 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
     @cps_article = CpsArticle.find params[:id]
   end
 
-  def cps_materials
+  def materials
     authorize! :read, CpsArticle
     @cps_article = CpsArticle.find params[:id]
     @cps_materials =  @cps_article.cps_materials
     render 'marketing_dashboard/cps_materials/index'
   end
 
-  def cps_article_shares
+  def article_shares
     authorize! :read, CpsArticle
     @cps_article = CpsArticle.find params[:id]
     params[:q] = {}    if params[:q].blank?
