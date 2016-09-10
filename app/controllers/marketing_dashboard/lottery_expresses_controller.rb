@@ -17,6 +17,7 @@ class MarketingDashboard::LotteryExpressesController < MarketingDashboard::BaseC
     @lottery_activity = LotteryActivity.find(params[:id])
 
     if @lottery_activity.update(lottery_activity_params)
+      @lottery_activity.deliver
       @lottery_activity.update(delivered: true, delivered_at: Time.now)
       redirect_to marketing_dashboard_lottery_expresses_path
     else
