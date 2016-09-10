@@ -65,7 +65,7 @@ class MarketingDashboard::LotteryProductsController < MarketingDashboard::BaseCo
       @lottery_product.pictures.build(name: picture)
     end if params[:lottery_product][:pictures].present?
 
-    if @lottery_product.update(lottery_product_params)
+    if @lottery_product.update!(lottery_product_params)
       redirect_to marketing_dashboard_lottery_products_path
     else
       render 'edit'
@@ -93,6 +93,6 @@ class MarketingDashboard::LotteryProductsController < MarketingDashboard::BaseCo
   private
 
   def lottery_product_params
-    params.require(:lottery_product).permit(:name, :description, :quantity, :cover, :price)
+    params.require(:lottery_product).permit(:name, :mode, :description, :quantity, :cover, :price)
   end
 end
