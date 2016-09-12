@@ -822,7 +822,6 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "taxpayer_id",     limit: 255
-    t.string   "company_name",    limit: 255
     t.string   "company_address", limit: 255
     t.string   "company_mobile",  limit: 255
     t.string   "bank_name",       limit: 255
@@ -1582,6 +1581,26 @@ ActiveRecord::Schema.define(version: 20160909035345) do
   end
 
   add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
+
+  create_table "sms_messages", force: :cascade do |t|
+    t.string   "phone",         limit: 255
+    t.string   "content",       limit: 255
+    t.integer  "receiver_id",   limit: 4
+    t.string   "receiver_type", limit: 64
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 64
+    t.string   "status",        limit: 64,  default: "pending"
+    t.string   "mode",          limit: 64
+    t.integer  "admin_user_id", limit: 4
+    t.string   "remark",        limit: 255
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "sms_messages", ["mode"], name: "index_sms_messages_on_mode", using: :btree
+  add_index "sms_messages", ["receiver_id", "receiver_type"], name: "index_sms_messages_on_receiver_id_and_receiver_type", using: :btree
+  add_index "sms_messages", ["resource_id", "resource_type"], name: "index_sms_messages_on_resource_id_and_resource_type", using: :btree
+  add_index "sms_messages", ["status"], name: "index_sms_messages_on_status", using: :btree
 
   create_table "social_account_professions", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
