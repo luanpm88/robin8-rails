@@ -141,19 +141,19 @@
               <%= link_to '待审核提现', pending_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '已通过待付款', checked_marketing_dashboard_withdraws_path %>
+              <%= link_to '待付款提现', checked_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已付款提现', agreed_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已拒绝提现', rejected_marketing_dashboard_withdraws_path %>
             </li>
             <li>
               <%= link_to '永久冻结提现', permanent_prohibited_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '已付款', agreed_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
-              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
-              <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
+              <%= link_to '支付宝黑名单', marketing_dashboard_alipay_account_blacklists_path %>
             </li>
           </ul>
         </li>
