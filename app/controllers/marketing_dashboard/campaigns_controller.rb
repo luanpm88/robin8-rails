@@ -142,6 +142,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     authorize! :manage, Campaign
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:status => :agreed)
+    SmsMessage.send_by_resource_to(@campaign.user, "您在Robin8发布的活动 #{@campaign.name} 已审核通过", @campaign, {mode: "general", admin: current_admin_user})
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Agreed successfully!'}
       format.json { head :no_content }
