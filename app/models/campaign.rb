@@ -363,6 +363,9 @@ class Campaign < ActiveRecord::Base
       # 出错了 就不更新url
     end
     if url_changed
+      if self.per_budget_type == 'recruit' && self.sub_type.blank?
+        return
+      end
       if not self.url.downcase.match(Regexp.new("((https?|ftp|file):((//)|(\\\\))+[\w\d:\#@%/;$()~_?\+-=\\\\.&]*)")) or self.url.downcase.include?("..") or (not self.url.include?("."))
         self.errors[:url] = "活动链接格式不正确"
         return false
