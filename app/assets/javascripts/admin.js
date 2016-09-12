@@ -31,4 +31,20 @@ $(function(){
     showClear: true,
     locale: 'zh-cn'
   })
+
+  $('.shrink').click(function() {
+    if ($(this).hasClass('active')) {
+      $('.sidebar').show();
+      $(this).removeClass('active');
+      $('#page-wrapper').css({"margin-left": "250px"});
+      $(this).css({"left": '250px'});
+      $(this).find('span').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-left');
+    } else {
+      $('.sidebar').hide();
+      $(this).addClass('active');
+      $('#page-wrapper').css({"margin-left": "0px"});
+      $(this).css({"left": '0px'});
+      $(this).find('span').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+    }
+  })
 });

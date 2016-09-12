@@ -96,7 +96,7 @@ export default class KolList extends React.Component {
         <th className="profiles"><h4>报名列表</h4></th>
         {/*<th className="fans">微信粉丝量</th>*/}
         <th className="location">地区</th>
-        <th className="avail_click">点击数</th>
+        {/*<th className="avail_click">点击数</th>*/}
         <th className="reason">详情</th>
         { this.render_status_header() }
         { this.render_score_and_mark() }
