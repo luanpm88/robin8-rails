@@ -22,7 +22,7 @@ module API
       if Rails.env.development? or Rails.env.test?
         puts message
       else
-        Rails.logger.info message
+        Airbrake.notify(exception)
       end
       rack_response({'message' => '500 Internal Server Error'}, 500)
     end
