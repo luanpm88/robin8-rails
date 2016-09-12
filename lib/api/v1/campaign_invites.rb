@@ -21,10 +21,10 @@ module API
           if  params[:status] == 'all'
             if current_kol.hide_recruit
               @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_budget_type != 'recruit'")
-              @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).recent_7
+              @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).recent_7.
                 order_by_status.page(params[:page]).per_page(10)
             else
-              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).recent_7
+              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).recent_7.
                 order_by_status.page(params[:page]).per_page(10)
             end
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
