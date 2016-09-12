@@ -17,6 +17,11 @@
     </div>
 
     <div class="form-group">
+      <label>商品类型</label>
+      <%= f.select :mode, LotteryProduct::MODE, {include_blank: true}, {class: "form-control"} %>
+    </div>
+
+    <div class="form-group">
       <label>商品描述</label>
       <%= f.text_field :description, class: "form-control" %>
     </div>

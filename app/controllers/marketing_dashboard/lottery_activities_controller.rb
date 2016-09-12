@@ -8,7 +8,9 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
       @lottery_activities = LotteryActivity.all
     end
 
-    @lottery_activities.order('created_at DESC').paginate(paginate_params)
+    @q = @lottery_activities.ransack(params[:q])
+    @lottery_activities = @q.result.order('created_at DESC')
+    @lottery_activities = @lottery_activities.paginate(paginate_params)
   end
 
   # def edit

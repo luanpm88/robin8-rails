@@ -7,19 +7,25 @@
   <div id="searchPanel" class="panel-body">
     <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>活动名称</label>
             <%= f.search_field :name_cont, class: "form-control", placeholder: "活动名称" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label>活动编号</label>
             <%= f.search_field :code_cont, class: "form-control", placeholder: "活动编号" %>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>是否发货</label>
+            <%= f.select :delivered_eq, [["已发货", true], ["未发货", false]], { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -77,3 +83,6 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @lottery_activities, renderer: BootstrapPagination::Rails  %>
+

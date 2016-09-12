@@ -68,28 +68,31 @@
               <%= link_to '所有的截图', marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
-            </li>
-            <li>
-              <%= link_to '待审核招募活动截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'recruit' }) %>
-            </li>
-            <li>
               <%= link_to '已通过截图', passed_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
               <%= link_to '已拒绝截图', rejected_marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '点击大于100的所有截图', marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
+              <%= link_to '点击大于100截图', marketing_dashboard_campaign_invites_path(q: { total_click_gt: 100 }) %>
             </li>
             <li>
-              <%= link_to '活动结束点击为0待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "executed", total_click_lt: 1 }) %>
+              <%= link_to '待审核CPC截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :click }) %>
             </li>
             <li>
-              <%= link_to '转发类型待审核截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
+              <%= link_to '*待审核CPP截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
             <li>
-              <%= link_to '作弊嫌疑待审核截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
+              <%= link_to '*待审核招募截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'recruit' }) %>
+            </li>
+            <li>
+              <%= link_to '*待审核特邀截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'invite' }) %>
+            </li>
+            <li>
+              <%= link_to '*有作弊嫌疑截图', pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
+            </li>
+            <li>
+              <%= link_to '*点击等于0截图', pending_marketing_dashboard_campaign_invites_path(q: { campaign_status_eq: "executed", total_click_lt: 1 }) %>
             </li>
           </ul>
         </li>
@@ -138,19 +141,19 @@
               <%= link_to '待审核提现', pending_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '已通过待付款', checked_marketing_dashboard_withdraws_path %>
+              <%= link_to '待付款提现', checked_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已付款提现', agreed_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已拒绝提现', rejected_marketing_dashboard_withdraws_path %>
             </li>
             <li>
               <%= link_to '永久冻结提现', permanent_prohibited_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '已付款', agreed_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
-              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
-              <%= link_to '支付宝帐号黑名单', marketing_dashboard_alipay_account_blacklists_path %>
+              <%= link_to '支付宝黑名单', marketing_dashboard_alipay_account_blacklists_path %>
             </li>
           </ul>
         </li>
@@ -338,5 +341,21 @@
     </div>
     <!-- /.sidebar-collapse -->
   </div>
+
+  <div><button class="shrink btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span></button></div>
   <!-- /.navbar-static-side -->
 </nav>
+
+
+<style>
+
+.shrink {
+  z-index: 100;
+  position: fixed;
+  top: 53px;
+  left: 260px;
+  width: 30px;
+  padding: 5px 0px;
+}
+
+</style>
