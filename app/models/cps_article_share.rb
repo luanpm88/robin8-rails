@@ -74,7 +74,7 @@ class CpsArticleShare < ActiveRecord::Base
   end
 
   # 获取文章分享 预计佣金
-  def share_settle_commission
+  def share_settled_commission
     commission = self.cps_promotion_settled_order_items.sum(:yg_cos_fee) * (1 - Jd::Settle::PlatformTax)
     commission.round(2)
   end
