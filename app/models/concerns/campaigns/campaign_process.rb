@@ -302,8 +302,8 @@ module Campaigns
     end
 
     class_methods do
-      PushStartHour = 9
-      PushEndHour = 21
+      PushStartHour = 8
+      PushEndHour = 22
       PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
       def can_push_message(campaign)
         now =  Time.now

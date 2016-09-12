@@ -71,7 +71,7 @@ class Campaign < ActiveRecord::Base
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
-  ReceiveCampaignInterval = Rails.env.production? ? 3.hours : 1.second
+  ReceiveCampaignInterval = Rails.env.production? ? 2.hours : 1.second
   def email
     user.try :email
   end
@@ -248,18 +248,6 @@ class Campaign < ActiveRecord::Base
 
   def create_job
     raise 'status 不能为空' if self.status.blank?
-    # if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
-    #   self.update_attributes :status => 'unexecute'
-    # end
-    # if self.status_changed? && self.status.to_s == 'unexecute'
-    #   if not self.campaign_from ==  "app"
-    #     if self.user.avail_amount >= self.need_pay_amount
-    #       self.user.payout(need_pay_amount, 'campaign', self)
-    #       Rails.logger.transaction.info "-------- create_job: after payout  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-    #     else
-    #       Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
-    #     end
-    #   end
     if (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
