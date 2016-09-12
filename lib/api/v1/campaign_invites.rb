@@ -25,7 +25,7 @@ module API
                 order_by_status.page(params[:page]).per_page(10)
             else
               executed_recruit_campaign_ids = Campaign.recent_7.where(:per_budget_type => 'recruit', :status => 'executed').collect{|c| c.id }
-              id_str = executed_recruit_campaign_ids.size > 0 ? executed_recruit_campaign_ids.join(",") : nil
+              id_str = executed_recruit_campaign_ids.size > 0 ? executed_recruit_campaign_ids.join(",") : '""'
               @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).recent_7.
                 order_by_status(id_str).page(params[:page]).per_page(10)
             end
