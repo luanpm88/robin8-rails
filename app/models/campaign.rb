@@ -65,7 +65,7 @@ class Campaign < ActiveRecord::Base
 
   before_validation :format_url
   after_save :create_job
-  before_create :genereate_campaign_number
+  before_create :generate_campaign_number
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
 
@@ -357,7 +357,7 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def genereate_campaign_number
+  def generate_campaign_number
     self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 
