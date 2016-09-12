@@ -213,7 +213,7 @@ module Brand
           optional :tags, type: String
           optional :hide_brand_name, type: Boolean
           optional :material_ids, type: String
-          optional :url, type: String
+          optional :url, type: String, default: nil
           optional :sub_type, type: String
         end
         post 'recruit_campaigns' do
