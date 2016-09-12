@@ -113,6 +113,23 @@ class LotteryActivity < ActiveRecord::Base
     end
   end
 
+  def deliver_product
+    return if self.delivered
+    return unless self.status == "finished"
+
+    unless SmsMessage.where(receiver: self.lucky_kol, resource: self, mode: "lottery_delivery").exists?
+      express_str = ""
+      if self.express_number.present?
+        express_str = "快递：#{self.express_name.presence || '顺丰'}，单号：#{self.express_number}。"
+      end
+
+      content = "您在Robin8一元夺宝的商品已发货。#{express_str}晒中奖商品到朋友圈，可以获得5元现金红包，联系客服领取。"
+      self.delivery_notify(content)
+    end
+
+    self.update(delivered: true, delivered_at: Time.now)
+  end
+
   def deliver_cash_product
     unless Transaction.where(account: self.lucky_kol, item: self, subject: "lottery_reward").exists?
       price = self.lottery_product.price
