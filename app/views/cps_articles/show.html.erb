@@ -7,7 +7,6 @@
         <%= image_tag @cps_article.kol.get_avatar_url %>
         <span class="name"><%= @cps_article.kol.name %></span>
       </span>
-      <span class="read-count">阅读: <%= @cps_article.read_count.value %></span>
     </p>
   </div>
   <div class="section-content">
@@ -30,13 +29,24 @@
           <%= link_to promotion_url do  %>
             <div class="avatar"><%= image_tag product.img_url %></div>
             <div class="info">
-              <p class="pro-title"><%= truncate product.goods_name, :length => 40, :separator => "..." %></p>
-              <p class="price">&yen;<span class="number-font"><%= product.unit_price %></span></p>
+              <div class="pro-title"><%= truncate product.goods_name, :length => 26, :separator => "..." %></div>
+              <div class="price">
+                售价&nbsp;&yen;<span class="sale-price"><%= product.unit_price %></span>
+                <% if !@cps_share %>
+                  &nbsp;&nbsp;提成&nbsp;<span class="commission">&yen;<%= product.kol_commision_wl %></span>
+                <% end %>
+              </div>
+            </div>
+            <div class="go">
+              <%= image_tag 'detail-arrow.png' %>
             </div>
           <% end %>
         </div>
       <% end %>
       <% index += 2 %>
     <% end %>
+  </div>
+  <div class="">
+
   </div>
 </div>
