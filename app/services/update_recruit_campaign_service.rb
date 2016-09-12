@@ -29,6 +29,7 @@ class UpdateRecruitCampaignService
 
     if @campaign_params[:sub_type].blank? or @campaign_params[:sub_type] == "null"
       @campaign_params[:sub_type] = nil
+      @campaign_params[:url] = nil
     end
 
     if @campaign.user.id != @user.id

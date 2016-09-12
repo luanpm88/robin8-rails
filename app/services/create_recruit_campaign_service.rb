@@ -30,6 +30,7 @@ class CreateRecruitCampaignService
 
     if @campaign_params[:sub_type].blank? or @campaign_params[:sub_type] == "null"
       @campaign_params[:sub_type] = nil
+      @campaign_params[:url] = nil
     end
 
     validate_recruit_time
