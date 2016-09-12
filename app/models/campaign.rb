@@ -51,7 +51,7 @@ class Campaign < ActiveRecord::Base
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, ->(ids = '""') { order(" case
                                          when (campaigns.per_budget_type = 'recruit' or campaigns.per_budget_type = 'invite') and campaigns.status = 'executing' then 5
-                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executed' and campaigns.id in (#{ids}) then 4
+                                         when campaigns.per_budget_type = 'recruit' and (campaigns.status = 'executed' or (campaigns.status = 'executing' and campaigns.campaigns.end_apply_check = '1') ) and campaigns.id in (#{ids}) then 4
                                          when campaigns.status = 'executing' then 3
                                          when campaigns.status ='executed' then 2
                                          else 1 end desc,
