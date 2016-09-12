@@ -64,14 +64,14 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def ban
     authorize! :update, Kol
-    render 'ban' and return if request.method.eql? 'GET'
+    render 'ban' # and return if request.method.eql? 'GET'
 
-    @kol.update(forbid_campaign_time: params[:forbid_time])
+    # @kol.update(params.require(:kol).permit(:forbid_campaign_time, :kol_level))
 
-    respond_to do |format|
-      format.html { redirect_to banned_marketing_dashboard_kols_path, notice: 'Ban successfully!' }
-      format.json { head :no_content }
-    end
+    # respond_to do |format|
+    #   format.html { redirect_to banned_marketing_dashboard_kols_path, notice: 'Ban successfully!' }
+    #   format.json { head :no_content }
+    # end
   end
 
   def disban
@@ -137,9 +137,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   def update
     authorize! :update, Kol
     @kol = Kol.find params[:id]
-    if params[:kol][:mobile_number].blank?
-      params[:kol][:mobile_number] = nil
-    end
+
     @kol.update_attributes(params.require(:kol).permit(:mobile_number, :name, :forbid_campaign_time, :kol_level))
     flash[:notice] = "保存成功"
     redirect_to marketing_dashboard_kols_path
