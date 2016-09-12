@@ -244,4 +244,4 @@ gem 'spreadsheet'
 gem "rolify"
 
 gem 'crm', path: 'crm'
-gem 'airbrake', '4.3.4'
+gem 'airbrake', '~> 5.0'
