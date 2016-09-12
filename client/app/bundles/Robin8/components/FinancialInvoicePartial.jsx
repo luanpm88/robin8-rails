@@ -5,6 +5,7 @@ import validator from 'validator';
 
 import BreadCrumb     from './shared/BreadCrumb';
 import FinancialMenu  from './shared/FinancialMenu'
+import ChooseInvoiceTypeModal from './financial/modals/ChooseInvoiceTypeModal';
 import InvoiceInfo from './financial/InvoiceInfo';
 import InvoiceHistory from './financial/InvoiceHistory';
 import getUrlQueryParams    from '../helpers/GetUrlQueryParams';
@@ -14,6 +15,7 @@ import 'recharge/invoice.scss'
 function select(state) {
   return {
     invoice: state.financialReducer.get('invoice'),
+    specialInvoice: state.financialReducer.get('specialInvoice'),
     invoiceReceiver: state.financialReducer.get('invoiceReceiver'),
     invoiceHistories: state.financialReducer.get('invoiceHistories'),
     appliableCredits: state.financialReducer.get('appliableCredits'),
@@ -22,6 +24,14 @@ function select(state) {
 }
 
 class FinancialInvoicePartial extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showChooseInviceModal: false,
+    }
+  }
 
   componentDidMount() {
     const { fetchAppliableCredits, fetchInvoiceHistories} = this.props.actions;
@@ -34,6 +44,10 @@ class FinancialInvoicePartial extends React.Component {
   componentDidUpdate() {
     this.displayPaginator(this.props);
     this.hide_or_show_paginator();
+  }
+
+  closeChooseInvoiceModal() {
+    this.setState({showChooseInviceModal: false})
   }
 
   hide_or_show_paginator() {
@@ -100,9 +114,8 @@ class FinancialInvoicePartial extends React.Component {
     if (validator.isNull(credits)) {
       return ;
     }
-    saveInvoiceHistory(credits);
-    this.refs.creditsInput.value = "";
-    setTimeout(fetchAppliableCredits, 1000);
+
+    this.setState({showChooseInviceModal: true})
   }
 
   render_invoice_histories_table() {
@@ -170,12 +183,13 @@ class FinancialInvoicePartial extends React.Component {
 
     return (
       <div className="financial page">
+
         <div className="container">
           <BreadCrumb />
           <div className="page-invoice">
             <FinancialMenu />
           <div className="main-content">
-            <InvoiceInfo invoice={this.props.invoice} invoiceReceiver={this.props.invoiceReceiver} actions={this.props.actions} />
+            <InvoiceInfo invoice={this.props.invoice} specialInvoice={this.props.specialInvoice}  invoiceReceiver={this.props.invoiceReceiver} actions={this.props.actions} />
             <div className='apply-invoice'>
               { this.render_appliable_credits() }
 
@@ -196,6 +210,7 @@ class FinancialInvoicePartial extends React.Component {
           </div>
         </div>
       </div>
+      <ChooseInvoiceTypeModal show={this.state.showChooseInviceModal} onHide={this.closeChooseInvoiceModal.bind(this)} actions={this.props.actions} creditsRef={this.refs.creditsInput} />
     </div>
     )
   }

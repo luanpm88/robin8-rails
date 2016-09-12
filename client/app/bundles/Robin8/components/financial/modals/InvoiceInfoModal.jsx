@@ -7,15 +7,15 @@ export default class InvoiceInfoModal extends Component {
   handleClick() {
     const onHide = this.props.onHide;
     const invoice = this.props.invoice
-    const saveInvoice = this.props.actions.saveInvoice;
-    const updateInvoice = this.props.actions.updateInvoice;
+    const saveCommonInvoice = this.props.actions.saveCommonInvoice;
+    const updateCommonInvoice = this.props.actions.updateCommonInvoice;
     if (validator.isNull(this.refs.invoiceTitleInput.value.trim())){
       $('.error-tip').show();
     } else {
       if (invoice.get('title')){
-        updateInvoice(this.refs.invoiceTitleInput.value);
+        updateCommonInvoice(this.refs.invoiceTitleInput.value);
       } else {
-        saveInvoice(this.refs.invoiceTitleInput.value);
+        saveCommonInvoice(this.refs.invoiceTitleInput.value);
       }
       onHide();
     }
@@ -39,9 +39,9 @@ export default class InvoiceInfoModal extends Component {
           <Modal.Title>普通增值税发票</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>
-            <p className='invoice-title'>发票抬头</p>
-            <input ref='invoiceTitleInput' onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} className='invoice-title-input' type="text" defaultValue={this.props.invoice.get('title')} />
+          <div className="form-group">
+            <span className='invoice-label'>发票抬头</span>
+            <input ref='invoiceTitleInput' onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} className='invoice-input' type="text" defaultValue={ this.props.invoice ? this.props.invoice.get('title') : ''} />
             <p className="error-tip" style={{display: 'none'}}>发票抬头不能为空</p>
           </div>
         </Modal.Body>
