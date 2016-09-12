@@ -1,9 +1,24 @@
-<h2><%= @title %></h2>
-<p class="pull-right">按报名先后顺序</p>
-<div class="check_info">
-  <span class="platform_passed_count">平台通过人数(不含品牌通过人数): <span class="label label-info"><%= @platform_passed_count %></span></span>
-  <span class="brand_passed_count" style="margin-left: 30px;">品牌通过人数:  <span class="label label-success"><%= @brand_passed_count %></span></span>
-</div>
+<h2>
+  招募活动审核
+</h2>
+
+<table class="table" style="text-align: left;">
+  <tr>
+    <td width="150px;">合格报名人数：</td>
+    <td><span class="label label-default"><%= @campaign_applies.count %></span></td>
+    <td width="150px;">平台通过人数:</td>
+    <td><span class="label label-info"><%= @platform_passed_count + @brand_passed_count %></span></td>
+  </tr>
+  <tr>
+    <td>预期招募人数：</td>
+    <td><span class="label label-default"><%= @campaign.recruit_person_count.to_i %></span></td>
+    <td>品牌通过人数:</td>
+    <td><span class="label label-success"><%= @brand_passed_count %></span></td>
+  </tr>
+</table>
+
+<span class="pull-right">按报名先后顺序</span>
+<span class="pull-left">注意：品牌主只能确认平台筛选通过的KOL</span>
 <table class='table table-bordered'>
   <thead>
     <tr>
@@ -19,11 +34,11 @@
       <th>最高点击</th>
       <th>性别</th>
       <th>城市</th>
+      <th><%= sort_link(@q, :status, "选中状态") %></th>
       <th>推荐理由-素材</th>
-      <th>操作</th>
+      <th>平台筛选</th>
     </tr>
   </thead>
-
   <tbody>
     <% @campaign_applies.includes(:kol).each do |campaign_apply| %>
       <% kol = campaign_apply.kol %>
@@ -50,6 +65,17 @@
         <td> <%= kol.maximum_click_of_campaigns %></td>
         <td> <%= kol.gender_text %></td>
         <td> <%= kol.app_city_label %> </td>
+        <td>
+          <% if campaign_apply.status == "brand_passed" %>
+            <span class="label label-success">品牌确认</span>
+          <% elsif campaign_apply.status == "platform_passed" %>
+            <span class="label label-info">平台选中</span>
+          <% elsif campaign_apply.status = "brand_rejected" %>
+            <span class="label label-warning">品牌拒绝</span>
+          <% else %>
+            <span class="label label-default">未选中</span>
+          <% end %>
+        </td>
         <td>
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
              <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>"> <br>

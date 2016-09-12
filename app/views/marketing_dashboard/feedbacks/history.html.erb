@@ -1,0 +1,46 @@
+<h3>
+  KOL名称：<%= @kol.name %> <small>/</small> 手机号：<%= @kol.mobile_number %>
+</h3>
+<hr />
+<ul>
+  <% @kol.feedbacks.order("created_at desc").each do |feedback| %>
+  <li class="row" style="margin-top: 15px;" data-feedback-id="<%= feedback.id %>">
+    <div class="col-md-8">
+      <div>
+        APP版本：<%= feedback.app_version %> |
+        APP平台：<%= feedback.app_platform %> |
+        APP系统：<%= feedback.os_version %> |
+        设备类型：<%= feedback.device_model %>
+      </div>
+      <div>
+        反馈日期：<%= feedback.created_at.strftime("%Y-%m-%d %H:%M:%S") %> |
+        处理状态：<%= feedback.status || :pending %>
+      </div>
+      <div class="well well-sm"><%= feedback.content %></div>
+      <% SmsMessage.feedback.resource_of_receiver(feedback, @kol).order("created_at desc").each do |message| %>
+        <div data-message-id="<%= message.id %>">
+          <div>
+            回复状态：<%= message.status %> |
+            消息类型：<%= message.mode %>
+          </div>
+          <div>
+            回复时间：<%= message.created_at.strftime("%Y-%m-%d %H:%M:%S") %> |
+            管理员：<%= message.admin_user.try(:email) %>
+          </div>
+          <% if message.remark %>
+          <div>
+            备注：<%= message.remark %>
+          </div>
+          <% end %>
+          <div class="alert alert-success well-sm"><%= message.content %></div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <%= image_tag feedback.screenshot.url(200), class: "img-thumbnail" %>
+    </div>
+  </li>
+  <% end %>
+</ul>
+
+

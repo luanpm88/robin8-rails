@@ -83,13 +83,25 @@
   alipay_orders = @user.alipay_orders
   campaign_orders = @user.campaigns.where(pay_way: "alipay")
 %>
-<p>共 <%= manual_recharges.count + alipay_orders.count + campaign_orders.count %> 次成功充值</p>
-
-<p>支付宝APP充值有 <%= @user.alipay_orders_from_app.count %> 次，成功 <%= @user.alipay_orders_from_app.where(status: "paid").count %>次，<%= link_to "查看全部", from_app_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
-
-<p>支付宝PC充值有 <%= @user.alipay_orders_from_pc.count %> 次，成功 <%= @user.alipay_orders_from_pc.where(status: "paid").count %>次，<%= link_to "查看全部", from_pc_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
-
-<p>PC手动充值有 <%= manual_recharges.count %> 次，<%= link_to "查看全部", marketing_dashboard_manual_recharges_path(q: {account_of_User_type_id_eq: @user.id}), target: "_blank" %></p>
-
-<p>直接付款发活动有 <%= campaign_orders.count %> 次，成功 <%= campaign_orders.where(alipay_status: 1).count %> 次，<%= link_to "查看全部", campaigns_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></p>
-
+<table class="table table-striped">
+  <tr>
+    <td>充值总次数</td>
+    <td><%= manual_recharges.count + alipay_orders.count + campaign_orders.count %> 次</td>
+  </tr>
+  <tr>
+    <td width="250px">支付宝APP充值</td>
+    <td>有 <%= @user.alipay_orders_from_app.count %> 次，成功 <%= @user.alipay_orders_from_app.where(status: "paid").count %>次，<%= link_to "查看全部", from_app_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></td>
+  </tr>
+  <tr>
+    <td>支付宝PC充值有</td>
+    <td><%= @user.alipay_orders_from_pc.count %> 次，成功 <%= @user.alipay_orders_from_pc.where(status: "paid").count %>次，<%= link_to "查看全部", from_pc_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></td>
+  </tr>
+  <tr>
+    <td>PC手动充值有</td>
+    <td><%= manual_recharges.count %> 次，<%= link_to "查看全部", marketing_dashboard_manual_recharges_path(q: {account_of_User_type_id_eq: @user.id}), target: "_blank" %></td>
+  </tr>
+  <tr>
+    <td>直接付款发活动有</td>
+    <td><%= campaign_orders.count %> 次，成功 <%= campaign_orders.where(alipay_status: 1).count %> 次，<%= link_to "查看全部", campaigns_marketing_dashboard_alipay_orders_path(q: {user_id_eq: @user.id}), target: "_blank" %></td>
+  </tr>
+</table>
