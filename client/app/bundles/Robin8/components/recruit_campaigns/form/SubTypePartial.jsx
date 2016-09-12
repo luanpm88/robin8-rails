@@ -36,19 +36,19 @@ export default class SubTypePartial extends React.Component {
               <div className="row">
                 <div className="col-md-4">
                   <input {...sub_type} type="radio" name="sub_type" value="wechat" className="commonPerBudgetType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
-                  转发到微信朋友圈
+                  &nbsp;转发到微信朋友圈
                 </div>
                 <div className="col-md-4">
                   <input {...sub_type} type="radio" name="sub_type" className="commonPerBudgetType" value="weibo" onChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
-                  转发到微博
+                  &nbsp;转发到微博
                 </div>
                 <div className="col-md-4">
                   <input {...sub_type} type="radio" name="sub_type" value="qq" onChange={sub_type.onChange} checked={sub_type.value === "qq"} />
-                  转发到QQ空间
+                  &nbsp;转发到QQ空间
                 </div>
                 <div className="col-md-4">
                   <input {...sub_type} type="radio" name="sub_type" value="" onChange={sub_type.onChange} checked={!sub_type.value} />
-                  品牌主自定义
+                  &nbsp;品牌主自定义
                 </div>
               </div>
             </div>
