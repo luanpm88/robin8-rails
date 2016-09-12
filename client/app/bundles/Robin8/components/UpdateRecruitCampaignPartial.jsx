@@ -31,7 +31,7 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
-  url: {url: { require_protocol: true }}
+  url: {url: { require_protocol: false }}
 })
 
 const validateFailed = (errors) => {
