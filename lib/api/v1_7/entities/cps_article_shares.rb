@@ -9,13 +9,13 @@ module API
             expose :created_at
           end
           expose :kol_id do |share|
-            share.kol.id
+            share.kol.id     rescue nil
           end
           expose :kol_name do |share|
-            share.kol.name
+            share.kol.name   rescue nil
           end
           expose :kol_avatar_url do |share|
-            share.kol.avatar_url
+            share.kol.avatar_url  rescue nil
           end
         end
 

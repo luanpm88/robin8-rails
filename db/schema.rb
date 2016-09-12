@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909035345) do
+ActiveRecord::Schema.define(version: 20160912033332) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -396,6 +396,7 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.string   "admin_desc",               limit: 255
     t.string   "cpi_example_screenshot",   limit: 255
     t.string   "remark",                   limit: 255
+    t.string   "sub_type",                 limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -822,7 +823,7 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "taxpayer_id",     limit: 255
-    t.string   "company_address", limit: 255
+    t.string   "company_name",    limit: 255
     t.string   "company_mobile",  limit: 255
     t.string   "bank_name",       limit: 255
     t.string   "bank_account",    limit: 255
@@ -1199,6 +1200,7 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.integer  "price",       limit: 4,   default: 0
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "mode",        limit: 255
   end
 
   create_table "mailgun_events", force: :cascade do |t|
@@ -1608,7 +1610,6 @@ ActiveRecord::Schema.define(version: 20160909035345) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
-
   create_table "social_account_tags", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
     t.integer  "tag_id",            limit: 4
@@ -1935,7 +1936,6 @@ ActiveRecord::Schema.define(version: 20160909035345) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
