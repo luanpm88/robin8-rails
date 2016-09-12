@@ -93,16 +93,16 @@
       <div class="col-md-6">
         <h3>发货管理</h3>
         <div class="form-group">
-          <label>快递单号（可不填）</label>
+          <label>快递单号（会被放在短信中通知KOL）</label>
           <%= f.text_field :express_number, class: "form-control" %>
         </div>
 
         <div class="form-group">
-          <label>快递公司名（可不填）</label>
+          <label>快递公司名（默认顺丰）</label>
           <%= f.text_field :express_name, class: "form-control" %> (圆通，顺丰，申通，百世汇通)
         </div>
         <%= f.submit '确认发货', :class => 'btn btn-primary btn-lg' %>
-        <p>* 可直接点确认发货，如果没有快递信息需要填写的话</p>
+        <p>* 点击发货按钮后，会向KOL手机发送已发货短信</p>
       </div>
     </div>
     <hr/>
