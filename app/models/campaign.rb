@@ -48,6 +48,7 @@ class Campaign < ActiveRecord::Base
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
+  scope :recent_7, ->{ where("start_time > '#{7.days.ago}'")}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order(" case
                                          when campaigns.status = 'executing'  and campaigns.end_apply_check='1' then 2
@@ -66,13 +67,13 @@ class Campaign < ActiveRecord::Base
 
   before_validation :format_url
   after_save :create_job
-  before_create :genereate_campaign_number
+  before_create :generate_campaign_number
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
-  ReceiveCampaignInterval = Rails.env.production? ? 3.hours : 0.second
+  ReceiveCampaignInterval = Rails.env.production? ? 2.hours : 1.second
   def email
     user.try :email
   end
@@ -249,18 +250,6 @@ class Campaign < ActiveRecord::Base
 
   def create_job
     raise 'status 不能为空' if self.status.blank?
-    # if self.need_pay_amount == 0 and self.status.to_s == 'unpay'
-    #   self.update_attributes :status => 'unexecute'
-    # end
-    # if self.status_changed? && self.status.to_s == 'unexecute'
-    #   if not self.campaign_from ==  "app"
-    #     if self.user.avail_amount >= self.need_pay_amount
-    #       self.user.payout(need_pay_amount, 'campaign', self)
-    #       Rails.logger.transaction.info "-------- create_job: after payout  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-    #     else
-    #       Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
-    #     end
-    #   end
     if (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
@@ -373,7 +362,7 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def genereate_campaign_number
+  def generate_campaign_number
     self.trade_number = Time.now.strftime("%Y%m%d%H%M%S") + "#{rand(10000..99999)}"
   end
 

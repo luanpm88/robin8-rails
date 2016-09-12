@@ -237,7 +237,7 @@ class CampaignInvite < ActiveRecord::Base
   def self.schedule_day_settle(async = true)
     Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
     if async
-      CampaignDaySettleWorker.perform_async
+      ::CampaignDaySettleWorker.perform_async
     else
       if Rails.env.production?
         transaction_time = Date.today.beginning_of_day - 1.minutes
