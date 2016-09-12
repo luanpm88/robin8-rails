@@ -132,7 +132,7 @@ class LotteryActivity < ActiveRecord::Base
 
   def deliver_cash_product
     unless Transaction.where(account: self.lucky_kol, item: self, subject: "lottery_reward").exists?
-      price = self.lottery_product.price
+      price = self.lottery_product.price - 1 # temp
       transaction = self.lucky_kol.income(price, "lottery_reward", self)
     end
 
