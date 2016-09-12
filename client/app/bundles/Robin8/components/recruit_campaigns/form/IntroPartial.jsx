@@ -78,7 +78,7 @@ export default class IntroPartial extends React.Component {
 
   _upload(size, scale) {
     const { img_url } = this.props
-
+    this.uploader.files = [];
     this.uploader.refresh();
     this.uploader.addFile(this.refs.fileInput.files[0]);
     this.uploader.bind("FileUploaded", function(up, file, info) {
