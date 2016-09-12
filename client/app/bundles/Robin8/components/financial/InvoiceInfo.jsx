@@ -69,7 +69,7 @@ export default class InvoiceInfo extends React.Component {
     if (invoice && invoice.get('title'))
       return <button className="btn edit" onClick={()=>this.setState({showInvoiceInfoModal: true})}>修改</button>
     else
-      return <button className="btn save" onClick={()=>this.setState({showInvoiceInfoModal: true})}>创建</button>
+      return <button className="btn save" onClick={()=>this.setState({showInvoiceInfoModal: true})}>填写</button>
 
   }
 
@@ -78,7 +78,7 @@ export default class InvoiceInfo extends React.Component {
     if (specialInvoice && specialInvoice.get('title'))
       return <button className="btn edit" onClick={()=>this.setState({showSpecialInvoiceInfoModal: true})}>修改</button>
     else
-      return <button className="btn save" onClick={()=>this.setState({showSpecialInvoiceInfoModal: true})}>创建</button>
+      return <button className="btn save" onClick={()=>this.setState({showSpecialInvoiceInfoModal: true})}>填写</button>
   }
 
   render_save_or_edit_invoice_receiver_button() {
@@ -86,7 +86,7 @@ export default class InvoiceInfo extends React.Component {
     if (invoiceReceiver && invoiceReceiver.get('name')){
       return <button className="btn edit" onClick={()=>this.setState({showInvoiceReceiverInfoModal: true})}>修改</button>
     } else {
-      return <button className="btn save" onClick={()=>this.setState({showInvoiceReceiverInfoModal: true})}>创建</button>
+      return <button className="btn save" onClick={()=>this.setState({showInvoiceReceiverInfoModal: true})}>填写</button>
     }
   }
 

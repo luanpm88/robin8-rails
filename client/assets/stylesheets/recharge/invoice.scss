@@ -45,7 +45,9 @@
 
         li {
           width: 385px;
-
+        }
+        li.active > a {
+          background: #ddd;
         }
       }
 
