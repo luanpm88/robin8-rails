@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
     resources :cps_materials do
-
+      member do
+        get :switch
+      end
     end
     resources :cps_articles do
       member do
