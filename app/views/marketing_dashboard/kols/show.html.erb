@@ -106,16 +106,16 @@
     <td><%= @kol.avail_amount %></td>
   </tr>
   <tr>
-    <td>历史活动收益</td>
+    <td>历史净收益金额</td>
     <td><%= @kol.historical_income %></td>
   </tr>
   <tr>
-    <td>历史收益</td>
-    <td><%= @kol.total_income %></td>
+    <td>历史提现金额</td>
+    <td><%= @kol.total_withdraw %></td>
   </tr>
   <tr>
-    <td>历史支出(包含夺宝现金活动)</td>
-    <td><%= @kol.total_withdraw %></td>
+    <td>历史提现流水次数</td>
+    <td><%= @kol.withdraw_transactions.count %>(包含手工提现)</td>
   </tr>
 </table>
 
@@ -123,10 +123,11 @@
 <table class="table table-bordered table-striped">
   <col width="200px" />
   <tr>
-    <td>KOL历史提现记录</td>
+    <td>KOL历史申请提现记录</td>
     <td>
       共 <%= @kol.withdraws.count %> 次提现申请，<%= @kol.withdraws.approved.count %> 次提现成功，共提现 <%= @kol.withdraws.approved.sum(:credits) %> 元
       <%= link_to "查看所有提现记录", marketing_dashboard_withdraws_path(q: { kol_id_eq: @kol.id }), target: "_blank" %>
+      <strong>(不含手工提现记录)</strong>
     </td>
   </tr>
   <tr>
