@@ -33,7 +33,7 @@ module API
             to_paginate(cps_articles)
           end
           present :error, 0
-          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
+          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::WithShareDetail
           present :cps_article_shares, cps_article_shares, with: API::V1_7::Entities::CpsArticleShares::Summary
         end
 
