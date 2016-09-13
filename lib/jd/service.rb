@@ -1,4 +1,8 @@
 module Jd
+  # access_token
+  # https://oauth.jd.com/oauth/authorize?response_type=code&client_id=AA2CCA7E09E01250E4DE8E1C125F313C&redirect_uri=http://robin8-staging.cn/jd/callback&client_secret=1202eca77b0e4b6ea30bd321aa5a94fb
+  # https://oauth.jd.com/oauth/token?grant_type=authorization_code&client_id=91EA317945B3BD584AD26BD5ACEFD65B&redirect_uri=http://robin8.net/jd/callback&code=pg4X6Q&client_secret=8d6401b804434ca9823009564fdf1f80
+
   class Service
     #TODO  pagesize current is 1000. we must paginate   depend on hasMore column
     AppKey = Rails.application.secrets[:jd][:app_key]
