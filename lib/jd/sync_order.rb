@@ -3,10 +3,10 @@ module Jd
     # 每15分钟需同步一下近一个小时的数据,如果该15分钟横跨小时,需要同步最近两个小时内的数据
     def self.schedule_sync
       Rails.logger.jd.info "------SyncCommision.SyncOrder"
-      last_query_time = (Time.now - 60.minutes).strftime("%Y%m%d%H")
+      last_query_time = (Time.now - 15.minutes).strftime("%Y%m%d%H")
       sync_by_time(last_query_time)
       query_time = Time.now.strftime("%Y%m%d%H")
-      sync_by_time(query_time)
+      sync_by_time(query_time)   if last_query_time != query_time
     end
 
     def self.sync_by_time(query_time = Time.now.strftime("%Y%m%d%H"))
@@ -60,8 +60,8 @@ module Jd
     end
 
     #每天同步一次近10天的历史
-    def self.schedule_sync_history
-      start_query_time = (Time.now - 10.days).beginning_of_day.strftime("%Y%m%d%H")
+    def self.schedule_sync_history(interval = 1)
+      start_query_time = (Time.now - interval.days).beginning_of_day.strftime("%Y%m%d%H")
       query_time_arr = CpsPromotionOrder.where(:yn => 1).where("order_query_time >= '#{start_query_time}'").collect{|t| t.order_query_time}.uniq.sort
       query_time_arr.each do |query_time|
         sync_by_time(query_time)
