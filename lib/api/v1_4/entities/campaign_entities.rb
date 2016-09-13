@@ -32,13 +32,13 @@ module API
           expose :tag_labels do |object|
             target = object.tag_target
             if target
-              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join('/')
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
             end
           end
 
           expose :region do |object|
             target = object.region_target
-            target.target_content.split(',').join('/') if target
+            target.target_content if target
           end
 
           expose :gender do |object|
@@ -48,7 +48,7 @@ module API
 
           expose :age do |object|
             target = object.age_target
-            target.target_content.split(',') if target
+            target.target_content if target
           end
 
         end
@@ -63,21 +63,16 @@ module API
         class CampaignListEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :need_pay_amount, :status, :img_url, :name, :budget, :per_budget_type, :per_action_budget
-          expose :tags do |object|
-            target = object.tag_target
-            target.target_content.split(',') if target
-          end
-
           expose :tag_labels do |object|
             target = object.tag_target
             if target
-              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join('/')
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
             end
           end
 
           expose :region do |object|
             target = object.region_target
-            target.target_content.split(',').join('/') if target
+            target.target_content if target
           end
 
           expose :gender do |object|
@@ -87,7 +82,7 @@ module API
 
           expose :age do |object|
             target = object.age_target
-            target.target_content.split(',') if target
+            target.target_content if target
           end
 
           with_options(format_with: :iso_timestamp) do
@@ -144,21 +139,16 @@ module API
             end
           end
 
-          expose :tags do |object|
-            target = object.tag_target
-            target.target_content.split(',') if target
-          end
-
           expose :tag_labels do |object|
             target = object.tag_target
             if target
-              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join('/')
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
             end
           end
 
           expose :region do |object|
             target = object.region_target
-            target.target_content.split(',').join('/') if target
+            target.target_content if target
           end
 
           expose :gender do |object|
@@ -168,7 +158,7 @@ module API
 
           expose :age do |object|
             target = object.age_target
-            target.target_content.split(',') if target
+            target.target_content if target
           end
         end
 
