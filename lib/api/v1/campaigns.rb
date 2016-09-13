@@ -65,10 +65,10 @@ module API
             return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' })
           elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && (campaign.is_post_type? || campaign.is_cpa_type?)
             return error_403!({error: 1, detail: '您还未申请成为KOL,不能接收转发类型活动!' })
-          elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && today_approved_invite_count >= 3
-            return error_403!({error: 1, detail: '您还未申请成为KOL,每天只能接3个活动!' })
-          elsif !Kol::AdminKolIds.include?(current_kol.id) && current_kol.is_big_v? && today_approved_invite_count >= 5
-            return error_403!({error: 1, detail: '为了提高广告质量,每天只能接5个活动!' })
+          elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && today_approved_invite_count >= 2
+            return error_403!({error: 1, detail: '您还未申请成为KOL,每天只能接2个活动!' })
+          elsif !Kol::AdminKolIds.include?(current_kol.id) && current_kol.is_big_v? && today_approved_invite_count >= 4
+            return error_403!({error: 1, detail: '为了提高广告质量,每天只能接4个活动!' })
           else
             campaign_invite = current_kol.receive_campaign(params[:id])
             campaign_invite = campaign_invite.reload
