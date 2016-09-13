@@ -38,6 +38,8 @@ class AdminAbility
       can [:read, :update], StasticData if admin.has_role?(:statistic_data_update)
       can [:read], AppUpgrade if admin.has_role?(:app_upgrade_read)
       can [:read, :update], AppUpgrade if admin.has_role?(:app_upgrade_update)
+      can [:read], CpsArticle if admin.has_role?(:cps_article_read)
+      can [:read, :update], CpsArticle if admin.has_role?(:cps_article_update)
     end
   end
 end

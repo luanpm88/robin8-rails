@@ -1,0 +1,103 @@
+<h3>Cps商品列表</h3>
+
+<% if params[:controller] == 'marketing_dashboard/cps_materials' %>
+  <div class="panel panel-default">
+    <!--<div class="panel-heading">-->
+      <!--搜索过滤-->
+    <!--</div>-->
+    <div id="searchPanel" class="panel-body">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>商品名</label>
+              <%= f.search_field :goods_name_cont, class: "form-control", placeholder: "商品名" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>sku id</label>
+              <%= f.search_field :sku_id_cont, class: "form-control", placeholder: "SKU ID" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>分类</label>
+              <%= f.select :category_eq, CpsMaterial.get_category_field, {:prompt => "全部"}, class: "form-control", placeholder: "SKU ID" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>状态</label>
+              <%= f.select :enabled_eq, [['出售中', 1], ['已下架', 0]], {:prompt => "全部"}, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label>&nbsp;</label>
+            <div>
+              <%= f.submit "搜索", class: "btn btn-primary" %>
+              <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="new" style="margin-bottom: 20px">
+    <%= form_tag '/marketing_dashboard/cps_materials', :method => 'post' do %>
+        <%= text_area_tag :material_urls, nil, :placeholder => '请进入京东联盟,拷贝商品地址.多个已 , 分隔,但是一次不能超过100个', :style=>"width:100%;height:60px" %>
+        <%= submit_tag '提交', :class=> 'btn btn-primary', :style => 'float:right' %>
+    <% end %>
+  </div>
+
+<% end %>
+
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>sku id</th>
+    <th>图片</th>
+    <th>名称</th>
+    <th>单价</th>
+    <th>开始结束日期</th>
+    <th>
+      总佣金</br>
+      Kol佣金
+    </th>
+    <th>类别</th>
+    <th>状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @cps_materials.each do |c| %>
+    <tr>
+      <td><%= c.sku_id %></td>
+      <td><%= image_tag c.img_url, :size => '100x100' %></td>
+      <td><%= link_to c.goods_name, c.material_url, :target => "_blank" %></td>
+      <td><%= c.unit_price %></td>
+      <td>
+        <%= c.start_date %></br>
+        <%= c.end_date %>
+      </td>
+      <td>
+        <%= c.commision_wl %></br>
+        <%= c.kol_commision_wl %></td>
+      <td><%= CpsMaterial::Categories[c.category] %></td>
+      <td><%= c.enabled ? '出售中' : '已下架' %></td>
+      <td>
+        <%= link_to (c.enabled ? '下架' : '上架'), switch_marketing_dashboard_cps_material_path(c) %> </br>
+        <%= link_to '设置', edit_marketing_dashboard_cps_material_path(c) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% if params[:controller_name] == 'marketing_dashboards/cps_materials' %>
+  <div class="pull-right">
+    <%= will_paginate @cps_materials, renderer: BootstrapPagination::Rails %>
+  </div>
+<% end %>

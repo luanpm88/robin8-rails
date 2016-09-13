@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912033332) do
+ActiveRecord::Schema.define(version: 20160912072344) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -1598,18 +1598,6 @@ ActiveRecord::Schema.define(version: 20160912033332) do
   add_index "sms_messages", ["resource_id", "resource_type"], name: "index_sms_messages_on_resource_id_and_resource_type", using: :btree
   add_index "sms_messages", ["status"], name: "index_sms_messages_on_status", using: :btree
 
-  create_table "social_account_professions", force: :cascade do |t|
-    t.integer  "social_account_id", limit: 4
-    t.integer  "profession_id",     limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
-  add_index "sms_messages", ["mode"], name: "index_sms_messages_on_mode", using: :btree
-  add_index "sms_messages", ["receiver_id", "receiver_type"], name: "index_sms_messages_on_receiver_id_and_receiver_type", using: :btree
-  add_index "sms_messages", ["resource_id", "resource_type"], name: "index_sms_messages_on_resource_id_and_resource_type", using: :btree
-  add_index "sms_messages", ["status"], name: "index_sms_messages_on_status", using: :btree
-
   create_table "social_account_tags", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
     t.integer  "tag_id",            limit: 4
@@ -1644,9 +1632,6 @@ ActiveRecord::Schema.define(version: 20160912033332) do
     t.text     "others",          limit: 65535
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
-    t.string   "repost_price",    limit: 255
-    t.string   "second_price",    limit: 255
-    t.text     "others",          limit: 65535
     t.string   "search_kol_id",   limit: 255
   end
 

@@ -1,0 +1,23 @@
+/*
+*/
+
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei",sans-serif;
+  font-weight: normal;
+}
+
+body{
+  line-height: 1;
+  font-family: "helvetica neue",arial,sans-serif,"Microsoft Yahei";
+  color: #666666;
+  font-size: 14px;
+  background-color: #f0f0f0;
+}
+
+
+
