@@ -68,7 +68,7 @@
   <% @cps_promotion_orders.each do |order| %>
     <tr>
       <td><%= link_to order.kol.name, marketing_dashboard_kol_path(order.kol) rescue nil %></td>
-      <td><%= link_to order.cps_article.title, marketing_dashboard_cps_article_path(order.cps_article) rescue nil %></td>
+      <td><%= link_to order.cps_article.title , marketing_dashboard_cps_articles_path("q[id_eq]" => order.cps_article.id) rescue nil %></td>
       <td><%= order.order_id %></td>
       <td><%= order.order_time.to_s(:date_time) %></td>
       <td><%= order.yn %></td>
