@@ -73,11 +73,11 @@ class Transaction < ActiveRecord::Base
       when 'limited_discount'
         "限时优惠"
       when 'cps_share_commission'
-        "CPS佣金"
+        "CPS佣金(#{self.item.cps_article.title})"
       when 'cps_tax'
-        "CPS税费"
+        "CPS税费(#{self.item.cps_article.title})"
       when 'cps_writing_commission'
-        "CPS文章税费"
+        "CPS文章税费(#{self.item.cps_article.title})"
       when 'lottery_reward'
         "夺宝现金奖励"
     end

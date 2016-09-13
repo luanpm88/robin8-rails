@@ -48,7 +48,7 @@
   <% @cps_promotion_order_items.each do |item| %>
     <tr>
       <!--<td><%#= link_to item.cps_promotion_order.cps_article.title, marketing_dashboard_cps_article_path(item.cps_promotion_order.cps_article) rescue nil %></td>-->
-      <td><%= link_to item.cps_promotion_order.order_id, marketing_dashboard_cps_promotion_order_path(item.cps_promotion_order) rescue nil %></td>
+      <td><%= link_to item.cps_promotion_order.order_id, marketing_dashboard_cps_promotion_orders_path("q[order_id_eq]" => item.cps_promotion_order.order_id) rescue nil %></td>
       <td><%= link_to item.cps_material.name, marketing_dashboard_cps_material_path(item.cps_material) rescue nil %></td>
       <td><%= item.quantity %></td>
       <td><%= item.return_num %></td>
