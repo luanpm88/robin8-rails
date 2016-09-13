@@ -63,7 +63,7 @@ module API
 
         # 文章详情
         get ':id/show' do
-          cps_article = current_kol.cps_articles.where(:id => params[:id]).first rescue nil
+          cps_article = CpsArticle.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
           present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::WithShareDetail
