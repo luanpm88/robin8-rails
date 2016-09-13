@@ -2,10 +2,10 @@ module Jd
   class SyncCommission
     def self.schedule_sync
       Rails.logger.jd.info "------SyncCommision.schedule_sync"
-      last_query_time = (Time.now - 20.minutes).strftime("%Y%m%d%H")
+      last_query_time = (Time.now - 60.minutes).strftime("%Y%m%d%H")
       sync_by_time(last_query_time)
       query_time = Time.now.strftime("%Y%m%d%H")
-      sync_by_time(query_time) if  query_time !=  last_query_time
+      sync_by_time(query_time)
     end
 
     def self.sync_by_time(query_time = Time.now.strftime("%Y%m%d%H"))
