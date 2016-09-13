@@ -8,6 +8,7 @@ module API
       mount API::V1_6::System
       mount API::V1_6::Campaigns
       mount API::V1_6::CampaignInvites
+      mount API::V1_6::KolFilter
     end
   end
 end

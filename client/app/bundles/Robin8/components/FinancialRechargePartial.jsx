@@ -185,7 +185,7 @@ class FinancialRechargePartial extends React.Component {
                       <p className="must-greater-than-500">最小金额为500元</p>
                     </div>
                     <div>
-                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票(<span className="red_color">已开具发票的金额不可以申请退款</span>)</span>
+                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>
                     </div>
                     <div className="invite-code">
                       <span>邀请码(选填):</span>

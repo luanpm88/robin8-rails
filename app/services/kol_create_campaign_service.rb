@@ -1,6 +1,6 @@
 class KolCreateCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target, :need_pay_amount, :campaign_from]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :age, :region, :gender, :tags, :need_pay_amount, :campaign_from]
 
   attr_reader :errors, :campaign
 
@@ -38,7 +38,7 @@ class KolCreateCampaignService
       return false
     end
     begin
-      @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :target].include? k }
+      @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
       create_default_targets
       return true
     rescue Exception => e
@@ -58,9 +58,12 @@ class KolCreateCampaignService
   private
 
   def create_default_targets
-    ['age', 'region', 'gender', 'tags'].each do |target_type|
-      @campaign.campaign_targets.create!({target_type: target_type, target_content: '全部'})
+    ['age', 'region', 'gender'].each do |target_type|
+      @campaign.campaign_targets.create!({target_type: target_type, target_content: @campaign_params[target_type.to_sym]})
     end
+
+    tag_labels = @campaign_params[:tags]
+    @campaign.campaign_targets.create!({target_type: 'tags', target_content: tag_labels.split(',').collect { |label| ::Tag.get_name_by_label(label) }.join(',')})
   end
 
   def enough_amount? user, budget
