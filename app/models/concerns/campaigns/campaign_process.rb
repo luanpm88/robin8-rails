@@ -112,7 +112,8 @@ module Campaigns
     # 当指定区域 或者 地区 不是全部 的时候 执行
     def add_queue_to_add_kols_when_tag_or_region_is_special
       if self.is_click_type? or self.is_post_type?
-        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) )
+        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) ) \
+           or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content)) or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content))
           CampaignWorker.perform_at(Time.now+5.hours, self.id, 'append_kols')
         end
       end
