@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get :materials
         get :promotion_orders
         get :article_shares
+        get :switch
       end
     end
     resources :cps_promotion_orders do

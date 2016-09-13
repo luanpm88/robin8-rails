@@ -43,4 +43,10 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
     end
   end
 
+  def switch
+    @cps_article = CpsArticle.find params[:id]
+    @cps_article.update_column(:enabled, !@cps_article.enabled)
+    redirect_to :action => :index
+  end
+
 end
