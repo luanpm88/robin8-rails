@@ -18,6 +18,10 @@ module Kols
       self.withdraw_transactions.sum(:credits)
     end
 
+    def total_expense
+      self.expense_transactions.sum(:credits)
+    end
+
     def maximum_click_of_campaigns
       self.campaign_invites.maximum(:avail_click)
     end
