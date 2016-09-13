@@ -363,7 +363,7 @@ var Drag = {
   {
     document.onmousemove = null;
     document.onmouseup   = null;
-    Drag.obj.root.onDragEnd(  parseInt(Drag.obj.root.style[Drag.obj.hmode ? "left" : "right"]), 
+    Drag.obj.root.onDragEnd(  parseInt(Drag.obj.root.style[Drag.obj.hmode ? "left" : "right"]),
                   parseInt(Drag.obj.root.style[Drag.obj.vmode ? "top" : "bottom"]));
     Drag.obj = null;
   },
@@ -406,12 +406,12 @@ function draglayer(){
   var bst = document.documentElement.scrollTop;
   var bcw = document.documentElement.clientWidth;
   var bch = document.documentElement.clientHeight;
-/* 
+/*
   !DOCTYPE声明bug调试
   var bsl = document.body.scrollLeft || document.documentElement.scrollLeft;
   var bst = document.body.scrollTop || document.documentElement.scrollTop;
   var bcw = document.body.clientWidth || document.documentElement.clientWidth;
-  var bch = document.body.clientHeight || document.documentElement.clientHeight; 
+  var bch = document.body.clientHeight || document.documentElement.clientHeight;
 */
   var osl = bsl + Math.floor( ( bcw - ocw ) / 2 );
   osl = Math.max( bsl , osl );
@@ -513,16 +513,11 @@ global.jobArea = {
         myid=id.substr(0,2)+'00';
         if(in_array(myid,jobArea_Arr)) this.del(myid);
       };
-      if(jobArea_Arr.length<5){
-        jobArea_Arr[jobArea_Arr.length]=id;
-        var html='<li class="jobArea'+id+'" onclick="jobArea.Chk(\''+id+'\')">'+ja[id]+'</li>';
-        $('#jobAreSelected dd').append(html);
-        $('.jobArea'+id).addClass('chkON');
-        $('#jobAreSelected li').hover(function(){$(this).addClass('over')},function(){$(this).removeClass('over')});
-      }else{
-        alert('您最多能选择5项');
-        return false;
-      }
+      jobArea_Arr[jobArea_Arr.length]=id;
+      var html='<li class="jobArea'+id+'" onclick="jobArea.Chk(\''+id+'\')">'+ja[id]+'</li>';
+      $('#jobAreSelected dd').append(html);
+      $('.jobArea'+id).addClass('chkON');
+      $('#jobAreSelected li').hover(function(){$(this).addClass('over')},function(){$(this).removeClass('over')});
     }else{
       this.del(id);
     }
@@ -540,7 +535,7 @@ global.jobArea = {
     for(var i in jobArea_Arr){
       areaStr+='/'+ja[jobArea_Arr[i]];
     }
-    areaStr=areaStr.substring(1)?areaStr.substring(1):'全部'; 
+    areaStr=areaStr.substring(1)?areaStr.substring(1):'全部';
     $('#btn_jobArea').html(areaStr);
     $('#btn_jobArea').trigger("change");
     $('#jobAreaID').val(jobArea_Arr);
