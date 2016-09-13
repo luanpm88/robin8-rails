@@ -7,6 +7,8 @@ module Campaigns
       has_one :region_target, -> {where(:target_type => 'region')}, class_name: "CampaignTarget"
       has_one :tag_target, -> {where(:target_type => 'tags')}, class_name: "CampaignTarget"
       has_one :sns_platform_target, -> {where(:target_type => 'sns_platforms')}, class_name: "CampaignTarget"
+      has_one :gender_target, -> {where(:target_type => 'gender')}, class_name: "CampaignTarget"
+      has_one :age_target, -> {where(:target_type => 'age')}, class_name: "CampaignTarget"
       has_one :newbie_kol_target, -> {where(:target_type => [:newbie_kols])}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols, :newbie_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"

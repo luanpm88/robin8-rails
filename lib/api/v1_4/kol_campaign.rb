@@ -131,7 +131,6 @@ module API
 
           service = KolUpdateCampaignService.new(brand_user, campaign, declared_params)
           service.perform
-          campaign.reload
           present :error, 0
           present :kol_amount, current_kol.avail_amount.to_f
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity

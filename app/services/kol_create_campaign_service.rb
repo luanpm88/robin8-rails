@@ -58,9 +58,12 @@ class KolCreateCampaignService
   private
 
   def create_default_targets
-    ['age', 'region', 'gender', 'tags'].each do |target_type|
+    ['age', 'region', 'gender'].each do |target_type|
       @campaign.campaign_targets.create!({target_type: target_type, target_content: @campaign_params[target_type.to_sym]})
     end
+
+    tag_labels = @campaign_params[:tags]
+    @campaign.campaign_targets.create!({target_type: 'tags', target_content: tag_labels.split(',').collect { |label| ::Tag.get_name_by_label(label) }.join(',')})
   end
 
   def enough_amount? user, budget
