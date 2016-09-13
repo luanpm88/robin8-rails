@@ -22,7 +22,6 @@ class LotteryActivity < ActiveRecord::Base
   scope :delivered, -> { where(delivered: true) }
   scope :ordered, -> { order("created_at desc") }
 
-
   def generate_ticket_bucket
     bucket = []
 
@@ -81,6 +80,11 @@ class LotteryActivity < ActiveRecord::Base
     self.orders.paid.where(kol: kol).inject([]) do |res, o|
       res += o.tickets
     end.map(&:code)
+  end
+
+  def get_net_income(kol)
+    return 0 unless self.lottery_product.income? and kol == self.lucky_kol
+    self.lottery_product.price - self.orders.where(kol: self.lucky_kol).sum(:credits)
   end
 
   def poster

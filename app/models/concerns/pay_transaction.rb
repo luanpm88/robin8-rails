@@ -47,7 +47,8 @@ module Concerns
       ActiveRecord::Base.transaction do
         self.lock!
         self.increment!(:amount, credits)
-        self.increment!(:historical_income, credits)   if self.is_a? Kol  and subject == "campaign"
+         # only count net income if need
+        self.increment!(:historical_income, (self.get_income_of(item) || credits)) if self.is_a? Kol
         self.increment!(:historical_recharge, credits) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
         self.decrement!(:historical_payout, credits)   if self.is_a? User and subject == "campaign"
         transaction = build_transaction(credits, subject, 'income', item , opposite, created_at)

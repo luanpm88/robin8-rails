@@ -29,6 +29,10 @@ class LotteryProduct < ActiveRecord::Base
     end
   end
 
+  def income?
+    self.mode == "cash"
+  end
+
   def mode=(value)
     super(value.blank? ? nil : value)
   end

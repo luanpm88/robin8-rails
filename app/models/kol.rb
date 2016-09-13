@@ -37,8 +37,8 @@ class Kol < ActiveRecord::Base
   has_many :campaign_shows
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
-  has_many :income_transactions, -> {income_transaction}, :as => :account, :class => Transaction
-  has_many :withdraw_transactions, -> {payout_transaction}, :as => :account, :class => Transaction
+  has_many :income_transactions,   -> {income_transaction}, :as => :account, :class => Transaction
+  has_many :withdraw_transactions, -> {withdraw_transaction}, :as => :account, :class => Transaction
 
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
