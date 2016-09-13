@@ -1,0 +1,89 @@
+<h3>Cps订单列表</h3>
+
+  <div class="panel panel-default">
+    <!--<div class="panel-heading">-->
+      <!--搜索过滤-->
+    <!--</div>-->
+    <div id="searchPanel" class="panel-body">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>kol id</label>
+              <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Kol名字</label>
+              <%= f.search_field :kol_name_cont, class: "form-control", placeholder: "KOL NAME" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Cps标题</label>
+              <%= f.search_field :cps_article_title_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>订单号</label>
+              <%= f.search_field :order_id_cont, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>状态</label>
+              <%= f.select :status_eq, CpsPromotionOrder.get_statuses_field, {:prompt => "全部"}, class: "form-control", placeholder: "SKU ID" %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label>&nbsp;</label>
+            <div>
+              <%= f.submit "搜索", class: "btn btn-primary" %>
+              <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>kol</th>
+    <th>文章</th>
+    <th>订单号</th>
+    <th>下单时间</th>
+    <th>yn</th>
+    <th>订单金额</th>
+    <th>订单状态</th>
+    <th>查询时间</th>
+    <th>佣金</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @cps_promotion_orders.each do |order| %>
+    <tr>
+      <td><%= link_to order.kol.name, marketing_dashboard_kol_path(order.kol) rescue nil %></td>
+      <td><%= link_to order.cps_article.title , marketing_dashboard_cps_articles_path("q[id_eq]" => order.cps_article.id) rescue nil %></td>
+      <td><%= order.order_id %></td>
+      <td><%= order.order_time.to_s(:date_time) %></td>
+      <td><%= order.yn %></td>
+      <td><%= order.total_money %></td>
+      <td><%= order.status %></td>
+      <td><%= order.order_query_time %></td>
+      <td><%= order.commision_fee %></td>
+      <td>
+        <%= link_to '订单详情', items_marketing_dashboard_cps_promotion_orders_path("q[cps_promotion_order_id_eq]" => order.id) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+  <div class="pull-right">
+    <%= will_paginate @cps_promotion_orders, renderer: BootstrapPagination::Rails %>
+  </div>

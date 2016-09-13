@@ -20,6 +20,10 @@ class PagesController < ApplicationController
     render 'kol', :layout => 'brand_v2'
   end
 
+  def carticles
+    render "carticles/show", :layout => false
+  end
+
   def moments
     render 'marketing', :layout => 'brand_v2'
   end

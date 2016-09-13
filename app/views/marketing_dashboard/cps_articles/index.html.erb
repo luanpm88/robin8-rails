@@ -1,0 +1,80 @@
+<h3>Cps文章列表</h3>
+
+<div class="panel panel-default">
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>文章标题</label>
+            <%= f.search_field :title_cont, class: "form-control", placeholder: "文章标题" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>作者名</label>
+            <%= f.text_field :author_name_cont, class: "form-control", placeholder: "作者名" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>作者ID</label>
+            <%= f.text_field :author_id_eq, class: "form-control", placeholder: "作者ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>文章标题</th>
+    <th>封面图</th>
+    <th>作者</th>
+    <th>状态</th>
+    <th>审核备注</th>
+    <th>创作时间</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @cps_articles.each do |c| %>
+    <tr>
+      <td><%= link_to c.title, "/cps_articles/#{c.id}", :target => "_blank" %></td>
+      <td><%= image_tag c.cover, :size => '100x100' %></td>
+      <td><%= link_to c.kol.name, marketing_dashboard_kol_path(c), :target => "_blank" %></td>
+      <td>
+        <% if c.status == 'pending' %>
+          <span class="label label-info"><%= CpsArticle::Statuses[c.status] %></span>
+        <% elsif c.status == 'passed' %>
+          <span class="label label-success"><%= CpsArticle::Statuses[c.status] %></span></br>
+          <span class="label label-default"><%= c.enabled ? '分享中' : '已下架' %></span>
+        <% elsif c.status == 'rejected' %>
+          <span class="label label-warning"><%= CpsArticle::Statuses[c.status] %></span>
+        <% end %>
+      </td>
+      <td><%= c.check_remark %></td>
+      <td><%= c.created_at.to_s(:date_time) %></td>
+      <td>
+        <%= link_to '审核', edit_marketing_dashboard_cps_article_path(c) if c.status == 'pending' %></br>
+        <%= link_to (c.enabled ? '下架' : '上架'), switch_marketing_dashboard_cps_article_path(c) if c.status == 'passed' %> </br>
+        <%= link_to "商品列表 [#{c.cps_materials.size}]", materials_marketing_dashboard_cps_article_path(c)  %></br>
+        <%= link_to "分享列表 [#{c.cps_article_shares.size}]", article_shares_marketing_dashboard_cps_article_path(c) if c.status == 'passed' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="pull-right">
+  <%= will_paginate @cps_articles, renderer: BootstrapPagination::Rails %>
+</div>

@@ -64,6 +64,7 @@ module API
           end
         end
 
+        #左边导航
         class Primary < Grape::Entity
           # key 没改，内容已经变成所有收入
           expose :influence_score  do |kol|
