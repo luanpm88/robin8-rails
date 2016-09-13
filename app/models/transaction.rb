@@ -70,11 +70,11 @@ class Transaction < ActiveRecord::Base
       when 'campaign_compensation'
         "活动补偿红包(#{self.item.name})"
       when 'cps_share_commission'
-        "CPS佣金"
+        "CPS佣金(#{self.item.cps_article.title})"
       when 'cps_tax'
-        "CPS税费"
+        "CPS税费(#{self.item.cps_article.title})"
       when 'cps_writing_commission'
-        "CPS文章税费"
+        "CPS文章税费(#{self.item.cps_article.title})"
     end
   end
 

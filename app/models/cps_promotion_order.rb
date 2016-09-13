@@ -4,6 +4,8 @@ class CpsPromotionOrder < ActiveRecord::Base
   belongs_to :cps_article_share
   has_one :cps_article, :through => :cps_article_share
 
+  #pending canceled finished part_return full_return settled
+
   # after_save :update_status
   Statuses = {:pending => '待收货', :finished => '已收货待确认', :part_return => '部分退货', :full_return => '全部退货', :settled => '已结算'}
   def self.get_statuses_field
