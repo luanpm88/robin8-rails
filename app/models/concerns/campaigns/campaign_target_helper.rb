@@ -81,7 +81,8 @@ module Campaigns
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
           unless target.target_content == '全部' || target.target_content == '全部 全部'
-            kols = kols.where(:app_city => target.get_citys)
+            cities = target.target_content.split(',').collect { |name| City.where("name like '#{name}%'").first.name_en }
+            kols = kols.where(:app_city => cities)
           end
         elsif target.target_type == 'tags'
           unless target.target_content == '全部'
@@ -93,14 +94,18 @@ module Campaigns
             kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
             kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
           end
-        #TODO 添加指定kols
-        # elsif target.target_type == 'age'
-        #   kols = kols.where("age > '#{target.contents}'")
-        # elsif target.target_type == 'age'
-        #   kols = kols.where("age > '#{target.contents}'")
-        # elsif target.target_type == 'gender'
-        #   kols = kols.where("gender = '#{target.contents}'")
+        elsif target.target_type == 'age'
+          unless target.target_content == '全部'
+            min_age = target.target_content.split(',').map(&:to_i).first
+            max_age = target.target_content.split(',').map(&:to_i).last
+            kols = kols.where(age: Range.new(min_age, max_age))
+          end
+        elsif target.target_type == 'gender'
+          unless target.target_content == '全部'
+            kols = kols.where(gender: target.target_content.to_i)
+          end
         end
+        #TODO 添加指定kols
       end
 
       kols.distinct.collect{|t| t.id} - get_unmatched_kol_ids rescue []
