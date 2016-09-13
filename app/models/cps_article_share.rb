@@ -10,7 +10,7 @@ class CpsArticleShare < ActiveRecord::Base
   has_many :cps_promotion_valid_order_items, :through => :cps_promotion_valid_orders, :source => 'cps_promotion_order_items'
   # 确认收入
   has_many :cps_promotion_settled_orders, -> {where(:status => 'settled')}, :class_name => 'CpsPromotionOrder'
-  has_many :cps_promotion_settled_order_items, :through => :cps_promotion_valid_orders, :source => 'cps_promotion_order_items'
+  has_many :cps_promotion_settled_order_items, :through => :cps_promotion_settled_orders, :source => 'cps_promotion_order_items'
 
   belongs_to :cps_article
   belongs_to :kol

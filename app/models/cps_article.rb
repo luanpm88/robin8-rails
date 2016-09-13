@@ -52,7 +52,7 @@ class CpsArticle < ActiveRecord::Base
     commission.round(2)
   end
 
-  # 获取文章写作 已结算佣金
+  # 获取文章写作 已结算佣金 也可以通过流水来计算
   def writing_settled_commission
     commission = self.cps_article_shares.collect{|t| t.cps_promotion_settled_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
     commission.round(2)

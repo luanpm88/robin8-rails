@@ -35,4 +35,10 @@ class MarketingDashboard::CpsMaterialsController < MarketingDashboard::BaseContr
     end
   end
 
+  def switch
+    @cps_material = CpsMaterial.find params[:id]
+    @cps_material.update_column(:enabled, !@cps_material.enabled)
+    redirect_to :action => :index
+  end
+
 end

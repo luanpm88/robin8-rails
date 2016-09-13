@@ -27,6 +27,12 @@
             </div>
           </div>
           <div class="col-md-3">
+            <div class="form-group">
+              <label>状态</label>
+              <%= f.select :enabled_eq, [['出售中', 1], ['已下架', 0]], {:prompt => "全部"}, class: "form-control", placeholder: "" %>
+            </div>
+          </div>
+          <div class="col-md-3">
             <label>&nbsp;</label>
             <div>
               <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -82,7 +88,7 @@
       <td><%= CpsMaterial::Categories[c.category] %></td>
       <td><%= c.enabled ? '出售中' : '已下架' %></td>
       <td>
-        <%= link_to c.enabled ? '下架' : '上架' %> </br>
+        <%= link_to (c.enabled ? '下架' : '上架'), switch_marketing_dashboard_cps_material_path(c) %> </br>
         <%= link_to '设置', edit_marketing_dashboard_cps_material_path(c) %>
       </td>
     </tr>
