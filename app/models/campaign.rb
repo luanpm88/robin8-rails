@@ -49,13 +49,16 @@ class Campaign < ActiveRecord::Base
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :recent_7, ->{ where("start_time > '#{7.days.ago}'")}
   scope :order_by_start, -> { order('start_time desc')}
+
+  # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
   scope :order_by_status, ->(ids = '""') { order(" case
                                          when campaigns.per_budget_type = 'invite' and campaigns.status = 'executing'  then 5
                                          when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check != '1' then 5
                                          when campaigns.per_budget_type = 'recruit' and (campaigns.status = 'executed' or (campaigns.status = 'executing' and campaigns.end_apply_check = '1') ) and campaigns.id in (#{ids}) then 4
-                                         when campaigns.status = 'executing' then 3
-                                         when campaigns.status ='executed' then 2
-                                         else 1 end desc,
+                                         when campaigns.per_budget_type != 'recruit' and campaigns.status = 'executing'  then 3
+                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check = '1' then 2
+                                         when campaigns.status ='executed' then 1
+                                         else 0 end desc,
                                         start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
