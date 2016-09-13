@@ -156,7 +156,11 @@ class CampaignInvite < ActiveRecord::Base
 
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
-    $weixin_client.authorize_url url
+    if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
+      url
+    else
+      $weixin_client.authorize_url url
+    end
   end
 
   def earn_money
@@ -237,7 +241,7 @@ class CampaignInvite < ActiveRecord::Base
   def self.schedule_day_settle(async = true)
     Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
     if async
-      CampaignDaySettleWorker.perform_async
+      ::CampaignDaySettleWorker.perform_async
     else
       if Rails.env.production?
         transaction_time = Date.today.beginning_of_day - 1.minutes

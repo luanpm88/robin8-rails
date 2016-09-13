@@ -264,25 +264,26 @@ module Campaigns
       else
         kol_budget_rate = KolBudgetRate
       end
-      if is_click_type?  || is_cpi_type? || is_cpa_type?
-        actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
-        point1, point2 = actual_per_budget.divmod(0.1)
-        point2 = point2.round(2)
-        if point2 >= 0.08
-          actual_per_action_budget = (point1 + 1) * 0.1
-        elsif point2 >= 0.03
-          actual_per_action_budget = point1 * 0.1 + 0.05
-        else
-          actual_per_action_budget = point1 * 0.1
-        end
-        actual_per_action_budget = actual_per_action_budget.round(2)
-      elsif is_recruit_type?
-        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
-      elsif is_invite_type?
-        actual_per_action_budget = nil
-      else
-        actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
-      end
+      actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(2)  rescue nil
+      # if is_click_type?  || is_cpi_type? || is_cpa_type?
+      #   actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
+      #   point1, point2 = actual_per_budget.divmod(0.1)
+      #   point2 = point2.round(2)
+      #   if point2 >= 0.08
+      #     actual_per_action_budget = (point1 + 1) * 0.1
+      #   elsif point2 >= 0.03
+      #     actual_per_action_budget = point1 * 0.1 + 0.05
+      #   else
+      #     actual_per_action_budget = point1 * 0.1
+      #   end
+      #   actual_per_action_budget = actual_per_action_budget.round(2)
+      # elsif is_recruit_type?
+      #   actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
+      # elsif is_invite_type?
+      #   actual_per_action_budget = nil
+      # else
+      #   actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
+      # end
       actual_per_action_budget
     end
 
@@ -302,8 +303,8 @@ module Campaigns
     end
 
     class_methods do
-      PushStartHour = 9
-      PushEndHour = 21
+      PushStartHour = 8
+      PushEndHour = 22
       PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
       def can_push_message(campaign)
         now =  Time.now
