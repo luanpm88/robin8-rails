@@ -332,9 +332,20 @@
         </li>
         <% end %>
 
+        <% if can?(:read, Kol) %>
         <li>
-          <%= link_to '获取手机注册验证码', new_marketing_dashboard_verify_code_path %>
+          <a href="#">辅助功能 <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '获取手机注册验证码', new_marketing_dashboard_verify_code_path %>
+            </li>
+            <li>
+              给KOL发送短信
+              <%#= link_to '给KOL发送短信', show_marketing_dashboard_verify_code_path %>
+            </li>
+          </ul>
         </li>
+        <% end %>
       </ul>
       <br/><br/><br/>
       <!-- /.sidebar-collapse -->
