@@ -119,7 +119,7 @@ module API
           if current_kol.present?
             SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])
           end
-          @campaigns = Campaign.order_by_status.limit(5)
+          @campaigns = Campaign.recent_7.order_by_status.limit(5)
           present :error, 0
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
