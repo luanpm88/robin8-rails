@@ -47,6 +47,9 @@ module API
           expose :total_income do |kol|
             kol.total_income.round(2)
           end
+          expose :total_expense do |kol|
+            0 # todo
+          end
           expose :total_withdraw do |kol|
             kol.total_withdraw.round(2)
           end
