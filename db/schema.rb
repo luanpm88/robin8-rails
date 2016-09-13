@@ -1610,6 +1610,7 @@ ActiveRecord::Schema.define(version: 20160912033332) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
+
   create_table "social_account_tags", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
     t.integer  "tag_id",            limit: 4
@@ -1936,6 +1937,7 @@ ActiveRecord::Schema.define(version: 20160912033332) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
