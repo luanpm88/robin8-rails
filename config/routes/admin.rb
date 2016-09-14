@@ -223,10 +223,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :verify_codes do
-      collection do
-        post 'get_verify_code'
-      end
+    namespace :utilities do
+      resource  "verify_code"
+      resource  "marketing_message"
+      resources "sms_messages"
     end
   end
 end
