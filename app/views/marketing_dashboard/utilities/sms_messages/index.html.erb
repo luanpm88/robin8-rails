@@ -15,6 +15,12 @@
           </div>
         </div>
         <div class="col-md-4">
+          <div class="form-group">
+            <label>短信类型</label>
+            <%= f.select :mode_eq, SmsMessage::MODE, { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-4">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -65,3 +71,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @sms_messages, renderer: BootstrapPagination::Rails  %>

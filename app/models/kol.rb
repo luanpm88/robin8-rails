@@ -643,7 +643,7 @@ class Kol < ActiveRecord::Base
     if self.kol_role == 'big_v' && self.kol_role_changed?
       content = "恭喜！您的KOL资质审核通过了，速去打开Robin8 APP查看详情！"
       PushMessage.push_common_message([self], content, 'KOL资质审核通过')
-      Emay::SendSms.to(self.mobile_number, content)
+      SmsMessage.send_to(self, content)
     end
   end
 
