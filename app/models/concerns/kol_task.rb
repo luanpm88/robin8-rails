@@ -41,8 +41,17 @@ module Concerns
 
     #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
-      device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
-      return if self.app_platform.blank? || self.os_version.blank? || device_token_exist == true
+      if self.IMEI.present?
+        device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+      elsif self.IDFA.present?
+        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+      else
+        device_exist = true
+      end
+      Rails.logger.transaction.info "--------generate_invite_task_record---#{self.id}-----IMEI:#{self.IMEI}---IDFA:#{self.IDFA}---exist:#{device_exist}"
+
+      # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
+      return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
       download_invitation = DownloadInvitation.find_invation(self)
       if download_invitation
         ActiveRecord::Base.transaction do
