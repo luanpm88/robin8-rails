@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         get :promotion_orders
         get :article_shares
         get :switch
+        get :check
       end
     end
     resources :cps_promotion_orders do

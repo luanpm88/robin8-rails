@@ -15,6 +15,11 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
     @cps_article = CpsArticle.find params[:id]
   end
 
+  def check
+    authorize! :read, CpsArticle
+    @cps_article = CpsArticle.find params[:id]
+  end
+
   def materials
     authorize! :read, CpsArticle
     @cps_article = CpsArticle.find params[:id]
