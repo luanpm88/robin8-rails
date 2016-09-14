@@ -17,6 +17,7 @@ class Transaction < ActiveRecord::Base
   scope :income_or_payout_transaction, ->{where(direct: ["payout", "income"])}
   scope :withdraw_transaction,   ->{where(direct: 'payout', subject: WITHDRAW_SUBJECTS)}
   scope :recharge_transaction,   ->{where(subject: RECHARGE_SUBJECTS)}
+  scope :expense_transaction,    ->{payout_transaction.where.not(subject: WITHDRAW_SUBJECTS)}
 
 
 
