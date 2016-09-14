@@ -263,7 +263,7 @@ class CampaignInvite < ActiveRecord::Base
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'rejected'
     self.settle_lock.lock  do
-      if ['cpi', 'click', 'cpa'].include? self.campaign.per_budget_type
+      if ['click'].include? self.campaign.per_budget_type
         next if (self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
@@ -274,7 +274,7 @@ class CampaignInvite < ActiveRecord::Base
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
-      elsif ['recruit', 'post', 'simple_cpi'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
+      elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'

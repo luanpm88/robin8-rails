@@ -11,6 +11,7 @@ class CpsArticle < ActiveRecord::Base
   after_save :send_notify_to_author
 
   # status  pending, passed, rejected
+  scope :enabled, -> {where(:enabled => true)}
   scope :pending, -> {where(:status => 'pending')}
   scope :passed, -> {where(:status => 'passed')}
   scope :rejected, -> {where(:status => 'rejected')}

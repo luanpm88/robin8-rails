@@ -1,5 +1,5 @@
 module GeTui
-  module Template
+  module Temp
     def self.notification_template(push_message,options = {})
       template = IGeTui::NotificationTemplate.new
       # push_message.template_content.stringify_keys.each{|key,value| template.instance_variable_set("@#{key}",value)}

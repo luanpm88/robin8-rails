@@ -47,6 +47,9 @@ module API
           expose :total_income do |kol|
             kol.total_income.round(2)
           end
+          expose :total_expense do |kol|
+            kol.total_expense.round(2)
+          end
           expose :total_withdraw do |kol|
             kol.total_withdraw.round(2)
           end
@@ -61,6 +64,7 @@ module API
           end
         end
 
+        #左边导航
         class Primary < Grape::Entity
           # key 没改，内容已经变成所有收入
           expose :influence_score  do |kol|

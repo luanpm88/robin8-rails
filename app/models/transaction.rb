@@ -6,6 +6,7 @@ class Transaction < ActiveRecord::Base
   validates :trade_no, allow_nil: true, allow_blank: true, uniqueness: true
 
   RECHARGE_SUBJECTS = ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay']
+  WITHDRAW_SUBJECTS = ['manual_withdraw', 'withdraw']
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
@@ -14,7 +15,9 @@ class Transaction < ActiveRecord::Base
   scope :income_transaction,   ->{where(direct: 'income')}
   scope :payout_transaction,   ->{where(direct: 'payout')}
   scope :income_or_payout_transaction, ->{where(direct: ["payout", "income"])}
-  scope :recharge_transaction, ->{where(subject: RECHARGE_SUBJECTS)}
+  scope :withdraw_transaction,   ->{where(direct: 'payout', subject: WITHDRAW_SUBJECTS)}
+  scope :recharge_transaction,   ->{where(subject: RECHARGE_SUBJECTS)}
+  scope :expense_transaction,    ->{payout_transaction.where.not(subject: WITHDRAW_SUBJECTS)}
 
 
 
@@ -72,6 +75,8 @@ class Transaction < ActiveRecord::Base
         "活动补偿红包(#{self.item.name})"
       when 'limited_discount'
         "限时优惠"
+      when 'lottery_reward'
+        "夺宝现金奖励"
       when 'cps_share_commission'
         "CPS佣金(#{self.item.cps_article.title})"
       when 'cps_tax'

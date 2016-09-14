@@ -1,3 +1,4 @@
+
 *{
   margin: 0;
   padding: 0;
@@ -8,6 +9,10 @@
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-text-size-adjust:none;
 }
+
+//html, body, .wrapper, .cps_article{
+//  height: 100%;
+//}
 
 body{
   line-height: 1;
@@ -37,6 +42,7 @@ body{
 @media screen and (min-width: 376px) {
   .cover{height: 227px;}
 }
+
 .topic-info{
   padding: 0 13px;
   overflow: auto;
@@ -139,4 +145,32 @@ body{
       }
     }
   }
+
+  .disclaimer{
+    padding: 50px 10px 72px;
+    text-align: center;
+    .title{
+      font-size: 11px;
+      color: #8d8d8d;
+    }
+    .content{
+      padding-top: 7px;
+      font-size: 11px;
+      color: #a9a9a9;
+      line-height: 1.4;
+    }
+  }
+  .download-app{
+    z-index: 10;
+    display: block;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #efefef;
+    img{
+      width: 100%;
+      vertical-align: bottom;
+    }
+  }
 }
+

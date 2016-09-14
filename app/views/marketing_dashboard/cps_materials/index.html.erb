@@ -57,6 +57,7 @@
 <table class="table table-bordered">
   <thead>
   <tr>
+    <th>product id</th>
     <th>sku id</th>
     <th>图片</th>
     <th>名称</th>
@@ -74,6 +75,7 @@
   <tbody>
   <% @cps_materials.each do |c| %>
     <tr>
+      <td><%= c.id %></td>
       <td><%= c.sku_id %></td>
       <td><%= image_tag c.img_url, :size => '100x100' %></td>
       <td><%= link_to c.goods_name, c.material_url, :target => "_blank" %></td>
@@ -96,7 +98,7 @@
   </tbody>
 </table>
 
-<% if params[:controller_name] == 'marketing_dashboards/cps_materials' %>
+<% if params[:controller] == 'marketing_dashboard/cps_materials' %>
   <div class="pull-right">
     <%= will_paginate @cps_materials, renderer: BootstrapPagination::Rails %>
   </div>

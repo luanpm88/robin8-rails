@@ -15,6 +15,11 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
     @cps_article = CpsArticle.find params[:id]
   end
 
+  def check
+    authorize! :read, CpsArticle
+    @cps_article = CpsArticle.find params[:id]
+  end
+
   def materials
     authorize! :read, CpsArticle
     @cps_article = CpsArticle.find params[:id]
@@ -41,6 +46,12 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
       flash[:error] = "保存失败"
       render :action => :edit
     end
+  end
+
+  def switch
+    @cps_article = CpsArticle.find params[:id]
+    @cps_article.update_column(:enabled, !@cps_article.enabled)
+    redirect_to :action => :index
   end
 
 end

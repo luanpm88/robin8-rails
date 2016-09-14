@@ -37,8 +37,9 @@ class Kol < ActiveRecord::Base
   has_many :campaign_shows
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
-  has_many :income_transactions, -> {income_transaction}, :as => :account, :class => Transaction
-  has_many :withdraw_transactions, -> {payout_transaction}, :as => :account, :class => Transaction
+  has_many :income_transactions,   -> {income_transaction}, :as => :account, :class => Transaction
+  has_many :withdraw_transactions, -> {withdraw_transaction}, :as => :account, :class => Transaction
+  has_many :expense_transactions, -> {expense_transaction}, :as => :account, :class => Transaction
 
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
@@ -101,6 +102,7 @@ class Kol < ActiveRecord::Base
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
   AdminKolIds = [79,48587]
+  TouristMobileNumber = "13000000000"
 
   ransacker :avail_amount do |parent|
     Arel.sql('(`kols`.`amount` - `kols`.`frozen_amount`)')

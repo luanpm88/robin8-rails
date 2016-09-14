@@ -11,7 +11,7 @@ module API
           optional :page, type: Integer
         end
         get '/' do
-          cps_articles = CpsArticle.passed.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+          cps_articles = CpsArticle.passed.enabled.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
           present :error, 0
           to_paginate(cps_articles)
           present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary

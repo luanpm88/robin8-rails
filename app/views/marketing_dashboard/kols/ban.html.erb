@@ -8,11 +8,11 @@
         </div>
         <div class="field form-group">
           <%= f.label "手机号" %>
-          <%= f.text_field :mobile_number, disabled: true, class: "form-control" %>
+          <div><%= f.object.mobile_number %></div>
         </div>
         <div class="field form-group">
           <%= f.label "名字" %>
-          <%= f.text_field :name, disabled: true, class: "form-control" %>
+          <div><%= f.object.name %></div>
         </div>
 
         <div class="field form-group" style="position: relative;">
