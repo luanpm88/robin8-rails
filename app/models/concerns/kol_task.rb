@@ -41,7 +41,6 @@ module Concerns
 
     #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
-      Rails.logger.info "-------generate_invite_task_record----#{self.IMEI} -----idfa:#{self.IDFA} "
       if self.IMEI.present?
         device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
       elsif self.IDFA.present?
@@ -49,7 +48,6 @@ module Concerns
       else
         device_exist = true
       end
-      Rails.logger.info "-------generate_invite_task_record----#{device_exist} -----"
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
       download_invitation = DownloadInvitation.find_invation(self)
