@@ -13,9 +13,9 @@ module GeTui
       return if push_message.receiver_cids.size == 0
       single_message = IGeTui::SingleMessage.new
       if push_message.template_type == 'transmission'
-        single_message.data = Template.transmission_template(push_message)
+        single_message.data = Temp.transmission_template(push_message)
       elsif push_message.template_type == 'notification'
-        single_message.data = Template.notification_template(push_message)
+        single_message.data = Temp.notification_template(push_message)
       end
       client = IGeTui::Client.new(push_message.receiver_cids[0])
       pusher.push_message_to_single(single_message, client)
@@ -25,9 +25,9 @@ module GeTui
       return if push_message.receiver_cids.size == 0
       list_message = IGeTui::ListMessage.new
       if push_message.template_type == 'transmission'
-        list_message.data = Template.transmission_template(push_message)
+        list_message.data = Temp.transmission_template(push_message)
       elsif push_message.template_type == 'notification'
-        list_message.data = Template.notification_template(push_message)
+        list_message.data = Temp.notification_template(push_message)
       end
       #获取 存储的信息 id
       list_message_content_id = pusher.get_content_id(list_message)
@@ -38,9 +38,9 @@ module GeTui
     def self.push_to_app(push_message)
       app_message = IGeTui::AppMessage.new
       if push_message.template_type == 'transmission'
-        app_message.data = Template.transmission_template(push_message)
+        app_message.data = Temp.transmission_template(push_message)
       elsif push_message.template_type == 'notification'
-        app_message.data = Template.notification_template(push_message)
+        app_message.data = Temp.notification_template(push_message)
       end
       push_message.receiver_list.each{|list_key,list_value| eval("app_message.#{list_key} = #{list_value}") }
       pusher.push_message_to_app(app_message)
