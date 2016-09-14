@@ -45,8 +45,17 @@
       <% end %>
       <% index += 2 %>
     <% end %>
-  </div>
-  <div class="">
 
+    <!--分享出去后显示-->
+    <% if @cps_share %>
+      <div class="disclaimer">
+        <div class="title">免责申明</div>
+        <div class="content">Robin8平台所发布文章内容仅供读者参考，本平台不承担相关责任。转载时会标注作者及出处</div>
+      </div>
+      <%= link_to 'http://t.cn/RGrNLK2', :class => 'download-app' do %>
+        <%= image_tag 'article_download_app.png' %>
+      <% end  %>
+    <% end %>
   </div>
+
 </div>
