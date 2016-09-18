@@ -205,6 +205,7 @@
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
+                <li><%= link_to '活动推送记录', push_record_marketing_dashboard_campaign_path(c), :target => "_blank" %></li>
                 <li><%= link_to '活动参与数据', marketing_dashboard_campaign_campaign_invites_path(c), :target => "_blank" %></li>
                 <li><%= link_to '活动点击数据', marketing_dashboard_campaign_campaign_shows_path(c), target: "_blank" %></li>
                 <li><%= link_to '活动统计数据', get_brand_campaign_show_url(c), target: "_blank" %></li>
