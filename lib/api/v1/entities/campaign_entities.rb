@@ -12,11 +12,18 @@ module API
               campaign.per_budget_type
             end
           end
-          expose :per_action_type, :sub_sub_message_type do |campaign|
+          expose :per_action_type do |campaign|
             if campaign.is_cpi_type?
               'cpi'
             else
                nil
+            end
+          end
+          expose :sub_sub_message_type do |campaign|
+            if campaign.is_cpi_type?
+              'cpi'
+            else
+              nil
             end
           end
           expose :url do |campaign|
