@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20160912072344) do
   create_table "admin_roles", force: :cascade do |t|
     t.string   "name",          limit: 100
     t.integer  "resource_id",   limit: 4
-    t.string   "resource_type", limit: 100
+    t.string   "resource_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -288,9 +288,6 @@ ActiveRecord::Schema.define(version: 20160912072344) do
     t.datetime "upload_time"
     t.datetime "check_time"
     t.boolean  "auto_check",        limit: 1,     default: false
-    t.integer  "social_account_id", limit: 4
-    t.float    "sale_price",        limit: 24
-    t.float    "price",             limit: 24
     t.string   "kol_score",         limit: 255
     t.string   "brand_opinion",     limit: 255
   end
@@ -877,15 +874,15 @@ ActiveRecord::Schema.define(version: 20160912072344) do
   end
 
   create_table "kol_announcements", force: :cascade do |t|
-    t.integer  "position",   limit: 4
     t.string   "category",   limit: 255
     t.string   "cover",      limit: 255
     t.string   "title",      limit: 255
     t.string   "link",       limit: 255
     t.string   "kol_id",     limit: 255
-    t.boolean  "enable",     limit: 1,   default: true
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.integer  "position",   limit: 4
+    t.boolean  "enable",     limit: 1,   default: true
   end
 
   create_table "kol_categories", force: :cascade do |t|
@@ -1000,6 +997,13 @@ ActiveRecord::Schema.define(version: 20160912072344) do
   add_index "kol_keywords", ["kol_id"], name: "index_kol_keywords_on_kol_id", using: :btree
   add_index "kol_keywords", ["social_account_id"], name: "index_kol_keywords_on_social_account_id", using: :btree
 
+  create_table "kol_professions", force: :cascade do |t|
+    t.integer  "kol_id",        limit: 4
+    t.integer  "profession_id", limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "kol_profile_screens", force: :cascade do |t|
     t.string   "url",         limit: 255
     t.string   "name",        limit: 255
@@ -1015,7 +1019,10 @@ ActiveRecord::Schema.define(version: 20160912072344) do
     t.string   "title",         limit: 255
     t.string   "cover_url",     limit: 255
     t.text     "desc",          limit: 16777215
+    t.text     "desc",          limit: 65535
     t.string   "link",          limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "provider",      limit: 255
     t.integer  "like_count",    limit: 4
     t.integer  "read_count",    limit: 4
@@ -1024,6 +1031,7 @@ ActiveRecord::Schema.define(version: 20160912072344) do
     t.string   "publish_time",  limit: 255
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.string   "cover_url",     limit: 255
   end
 
   create_table "kol_tags", force: :cascade do |t|
@@ -1927,6 +1935,7 @@ ActiveRecord::Schema.define(version: 20160912072344) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
