@@ -1,0 +1,75 @@
+<h1>短信发送日志</h1>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>手机号</label>
+            <%= f.search_field :phone_cont, class: "form-control", placeholder: "手机号" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>短信类型</label>
+            <%= f.select :mode_eq, SmsMessage::MODE, { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>接收者ID</th>
+      <th>接收者类型</th>
+      <th>手机</th>
+      <th>内容</th>
+      <th>类型</th>
+      <th>状态</th>
+      <th><%= sort_link(@q, :created_at, "发送时间") %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sms_messages.each do |message| %>
+      <%
+        receiver = message.receiver
+        if receiver
+          if receiver.is_a?(Kol)
+            receiver_name = "KOL"
+            receiver_path = marketing_dashboard_kol_path(receiver)
+          else
+            receiver_name = "品牌主"
+            receiver_path = marketing_dashboard_user_path(receiver)
+          end
+        end
+      %>
+      <tr>
+        <td><%= link_to receiver.id, receiver_path, :target => "_blank" if receiver %></td>
+        <td><%= receiver_name %></td>
+        <td><%= message.phone %></td>
+        <td><%= message.content %></td>
+        <td><%= message.mode %></td>
+        <td><%= message.status %></td>
+        <td><%= message.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @sms_messages, renderer: BootstrapPagination::Rails  %>

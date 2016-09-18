@@ -340,14 +340,16 @@
 
         <% if can?(:read, Kol) %>
         <li>
-          <a href="#">辅助功能 <span class="fa arrow"></span></a>
+          <a href="#">实用工具 <span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '获取手机注册验证码', new_marketing_dashboard_verify_code_path %>
+              <%= link_to '获取手机注册验证码', marketing_dashboard_utilities_verify_code_path %>
             </li>
             <li>
-              给KOL发送短信
-              <%#= link_to '给KOL发送短信', show_marketing_dashboard_verify_code_path %>
+              <%= link_to '指定手机发营销短信', marketing_dashboard_utilities_marketing_message_path %>
+            </li>
+            <li>
+              <%= link_to '短信发送日志', marketing_dashboard_utilities_sms_messages_path %>
             </li>
           </ul>
         </li>
