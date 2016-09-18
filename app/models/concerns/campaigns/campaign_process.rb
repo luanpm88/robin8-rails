@@ -91,6 +91,12 @@ module Campaigns
         CampaignWorker.perform_at(_start_time, self.id, 'start')
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+      # 推送记录
+      if Rails.env.development? or Rails.env.test?
+        CampaignPushRecordWorker.new.perform(self.id, 'common')
+      else
+        CampaignPushRecordWorker.perform_async(self.id, 'common')
+      end
     end
 
     def go_start(kol_ids = nil)
@@ -113,7 +119,8 @@ module Campaigns
     # 当指定区域 或者 地区 不是全部 的时候 执行
     def add_queue_to_add_kols_when_tag_or_region_is_special
       if self.is_click_type? or self.is_post_type?
-        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) )
+        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) ) \
+           or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content)) or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content))
           CampaignWorker.perform_at(Time.now+5.hours, self.id, 'append_kols')
         end
       end
@@ -125,7 +132,12 @@ module Campaigns
         Kol.where(:id => kol_ids).each do |kol|
           kol.add_campaign_id self.id, true
         end
-        Message.new_campaign(self, kol_ids)
+        if Rails.env.development? or Rails.env.test?
+          CampaignPushRecordWorker.new.perform(self.id, 'append')
+        else
+          Message.new_campaign(self, kol_ids)
+          CampaignPushRecordWorker.perform_async(self.id, 'append')
+        end
       end
     end
 
@@ -137,7 +149,14 @@ module Campaigns
           should_push_kol_is << kol.id
         end
       end
-      Message.new_campaign(self, should_push_kol_is)  if should_push_kol_is.size > 0
+      if should_push_kol_is.size > 0
+        if Rails.env.development? or Rails.env.test?
+          CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
+        else
+          Message.new_campaign(self, should_push_kol_is)
+          CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
+        end
+      end
     end
 
     #finish_remark:  expired or fee_end

@@ -19,6 +19,13 @@ module API
                nil
             end
           end
+          expose :sub_sub_message_type do |campaign|
+            if campaign.is_cpi_type?
+              'cpi'
+            else
+              nil
+            end
+          end
           expose :url do |campaign|
             campaign.url.gsub("#rd","").gsub("#wechat_redirect","")   rescue campaign.url
           end

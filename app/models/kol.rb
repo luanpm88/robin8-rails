@@ -102,6 +102,7 @@ class Kol < ActiveRecord::Base
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
   AdminKolIds = [79,48587]
+  TouristMobileNumber = "13000000000"
 
   ransacker :avail_amount do |parent|
     Arel.sql('(`kols`.`amount` - `kols`.`frozen_amount`)')

@@ -31,6 +31,14 @@ module Users
     end
 
     def scan_submit
+      unless params[:id]
+        flash[:error] = "请重新登录手机App并重新扫描二维码"
+        return redirect_to login_url(params.permit(:ok_url))
+      end
+      unless params[:token]
+        flash[:error] = "扫码失败，请重试"
+        return redirect_to login_url(params.permit(:ok_url))
+      end
       unless $redis.get(params[:token]) == params[:id]
         flash[:error] = "扫码登录出错，请尝试其他方式"
         return redirect_to login_url(params.permit(:ok_url))

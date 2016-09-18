@@ -1,0 +1,95 @@
+<style type="text/css">
+  .table-responsive table {
+    margin-bottom: 0;
+  }
+</style>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Kol ID</label>
+            <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Kol手机号</label>
+            <%= f.search_field :kol_mobile_number_eq, class: "form-control", placeholder: "Kol手机号" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Kol昵称</label>
+            <%= f.search_field :kol_name_eq, class: "form-control", placeholder: "Kol昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>推送类型</label>
+            <%= f.select :push_type_eq, options_for_select([['首次推送', 'common'], ['补推', 'append'], ['全推', 'push_all']]), { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>推送状态</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.select :success_eq, options_for_select([['成功', 'true'], ['失败', 'false']]), { include_blank: true }, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>活动ID</th>
+        <th>Kol ID</th>
+        <th>推送类型</th>
+        <th>推送状态</th>
+        <th>成功原因</th>
+        <th>失败原因</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @push_records.each do |pr| %>
+      <tr>
+        <td><%= pr.campaign_id %></td>
+        <td><%= pr.kol_id %></td>
+        <td>
+          <% if pr.push_type == 'common' %>
+            <%= '首次推送' %>
+          <% elsif pr.push_type == 'append' %>
+            <%= '补推' %>
+          <% elsif pr.push_type == 'push_all' %>
+            <%= '全推' %>
+          <% end %>
+        </td>
+        <td><%= pr.success == true ? '成功' : '失败' %></td>
+        <td><%= pr.success_reason %></td>
+        <td><%= pr.fail_reason %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= will_paginate @push_records, renderer: BootstrapPagination::Rails  %>

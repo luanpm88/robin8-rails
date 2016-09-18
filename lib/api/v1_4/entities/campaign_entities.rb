@@ -23,6 +23,34 @@ module API
           expose :stats_data do |campaign|
             campaign.get_stats_for_app
           end
+
+          expose :tags do |object|
+            target = object.tag_target
+            target.target_content.split(',') if target
+          end
+
+          expose :tag_labels do |object|
+            target = object.tag_target
+            if target
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
+            end
+          end
+
+          expose :region do |object|
+            target = object.region_target
+            target.target_content if target
+          end
+
+          expose :gender do |object|
+            target = object.gender_target
+            target.target_content if target
+          end
+
+          expose :age do |object|
+            target = object.age_target
+            target.target_content if target
+          end
+
         end
 
         class CampaignAlipayEntity < Grape::Entity
@@ -35,6 +63,28 @@ module API
         class CampaignListEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :need_pay_amount, :status, :img_url, :name, :budget, :per_budget_type, :per_action_budget
+          expose :tag_labels do |object|
+            target = object.tag_target
+            if target
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
+            end
+          end
+
+          expose :region do |object|
+            target = object.region_target
+            target.target_content if target
+          end
+
+          expose :gender do |object|
+            target = object.gender_target
+            target.target_content if target
+          end
+
+          expose :age do |object|
+            target = object.age_target
+            target.target_content if target
+          end
+
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
@@ -87,6 +137,28 @@ module API
             else
               []
             end
+          end
+
+          expose :tag_labels do |object|
+            target = object.tag_target
+            if target
+              target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }.join(',')
+            end
+          end
+
+          expose :region do |object|
+            target = object.region_target
+            target.target_content if target
+          end
+
+          expose :gender do |object|
+            target = object.gender_target
+            target.target_content if target
+          end
+
+          expose :age do |object|
+            target = object.age_target
+            target.target_content if target
           end
         end
 
