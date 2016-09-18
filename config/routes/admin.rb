@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         post :refresh_budget
         patch :save_example_screenshot_and_remark
         match 'add_seller', via: [:post, :get]
+        get :push_record
       end
       collection do
         put :reject
