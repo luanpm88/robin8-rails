@@ -4,11 +4,14 @@ class SmsMessage < ActiveRecord::Base
   belongs_to :admin_user
 
   STATUS= [ "pending", "retried", "success", "failed" ]
-  MODE  = [ "general", "feedback", "lottery_delivery", "manual" ]
+
+  MODE  = [ "general", "feedback", "lottery_delivery", "manual", "verified_code" ]
+
   PHONE_EXP = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
 
   scope :feedback, -> { where(mode: "feedback") }
   scope :lottery_delivery, -> { where(mode: "lottery_delivery") }
+  scope :verified_code, -> { where(mode: "verified_code") }
   scope :resource_of_receiver, -> (res, rec) { where(resource: res, receiver: rec) }
 
   validates :phone, :content, :mode, presence: true
