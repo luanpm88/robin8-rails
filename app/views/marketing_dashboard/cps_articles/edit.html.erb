@@ -13,8 +13,13 @@
             </div>
 
             <div class="field form-group">
+              <%= f.label "封面图片" %><br />
+              <%= f.text_field :cover, autofocus: false, class: "form-control" %>
+            </div>
+
+            <div class="field form-group">
               <%= f.label "内容" %><br />
-              <%= f.text_area :content, autofocus: true, :style => "width: 100%;height:300px", class: "form-control" %>
+              <%= f.text_area :content, autofocus: false, :style => "width: 100%;height:300px", class: "form-control" %>
             </div>
 
             <div class="actions">
