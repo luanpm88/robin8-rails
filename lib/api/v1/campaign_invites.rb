@@ -112,9 +112,9 @@ module API
             uploader.store!(params[:screenshot])
             campaign_invite.reupload_screenshot(uploader.url)
             #是否进入自动审核
-            if params[:campaign_logo].present?
-              campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
-            end
+            # if params[:campaign_logo].present?
+            #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
+            # end
             campaign_invite.save
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
