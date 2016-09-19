@@ -16,6 +16,9 @@ Rails.application.routes.draw do
         get :switch
         get :check
       end
+      collection do
+        get :need_shield
+      end
     end
     resources :cps_promotion_orders do
       collection do
