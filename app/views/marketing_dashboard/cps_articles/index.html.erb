@@ -1,5 +1,9 @@
-<h3>Cps文章列表</h3>
+<h3>
+  Cps文章列表
+  <%= link_to '需要下架的文章', '/marketing_dashboard/cps_articles/need_shield', :style=>"font-size: 14px;float:right;color: red" %>
+</h3>
 
+<% if action_name == 'index' %>
 <div class="panel panel-default">
   <div id="searchPanel" class="panel-body">
     <%= search_form_for @q, url: request.path, class: "form" do |f| %>
@@ -33,6 +37,7 @@
     <% end %>
   </div>
 </div>
+<% end %>
 
 <table class="table table-bordered">
   <thead>
@@ -76,6 +81,8 @@
   </tbody>
 </table>
 
-<div class="pull-right">
-  <%= will_paginate @cps_articles, renderer: BootstrapPagination::Rails %>
-</div>
+<% if action_name == 'index' %>
+  <div class="pull-right">
+    <%= will_paginate @cps_articles, renderer: BootstrapPagination::Rails %>
+  </div>
+<% end %>

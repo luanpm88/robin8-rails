@@ -5,6 +5,13 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
     @cps_articles = @q.result.includes(:kol, :cps_materials).order('created_at desc').paginate(paginate_params)
   end
 
+  def need_shield
+    authorize! :read, CpsArticle
+    @cps_articles = CpsArticle.joins(:cps_materials).where("cps_materials.end_date < '#{Date.today}' and cps_articles.enabled = '1'").
+      group("cps_articles.id").having("count(cps_materials.id) > 0")
+    render :action => :index
+  end
+
   def create
     authorize! :update, CpsArticle
     redirect_to :action => :index

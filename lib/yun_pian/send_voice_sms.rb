@@ -25,10 +25,18 @@ module YunPian
 
     def send_request
       options = {:mobile => @phone_number, :apikey => @api_key, :code => @code}
+      @sms_message = SmsMessage.create(
+        phone: @phone_number,
+        content: "语音验证码：#{options[:code]}",
+        mode: "verified_code",
+        status: "success"
+      )
       res = Net::HTTP.post_form(URI.parse(VoiceServer), options)
       begin
         JSON.parse res.body
       rescue => e
+        @sms_message.update(status: "failed")
+
         {
           code: 502,
           msg: "内容解析错误",

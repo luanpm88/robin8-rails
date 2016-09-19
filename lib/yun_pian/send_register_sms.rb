@@ -21,23 +21,36 @@ module YunPian
 
       ChinaSMS.use :yunpian, password: @api_key
       tpl_params = {code: code, company: @company_sign}
+
+      @sms_message = SmsMessage.create(
+        phone: @phone_number,
+        content: "短信验证码：#{tpl_params[:code]} #{tpl_params[:company]}",
+        mode: "verified_code",
+        status: "pending"
+      )
+
       begin
         res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
       rescue Exception => ex
+        @sms_message.update(status: "failed")
         Rails.logger.sms_spider.error ex
         return {:message => ex.message}
       ensure
-        return {'code' => 0 } if  Rails.env.staging?
+        if  Rails.env.staging?
+          @sms_message.update(status: "success")
+          return {'code' => 0 }
+        end
       end
 
       if res["code"] == 0
+        @sms_message.update(status: "success")
         Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
       else
+        @sms_message.update(status: "failed")
         Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
       end
 
       return res
-
     end
 
     def write_cache_for phone_number, code

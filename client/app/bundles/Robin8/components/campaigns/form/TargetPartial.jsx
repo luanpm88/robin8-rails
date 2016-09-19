@@ -81,8 +81,10 @@ export default class TargetPartial extends React.Component {
       $('.target-city-label').text(region.value);
       this.tagSelector.set(tags.value, false);
 
+      region.value = region.value.split("/").join(",");
+      this.props.region.onChange(region.value);
       this.fetchKolCountWithConditions({
-        region: _.replace(region.value, "/", ","),
+        region: region.value,
         tag: _.isArray(tags.value) ? tags.value.join(",") : '全部'
       });
     }

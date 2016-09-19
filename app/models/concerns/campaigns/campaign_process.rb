@@ -216,12 +216,18 @@ module Campaigns
     # 更新invite 状态和点击数
     def end_invites
       # ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
+      campaign = self
       campaign_invites.each do |invite|
         next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
         if invite.status == 'approved'
           invite.status = 'finished'
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
+          # recruit campaign upload img after campaign finished
+          if invite.total_click == 0 &&  (campaign.is_post_type? || campaign.is_simple_cpi_type? || campaign.is_cpa_type?)
+            invite.img_status = 'rejected'
+            invite.reject_reason = '活动一次点击都没有'
+          end
           invite.save!
         else
           # receive but not apporve  we must delete
@@ -284,25 +290,6 @@ module Campaigns
         kol_budget_rate = KolBudgetRate
       end
       actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(2)  rescue nil
-      # if is_click_type?  || is_cpi_type? || is_cpa_type?
-      #   actual_per_budget = (self.per_action_budget * kol_budget_rate).round(2)
-      #   point1, point2 = actual_per_budget.divmod(0.1)
-      #   point2 = point2.round(2)
-      #   if point2 >= 0.08
-      #     actual_per_action_budget = (point1 + 1) * 0.1
-      #   elsif point2 >= 0.03
-      #     actual_per_action_budget = point1 * 0.1 + 0.05
-      #   else
-      #     actual_per_action_budget = point1 * 0.1
-      #   end
-      #   actual_per_action_budget = actual_per_action_budget.round(2)
-      # elsif is_recruit_type?
-      #   actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(0)
-      # elsif is_invite_type?
-      #   actual_per_action_budget = nil
-      # else
-      #   actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(1)
-      # end
       actual_per_action_budget
     end
 
