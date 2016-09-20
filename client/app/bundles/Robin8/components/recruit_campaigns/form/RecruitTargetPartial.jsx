@@ -127,7 +127,6 @@ export default class TargetPartial extends React.Component {
         _.get(nextProps, ['region', 'value'])) {
 
       const { region, tags, sns_platforms:sns, age, gender } = nextProps;
-      debugger
 
       this.initConditionComponent();
 
