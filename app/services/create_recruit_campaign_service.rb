@@ -3,8 +3,8 @@ class CreateRecruitCampaignService
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
-                  :region, :tags, :sns_platforms, :recruit_start_time,
-                  :recruit_end_time, :hide_brand_name, :material_ids]
+                  :region, :tags, :sns_platforms, :recruit_start_time, :url, :sub_type,
+                  :recruit_end_time, :hide_brand_name, :material_ids ]
 
   attr_reader :errors, :campaign
 
@@ -27,6 +27,11 @@ class CreateRecruitCampaignService
     #   @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
     #   return false
     # end
+
+    if @campaign_params[:sub_type].blank? or @campaign_params[:sub_type] == "null"
+      @campaign_params[:sub_type] = nil
+      @campaign_params[:url] = nil
+    end
 
     validate_recruit_time
     @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})

@@ -15,6 +15,7 @@ import RecruitDatePartial       from './recruit_campaigns/form/RecruitDatePartia
 import RecruitBudgetPartial     from './recruit_campaigns/form/RecruitBudgetPartial';
 import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
 import RecruitTargetPartial     from './recruit_campaigns/form/RecruitTargetPartial';
+import SubTypePartial           from './recruit_campaigns/form/SubTypePartial';
 
 import initToolTip              from './shared/InitToolTip';
 import CampaignFormValidate     from './shared/validate/CampaignFormValidate'
@@ -30,6 +31,7 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
+  url: {url: { require_protocol: false }}
 })
 
 const validateFailed = (errors) => {
@@ -50,7 +52,7 @@ function select(state){
 class UpdateRecruitCampaignPartial extends React.Component{
   constructor(props, context){
     super(props, context);
-    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_renderRevokeModal']);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign', '_renderRevokeModal', "renderMaterialsPartial"]);
     this.state = {
       showRevokeConfirmModal: false
     };
@@ -107,12 +109,20 @@ class UpdateRecruitCampaignPartial extends React.Component{
     }
   }
 
+  renderMaterialsPartial() {
+    const {  materials, material_ids, sub_type } = this.props.fields;
+
+    if (!sub_type.value) {
+      return <CreateMaterialsPartial {...{materials, material_ids}} />
+    }
+  }
+
 
   render(){
     const { name, description, img_url, tags, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
           recruit_person_count, region, sns_platforms,
-          hide_brand_name, materials, material_ids
+          hide_brand_name, materials, material_ids, url, sub_type
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { campaign } = this.props;
@@ -126,7 +136,8 @@ class UpdateRecruitCampaignPartial extends React.Component{
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, hide_brand_name}}/>
-              <CreateMaterialsPartial {...{materials, material_ids}} />
+              <SubTypePartial {...{url, sub_type}}/>
+              { this.renderMaterialsPartial() }
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} budgetEditable={campaign.get("budget_editable")} />
@@ -149,7 +160,8 @@ UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "tags", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "region", "sns_platforms", "hide_brand_name",
+         "materials", "material_ids", "sub_type"],
   returnRejectedSubmitPromise: true,
   validate
 },

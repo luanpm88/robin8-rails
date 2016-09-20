@@ -16,7 +16,7 @@ module API
             if campaign.is_cpi_type?
               'cpi'
             else
-               nil
+               campaign.sub_type
             end
           end
           expose :sub_sub_message_type do |campaign|
