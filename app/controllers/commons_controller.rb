@@ -13,9 +13,9 @@ class CommonsController < ApplicationController
     invite_id = uuid_params['campaign_invite_id']
     material_url = uuid_params['material_url']
     campaign_invite =  CampaignInvite.find(invite_id)               rescue nil
-    if campaign_invite
+    if campaign_invite  && campaign_invite.campaign.is_recruit_type?
       campaign_invite.redis_avail_click.increment
-      campaign_invite.campaign.redis_avail_click.increment
+      campaign_invite.campaign.redis_total_click.increment
     end
     redirect_to material_url
   end
