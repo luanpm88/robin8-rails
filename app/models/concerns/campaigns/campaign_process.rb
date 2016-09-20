@@ -92,11 +92,11 @@ module Campaigns
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
       # 推送记录
-      if Rails.env.development? or Rails.env.test?
-        CampaignPushRecordWorker.new.perform(self.id, 'common')
-      else
-        CampaignPushRecordWorker.perform_async(self.id, 'common')
-      end
+      # if Rails.env.development? or Rails.env.test?
+      #   CampaignPushRecordWorker.new.perform(self.id, 'common')
+      # else
+      #   CampaignPushRecordWorker.perform_async(self.id, 'common')
+      # end
     end
 
     def go_start(kol_ids = nil)
@@ -133,10 +133,10 @@ module Campaigns
           kol.add_campaign_id self.id, true
         end
         if Rails.env.development? or Rails.env.test?
-          CampaignPushRecordWorker.new.perform(self.id, 'append')
+          # CampaignPushRecordWorker.new.perform(self.id, 'append')
         else
           Message.new_campaign(self, kol_ids)
-          CampaignPushRecordWorker.perform_async(self.id, 'append')
+          # CampaignPushRecordWorker.perform_async(self.id, 'append')
         end
       end
     end
@@ -151,10 +151,10 @@ module Campaigns
       end
       if should_push_kol_is.size > 0
         if Rails.env.development? or Rails.env.test?
-          CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
+          # CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
         else
           Message.new_campaign(self, should_push_kol_is)
-          CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
+          # CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
         end
       end
     end
@@ -224,7 +224,7 @@ module Campaigns
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
           # recruit campaign upload img after campaign finished
-          if invite.total_click == 0 &&  (campaign.is_post_type? || campaign.is_simple_cpi_type? || campaign.is_cpa_type?)
+          if invite.total_click == 0 &&  (campaign.is_post_type? || campaign.is_simple_cp_type? || campaign.is_click_type? || campaign.is_cpa_type?)
             invite.img_status = 'rejected'
             invite.reject_reason = '活动一次点击都没有'
           end

@@ -110,17 +110,6 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    # # check kol's total_click_threshold
-    # if kol# && kol.total_click_threshold
-    #   store_key =  "total_click_threshold_#{campaign_invite.id}"
-    #   current_total_click = Rails.cache.read(store_key)  || 0
-    #   if current_total_click >= (kol.total_click_threshold  || 120)
-    #     return [false, "exceed_total_click_threshold"]
-    #   else
-    #     Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
-    #   end
-    # end
-
     #check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)
     if ip_score.to_i <= 50
@@ -167,6 +156,7 @@ class CampaignShow < ActiveRecord::Base
     campaign_show = CampaignShow.new(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
                                      :visit_time => Time.now, :visitor_ip => visitor_ip, :request_url => request_uri, :visitor_agent => visitor_agent, :visitor_referer => visitor_referer,
                                      :other_options => options.inspect, :proxy_ips => proxy_ips, :openid => openid)
+    # cpi 特殊处理 , 开始为false ,后来更改原来的状态
     if campaign.is_cpi_type?
       status, remark = false, 'cpi_visit'
       campaign_show.appid = campaign.appid  || campaign.user.appid

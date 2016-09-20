@@ -168,7 +168,7 @@
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
         <td><%= c.kol.name rescue "" %></td>
         <td><%= c.kol.kol_level rescue "" %></td>
-        <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
+        <td><%= c.get_avail_click(true) > 0 ? c.get_avail_click(true) : c.avail_click %></td>
         <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click %></td>
         <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
         <td><%= c.campaign_observer_status %><%= c.observer_text %></td>
