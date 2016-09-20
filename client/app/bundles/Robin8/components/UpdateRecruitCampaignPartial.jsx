@@ -122,7 +122,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
     const { name, description, img_url, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
           recruit_person_count, age, gender, tags, region, sns_platforms,
-          hide_brand_name, materials, material_ids
+          hide_brand_name, materials, material_ids, url, sub_type
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { campaign } = this.props;
@@ -160,7 +160,7 @@ UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "age", "gender", "tags", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "age", "gender", "tags", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids", "sub_type"],
   returnRejectedSubmitPromise: true,
   validate
 },

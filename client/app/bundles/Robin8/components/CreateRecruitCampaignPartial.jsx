@@ -29,6 +29,8 @@ const initCampaign = {
   per_action_budget: 1000,
   recruit_person_count: 1,
   hide_brand_name: false,
+  sub_type: null,
+  url: "",
   region: "全部",
   tags: "全部",
   age: '全部',
@@ -81,7 +83,7 @@ class CreateRecruitCampaign extends React.Component{
     const { name, description, img_url, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
           recruit_person_count, age, gender, tags, region, sns_platforms,
-          hide_brand_name, materials, material_ids
+          hide_brand_name, materials, material_ids, url, sub_type
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
@@ -116,7 +118,7 @@ CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "age", "gender", "tags", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids"],
+         "recruit_person_count", "age", "gender", "tags", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids", "sub_type"],
   returnRejectedSubmitPromise: true,
   validate
 },
