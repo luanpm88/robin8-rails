@@ -57,7 +57,7 @@ class UpdateRecruitCampaignService
         update_recruit_tags
         update_recruit_sns_platforms
         update_materials
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :tags, :material_ids].include? k })
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:age, :gender, :region, :sns_platforms, :tags, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten

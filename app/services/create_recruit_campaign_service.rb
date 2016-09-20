@@ -37,7 +37,7 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :tags, :sns_platforms, :material_ids].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:age, :gender, :region, :tags, :sns_platforms, :material_ids].include? k })
 
         create_campaign_materials
 
