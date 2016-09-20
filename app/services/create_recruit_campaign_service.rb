@@ -2,7 +2,7 @@ class CreateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
-                  :per_action_budget, :start_time, :deadline,
+                  :per_action_budget, :start_time, :deadline, :age, :gender,
                   :region, :tags, :sns_platforms, :recruit_start_time,
                   :recruit_end_time, :hide_brand_name, :material_ids]
 
@@ -41,7 +41,7 @@ class CreateRecruitCampaignService
 
         create_campaign_materials
 
-        @campaign_params.select{ |k, v| [:region, :tags, :sns_platforms].include? k }.each do |k, v|
+        @campaign_params.select{ |k, v| [:age, :gender, :region, :tags, :sns_platforms].include? k }.each do |k, v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end
