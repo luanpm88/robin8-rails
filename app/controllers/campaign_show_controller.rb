@@ -40,7 +40,7 @@ class CampaignShowController < ApplicationController
 
   private
   def deal_with_cpa_campaign uuid_params, openid
-    if ["unexecute", "agreed"].include?(@campaign.status)
+    if ["unpay", "unexecute", "agreed"].include?(@campaign.status)
       redirect_to @campaign.url
       return
     end

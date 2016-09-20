@@ -37,9 +37,9 @@ every 1.day, :at => '12:00 pm' do
 end
 
 #keep with secret
-every :tuesday, :at => '0:10 am' do
-  runner "KolInfluenceValue.schedule_cal_influence"
-end
+# every :tuesday, :at => '0:10 am' do
+#   runner "KolInfluenceValue.schedule_cal_influence"
+# end
 
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'

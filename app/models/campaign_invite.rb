@@ -9,7 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
-  CommonRejectedReason = ["朋友圈截图错误", "朋友圈截图不完整", "活动保留时间不足30分钟", "活动评论有诱导嫌疑", "活动含诱导点击文字", "活动被设置分组了","朋友圈过多活动影响效果","系统检测到有作弊嫌疑","活动一次点击都没有"]
+  CommonRejectedReason = ["朋友圈截图错误", "朋友圈截图不完整", "参考截图规范上传指定截图", "活动保留时间不足30分钟", "活动评论有诱导嫌疑", "活动含诱导点击文字", "活动被设置分组了","朋友圈过多活动影响效果","系统检测到有作弊嫌疑","活动一次点击都没有"]
   # observer_status 0 表示 未计算, 1 表示 正常, 2 表示 存在作弊嫌疑
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
@@ -144,8 +144,9 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_total_click.value   rescue self.total_click
   end
 
-  def get_avail_click
-    if ['post', 'simple_cpi'].include?(self.campaign.per_budget_type)
+  #招募活动,
+  def get_avail_click(real = false)
+    if !real && ['post', 'simple_cpi', 'recruit'].include?(self.campaign.per_budget_type)
       get_total_click
     else
       status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
