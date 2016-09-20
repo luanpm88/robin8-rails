@@ -3,7 +3,7 @@ class UpdateRecruitCampaignService
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget,
                   :per_budget_type, :per_action_budget, :start_time,
-                  :deadline, :region, :sns_platforms, :tags,
+                  :deadline, :region, :sns_platforms, :tags, :url, :sub_type,
                   :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -25,6 +25,11 @@ class UpdateRecruitCampaignService
 
     if @campaign.status == "rejected"
       @campaign_params.merge!(:status => "unexecute", :invalid_reasons => nil)
+    end
+
+    if @campaign_params[:sub_type].blank? or @campaign_params[:sub_type] == "null"
+      @campaign_params[:sub_type] = nil
+      @campaign_params[:url] = nil
     end
 
     if @campaign.user.id != @user.id
@@ -55,7 +60,7 @@ class UpdateRecruitCampaignService
         update_recruit_tags
         update_recruit_sns_platforms
         update_materials
-        @campaign.update_attributes(@campaign_params.reject {|k,v| [:region, :sns_platforms, :tags, :material_ids].include? k })
+        @campaign.update!(@campaign_params.reject {|k,v| [:region, :sns_platforms, :tags, :material_ids].include? k })
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
