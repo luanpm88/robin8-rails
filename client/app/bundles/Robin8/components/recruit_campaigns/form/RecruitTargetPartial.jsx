@@ -64,6 +64,9 @@ export default class TargetPartial extends React.Component {
       this.props.sns_platforms.onChange("全部");
     }
 
+    _.assignIn(condition, { age: this.props.age.value });
+    _.assignIn(condition, { gender: this.props.gender.value });
+
     if (e && e.target.name === 'age'){
       this.props.age.onChange(e.target.value);
       _.assignIn(condition, { age: e.target.value });
