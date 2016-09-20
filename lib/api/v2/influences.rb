@@ -225,7 +225,7 @@ module API
           return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code?
           if  Influence::Util.is_mobile?(params[:mobile])
             invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid], current_kol.try(:id)))
-            Emay::SendSms.to(params[:mobile],invite_content)
+            SmsMessage.send_to(params[:mobile], invite_content)
             TmpKolContact.record_send_invite(params[:kol_uuid], params[:mobile], current_kol)
             present :error, 0
           else

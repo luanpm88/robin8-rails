@@ -75,7 +75,7 @@ module Brand
 
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "age")
+          target = object.age_target
           target.target_content if target
         end
 
@@ -90,7 +90,7 @@ module Brand
         # end
 
         expose :gender do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "gender")
+          target = object.gender_target
           target.target_content if target
         end
 

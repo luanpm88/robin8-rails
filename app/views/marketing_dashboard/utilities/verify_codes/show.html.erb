@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <h2>
+    获取短信验证码
+  </h2>
+  <hr />
+  <div class="text-success result"></div>
+  <div class="row" style="margin-top: 10px;">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>手机号码</label>
+        <input class="mobile-input form-control" placeholder="填写手机号码">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>验证码</label>
+        <input class="code-input form-control" placeholder="填写验证码">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <button class="btn btn-primary">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  var url = "<%= marketing_dashboard_utilities_verify_code_path %>"
+  $(".btn").click(function(){
+    if ($('.mobile-input').val()){
+      $.ajax(
+      {
+        method: "post",
+        url: url,
+        data: {
+          mobile_number: $('.mobile-input').val(),
+          code: $('.code-input').val()
+        }
+      }).done(function(data){
+        if(data["code"]){
+          $('.code-input').val(data["code"]);
+          $('.result').html("短信验证码获取成功 " + data["code"]);
+        }else{
+          alert('获取失败，请刷新重试')
+        }
+      })
+    }
+  })
+</script>

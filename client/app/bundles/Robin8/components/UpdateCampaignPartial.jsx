@@ -123,7 +123,7 @@ class UpdateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
               <DatePartial {...{ start_time, deadline }} />
-              <TargetPartial {...{region, tags}} />
+              <TargetPartial {...{region, tags, age, gender}} />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
                 {this.renderSubmitOrRevokeBtn()}

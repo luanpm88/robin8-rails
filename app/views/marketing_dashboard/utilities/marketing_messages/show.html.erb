@@ -1,0 +1,42 @@
+<style type="text/css">
+  .template {
+    display: none;
+  }
+</style>
+
+<div class="container-fluid">
+  <h2>
+    指定手机发营销短信
+  </h2>
+  <hr />
+
+  <div class="row" style="margin-top: 10px;">
+    <div class="col-md-6">
+      <div class="well well-sm template"></div>
+      <%= form_for :marketing_message, url: marketing_dashboard_utilities_marketing_message_path, html: {class: "form"} do |f| %>
+        <div class="form-group">
+          <label>手机号</label>
+          <%= f.text_field :mobile_number, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label>短信内容</label>
+          <%= f.text_area :content, id: "message_content", size: "60x3", class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label>备注</label>
+          <%= f.text_field :remark, class: "form-control" %>
+        </div>
+        <%= f.submit "发送", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var templateElement = $(".template");
+  var templateStr = "<%= Emay::TemplateContent.get_content('[content]') %>";
+  $("#message_content").change(function() {
+    var str = templateStr.replace("[content]", $(this).val());
+    templateElement.show().html(str);
+  });
+</script>

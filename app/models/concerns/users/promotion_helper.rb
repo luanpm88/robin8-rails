@@ -12,7 +12,7 @@ module Users
 
       transaction = self.income(50, "limited_discount")
       unless Rails.env.development?
-        Emay::SendSms.to([self.kol.mobile_number], "恭喜！您的Robin8品牌主账号已创建成功，50元红包已到账，可直接抵扣。")
+        SmsMessage.send_by_resource_to(self.kol, "恭喜！您的Robin8品牌主账号已创建成功，50元红包已到账，可直接抵扣。", transaction)
         PushMessage.push_common_message([self.kol], "Robin8品牌主账号50元红包已到账，请查收", "恭喜您成功开通Robin8品牌主账号", transaction)
       end
     end
