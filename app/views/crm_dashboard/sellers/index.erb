@@ -27,7 +27,8 @@
         <td><%= seller.department %></td>
         <td>
           <%= link_to "所联系的客户", customers_crm_dashboard_seller_path(seller), target: "_blank"%> /
-          <%= link_to "所接充值订单", orders_crm_dashboard_seller_path(seller)%>
+          <%= link_to "所接充值订单", orders_crm_dashboard_seller_path(seller)%> /
+          <%= link_to "所关联的所有活动", campaigns_crm_dashboard_seller_path(seller)%> /
           <%= link_to "编辑", edit_crm_dashboard_seller_path(seller) %> /
           <%= link_to "删除", crm_dashboard_seller_path(seller), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
         </td>
