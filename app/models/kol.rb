@@ -85,18 +85,18 @@ class Kol < ActiveRecord::Base
   has_many :cps_article_shares
 
 
-  scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
+  #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
-    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")} #.where("kol_role='mcn_big_v' or device_token is not null")}
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}' and `kols`.`mobile_number` is not null")} #.where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
   else
-    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")}
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}' and `kols`.`mobile_number` is not null")}
     scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
