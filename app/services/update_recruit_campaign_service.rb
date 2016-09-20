@@ -3,7 +3,7 @@ class UpdateRecruitCampaignService
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget,
                   :per_budget_type, :per_action_budget, :start_time,
-                  :deadline, :region, :sns_platforms, :tags, :url, :sub_type,
+                  :deadline, :age, :gender, :region, :sns_platforms, :tags, :url, :sub_type,
                   :recruit_start_time, :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -56,6 +56,8 @@ class UpdateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
+        update_recruit_gender
+        update_recruit_age
         update_recruit_region
         update_recruit_tags
         update_recruit_sns_platforms
@@ -81,6 +83,21 @@ class UpdateRecruitCampaignService
   def permitted_params_from params
     # params.merge!(address: nil) unless params[:address].present?
     params.select { |k, v| PERMIT_PARAMS.include? k }
+  end
+
+
+  def update_recruit_gender
+    campaign_target = @campaign.campaign_targets.where(target_type: :gender).first
+    unless campaign_target.target_content.eql? @campaign_params[:gender]
+      campaign_target.update_attributes(target_content: @campaign_params[:gender])
+    end
+  end
+
+  def update_recruit_age
+    campaign_target = @campaign.campaign_targets.where(target_type: :age).first
+    unless campaign_target.target_content.eql? @campaign_params[:age]
+      campaign_target.update_attributes(target_content: @campaign_params[:age])
+    end
   end
 
   def update_recruit_region

@@ -126,7 +126,8 @@ export default class TargetPartial extends React.Component {
     if (!_.get(this.props, ['region', 'value']) &&
         _.get(nextProps, ['region', 'value'])) {
 
-      const { region, tags, sns_platforms:sns } = nextProps;
+      const { region, tags, sns_platforms:sns, age, gender } = nextProps;
+      debugger
 
       this.initConditionComponent();
 
@@ -138,7 +139,9 @@ export default class TargetPartial extends React.Component {
       this.fetchKolCountWithConditions({
         region: _.replace(region.value, "/", ","),
         sns: _.isArray(sns.value) ? sns.value.join(",") : sns.value,
-        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value
+        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value,
+        age: age.value,
+        gender: gender.value
       });
     }
   }
