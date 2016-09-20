@@ -53,6 +53,16 @@ module Brand
               # @kols = @kols.where("`social_accounts`.`provider` IN (?)", sns)
             end
 
+            if params[:age] && params[:age] != '全部'
+              min_age = params[:age].split(',').map(&:to_i).first
+              max_age = params[:age].split(',').map(&:to_i).last
+              @kols = @kols.ransack({age_in: Range.new(min_age, max_age)}).result
+            end
+
+            if params[:gender] && params[:gender] != '全部'
+              @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
+            end
+
             if params[:just_count]
               { count: @kols.distinct.count }
             else
