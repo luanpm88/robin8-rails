@@ -100,8 +100,14 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  #永久拒绝,同时把金额返回给其他用户
   def permanent_reject rejected_reason=nil
     return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
+    # 招募类型,转发类型,simple_cpi
+    if self.campaign.is_recruit_type? || self.is_post_type? || self.is_simple_cpi_type?
+      self.update_columns(:status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      return
+    end
     self.with_lock do
       kol_avail_click = self.get_avail_click
       self.update_columns(:avail_click => 0, :status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
