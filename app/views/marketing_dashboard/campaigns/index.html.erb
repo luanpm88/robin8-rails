@@ -189,7 +189,7 @@
           <td><%= c.campaign_from %></td>
           <td><%= c.valid_invites.count %></td>
           <td><%= c.campaign_invites.count %></td>
-          <td><%= c.get_avail_click(true) %></td>
+          <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
           <td><%= c.get_total_click > 0 ? c.get_total_click : c.get_total_click  %></td>
           <td>
             <% if seller = get_campaign_seller(c) %>
