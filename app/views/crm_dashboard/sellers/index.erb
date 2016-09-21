@@ -12,6 +12,7 @@
       <th>头像</th>
       <th>电话号码</th>
       <th>部门</th>
+      <th>所有活动总价</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -25,9 +26,11 @@
         <td><%= link_to image_tag(seller.avatar_url, :width => "50px"), seller.avatar_url, :target => "_blank"%></td>
         <td><%= seller.mobile_number %> </td>
         <td><%= seller.department %></td>
+        <td><%= seller.all_campaigns_total_credit %></td>
         <td>
           <%= link_to "所联系的客户", customers_crm_dashboard_seller_path(seller), target: "_blank"%> /
-          <%= link_to "所接充值订单", orders_crm_dashboard_seller_path(seller)%>
+          <%= link_to "所接充值订单", orders_crm_dashboard_seller_path(seller)%> /
+          <%= link_to "所关联的所有活动", campaigns_crm_dashboard_seller_path(seller)%> /
           <%= link_to "编辑", edit_crm_dashboard_seller_path(seller) %> /
           <%= link_to "删除", crm_dashboard_seller_path(seller), :method => :delete, "data-confirm" => "你确定要删除吗" %></td>
         </td>

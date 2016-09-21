@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       member do
         get :customers
         get :orders
+        get :campaigns
       end
     end
     resources :customers
