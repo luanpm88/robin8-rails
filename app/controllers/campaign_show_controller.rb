@@ -2,6 +2,16 @@ class CampaignShowController < ApplicationController
   skip_before_action  :only => [:show, :share]
   layout 'website'
 
+  # 先到visit 获取来源, 根据点击量,来决定是否需要手动授权
+  def visit
+    referer = request.referer
+    request_url = request.url
+    Rails.logger.info "----#{referer}--#{request_url}"
+    cookies[:_robin8_visitor_info] = {:referer => referer, :request_url => request_url}.to_json
+    campaign_invite = CampaignInvite.find params[:id]
+    redirect_to campaign_invite.origin_share_url
+  end
+
   def show
     sns_info = $weixin_client.get_oauth_access_token(params[:code])
     openid = sns_info.result['openid']    rescue nil
@@ -15,8 +25,8 @@ class CampaignShowController < ApplicationController
       @campaign_invite = CampaignInvite.find_by(:uuid => params[:uuid])     rescue nil
     end
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
-
-    Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+    info = JSON.parse(cookies[:_robin8_visitor_info])   rescue {}
+    Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} -- #{params[:uuid]} --- #{info.inspect} --- #{request.remote_ip}"
     if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign(uuid_params, openid)
     end
