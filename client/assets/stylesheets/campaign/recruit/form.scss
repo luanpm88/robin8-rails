@@ -206,3 +206,13 @@
   font-size: 12px;
   font-weight: 400;
 }
+
+.campaign-target-group {
+  .row2 {
+    margin-top: 35px;
+    .target-age, .target-gender {
+      width: 115px;
+      margin: 0 auto;
+    }
+  }
+}

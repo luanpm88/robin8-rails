@@ -34,9 +34,9 @@ module API
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
 
-          if (params[:start_time].to_time - Time.now) < 2.hours
-            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
-          end
+          # if (params[:start_time].to_time - Time.now) < 2.hours
+          #   error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          # end
 
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
@@ -91,9 +91,9 @@ module API
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
 
-          if (params[:start_time].to_time - Time.now) < 2.hours
-            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
-          end
+          # if (params[:start_time].to_time - Time.now) < 2.hours
+          #   error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          # end
 
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return

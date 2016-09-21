@@ -29,11 +29,13 @@ const initCampaign = {
   per_action_budget: 1000,
   recruit_person_count: 1,
   hide_brand_name: false,
+  sub_type: null,
+  url: "",
   region: "全部",
   tags: "全部",
-  sns_platforms: "全部",
-  sub_type: null,
-  url: ""
+  age: '全部',
+  gender: '全部',
+  sns_platforms: "全部"
 }
 
 const validate = new CampaignFormValidate({
@@ -78,9 +80,9 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   render(){
-    const { name, description, img_url, tags, start_time, deadline,
+    const { name, description, img_url, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget,
-          recruit_person_count, region, sns_platforms,
+          recruit_person_count, age, gender, tags, region, sns_platforms,
           hide_brand_name, materials, material_ids, url, sub_type
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -98,7 +100,7 @@ class CreateRecruitCampaign extends React.Component{
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
-              <RecruitTargetPartial {...{region, tags, sns_platforms}} />
+              <RecruitTargetPartial {...{age, gender, region, tags, sns_platforms}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
@@ -114,10 +116,9 @@ class CreateRecruitCampaign extends React.Component{
 
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "tags", "start_time",
+  fields: ["name", "description", "img_url", "url", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget",
-         "recruit_person_count", "region", "sns_platforms", "hide_brand_name", "materials",
-         "sub_type", "material_ids"],
+         "recruit_person_count", "age", "gender", "tags", "region", "sns_platforms", "hide_brand_name", "materials", "material_ids", "sub_type"],
   returnRejectedSubmitPromise: true,
   validate
 },

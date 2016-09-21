@@ -208,6 +208,8 @@ module Brand
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
+          optional :age, type:String
+          optional :gender, type:String
           optional :region, type: String
           optional :sns_platforms, type: String
           optional :tags, type: String
@@ -238,6 +240,8 @@ module Brand
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
           optional :budget,   type: Float
+          optional :age, type:String
+          optional :gender, type:String
           optional :region, type: String
           optional :sns_platforms, type: String
           optional :tags, type: String
