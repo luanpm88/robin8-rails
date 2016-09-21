@@ -53,7 +53,7 @@ export default class TargetPartial extends React.Component {
 
     _.assignIn(condition, { age: this.props.age.value });
     _.assignIn(condition, { gender: this.props.gender.value });
-    
+
     if (e && e.target.name === 'age'){
       this.props.age.onChange(e.target.value);
       _.assignIn(condition, { age: e.target.value });
@@ -99,7 +99,7 @@ export default class TargetPartial extends React.Component {
       region.value = region.value.split("/").join(",");
       this.props.region.onChange(region.value);
       this.fetchKolCountWithConditions({
-        region: region.value,
+        region: region.value.split('/').join(','),
         tag: _.isArray(tags.value) ? tags.value.join(",") : '全部',
         age: age.value,
         gender: gender.value

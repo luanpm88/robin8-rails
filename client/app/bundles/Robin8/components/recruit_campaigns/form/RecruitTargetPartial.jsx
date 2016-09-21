@@ -132,14 +132,13 @@ export default class TargetPartial extends React.Component {
       const { region, tags, sns_platforms:sns, age, gender } = nextProps;
 
       this.initConditionComponent();
-
       if(region.value === "全部 全部") region.value = "全部"
       $('.target-city-label').text(region.value);
       this.tagSelector.set(tags.value, false);
       this.snsSelector.set(sns.value, false);
 
       this.fetchKolCountWithConditions({
-        region: _.replace(region.value, "/", ","),
+        region: region.value.split('/').join(','),
         sns: _.isArray(sns.value) ? sns.value.join(",") : sns.value,
         tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value,
         age: age.value,
