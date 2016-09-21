@@ -85,6 +85,9 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.datetime "updated_at",           null: false
   end
 
+  add_index "agent_kols", ["agent_id"], name: "index_agent_kols_on_agent_id", using: :btree
+  add_index "agent_kols", ["kol_id"], name: "index_agent_kols_on_kol_id", using: :btree
+
   create_table "alerts", force: :cascade do |t|
     t.integer  "stream_id",          limit: 4
     t.string   "email",              limit: 255
@@ -410,10 +413,16 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.string   "admin_desc",               limit: 255
     t.string   "cpi_example_screenshot",   limit: 255
     t.string   "remark",                   limit: 255
-    t.string   "sub_type",                 limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
+
+  create_table "carticles", force: :cascade do |t|
+    t.integer  "kol_id_id",  limit: 4
+    t.text     "body",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -481,14 +490,15 @@ ActiveRecord::Schema.define(version: 20160919030603) do
 
   create_table "cps_articles", force: :cascade do |t|
     t.integer  "kol_id",       limit: 4
-    t.text     "content",      limit: 65535
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
     t.string   "title",        limit: 255
     t.string   "cover",        limit: 255
-    t.boolean  "enabled",      limit: 1,     default: true
+    t.text     "content",      limit: 65535
     t.string   "status",       limit: 255,   default: "pending"
+    t.datetime "check_time"
     t.string   "check_remark", limit: 255
+    t.boolean  "enabled",      limit: 1,     default: true
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
   create_table "cps_materials", force: :cascade do |t|
@@ -501,20 +511,20 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.date     "end_date"
     t.float    "commision_ration_pc", limit: 24
     t.float    "commision_ration_wl", limit: 24
-    t.string   "goods_name",          limit: 255
-    t.string   "category",            limit: 255
-    t.datetime "last_sync_at"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
     t.float    "commision_pc",        limit: 24
     t.float    "commision_wl",        limit: 24
     t.float    "kol_commision_pc",    limit: 24
     t.float    "kol_commision_wl",    limit: 24
+    t.string   "goods_name",          limit: 255
+    t.string   "category",            limit: 255
+    t.datetime "last_sync_at"
     t.boolean  "enabled",             limit: 1,   default: true
     t.integer  "position",            limit: 4,   default: 0
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
-  add_index "cps_materials", ["sku_id"], name: "index_materials_on_sku_id", using: :btree
+  add_index "cps_materials", ["sku_id"], name: "index_cps_materials_on_sku_id", using: :btree
 
   create_table "cps_promotion_materials", force: :cascade do |t|
     t.integer  "kol_id",               limit: 4
@@ -547,7 +557,6 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.integer  "kol_id",               limit: 4
     t.integer  "cps_article_share_id", limit: 4
     t.integer  "split_type",           limit: 4
-    t.integer  "cos_price",            limit: 4
     t.string   "order_id",             limit: 20
     t.datetime "order_time"
     t.string   "parent_id",            limit: 255
@@ -555,19 +564,22 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.string   "source_emt",           limit: 255
     t.float    "total_money",          limit: 24
     t.boolean  "yn",                   limit: 1
-    t.integer  "order_num",            limit: 4
     t.string   "status",               limit: 255, default: "pending"
-    t.integer  "return_num",           limit: 4
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.string   "sub_union",            limit: 40
     t.string   "order_query_time",     limit: 40
     t.string   "receipt_query_time",   limit: 40
-    t.string   "sub_union",            limit: 40
-    t.float    "commision_fee",        limit: 24
     t.string   "cancel_query_time",    limit: 40
+    t.float    "cos_price",            limit: 24
+    t.float    "commision_fee",        limit: 24
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
   end
 
+  add_index "cps_promotion_orders", ["cps_article_share_id"], name: "index_cps_promotion_orders_on_cps_article_share_id", using: :btree
+  add_index "cps_promotion_orders", ["kol_id"], name: "index_cps_promotion_orders_on_kol_id", using: :btree
   add_index "cps_promotion_orders", ["order_id"], name: "index_cps_promotion_orders_on_order_id", using: :btree
+  add_index "cps_promotion_orders", ["order_query_time"], name: "index_cps_promotion_orders_on_order_query_time", using: :btree
+  add_index "cps_promotion_orders", ["receipt_query_time"], name: "index_cps_promotion_orders_on_receipt_query_time", using: :btree
 
   create_table "crm_cases", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -841,7 +853,6 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "taxpayer_id",     limit: 255
-    t.string   "company_name",    limit: 255
     t.string   "company_address", limit: 255
     t.string   "company_mobile",  limit: 255
     t.string   "bank_name",       limit: 255
@@ -1011,6 +1022,13 @@ ActiveRecord::Schema.define(version: 20160919030603) do
   add_index "kol_keywords", ["kol_id"], name: "index_kol_keywords_on_kol_id", using: :btree
   add_index "kol_keywords", ["social_account_id"], name: "index_kol_keywords_on_social_account_id", using: :btree
 
+  create_table "kol_professions", force: :cascade do |t|
+    t.integer  "kol_id",        limit: 4
+    t.integer  "profession_id", limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "kol_profile_screens", force: :cascade do |t|
     t.string   "url",         limit: 255
     t.string   "name",        limit: 255
@@ -1025,7 +1043,7 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.integer  "kol_id",        limit: 4
     t.string   "title",         limit: 255
     t.string   "cover_url",     limit: 255
-    t.text     "desc",          limit: 16777215
+    t.text     "desc",          limit: 65535
     t.string   "link",          limit: 255
     t.string   "provider",      limit: 255
     t.integer  "like_count",    limit: 4
@@ -1033,8 +1051,8 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.integer  "repost_count",  limit: 4
     t.integer  "comment_count", limit: 4
     t.string   "publish_time",  limit: 255
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "kol_tags", force: :cascade do |t|
@@ -1466,6 +1484,17 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.float    "china_price", limit: 24
   end
 
+  create_table "professions", force: :cascade do |t|
+    t.string   "name",       limit: 50
+    t.string   "label",      limit: 255
+    t.integer  "position",   limit: 4
+    t.boolean  "enable",     limit: 1,   default: true
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "professions", ["name"], name: "index_professions_on_name", unique: true, using: :btree
+
   create_table "provinces", force: :cascade do |t|
     t.string   "name",       limit: 191
     t.string   "name_en",    limit: 255
@@ -1608,6 +1637,13 @@ ActiveRecord::Schema.define(version: 20160919030603) do
   add_index "sms_messages", ["receiver_id", "receiver_type"], name: "index_sms_messages_on_receiver_id_and_receiver_type", using: :btree
   add_index "sms_messages", ["resource_id", "resource_type"], name: "index_sms_messages_on_resource_id_and_resource_type", using: :btree
   add_index "sms_messages", ["status"], name: "index_sms_messages_on_status", using: :btree
+
+  create_table "social_account_professions", force: :cascade do |t|
+    t.integer  "social_account_id", limit: 4
+    t.integer  "profession_id",     limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "social_account_tags", force: :cascade do |t|
     t.integer  "social_account_id", limit: 4
@@ -1787,6 +1823,105 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
+
+  create_table "tmp_kols", force: :cascade do |t|
+    t.string   "email",                  limit: 191
+    t.string   "encrypted_password",     limit: 255
+    t.string   "reset_password_token",   limit: 191
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,         null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "confirmation_token",     limit: 255
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "first_name",             limit: 255
+    t.string   "last_name",              limit: 255
+    t.string   "location",               limit: 255
+    t.string   "locale",                 limit: 255
+    t.boolean  "is_public",              limit: 1,                              default: true
+    t.date     "date_of_birthday"
+    t.string   "title",                  limit: 255
+    t.string   "industry",               limit: 255
+    t.string   "mobile_number",          limit: 191
+    t.integer  "gender",                 limit: 4,                              default: 0
+    t.string   "country",                limit: 255
+    t.string   "province",               limit: 255
+    t.string   "city",                   limit: 255
+    t.string   "audience_gender_ratio",  limit: 255
+    t.string   "audience_age_groups",    limit: 255
+    t.integer  "wechat_personal_fans",   limit: 4
+    t.string   "wechat_public_name",     limit: 255
+    t.string   "wechat_public_id",       limit: 255
+    t.integer  "wechat_public_fans",     limit: 4
+    t.string   "audience_regions",       limit: 255
+    t.string   "avatar",                 limit: 255
+    t.integer  "stats_total",            limit: 4,                              default: 0
+    t.datetime "stats_total_changed"
+    t.decimal  "amount",                               precision: 12, scale: 2, default: 0.0
+    t.decimal  "frozen_amount",                        precision: 12, scale: 2, default: 0.0
+    t.string   "provider",               limit: 255
+    t.string   "social_name",            limit: 255
+    t.string   "social_uid",             limit: 255
+    t.string   "from_which_campaign",    limit: 255
+    t.datetime "forbid_campaign_time"
+    t.integer  "five_click_threshold",   limit: 4
+    t.integer  "total_click_threshold",  limit: 4
+    t.string   "app_platform",           limit: 255
+    t.string   "app_version",            limit: 255
+    t.string   "private_token",          limit: 80
+    t.string   "device_token",           limit: 80
+    t.text     "desc",                   limit: 65535
+    t.string   "alipay_account",         limit: 255
+    t.string   "name",                   limit: 255
+    t.string   "app_country",            limit: 255
+    t.string   "app_province",           limit: 255
+    t.string   "app_city",               limit: 255
+    t.string   "IMEI",                   limit: 255
+    t.string   "IDFA",                   limit: 255
+    t.string   "phone_city",             limit: 255
+    t.string   "utm_source",             limit: 255
+    t.float    "influence_score",        limit: 24,                             default: -1.0
+    t.string   "kol_uuid",               limit: 255
+    t.datetime "cal_time"
+    t.string   "rongcloud_token",        limit: 255
+    t.string   "os_version",             limit: 255
+    t.string   "device_model",           limit: 255
+    t.string   "alipay_name",            limit: 255
+    t.string   "invite_code",            limit: 10
+    t.integer  "age",                    limit: 4
+    t.integer  "weixin_friend_count",    limit: 4
+    t.string   "kol_level",              limit: 255
+    t.string   "id_card",                limit: 255
+    t.string   "job_info",               limit: 255
+    t.string   "avatar_url",             limit: 255
+    t.string   "kol_role",               limit: 80,                             default: "public"
+    t.string   "role_apply_status",      limit: 255,                            default: "pending"
+    t.datetime "role_apply_time"
+    t.datetime "role_check_time"
+    t.string   "role_check_remark",      limit: 255
+    t.float    "longitude",              limit: 24
+    t.float    "latitude",               limit: 24
+    t.integer  "is_hot",                 limit: 4,                              default: 0
+    t.text     "memo",                   limit: 65535
+    t.float    "historical_income",      limit: 24,                             default: 0.0
+  end
+
+  add_index "tmp_kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
+  add_index "tmp_kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
+  add_index "tmp_kols", ["forbid_campaign_time"], name: "index_kols_on_forbid_campaign_time", using: :btree
+  add_index "tmp_kols", ["invite_code"], name: "index_kols_on_invite_code", using: :btree
+  add_index "tmp_kols", ["is_hot"], name: "index_kols_on_is_hot", using: :btree
+  add_index "tmp_kols", ["mobile_number"], name: "index_kols_on_mobile_number", unique: true, using: :btree
+  add_index "tmp_kols", ["private_token"], name: "index_kols_on_private_token", using: :btree
+  add_index "tmp_kols", ["reset_password_token"], name: "index_kols_on_reset_password_token", unique: true, using: :btree
+  add_index "tmp_kols", ["updated_at"], name: "index_kols_on_updated_at", using: :btree
 
   create_table "track_url_clicks", force: :cascade do |t|
     t.integer  "track_url_id", limit: 4
@@ -1990,8 +2125,6 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.string   "remark",        limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-    t.string   "check_remark",  limit: 255
-    t.datetime "check_time"
     t.string   "reject_reason", limit: 255
   end
 
