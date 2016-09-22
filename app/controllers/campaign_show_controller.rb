@@ -40,14 +40,19 @@ class CampaignShowController < ApplicationController
 
   private
   def deal_with_cpa_campaign uuid_params, openid
-    if ["unpay", "unexecute", "agreed"].include?(@campaign.status)
-      redirect_to @campaign.url
-      return
-    end
-
     uuid_params.symbolize_keys!
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
+
+    if ["unpay", "unexecute", "agreed"].include?(@campaign.status)
+      if other_options[:step] == 1
+        redirect_to @campaign.url
+      else
+        @campaign_action_url = CampaignActionUrl.find_by :identifier => uuid_params[:campaign_action_url_identifier]
+        redirect_to (@campaign_action_url.try(:action_url) || "http://robin8.net")
+      end
+      return
+    end
 
     CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, other_options)
     if other_options[:step] == 1
