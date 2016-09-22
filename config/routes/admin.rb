@@ -3,6 +3,11 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
+    resources :article_contents do
+      member do
+        get :sync
+      end
+    end
     resources :cps_materials do
       member do
         get :switch
