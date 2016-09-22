@@ -17,13 +17,13 @@ module Crawler
           sub_url = sub_category.css("a")[0].attr("href").gsub("..","http://www.diaox2.com" )
           puts sub_name
           puts sub_url
-          ArticleCategory.create!(name: title, url: url, sub_name: sub_name, sub_url: sub_url )
+          ArticleCategory.create!(name: title, sub_name: sub_name, sub_url: sub_url )
         end
       end
     end
 
     def self.get_aritcle_list
-      ArticleCategory.all.each do |category|
+      ArticleCategory.where("article_category_id >= 23").each do |category|
         doc = get_doc(category.sub_url)
         doc.css(".img-container").each do |article_a|
           artcile_url = article_a.attr("href").gsub("..","http://www.diaox2.com")
@@ -34,7 +34,8 @@ module Crawler
     end
 
     def self.get_article_content(article_category_id, article_url)
-      doc = get_doc(article_url)
+      return if ArticleCategory.find_by(:url => article_url).present?
+      doc = get_doc(article_url)   rescue nil
       title = doc.css(".article-area")[0].css(".article-title").text   rescue nil
       return if title.blank?
       cover_url = doc.css(".article-area")[0].css(".article-banner-container li img")[0].attr("src") rescue nil
@@ -56,5 +57,5 @@ module Crawler
   end
 end
 
-
+# Crawler::Article.get_categories
 # Crawler::Article.get_aritcle_list
