@@ -104,7 +104,7 @@ class CampaignInvite < ActiveRecord::Base
   def permanent_reject rejected_reason=nil
     return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
     # 招募类型,转发类型,simple_cpi
-    if self.campaign.is_recruit_type? || self.is_post_type? || self.is_simple_cpi_type?
+    if self.campaign.is_recruit_type? || self.campaign.is_post_type? || self.campaign.is_simple_cpi_type?
       self.update_columns(:status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
       return
     end

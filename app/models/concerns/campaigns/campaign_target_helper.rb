@@ -39,7 +39,7 @@ module Campaigns
 
     def get_remove_kol_ids_of_campaign_by_target
       campaign_ids = get_ids_from_target_content self.remove_campaign_targets.map(&:target_content)
-      CampaignInvite.where(:campaign_id => campaign_ids).map(&:kol_id)
+      CampaignInvite.where(:campaign_id => campaign_ids).where(:status => ['approved', 'finished', 'settled']).map(&:kol_id)
     end
 
     def today_receive_three_times_kol_ids
