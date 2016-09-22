@@ -210,6 +210,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
 
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.order('created_at DESC').paginate(paginate_params)
+    @push_records = @q.result.paginate(paginate_params)
   end
 end
