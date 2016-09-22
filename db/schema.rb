@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919030603) do
+ActiveRecord::Schema.define(version: 20160922080623) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -312,14 +312,12 @@ ActiveRecord::Schema.define(version: 20160919030603) do
   end
 
   create_table "campaign_push_records", force: :cascade do |t|
-    t.integer  "campaign_id",    limit: 4
-    t.integer  "kol_id",         limit: 4
-    t.string   "push_type",      limit: 255
-    t.boolean  "success",        limit: 1
-    t.string   "success_reason", limit: 255
-    t.string   "fail_reason",    limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer "campaign_id",    limit: 4
+    t.integer "kol_id",         limit: 4
+    t.string  "push_type",      limit: 255
+    t.boolean "success",        limit: 1
+    t.string  "success_reason", limit: 255
+    t.string  "fail_reason",    limit: 255
   end
 
   create_table "campaign_shows", force: :cascade do |t|
@@ -413,6 +411,7 @@ ActiveRecord::Schema.define(version: 20160919030603) do
     t.string   "admin_desc",               limit: 255
     t.string   "cpi_example_screenshot",   limit: 255
     t.string   "remark",                   limit: 255
+    t.string   "sub_type",                 limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
