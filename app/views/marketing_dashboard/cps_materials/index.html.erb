@@ -87,7 +87,7 @@
       <td>
         <%= c.commision_wl %></br>
         <%= c.kol_commision_wl %></td>
-      <td><%= CpsMaterial::Categories[c.category] %></td>
+      <td><%= c.category %></td>
       <td><%= c.enabled ? '出售中' : '已下架' %></td>
       <td>
         <%= link_to (c.enabled ? '下架' : '上架'), switch_marketing_dashboard_cps_material_path(c) %> </br>
