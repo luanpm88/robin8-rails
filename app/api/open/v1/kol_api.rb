@@ -2,9 +2,10 @@ module Open
   module V1
     class KolAPI < Base
       include Grape::Kaminari
-      # before do
-      #   authenticate!
-      # end
+      before do
+        authenticate!
+        request_limit!
+      end
 
       resource :kols do
         desc 'Get KOL(BigV) list'
@@ -32,7 +33,7 @@ module Open
           @kols = @kols.order("#{order} DESC").page(params[:page]).per_page(20)
 
           present :success,      true
-          present :data,         @kols, with: Open::V1::Entities::Kol::Summary
+          present :kols,         @kols, with: Open::V1::Entities::Kol::Summary
           present :total_count,  @kols.count
           present :current_page, @kols.current_page
           present :total_pages,  @kols.total_pages
@@ -43,7 +44,7 @@ module Open
           @kol = Kol.where(id: params[:id]).take!
 
           present :success, true
-          present :data, @kol, with: Open::V1::Entities::Kol::Detail
+          present :kol,     @kol, with: Open::V1::Entities::Kol::Detail
         end
       end
     end
