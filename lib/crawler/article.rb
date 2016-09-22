@@ -50,7 +50,7 @@ module Crawler
         end
       end
       puts contents
-      ArticleContent.create(title: title, cover_url: cover_url,)
+      ArticleContent.create(title: title, cover: cover_url, content: contents, url:article_url)
     end
   end
 end
