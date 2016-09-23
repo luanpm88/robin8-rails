@@ -3,6 +3,7 @@ class CpsMaterial < ActiveRecord::Base
   before_create :cal_commision, :cal_kol_commision
 
   scope :enabled, -> {where(:enabled => true)}
+  scope :hot, -> {where(:is_hot => true)}
 
   #TODO
   Categories =  ["手机", "家具", "珠宝首饰", "影视", "厨具", "音乐", "玩具乐器", "家用电器", "礼品箱包", "服饰内衣", "家居家装", "运动户外", "养生保健",

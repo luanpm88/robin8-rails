@@ -35,9 +35,16 @@ class MarketingDashboard::CpsMaterialsController < MarketingDashboard::BaseContr
     end
   end
 
-  def switch
+  def switch_enable
     @cps_material = CpsMaterial.find params[:id]
     @cps_material.update_column(:enabled, !@cps_material.enabled)
+    redirect_to :action => :index
+  end
+
+  def switch_hot
+    @cps_material = CpsMaterial.find params[:id]
+    @cps_material.update_column(:is_hot, !@cps_material.is_hot)
+    flash[:notice] = "设置成功"
     redirect_to :action => :index
   end
 

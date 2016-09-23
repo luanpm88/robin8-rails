@@ -10,7 +10,8 @@ Rails.application.routes.draw do
     end
     resources :cps_materials do
       member do
-        get :switch
+        get :switch_enable
+        get :switch_hot
       end
     end
     resources :cps_articles do
