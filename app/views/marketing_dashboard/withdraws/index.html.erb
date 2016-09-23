@@ -220,9 +220,11 @@
    })
 
 
-  $(".check_reject").click(function(){
+  $(".check_reject").click(function(e){
+    e.preventDefault();
     if( ! $('.reject_reason').val()){
       alert("拒绝理由不能为空")
+      return
     }
     $.ajax({
       method: "POST",

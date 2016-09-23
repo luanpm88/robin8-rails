@@ -29,7 +29,17 @@
   <thead>
     <tr>
       <th width="50px;">ID</th>
-      <th>帐号</th>
+      <th>支付宝帐号</th>
+      <th>KOL ID</th>
+      <th>KOL昵称</th>
+      <th>KOL手机</th>
+      <th>提现金额</th>
+      <th>提现次数</th>
+      <th>KOL等级</th>
+      <th>可提现金额</th>
+      <th>历史收益</th>
+      <th>平均点击</th>
+      <th>最高点击</th>
       <th>加入黑名单时间</th>
       <th width="90px;">操作</th>
     </tr>
@@ -39,6 +49,16 @@
       <tr>
         <td><%= a.id %></td>
         <td><%= a.account %></td>
+        <td><%= link_to Withdraw.find(a.withdraw_id).kol_id, marketing_dashboard_kol_path(:id => Withdraw.find(a.withdraw_id).kol_id), :target => "_blank" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).kol.name rescue "" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).kol.mobile_number rescue "" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).credits %></td>
+        <td><%= Withdraw.where(:alipay_no =>a.account).count rescue "" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).kol_level rescue "" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).kol.avail_amount rescue "" %></td>
+        <td><%= Withdraw.find(a.withdraw_id).kol.total_income rescue "" %></td>
+        <td> <%= Withdraw.find(a.withdraw_id).kol.average_click_of_campaigns rescue "" %></td>
+        <td> <%= Withdraw.find(a.withdraw_id).kol.maximum_click_of_campaigns rescue "" %></td>
         <td><%= a.created_at %></td>
         <td>
           <%= link_to "把此帐号移出黑名单", disban_marketing_dashboard_alipay_account_blacklist_path(a) %>
