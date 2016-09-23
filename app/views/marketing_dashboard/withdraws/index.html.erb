@@ -1,5 +1,5 @@
 <div class="modal admin-withdraw-modal fade" tabindex="-1" role="dialog">
-  <h5><%= devise_error_messages! %></h5>  
+  <h5><%= devise_error_messages! %></h5>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -162,13 +162,11 @@
           <% if w.status == 'pending' %>
             <%= link_to '通过审核', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
             <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
-            <%= link_to '永久冻结', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_permanent_frozen_path(w.id)  %> /
-            <%= link_to '永久冻结此支付宝帐号', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
+            <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% elsif w.status == 'checked' %>
           <%= link_to '同意付款', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
           <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
-          <%= link_to '永久冻结', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_permanent_frozen_path(w.id)  %> /
-          <%= link_to '永久冻结此支付宝帐号', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
+          <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% end %>
           <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
         </td>
