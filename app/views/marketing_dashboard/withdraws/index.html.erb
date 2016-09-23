@@ -162,11 +162,9 @@
           <% if w.status == 'pending' %>
             <%= link_to '通过审核', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
             <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
-            <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% elsif w.status == 'checked' %>
           <%= link_to '同意付款', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
           <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
-          <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <% end %>
           <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
           <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
@@ -222,9 +220,11 @@
    })
 
 
-  $(".check_reject").click(function(){
+  $(".check_reject").click(function(e){
+    e.preventDefault();
     if( ! $('.reject_reason').val()){
       alert("拒绝理由不能为空")
+      return
     }
     $.ajax({
       method: "POST",
