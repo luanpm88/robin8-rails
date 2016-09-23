@@ -87,6 +87,7 @@ class Kol < ActiveRecord::Base
 
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
+  scope :android, ->{ where("app_platform = 'Android'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
@@ -646,6 +647,15 @@ class Kol < ActiveRecord::Base
       PushMessage.push_common_message([self], content, 'KOL资质审核通过')
       SmsMessage.send_to(self, content)
     end
+  end
+
+  def self.get_all_weibo_uids
+    identity_uids = Identity.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    social_uids = SocialAccount.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    all_uids = (identity_uids + social_uids).uniq
+    File.open("#{Rails.root}/tmp/uids.txt", 'wb'){|f| f.write all_uids.join(",")}
+    File.open("#{Rails.root}/tmp/uids.yaml", 'wb'){|f| f.write YAML::dump(all_uids) }
+    all_uids
   end
 
 end

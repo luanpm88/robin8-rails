@@ -52,7 +52,6 @@ module Concerns
         campaign_invite.status = 'approved'
         campaign_invite.img_status = 'pending'
         campaign_invite.uuid = uuid
-        # campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
         # Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
         campaign_invite.save
       end
@@ -175,5 +174,6 @@ module Concerns
     def avg_campaign_credit
       campaign_total_income / self.campaign_invites.settled.count
     end
+
   end
 end

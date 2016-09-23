@@ -5,16 +5,20 @@ class CampaignTarget < ActiveRecord::Base
     :add_kols         => "添加指定的kols(填写(kol_id)",
     :specified_kols   => "仅特定的kols(填写(kol_id)",
     :social_accounts  => "特邀活动指定的社交账号(social_account_id)",
-    :newbie_kols      => "对于新人的kols可见(填写(any)"
+    :newbie_kols      => "对于新人的kols可见(填写(any)",
+    :ios_platform      => "IOS平台(过滤content不需要填)",
+    :android_platform  => "Android平台(过滤content不需要填)"
   }
   attr_accessor :target_type_text
 
   belongs_to :campaign
-
-  validates_presence_of :target_type, :target_content
-  validates_inclusion_of :target_type, :in => %w(age region gender influence_score tags sns_platforms remove_campaigns remove_kols add_kols specified_kols newbie_kols social_accounts)
-
   before_validation :set_target_type_by_text
+
+  validates_presence_of :target_type
+  validates_presence_of :target_content, :if => Proc.new{|t| t.target_type != 'ios_platform' && t.target_type != 'android_platform' }
+  validates_inclusion_of :target_type, :in => %w(age region gender influence_score tags sns_platforms remove_campaigns remove_kols add_kols specified_kols newbie_kols social_accounts ios_platform android_platform)
+
+
 
   def set_target_type_by_text
     if self.target_type.blank? and self.target_type_text.present?

@@ -157,9 +157,9 @@ class CampaignInvite < ActiveRecord::Base
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
   end
 
-  def self.generate_share_url(uuid)
-    ShortUrl.convert origin_share_url(uuid)
-  end
+  # def self.generate_share_url(uuid)
+  #   ShortUrl.convert origin_share_url(uuid)
+  # end
 
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
@@ -190,10 +190,10 @@ class CampaignInvite < ActiveRecord::Base
     return true
   end
 
-  def approve
-    uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
-    self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
-  end
+  # def approve
+  #   uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
+  #   self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
+  # end
 
   def tag
     return nil if  self.campaign.blank?
