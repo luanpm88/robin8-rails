@@ -1,6 +1,8 @@
 class OpenAPI < Grape::API
   include Grape::PresentCache
 
+  STORE_KEY = "robin8:open:access_tokens"
+
   logger Logger.new(Rails.root.join("log/open_api.log"))
 
   format :json
@@ -50,6 +52,6 @@ class OpenAPI < Grape::API
   mount   Open::V1::Root
 
   route :any, '*path' do
-    rack_response({ success: false, error: '没有相应的请求路径' }.to_json, 404)
+    error!({ success: false, error: '没有相应的请求路径' }, 404)
   end
 end

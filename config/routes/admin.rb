@@ -231,6 +231,7 @@ Rails.application.routes.draw do
       resource  "verify_code"
       resource  "marketing_message"
       resources "sms_messages"
+      resources "open_tokens"
     end
   end
 end

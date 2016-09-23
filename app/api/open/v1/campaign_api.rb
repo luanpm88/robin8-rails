@@ -10,17 +10,11 @@ module Open
 
         desc 'create an campaign'
         params do
-          requires :name,              type: String
-          requires :description,       type: String
           requires :url,               type: String
           requires :budget,            type: Float
-          requires :per_budget_type,   type: String
           requires :per_action_budget, type: Float
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
-
-          requires :poster,     type: Hash
-          requires :screenshot, type: Hash
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -40,10 +34,6 @@ module Open
             error!({ success: false, error: '结束时间需要晚于开始时间' }, 400) and return
           end
 
-          if params[:per_budget_type] != "simple_cpi"
-            error!({ success: false, error: '目前只支持创建CPI活动' }, 400) and return
-          end
-
           if params[:per_action_budget] and params[:per_action_budget].to_f < 3
             error!({ success: false, error: '活动单价不能小于3元' }, 400) and return
           end
@@ -56,19 +46,30 @@ module Open
             error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return
           end
 
-          if params[:poster]
-            poster = AvatarUploader.new
-            poster.store!(params[:poster])
+          if params[:tags] and params[:tags] != "全部"
+            params[:tags] = Tag.where(label: params[:tags].split(",")).map(&:label).join(",")
+            params[:tags] = "全部" unless params[:tags].present?
           end
 
-          if params[:screenshot]
-            screenshot = AvatarUploader.new
-            screenshot.store!(params[:screenshot])
+          if params[:gender] and params[:gender] != "全部"
+            params[:gender] = ([1, 2].include? params[:gender].to_i) ? params[:gender] : "全部"
+          end
+
+          if params[:age] and params[:age] != "全部"
+            min, max = params[:age].split(',').map(&:to_i)
+            params[:age] = min < max ? [min, max].join(',') : "全部"
+          end
+
+          if params[:region] and params[:region] != "全部"
+            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
+            params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
           end
 
           service = KolCreateCampaignService.new current_user, declared(params).merge(
-            :img_url => poster.url,
-            :cpi_example_screenshot => screenshot,
+            :name => "新的开放接口创建的CPI活动",
+            :description => "无",
+            :per_budget_type => "simple_cpi",
+            :img_url => "-",
             :need_pay_amount => params[:budget],
             :campaign_from => "open"
           )
@@ -92,17 +93,10 @@ module Open
         desc "update existed campaign"
         params do
           requires :id,                type: Integer
-          optional :name,              type: String
-          optional :description,       type: String
           optional :url,               type: String
-          optional :per_budget_type,   type: String
           optional :per_action_budget, type: Float
           optional :start_time,        type: DateTime
           optional :deadline,          type: DateTime
-          optional :budget,            type: Float
-
-          optional :poster,     type: Hash
-          optional :screenshot, type: Hash
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -116,10 +110,6 @@ module Open
             error!({success: false, error: "活动已经开始不能修改!"}) and return
           end
 
-          if params[:budget] and params[:budget].to_f < 100
-            error!({success: false, error: "总预算不能低于100元!"}) and return
-          end
-
           if params[:start_time] and (params[:start_time].to_time - Time.now) < 2.hours
             error!({success: false, error: "活动开始时间必须是两个小时之后!"}) and return
           end
@@ -128,33 +118,37 @@ module Open
             error!({success: false, error: "结束时间需要晚于开始时间!"}) and return
           end
 
-          if params[:per_budget_type] and params[:per_budget_type] != "simple_cpi"
-            error!({ success: false, error: '目前只支持创建CPI活动' }, 400) and return
-          end
-
           if params[:per_action_budget] and params[:per_action_budget].to_f < 3
             error!({ success: false, error: '活动单价不能小于3元' }, 400) and return
           end
 
-          declared_params = declared(params)
-          if params[:poster]
-            poster = AvatarUploader.new
-            poster.store!(params[:poster])
-            declared_params.merge!(:img_url => poster.url)
+          if params[:tags] and params[:tags] != "全部"
+            params[:tags] = Tag.where(label: params[:tags].split(",")).map(&:label).join(",")
+            params[:tags] = "全部" unless params[:tags].present?
           end
 
-          if params[:screenshot]
-            screenshot = AvatarUploader.new
-            screenshot.store!(params[:screenshot])
-            declared_params.merge!(:cpi_example_screenshot => screenshot)
+          if params[:gender] and params[:gender] != "全部"
+            params[:gender] = ([1, 2].include? params[:gender].to_i) ? params[:gender] : "全部"
           end
+
+          if params[:age] and params[:age] != "全部"
+            min, max = params[:age].split(',').map(&:to_i)
+            params[:age] = min < max ? [min, max].join(',') : "全部"
+          end
+
+          if params[:region] and params[:region] != "全部"
+            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
+            params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
+          end
+
+          declared_params = declared(params)
 
           if @campaign.status == "rejected"
             @campaign.status = "unexecute"
             @campaign.invalid_reasons = nil
           end
 
-          declared_params.reject! {|i| [:id, :budget].include? i}.to_h
+          declared_params.reject! {|i| [:id].include? i}.to_h
 
           service = KolUpdateCampaignService.new(current_user, @campaign, declared_params)
           if service.perform and service.errors.empty?
@@ -170,7 +164,7 @@ module Open
         params do
           requires :id, type: Integer
         end
-        put "/:id/revoke" do
+        delete "/:id/revoke" do
           @campaign = current_user.campaigns.find(params[:id])
 
           if @campaign.status == "revoked"
@@ -191,13 +185,13 @@ module Open
 
         desc "get all campaign of current user"
         params do
-          optional :status, type: String
+          optional :campaign_type, type: String
           optional :page,   type: Integer
         end
         get "/" do
           @campaigns = current_user.campaigns
 
-          case params[:status]
+          case params[:campaign_type]
           when 'unpay'
             @campaigns = @campaigns.where(:status => 'unpay')
           when 'checking'
@@ -208,7 +202,6 @@ module Open
             @campaigns = @campaigns.where(:status => ['executed', "settled"])
           end
 
-          @campaigns = @campaigns.where(:per_budget_type => ["click", "post"])
           @campaigns = @campaigns.order("created_at DESC").page(params[:page]).per_page(10)
 
           present :success, true
@@ -240,6 +233,9 @@ module Open
 
           present :success, true
           present :invites, @invites, with: Open::V1::Entities::Campaign::CampaignInviteList
+          present :total_count,  @invites.count
+          present :current_page, @invites.current_page
+          present :total_pages,  @invites.total_pages
         end
       end
     end
