@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160922061633) do
+ActiveRecord::Schema.define(version: 20160922024424) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -522,8 +522,8 @@ ActiveRecord::Schema.define(version: 20160922061633) do
     t.string   "goods_name",          limit: 255
     t.string   "category",            limit: 255
     t.datetime "last_sync_at"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.float    "commision_pc",        limit: 24
     t.float    "commision_wl",        limit: 24
     t.float    "kol_commision_pc",    limit: 24
