@@ -32,15 +32,18 @@ class KolUpdateCampaignService
     if @errors.size > 0
       return false
     end
-    begin
+    # begin
+      Rails.logger.info "-----d-d-d-d-d-"
       ActiveRecord::Base.transaction do
+        Rails.logger.info @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
         @campaign.update_attributes @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
+        Rails.logger.info "-----22222222d-d-d-d-d-"
         update_campaign_targets
       end
-    rescue Exception => e
-      @errors.concat e.record.errors.messages.map(&:last).flatten
-      return false
-    end
+    # rescue Exception => e
+    #   @errors.concat e.record.errors.messages.map(&:last).flatten
+    #   return false
+    # end
   end
 
   def first_error_message
@@ -90,6 +93,8 @@ class KolUpdateCampaignService
     ['age', 'region', 'gender'].each do |target_type|
       @campaign.campaign_targets.create!({target_type: target_type, target_content: @campaign_params[target_type.to_sym]})
     end
+
+    Rails.logger.info "-----3333322323--------"
 
     tag_labels = @campaign_params[:tags]
     @campaign.campaign_targets.create!({target_type: 'tags', target_content: tag_labels.split(',').collect { |label| ::Tag.get_name_by_label(label) }.join(',')})
