@@ -13,7 +13,7 @@ class CampaignShowController < ApplicationController
   def show
     sns_info = $weixin_client.get_oauth_access_token(params[:code])
     openid = sns_info.result['openid']    rescue nil
-    uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
+    uuid_params = JSON.parse(Base64.decode64(params[:uuid]))   rescue {}
     campaign_id = uuid_params['campaign_id']
     if uuid_params["campaign_action_url_identifier"].present?
       @campaign_action_url = CampaignActionUrl.find_by :identifier => uuid_params["campaign_action_url_identifier"]
@@ -48,16 +48,14 @@ class CampaignShowController < ApplicationController
 
   private
   def deal_with_cpa_campaign uuid_params, openid
-    if ["unpay", "unexecute", "agreed"].include?(@campaign.status)
-      redirect_to @campaign.url
-      return
-    end
-
     uuid_params.symbolize_keys!
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
 
-    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, other_options)
+    unless ["unpay", "unexecute", "agreed"].include?(@campaign.status)
+      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, other_options)
+    end
+
     if other_options[:step] == 1
       redirect_to @campaign.url
     else

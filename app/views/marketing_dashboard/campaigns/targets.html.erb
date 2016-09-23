@@ -1,6 +1,6 @@
 <h2><%= @title %></h2>
 <%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
-<% attrs = %w(id name email mobile_number) %>
+<% attrs = %w(id name app_platform email mobile_number) %>
 <table class='table table-bordered'>
   <thead>
 

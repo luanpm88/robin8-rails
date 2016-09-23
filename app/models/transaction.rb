@@ -30,7 +30,7 @@ class Transaction < ActiveRecord::Base
                         check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
-                        cps_share_commission cps_tax cps_writing_commission)
+                        cps_share_commission cps_tax cps_writing_commission campaign_income_revoke)
 
   # subject
   # manual_recharge manual_withdraw
@@ -71,6 +71,8 @@ class Transaction < ActiveRecord::Base
         "营销活动(#{self.item.name}) 撤销"
       when "campaign_refund"
         "营销活动(#{self.item.name}) 退款"
+      when "campaign_income_revoke"
+        "营销活动(#{self.item.name}) 审核失败"
       when 'campaign_compensation'
         "活动补偿红包(#{self.item.name})"
       when 'limited_discount'

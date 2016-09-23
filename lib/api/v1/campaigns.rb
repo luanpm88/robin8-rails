@@ -54,9 +54,6 @@ module API
           campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
           last_approved_invite = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at is not null").order("approved_at desc").first      rescue nil
           today_approved_invite_count = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at > '#{Date.today}'").count
-          if (current_kol.id.to_s != '27971' && current_kol.id.to_s != '59797') && current_kol.app_platform == 'IOS' && current_kol.os_version.start_with?("10.0")
-            return error_403!({error: 1, detail: '暂不支持IOS10系统，我们正在紧急适配，请耐心等待！' })
-          end
           if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
