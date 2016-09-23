@@ -30,6 +30,7 @@
     <tr>
       <th width="50px;">ID</th>
       <th>支付宝帐号</th>
+      <th>支付宝姓名</th>
       <th>KOL ID</th>
       <th>KOL昵称</th>
       <th>KOL手机</th>
@@ -49,6 +50,7 @@
       <tr>
         <td><%= a.id %></td>
         <td><%= a.account %></td>
+        <td><%= Withdraw.find(a.withdraw_id).real_name %></td>
         <td><%= link_to Withdraw.find(a.withdraw_id).kol_id, marketing_dashboard_kol_path(:id => Withdraw.find(a.withdraw_id).kol_id), :target => "_blank" %></td>
         <td><%= Withdraw.find(a.withdraw_id).kol.name rescue "" %></td>
         <td><%= Withdraw.find(a.withdraw_id).kol.mobile_number rescue "" %></td>
