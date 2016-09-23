@@ -163,8 +163,10 @@ class CampaignInvite < ActiveRecord::Base
 
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
-    if self.campaign.is_recruit_type? || self.campaign.is_invite_type?  || self.campaign.is_simple_cpi_type?
+    if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
       url
+    elsif self.campaign.is_simple_cpi_type?
+      self.campaign.url
     else
       $weixin_client.authorize_url url
     end
