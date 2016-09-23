@@ -13,7 +13,7 @@ class MarketingDashboard::CpsMaterialsController < MarketingDashboard::BaseContr
     elsif material_url_arr.size > 100
       flash[:error] = "商品数量一次不能超过100个"
     else
-      CpsMaterial.sync_info_from_api(material_url_arr)
+      CpsMaterial.sync_info_from_api(material_url_arr, params[:category])
     end
     redirect_to :action => :index
   end

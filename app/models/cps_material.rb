@@ -13,7 +13,7 @@ class CpsMaterial < ActiveRecord::Base
   end
 
   # 根据url 自动同步信息从
-  def self.sync_info_from_api(urls = [])
+  def self.sync_info_from_api(urls = [], category)
     sku_ids = []
     urls.each do |url|
       sku_id = url.split("/").last.split(".").first rescue nil
@@ -27,7 +27,7 @@ class CpsMaterial < ActiveRecord::Base
       res['result'].each do |item|
         CpsMaterial.create!(sku_id: item['skuId'], img_url: item['imgUrl'], material_url: item['materialUrl'], shop_id: item['shopId'], unit_price: item['unitPrice'],
                             start_date: get_time(item['startDate']), end_date: get_time(item['endDate']), goods_name: item['goodsName'],
-                            commision_ration_pc: item['commisionRatioPc'], commision_ration_wl: item['commisionRatioWl'], last_sync_at: Time.now )
+                            commision_ration_pc: item['commisionRatioPc'], commision_ration_wl: item['commisionRatioWl'], last_sync_at: Time.now, category: category )
       end
     else
       Rails.logger.info "======sync_info_from_api----not successful"

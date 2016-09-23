@@ -23,7 +23,7 @@ module Crawler
     end
 
     def self.get_aritcle_list
-      ArticleCategory.where("article_category_id >= 23").each do |category|
+      ArticleCategory.where("id >= 23").each do |category|
         doc = get_doc(category.sub_url)
         doc.css(".img-container").each do |article_a|
           artcile_url = article_a.attr("href").gsub("..","http://www.diaox2.com")
@@ -34,7 +34,7 @@ module Crawler
     end
 
     def self.get_article_content(article_category_id, article_url)
-      return if ArticleCategory.find_by(:url => article_url).present?
+      return if ArticleContent.find_by(:url => article_url).present?
       doc = get_doc(article_url)   rescue nil
       title = doc.css(".article-area")[0].css(".article-title").text   rescue nil
       return if title.blank?
