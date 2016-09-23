@@ -6,54 +6,64 @@ class CampaignPushRecordWorker
 
     if type == 'common'
       if @campaign.is_invite_type? && @campaign.get_social_account_related_kol_ids #针对特邀活动，指定了特定的社交账号，通过社交账号来找到KOL
-        @campaign.get_social_account_related_kol_ids.each_slice(5000) do |kol_ids|
-          inserts = []
-          kol_ids.each do |kol_id|
-            inserts.push "(#{@campaign.id}, #{kol_id}, 'common', True, '特邀活动指定特定kol')"
+        ActiveRecord::Base.transaction do
+          @campaign.get_social_account_related_kol_ids.each_slice(5000) do |kol_ids|
+            inserts = []
+            kol_ids.each do |kol_id|
+              inserts.push "(#{@campaign.id}, #{kol_id}, 'common', True, '特邀活动指定特定kol')"
+            end
+            sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
+            ActiveRecord::Base.connection.execute(sql)
+            # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'common', success: true, success_reason: '特邀活动指定特定kol')
           end
-          sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
-          ActiveRecord::Base.connection.execute(sql)
-          # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'common', success: true, success_reason: '特邀活动指定特定kol')
         end
       elsif @campaign.get_specified_kol_ids
-        @campaign.get_specified_kol_ids.each_slice(5000) do |kol_ids|
-          inserts = []
-          kol_ids.each do |kol_id|
-            inserts.push "(#{@campaign.id}, #{kol_id}, 'common', True, '指定kols')"
+        ActiveRecord::Base.transaction do
+          @campaign.get_specified_kol_ids.each_slice(5000) do |kol_ids|
+            inserts = []
+            kol_ids.each do |kol_id|
+              inserts.push "(#{@campaign.id}, #{kol_id}, 'common', True, '指定kols')"
+            end
+            sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
+            ActiveRecord::Base.connection.execute(sql)
+            # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'common', success: true, success_reason: '指定kols')
           end
-          sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
-          ActiveRecord::Base.connection.execute(sql)
-          # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'common', success: true, success_reason: '指定kols')
         end
       elsif @campaign.get_matching_kol_ids
-        save_matched_kols
-        save_removed_kols_by_specified_campaign
-        save_specify_removed_kols
-        save_black_list_kols
-        save_today_receive_three_times_kols
-        save_frequent_push_kols
+        ActiveRecord::Base.transaction do
+          save_matched_kols
+          save_removed_kols_by_specified_campaign
+          save_specify_removed_kols
+          save_black_list_kols
+          save_today_receive_three_times_kols
+          save_frequent_push_kols
+        end
       end
 
     elsif type == 'append'
-      @campaign.get_append_kol_ids.each_slice(5000) do |kol_ids|
-        inserts = []
-        kol_ids.each do |kol_id|
-          inserts.push "(#{@campaign.id}, #{kol_id}, 'append', True, '定时补推')"
-        end
-        sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
-        ActiveRecord::Base.connection.execute(sql)
-        # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'append', success: true, success_reason: '定时补推')
-      end
-    elsif type == 'push_all'
-      if kols.present?
-        kols.each_slice(5000) do |kol_ids|
+      ActiveRecord::Base.transaction do
+        @campaign.get_append_kol_ids.each_slice(5000) do |kol_ids|
           inserts = []
           kol_ids.each do |kol_id|
-            inserts.push "(#{@campaign.id}, #{kol_id}, 'push_all', True, '全推')"
+            inserts.push "(#{@campaign.id}, #{kol_id}, 'append', True, '定时补推')"
           end
           sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
           ActiveRecord::Base.connection.execute(sql)
-          # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'push_all', success: true, success_reason: '全推')
+          # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'append', success: true, success_reason: '定时补推')
+        end
+      end
+    elsif type == 'push_all'
+      if kols.present?
+        ActiveRecord::Base.transaction do
+          kols.each_slice(5000) do |kol_ids|
+            inserts = []
+            kol_ids.each do |kol_id|
+              inserts.push "(#{@campaign.id}, #{kol_id}, 'push_all', True, '全推')"
+            end
+            sql = "INSERT INTO campaign_push_records(campaign_id, kol_id, push_type, success, success_reason) values #{inserts.join(',')}"
+            ActiveRecord::Base.connection.execute(sql)
+            # CampaignPushRecord.create!(campaign_id: @campaign.id, kol_id: kol_id, push_type: 'push_all', success: true, success_reason: '全推')
+          end
         end
       end
     end
