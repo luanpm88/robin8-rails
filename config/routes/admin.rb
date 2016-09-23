@@ -3,9 +3,15 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
+    resources :article_contents do
+      member do
+        get :sync
+      end
+    end
     resources :cps_materials do
       member do
-        get :switch
+        get :switch_enable
+        get :switch_hot
       end
     end
     resources :cps_articles do
@@ -15,6 +21,9 @@ Rails.application.routes.draw do
         get :article_shares
         get :switch
         get :check
+      end
+      collection do
+        get :need_shield
       end
     end
     resources :cps_promotion_orders do
@@ -54,6 +63,7 @@ Rails.application.routes.draw do
         post :refresh_budget
         patch :save_example_screenshot_and_remark
         match 'add_seller', via: [:post, :get]
+        get :push_record
       end
       collection do
         put :reject

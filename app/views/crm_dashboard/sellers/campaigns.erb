@@ -1,0 +1,94 @@
+<h3>销售活动列表</h3>
+
+<div class="container-fluid" style="padding: 20px 0;">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding: 0;">
+      <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
+        搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
+      </a>
+    </div>
+    <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动ID</label>
+              <%= f.search_field :id_eq, class: "form-control", placeholder: "活动ID" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动名称</label>
+              <%= f.search_field :name_cont, class: "form-control", placeholder: "活动名称" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>品牌主ID</label>
+              <%= f.search_field :user_id_eq, class: "form-control", placeholder: "品牌主ID" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动类型</label>
+              <%= f.select :per_budget_type_eq, [ :click, :post, :cpa, :recruit, :invite ], { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动状态</label>
+              <%= f.select :status_eq, [:agreed, :executing, :executed, :settled ], { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div>
+                <%= f.submit "搜索", class: "btn btn-primary" %>
+                <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th width="50px;">活动ID</th>
+      <th>活动名称</th>
+      <th width="50px;">品牌主ID</th>
+      <th>品牌昵称</th>
+      <th width="110px;">品牌主手机</th>
+      <th>活动创建时间</th>
+      <th>活动金额</th>
+      <th>活动状态</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @campaigns.each do |c| %>
+      <tr>
+        <td><%= link_to c.id, marketing_dashboard_campaign_path(:id => c.id), :target => "_blank" %></td>
+        <td><%= c.name %></td>
+        <td><%= link_to c.user_id, marketing_dashboard_user_path(:id => c.user_id), :target => "_blank" %></td>
+        <td><%= c.user.name if c.user %></td>
+        <td><%= c.user.mobile_number if c.user %></td>
+
+        <td><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue "" %></td>
+        <td><%= c.budget %></td>
+        <td><%= c.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>

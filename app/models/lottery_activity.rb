@@ -34,7 +34,7 @@ class LotteryActivity < ActiveRecord::Base
   end
 
   def generate_lucky_number(salt) # salt = A + B
-    (salt / total_number) % total_number + 10000001
+    salt % total_number + 10000001
   end
 
   def try_draw

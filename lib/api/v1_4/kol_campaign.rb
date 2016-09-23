@@ -17,6 +17,11 @@ module API
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
+
+          optional :age, type: String, default: '全部'
+          optional :gender, type:String, default: '全部'
+          optional :region, type: String, default: '全部'
+          optional :tags, type: String, default: '全部'
         end
         post "/" do
           brand_user = current_kol.find_or_create_brand_user
@@ -29,9 +34,9 @@ module API
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
 
-          if (params[:start_time].to_time - Time.now) < 2.hours
-            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
-          end
+          # if (params[:start_time].to_time - Time.now) < 2.hours
+          #   error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          # end
 
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
@@ -42,6 +47,10 @@ module API
           end
 
           if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
@@ -70,6 +79,11 @@ module API
           optional :start_time, type: DateTime
           optional :deadline, type: DateTime
           optional :budget, type: Float
+
+          optional :age, type: String, default: '全部'
+          optional :gender, type:String, default: '全部'
+          optional :region, type: String, default: '全部'
+          optional :tags, type: String, default: '全部'
         end
         put '/update' do
           brand_user = current_kol.find_or_create_brand_user
@@ -81,9 +95,9 @@ module API
             error_403!({error: 1, detail: "总预算不能低于100元!"})  and return
           end
 
-          if (params[:start_time].to_time - Time.now) < 2.hours
-            error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
-          end
+          # if (params[:start_time].to_time - Time.now) < 2.hours
+          #   error_403!({error: 1, detail: "活动开始时间必须是两个小时之后!"})  and return
+          # end
 
           if params[:deadline].to_time <= params[:start_time].to_time
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
@@ -94,6 +108,10 @@ module API
           end
 
           if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          end
+
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
@@ -121,7 +139,6 @@ module API
 
           service = KolUpdateCampaignService.new(brand_user, campaign, declared_params)
           service.perform
-          campaign.reload
           present :error, 0
           present :kol_amount, current_kol.avail_amount.to_f
           present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
@@ -144,7 +161,7 @@ module API
           else
             campaigns = brand_user.campaigns
           end
-          campaigns = campaigns.where(:per_budget_type => ["click", "post"]).order("created_at desc").page(params[:page] || 1).per_page(10)
+          campaigns = campaigns.where(:per_budget_type => ["click", "post", "simple_cpi"]).order("created_at desc").page(params[:page] || 1).per_page(10)
           present :error, 0
           to_paginate(campaigns)
           present :campaigns, campaigns, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity

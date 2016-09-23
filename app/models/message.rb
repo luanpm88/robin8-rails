@@ -65,7 +65,7 @@ class Message < ActiveRecord::Base
 
 
   def self.new_check_message(message_type,invite, campaign)
-    message = Message.new(:message_type => message_type, :sub_message_type => campaign.per_budget_type, :receiver => invite.kol, :item => invite)
+    message = Message.new(:message_type => message_type, :sub_message_type => campaign.per_budget_type, :receiver => invite.kol, :item => campaign)
     if  message_type == 'screenshot_passed'
       message.title = "截图已经通过审核，快来查查你的收益"
     elsif message_type == 'screenshot_rejected'
@@ -81,7 +81,7 @@ class Message < ActiveRecord::Base
 
   # create or update
   def self.new_income(invite, campaign)
-    message = Message.find_or_initialize_by(:message_type => 'income', :receiver => invite.kol, :item => invite)
+    message = Message.find_or_initialize_by(:message_type => 'income', :receiver => invite.kol, :item => campaign)
     if message.new_record?
       message.logo_url = campaign.img_url
       message.sender = campaign.user.company || campaign.user.name  rescue nil

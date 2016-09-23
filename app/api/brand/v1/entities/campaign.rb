@@ -6,7 +6,7 @@ module Brand
         expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
-               :budget_editable, :pay_way, :need_pay_amount
+               :budget_editable, :pay_way, :need_pay_amount, :sub_type
 
         expose :user, using: Entities::User
 
@@ -75,7 +75,7 @@ module Brand
 
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "age")
+          target = object.age_target
           target.target_content if target
         end
 
@@ -90,7 +90,7 @@ module Brand
         # end
 
         expose :gender do |object, opts|
-          target = object.campaign_targets.find_by(target_type: "gender")
+          target = object.gender_target
           target.target_content if target
         end
 

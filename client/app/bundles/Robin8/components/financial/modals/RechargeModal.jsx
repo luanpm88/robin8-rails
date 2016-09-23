@@ -43,7 +43,7 @@ export default class RechargeModal extends Component {
           <div className="invoice-info">
             <span className='tax-amount'>发票税费: </span><span className='price'>{tax}元</span>
           </div>
-          <p className="detail help-block">若您的需要开具发票，我们会按照国家规定征收6%税点，发票税费不计入余额，充值成功后您可以在申请发票模块进行发票申请</p>
+          <p className="detail help-block"><span className="red_color">若您的需要开具发票，我们会按照国家规定征收6%税点，发票税费不计入余额，充值成功后您可以在申请发票模块进行发票申请。已申请发票的金额不可以申请退款。</span></p>
         </div>
       )
     } else {

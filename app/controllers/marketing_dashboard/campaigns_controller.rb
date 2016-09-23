@@ -205,4 +205,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       redirect_to :back, notice: '添加成功'
     end
   end
+
+  def push_record
+    @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+
+    @q = @push_records.ransack(params[:q])
+    @push_records = @q.result.paginate(paginate_params)
+  end
 end

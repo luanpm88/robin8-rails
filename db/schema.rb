@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912072344) do
+ActiveRecord::Schema.define(version: 20160922080623) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -184,6 +184,15 @@ ActiveRecord::Schema.define(version: 20160912072344) do
 
   add_index "article_actions", ["kol_id"], name: "index_article_actions_on_kol_id", using: :btree
 
+  create_table "article_categories", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "url",        limit: 255
+    t.string   "sub_name",   limit: 255
+    t.string   "sub_url",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "article_comments", force: :cascade do |t|
     t.text     "text",         limit: 16777215
     t.string   "comment_type", limit: 191
@@ -197,6 +206,15 @@ ActiveRecord::Schema.define(version: 20160912072344) do
   add_index "article_comments", ["article_id"], name: "index_article_comments_on_article_id", using: :btree
   add_index "article_comments", ["comment_type"], name: "index_article_comments_on_comment_type", using: :btree
   add_index "article_comments", ["sender_type", "sender_id"], name: "index_article_comments_on_sender_type_and_sender_id", using: :btree
+
+  create_table "article_contents", force: :cascade do |t|
+    t.integer  "article_category_id", limit: 4
+    t.string   "title",               limit: 255
+    t.string   "cover",               limit: 255
+    t.text     "content",             limit: 65535
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
 
   create_table "articles", force: :cascade do |t|
     t.text     "text",          limit: 16777215
@@ -308,6 +326,15 @@ ActiveRecord::Schema.define(version: 20160912072344) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "campaign_push_records", force: :cascade do |t|
+    t.integer "campaign_id",    limit: 4
+    t.integer "kol_id",         limit: 4
+    t.string  "push_type",      limit: 255
+    t.boolean "success",        limit: 1
+    t.string  "success_reason", limit: 255
+    t.string  "fail_reason",    limit: 255
+  end
+
   create_table "campaign_shows", force: :cascade do |t|
     t.integer  "campaign_id",     limit: 4
     t.integer  "kol_id",          limit: 4
@@ -339,10 +366,10 @@ ActiveRecord::Schema.define(version: 20160912072344) do
 
   create_table "campaign_targets", force: :cascade do |t|
     t.string   "target_type",    limit: 255
-    t.string   "target_content", limit: 255
+    t.text     "target_content", limit: 65535
     t.integer  "campaign_id",    limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "campaign_targets", ["campaign_id"], name: "index_campaign_targets_on_campaign_id", using: :btree
@@ -501,6 +528,7 @@ ActiveRecord::Schema.define(version: 20160912072344) do
     t.float    "kol_commision_wl",    limit: 24
     t.boolean  "enabled",             limit: 1,   default: true
     t.integer  "position",            limit: 4,   default: 0
+    t.boolean  "is_hot",              limit: 1,   default: false
   end
 
   add_index "cps_materials", ["sku_id"], name: "index_materials_on_sku_id", using: :btree

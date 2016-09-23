@@ -2,8 +2,8 @@ class CreateRecruitCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
 
   PERMIT_PARAMS = [:name, :description, :img_url, :budget, :per_budget_type,
-                  :per_action_budget, :start_time, :deadline,
-                  :region, :tags, :sns_platforms, :recruit_start_time,
+                  :per_action_budget, :start_time, :deadline, :age, :gender,
+                  :region, :tags, :sns_platforms, :recruit_start_time, :url, :sub_type,
                   :recruit_end_time, :hide_brand_name, :material_ids]
 
   attr_reader :errors, :campaign
@@ -28,6 +28,11 @@ class CreateRecruitCampaignService
     #   return false
     # end
 
+    if @campaign_params[:sub_type].blank? or @campaign_params[:sub_type] == "null"
+      @campaign_params[:sub_type] = nil
+      @campaign_params[:url] = nil
+    end
+
     validate_recruit_time
     @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
 
@@ -37,11 +42,11 @@ class CreateRecruitCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:region, :tags, :sns_platforms, :material_ids].include? k })
+        @campaign = @user.campaigns.create!(@campaign_params.reject{|k,v| [:age, :gender, :region, :tags, :sns_platforms, :material_ids].include? k })
 
         create_campaign_materials
 
-        @campaign_params.select{ |k, v| [:region, :tags, :sns_platforms].include? k }.each do |k, v|
+        @campaign_params.select{ |k, v| [:age, :gender, :region, :tags, :sns_platforms].include? k }.each do |k, v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end
