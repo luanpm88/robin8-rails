@@ -2,6 +2,7 @@
   品牌主名：<%= @user.smart_name %> / 手机号：<%= @user.mobile_number %>
   <div class="pull-right">
     <%= link_to_switch_user_live @user %>
+    <%= link_to "生成密钥", marketing_dashboard_utilities_open_tokens_path(user_id: @user.id), method: :post, confirm: "确定要创建密钥吗？", class: "btn btn-default" %>
   </div>
 </h3>
 
