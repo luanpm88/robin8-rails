@@ -10,7 +10,8 @@ module Kols
 
     # 总的净收入金额，赚得钱减去成本
     def total_income
-      self.historical_income
+      # self.historical_income
+      self.income_transactions.sum(:credits)
     end
 
     # 总的取现成功的金额
