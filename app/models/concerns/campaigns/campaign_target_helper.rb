@@ -76,7 +76,7 @@ module Campaigns
       return [] if self.newbie_kol_target.present?
 
       # TODO big_v 正式上线后 可以把 active 去掉
-      kols = Kol.active.personal_big_v
+      kols = Kol.active
 
       kols = kols.where("`kols`.`app_version` >= '1.2.0'")    if self.is_recruit_type?
 
