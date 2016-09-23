@@ -87,6 +87,7 @@ class Kol < ActiveRecord::Base
 
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
+  scope :android, ->{ where("app_platform = 'Android'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
