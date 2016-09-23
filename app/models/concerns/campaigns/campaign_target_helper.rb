@@ -16,6 +16,8 @@ module Campaigns
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
       has_many :specified_kol_targets, -> {where(:target_type => [:specified_kols])}, class_name: "CampaignTarget"
       has_many :social_account_targets, -> {where(:target_type => :social_accounts)}, class_name: "CampaignTarget"
+      has_one :ios_platform_target, -> {where(:target_type => 'ios_platform')}, class_name: "CampaignTarget"
+      has_one :android_platform_target, -> {where(:target_type => 'android_platform')}, class_name: "CampaignTarget"
     end
 
     def get_unmatched_kol_ids
@@ -104,6 +106,17 @@ module Campaigns
           unless target.target_content == '全部'
             kols = kols.where(gender: target.target_content.to_i)
           end
+        elsif target.target_type == 'ios_platform'
+          kols = kols.ios
+        elsif target.target_type == 'android_platform'
+          kols = kols.android
+        #TODO 添加指定kols
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'gender'
+        #   kols = kols.where("gender = '#{target.contents}'")
         end
         #TODO 添加指定kols
       end

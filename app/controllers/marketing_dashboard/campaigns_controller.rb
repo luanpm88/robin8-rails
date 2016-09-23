@@ -104,7 +104,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @black_list_ids = @campaign.get_black_list_kols
     @receive_campaign_kol_ids  = @campaign.get_remove_kol_ids_of_campaign_by_target
     @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
-    @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
     @three_hours_had_receive_kol_ids = @campaign.three_hours_had_receive_kol_ids
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
