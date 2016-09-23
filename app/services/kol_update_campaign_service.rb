@@ -34,8 +34,7 @@ class KolUpdateCampaignService
     end
     # begin
       ActiveRecord::Base.transaction do
-        Rails.logger.info @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
-        @campaign.update_attributes @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
+        @campaign.update_attributes @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }.compact!
         update_campaign_targets
       end
     # rescue Exception => e
