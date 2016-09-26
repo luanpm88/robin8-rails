@@ -56,7 +56,7 @@
     <tr>
       <td><%= link_to c.title, "/cps_articles/#{c.id}", :target => "_blank" %></td>
       <td><%= image_tag c.cover, :size => '100x100' %></td>
-      <td><%#= link_to (c.kol.name rescue ''), marketing_dashboard_kol_path(c.kol), :target => "_blank" %></td>
+      <td><%= link_to (c.kol.name rescue ''), marketing_dashboard_kol_path(c.kol), :target => "_blank" %></td>
       <td>
         <% if c.status == 'pending' %>
           <span class="label label-info"><%= CpsArticle::Statuses[c.status] %></span>
