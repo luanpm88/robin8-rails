@@ -6,7 +6,7 @@ end
 
 Rails.application.routes.draw do
   mount Crm::Engine, at: "/crm"
-  mount StatusPage::Engine, at: '/'
+  # mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
   mount OpenAPI => '/api', as: :open_api, constraints: {subdomain: 'open'}
   mount API::Application => '/api'
