@@ -16,7 +16,7 @@ class RegisteredInvitationsController < ApplicationController
     )
 
     if @invitation.save
-      render json: {url: root_url }
+      render json: {url: Rails.application.secrets[:download_url] || root_url }
     else
       render json: {error: "邀请异常，请重新尝试" }
     end
