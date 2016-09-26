@@ -84,6 +84,8 @@ class Kol < ActiveRecord::Base
   has_many :cps_articles
   has_many :cps_article_shares
 
+  has_one  :registered_invitation,  foreign_key: :invitee_id, inverse_of: :invitee
+  has_many :registered_invitations, foreign_key: :inviter_id, inverse_of: :inviter
 
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
