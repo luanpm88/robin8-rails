@@ -177,6 +177,9 @@ Rails.application.routes.draw do
   get '/invite', to: 'pages#invite'
   get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help'
   resources :campaign, only: [:index, :create, :update, :show]
+  resources :registered_invitations do
+    post :sms, on: :collection
+  end
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
