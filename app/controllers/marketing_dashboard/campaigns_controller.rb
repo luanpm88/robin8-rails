@@ -81,7 +81,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def add_target
     authorize! :manage, Campaign
-    CampaignTarget.create(params.require(:campaign_target).permit(:target_type_text, :target_content).merge(:campaign_id => params[:id]))
+    CampaignTarget.create!(params.require(:campaign_target).permit(:target_type_text, :target_content).merge(:campaign_id => params[:id]))
     redirect_to targets_marketing_dashboard_campaign_path(:id => params[:id])
   end
 
@@ -103,7 +103,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @remove_kol_ids = @campaign.get_remove_kol_ids_by_target
     @black_list_ids = @campaign.get_black_list_kols
     @receive_campaign_kol_ids  = @campaign.get_remove_kol_ids_of_campaign_by_target
-    @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
     @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
     @three_hours_had_receive_kol_ids = @campaign.three_hours_had_receive_kol_ids
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
@@ -210,6 +209,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
 
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.order('created_at DESC').paginate(paginate_params)
+    @push_records = @q.result.paginate(paginate_params)
   end
 end

@@ -92,11 +92,11 @@ module Campaigns
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
       # 推送记录
-      # if Rails.env.development? or Rails.env.test?
-      #   CampaignPushRecordWorker.new.perform(self.id, 'common')
-      # else
-      #   CampaignPushRecordWorker.perform_async(self.id, 'common')
-      # end
+      if Rails.env.development? or Rails.env.test?
+        CampaignPushRecordWorker.new.perform(self.id, 'common')
+      else
+        CampaignPushRecordWorker.perform_async(self.id, 'common')
+      end
     end
 
     def go_start(kol_ids = nil)
@@ -118,6 +118,7 @@ module Campaigns
 
     # 当指定区域 或者 地区 不是全部 的时候 执行
     def add_queue_to_add_kols_when_tag_or_region_is_special
+      return  if self.specified_kol_targets.present?
       if self.is_click_type? or self.is_post_type?
         if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) ) \
            or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content)) or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content))
@@ -133,10 +134,10 @@ module Campaigns
           kol.add_campaign_id self.id, true
         end
         if Rails.env.development? or Rails.env.test?
-          # CampaignPushRecordWorker.new.perform(self.id, 'append')
+          CampaignPushRecordWorker.new.perform(self.id, 'append')
         else
           Message.new_campaign(self, kol_ids)
-          # CampaignPushRecordWorker.perform_async(self.id, 'append')
+          CampaignPushRecordWorker.perform_async(self.id, 'append')
         end
       end
     end
@@ -151,10 +152,10 @@ module Campaigns
       end
       if should_push_kol_is.size > 0
         if Rails.env.development? or Rails.env.test?
-          # CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
+          CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
         else
           Message.new_campaign(self, should_push_kol_is)
-          # CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
+          CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
         end
       end
     end
@@ -224,7 +225,7 @@ module Campaigns
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
           # recruit campaign upload img after campaign finished
-          if invite.total_click == 0 &&  (campaign.is_post_type? || campaign.is_simple_cp_type? || campaign.is_click_type? || campaign.is_cpa_type?)
+          if invite.total_click == 0 &&  (campaign.is_post_type?  || campaign.is_click_type? || campaign.is_cpa_type?)
             invite.img_status = 'rejected'
             invite.reject_reason = '活动一次点击都没有'
           end

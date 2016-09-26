@@ -10,12 +10,14 @@ module Campaigns
       has_one :gender_target, -> {where(:target_type => 'gender')}, class_name: "CampaignTarget"
       has_one :age_target, -> {where(:target_type => 'age')}, class_name: "CampaignTarget"
       has_one :newbie_kol_target, -> {where(:target_type => [:newbie_kols])}, class_name: "CampaignTarget"
-      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols, :newbie_kols])}, class_name: "CampaignTarget"
+      has_many :manual_campaign_targets, -> {where(:target_type => CampaignTarget::TargetTypes.keys)}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
       has_many :specified_kol_targets, -> {where(:target_type => [:specified_kols])}, class_name: "CampaignTarget"
       has_many :social_account_targets, -> {where(:target_type => :social_accounts)}, class_name: "CampaignTarget"
+      has_one :ios_platform_target, -> {where(:target_type => 'ios_platform')}, class_name: "CampaignTarget"
+      has_one :android_platform_target, -> {where(:target_type => 'android_platform')}, class_name: "CampaignTarget"
     end
 
     def get_unmatched_kol_ids
@@ -39,7 +41,7 @@ module Campaigns
 
     def get_remove_kol_ids_of_campaign_by_target
       campaign_ids = get_ids_from_target_content self.remove_campaign_targets.map(&:target_content)
-      CampaignInvite.where(:campaign_id => campaign_ids).map(&:kol_id)
+      CampaignInvite.where(:campaign_id => campaign_ids).where(:status => ['approved', 'finished', 'settled']).map(&:kol_id)
     end
 
     def today_receive_three_times_kol_ids
@@ -74,14 +76,14 @@ module Campaigns
       return [] if self.newbie_kol_target.present?
 
       # TODO big_v 正式上线后 可以把 active 去掉
-      kols = Kol.active.personal_big_v
+      kols = Kol.active
 
       kols = kols.where("`kols`.`app_version` >= '1.2.0'")    if self.is_recruit_type?
 
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
           unless target.target_content == '全部' || target.target_content == '全部 全部'
-            cities = target.target_content.split(',').collect { |name| City.where("name like '#{name}%'").first.name_en }
+            cities = target.target_content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en }
             kols = kols.where(:app_city => cities)
           end
         elsif target.target_type == 'tags'
@@ -96,14 +98,25 @@ module Campaigns
           end
         elsif target.target_type == 'age'
           unless target.target_content == '全部'
-            min_age = target.target_content.split(',').map(&:to_i).first
-            max_age = target.target_content.split(',').map(&:to_i).last
+            min_age = target.target_content.split(/[,\/]/).map(&:to_i).first
+            max_age = target.target_content.split(/[,\/]/).map(&:to_i).last
             kols = kols.where(age: Range.new(min_age, max_age))
           end
         elsif target.target_type == 'gender'
           unless target.target_content == '全部'
             kols = kols.where(gender: target.target_content.to_i)
           end
+        elsif target.target_type == 'ios_platform'
+          kols = kols.ios
+        elsif target.target_type == 'android_platform'
+          kols = kols.android
+        #TODO 添加指定kols
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'age'
+        #   kols = kols.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'gender'
+        #   kols = kols.where("gender = '#{target.contents}'")
         end
         #TODO 添加指定kols
       end

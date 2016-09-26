@@ -104,7 +104,7 @@ class CampaignInvite < ActiveRecord::Base
   def permanent_reject rejected_reason=nil
     return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
     # 招募类型,转发类型,simple_cpi
-    if self.campaign.is_recruit_type? || self.is_post_type? || self.is_simple_cpi_type?
+    if self.campaign.is_recruit_type? || self.campaign.is_post_type? || self.campaign.is_simple_cpi_type?
       self.update_columns(:status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
       return
     end
@@ -157,9 +157,9 @@ class CampaignInvite < ActiveRecord::Base
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
   end
 
-  def self.generate_share_url(uuid)
-    ShortUrl.convert origin_share_url(uuid)
-  end
+  # def self.generate_share_url(uuid)
+  #   ShortUrl.convert origin_share_url(uuid)
+  # end
 
   # 第一次访问的地址
   def visit_url
@@ -171,6 +171,8 @@ class CampaignInvite < ActiveRecord::Base
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
     if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
       url
+    elsif self.campaign.is_simple_cpi_type?
+      self.campaign.url
     else
       #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
@@ -197,10 +199,10 @@ class CampaignInvite < ActiveRecord::Base
     return true
   end
 
-  def approve
-    uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
-    self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
-  end
+  # def approve
+  #   uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
+  #   self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
+  # end
 
   def tag
     return nil if  self.campaign.blank?

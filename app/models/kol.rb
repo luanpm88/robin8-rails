@@ -3,8 +3,8 @@ class Kol < ActiveRecord::Base
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
   # counter :redis_new_income      #unit is cent
-  list :read_message_ids, :maxlength => 2000             # 所有阅读过的
-  list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
+  list :read_message_ids, :maxlength => 20             # 所有阅读过的
+  list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   include Concerns::Unionability
@@ -85,18 +85,19 @@ class Kol < ActiveRecord::Base
   has_many :cps_article_shares
 
 
-  scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
+  #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
+  scope :android, ->{ where("app_platform = 'Android'") }
   scope :by_date, ->(date){where("created_at > '#{date.beginning_of_day}' and created_at < '#{date.end_of_day}' ") }
   scope :order_by_hot, ->{order("is_hot desc, role_apply_time desc, id desc")}
   scope :order_by_created, ->{order("created_at desc")}
   if Rails.env.production?
-    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")} #.where("kol_role='mcn_big_v' or device_token is not null")}
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}' and `kols`.`mobile_number` is not null")} #.where("kol_role='mcn_big_v' or device_token is not null")}
     scope :big_v, ->{ }
     # scope :mcn_big_v, -> { }
     scope :personal_big_v, ->{ }
   else
-    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'")}
+    scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}' and `kols`.`mobile_number` is not null")}
     scope :big_v, ->{ where("kol_role = 'mcn_big_v' or kol_role = 'big_v'") }
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
@@ -646,6 +647,15 @@ class Kol < ActiveRecord::Base
       PushMessage.push_common_message([self], content, 'KOL资质审核通过')
       SmsMessage.send_to(self, content)
     end
+  end
+
+  def self.get_all_weibo_uids
+    identity_uids = Identity.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    social_uids = SocialAccount.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    all_uids = (identity_uids + social_uids).uniq
+    File.open("#{Rails.root}/tmp/uids.txt", 'wb'){|f| f.write all_uids.join(",")}
+    File.open("#{Rails.root}/tmp/uids.yaml", 'wb'){|f| f.write YAML::dump(all_uids) }
+    all_uids
   end
 
 end

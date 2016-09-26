@@ -1,0 +1,68 @@
+<h3>
+  Cps备选文章列表
+</h3>
+
+<div class="panel panel-default">
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>文章标题</label>
+            <%= f.search_field :title_cont, class: "form-control", placeholder: "文章标题" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>分类</label>
+            <%= f.select :article_category_id_eq, options_for_select(ArticleCategory.all.collect{|t| [t.sub_name, t.id]}, @q.article_category_id_eq), {include_blank: '全部'}, class: "form-control", placeholder: "文章标题" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>同步状态</label>
+            <%= f.select :is_sync_eq, options_for_select([['已同步',1],['同步未',0]], @q.is_sync_eq), {include_blank: '全部'}, class: "form-control", placeholder: "同步状态" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>类别</th>
+    <th>封面图</th>
+    <th>文章标题</th>
+    <th width="45%">内容</th>
+    <th>同步状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @article_contents.each do |c| %>
+    <tr>
+      <th><%= c.article_category.sub_name %></th>
+      <td><%= image_tag c.cover, :size => '100x100' %></td>
+      <td><%= link_to c.title, c.url, :target => "_blank" %></td>
+      <td><%= truncate(c.content, length: 370, separator: '....') %></td>
+      <td><%= c.is_sync == true ? '已同步' : '未同步' %></td>
+      <td>
+        <%= link_to '立即同步', sync_marketing_dashboard_article_content_path(c) if c.is_sync != true %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="pull-right">
+  <%= will_paginate @article_contents, renderer: BootstrapPagination::Rails %>
+</div>

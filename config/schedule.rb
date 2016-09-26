@@ -49,7 +49,7 @@ every 5.minutes do
   runner "CampaignInvite.schedule_day_settle", :environment => 'staging'
 end
 
-every 3.hours do
+every 1.day, :at => '17:01 pm' do
   runner "CampaignObserver.notify_operational_staff", :environment => 'production'
 end
 

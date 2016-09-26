@@ -56,6 +56,20 @@ class CrmDashboard::SellersController < CrmDashboard::BaseController
     @orders = AlipayOrder.where(invite_code: @seller.invite_code).order('created_at DESC').paginate(paginate_params)
   end
 
+  def campaigns
+    @seller = Crm::Seller.find(params[:id])
+    campaign_ids = []
+    User.where(seller_id: @seller.id).find_each do |u|
+      u.campaigns.each do |c|
+        campaign_ids << c.id
+      end
+    end
+    @campaigns = Campaign.where('id in (?)', campaign_ids).agreed
+
+    @q = @campaigns.ransack(params[:q])
+    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
+  end
+
   private
 
   def seller_params

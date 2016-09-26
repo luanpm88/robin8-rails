@@ -52,7 +52,6 @@ module Concerns
         campaign_invite.status = 'approved'
         campaign_invite.img_status = 'pending'
         campaign_invite.uuid = uuid
-        # campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
         # Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
         campaign_invite.save
       end
@@ -64,12 +63,11 @@ module Concerns
       campaign = Campaign.find campaign_id  rescue nil
       return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
       campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
-      if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
+      if (campaign_invite && campaign_invite.uuid.blank?)  || campaign_invite.new_record?
         uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
-        campaign_invite.status = 'running'
-        campaign_invite.img_status = 'pending'
         campaign_invite.uuid = uuid
-        # campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+        campaign_invite.status = 'running'            if  campaign_invite.status.blank?
+        campaign_invite.img_status = 'pending'        if  campaign_invite.img_status.blank?
         campaign_invite.save
       end
       campaign_invite
@@ -81,7 +79,7 @@ module Concerns
       campaign_invite = CampaignInvite.find campaign_invite_id  rescue nil
       if campaign_invite && campaign_invite.status == 'running'
         campaign_invite.status = 'approved'
-        campaign_invite.approved_at = Time.now
+        campaign_invite.approved_at = Time.now    if campaign_invite.approved_at.blank?
         campaign_invite.save
         campaign_invite.reload
       else
@@ -176,5 +174,6 @@ module Concerns
     def avg_campaign_credit
       campaign_total_income / self.campaign_invites.settled.count
     end
+
   end
 end

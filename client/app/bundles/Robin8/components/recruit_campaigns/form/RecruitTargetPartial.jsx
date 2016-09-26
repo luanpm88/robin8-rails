@@ -29,7 +29,7 @@ export default class TargetPartial extends React.Component {
     })
   }
 
-  handleConditionChange(){
+  handleConditionChange(e){
 
     let condition = {};
 
@@ -62,6 +62,21 @@ export default class TargetPartial extends React.Component {
       this.props.sns_platforms.onChange(condstr);
     } else {
       this.props.sns_platforms.onChange("全部");
+    }
+
+    _.assignIn(condition, { age: this.props.age.value });
+    _.assignIn(condition, { gender: this.props.gender.value });
+
+    if (e && e.target.name === 'age'){
+      this.props.age.onChange(e.target.value);
+      _.assignIn(condition, { age: e.target.value });
+      _.assignIn(condition, { gender: this.props.gender.value });
+    }
+
+    if (e && e.target.name === 'gender' ){
+      this.props.gender.onChange(e.target.value);
+      _.assignIn(condition, { gender: e.target.value });
+      _.assignIn(condition, { age: this.props.age.value });
     }
 
     this.fetchKolCountWithConditions(condition);
@@ -114,19 +129,20 @@ export default class TargetPartial extends React.Component {
     if (!_.get(this.props, ['region', 'value']) &&
         _.get(nextProps, ['region', 'value'])) {
 
-      const { region, tags, sns_platforms:sns } = nextProps;
+      const { region, tags, sns_platforms:sns, age, gender } = nextProps;
 
       this.initConditionComponent();
-
       if(region.value === "全部 全部") region.value = "全部"
       $('.target-city-label').text(region.value);
       this.tagSelector.set(tags.value, false);
       this.snsSelector.set(sns.value, false);
 
       this.fetchKolCountWithConditions({
-        region: _.replace(region.value, "/", ","),
+        region: region.value.split('/').join(','),
         sns: _.isArray(sns.value) ? sns.value.join(",") : sns.value,
-        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value
+        tag: _.isArray(tags.value) ? tags.value.join(",") : tags.value,
+        age: age.value,
+        gender: gender.value
       });
     }
   }
@@ -141,6 +157,8 @@ export default class TargetPartial extends React.Component {
   }
 
   render() {
+    const { age, gender } = this.props;
+
     return (
       <div className="creat-activity-form">
         <div className="header">
@@ -183,6 +201,35 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
             </div>
+
+            <div className="row row2">
+              <div className="col-md-4">
+                <div className="campaign-target target-age form-group">
+                  <label>年龄</label>
+                  <select className="form-control select-age" {...age} value={age.value || ''} onChange={this.handleConditionChange}>
+                    <option value="全部">全部</option>
+                    <option value="0, 20">0-20</option>
+                    <option value="20, 30">20-30</option>
+                    <option value="30, 40">30-40</option>
+                    <option value="40, 50">40-50</option>
+                    <option value="50, 60">50-60</option>
+                    <option value="60, 100">60以上</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="campaign-target target-gender form-group">
+                  <label>性别</label>
+                  <select className="form-control select-gender" {...gender} value={gender.value || ''} onChange={this.handleConditionChange}>
+                    <option value="全部">全部</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

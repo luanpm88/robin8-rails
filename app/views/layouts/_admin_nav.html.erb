@@ -156,9 +156,6 @@
               <%= link_to '已拒绝提现', rejected_marketing_dashboard_withdraws_path %>
             </li>
             <li>
-              <%= link_to '永久冻结提现', permanent_prohibited_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
               <%= link_to '支付宝黑名单', marketing_dashboard_alipay_account_blacklists_path %>
             </li>
           </ul>
@@ -300,7 +297,13 @@
             <a href="#">CPS管理 <span class='fa arrow'></span> </a>
             <ul class="nav nav-second-level">
               <li>
-                <%= link_to 'cps商品', marketing_dashboard_cps_materials_path %>
+                <%= link_to 'cps所有商品', marketing_dashboard_cps_materials_path %>
+              </li>
+              <li>
+                <%= link_to 'cps热门商品', marketing_dashboard_cps_materials_path(q: {is_hot_eq: 1 }) %>
+              </li>
+              <li>
+                <%= link_to 'cps备选文章', marketing_dashboard_article_contents_path %>
               </li>
               <li>
                 <%= link_to 'cps文章', marketing_dashboard_cps_articles_path %>
