@@ -69,17 +69,12 @@ module Campaigns
     end
 
     # 开始时候就发送邀请 但是状态为pending
+    # 由于活动审核时候获得kol_id可能和活动开始获得的推送kol_id 可能不一致,所以干脆都在go_start 进行发送+ 推送
     def send_invites(kol_ids = nil)
       _start = Time.now
       Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
       return if self.status != 'agreed'
       self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
-      campaign_id = self.id
-      kol_ids ||=  get_kol_ids
-      Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
-      Kol.where(:id => kol_ids).each do |kol|
-        kol.add_campaign_id campaign_id
-      end
       # make sure those execute late (after invite create)
       #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
       if  is_recruit_type?
@@ -91,12 +86,6 @@ module Campaigns
         CampaignWorker.perform_at(_start_time, self.id, 'start')
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-      # 推送记录
-      if Rails.env.development? or Rails.env.test?
-        CampaignPushRecordWorker.new.perform(self.id, 'common')
-      else
-        CampaignPushRecordWorker.perform_async(self.id, 'common')
-      end
     end
 
     def go_start(kol_ids = nil)
@@ -111,7 +100,20 @@ module Campaigns
           self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
         end
         self.update_columns(:status => 'executing')
-        Message.new_campaign(self, (kol_ids || get_kol_ids))
+        campaign_id = self.id
+        kol_ids ||=  get_kol_ids
+        Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
+        # send_invite
+        Kol.where(:id => kol_ids).each do |kol|
+          kol.add_campaign_id campaign_id
+        end
+        # 推送记录
+        Message.new_campaign(self, kol_ids)
+        if Rails.env.development? or Rails.env.test?
+          CampaignPushRecordWorker.new.perform(self.id, 'common')
+        else
+          CampaignPushRecordWorker.perform_async(self.id, 'common')
+        end
       end
       add_queue_to_add_kols_when_tag_or_region_is_special
     end
