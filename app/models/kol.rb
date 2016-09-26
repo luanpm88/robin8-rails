@@ -649,4 +649,13 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def self.get_all_weibo_uids
+    identity_uids = Identity.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    social_uids = SocialAccount.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    all_uids = (identity_uids + social_uids).uniq
+    File.open("#{Rails.root}/tmp/uids.txt", 'wb'){|f| f.write all_uids.join(",")}
+    File.open("#{Rails.root}/tmp/uids.yaml", 'wb'){|f| f.write YAML::dump(all_uids) }
+    all_uids
+  end
+
 end

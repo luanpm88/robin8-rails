@@ -171,6 +171,8 @@ class CampaignInvite < ActiveRecord::Base
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
     if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
       url
+    elsif self.campaign.is_simple_cpi_type?
+      self.campaign.url
     else
       #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
