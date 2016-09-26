@@ -22,9 +22,16 @@ export default class InviteKol extends React.Component {
   }
 
   render_avail_click(){
-    const { campaign_invite, campaign} = this.props;
+    const { campaign_invite, campaign } = this.props;
     if(campaign.get("per_budget_type") == "cpa" || campaign.get("per_budget_type") == "click"){
       return <td>{campaign_invite.get("get_avail_click")}</td>
+    }
+  }
+
+  render_total_click(){
+    const { campaign_invite, campaign } = this.props;
+    if(campaign.get("per_budget_type") != "simple_cpi"){
+      return <td>{campaign_invite.get("get_total_click")}</td>
     }
   }
 
@@ -56,7 +63,7 @@ export default class InviteKol extends React.Component {
         {this.render_avatar(campaign_invite)}
         <td>{campaign_invite.get("kol").get("name") || "该用户未设置昵称"}</td>
         {this.render_avail_click()}
-        <td>{campaign_invite.get("get_total_click")}</td>
+        {this.render_total_click()}
         {this.render_reward()}
         {this.render_screenshot()}
       </tr>

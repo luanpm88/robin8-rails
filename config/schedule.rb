@@ -24,9 +24,9 @@ every 1.day, :at => '0:10 am' do
 end
 
 # updating sitemap
-every 1.day, :at => '5:00 am' do
-  rake "-s sitemap:refresh"
-end
+# every 1.day, :at => '5:00 am' do
+#   rake "-s sitemap:refresh"
+# end
 
 every 1.day, :at => '12:00 am' do
   command "backup perform --trigger robin8_backup_local"
@@ -84,5 +84,6 @@ every 1.day, :at => '0:40 am' do
   runner "Jd::SyncOrder.schedule_sync_history(10)"
   runner "Jd::SyncCommission.schedule_sync_history(10)"
   runner "Jd::Settle.schedule_settle"
+  runner "Jd::OffShelf.go"
 end
 

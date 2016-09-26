@@ -3,7 +3,7 @@ class Kol < ActiveRecord::Base
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
   # counter :redis_new_income      #unit is cent
-  list :read_message_ids, :maxlength => 20             # 所有阅读过的
+  list :read_message_ids, :maxlength => 40             # 所有阅读过的
   list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
@@ -369,9 +369,8 @@ class Kol < ActiveRecord::Base
   def read_all
     unread_message_ids = self.unread_messages.collect{|t| t.id.to_s}
     Message.where(:id => unread_message_ids).update_all(:read_at => Time.now, :is_read => true)
-    unread_message_ids = unread_message_ids -  self.read_message_ids.values
     unread_message_ids.each do |message_id|
-      self.read_message_ids << message_id
+      self.read_message_ids << message_id   unless self.read_message_ids.include?(message_id)
     end
   end
 
@@ -404,13 +403,14 @@ class Kol < ActiveRecord::Base
     list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
     list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
+    message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
     sql = "select * from messages
            where (
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
                    (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
                    (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}'
+                 messages.created_at > '#{message_limit_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -419,12 +419,13 @@ class Kol < ActiveRecord::Base
   def read_messages
     kol_id = self.id
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
+    message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
     sql = "select * from messages
            where (
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
                    (messages.id in (" + read_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}'
+                 messages.created_at > '#{message_limit_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end

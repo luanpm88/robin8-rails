@@ -7,7 +7,7 @@ class MarketingDashboard::CpsArticlesController < MarketingDashboard::BaseContro
 
   def need_shield
     authorize! :read, CpsArticle
-    @cps_articles = CpsArticle.joins(:cps_materials).where("cps_materials.end_date < '#{Date.today}' and cps_articles.enabled = '1'").
+    @cps_articles = CpsArticle.joins(:cps_materials).where("cps_materials.end_date < '#{Date.today}' and cps_articles.enabled = '1' and cps_articles.status = 'passed'").
       group("cps_articles.id").having("count(cps_materials.id) > 0")
     render :action => :index
   end
