@@ -163,7 +163,11 @@ class CampaignInvite < ActiveRecord::Base
 
   # 第一次访问的地址
   def visit_url
-    "#{Rails.application.secrets.domain}/campaign_visit?id=#{self.id}"
+    if self.campaign.is_simple_cpi_type?
+      self.campaign.url
+    else
+      "#{Rails.application.secrets.domain}/campaign_visit?id=#{self.id}"
+    end
   end
 
   # 第二次 微信回调的地址
