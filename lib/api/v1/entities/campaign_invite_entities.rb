@@ -6,7 +6,8 @@ module API
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :status, :img_status, :is_invited, :screenshot, :reject_reason , :uuid, :price, :sale_price
           expose :share_url do |campaign_invite|
-            campaign_invite.origin_share_url
+            campaign_invite.visit_url
+            # campaign_invite.origin_share_url
           end
           with_options(format_with: :iso_timestamp) do
             expose :approved_at
@@ -24,13 +25,6 @@ module API
           expose :upload_interval_time
           expose :ocr_status do |campaign_invite|
             true
-            # if campaign_invite.ocr_status == 'passed'
-            #   true
-            # elsif campaign_invite.ocr_status == 'failure'
-            #   false
-            # else
-            #   nil
-            # end
           end
           expose :ocr_detail do |campaign_invite|
             ''

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'brand/(/*all)/', to: "brand#index"
   get "brand", to: "brand#index"
 
+  get 'campaign_visit' => "campaign_show#visit"
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
   get 'read_hot_item' => 'commons#read_hot_item'
