@@ -60,9 +60,21 @@ module Campaigns
       end
     end
 
+    def get_platform_kols
+      if ios_platform_target.present?
+        kols = kols.active.ios
+      elsif android_platform_target.present?
+        kols = kols.active.android
+      else
+        kols = Kol.active
+      end
+      kols
+    end
+
     # 获取匹配kols
-    def get_matching_kol_ids
-      kols = Kol.active
+    # Notice : 把不匹配的移开,不在该方法计算
+    def get_matching_kol_ids(kols = nil)
+      kols ||= Kol.active
 
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
@@ -90,29 +102,41 @@ module Campaigns
           unless target.target_content == '全部'
             kols = kols.where(gender: target.target_content.to_i)
           end
-        elsif target.target_type == 'ios_platform'
-          kols = kols.ios
-        elsif target.target_type == 'android_platform'
-          kols = kols.android
+        end
       end
 
-      kols.distinct.collect{|t| t.id} - get_unmatched_kol_ids rescue []
+      kols.collect{|t| t.id}
     end
 
-    def get_append_kol_ids
-      Kol.active.map(&:id) - self.get_matching_kol_ids - self.get_unmatched_kol_ids rescue []
-    end
-
-    def get_kol_ids
-      if self.is_invite_type?                        #特邀活动
-        get_social_account_related_kol_ids
-      elsif self.specified_kol_targets.present?       #指定任务
-        get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
-      elsif self.newbie_kol_target.present?          #新手活动
-        return []
+    def get_append_kol_ids(record = false)
+      if self.is_invite_type?  || self.specified_kol_targets.present?  ||  self.newbie_kol_target.present?
+        return nil
       else
-        get_matching_kol_ids
+        normal_push_kol_ids = CampaignPushRecord.where(campaign_id: self.id, push_type: 'normal' )
+        get_platform_kol_ids = get_platform_kols.map(&:id)
+        kol_ids = get_platform_kol_ids - normal_push_kol_ids - self.get_unmatched_kol_ids rescue []
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
+    end
+
+    #TODO imporve this
+    def get_kol_ids(record = false)
+      if self.is_invite_type?                        #特邀活动
+        kol_ids  = get_social_account_related_kol_ids
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record
+      elsif self.specified_kol_targets.present?       #指定任务
+        kol_ids = get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
+      elsif self.newbie_kol_target.present?          #新手活动
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: "", push_type: push_type, filter_type: 'match', filter_reason: 'newbie_kol')                    if record
+        kol_ids = []
+      else
+        kol_ids = get_matching_kol_ids(get_platform_kols) - get_unmatched_kol_ids rescue []
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
+        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
+      end
+      kol_ids
     end
 
     class_methods do
