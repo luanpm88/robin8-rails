@@ -52,20 +52,32 @@ module Concerns
 
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
-      download_invitation = DownloadInvitation.find_invation(self)
-      if download_invitation
-        ActiveRecord::Base.transaction do
-          inviter = download_invitation.inviter
-          download_invitation.active_invitation
-          task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-          task_record.sync_to_transaction    if inviter.today_invite_count <= 5
-        end
-      else   #创建cpi_reg
-        params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,
-                  device_model:self.device_model, reg_ip: self.current_sign_in_ip}
-        data = {appid: Kol.get_official_appid, device_uuid: (self.IMEI || self.IDFA)}
-        CpiReg.create_reg(params, data)
+
+      invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
+      return unless invitation
+
+      ActiveRecord::Base.transaction do
+        inviter = invitation.inviter
+        invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
+
+        task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
+        task_record.sync_to_transaction  #  if inviter.today_invite_count <= 5
       end
+
+      # download_invitation = DownloadInvitation.find_invation(self)
+      # if download_invitation
+      #   ActiveRecord::Base.transaction do
+      #     inviter = download_invitation.inviter
+      #     download_invitation.active_invitation
+      #     task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
+      #     task_record.sync_to_transaction    if inviter.today_invite_count <= 5
+      #   end
+      # else   #创建cpi_reg
+      #   params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,
+      #             device_model:self.device_model, reg_ip: self.current_sign_in_ip}
+      #   data = {appid: Kol.get_official_appid, device_uuid: (self.IMEI || self.IDFA)}
+      #   CpiReg.create_reg(params, data)
+      # end
     end
 
     # def generate_invite_code
