@@ -283,6 +283,10 @@ class Campaign < ActiveRecord::Base
     self.status == 'executing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
+  def example_screenshot_required?
+    %w(simple_cpi recruit cpt).include? self.per_budget_type
+  end
+
   def get_campaign_invite(kol_id)
     invite = CampaignInvite.find_or_initialize_by(:campaign_id => self.id, :kol_id => kol_id)
     if invite.new_record? && self.status == 'executing'
