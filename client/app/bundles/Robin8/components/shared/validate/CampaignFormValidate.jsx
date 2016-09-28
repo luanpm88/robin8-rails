@@ -33,6 +33,8 @@ export default function CampaignFormValidate(options){
           errors[fieldName] = "最低金额为 2 元";
         } else if ($("input:radio:checked").val() == 'simple_cpi' && parseFloat(value) < 2) {
           errors[fieldName] = "最低金额为 2 元";
+        } else if ($("input:radio:checked").val() == 'cpt' && parseFloat(value) < 1) {
+          errors[fieldName] = "最低金额为 1 元";
         } else if ($("input:radio:checked").val() == 'cpa' && parseFloat(value) < 1) {
           errors[fieldName] = "最低金额为 1 元";
         } else if (parseFloat(value) > parseInt($(".budget-input").val())) {

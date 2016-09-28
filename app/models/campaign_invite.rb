@@ -103,8 +103,8 @@ class CampaignInvite < ActiveRecord::Base
   #永久拒绝,同时把金额返回给其他用户
   def permanent_reject rejected_reason=nil
     return if self.status == 'settled' || self.status == 'rejected'  || self.img_status == 'passed'
-    # 招募类型,转发类型,simple_cpi
-    if self.campaign.is_recruit_type? || self.campaign.is_post_type? || self.campaign.is_simple_cpi_type?
+    # 招募类型,转发类型,simple_cpi,cpt
+    if self.campaign.is_recruit_type? || self.campaign.is_post_type? || self.campaign.is_simple_cpi_type?   || self.campaign.is_cpt_type? || self.campaign.is_invite_type?
       self.update_columns(:status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
       return
     end
@@ -144,9 +144,9 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_total_click.value   rescue self.total_click
   end
 
-  #招募活动,
+  #是否直接显示总点击给用户看
   def get_avail_click(real = false)
-    if !real && ['post', 'simple_cpi', 'recruit'].include?(self.campaign.per_budget_type)
+    if !real && ['post', 'simple_cpi', 'recruit', 'recruit', 'cpt'].include?(self.campaign.per_budget_type)
       get_total_click
     else
       status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
@@ -242,6 +242,8 @@ class CampaignInvite < ActiveRecord::Base
       return 'cpa'
     when 'simple_cpi'
       return '下载'
+    when 'cpt'
+      return '任务'
     end
     return self.campaign.per_budget_type
   end
@@ -294,7 +296,7 @@ class CampaignInvite < ActiveRecord::Base
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
-      elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
+      elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi', 'cpt'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'

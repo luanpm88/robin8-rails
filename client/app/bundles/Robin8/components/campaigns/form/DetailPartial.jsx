@@ -66,6 +66,9 @@ export default class DetailPartial extends React.Component {
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
       }
+      if(per_budget_type.value == 'cpt') {
+        per_action_budget.onChange("1.0")
+      }
       if(per_budget_type.value == 'cpa') {
         per_action_budget.onChange("1.0")
       }
@@ -132,8 +135,15 @@ export default class DetailPartial extends React.Component {
                 按照点击指定链接奖励KOL
               </label>
             </div>
+            <div className="sources-check radio">
+              <label>
+                <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                按照任务奖励KOL
+              </label>
 
-            <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
+            </div>
+
+            <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
               {
                 do {
                   if(per_budget_type.value == "cpa"){
@@ -158,9 +168,13 @@ export default class DetailPartial extends React.Component {
                         <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
                       </div>
                     </div>
+                  }else if(per_budget_type.value == 'cpt'){
+                    <div className="cpi-tip-label">
+                      <label>请把任务链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                    </div>
                   }else{
                     <div className="cpi-tip-label">
-                      <label>请把下载链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                    <label>请把下载链接填入上方<a href="#campaign-link">活动链接</a>处</label>
                     </div>
                   }
                 }
