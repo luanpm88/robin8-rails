@@ -62,9 +62,9 @@ module Campaigns
 
     def get_platform_kols
       if ios_platform_target.present?
-        kols = kols.active.ios
+        kols = Kol.active.ios
       elsif android_platform_target.present?
-        kols = kols.active.android
+        kols = Kol.active.android
       else
         kols = Kol.active
       end
