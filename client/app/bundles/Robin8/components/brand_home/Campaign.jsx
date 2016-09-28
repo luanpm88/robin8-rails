@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, campaignType, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign, isInviteCampaign } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, campaignType, formatDate, campaignStatusHelper, canEditCampaign, canPayCampaign, isRecruitCampaign, isInviteCampaign, isCptCampaign } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -110,44 +110,64 @@ export default class Campaign extends React.Component {
     }
   }
 
+  renderRecruitCampaignStatInfo(campaign) {
+    return (
+      <ul className="stat-info grid-4">
+        <li>
+          <span className="txt">预计招募人数</span>
+          <div className="cl-recruiters-count">
+            <strong className="stat-num">{ campaign.get("budget") / campaign.get('per_action_budget') }</strong>
+          </div>
+        </li>
+        <li><span className="txt">已招募</span><strong className="stat-num">{ campaign.get("brand_passed_count") }</strong></li>
+        <li><span className="txt">人均奖励</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
+        <li>
+          <span className="txt">招募预算</span>
+          <div  className="cl-total-budget">
+            <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
+          </div>
+        </li>
+      </ul>
+    )
+  }
+
+  renderInviteCampaignStatInfo(campaign) {
+    return (
+      <ul className="stat-info invite-campaign grid-4">
+        <li id="invites-count">
+          <span className="txt">预计邀请人数</span>
+          <div id="cl-invites-count">
+            <strong className="stat-num">{ campaign.get("total_invite_kols_count") }</strong>
+          </div>
+        </li>
+        <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</strong></li>
+        <li id="invites-total-budget">
+          <span className="txt">邀请预算</span>
+          <div  className="cl-invites-total-budget">
+            <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
+          </div>
+        </li>
+      </ul>
+    )
+  }
+
+  renderCptCampaignStatInfo(campaign) {
+    return (
+      <ul className="stat-info grid-4">
+        <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
+        <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
+        <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+      </ul>
+    )
+  }
+
   renderCampaignStatInfo(campaign) {
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
-      return (
-        <ul className="stat-info grid-4">
-          <li>
-            <span className="txt">预计招募人数</span>
-            <div className="cl-recruiters-count">
-              <strong className="stat-num">{ campaign.get("budget") / campaign.get('per_action_budget') }</strong>
-            </div>
-          </li>
-          <li><span className="txt">已招募</span><strong className="stat-num">{ campaign.get("brand_passed_count") }</strong></li>
-          <li><span className="txt">人均奖励</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
-          <li>
-            <span className="txt">招募预算</span>
-            <div  className="cl-total-budget">
-              <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
-            </div>
-          </li>
-        </ul>
-      )
+      return this.renderRecruitCampaignStatInfo(campaign);
+    } else if(isCptCampaign(campaign.get("per_budget_type"))) {
+      return this.renderCptCampaignStatInfo(campaign);
     } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
-      return (
-        <ul className="stat-info invite-campaign grid-4">
-          <li id="invites-count">
-            <span className="txt">预计邀请人数</span>
-            <div id="cl-invites-count">
-              <strong className="stat-num">{ campaign.get("total_invite_kols_count") }</strong>
-            </div>
-          </li>
-          <li id="invited-count"><span className="txt">已邀请人数</span><strong className="stat-num">{ campaign.get("total_agreed_invite_kols_count") }</strong></li>
-          <li id="invites-total-budget">
-            <span className="txt">邀请预算</span>
-            <div  className="cl-invites-total-budget">
-              <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
-            </div>
-          </li>
-        </ul>
-      )
+      return this.renderInviteCampaignStatInfo(campaign);
     } else {
       return (
         <ul className="stat-info grid-4">
