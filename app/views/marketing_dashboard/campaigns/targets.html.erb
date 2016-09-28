@@ -99,7 +99,7 @@
         <% attrs.each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
-        <td><%= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids, @today_receive_three_times_kol_ids, @three_hours_had_receive_kol_ids) %></td>
+        <td><%= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids, @three_hours_had_receive_kol_ids) %></td>
       </tr>
     <% end %>
   </tbody>
