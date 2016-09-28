@@ -257,6 +257,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  #目前只是CPC会自动审核,且会在活动结束后审核
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
   def self.schedule_day_settle(async = true)
     Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
@@ -268,7 +269,7 @@ class CampaignInvite < ActiveRecord::Base
       else
         transaction_time = Time.now
       end
-      campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'click', 'cpa']).collect{|t| t.id}
+      campaign_ids = Campaign.where(:status => ['executed'], :per_budget_type => ['click']).collect{|t| t.id}
       return if campaign_ids.size == 0
       ids = CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.collect{|t| t.id}
       Rails.logger.settle.info "----schedule_day_settle---day_settle:#{ids}--#{transaction_time}"
@@ -284,7 +285,7 @@ class CampaignInvite < ActiveRecord::Base
     return if self.status == 'rejected'
     self.settle_lock.lock  do
       if ['click'].include? self.campaign.per_budget_type
-        next if (self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
+        next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
