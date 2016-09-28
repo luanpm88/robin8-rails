@@ -13,7 +13,7 @@ export function showCampaignTypeText(budget_type){
       return '参与'
     case "simple_cpi":
       return '下载'
-    case "cpi":
+    case "cpt":
       return '任务'
   }
 }
