@@ -265,7 +265,7 @@ class Kol < ActiveRecord::Base
     income = 0
     self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
       if invite.campaign &&  invite.campaign.actual_per_action_budget
-        if invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type?
+        if invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type? || invite.campaign.is_cpt_type?
           income += invite.campaign.actual_per_action_budget
         else
           income += invite.campaign.actual_per_action_budget * invite.get_avail_click  rescue 0
@@ -298,7 +298,7 @@ class Kol < ActiveRecord::Base
     income = 0
     count = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type?)
+      if invite.campaign && invite.campaign.actual_per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_simple_cpi_type? || invite.campaign.is_recruit_type? || invite.campaign.is_cpt_type?)
         income += invite.campaign.actual_per_action_budget
         count += 1
       elsif invite.campaign.is_invite_type?
@@ -632,9 +632,9 @@ class Kol < ActiveRecord::Base
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     if imei.present?
-      return Kol.where(:IMEI => imei).size >= BindMaxCount
+      return Kol.where(:IMEI => imei).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
     elsif idfa.present?
-      return Kol.where(:IDFA => idfa).size >= BindMaxCount
+      return Kol.where(:IDFA => idfa).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
     else
       return false
     end
