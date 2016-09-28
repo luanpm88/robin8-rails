@@ -10,7 +10,7 @@
         <img src="<%= @campaign.example_screenshot %>"></img>
       </div>
       <span class="btn btn-primary" id="upload-img" style='margin-top:20px'>上传图片</span>
-      <%= f.hidden_field :cpi_example_screenshot, class: "form-control screenshot-input", required: true %>
+      <%= f.hidden_field :example_screenshot, class: "form-control screenshot-input", required: true %>
     <% end %>
     <%= f.text_area :remark, class: "form-control", placeholder: '请填写具体说明', required: true, rows: "5", style: 'width:400px; margin-top:20px' %>
     <% if @campaign.per_budget_type == 'simple_cpi' || @campaign.per_budget_type == 'cpt' %>

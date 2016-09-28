@@ -138,9 +138,10 @@ export default class DetailPartial extends React.Component {
             <div className="sources-check radio">
               <label>
                 <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
-                按照任务奖励KOL
+                按照完成任务奖励KOL
               </label>
-
+              <label className="cpa-label">
+              </label>
             </div>
 
             <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
@@ -170,7 +171,7 @@ export default class DetailPartial extends React.Component {
                     </div>
                   }else if(per_budget_type.value == 'cpt'){
                     <div className="cpi-tip-label">
-                      <label>请把任务链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                      <label>请把参加的任务链接填入上方<a href="#campaign-link">活动链接</a>处</label>
                     </div>
                   }else{
                     <div className="cpi-tip-label">

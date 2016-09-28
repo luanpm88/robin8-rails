@@ -5,6 +5,9 @@ module API
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :name, :description, :status, :message, :max_action, :cpi_example_screenshot, :remark
+          expose :cpi_example_screenshot do |campaign|
+            campaign.example_screenshot
+          end
           expose :per_budget_type do |campaign|
             if campaign.is_cpi_type?
               'cpa'

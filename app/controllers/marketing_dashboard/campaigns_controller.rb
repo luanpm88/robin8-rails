@@ -114,7 +114,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def save_example_screenshot_and_remark
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(cpi_example_screenshot: params[:campaign][:cpi_example_screenshot],
+    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
       remark: params[:campaign][:remark])
     flash[:notice] = "保存成功"
     render :add_example_screenshot
