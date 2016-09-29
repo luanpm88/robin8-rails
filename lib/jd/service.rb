@@ -91,8 +91,9 @@ module Jd
       app_params[:sign] = generate_sign(app_params)
       res = RestClient.get(ServerUrl, {:accept => :json, :params => app_params})
       Rails.logger.jd.info "--------jd-----response-before--: #{res.inspect}"
-      res = JSON.parse res
-      puts res
+      res = JSON.parse res    rescue nil
+      #简单暴力 try again
+      res = JSON.parse RestClient.get(ServerUrl, {:accept => :json, :params => app_params})   if res.blank?
       Rails.logger.jd.info "--------jd-----response: #{res.inspect}"
       return res
     end
