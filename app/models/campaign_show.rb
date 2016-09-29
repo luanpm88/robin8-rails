@@ -122,7 +122,9 @@ class CampaignShow < ActiveRecord::Base
       return [false, CampaignExecuted]
     end
 
-    return [true,nil]
+    from_group = (request_uri.include?("groupmessage") ||  request_uri.include?("singlemessage")) ? "from_group" : nil
+
+    return [true,from_group]
   end
 
   #TODO campaign  campaign_invite store in redis
