@@ -36,7 +36,7 @@ module API
           optional :id_card, type: String
         end
         put 'bind_alipay' do
-          return {:error => 1, :detail => '您支付宝账号不能被修改'} if !curent_user.can_update_alipay
+          return {:error => 1, :detail => '支付宝账号不能被修改!'} if !current_kol.can_update_alipay
           present :error, 0
           current_kol.update_columns(:alipay_account => params[:alipay_account], :alipay_name => params[:alipay_name],
                                      :id_card => params[:id_card])
