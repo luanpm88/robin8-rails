@@ -145,6 +145,7 @@
       <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
       <th><%= sort_link(@q, :total_click, "总点击") %></th>
       <th><%= sort_link(@q, :approved_at, "接单时间") %></th>
+      <th>非朋友圈点击</th>
       <th>是否作弊</th>
       <th>拒绝理由</th>
       <th>操作</th>
@@ -171,6 +172,7 @@
         <td><%= c.get_avail_click(true) > 0 ? c.get_avail_click(true) : c.avail_click %></td>
         <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click %></td>
         <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
+        <td><%= c.from_meesage_click_count %></td>
         <td><%= c.campaign_observer_status %><%= c.observer_text %></td>
         <td><%= c.reject_reason %></td>
         <td>

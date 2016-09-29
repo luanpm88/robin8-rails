@@ -44,6 +44,8 @@ class CampaignInvite < ActiveRecord::Base
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
   scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time < '#{CanAutoCheckInterval.ago}'))")}
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
+
+
   delegate :name, to: :campaign
   def upload_start_at
     if  campaign.is_recruit_type? || campaign.is_post_type?
@@ -311,6 +313,11 @@ class CampaignInvite < ActiveRecord::Base
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
     end
+  end
+
+  #.fi
+  def from_meesage_click_count
+     CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :from_group => 'from_group').count
   end
 
 end
