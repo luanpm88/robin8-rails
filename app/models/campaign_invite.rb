@@ -317,7 +317,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #.fi
   def from_meesage_click_count
-     CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :from_group => 'from_group').count
+     CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :remark => 'from_group').count
   end
 
 end
