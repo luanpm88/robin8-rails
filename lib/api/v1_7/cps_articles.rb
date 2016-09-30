@@ -73,7 +73,7 @@ module API
           cps_article = CpsArticle.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::WithShareDetail
+          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::WithShareCommission
         end
 
         # 文章中所含商品
