@@ -48,7 +48,7 @@ class Campaign < ActiveRecord::Base
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
-  scope :recent_7, ->{ where("start_time > '#{7.days.ago}'")}
+  scope :recent_7, ->{ where("deadline > '#{7.days.ago}'")}
   scope :order_by_start, -> { order('start_time desc')}
 
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
@@ -204,7 +204,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def remain_budget(from_brand = true)
-    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)
+    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)     rescue 0
   end
 
   def post_count

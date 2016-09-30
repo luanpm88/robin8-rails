@@ -1,5 +1,9 @@
 require 'sidekiq/web'
 
+Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  username == 'robin8' && password == 'robin8&admin'
+end
+
 %w(admin crm).each do |route_name|
   load "#{Rails.root}/config/routes/#{route_name}.rb"
 end

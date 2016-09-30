@@ -19,7 +19,7 @@ module API
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           present :announcements, Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary  if params[:with_announcements] == 'y'
           if  params[:status] == 'all'
-            applied_recruit_campaign_ids = current_kol.campaign_invites.joins(:campaign).where("campaigns.start_time > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
+            applied_recruit_campaign_ids = current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
               where("campaign_invites.status = 'approved'  or campaign_invites.status = 'finished'").collect{|t| t.campaign_id}
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).recent_7.
