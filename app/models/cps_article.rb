@@ -9,6 +9,7 @@ class CpsArticle < ActiveRecord::Base
 
   before_save :build_article_materials
   after_save :send_notify_to_author
+  attr_accessor :share_forecast_commission, :share_settled_commission
 
   # status  pending, passed, rejected
   scope :enabled, -> {where(:enabled => true)}
