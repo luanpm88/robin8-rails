@@ -204,7 +204,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def remain_budget(from_brand = true)
-    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)
+    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)     rescue 0
   end
 
   def post_count
