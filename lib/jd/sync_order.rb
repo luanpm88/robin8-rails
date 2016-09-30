@@ -17,7 +17,7 @@ module Jd
           next if !order.new_record?  && order.yn == 0
           if order.new_record?
             order.sub_union = order_data["subUnion"]
-            sub_union_arr = order.sub_union.split("_")
+            sub_union_arr = order.sub_union.split("_")   rescue  [60504, 1]        #之前的无子联盟号订单挂到60504 kol上
             order.kol_id = sub_union_arr[0]
             order.cps_article_share_id = sub_union_arr[1]
             order.order_query_time =  query_time
