@@ -2,6 +2,14 @@ class CampaignShowController < ApplicationController
   skip_before_action  :only => [:show, :share]
   layout 'website'
 
+  # 先到visit 获取来源, 根据点击量,来决定是否需要手动授权
+  def visit
+    Rails.logger.info "------referer:#{request.referer}"
+    Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
+    campaign_invite = CampaignInvite.find params[:id]
+    redirect_to campaign_invite.origin_share_url
+  end
+
   def show
     sns_info = $weixin_client.get_oauth_access_token(params[:code])
     openid = sns_info.result['openid']    rescue nil
@@ -15,8 +23,8 @@ class CampaignShowController < ApplicationController
       @campaign_invite = CampaignInvite.find_by(:uuid => params[:uuid])     rescue nil
     end
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
-
-    Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+    visit_url = Rails.cache.read("visit_url_#{cookies[:_robin8_visitor]}") || request.url
+    Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} ---visit_url:#{visit_url}--- #{params[:uuid]} ------ #{request.remote_ip}"
     if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign(uuid_params, openid)
     end
@@ -25,9 +33,9 @@ class CampaignShowController < ApplicationController
       redirect_to @campaign.url
     else
       if Rails.env.development?
-        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, {})
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url, openid, {})
       else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url,openid, {})
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url,openid, {})
       end
       redirect_to @campaign.url
     end

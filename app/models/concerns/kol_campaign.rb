@@ -174,5 +174,6 @@ module Concerns
     def avg_campaign_credit
       campaign_total_income / self.campaign_invites.settled.count
     end
+
   end
 end

@@ -30,6 +30,11 @@
       <ul class="nav" id="side-menu">
         <% if can?(:write, AdminUser) %>
           <li>
+            <%= link_to "CRM管理", crm_dashboard_path, :target => '_blank' %>
+          </li>
+        <% end %>
+        <% if can?(:write, AdminUser) %>
+          <li>
             <%= link_to "管理员管理", marketing_dashboard_admin_users_path %>
           </li>
         <% end %>
@@ -154,9 +159,6 @@
             </li>
             <li>
               <%= link_to '已拒绝提现', rejected_marketing_dashboard_withdraws_path %>
-            </li>
-            <li>
-              <%= link_to '永久冻结提现', permanent_prohibited_marketing_dashboard_withdraws_path %>
             </li>
             <li>
               <%= link_to '支付宝黑名单', marketing_dashboard_alipay_account_blacklists_path %>

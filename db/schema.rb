@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160922080623) do
+ActiveRecord::Schema.define(version: 20160926040836) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -102,9 +102,10 @@ ActiveRecord::Schema.define(version: 20160922080623) do
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
   create_table "alipay_account_blacklists", force: :cascade do |t|
-    t.string   "account",    limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "account",     limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "withdraw_id", limit: 4
   end
 
   create_table "alipay_orders", force: :cascade do |t|
@@ -214,6 +215,8 @@ ActiveRecord::Schema.define(version: 20160922080623) do
     t.text     "content",             limit: 65535
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.string   "url",                 limit: 255
+    t.boolean  "is_sync",             limit: 1
   end
 
   create_table "articles", force: :cascade do |t|
@@ -505,6 +508,7 @@ ActiveRecord::Schema.define(version: 20160922080623) do
     t.boolean  "enabled",      limit: 1,     default: true
     t.string   "status",       limit: 255,   default: "pending"
     t.string   "check_remark", limit: 255
+    t.datetime "end_date"
   end
 
   create_table "cps_materials", force: :cascade do |t|
@@ -520,8 +524,8 @@ ActiveRecord::Schema.define(version: 20160922080623) do
     t.string   "goods_name",          limit: 255
     t.string   "category",            limit: 255
     t.datetime "last_sync_at"
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.float    "commision_pc",        limit: 24
     t.float    "commision_wl",        limit: 24
     t.float    "kol_commision_pc",    limit: 24

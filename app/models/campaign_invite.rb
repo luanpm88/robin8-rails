@@ -9,7 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
-  CommonRejectedReason = ["朋友圈截图错误", "朋友圈截图不完整", "参考截图规范上传指定截图", "活动保留时间不足30分钟", "活动评论有诱导嫌疑", "活动含诱导点击文字", "活动被设置分组了","朋友圈过多活动影响效果","系统检测到有作弊嫌疑","活动一次点击都没有"]
+  CommonRejectedReason = ["朋友圈截图错误", "朋友圈截图不完整", "参考截图规范上传指定截图", "活动保留时间不足30分钟", "活动评论有诱导嫌疑", "活动含诱导点击文字", "活动被设置分组了","朋友圈过多活动影响效果", "检测到你通过组群获取点击", "系统检测到有作弊嫌疑","活动一次点击都没有"]
   # observer_status 0 表示 未计算, 1 表示 正常, 2 表示 存在作弊嫌疑
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
@@ -163,11 +163,24 @@ class CampaignInvite < ActiveRecord::Base
   #   ShortUrl.convert origin_share_url(uuid)
   # end
 
+  # 第一次访问的地址
+  def visit_url
+    if self.campaign.is_simple_cpi_type?
+      self.campaign.url
+    else
+      "#{Rails.application.secrets.domain}/campaign_visit?id=#{self.id}"
+    end
+  end
+
+  # 第二次 微信回调的地址
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
     if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
       url
+    elsif self.campaign.is_simple_cpi_type?
+      self.campaign.url
     else
+      #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
     end
   end
@@ -246,6 +259,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  #目前只是CPC会自动审核,且会在活动结束后审核
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
   def self.schedule_day_settle(async = true)
     Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
@@ -257,7 +271,7 @@ class CampaignInvite < ActiveRecord::Base
       else
         transaction_time = Time.now
       end
-      campaign_ids = Campaign.where(:status => ['executing', 'executed'], :per_budget_type => ['cpi', 'click', 'cpa']).collect{|t| t.id}
+      campaign_ids = Campaign.where(:status => ['executed'], :per_budget_type => ['click']).collect{|t| t.id}
       return if campaign_ids.size == 0
       ids = CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.collect{|t| t.id}
       Rails.logger.settle.info "----schedule_day_settle---day_settle:#{ids}--#{transaction_time}"
@@ -273,7 +287,7 @@ class CampaignInvite < ActiveRecord::Base
     return if self.status == 'rejected'
     self.settle_lock.lock  do
       if ['click'].include? self.campaign.per_budget_type
-        next if (self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
+        next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
@@ -303,7 +317,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #.fi
   def from_meesage_click_count
-     CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :from_group => 'from_group').count
+     CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :remark => 'from_group').count
   end
 
 end

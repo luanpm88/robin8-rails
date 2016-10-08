@@ -40,6 +40,8 @@ class CpsArticle < ActiveRecord::Base
       end
     end
     self.cps_material_ids = product_ids
+    #设置文章的有效期,根据商品的有效期来定
+    self.end_date = self.cps_materials.collect{|t| t.end_date}.min
   end
 
   def material_total_price
@@ -59,7 +61,6 @@ class CpsArticle < ActiveRecord::Base
     commission = self.cps_article_shares.collect{|t| t.cps_promotion_settled_order_items.sum(:yg_cos_fee)}.sum * Jd::Settle::ArticleTax
     commission.round(2)
   end
-
 
   # 审核结果发送通知
   def send_notify_to_author

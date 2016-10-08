@@ -1,12 +1,16 @@
 require 'sidekiq/web'
 
+Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  username == 'robin8' && password == 'robin8&admin'
+end
+
 %w(admin crm).each do |route_name|
   load "#{Rails.root}/config/routes/#{route_name}.rb"
 end
 
 Rails.application.routes.draw do
   mount Crm::Engine, at: "/crm"
-  mount StatusPage::Engine, at: '/'
+  # mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
@@ -20,6 +24,7 @@ Rails.application.routes.draw do
   get 'brand/(/*all)/', to: "brand#index"
   get "brand", to: "brand#index"
 
+  get 'campaign_visit' => "campaign_show#visit"
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
   get 'read_hot_item' => 'commons#read_hot_item'
@@ -177,6 +182,9 @@ Rails.application.routes.draw do
   get '/invite', to: 'pages#invite'
   get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help'
   resources :campaign, only: [:index, :create, :update, :show]
+  resources :registered_invitations do
+    post :sms, on: :collection
+  end
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'

@@ -27,6 +27,18 @@
           </div>
         </div>
         <div class="col-md-3">
+          <div class="form-group">
+            <label>审核状态</label>
+            <%= f.select :status_eq, options_for_select(CpsArticle::Statuses.collect{|key,value| [value, key]}, @q.status_eq), {:include_blank => "全部"}, class: "form-control", placeholder: "" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>上架状态</label>
+            <%= f.select :enabled_eq, options_for_select([['有效', 1], ['已下架', 0]], @q.enabled_eq), {:include_blank => "全部"}, class: "form-control", placeholder: "" %>
+          </div>
+        </div>
+        <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -44,10 +56,13 @@
   <tr>
     <th>文章标题</th>
     <th>封面图</th>
-    <th>作者</th>
+    <th>作者ID</th>
+    <th>作者名</th>
     <th>状态</th>
     <th>审核备注</th>
     <th>创作时间</th>
+    <th>有效日期</th>
+    <th>阅读量</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -55,8 +70,9 @@
   <% @cps_articles.each do |c| %>
     <tr>
       <td><%= link_to c.title, "/cps_articles/#{c.id}", :target => "_blank" %></td>
-      <td><%= image_tag c.cover, :size => '100x100' %></td>
-      <td><%#= link_to (c.kol.name rescue ''), marketing_dashboard_kol_path(c.kol), :target => "_blank" %></td>
+      <td><%= image_tag c.cover, :size => '60x60' %></td>
+      <td><%= link_to c.kol.try(:id), marketing_dashboard_kol_path(c.kol), :target => "_blank" %></td>
+      <td><%= link_to c.kol.try(:name), marketing_dashboard_kol_path(c.kol), :target => "_blank" %></td>
       <td>
         <% if c.status == 'pending' %>
           <span class="label label-info"><%= CpsArticle::Statuses[c.status] %></span>
@@ -69,6 +85,8 @@
       </td>
       <td><%= c.check_remark %></td>
       <td><%= c.created_at.to_s(:date_time) %></td>
+      <td><%= c.end_date.to_date  rescue nil %></td>
+      <td><%= c.read_count.value %></td>
       <td>
         <%= link_to '编辑', edit_marketing_dashboard_cps_article_path(c)  %></br>
         <%= link_to '审核', check_marketing_dashboard_cps_article_path(c) if c.status == 'pending' %></br>

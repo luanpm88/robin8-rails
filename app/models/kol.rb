@@ -3,7 +3,7 @@ class Kol < ActiveRecord::Base
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
   # counter :redis_new_income      #unit is cent
-  list :read_message_ids, :maxlength => 20             # 所有阅读过的
+  list :read_message_ids, :maxlength => 40             # 所有阅读过的
   list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
@@ -84,6 +84,8 @@ class Kol < ActiveRecord::Base
   has_many :cps_articles
   has_many :cps_article_shares
 
+  has_one  :registered_invitation,  foreign_key: :invitee_id, inverse_of: :invitee
+  has_many :registered_invitations, foreign_key: :inviter_id, inverse_of: :inviter
 
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
@@ -369,9 +371,8 @@ class Kol < ActiveRecord::Base
   def read_all
     unread_message_ids = self.unread_messages.collect{|t| t.id.to_s}
     Message.where(:id => unread_message_ids).update_all(:read_at => Time.now, :is_read => true)
-    unread_message_ids = unread_message_ids -  self.read_message_ids.values
     unread_message_ids.each do |message_id|
-      self.read_message_ids << message_id
+      self.read_message_ids << message_id   unless self.read_message_ids.include?(message_id)
     end
   end
 
@@ -404,13 +405,14 @@ class Kol < ActiveRecord::Base
     list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
     list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
+    message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
     sql = "select * from messages
            where (
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
                    (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
                    (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}'
+                 messages.created_at > '#{message_limit_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -419,12 +421,13 @@ class Kol < ActiveRecord::Base
   def read_messages
     kol_id = self.id
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
+    message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
     sql = "select * from messages
            where (
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
                    (messages.id in (" + read_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}'
+                 messages.created_at > '#{message_limit_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -526,7 +529,7 @@ class Kol < ActiveRecord::Base
   end
 
   def can_update_alipay
-    self.alipay_account.blank? || (self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0)
+    self.alipay_account.blank? || self.id_card.blank? || (self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0)
   end
 
   def address!
@@ -629,9 +632,9 @@ class Kol < ActiveRecord::Base
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     if imei.present?
-      return Kol.where(:IMEI => imei).size >= BindMaxCount
+      return Kol.where(:IMEI => imei).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
     elsif idfa.present?
-      return Kol.where(:IDFA => idfa).size >= BindMaxCount
+      return Kol.where(:IDFA => idfa).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
     else
       return false
     end
@@ -647,6 +650,15 @@ class Kol < ActiveRecord::Base
       PushMessage.push_common_message([self], content, 'KOL资质审核通过')
       SmsMessage.send_to(self, content)
     end
+  end
+
+  def self.get_all_weibo_uids
+    identity_uids = Identity.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    social_uids = SocialAccount.where(:provider => 'weibo').where("uid is not null and uid != ''").collect{|t| t.uid }
+    all_uids = (identity_uids + social_uids).uniq
+    File.open("#{Rails.root}/tmp/uids.txt", 'wb'){|f| f.write all_uids.join(",")}
+    File.open("#{Rails.root}/tmp/uids.yaml", 'wb'){|f| f.write YAML::dump(all_uids) }
+    all_uids
   end
 
 end

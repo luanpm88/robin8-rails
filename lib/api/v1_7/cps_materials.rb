@@ -18,9 +18,9 @@ module API
         end
         get '/' do
           if params[:category].present?
-            cps_materials = CpsMaterial.where(:category => params[:category_name]).enabled.order("position desc, id desc").page(params[:page]).per_page(10)
+            cps_materials = CpsMaterial.hot.where(:category => params[:category_name]).enabled.order("position desc, id desc").page(params[:page]).per_page(10)
           else
-            cps_materials = CpsMaterial.enabled.order("position desc, id desc").page(params[:page]).per_page(10)
+            cps_materials = CpsMaterial.enabled.hot.order("position desc, id desc").page(params[:page]).per_page(10)
           end
           present :error, 0
           to_paginate(cps_materials)
