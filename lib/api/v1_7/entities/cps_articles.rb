@@ -15,6 +15,9 @@ module API
           expose :cps_article_shares, using: API::V1_7::Entities::CpsArticleShares::Summary
         end
 
+        class WithShareCommission < WithShareDetail
+          expose :share_settled_commission, :share_forecast_commission
+        end
       end
     end
   end

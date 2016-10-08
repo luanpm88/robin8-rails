@@ -26,14 +26,21 @@ module API
           if params[:status] == 'shares'
             cps_article_shares = current_kol.cps_article_shares.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
             to_paginate(cps_article_shares)
-            cps_articles = cps_article_shares.collect{|share| share.cps_article}
+            cps_articles = []
+            cps_article_shares.each do |share|
+              article = share.cps_article
+              article.share_forecast_commission = share.share_forecast_commission
+              article.share_settled_commission =  share.share_settled_commission
+              cps_articles << article
+            end
           else
             cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("created_at desc").page(params[:page]).per_page(10)
             cps_article_shares = [CpsArticleShare.new]
             to_paginate(cps_articles)
           end
           present :error, 0
-          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::WithShareDetail
+          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::WithShareCommission
+          # TODO cps_article_shares remove later
           present :cps_article_shares, cps_article_shares, with: API::V1_7::Entities::CpsArticleShares::Summary
         end
 
@@ -66,7 +73,7 @@ module API
           cps_article = CpsArticle.where(:id => params[:id]).first rescue nil
           return error_403!({error: 1, detail: '该文章不存在！' })  if cps_article.blank?
           present :error, 0
-          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::WithShareDetail
+          present :cps_article, cps_article, with: API::V1_7::Entities::CpsArticles::WithShareCommission
         end
 
         # 文章中所含商品

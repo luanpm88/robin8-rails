@@ -204,7 +204,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def remain_budget(from_brand = true)
-    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)     rescue 0
+    return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)  rescue nil
   end
 
   def post_count
@@ -264,6 +264,7 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
+      self.revoke
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
     end
   end
