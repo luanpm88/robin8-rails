@@ -40,6 +40,7 @@ class AdminAbility
       can [:read, :update], AppUpgrade if admin.has_role?(:app_upgrade_update)
       can [:read], CpsArticle if admin.has_role?(:cps_article_read)
       can [:read, :update], CpsArticle if admin.has_role?(:cps_article_update)
+      can :manage, Campaign if admin.has_role?(:manage_campaign)
     end
   end
 end

@@ -75,7 +75,7 @@ class AdminRole < ActiveRecord::Base
       'APP管理(只读)'
     when 'app_upgrade_update'
       'APP管理(读写)'
-    when 'campaign_check'
+    when 'manage_campaign'
       '活动审核'
     when 'cps_article_read'
       'CPS管理(只读)'
