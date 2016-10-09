@@ -7,13 +7,25 @@
   总邀请注册人数： <%= RegisteredInvitation.completed.count %>
 </div>
 
+<form class="form-inline">
+  <div class="form-group" style="position: relative;">
+    <label class="sr-only" for="exampleInputEmail3">日期</label>
+    <%= text_field :invitation, :start_date, value: params[:start_date], placeholder: "起始日期", class: "form-control datetime" %>
+  </div>
+  <div class="form-group" style="position: relative;">
+    <%= text_field :invitation, :end_date, value: params[:end_date], placeholder: "结束日期",class: "form-control datetime" %>
+  </div>
+  <%= link_to "查询", registered_invitations_marketing_dashboard_stastic_datas_path, class: "btn btn-primary search" %>
+</form>
+
+
 <%
-  start_date = 7.days.ago.to_date
-  end_date   = Date.today
+  start_date = (params[:start_date] || (7.days - 1.day).ago).to_date
+  end_date   = (params[:end_date] || Date.today).to_date
 
   ActiveRecord::Base.default_timezone = :utc
-  invitation_stats = RegisteredInvitation.group_by_day(:created_at, format: "%Y-%m-%d").count
-  registered_stats = RegisteredInvitation.completed.group_by_day(:created_at, format: "%Y-%m-%d").count
+  invitation_stats = RegisteredInvitation.group_by_day(:created_at, time_zone: "Beijing", range: (start_date..end_date), format: "%Y-%m-%d").count
+  registered_stats = RegisteredInvitation.completed.group_by_day(:created_at, time_zone: "Beijing", range: (start_date..end_date), format: "%Y-%m-%d").count
   ActiveRecord::Base.default_timezone = :local
 %>
 
@@ -26,7 +38,7 @@
     </tr>
   </thead>
   <tbody>
-    <% (start_date..end_date).map{ |d| d.strftime("%Y-%m-%d") }.each do |date| %>
+    <% (start_date..end_date).map{ |d| d.strftime("%Y-%m-%d") }.reverse.each do |date| %>
       <tr>
         <td><%= date %></td>
         <td><%= invitation_stats[date] || 0 %></td>
@@ -68,3 +80,16 @@
 </table>
 
 <%= will_paginate @invitations, renderer: BootstrapPagination::Rails  %>
+
+<script type="text/javascript">
+(function() {
+  $(".search").click(function() {
+    var start_date = $("#invitation_start_date").val();
+    var end_date = $("#invitation_end_date").val();
+    url = $(this).attr("href") + "?" + "start_date=" + start_date + "&" + "end_date=" + end_date;
+    console.log(url);
+    window.location.href = url;
+    return false;
+  });
+})();
+</script>
