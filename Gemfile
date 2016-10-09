@@ -50,7 +50,7 @@ gem 'rest-client'
 gem 'mongoid', '~> 5.0.0'
 
 # Send notification when error occur
-gem 'exception_notification'
+# gem 'exception_notification'
 
 # Character encoding detecting library
 gem 'charlock_holmes'

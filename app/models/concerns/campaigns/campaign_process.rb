@@ -7,6 +7,7 @@ module Campaigns
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
       KolBudgetRate = 0.7
+      AppendWaitTime =  Rails.env.production?  ? 5.hours  : 5.minutes
     end
 
     def pay
@@ -101,45 +102,26 @@ module Campaigns
         end
         self.update_columns(:status => 'executing')
         campaign_id = self.id
-        kol_ids ||=  get_kol_ids
+        kol_ids ||=  get_kol_ids(true)
         Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
         # send_invite
         Kol.where(:id => kol_ids).each do |kol|
           kol.add_campaign_id campaign_id
         end
-        # 推送记录
+        # 发送通知
         Message.new_campaign(self, kol_ids)
-        if Rails.env.development? or Rails.env.test?
-          CampaignPushRecordWorker.new.perform(self.id, 'common')
-        else
-          CampaignPushRecordWorker.perform_async(self.id, 'common')
-        end
       end
-      add_queue_to_add_kols_when_tag_or_region_is_special
-    end
-
-    # 当指定区域 或者 地区 不是全部 的时候 执行
-    def add_queue_to_add_kols_when_tag_or_region_is_special
-      return  if self.specified_kol_targets.present?
-      if self.is_click_type? or self.is_post_type?
-        if (self.tag_target.present? and  not ["全部"].include?(self.tag_target.target_content)) or (self.region_target.present? and not ["全部",  '全部 全部'].include?(self.region_target.target_content) ) \
-           or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content)) or (self.gender_target.present? and not ["全部"].include?(self.gender_target.target_content))
-          CampaignWorker.perform_at(Time.now+5.hours, self.id, 'append_kols')
-        end
+      if self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?
+        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'append_kols')
       end
     end
 
     def append_kols
-      kol_ids = self.get_append_kol_ids
+      return if self.status == 'executed'
+      kol_ids = self.get_append_kol_ids(true)
       if kol_ids.present?
         Kol.where(:id => kol_ids).each do |kol|
           kol.add_campaign_id self.id, true
-        end
-        if Rails.env.development? or Rails.env.test?
-          CampaignPushRecordWorker.new.perform(self.id, 'append')
-        else
-          Message.new_campaign(self, kol_ids)
-          CampaignPushRecordWorker.perform_async(self.id, 'append')
         end
       end
     end
@@ -152,14 +134,7 @@ module Campaigns
           should_push_kol_is << kol.id
         end
       end
-      if should_push_kol_is.size > 0
-        if Rails.env.development? or Rails.env.test?
-          CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
-        else
-          Message.new_campaign(self, should_push_kol_is)
-          CampaignPushRecordWorker.perform_async(self.id, 'push_all', should_push_kol_is)
-        end
-      end
+      # CampaignPushRecordWorker.new.perform(self.id, 'push_all', should_push_kol_is)
     end
 
     #finish_remark:  expired or fee_end
@@ -317,9 +292,6 @@ module Campaigns
       PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
       def can_push_message(campaign)
         now =  Time.now
-        # notice : recruit cmapaign start_time is after
-        # last_campaign = Campaign.where(:status => ['executing', 'executed', 'settled']).where("start_time < '#{now}'").where.not(:id => campaign.id).order("start_time desc").first
-        # if now.hour >= PushStartHour && now.hour < PushEndHour  && (now - PushInterval > last_campaign.start_time || last_campaign.start_time.hour < PushEndHour)
         if now.hour >= PushStartHour && now.hour < PushEndHour
           return true
         else
