@@ -229,10 +229,10 @@
             </div>
             <div class="option-group" role="group">
               <% if c.status == 'unexecute' %>
-                <% if (c.per_budget_type == 'simple_cpi' ||  c.per_budget_type == 'simple_cpi') && c.example_screenshot.blank? %>
-                <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                <% if c.example_screenshot_required? && c.example_screenshot.blank? %>
+                  <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
                 <% elsif c.per_budget_type == 'cpa' && c.remark.blank? %>
-                <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
+                  <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>
                 <% else %>
                   <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
                     <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary", target: "_blank" %>

@@ -442,24 +442,18 @@
 }
 
 .creat-content-sources .action-mode {
-  margin-top: 6px;
-  font-size: 18px;
+  // margin-top: 6px;
+  // font-size: 18px;
   font-weight: bold;
-  width: 120px;
+  // width: 120px;
   float: left;
 }
 
-.creat-content-sources .sources-check label {
-  margin-right: 100px;
-}
-
-.creat-content-sources .sources-check .cpa-label {
-  position: relative;
-  left: -32px;
-}
-
-.creat-content-sources .sources-check label:first-child {
-  margin-left: 20px !important;
+.creat-content-sources .sources-check {
+  padding-left: 140px;
+  input {
+    margin-right: 5px;
+  }
 }
 
 .creat-content-sources .action-url-group {
@@ -470,7 +464,6 @@
 
 .creat-content-sources .action-url-group .action-url-text {
   float: left;
-  margin-left: 20px;
   margin-top: 12px;
 }
 
@@ -486,7 +479,6 @@
 
 .creat-content-sources .action-url-group .generate-short-url-text {
   float: left;
-  margin-left: 20px;
   margin-top: 28px;
 }
 
@@ -565,9 +557,7 @@
 .creat-content-sources .sources-check {
   margin-top: 0;
 }
-.creat-content-sources .sources-check:last-child {
-  margin-bottom: 0;
-}
+
 .creat-date .content {
   position: relative;
 }

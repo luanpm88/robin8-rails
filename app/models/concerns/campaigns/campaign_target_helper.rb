@@ -115,8 +115,8 @@ module Campaigns
         normal_push_kol_ids = CampaignPushRecord.where(campaign_id: self.id, push_type: 'normal' )
         get_platform_kol_ids = get_platform_kols.map(&:id)
         kol_ids = get_platform_kol_ids - normal_push_kol_ids - self.get_unmatched_kol_ids rescue []
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
     end
 
@@ -124,17 +124,17 @@ module Campaigns
     def get_kol_ids(record = false)
       if self.is_invite_type?                        #特邀活动
         kol_ids  = get_social_account_related_kol_ids
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record
       elsif self.specified_kol_targets.present?       #指定任务
         kol_ids = get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
       elsif self.newbie_kol_target.present?          #新手活动
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: "", push_type: push_type, filter_type: 'match', filter_reason: 'newbie_kol')                    if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: "", push_type: push_type, filter_type: 'match', filter_reason: 'newbie_kol')                    if record
         kol_ids = []
       else
         kol_ids = get_matching_kol_ids(get_platform_kols) - get_unmatched_kol_ids rescue []
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
-        CampaignPushRecord.create(campaign_id: campaign_id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
       kol_ids
     end
