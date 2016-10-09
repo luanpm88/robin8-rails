@@ -1,0 +1,23 @@
+<h1>开放API</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>品牌主ID</th>
+      <th>品牌主名称</th>
+      <th>密钥</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.id, marketing_dashboard_user_path(user), target: "_blank" %></td>
+        <td><%= user.smart_name %></td>
+        <td><%= user.open_token %></td>
+        <td><%= link_to "更换密钥", marketing_dashboard_utilities_open_tokens_path(user_id: user.id), method: :post, confirm: "确定要更换密钥吗？" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

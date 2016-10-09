@@ -91,6 +91,9 @@
               <%= link_to '*待审核CPI截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :simple_cpi }) %>
             </li>
             <li>
+              <%= link_to '*待审核CPT截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :cpt }) %>
+            </li>
+            <li>
               <%= link_to '*待审核CPP截图', pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
             </li>
             <li>
@@ -358,6 +361,9 @@
             </li>
             <li>
               <%= link_to '短信发送日志', marketing_dashboard_utilities_sms_messages_path %>
+            </li>
+            <li>
+              <%= link_to '开放API', marketing_dashboard_utilities_open_tokens_path %>
             </li>
           </ul>
         </li>

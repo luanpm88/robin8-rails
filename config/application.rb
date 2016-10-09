@@ -49,7 +49,7 @@ module Robin8
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
 
     config.assets.manifest = Rails.root.join('public', 'assets', 'manifest.json')
-    config.eager_load_paths.push(*%W(#{config.root}/lib/exception_notifier))
+    # config.eager_load_paths.push(*%W(#{config.root}/lib/exception_notifier))
 
     config.action_dispatch.perform_deep_munge = false
     config.i18n.available_locales = ['en', 'zh']

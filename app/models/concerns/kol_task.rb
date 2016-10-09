@@ -49,7 +49,6 @@ module Concerns
         device_exist = true
       end
       Rails.logger.transaction.info "--------generate_invite_task_record---#{self.id}-----IMEI:#{self.IMEI}---IDFA:#{self.IDFA}---exist:#{device_exist}"
-
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 

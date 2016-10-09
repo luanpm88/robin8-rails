@@ -52,7 +52,7 @@ export default class KolList extends React.Component {
       if(campaign.get("per_budget_type") === "post") {
         return(<tr><td>kol id</td><td>头像</td><td>昵称</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
       }
-      else if(campaign.get("per_budget_type") === 'simple_cpi'){
+      else if(campaign.get("per_budget_type") === 'simple_cpi' || campaign.get("per_budget_type") === 'cpt'){
         return(<tr><td>kol id</td><td>头像</td><td>昵称</td><td>奖励</td><td>截图</td></tr>)
       }
       else {
@@ -62,7 +62,7 @@ export default class KolList extends React.Component {
       if(campaign.get("per_budget_type") === "post") {
         return(<tr><td>头像</td><td>昵称</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
       }
-      else if(campaign.get("per_budget_type") === 'simple_cpi'){
+      else if(campaign.get("per_budget_type") === 'simple_cpi' || campaign.get("per_budget_type") === 'cpt'){
         return(<tr><td>头像</td><td>昵称</td><td>奖励</td><td>截图</td></tr>)
       }
       else {

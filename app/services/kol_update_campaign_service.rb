@@ -26,21 +26,21 @@ class KolUpdateCampaignService
       return false
     end
 
-    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
-    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db) if @campaign_params[:start_time]
+    @campaign_params[:deadline]   = @campaign_params[:deadline].to_formatted_s(:db)   if @campaign_params[:deadline]
 
     if @errors.size > 0
       return false
     end
-    begin
+    # begin
       ActiveRecord::Base.transaction do
         @campaign.update_attributes @campaign_params.reject{|k,v| [:campaign_action_url, :age, :region, :gender, :tags].include? k }
         update_campaign_targets
       end
-    rescue Exception => e
-      @errors.concat e.record.errors.messages.map(&:last).flatten
-      return false
-    end
+    # rescue Exception => e
+    #   @errors.concat e.record.errors.messages.map(&:last).flatten
+    #   return false
+    # end
   end
 
   def first_error_message
@@ -90,6 +90,7 @@ class KolUpdateCampaignService
     ['age', 'region', 'gender'].each do |target_type|
       @campaign.campaign_targets.create!({target_type: target_type, target_content: @campaign_params[target_type.to_sym]})
     end
+
 
     tag_labels = @campaign_params[:tags]
     @campaign.campaign_targets.create!({target_type: 'tags', target_content: tag_labels.split(',').collect { |label| ::Tag.get_name_by_label(label) }.join(',')})

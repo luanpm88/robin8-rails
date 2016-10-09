@@ -85,6 +85,8 @@ class Transaction < ActiveRecord::Base
         "CPS税费(#{self.item.cps_article.title})"
       when 'cps_writing_commission'
         "CPS文章税费(#{self.item.cps_article.title})"
+      when 'lottery_reward'
+        "夺宝现金奖励"
     end
   end
 
