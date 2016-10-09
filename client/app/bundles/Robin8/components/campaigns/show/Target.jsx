@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import { ageHelper, genderHelper } from "../../../helpers/CampaignHelper"
+import { ageHelperEx, genderHelperEx } from "../../../helpers/CampaignHelper"
 
 export default class Target extends React.Component{
 
@@ -62,7 +62,7 @@ export default class Target extends React.Component{
             {this.renderKolCount()}
 
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-3">
                 <div className="campaign-target target-region">
                   <label >地区</label>
                   <div className="target-result">
@@ -70,11 +70,27 @@ export default class Target extends React.Component{
                   </div>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-3">
                 <div className="campaign-target target-profession">
                   <label>分类</label>
                   <div className="target-result">
                     <div id="profession-result">{campaign.get("tag_labels") ? campaign.get("tag_labels").join('/') : '全部'}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-age">
+                  <label>年龄</label>
+                  <div className="target-result">
+                    <div id="age-result">{ ageHelperEx(campaign.get("age")) }</div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="campaign-target target-gender">
+                  <label>性别</label>
+                  <div className="target-result">
+                    <div id="age-result">{ genderHelperEx(campaign.get("gender")) }</div>
                   </div>
                 </div>
               </div>

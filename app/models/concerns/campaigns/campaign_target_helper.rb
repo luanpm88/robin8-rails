@@ -117,6 +117,7 @@ module Campaigns
         kol_ids = get_platform_kol_ids - normal_push_kol_ids - self.get_unmatched_kol_ids rescue []
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
+        kol_ids
       end
     end
 
