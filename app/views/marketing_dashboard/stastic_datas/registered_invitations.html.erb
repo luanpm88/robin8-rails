@@ -1,0 +1,70 @@
+<h2>kol好友注册邀请</h2>
+
+<div class="pull-right">
+  总邀请人数： <%= RegisteredInvitation.count %>
+</div>
+<div class="pull-right" style="margin-right: 15px;">
+  总邀请注册人数： <%= RegisteredInvitation.completed.count %>
+</div>
+
+<%
+  start_date = 7.days.ago.to_date
+  end_date   = Date.today
+
+  ActiveRecord::Base.default_timezone = :utc
+  invitation_stats = RegisteredInvitation.group_by_day(:created_at, format: "%Y-%m-%d").count
+  registered_stats = RegisteredInvitation.completed.group_by_day(:created_at, format: "%Y-%m-%d").count
+  ActiveRecord::Base.default_timezone = :local
+%>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>日期</th>
+      <th>邀请人数</th>
+      <th>邀请注册人数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% (start_date..end_date).map{ |d| d.strftime("%Y-%m-%d") }.each do |date| %>
+      <tr>
+        <td><%= date %></td>
+        <td><%= invitation_stats[date] || 0 %></td>
+        <td><%= registered_stats[date] || 0 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr/>
+<h3>邀请记录列表</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>邀请人ID</th>
+      <th>邀请人名称</th>
+      <th>受邀人ID</th>
+      <th>受邀人名称</th>
+      <th>手机号</th>
+      <th>状态</th>
+      <th>接受时间</th>
+      <th>注册时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invitations.each do |invitation| %>
+      <tr>
+        <td> <%= link_to invitation.inviter_id, marketing_dashboard_kol_path(:id => invitation.inviter_id), :target => "_blank" %> </td>
+        <td> <%= invitation.inviter.name %> </td>
+        <td> <%= link_to invitation.invitee_id, marketing_dashboard_kol_path(:id => invitation.invitee_id), :target => "_blank" rescue nil %> </td>
+        <td> <%= invitation.invitee.name rescue nil %> </td>
+        <td> <%= invitation.mobile_number %> </td>
+        <td> <%= invitation.status %> </td>
+        <td> <%= invitation.created_at.strftime("%Y-%m-%d %H:%M:%S") %> </td>
+        <td> <%= invitation.registered_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil  %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @invitations, renderer: BootstrapPagination::Rails  %>
