@@ -42,17 +42,33 @@ module Campaigns
         end
       end
 
+      # 根据返回的结果获取城市名称
+      def self.get_city_name(analyze_res)
+        location = analyze_res["entities"]["location"].keys.collect{|t| t[0..5].downcase }    rescue nil
+        return nil if location.blank?
+        cities = []
+        location.each do |name_en|
+          city_name = City.where("name_en like '#{name_en}%'").first.name     rescue nil
+          if city_name
+            cities << city_name
+          else
+            province = Province.where("name_en like '#{name_en}%'").first   rescue nil
+            province.cities.collect{|t| cities << t.name }    if province
+          end
+        end
+        cities
+      end
+
       # 返回所有的分析内容
       def self.get_analysis_res(url, expect_effect)
         per_budget_type = get_effect_budget_type(expect_effect)
         per_action_type = MinPerActionBudget[per_budget_type.to_sym]
         start_time = get_start_time
         analyze_res = analyze_url(url)
-        info[:tags] = res["industries"][0..5].collect{|t| t.label if t.probability.to_i >= 3}.join(",") rescue '全部'
-        location = res["location"].keys.collect{|t| t.downcase }
-        city_region = City.where(:name_en => )
         input_info = {name: analyze_res['article_title'], url: url, per_budget_type: per_budget_type, per_action_type: per_action_type, budget: MinBudget,
                       start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analyze_res['article_image'], desc: (analyze_res['article_text'][0..60]  rescue nil)  }
+        campaign = Campaign.new(input_info)
+        tags = res["entities"]["industries"][0..5].collect{|t| t.label if t.probability.to_i >= 3}.join(",") rescue nil
 
       end
     end
