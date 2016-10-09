@@ -48,12 +48,12 @@ module Campaigns
         per_action_type = MinPerActionBudget[per_budget_type.to_sym]
         start_time = get_start_time
         analyze_res = analyze_url(url)
-        info[:tags] = res["industries"][0..5].collect{|t| t.label if t.probability.to_i >= 3}.join(",") rescue '全部'
-        location = res["location"].keys.collect{|t| t.downcase }
-        city_region = City.where(:name_en => )
         input_info = {name: analyze_res['article_title'], url: url, per_budget_type: per_budget_type, per_action_type: per_action_type, budget: MinBudget,
                       start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analyze_res['article_image'], desc: (analyze_res['article_text'][0..60]  rescue nil)  }
-
+        campaign = Campaign.new(input_info)
+        tags = res["industries"][0..5].collect{|t| t.label if t.probability.to_i >= 3}.join(",") rescue nil
+        location = res["location"].keys.collect{|t| t.downcase }
+        city_region = City.where(:name_en => )
       end
     end
   end
