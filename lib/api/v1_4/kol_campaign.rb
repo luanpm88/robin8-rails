@@ -54,6 +54,10 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
+          if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
+            error_403!({error: 1, detail: "单次任务不能低于1元!"})  and return
+          end
+
           service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
@@ -115,6 +119,10 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
+          if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
+            error_403!({error: 1, detail: "单次任务不能低于1元!"})  and return
+          end
+
           declared_params = declared(params)
           if params[:img]
             uploader = AvatarUploader.new
@@ -161,7 +169,7 @@ module API
           else
             campaigns = brand_user.campaigns
           end
-          campaigns = campaigns.where(:per_budget_type => ["click", "post", "simple_cpi"]).order("created_at desc").page(params[:page] || 1).per_page(10)
+          campaigns = campaigns.where(:per_budget_type => ["click", "post", "simple_cpi", "cpt"]).order("created_at desc").page(params[:page] || 1).per_page(10)
           present :error, 0
           to_paginate(campaigns)
           present :campaigns, campaigns, with: API::V1_4::Entities::CampaignEntities::CampaignListEntity
