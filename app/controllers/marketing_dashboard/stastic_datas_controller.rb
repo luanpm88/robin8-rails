@@ -126,6 +126,11 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
     end
   end
 
+  def registered_invitations
+    @invitations = RegisteredInvitation.order("created_at desc").page(params[:page])
+    render 'registered_invitations'
+  end
+
   private
   def stastic_data_params
     params.require(:stastic_data).permit(:start_time, :end_time)

@@ -8,6 +8,9 @@ class Transaction < ActiveRecord::Base
   RECHARGE_SUBJECTS = ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay']
   WITHDRAW_SUBJECTS = ['manual_withdraw', 'withdraw']
 
+  KOL_INCOME_SUBJECTS = ['campaign', 'check_in', 'invite_friend', 'complete_info', 'favorable_comment',
+                         'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission']
+
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
   scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation')")}  #campaign_compensation
@@ -84,7 +87,7 @@ class Transaction < ActiveRecord::Base
       when 'cps_tax'
         "CPS税费(#{self.item.cps_article.title})"
       when 'cps_writing_commission'
-        "CPS文章税费(#{self.item.cps_article.title})"
+        "CPS写作佣金(#{self.item.cps_article.title})"
     end
   end
 

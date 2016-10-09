@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include Concerns::BrowserRequest
   include Concerns::RequestSmsValidator
-
   before_filter :set_cookies
   before_filter :set_utm_source
   before_action :set_translations

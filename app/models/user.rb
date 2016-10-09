@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   include Users::AlipayHelper
   include Users::PromotionHelper
   include Users::InvoiceHelper
-  attr_accessor :login
+  attr_accessor :login, :open_token
 
   has_many :transactions, :as => :account
   has_many :alipay_orders

@@ -12,8 +12,9 @@ export function showCampaignTypeText(budget_type){
     case "recruit":
       return '参与'
     case "simple_cpi":
-    case "cpi":
       return '下载'
+    case "cpt":
+      return '任务'
   }
 }
 
@@ -28,6 +29,10 @@ export function campaignType(budget_type) {
 
 export function formatDate(date, format="YYYY-M-D H:mm"){
   return moment(date).format(format)
+}
+
+export function ageHelperEx(age){
+  return !!age ? age.replace(',', ' - ') : '全部';
 }
 
 export function ageHelper(age){
@@ -48,6 +53,18 @@ export function ageHelper(age){
       return "60岁以上"
     default:
       return "全部"
+  }
+}
+
+export function genderHelperEx(gender){
+  switch(gender){
+    case "1":
+      return "男"
+    case "2":
+      return "女"
+    default:
+      return "全部"
+
   }
 }
 
@@ -126,6 +143,10 @@ export function isRecruitCampaign(per_budget_type){
 
 export function isInviteCampaign(per_budget_type){
   return per_budget_type === 'invite' ? true : false;
+}
+
+export function isCptCampaign(per_budget_type){
+  return per_budget_type === 'cpt' ? true : false;
 }
 
 export function campaignMaterialType(type) {

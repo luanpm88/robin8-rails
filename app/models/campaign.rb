@@ -14,7 +14,7 @@ class Campaign < ActiveRecord::Base
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
-  validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi'].include? campaign.per_budget_type }
+  validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi','cpt'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   validates :sub_type, :inclusion => { :in => ["wechat", "qq", "weibo"] }, :allow_nil => true
   #Status : unpay unexecute agreed rejected  executing executed
@@ -114,13 +114,13 @@ class Campaign < ActiveRecord::Base
   def get_stats_for_app
     if self.per_budget_type == "click" or self.per_budget_type == "cpa"
       get_stats('app')[1..-1]
-    elsif self.per_budget_type.in?(["post", "simple_cpi"])
+    elsif self.per_budget_type.in?(["post", "simple_cpi", "cpt"])
       get_stats('app')[1...-1]
     end
   end
 
   def need_finish
-    self.per_budget_type.in?(["post", "simple_cpi"]) && self.valid_invites.size >= self.max_action && self.status == 'executing'
+    self.per_budget_type.in?(["post", "simple_cpi", "cpt"]) && self.valid_invites.size >= self.max_action && self.status == 'executing'
   end
 
   #统计信息
@@ -189,7 +189,7 @@ class Campaign < ActiveRecord::Base
       else
         (get_avail_click * per_budget).round(2)       rescue 0
       end
-    elsif self.is_post_type? || self.is_simple_cpi_type? || self.is_recruit_type?
+    elsif self.is_post_type? || self.is_simple_cpi_type? || self.is_recruit_type? || self.is_cpt_type?
       if self.status == 'settled'
         (self.settled_invites.count * per_budget).round(2) rescue 0
       else
@@ -225,7 +225,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite'].each do |value|
+  ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite', 'cpt'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end
@@ -283,6 +283,10 @@ class Campaign < ActiveRecord::Base
   #冲刺标签
   def is_sprint
     self.status == 'executing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+  end
+
+  def example_screenshot_required?
+    %w(simple_cpi recruit cpt).include? self.per_budget_type
   end
 
   def get_campaign_invite(kol_id)

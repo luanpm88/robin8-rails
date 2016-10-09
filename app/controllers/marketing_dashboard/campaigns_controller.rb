@@ -103,7 +103,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @remove_kol_ids = @campaign.get_remove_kol_ids_by_target
     @black_list_ids = @campaign.get_black_list_kols
     @receive_campaign_kol_ids  = @campaign.get_remove_kol_ids_of_campaign_by_target
-    @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
     @three_hours_had_receive_kol_ids = @campaign.three_hours_had_receive_kol_ids
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
@@ -114,7 +113,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def save_example_screenshot_and_remark
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(cpi_example_screenshot: params[:campaign][:cpi_example_screenshot],
+    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
       remark: params[:campaign][:remark])
     flash[:notice] = "保存成功"
     render :add_example_screenshot

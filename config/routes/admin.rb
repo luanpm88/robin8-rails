@@ -142,6 +142,7 @@ Rails.application.routes.draw do
         get :download_user_recharge_statistics
         get :download_campaign_statistics_in_time_range
         get :download_kol_withdraw_statistics_in_time_range
+        get :registered_invitations
       end
     end
     resources :feedbacks, except: [:destroy, :new, :create]  do
@@ -237,6 +238,7 @@ Rails.application.routes.draw do
       resource  "verify_code"
       resource  "marketing_message"
       resources "sms_messages"
+      resources "open_tokens"
     end
   end
 end
