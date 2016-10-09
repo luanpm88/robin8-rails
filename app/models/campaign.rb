@@ -10,6 +10,7 @@ class Campaign < ActiveRecord::Base
   include Campaigns::AlipayHelper
   include Campaigns::ValidationHelper
   include Campaigns::StatsHelper
+  include Campaigns::CampaignAnalysis
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
