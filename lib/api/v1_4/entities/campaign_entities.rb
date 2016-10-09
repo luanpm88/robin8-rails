@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class CampaignStatsEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :cpi_example_screenshot, :remark
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :remark
           expose :cpi_example_screenshot do |campaign|
             campaign.example_screenshot
           end
