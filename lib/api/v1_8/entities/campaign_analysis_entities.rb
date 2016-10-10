@@ -1,13 +1,22 @@
 module API
-  module V1_4
+  module V1_8
     module Entities
       module CampaignAnalysisEntities
-        class Summary < Grape::Entity
-          expose :name do |effect|
-            effect.key
+        class AnalysisInfo < Grape::Entity
+          expose :text do  |object|
+            object[:text]
           end
-          expose :label do |effect|
-            effect.value
+          expose :keywords do |object|
+            object[:keywords]
+          end
+          expose :sentiment do |object|
+            object[:sentiment]
+          end
+          expose :persons_brands do |object|
+            object[:persons_brands]
+          end
+          expose :products do |object|
+            object[:products]
           end
         end
       end
