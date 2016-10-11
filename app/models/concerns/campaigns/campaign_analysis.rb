@@ -101,7 +101,7 @@ module Campaigns
         end  rescue nil
         info[:products] = products
         info[:cities] =  analysis_res["entities"]["locations"].values.collect{|t| t["expressions"].keys.first}   rescue []
-        info[:categories] = analysis_res["industries"].collect{|industry| {"label" => Tag::NameLabel[industry["label"]], "probability" => industry["probability"] } }
+        info[:categories] = analysis_res["industries"].collect{|industry| {"label" => Tag::NameLabel[industry["label"]], "probability" => (industry["probability"].to_f / 100).round(4) } }
         info
       end
 
