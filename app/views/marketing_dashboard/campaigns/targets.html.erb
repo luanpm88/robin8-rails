@@ -81,27 +81,30 @@
   </div>
 </div>
 
-<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
+<%#= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
 
+<!--
 <h1> 过滤掉的kols </h1>
 <table class='table table-bordered well'>
   <thead>
     <tr>
-      <% attrs.each do |attr| %>
-        <th><%= attr.camelcase %></th>
-      <% end %>
+      <%# attrs.each do |attr| %>
+        <th><%#= attr.camelcase %></th>
+      <%# end %>
       <th>过滤理由</th>
     </tr>
   </thead>
   <tbody>
-    <% @unmatched_kols.each do |k| %>
+    <%# @unmatched_kols.each do |k| %>
       <tr>
-        <% attrs.each do |v| %>
-          <td> <%= k.send v %> </td>
-        <% end %>
-        <td><%= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids, @three_hours_had_receive_kol_ids) %></td>
+        <%# attrs.each do |v| %>
+          <td> <%#= k.send v %> </td>
+        <%# end %>
+        <td><%#= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids, @three_hours_had_receive_kol_ids) %></td>
       </tr>
-    <% end %>
+    <%# end %>
   </tbody>
 
 </table>
+
+-->
