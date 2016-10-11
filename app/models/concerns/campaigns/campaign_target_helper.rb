@@ -105,7 +105,7 @@ module Campaigns
         end
       end
 
-      kols.collect{|t| t.id}
+      kols.select("id").distinct.collect{|t| t.id}
     end
 
     def get_append_kol_ids(record = false)
