@@ -23,6 +23,16 @@ module API
           present :campaign_input, campaign_input, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           present :analysis_info, analysis_info, with: API::V1_8::Entities::CampaignAnalysisEntities::AnalysisInfo
         end
+
+        desc "参与人员分析"
+        params do
+          requires :id, type: Integer
+        end
+        get "invitee_analysis" do
+          campaign = Campaign.find params[:id]
+          present :error, 0
+          # present :campaign_input, campaign_input, with: API::V1_8::Entities::CampaignEntities::CampaignStatsEntity
+        end
       end
     end
   end
