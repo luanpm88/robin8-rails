@@ -69,10 +69,10 @@ module Campaigns
                       start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analysis_res['article_image'], description: (analysis_res['article_text'][0..60]  rescue nil)  }
         campaign = Campaign.new(input_info)
         tags = analysis_res["industries"][0..5].collect{|t| t['label'] if t['probability'].to_i >= 3}.compact.join(",") rescue nil
-        campaign.build_tag_target(target_type: 'tags', target_content: tags) if tags.present?
+        campaign.build_tag_target(target_type: 'tags', target_content: (tags.blank? ? "全部" : tags))
         cities = get_city_name(analysis_res)
-        campaign.build_region_target(target_type: 'region', target_content: cities) if cities.present?
-        #年龄\性别返回全部
+        campaign.build_region_target(target_type: 'region', target_content: (cities.blank? ? "全部" : cities))
+        #年龄\性别返回默认值 全部
         campaign.build_age_target(target_type: 'age', target_content: "全部")
         campaign.build_gender_target(target_type: 'gender', target_content: "全部")
         campaign
