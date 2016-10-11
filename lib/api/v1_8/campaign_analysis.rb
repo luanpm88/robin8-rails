@@ -6,7 +6,7 @@ module API
           authenticate!
         end
 
-        desc "获取活动期望效果"
+        desc "获取活动期望效果列表"
         get "expect_effect_list" do
           present :error, 0
           present :expect_effect_list, Campaign::ExpectEffects
@@ -17,7 +17,7 @@ module API
           requires :url, type: String
           requires :expect_effect, type: String
         end
-        post "analysis" do
+        post "content_analysis" do
           campaign_input, analysis_info =  Campaign.get_analysis_res(params[:url], params[:expect_effect])
           present :error, 0
           present :campaign_input, campaign_input, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
