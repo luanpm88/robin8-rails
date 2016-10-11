@@ -24,7 +24,7 @@ module API
         end
         get 'my_articles' do
           if params[:status] == 'shares'
-            cps_article_shares = current_kol.cps_article_shares.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
+            cps_article_shares = current_kol.cps_article_shares.includes(:kol, :cps_article).order("updated_at desc").page(params[:page]).per_page(10)
             to_paginate(cps_article_shares)
             cps_articles = []
             cps_article_shares.each do |share|
@@ -34,7 +34,7 @@ module API
               cps_articles << article
             end
           else
-            cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol).order("created_at desc").page(params[:page]).per_page(10)
+            cps_articles = current_kol.cps_articles.send("#{params[:status]}").includes(:kol, :cps_article_shares).order("created_at desc").page(params[:page]).per_page(10)
             cps_article_shares = [CpsArticleShare.new]
             to_paginate(cps_articles)
           end
