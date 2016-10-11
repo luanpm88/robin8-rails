@@ -72,6 +72,9 @@ module Campaigns
         campaign.build_tag_target(target_type: 'tags', target_content: tags) if tags.present?
         cities = get_city_name(analysis_res)
         campaign.build_region_target(target_type: 'region', target_content: cities) if cities.present?
+        #年龄\性别返回全部
+        campaign.build_age_target(target_type: 'age', target_content: "全部")
+        campaign.build_gender_target(target_type: 'gender', target_content: "全部")
         campaign
       end
 
@@ -82,7 +85,7 @@ module Campaigns
         keywords = []
         total_feq =  analysis_res["entities"]["features"].values.collect{|feature| feature['freq']}.sum    rescue 0
         analysis_res["entities"]["features"].values.each do |feature|
-          keywords << {label: feature['expressions'].keys.first, freq: feature['freq'] / total_feq.to_f}
+          keywords << {label: feature['expressions'].keys.first, probability: feature['freq'] / total_feq.to_f}
         end  rescue nil
         info[:keywords] =  keywords
         info[:sentiment] =  analysis_res['sentiment'].first.collect{|t| {:label => t['label'], :probability => t['probability'].round(2)}}
@@ -97,6 +100,8 @@ module Campaigns
           products << {label: feature['expressions'].keys.first, freq: feature['freq']}
         end  rescue nil
         info[:products] = products
+        info[:cities] =  analysis_res["entities"]["locations"].values.collect{|t| t["expressions"].keys.first}   rescue []
+        info[:categories] = analysis_res["industries"].collect{|industry| {"label" => Tag::NameLabel[industry["label"]], "probability" => industry["probability"] } }
         info
       end
 

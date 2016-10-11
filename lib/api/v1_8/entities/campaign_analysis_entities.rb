@@ -3,21 +3,13 @@ module API
     module Entities
       module CampaignAnalysisEntities
         class AnalysisInfo < Grape::Entity
-          expose :text do  |object|
-            object[:text]
-          end
-          expose :keywords do |object|
-            object[:keywords]
-          end
-          expose :sentiment do |object|
-            object[:sentiment]
-          end
-          expose :persons_brands do |object|
-            object[:persons_brands]
-          end
-          expose :products do |object|
-            object[:products]
-          end
+          expose :text
+          expose :keywords
+          expose :sentiment
+          expose :persons_brands
+          expose :products
+          expose :cities
+          expose :categories
         end
       end
     end
