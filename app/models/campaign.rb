@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
   include Campaigns::ValidationHelper
   include Campaigns::StatsHelper
   include Campaigns::CampaignAnalysis
+  include Campaigns::CampaignInviteAnalysis
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
@@ -38,6 +39,7 @@ class Campaign < ActiveRecord::Base
   has_many :weibo, through: :weibo_invites
   has_many :articles
   has_many :kol_categories, :through => :kols
+  has_many :kol_tags, :through => :kols
   has_many :campaign_action_urls, autosave: true
 
   has_many :campaign_categories
