@@ -26,10 +26,10 @@ module API
 
         desc "参与人员分析"
         params do
-          requires :id, type: Integer
+          requires :campaign_id, type: Integer
         end
         get "invitee_analysis" do
-          campaign = Campaign.find params[:id]
+          campaign = Campaign.find params[:campaign_id]
           present :error, 0
           present :gender_analysis, campaign.gender_analysis_of_invitee
           present :age_analysis, campaign.age_analysis_of_invitee
