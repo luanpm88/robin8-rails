@@ -31,7 +31,10 @@ module API
         get "invitee_analysis" do
           campaign = Campaign.find params[:id]
           present :error, 0
-          # present :campaign_input, campaign_input, with: API::V1_8::Entities::CampaignEntities::CampaignStatsEntity
+          present :gender_analysis, campaign.gender_analysis_of_invitee
+          present :age_analysis, campaign.age_analysis_of_invitee
+          present :tag_analysis, campaign.tag_analysis_of_invitee
+          present :region_analysis, campaign.region_analysis_of_invitee
         end
       end
     end

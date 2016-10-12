@@ -39,6 +39,7 @@ class Campaign < ActiveRecord::Base
   has_many :weibo, through: :weibo_invites
   has_many :articles
   has_many :kol_categories, :through => :kols
+  has_many :kol_tags, :through => :kols
   has_many :campaign_action_urls, autosave: true
 
   has_many :campaign_categories

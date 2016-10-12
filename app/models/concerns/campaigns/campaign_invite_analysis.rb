@@ -24,6 +24,7 @@ module Campaigns
 
       [[0, 20], [20, 40], [40, 60], [60, 100]].map do |min, max|
         age_count = self.kols.where("age > ? AND age <= ?", min, max).count
+
         {
           name: "#{min}岁-#{max}岁",
           count: age_count,
@@ -33,12 +34,40 @@ module Campaigns
     end
 
     def tag_analysis_of_invitee
-    end
+      tag_counts = self.kol_tags.joins(:tag).group(:tag_id).count.sort_by {|k, v| v}.reverse
 
-    def city_analysis_of_invitee
+      tag_counts = tag_counts[0, 5]
+      total_count = tag_counts.inject(0) do |sum, tc|
+        sum += tc[1]
+      end
+
+      tag_counts.map do |tc|
+        tag = Tag.find(tc[0])
+
+        {
+          name: tag.label,
+          code: tag.name,
+          count: tc[1],
+          ratio: 1.0 * tc[1] / total_count
+        }
+      end
     end
 
     def region_analysis_of_invitee
+      city_counts = self.kols.group(:app_city).count
+      city_counts.map do |cc|
+        city = City.where(name_en: cc[0]).take
+        next unless city
+        province = city.province
+        next unless province
+
+        {
+          city_name: city.short_name,
+          city_code: city.name_en,
+          province_name: province.name,
+          province_code: province.name_en
+        }
+      end.compact!.sort_by { |c| c[:province_code] }
     end
   end
 end
