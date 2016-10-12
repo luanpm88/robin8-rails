@@ -13,6 +13,10 @@ module Brand::V1::APIHelpers
       end
   end
 
+  def is_super_user?
+    warden.authenticate(:scope => :admin_user).present?
+  end
+
   def can?(*args)
     current_ability.can?(*args)
   end

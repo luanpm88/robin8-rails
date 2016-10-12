@@ -48,7 +48,7 @@ class Withdraw < ActiveRecord::Base
         self.kol.unfrozen(self.credits,'withdraw', self, nil)
         self.kol.payout(self.credits, 'withdraw',self,nil)
         if self.kol.mobile_number.present?
-          SmsMessage.send_by_resource_to(self.kol, "恭喜您！你在Robin8的提现已到账！速去支付宝查看！", self)
+          SmsMessage.send_by_resource_to(self.kol, "恭喜您！你在Robin8的提现已到账！速去支付宝[账单]中查看！", self)
         end
     elsif self.status_changed? && self.status == 'rejected'
       # 解冻

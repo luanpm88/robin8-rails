@@ -105,16 +105,17 @@ module Campaigns
         end
       end
 
-      kols.collect{|t| t.id}
+      kols.select("id").distinct.collect{|t| t.id}
     end
 
     def get_append_kol_ids(record = false)
       if self.is_invite_type?  || self.specified_kol_targets.present?  ||  self.newbie_kol_target.present?
         return nil
       else
-        normal_push_kol_ids = CampaignPushRecord.where(campaign_id: self.id, push_type: 'normal' )
+        normal_push_kol_ids = CampaignPushRecord.where(campaign_id: self.id, push_type: 'normal' ).first.kol_ids.split(",")  rescue []
+        approved_kol_ids = CampaignInvite.where(campaign_id: self.id).collect{|t| t.kol_id}
         get_platform_kol_ids = get_platform_kols.map(&:id)
-        kol_ids = get_platform_kol_ids - normal_push_kol_ids - self.get_unmatched_kol_ids rescue []
+        kol_ids = get_platform_kol_ids - normal_push_kol_ids - approved_kol_ids - self.get_unmatched_kol_ids rescue []
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
         kol_ids
@@ -122,7 +123,12 @@ module Campaigns
     end
 
     #TODO imporve this
-    def get_kol_ids(record = false)
+    def get_kol_ids(record = false, kol_ids = nil)
+      #如果指定了kol_is 记录后直接返回
+      if kol_ids.present?
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'manual_special', filter_reason: 'manual_special')  if record
+        return kol_ids
+      end
       if self.is_invite_type?                        #特邀活动
         kol_ids  = get_social_account_related_kol_ids
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record

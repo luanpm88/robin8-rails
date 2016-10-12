@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import BrandHomeContainer from '../containers/BrandHomeContainer';
 import BrandHomePartial from '../components/BrandHomePartial';
-
 export default (
   <Route path="/brand" component={BrandHomeContainer}>
     <IndexRoute component={BrandHomePartial} />
@@ -23,6 +22,12 @@ export default (
       require.ensure([], (require) => {
         cb(null, require('../components/UpdateCampaignPartial').default);
       }, "updateCampaign");
+    }}/>
+
+    <Route path="campaigns/:id/edit_base" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/UpdateCampaignBasePartial').default);
+      }, "updateCampaignBase");
     }}/>
 
     <Route path="campaigns/:id/preview" getComponent={(nextState, cb) => {

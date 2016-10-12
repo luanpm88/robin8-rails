@@ -102,7 +102,7 @@ module Campaigns
         end
         self.update_columns(:status => 'executing')
         campaign_id = self.id
-        kol_ids ||=  get_kol_ids(true)
+        kol_ids = get_kol_ids(true, kol_ids)
         Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
         # send_invite
         Kol.where(:id => kol_ids).each do |kol|
