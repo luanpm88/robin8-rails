@@ -30,7 +30,7 @@
         <div class="col-md-3">
           <div class="form-group">
             <label>KOL等级</label>
-            <%= f.select :kol_kol_level_eq, [ "A", "B", "S" ], { include_blank: true }, class: "form-control" %>
+            <%= f.select :kol_kol_level_eq, [ "A", "B", "C", "S" ], { include_blank: true }, class: "form-control" %>
           </div>
         </div>
         <div class="col-md-3">
@@ -54,7 +54,7 @@
         <div class="col-md-3">
           <div class="form-group">
             <label>活动类型</label>
-            <%= f.select :campaign_per_budget_type_eq, ["click", "post", "cpa", "recruit", "invite"], { include_blank: true }, class: "form-control" %>
+            <%= f.select :campaign_per_budget_type_eq, ["click", "post", "cpa", "recruit", "invite", "simple_cpi", "cpt"], { include_blank: true }, class: "form-control" %>
           </div>
         </div>
         <div class="col-md-3">
