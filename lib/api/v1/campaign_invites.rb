@@ -52,6 +52,7 @@ module API
         #活动邀请详情
         params do
           requires :id, type: Integer
+          optional :invitee_page, type: Integer
         end
         get ':id' do
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
@@ -59,7 +60,7 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            invitees = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").order("id desc").includes(:kol).collect{|t| t.kol}
+            invitees = CampaignInvite.get_invitees(campaign.id, params[:invitee_page])
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
             present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary

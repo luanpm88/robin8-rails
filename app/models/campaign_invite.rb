@@ -317,9 +317,16 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  #.fi
   def from_meesage_click_count
      CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :remark => 'from_group').count
+  end
+
+  def self.get_invitees(campaign_id, page = nil)
+    campaign_invites = CampaignInvite.where(:campaign_id => campaign_id).where("status != 'running'").order("id desc").includes(:kol)
+    if page.present?
+      campaign_invites = campaign_invites.page(page).per_page(10)
+    end
+    campaign_invites.collect{|t| t.kol}
   end
 
 end
