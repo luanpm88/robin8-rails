@@ -194,6 +194,20 @@ module Brand
               error_unprocessable! service.first_error_message
             end
           end
+
+          desc 'Update a campaign base info'
+          params do
+            requires :name, type: String
+            requires :description, type: String
+            requires :url, type: String
+            requires :img_url, type: String
+          end
+          put ':id/edit_base' do
+            error_403! unless  is_super_user?
+            campaign = Campaign.find params[:id]
+            campaign.update_columns({name: params[:name], description: params[:description], url: params[:url], img_url: params[:img_url]})
+            present campaign
+          end
         end
 
         desc 'Create a recruit campaign'

@@ -42,6 +42,7 @@ export default function campaignReducer($$state = initialState, action=nil) {
       return $$state;
 
     case actionTypes.UPDATE_CAMPAIGN:
+    case actionTypes.UPDATE_CAMPAIGN_BASE:
     case actionTypes.UPDATE_RECRUIT:
     case actionTypes.UPDATE_INVITE_CAMPAIGN:
       if(fetchState === "failure"){

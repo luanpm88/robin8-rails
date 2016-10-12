@@ -106,6 +106,40 @@ export function updateCampaign(campaign_id, campaign) {
   };
 }
 
+export function updateCampaignBase(campaign_id, campaign) {
+  var formData = new FormData()
+  for(let key of Object.keys(campaign)) {
+    switch(key) {
+      case 'url':
+        const regex = /^http|https:\/\//
+        if (regex.test(campaign.url)) {
+          formData.append(`${key}`, campaign[key])
+        }
+        else {
+          formData.append(`${key}`, 'http://' + campaign[key])
+        }
+      default:
+        formData.append(`${key}`, campaign[key]);
+        break;
+    }
+  }
+
+  return {
+    type: actionTypes.UPDATE_CAMPAIGN_BASE,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/edit_base`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+        },
+        credentials: "same-origin",
+        method: 'PUT',
+        body: formData
+      }
+    ),
+    redirect: '/brand/campaigns/:id/preview'
+  };
+}
+
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
