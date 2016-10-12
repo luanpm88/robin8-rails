@@ -39,6 +39,10 @@ module MarketingDashboard::CampaignsHelper
     end
   end
 
+  def get_base_edit_brand_campaign_show_url c
+    "/brand/campaigns/#{c.id}/edit_base?super_visitor_token=#{get_super_visitor_token}&user_id=#{c.user_id}"
+  end
+
   def get_campaign_seller(c)
     c.user.seller
   end
