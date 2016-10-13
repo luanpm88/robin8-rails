@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class CampaignStatsEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :remark
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :remark, :sub_type
           expose :cpi_example_screenshot do |campaign|
             campaign.example_screenshot
           end
@@ -65,7 +65,7 @@ module API
 
         class CampaignListEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :need_pay_amount, :status, :img_url, :name, :budget, :per_budget_type, :per_action_budget
+          expose :id, :need_pay_amount, :status, :img_url, :name, :budget, :per_budget_type, :per_action_budget, :sub_type
           expose :tag_labels do |object|
             target = object.tag_target
             if target
@@ -111,7 +111,7 @@ module API
 
         class CreateCampaignEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :sub_type
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
@@ -120,7 +120,7 @@ module API
 
         class UnpayShowEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :sub_type
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
@@ -129,7 +129,7 @@ module API
 
         class DetailEntity < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :voucher_amount, :used_voucher, :budget_editable
+          expose :id, :name, :description, :status, :url, :img_url, :per_budget_type, :per_action_budget, :budget, :need_pay_amount, :voucher_amount, :used_voucher, :budget_editable, :sub_type
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time

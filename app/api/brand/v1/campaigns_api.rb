@@ -66,6 +66,7 @@ module Brand
             optional :message, type: String
             requires :start_time, type: DateTime
             requires :deadline, type: DateTime
+            requires :sub_type, type: String
             requires :target, type: Hash do
               requires :age    , type:String
               requires :region , type:String
@@ -173,6 +174,7 @@ module Brand
             optional :message, type: String
             requires :start_time, type: DateTime
             requires :deadline, type: DateTime
+            requires :sub_type, type: String
             requires :target, type: Hash do
               requires :age    , type:String
               requires :region , type:String

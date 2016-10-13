@@ -28,7 +28,8 @@ const initCampaign = {
   per_action_budget: 0.2,
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm'),
-  per_budget_collect_type: ""
+  per_budget_collect_type: "",
+  sub_type: 'wechat'
 }
 
 const validate = new CampaignFormValidate({
@@ -40,6 +41,7 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
+  sub_type: { require: true }
 })
 
 const validateFailed = (errors) => {
@@ -66,7 +68,7 @@ class CreateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, gender, region, tags, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type} = this.props.fields;
+    const { name, description, img_url, url, age, gender, region, tags, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type} = this.props.fields;
     const brand = this.props.brand
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
@@ -79,7 +81,7 @@ class CreateCampaignPartial extends React.Component {
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
               <BudgetPartial {...{ budget }} />
-              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type }} />
+              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type }} />
               <DatePartial {...{ start_time, deadline }} />
               <TargetPartial {...{region, tags, age, gender}} />
               <div className="creat-form-footer">
@@ -97,7 +99,7 @@ class CreateCampaignPartial extends React.Component {
 
 CreateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
   returnRejectedSubmitPromise: true,
   validate
 },

@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161009032709) do
+ActiveRecord::Schema.define(version: 20161013061828) do
+
+  create_table "aa_bbs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -386,8 +391,8 @@ ActiveRecord::Schema.define(version: 20161009032709) do
     t.datetime "deadline"
     t.decimal  "budget",                                        precision: 13, scale: 3
     t.integer  "user_id",                      limit: 4
-    t.datetime "created_at",                                                                             null: false
-    t.datetime "updated_at",                                                                             null: false
+    t.datetime "created_at",                                                                                 null: false
+    t.datetime "updated_at",                                                                                 null: false
     t.integer  "release_id",                   limit: 4
     t.text     "concepts",                     limit: 16777215
     t.text     "summaries",                    limit: 16777215
@@ -438,6 +443,7 @@ ActiveRecord::Schema.define(version: 20161009032709) do
     t.string   "applying_note_description",    limit: 255
     t.string   "applying_picture_description", limit: 255
     t.string   "expect_effect",                limit: 255
+    t.string   "forward_platform",             limit: 255,                               default: "moments"
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree

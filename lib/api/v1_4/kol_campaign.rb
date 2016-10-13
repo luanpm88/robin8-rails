@@ -17,6 +17,7 @@ module API
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
+          optional :sub_type, type: String
 
           optional :age, type: String, default: '全部'
           optional :gender, type:String, default: '全部'
@@ -50,8 +51,8 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
-            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
+            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
@@ -83,6 +84,7 @@ module API
           optional :start_time, type: DateTime
           optional :deadline, type: DateTime
           optional :budget, type: Float
+          optional :sub_type, type: String
 
           optional :age, type: String, default: '全部'
           optional :gender, type:String, default: '全部'
@@ -115,8 +117,8 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
-            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
+            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1

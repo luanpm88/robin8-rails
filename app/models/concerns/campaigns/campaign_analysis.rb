@@ -66,7 +66,8 @@ module Campaigns
         per_action_budget = MinPerActionBudget[per_budget_type.to_sym]
         start_time = get_start_time
         input_info = {name: analysis_res['article_title'], url: url, per_budget_type: per_budget_type, per_action_budget: per_action_budget, budget: MinBudget,
-                      start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analysis_res['article_image'], description: (analysis_res['article_text'][0..60]  rescue nil)  }
+                      start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analysis_res['article_image'],
+                      description: ((analysis_res['article_text'][0..60]  rescue nil)), sub_type: 'wechat'  }
         campaign = Campaign.new(input_info)
         tags = analysis_res["industries"][0..5].collect{|t| t['label'] if t['probability'].to_i >= 3}.compact.join(",") rescue nil
         campaign.build_tag_target(target_type: 'tags', target_content: (tags.blank? ? "全部" : tags))
