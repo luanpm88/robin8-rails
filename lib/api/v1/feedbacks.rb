@@ -3,8 +3,8 @@ module API
     class Feedbacks < Grape::API
       helpers do
         def can_feedback?(kol_id)
-          Feedback.where(kol_id: kol_id).
-             where("created_at < ?", 1.hours.ago).
+          return !Feedback.where(kol_id: kol_id).
+             where("created_at > ?", 1.hours.ago).
              exists?
         end
       end
