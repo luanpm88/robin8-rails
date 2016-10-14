@@ -113,6 +113,7 @@
       <th>提现状态</th>
       <th>支付宝关联用户</th>
       <th>提现次数</th>
+      <th>申请时间</th>
       <th>KOL等级</th>
       <th>拉黑时间</th>
       <th>来源</th>
@@ -147,6 +148,7 @@
           <% end %>
         </td>
         <td><%= w.kol.withdraws.count %></td>
+        <td><%= w.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         <td><%= w.kol.kol_level rescue "" %></td>
         <td><%= color_time(w.kol.forbid_campaign_time) %></td>
         <td><%= w.kol.app_platform rescue "" %></td>
