@@ -8,5 +8,9 @@ class KolWechatWorker
     else
       kol_wechat = KolWechat.find_by(kol_id: kol_id, category: 'friends_info', openid: user_info['openid'])
     end
+
+    if kol_wechat.blank?
+      kol
+    end
   end
 end

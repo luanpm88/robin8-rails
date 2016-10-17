@@ -20,5 +20,6 @@ class CreateKolWechats < ActiveRecord::Migration
 
     add_index :kol_wechats, :kol_id
     add_index :kol_wechats, :category
+    add_index :kol_wechats, :openid
   end
 end
