@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-2">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">设置授权类型</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_for(@campaign, url: set_auth_type_marketing_dashboard_campaign_path(@campaign), method: :put) do |f| %>
+            <div class="field form-group">
+              <%= f.label "分享渠道" %>: <%= @campaign.sub_type %><br />
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "活动类型" %>: <%= @campaign.per_budget_type %><br />
+
+            </div>
+
+            <div class="field form-group">
+              <%= f.label "授权类型" %>: <%= f.select :wechat_auth_type, options_for_select(Campaign::AuthTypes.collect{|key, value| [value, key]}, @campaign.wechat_auth_type), autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

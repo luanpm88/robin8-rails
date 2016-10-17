@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013061828) do
+ActiveRecord::Schema.define(version: 20161017062638) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -444,6 +444,7 @@ ActiveRecord::Schema.define(version: 20161013061828) do
     t.string   "applying_picture_description", limit: 255
     t.string   "expect_effect",                limit: 255
     t.string   "forward_platform",             limit: 255,                               default: "moments"
+    t.string   "auth_type",                    limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -1081,6 +1082,22 @@ ActiveRecord::Schema.define(version: 20161013061828) do
 
   add_index "kol_tags", ["kol_id"], name: "index_kol_tags_on_kol_id", using: :btree
   add_index "kol_tags", ["tag_id"], name: "index_kol_tags_on_tag_id", using: :btree
+
+  create_table "kol_wechats", force: :cascade do |t|
+    t.integer  "kol_id",     limit: 4
+    t.string   "openid",     limit: 255
+    t.string   "nickname",   limit: 255
+    t.integer  "sex",        limit: 4
+    t.string   "province",   limit: 255
+    t.string   "city",       limit: 255
+    t.string   "country",    limit: 255
+    t.string   "headimgurl", limit: 255
+    t.text     "privilege",  limit: 65535
+    t.string   "unionid",    limit: 255
+    t.string   "auth_type",  limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "kols", force: :cascade do |t|
     t.string   "email",                  limit: 191

@@ -210,4 +210,13 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @q = @push_records.ransack(params[:q])
     @push_records = @q.result.paginate(paginate_params)
   end
+
+  def set_auth_type
+    @campaign = Campaign.find params[:id]
+    if request.get?
+    else
+      @campaign.update_column(:wechat_auth_type, params[:campaign][:wechat_auth_type])
+      redirect_to :action => :index
+    end
+  end
 end

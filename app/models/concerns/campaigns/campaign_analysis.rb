@@ -28,7 +28,7 @@ module Campaigns
       NlpServer = "http://robin8-staging.cn:5000/kol/v1.0/analyze"
       def analyze_url(url)
         params = {url: url}
-        res = RestClient.post NlpServer, params.to_json,  :content_type => :json, :accept => :json      rescue nil
+        res = RestClient.post NlpServer, params.to_json,  :content_type => :json, :accept => :json, :timeout => 5      rescue nil
         res = JSON.parse(res)["data"]  rescue nil
         res
       end

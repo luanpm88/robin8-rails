@@ -13,11 +13,14 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignAnalysis
   include Campaigns::CampaignInviteAnalysis
 
+  AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
+
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
   validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi','cpt'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
   validates :sub_type, :inclusion => { :in => ["wechat", "qq", "weibo"] }, :allow_nil => true
+  validates :wechat_auth_type, :inclusion => { :in => AuthTypes.keys }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa simple_cpi cpi recruit invite
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
@@ -77,7 +80,7 @@ class Campaign < ActiveRecord::Base
   after_save :create_job
   before_create :generate_campaign_number
   after_create :update_user_status
-  after_save :deal_with_campaign_img_url
+  after_save :deal_with_campaign_img_url, :deal_wechat_auth_type
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -391,6 +394,14 @@ class Campaign < ActiveRecord::Base
       if file_name.end_with?("png") || file_name.end_with?("jpg") || file_name.end_with?("jpeg")
         CampaignImgWorker.perform_async(self.id, self.img_url)
       end
+    end
+  end
+
+  def deal_wechat_auth_type
+    if self.sub_type == 'wechat' && self.per_budget_type != 'simple_cpi'
+      self.wechat_auth_type = 'base'
+    else
+      self.wechat_auth_type = nil
     end
   end
 end

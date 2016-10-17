@@ -213,13 +213,15 @@
                 <li><%= link_to '活动参与数据', marketing_dashboard_campaign_campaign_invites_path(c), :target => "_blank" %></li>
                 <li><%= link_to '活动点击数据', marketing_dashboard_campaign_campaign_shows_path(c), target: "_blank" %></li>
                 <li><%= link_to '活动统计数据', get_brand_campaign_show_url(c), target: "_blank" %></li>
-
+                <% if c.status != 'unexecute' || c.status == "agreed" || c.status == 'unpay' %>
+                  <li><%= link_to '设置授权类型', set_auth_type_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
+                <% end %>
                 <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
-                <li><%= link_to 'KOL招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
+                  <li><%= link_to 'KOL招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
                 <% end %>
 
                 <% if c.status == 'executing' %>
-                <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
+                  <li><%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
                 <% if not Rails.cache.fetch("campaign_id_#{c.id}_push_all")%>
                   <li><%= link_to '补推给所有人',push_all_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
                 <% end %>
