@@ -175,13 +175,13 @@ class CampaignInvite < ActiveRecord::Base
   # 第二次 微信回调的地址
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
-    if self.campaign.is_recruit_type? || self.campaign.is_invite_type?
+    if self.campaign.wechat_auth_type == 'no'
       url
-    elsif self.campaign.is_simple_cpi_type?
-      self.campaign.url
-    else
+    elsif self.campaign.wechat_auth_type == 'base'
       #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
+    elsif self.campaign.wechat_auth_type == 'self_info' ||  self.campaign.wechat_auth_type == 'friends_info'
+      $weixin_client.authorize_url url, 'snsapi_userinfo'
     end
   end
 

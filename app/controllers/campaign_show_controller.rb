@@ -22,11 +22,18 @@ class CampaignShowController < ApplicationController
       @campaign = Campaign.find campaign_id rescue nil
       @campaign_invite = CampaignInvite.find_by(:uuid => params[:uuid])     rescue nil
     end
+
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
     visit_url = Rails.cache.read("visit_url_#{cookies[:_robin8_visitor]}") || request.url
     Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} ---visit_url:#{visit_url}--- #{params[:uuid]} ------ #{request.remote_ip}"
     if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign(uuid_params, openid)
+    end
+
+    # wechat_auth_type ==  'info'
+    if sns_info['scope'] == 'snsapi_userinfo'
+      user_info = $weixin_client.get_oauth_userinfo(sns_info.result['openid'], sns_info.result['access_token'])
+      KolWechatWorker.perform_async(@campaign.wechat_auth_type, @campaign_invite.kol_id, user_info)
     end
 
     if @campaign.status == 'agreed' ||  @campaign_invite.blank?

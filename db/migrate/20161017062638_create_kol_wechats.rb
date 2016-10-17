@@ -1,6 +1,6 @@
 class CreateKolWechats < ActiveRecord::Migration
   def change
-    add_column :campaigns, :wechat_auth_type, :string, :default => 'base' # nothing, base, self_info, friends_info
+    add_column :campaigns, :wechat_auth_type, :string, :default => 'base' # no, base, self_info, friends_info
 
     create_table :kol_wechats do |t|
       t.integer :kol_id
@@ -13,9 +13,12 @@ class CreateKolWechats < ActiveRecord::Migration
       t.string :headimgurl
       t.text   :privilege
       t.string :unionid
-      t.string :category # self\friend
+      t.string :category
 
       t.timestamps null: false
     end
+
+    add_index :kol_wechats, :kol_id
+    add_index :kol_wechats, :category
   end
 end
