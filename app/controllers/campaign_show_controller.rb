@@ -33,7 +33,11 @@ class CampaignShowController < ApplicationController
     # wechat_auth_type ==  'info'
     if sns_info['scope'] == 'snsapi_userinfo'
       user_info = $weixin_client.get_oauth_userinfo(sns_info.result['openid'], sns_info.result['access_token'])
-      KolWechatWorker.perform_async(@campaign.wechat_auth_type, @campaign_invite.kol_id, user_info)
+      if Rails.env.staging?
+        KolWechatWorker.new.perform(@campaign.wechat_auth_type, @campaign_invite.kol_id, user_info)
+      else
+        KolWechatWorker.perform_async(@campaign.wechat_auth_type, @campaign_invite.kol_id, user_info)
+      end
     end
 
     if @campaign.status == 'agreed' ||  @campaign_invite.blank?
