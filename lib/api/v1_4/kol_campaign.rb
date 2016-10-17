@@ -18,6 +18,8 @@ module API
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
           optional :sub_type, type: String
+          optional :img, type: Hash
+          optional :img_url, type: String
 
           optional :age, type: String, default: '全部'
           optional :gender, type:String, default: '全部'
@@ -59,7 +61,7 @@ module API
             error_403!({error: 1, detail: "单次任务不能低于1元!"})  and return
           end
 
-          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
+          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => (uploader.url || params[:img_url]), :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
             campaign = brand_user.campaigns.last
