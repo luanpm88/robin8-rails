@@ -5,7 +5,7 @@ class SmsMessage < ActiveRecord::Base
 
   STATUS= [ "pending", "retried", "success", "failed" ]
 
-  MODE  = [ "general", "feedback", "lottery_delivery", "manual", "verified_code" ]
+  MODE  = [ "general", "feedback", "lottery_delivery", "manual", "verified_code", "campaign_check" ]
 
   PHONE_EXP = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
 
@@ -31,6 +31,8 @@ class SmsMessage < ActiveRecord::Base
       message.receiver = target
     elsif target.is_a? String and PHONE_EXP.match(target).present?
       message.phone    = target
+    elsif target.is_a? Array
+      message.phone    = target.join(",")
     else
       return false
     end

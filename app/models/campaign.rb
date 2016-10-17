@@ -253,9 +253,13 @@ class Campaign < ActiveRecord::Base
     self.budget / self.per_action_budget
   end
 
+  AdminPhones = ['13817164642', '15221773929', '18917797087', '13917397090']
   def create_job
     raise 'status 不能为空' if self.status.blank?
-    if (self.status_changed? && status.to_s == 'agreed')
+    if (self.status_changed? && status.to_s == 'unexecute')
+      #send sms to admin to check campaign
+      SmsMessage.send_by_resource_to(AdminPhones, "有新的活动需要审核 (#{self.name})", self, {:mode => 'campaign_check' })
+    elsif (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
