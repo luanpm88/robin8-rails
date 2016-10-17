@@ -11,8 +11,8 @@ class KolWechatWorker
 
     if kol_wechat.blank?
       KolWechat.create!(kol_id:kol_id, category: wechat_auth_type, openid: user_info['openid'], nickname: user_info['nickname'],
-                                 sex: user_info['sex'], province: user_info['province'], city: user_info['city'], headimgurl: user_info['headimgurl'],
-                                 unionid: user_info['unionid'] )
+                        sex: user_info['sex'], country: user_info['country'], province: user_info['province'], city: user_info['city'],
+                        headimgurl: user_info['headimgurl'], unionid: user_info['unionid'] )
     end
   end
 end
