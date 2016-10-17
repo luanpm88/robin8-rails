@@ -28,9 +28,11 @@ module API
         end
         post "/" do
           brand_user = current_kol.find_or_create_brand_user
-          if params[:img]
+          img_url = params[:img_Url]
+          if img_url.blank? && params[:img].present?
             uploader = AvatarUploader.new
             uploader.store!(params[:img])
+            img_url = uploader.url
           end
 
           if params[:budget].to_i < 100
@@ -61,7 +63,7 @@ module API
             error_403!({error: 1, detail: "单次任务不能低于1元!"})  and return
           end
 
-          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => (uploader.url || params[:img_url]), :need_pay_amount => params[:budget], :campaign_from => "app")
+          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => img_url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
             campaign = brand_user.campaigns.last
