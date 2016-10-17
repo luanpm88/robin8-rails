@@ -256,7 +256,7 @@ class Campaign < ActiveRecord::Base
   AdminPhones = ['13817164642', '15221773929', '18917797087', '13917397090']
   def create_job
     raise 'status 不能为空' if self.status.blank?
-    if (self.status_changed? && status.to_s == 'unexecute')
+    if (self.status_changed? && status.to_s == 'unexecute') && Rails.env.production?
       #send sms to admin to check campaign
       SmsMessage.send_by_resource_to(AdminPhones, "有新的活动需要审核 (#{self.name})", self, {:mode => 'campaign_check' })
     elsif (self.status_changed? && status.to_s == 'agreed')
