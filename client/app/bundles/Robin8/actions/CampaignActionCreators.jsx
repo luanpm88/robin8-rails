@@ -264,3 +264,9 @@ export function analysisCampaign(url){
     })
   }
 }
+
+export function clearAnalysisCampaign() {
+  return {
+    type: actionTypes.CLEAR_ANALYSIS_CAMPAIGN
+  };
+}

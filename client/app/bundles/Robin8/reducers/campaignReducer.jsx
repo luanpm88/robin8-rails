@@ -179,6 +179,9 @@ export default function campaignReducer($$state = initialState, action=nil) {
         })
       }
       return $$state;
+    case actionTypes.CLEAR_ANALYSIS_CAMPAIGN:
+      $$state = $$state.set("analysis_result", Immutable.Map());
+      return $$state;
     default:
       return $$state;
   }

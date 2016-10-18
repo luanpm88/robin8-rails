@@ -33,7 +33,7 @@
   .feature-link {
     width: 100%;
     .link-text {
-      padding: 10px;
+      padding: 15px;
       text-align: center;
       background-color: #fafafa;
     }
@@ -41,7 +41,7 @@
   .feature-info {
     width: 100%;
     .info-text {
-      padding: 10px;
+      padding: 15px;
       font-size: 14px;
       border: 2px solid #fafafa;
       background-color: #fafafa;
@@ -54,7 +54,11 @@
       background-color: #fafafa;
     }
   }
-  .chart-wrapper {
+  .chart-loading {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
   }
 }
 

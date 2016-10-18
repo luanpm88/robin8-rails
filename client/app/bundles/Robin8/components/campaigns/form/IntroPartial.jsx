@@ -59,7 +59,7 @@ const initBootstrapMaxLength = function() {
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_upload'])
+    _.bindAll(this, ['_upload', 'openAnalysisUrl'])
   }
 
   _upload(size, scale) {
@@ -81,6 +81,17 @@ export default class IntroPartial extends React.Component {
   componentDidMount() {
     this.uploader = getUploader();
     initBootstrapMaxLength();
+  }
+
+  openAnalysisUrl() {
+    let targetUrl = encodeURIComponent($("#promotionUrl").val());
+    let url = `/brand/campaigns/analysis?url=${targetUrl}`;
+
+    if (!!targetUrl) {
+      window.open(url);
+    } else {
+      alert("请填写想要分析的链接");
+    }
   }
 
   render() {
@@ -130,7 +141,7 @@ export default class IntroPartial extends React.Component {
               <div className="form-group">
                 <label htmlFor="campaign-url" id='campaign-link'>活动链接</label>
                 <input {...url} id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
-                <a className="analysis-link" onClick={() => { window.open($("#promotionUrl").val()) }}>查看链接分析</a>
+                <a className="analysis-link" onClick={this.openAnalysisUrl}>查看链接分析</a>
                 <ShowError field={url} />
               </div>
             </div>

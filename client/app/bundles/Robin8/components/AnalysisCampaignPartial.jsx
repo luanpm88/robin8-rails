@@ -31,7 +31,7 @@ class AnalysisCampaignPartial extends React.Component {
 
   componentDidMount() {
     const { analysisCampaign } = this.props.actions;
-    const { url } = this.getAnalysisUrl();
+    const url = this.getAnalysisUrl();
     if (!!url) {
       analysisCampaign(url);
     } else {
@@ -40,6 +40,7 @@ class AnalysisCampaignPartial extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.actions.clearAnalysisCampaign();
   }
 
   getAnalysisUrl() {
@@ -201,7 +202,7 @@ class AnalysisCampaignPartial extends React.Component {
     })
 
     const option = {
-      color: ['#f54750', '#4e5460', '#4dc0bd', '#fcb364', '#95a1b1'],
+      color: ['#f54750'],
       tooltip : {
         trigger: 'axis',
         axisPointer : {
@@ -268,7 +269,6 @@ class AnalysisCampaignPartial extends React.Component {
     })
 
     const option = {
-      color: ['#f54750', '#4e5460', '#4dc0bd', '#fcb364', '#95a1b1'],
       tooltip : {
         trigger: 'axis',
         axisPointer : {
@@ -299,10 +299,11 @@ class AnalysisCampaignPartial extends React.Component {
         {
           name:'频数',
           type:'bar',
-          barWidth: '30%',
+          barWidth: '50%',
           data: values
         }
-      ]
+      ],
+      color: ['#4dc0bd']
     };
 
     return <div className="chart-wrapper person-chart">
