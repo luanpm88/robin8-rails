@@ -12,6 +12,12 @@ export default (
       }, "selectCampaign");
     }}/>
 
+    <Route path="campaigns/analysis" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/AnalysisCampaignPartial').default);
+      }, "analysisCampaign");
+    }}/>
+
     <Route path="campaigns/new" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/CreateCampaignPartial').default);

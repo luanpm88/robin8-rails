@@ -24,6 +24,16 @@ module Brand
             short_url = ShortUrl.convert origin_action_url
           end
 
+          desc "analysis link url"
+          params do
+            requires :url, type: String
+          end
+          post :analysis do
+            analysis_res =  Campaign.analyze_url(params[:url])
+            analysis_info = Campaign.get_analysis_info analysis_res
+            present analysis_info
+          end
+
           params do
             requires :campaign_id, type: String
           end

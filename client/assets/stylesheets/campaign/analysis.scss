@@ -1,0 +1,60 @@
+.analysis-section {
+  background-color: #fff;
+
+  &:after {
+    clear: both;
+    content: "";
+    display: block;
+  }
+
+  h5 {
+    font-size: 18px;
+    line-height: 24px;
+    position: relative;
+    padding-left: 10px;
+
+    &:before {
+      position: absolute;
+      left: 0;
+      top: 3px;
+      content: "";
+      width: 3px;
+      height: 18px;
+      background-color: #ead003;
+    }
+  }
+
+  .feature {
+    width: 50%;
+    position: relative;
+    padding: 25px;
+    float: left;
+  }
+  .feature-link {
+    width: 100%;
+    .link-text {
+      padding: 10px;
+      text-align: center;
+      background-color: #fafafa;
+    }
+  }
+  .feature-info {
+    width: 100%;
+    .info-text {
+      padding: 10px;
+      font-size: 14px;
+      border: 2px solid #fafafa;
+      background-color: #fafafa;
+    }
+  }
+  .feature-keyword {
+    width: 100%;
+    .keyword-chart {
+      border: 2px solid #fafafa;
+      background-color: #fafafa;
+    }
+  }
+  .chart-wrapper {
+  }
+}
+
