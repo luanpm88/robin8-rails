@@ -32,7 +32,7 @@ module API
             return error_403!({error: 1, detail: '校验失败'})
           end
 
-          unless can_feedback?(feedback.kol_id)
+          unless params[:content].start_with?("我是品牌主") or can_feedback?(feedback.kol_id)
             return error_403!({error: 1, detail: '提交反馈太频繁'})
           end
 
