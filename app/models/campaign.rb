@@ -402,6 +402,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def deal_wechat_auth_type
+    self.sub_type = 'webchat' if self.sub_type.blank?
     if self.sub_type == 'wechat' && self.per_budget_type != 'simple_cpi'
       self.wechat_auth_type = 'base'
     else

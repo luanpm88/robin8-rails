@@ -67,7 +67,7 @@ module Campaigns
           province_name: province.name,
           province_code: province.name_en
         }
-      end.sort_by { |c| c[:province_code] }.compact
+      end.sort_by { |c| c[:province_code] }.compact    rescue nil
     end
   end
 end
