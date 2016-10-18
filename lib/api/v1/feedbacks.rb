@@ -4,6 +4,7 @@ module API
       helpers do
         def can_feedback?(kol_id)
           return !Feedback.where(kol_id: kol_id).
+             where.not("content LIKE ?", "%我是品牌主%").
              where("created_at > ?", 1.hours.ago).
              exists?
         end
