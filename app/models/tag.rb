@@ -1,6 +1,7 @@
 class Tag < ActiveRecord::Base
 
   default_scope ->{where(:enabled => true)}
+  NameLabel = Tag.all.inject({}){|h, t| h[t.name] = t.label; h}
 
   # def self.add_test_tags
   #   index = 0
@@ -24,4 +25,5 @@ class Tag < ActiveRecord::Base
     return "全部" if(label == "全部")
     Tag.where(label: label).take.name rescue nil
   end
+
 end

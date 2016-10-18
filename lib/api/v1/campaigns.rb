@@ -10,6 +10,7 @@ module API
         #获取活动信息 根据
         params do
           requires :id, type: Integer
+          optional :invitee_page, type: Integer
         end
         get ':id' do
           campaign = Campaign.find(params[:id])            rescue nil
@@ -17,9 +18,25 @@ module API
             return error_403!({error: 1, detail: '该活动不存在' })
           else
             campaign_invite = campaign.get_campaign_invite(current_kol.try(:id))
-            invitees = CampaignInvite.where(:campaign_id => campaign.id).where("status != 'running'").order("id desc").includes(:kol).collect{|t| t.kol}
+            invitees = CampaignInvite.get_invitees(params[:id], params[:invitee_page])
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary
+          end
+        end
+
+        #获取活动参与人员信息
+        params do
+          requires :id, type: Integer
+          optional :invitee_page, type: Integer
+        end
+        get ':id/invitees' do
+          campaign = Campaign.find(params[:id])            rescue nil
+          if campaign.blank?
+            return error_403!({error: 1, detail: '该活动不存在' })
+          else
+            invitees = CampaignInvite.get_invitees(params[:id], params[:invitee_page])
+            present :error, 0
             present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary
           end
         end

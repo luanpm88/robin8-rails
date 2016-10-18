@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160928055840) do
+ActiveRecord::Schema.define(version: 20161017062638) do
+
+  create_table "aa_bbs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -274,6 +279,8 @@ ActiveRecord::Schema.define(version: 20160928055840) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "remark",              limit: 255
+    t.string   "picture",             limit: 255
+    t.string   "note",                limit: 255
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -379,58 +386,65 @@ ActiveRecord::Schema.define(version: 20160928055840) do
   add_index "campaign_targets", ["campaign_id"], name: "index_campaign_targets_on_campaign_id", using: :btree
 
   create_table "campaigns", force: :cascade do |t|
-    t.string   "name",                     limit: 255
-    t.text     "description",              limit: 16777215
+    t.string   "name",                         limit: 255
+    t.text     "description",                  limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                                    precision: 13, scale: 3
-    t.integer  "user_id",                  limit: 4
-    t.datetime "created_at",                                                                         null: false
-    t.datetime "updated_at",                                                                         null: false
-    t.integer  "release_id",               limit: 4
-    t.text     "concepts",                 limit: 16777215
-    t.text     "summaries",                limit: 16777215
-    t.text     "hashtags",                 limit: 16777215
-    t.string   "content_type",             limit: 255
-    t.boolean  "non_cash",                 limit: 1,                                 default: false
-    t.string   "short_description",        limit: 255
-    t.text     "url",                      limit: 65535
-    t.float    "per_action_budget",        limit: 53
+    t.decimal  "budget",                                        precision: 13, scale: 3
+    t.integer  "user_id",                      limit: 4
+    t.datetime "created_at",                                                                                 null: false
+    t.datetime "updated_at",                                                                                 null: false
+    t.integer  "release_id",                   limit: 4
+    t.text     "concepts",                     limit: 16777215
+    t.text     "summaries",                    limit: 16777215
+    t.text     "hashtags",                     limit: 16777215
+    t.string   "content_type",                 limit: 255
+    t.boolean  "non_cash",                     limit: 1,                                 default: false
+    t.string   "short_description",            limit: 255
+    t.text     "url",                          limit: 65535
+    t.float    "per_action_budget",            limit: 53
     t.datetime "start_time"
-    t.text     "message",                  limit: 65535
-    t.string   "status",                   limit: 255
-    t.integer  "max_action",               limit: 4
-    t.integer  "avail_click",              limit: 4,                                 default: 0
-    t.integer  "total_click",              limit: 4,                                 default: 0
-    t.string   "finish_remark",            limit: 255
-    t.string   "img_url",                  limit: 255
+    t.text     "message",                      limit: 65535
+    t.string   "status",                       limit: 255
+    t.integer  "max_action",                   limit: 4
+    t.integer  "avail_click",                  limit: 4,                                 default: 0
+    t.integer  "total_click",                  limit: 4,                                 default: 0
+    t.string   "finish_remark",                limit: 255
+    t.string   "img_url",                      limit: 255
     t.datetime "actual_deadline_time"
-    t.string   "per_budget_type",          limit: 255
-    t.text     "task_description",         limit: 65535
+    t.string   "per_budget_type",              limit: 255
+    t.text     "task_description",             limit: 65535
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
-    t.string   "address",                  limit: 255
-    t.boolean  "hide_brand_name",          limit: 1,                                 default: false
-    t.boolean  "end_apply_check",          limit: 1,                                 default: false
-    t.float    "actual_per_action_budget", limit: 24
+    t.string   "address",                      limit: 255
+    t.boolean  "hide_brand_name",              limit: 1,                                 default: false
+    t.boolean  "end_apply_check",              limit: 1,                                 default: false
+    t.float    "actual_per_action_budget",     limit: 24
     t.datetime "check_time"
     t.datetime "end_apply_time"
-    t.decimal  "need_pay_amount",                           precision: 13, scale: 3, default: 0.0
-    t.string   "pay_way",                  limit: 255
-    t.boolean  "used_voucher",             limit: 1,                                 default: false
-    t.decimal  "voucher_amount",                            precision: 12, scale: 2, default: 0.0
-    t.string   "trade_number",             limit: 255
-    t.integer  "alipay_status",            limit: 4,                                 default: 0
-    t.string   "invalid_reasons",          limit: 255
-    t.text     "alipay_notify_text",       limit: 65535
-    t.string   "campaign_from",            limit: 255,                               default: "pc"
-    t.boolean  "budget_editable",          limit: 1,                                 default: true
-    t.string   "action_desc",              limit: 255
-    t.string   "appid",                    limit: 255
+    t.decimal  "need_pay_amount",                               precision: 13, scale: 3, default: 0.0
+    t.string   "pay_way",                      limit: 255
+    t.boolean  "used_voucher",                 limit: 1,                                 default: false
+    t.decimal  "voucher_amount",                                precision: 12, scale: 2, default: 0.0
+    t.string   "trade_number",                 limit: 255
+    t.integer  "alipay_status",                limit: 4,                                 default: 0
+    t.string   "invalid_reasons",              limit: 255
+    t.text     "alipay_notify_text",           limit: 65535
+    t.string   "campaign_from",                limit: 255,                               default: "pc"
+    t.boolean  "budget_editable",              limit: 1,                                 default: true
+    t.string   "action_desc",                  limit: 255
+    t.string   "appid",                        limit: 255
     t.datetime "revoke_time"
-    t.string   "admin_desc",               limit: 255
-    t.string   "example_screenshot",       limit: 255
-    t.string   "remark",                   limit: 255
-    t.string   "sub_type",                 limit: 255
+    t.string   "admin_desc",                   limit: 255
+    t.string   "example_screenshot",           limit: 255
+    t.string   "remark",                       limit: 255
+    t.string   "sub_type",                     limit: 255
+    t.boolean  "is_applying_note_required",    limit: 1,                                 default: false
+    t.boolean  "is_applying_picture_required", limit: 1,                                 default: false
+    t.string   "applying_note_description",    limit: 255
+    t.string   "applying_picture_description", limit: 255
+    t.string   "expect_effect",                limit: 255
+    t.string   "forward_platform",             limit: 255,                               default: "moments"
+    t.string   "auth_type",                    limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -509,7 +523,7 @@ ActiveRecord::Schema.define(version: 20160928055840) do
     t.boolean  "enabled",      limit: 1,     default: true
     t.string   "status",       limit: 255,   default: "pending"
     t.string   "check_remark", limit: 255
-    t.datetime "end_date"
+    t.date     "end_date"
   end
 
   create_table "cps_materials", force: :cascade do |t|
@@ -1068,6 +1082,22 @@ ActiveRecord::Schema.define(version: 20160928055840) do
 
   add_index "kol_tags", ["kol_id"], name: "index_kol_tags_on_kol_id", using: :btree
   add_index "kol_tags", ["tag_id"], name: "index_kol_tags_on_tag_id", using: :btree
+
+  create_table "kol_wechats", force: :cascade do |t|
+    t.integer  "kol_id",     limit: 4
+    t.string   "openid",     limit: 255
+    t.string   "nickname",   limit: 255
+    t.integer  "sex",        limit: 4
+    t.string   "province",   limit: 255
+    t.string   "city",       limit: 255
+    t.string   "country",    limit: 255
+    t.string   "headimgurl", limit: 255
+    t.text     "privilege",  limit: 65535
+    t.string   "unionid",    limit: 255
+    t.string   "auth_type",  limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "kols", force: :cascade do |t|
     t.string   "email",                  limit: 191

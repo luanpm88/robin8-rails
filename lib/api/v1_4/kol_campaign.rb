@@ -17,6 +17,9 @@ module API
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
+          optional :sub_type, type: String
+          optional :img, type: Hash
+          optional :img_url, type: String
 
           optional :age, type: String, default: '全部'
           optional :gender, type:String, default: '全部'
@@ -25,9 +28,11 @@ module API
         end
         post "/" do
           brand_user = current_kol.find_or_create_brand_user
-          if params[:img]
+          img_url = params[:img_Url]
+          if img_url.blank? && params[:img].present?
             uploader = AvatarUploader.new
             uploader.store!(params[:img])
+            img_url = uploader.url
           end
 
           if params[:budget].to_i < 100
@@ -50,15 +55,15 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
-            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
+            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
             error_403!({error: 1, detail: "单次任务不能低于1元!"})  and return
           end
 
-          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => uploader.url, :need_pay_amount => params[:budget], :campaign_from => "app")
+          service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => img_url, :need_pay_amount => params[:budget], :campaign_from => "app")
           service.perform
           if service.errors.empty?
             campaign = brand_user.campaigns.last
@@ -83,6 +88,7 @@ module API
           optional :start_time, type: DateTime
           optional :deadline, type: DateTime
           optional :budget, type: Float
+          optional :sub_type, type: String
 
           optional :age, type: String, default: '全部'
           optional :gender, type:String, default: '全部'
@@ -115,8 +121,8 @@ module API
             error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
-            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
+            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1

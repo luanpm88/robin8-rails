@@ -56,12 +56,13 @@ export default class DetailPartial extends React.Component {
 
   _listenPerBudgetTypeChange() {
     $("input[name='action_type']").change(function(){
-      const { per_action_budget, per_budget_type } = this.props;
+      const { per_action_budget, per_budget_type, sub_type } = this.props;
       if(per_budget_type.value == 'post') {
         per_action_budget.onChange("2.0")
       }
       if(per_budget_type.value == 'click') {
         per_action_budget.onChange("0.2")
+        sub_type.onChange("wechat")
       }
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
@@ -102,8 +103,7 @@ export default class DetailPartial extends React.Component {
   }
 
   render() {
-    const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget} = this.props
-
+    const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type } = this.props
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
@@ -140,6 +140,40 @@ export default class DetailPartial extends React.Component {
                   </div>
                   */}
                 </div>
+              </div>
+            </div>
+
+            <div className="row forward-platform-select">
+              <p className="action-mode">推广平台选择</p>
+              <div className="sources-check">
+                {
+                  do {
+                    if(per_budget_type.value != "click"){
+                      <div className="row">
+                        <div className="col-md-4">
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          分享到朋友圈
+                        </div>
+                        <div className="col-md-4">
+                          <input {...sub_type} type="radio" name="sub_type" value="weibo"  className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
+                          分享到微博
+                        </div>
+
+                        <div className="col-md-4">
+                          <input {...sub_type} type="radio" name="sub_type" value="qq" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "qq"} />
+                          分享到QQ空间
+                        </div>
+                      </div>
+                    } else{
+                      <div className="row">
+                        <div className="col-md-4">
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          分享到朋友圈
+                        </div>
+                      </div>
+                    }
+                  }
+                }
               </div>
             </div>
 

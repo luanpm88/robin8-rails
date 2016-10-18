@@ -64,6 +64,7 @@ Rails.application.routes.draw do
         patch :save_example_screenshot_and_remark
         match 'add_seller', via: [:post, :get]
         get :push_record
+        match :set_auth_type, via: [:put, :get]
       end
       collection do
         put :reject
