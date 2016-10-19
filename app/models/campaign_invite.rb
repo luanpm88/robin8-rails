@@ -324,9 +324,11 @@ class CampaignInvite < ActiveRecord::Base
   def self.get_invitees(campaign_id, page = nil)
     campaign_invites = CampaignInvite.where(:campaign_id => campaign_id).where("status != 'running'").order("id desc").includes(:kol)
     if page.present?
-      campaign_invites = campaign_invites.page(page).per_page(10)
+      campaign_invites = campaign_invites.page(page).per_page(12)
+      total_count = campaign_invites.total_entries    rescue nil
     end
-    campaign_invites.collect{|t| t.kol}
+    total_count ||= campaign_invites.count
+    [total_count, campaign_invites.collect{|t| t.kol}]
   end
 
 end
