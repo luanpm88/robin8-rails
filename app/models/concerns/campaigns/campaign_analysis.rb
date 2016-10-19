@@ -29,7 +29,7 @@ module Campaigns
       def analyze_url(url)
         params = {url: url}
         res = RestClient.post NlpServer, params.to_json,  :content_type => :json, :accept => :json, :timeout => 5      rescue nil
-        res = JSON.parse(res)["data"]  rescue nil
+        res = JSON.parse(res)["data"]  rescue {}
         res
       end
 
@@ -87,9 +87,9 @@ module Campaigns
         total_feq =  analysis_res["entities"]["features"].values.collect{|feature| feature['freq']}.sum    rescue 0
         analysis_res["entities"]["features"].values.each do |feature|
           keywords << {label: feature['expressions'].keys.first, probability: feature['freq'] / total_feq.to_f}
-        end  rescue nil
+        end  rescue []
         info[:keywords] =  keywords
-        info[:sentiment] =  analysis_res['sentiment'].first.collect{|t| {:label => t['label'], :probability => t['probability'].round(2)}}
+        info[:sentiment] =  analysis_res['sentiment'].first.collect{|t| {:label => t['label'], :probability => t['probability'].round(2)}}  rescue []
         persons_brands = []
         persons_brands_data = (analysis_res["entities"]['persons'].values rescue []) + (analysis_res["entities"]['brands'].values rescue [])
         persons_brands_data.each do |feature|
@@ -99,10 +99,10 @@ module Campaigns
         products = []
         analysis_res["entities"]['producttypes'].values.each do |feature|
           products << {label: feature['expressions'].keys.first, freq: feature['freq']}
-        end  rescue nil
+        end  rescue []
         info[:products] = products
         info[:cities] =  analysis_res["entities"]["locations"].values.collect{|t| t["expressions"].keys.first}   rescue []
-        info[:categories] = analysis_res["industries"].collect{|industry| {"label" => Tag::NameLabel[industry["label"]], "probability" => (industry["probability"].to_f / 100).round(4) } }
+        info[:categories] = analysis_res["industries"].collect{|industry| {"label" => Tag::NameLabel[industry["label"]], "probability" => (industry["probability"].to_f / 100).round(4) } }  rescue []
         info
       end
 

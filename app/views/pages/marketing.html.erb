@@ -52,10 +52,10 @@
         <% user = current_kol.user %>
         <div class="logged-wrap">
           <div class="profile">
-            <% avatar_url = user.avatar_url || asset_url('brand-profile-pic.jpg') %>
+            <% avatar_url = user.try(:avatar_url) || asset_url('brand-profile-pic.jpg') %>
             <div class="avatar" style="background-image: url('<%= avatar_url %>')">
             </div>
-            <div class="name"><%= user.name %></div>
+            <div class="name"><%= user.try(:name) %></div>
           </div>
           <%= link_to "马上进入", brand_path, class: "btn btn-primary", target: "_top" %>
         </div>
