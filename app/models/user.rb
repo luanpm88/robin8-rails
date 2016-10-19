@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {income_or_payout_transaction}, class_name: 'Transaction', as: :account
   has_many :recharge_transactions, -> {recharge_transaction}, class_name: 'Transaction', as: :account
+  has_many :campaign_payout_transactions, -> {payout_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
+  has_many :campaign_income_transactions, -> {income_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   belongs_to :kol, inverse_of: :user
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
@@ -184,6 +186,11 @@ class User < ActiveRecord::Base
 
   def email_changed?
     false
+  end
+
+  # must be the same as historical_payout attribute
+  def total_historical_payout
+    self.campaign_payout_transactions.sum(:credits) - self.campaign_income_transactions.sum(:credits)
   end
 
   def total_recharge

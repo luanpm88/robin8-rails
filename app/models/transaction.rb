@@ -19,6 +19,8 @@ class Transaction < ActiveRecord::Base
   scope :except_frozen, ->{where("direct != 'frozen' and direct != 'unfrozen'")}
   scope :income_transaction,   ->{where(direct: 'income')}
   scope :payout_transaction,   ->{where(direct: 'payout')}
+  scope :payout_transaction_of_user_campaign,   ->{where(direct: 'payout', subject: USER_CAMPAIGN_PAYOUT_SUBJECTS)}
+  scope :income_transaction_of_user_campaign,   ->{where(direct: 'income', subject: USER_CAMPAIGN_INCOME_SUBJECTS)}
   scope :income_or_payout_transaction, ->{where(direct: ["payout", "income"])}
   scope :withdraw_transaction,   ->{where(direct: 'payout', subject: WITHDRAW_SUBJECTS)}
   scope :recharge_transaction,   ->{where(subject: RECHARGE_SUBJECTS)}
