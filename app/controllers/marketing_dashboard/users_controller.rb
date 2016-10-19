@@ -20,7 +20,21 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       end
 
       format.csv do
-        @users = @users.is_live.joins(:campaigns).distinct
+        @users = @users.is_live
+
+        if params[:filter] == "no_campaign"
+          @users = @users.joins("LEFT OUTER JOIN campaigns ON campaigns.user_id = users.id").where("campaigns.user_id IS NULL")
+          # @users = @users.includes(:campaigns).where(campaigns: { id: nil })
+        elsif params[:filter] == "campagin_created"
+          @users = @users.joins("LEFT OUTER JOIN campaigns ON campaigns.user_id = users.id").where.not("campaigns.status IN (?)", [:executed, :settled]).distinct
+          # @users = @users.includes(:campaigns).where.not(campaigns: { status: [:executed, :settled] })
+        elsif params[:filter] == "campagin_settled"
+          @users = @users.joins("LEFT OUTER JOIN campaigns ON campaigns.user_id = users.id").where("campaigns.status IN (?)", [:executed, :settled]).distinct
+          # @users = @users.includes(:campaigns).where(campaigns: { status: [:executed, :settled] })
+        elsif params[:filter] == "has_campagin"
+          @users = @users.joins("LEFT OUTER JOIN campaigns ON campaigns.user_id = users.id").where("campaigns.user_id IS NOT NULL").distinct
+        end
+
         headers['Content-Disposition'] = "attachment; filename=\"发单品牌主记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
         headers['Content-Type'] ||= 'text/csv; charset=utf-8'
         render 'index'

@@ -93,7 +93,33 @@
   </tbody>
 </table>
 
-<%= link_to '导出发单品牌主CSV', request.path + ".csv", :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
+<%
+  download_tips = "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？"
+%>
+
+<div class="btn-group dropup">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    导出品牌主CSV <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <%= link_to '未发过单品牌主', request.path + ".csv?filter=no_campaign", "data-confirm" => download_tips %>
+    </li>
+    <li>
+      <%= link_to '未成功发单品牌主', request.path + ".csv?filter=campagin_created", "data-confirm" => download_tips %>
+    </li>
+    <li>
+      <%= link_to '成功发过单品牌主', request.path + ".csv?filter=campagin_settled", "data-confirm" => download_tips %>
+    </li>
+    <li>
+      <%= link_to '发过单品牌主', request.path + ".csv?filter=has_campagin", "data-confirm" => download_tips %>
+    </li>
+    <li>
+      <%= link_to '全部品牌主', request.path + ".csv", "data-confirm" => download_tips %>
+    </li>
+  </ul>
+</div>
+
 
 <div class="pull-right">
   <%= will_paginate @users, renderer: BootstrapPagination::Rails  %>
