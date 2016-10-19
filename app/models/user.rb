@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :contacts, through: :media_lists
 
   has_many :campaigns, -> {where.not(status: 'revoked')}
+  has_one  :last_campaign, -> {where.not(status: 'revoked').order("created_at DESC") }, class_name: "Campaign"
   has_many :campaign_invites, through: :campaigns
 
   has_many :article_comments, as: :sender
@@ -60,6 +61,9 @@ class User < ActiveRecord::Base
   scope :is_live, -> { where(is_live: true) }
   # scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge' OR `transactions`.`subject` = 'campaign_pay_by_alipay') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
   # scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
+
+  scope :last_campaigns, -> { joins("LEFT JOIN (SELECT `campaigns`.`user_id` AS user_id, MAX(`campaigns`.`created_at`) AS last_campaign_at FROM `campaigns` WHERE `campaigns`.`status` <> 'revoked' GROUP BY `campaigns`.`user_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`").distinct("user_id") }
+  scope :sort_by_last_campaign_at, ->(dir) { last_campaigns.order("last_campaign_at #{dir}") }
 
   # class EmailValidator < ActiveModel::Validator
   #   def validate(record)
@@ -195,9 +199,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  # def self.ransortable_attributes(auth_object = nil)
-  #   ransackable_attributes(auth_object) + %w( sort_by_total_recharge )
-  # end
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_last_campaign_at )
+  end
 
   def init_appid
     self.update_column(:appid, SecureRandom.hex) if self.appid.blank?

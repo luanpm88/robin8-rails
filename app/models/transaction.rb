@@ -8,6 +8,7 @@ class Transaction < ActiveRecord::Base
   RECHARGE_SUBJECTS = ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay']
   WITHDRAW_SUBJECTS = ['manual_withdraw', 'withdraw']
 
+  USER_CAMPAIGN_SUBJECTS = ['campaign', 'campaign_pay_by_alipay']
   KOL_INCOME_SUBJECTS = ['campaign', 'check_in', 'invite_friend', 'complete_info', 'favorable_comment',
                          'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission']
 

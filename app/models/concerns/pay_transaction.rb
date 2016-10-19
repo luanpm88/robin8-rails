@@ -50,7 +50,7 @@ module Concerns
          # only count net income if need
         self.increment!(:historical_income, (self.get_income_of(item) || credits)) if self.is_a? Kol and Transaction::KOL_INCOME_SUBJECTS.include?(subject)
         self.increment!(:historical_recharge, credits) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
-        self.decrement!(:historical_payout, credits)   if self.is_a? User and subject == "campaign"
+        self.decrement!(:historical_payout, credits)   if self.is_a? User and subject == "campaign_refund"
         transaction = build_transaction(credits, subject, 'income', item , opposite, created_at)
         transaction.save!
         transaction
@@ -67,7 +67,7 @@ module Concerns
           end
         end
         self.decrement!(:amount, credits)
-        self.increment!(:historical_payout, credits)   if self.is_a? User and subject == "campaign"
+        self.increment!(:historical_payout, credits) if self.is_a? User and Transaction::USER_CAMPAIGN_SUBJECTS.include?(subject)
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
         transaction.save!
       end
@@ -76,6 +76,8 @@ module Concerns
     def payout_by_alipay(credits, subject, item, opposite=nil)
       ActiveRecord::Base.transaction do
         self.lock!
+        self.increment!(:historical_recharge, credits) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
+        self.increment!(:historical_payout, credits) if self.is_a? User and Transaction::USER_CAMPAIGN_SUBJECTS.include?(subject)
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
         transaction.save!
       end
