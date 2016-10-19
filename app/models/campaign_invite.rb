@@ -328,7 +328,7 @@ class CampaignInvite < ActiveRecord::Base
       total_count = campaign_invites.total_entries    rescue nil
     end
     total_count ||= campaign_invites.count
-    [total_count, campaign_invites.collect{|t| t.kol}]
+    [total_count, campaign_invites]
   end
 
 end

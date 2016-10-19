@@ -60,11 +60,11 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            invitees_count, invitees = CampaignInvite.get_invitees(campaign.id, params[:invitee_page])
+            invitees_count, campaign_invites = CampaignInvite.get_invitees(campaign.id, params[:invitee_page])
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
             present :invitees_count, invitees_count
-            present :invitees, invitees, with: API::V1::Entities::KolEntities::InviteeSummary
+            present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
           end
         end
 
