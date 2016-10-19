@@ -28,7 +28,7 @@ module API
         end
         post "/" do
           brand_user = current_kol.find_or_create_brand_user
-          img_url = params[:img_Url]
+          img_url = params[:img_url]
           if img_url.blank? && params[:img].present?
             uploader = AvatarUploader.new
             uploader.store!(params[:img])

@@ -148,7 +148,7 @@ export default class DetailPartial extends React.Component {
               <div className="sources-check">
                 {
                   do {
-                    if(per_budget_type.value != "click"){
+                    if(false && per_budget_type.value != "click"){
                       <div className="row">
                         <div className="col-md-4">
                           <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
