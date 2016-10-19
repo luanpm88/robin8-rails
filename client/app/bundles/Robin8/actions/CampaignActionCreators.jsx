@@ -241,10 +241,32 @@ export function fetchStatisticsClicksOfCampaign(campaign_id){
   };
 }
 
-
 export function fetchInstallsOfCampaign(campaign_id){
   return {
     type: actionTypes.FETCH_INSTALLS_OF_CAMPAIGN,
     promise: fetch(`${baseUrl}/campaigns/installs?campaign_id=${campaign_id}`, {"credentials": "include"})
+  };
+}
+
+export function analysisCampaign(url){
+  var formData = new FormData()
+  formData.append("url", url)
+
+  return {
+    type: actionTypes.ANALYSIS_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaigns/analysis`, {
+      headers: {
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+      },
+      credentials: "same-origin",
+      method: 'POST',
+      body: formData
+    })
+  }
+}
+
+export function clearAnalysisCampaign() {
+  return {
+    type: actionTypes.CLEAR_ANALYSIS_CAMPAIGN
   };
 }
