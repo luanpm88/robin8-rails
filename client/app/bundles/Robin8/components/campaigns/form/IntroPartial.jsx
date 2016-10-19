@@ -141,7 +141,7 @@ export default class IntroPartial extends React.Component {
               <div className="form-group">
                 <label htmlFor="campaign-url" id='campaign-link'>活动链接</label>
                 <input {...url} id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
-                <a className="analysis-link" onClick={this.openAnalysisUrl}>查看链接分析</a>
+                <a className="analysis-link" onClick={this.openAnalysisUrl}>查看NLP结果</a>
                 <ShowError field={url} />
               </div>
             </div>
