@@ -56,7 +56,7 @@ module API
           end
 
           if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
-            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
+            error_403!({error: 1, detail: "单次下载不能低于3元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
@@ -122,7 +122,7 @@ module API
           end
 
           if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
-            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
+            error_403!({error: 1, detail: "单次下载不能低于3元!"})  and return
           end
 
           if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 1
