@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :contacts, through: :media_lists
 
   has_many :campaigns, -> {where.not(status: 'revoked')}
+  has_one  :last_campaign, -> {where.not(status: 'revoked').order("created_at DESC") }, class_name: "Campaign"
   has_many :campaign_invites, through: :campaigns
 
   has_many :article_comments, as: :sender
@@ -35,6 +36,8 @@ class User < ActiveRecord::Base
   has_many :kols, through: :private_kols
   has_many :paid_transactions, -> {income_or_payout_transaction}, class_name: 'Transaction', as: :account
   has_many :recharge_transactions, -> {recharge_transaction}, class_name: 'Transaction', as: :account
+  has_many :campaign_payout_transactions, -> {payout_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
+  has_many :campaign_income_transactions, -> {income_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   belongs_to :kol, inverse_of: :user
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
@@ -60,6 +63,9 @@ class User < ActiveRecord::Base
   scope :is_live, -> { where(is_live: true) }
   # scope :total_recharge_of_transactions, -> { joins("LEFT JOIN (SELECT `transactions`.`account_id` AS user_id, SUM(`transactions`.`credits`) AS total_recharge FROM `transactions` WHERE `transactions`.`account_type` = 'User' AND (`transactions`.`subject` = 'manual_recharge' OR `transactions`.`subject` = 'alipay_recharge' OR `transactions`.`subject` = 'campaign_pay_by_alipay') GROUP BY `transactions`.`account_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`") }
   # scope :sort_by_total_recharge, ->(dir) { total_recharge_of_transactions.order("total_recharge #{dir}") }
+
+  scope :last_campaigns, -> { joins("LEFT JOIN (SELECT `campaigns`.`user_id` AS user_id, MAX(`campaigns`.`created_at`) AS last_campaign_at FROM `campaigns` WHERE `campaigns`.`status` <> 'revoked' GROUP BY `campaigns`.`user_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`").distinct("user_id") }
+  scope :sort_by_last_campaign_at, ->(dir) { last_campaigns.order("last_campaign_at #{dir}") }
 
   # class EmailValidator < ActiveModel::Validator
   #   def validate(record)
@@ -182,6 +188,11 @@ class User < ActiveRecord::Base
     false
   end
 
+  # must be the same as historical_payout attribute
+  def total_historical_payout
+    self.campaign_payout_transactions.sum(:credits) - self.campaign_income_transactions.sum(:credits)
+  end
+
   def total_recharge
     self.recharge_transactions.sum(:credits)
   end
@@ -195,9 +206,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  # def self.ransortable_attributes(auth_object = nil)
-  #   ransackable_attributes(auth_object) + %w( sort_by_total_recharge )
-  # end
+  def self.ransortable_attributes(auth_object = nil)
+    ransackable_attributes(auth_object) + %w( sort_by_last_campaign_at )
+  end
 
   def init_appid
     self.update_column(:appid, SecureRandom.hex) if self.appid.blank?

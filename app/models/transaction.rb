@@ -8,6 +8,8 @@ class Transaction < ActiveRecord::Base
   RECHARGE_SUBJECTS = ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay']
   WITHDRAW_SUBJECTS = ['manual_withdraw', 'withdraw']
 
+  USER_CAMPAIGN_PAYOUT_SUBJECTS = ['campaign', 'campaign_pay_by_alipay']
+  USER_CAMPAIGN_INCOME_SUBJECTS = ['campaign_revoke', 'campaign_refund']
   KOL_INCOME_SUBJECTS = ['campaign', 'check_in', 'invite_friend', 'complete_info', 'favorable_comment',
                          'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission']
 
@@ -17,6 +19,8 @@ class Transaction < ActiveRecord::Base
   scope :except_frozen, ->{where("direct != 'frozen' and direct != 'unfrozen'")}
   scope :income_transaction,   ->{where(direct: 'income')}
   scope :payout_transaction,   ->{where(direct: 'payout')}
+  scope :payout_transaction_of_user_campaign,   ->{where(direct: 'payout', subject: USER_CAMPAIGN_PAYOUT_SUBJECTS)}
+  scope :income_transaction_of_user_campaign,   ->{where(direct: 'income', subject: USER_CAMPAIGN_INCOME_SUBJECTS)}
   scope :income_or_payout_transaction, ->{where(direct: ["payout", "income"])}
   scope :withdraw_transaction,   ->{where(direct: 'payout', subject: WITHDRAW_SUBJECTS)}
   scope :recharge_transaction,   ->{where(subject: RECHARGE_SUBJECTS)}
