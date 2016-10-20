@@ -79,7 +79,7 @@ module Campaigns
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
           unless target.target_content == '全部' || target.target_content == '全部 全部'
-            cities = target.target_content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en }
+            cities = target.target_content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en rescue nil }
             kols = kols.where(:app_city => cities)
           end
         elsif target.target_type == 'tags'
