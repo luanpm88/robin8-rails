@@ -155,12 +155,12 @@ export default class TargetPartial extends React.Component {
                   <label>年龄</label>
                   <select className="form-control select-age" {...age} value={age.value || ''} onChange={this.handleConditionChange}>
                     <option value="全部">全部</option>
-                    <option value="0, 20">0-20</option>
-                    <option value="20, 30">20-30</option>
-                    <option value="30, 40">30-40</option>
-                    <option value="40, 50">40-50</option>
-                    <option value="50, 60">50-60</option>
-                    <option value="60, 100">60以上</option>
+                    <option value="0,20">0-20</option>
+                    <option value="20,30">20-30</option>
+                    <option value="30,40">30-40</option>
+                    <option value="40,50">40-50</option>
+                    <option value="50,60">50-60</option>
+                    <option value="60,100">60以上</option>
                   </select>
                 </div>
               </div>
