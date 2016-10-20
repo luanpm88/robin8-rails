@@ -112,7 +112,7 @@ module Campaigns
         Message.new_campaign(self, kol_ids)
       end
       if self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?
-        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'append_kols')
+        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
     end
 
@@ -120,8 +120,9 @@ module Campaigns
       return unless self.status == 'executing'
 
       filter_types = ["tags", "age", "region", "gender"]
-      filter_types = filter_types & self.campaign_targets.map(&:target_type)
+      filter_types = filter_types & self.campaign_targets.where.not(target_content: "全部").map(&:target_type)
       filter_types = filter_types - self.campaign_push_records.map(&:converted_target_type)
+      return if filter_types.blank?
 
       removed_type = filter_types.shift
       kol_ids = self.get_remaining_kol_ids(filter_types)
@@ -134,13 +135,13 @@ module Campaigns
       CampaignPushRecord.create(
         campaign_id: self.id,
         kol_ids: kol_ids.join(","),
-        push_type: 'append',
-        filter_type: 'match',
-        filter_reason: '#{removed_type}_target_removed'
+        push_type: "append",
+        filter_type: "match",
+        filter_reason: "#{removed_type}_target_removed"
       )
 
       unless filter_types.blank?
-        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
+        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, "timed_append_kols")
       end
     end
 
