@@ -20,7 +20,7 @@
         user.avail_amount,
         user.historical_payout,
         user.historical_recharge,
-        user.campaigns.maximum("created_at").strftime("%Y-%m-%d %H:%M"),
+        (user.campaigns.maximum("created_at").strftime("%Y-%m-%d %H:%M") rescue nil),
         user.seller.try(:name)
       ]
     end
