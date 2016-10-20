@@ -163,21 +163,22 @@ class CampaignInvite < ActiveRecord::Base
   #   ShortUrl.convert origin_share_url(uuid)
   # end
 
-  # 第一次访问的地址
+  # 访问的地址, 需要监控的活动,直接跳转到本地,拿取一次referer.否则直接跳转.cpi 活动直接跳转
   def visit_url
     if self.campaign.is_simple_cpi_type?
       self.campaign.url
+      # 无需监控的活动,直接访问.  不需要拿到原始referer
+    elsif self.campaign.wechat_auth_type == 'no'
+      "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
     else
       "#{Rails.application.secrets.domain}/campaign_visit?id=#{self.id}"
     end
   end
 
-  # 第二次 微信回调的地址
+  # 需要监控的活动 需要微信回调的地址
   def origin_share_url
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
-    if self.campaign.wechat_auth_type == 'no'
-      url
-    elsif self.campaign.wechat_auth_type == 'base'
+    if self.campaign.wechat_auth_type == 'base'
       #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
     elsif self.campaign.wechat_auth_type == 'self_info' ||  self.campaign.wechat_auth_type == 'friends_info'
