@@ -116,13 +116,31 @@ module Campaigns
       end
     end
 
-    def append_kols
-      return if self.status == 'executed'
-      kol_ids = self.get_append_kol_ids(true)
+    def timed_append_kols
+      return unless self.status == 'executing'
+
+      filter_types = ["tags", "age", "region", "gender"]
+      filter_types = filter_types & self.campaign_targets.map(&:target_type)
+      filter_types = filter_types - self.campaign_push_records.map(&:converted_target_type)
+
+      removed_type = filter_types.shift
+      kol_ids = self.get_remaining_kol_ids(filter_types)
+
       if kol_ids.present?
-        Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id self.id, true
-        end
+        Kol.where(id: kol_ids).each { |k| k.add_campaign_id(self.id, true) }
+        Message.new_campaign(self, kol_ids)
+      end
+
+      CampaignPushRecord.create(
+        campaign_id: self.id,
+        kol_ids: kol_ids.join(","),
+        push_type: 'append',
+        filter_type: 'match',
+        filter_reason: '#{removed_type}_target_removed'
+      )
+
+      unless filter_types.blank?
+        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
     end
 

@@ -34,8 +34,8 @@ class CampaignWorker
       campaign.finish('fee_end') if campaign.status != 'executed'
     elsif job_type == 'remind_upload'
       campaign.remind_upload
-    elsif job_type == "append_kols"
-      campaign.append_kols
+    elsif job_type == "timed_append_kols"
+      campaign.periodical_append_kols
     elsif job_type == "push_all_kols"
       campaign.push_all_kols
     end

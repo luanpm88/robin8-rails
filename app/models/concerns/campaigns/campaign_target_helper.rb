@@ -20,11 +20,23 @@ module Campaigns
       has_one :android_platform_target, -> {where(:target_type => 'android_platform')}, class_name: "CampaignTarget"
     end
 
+    def get_unmatched_kols(kols)
+      kols = kols.where.not(id: get_unmatched_kol_ids)
+    end
+
     # 获取 不匹配的kol_ids
     def get_unmatched_kol_ids
-      # (接过指定campaign 的kols + 指定去掉的kol + 黑名单中的kol +  三小时内接过).uniq - 指定添加的kol
-      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols +
-         three_hours_had_receive_kol_ids).uniq - add_kols_by_targets
+      # (接过指定campaign 的kols +
+      #  指定去掉的kol +
+      #  黑名单中的kol +
+      #  三小时内接过).uniq -
+      #  指定添加的kol
+
+      (get_remove_kol_ids_of_campaign_by_target +
+       get_remove_kol_ids_by_target +
+       get_black_list_kols +
+       three_hours_had_receive_kol_ids).uniq -
+       add_kols_by_targets
     end
 
     def get_remove_kol_ids_by_target
@@ -61,65 +73,54 @@ module Campaigns
     end
 
     def get_platform_kols
-      if ios_platform_target.present?
-        kols = Kol.active.ios
-      elsif android_platform_target.present?
-        kols = Kol.active.android
-      else
-        kols = Kol.active
+      kols = Kol.active
+
+      if self.ios_platform_target.present?
+        kols = kols.ios
+      elsif self.android_platform_target.present?
+        kols = kols.android
       end
+
       kols
+    end
+
+    def get_matching_kols(kols = nil, target_types = nil)
+      kols ||= Kol.active
+
+      targets = self.campaign_targets
+      targets = targets.where(target_type: target_types) unless target_types.nil?
+      targets.each do |target|
+        next if target.target_type == 'sns_platforms' and self.is_recruit_type?
+
+        kols = target.filter(kols)
+      end
+
+      kols.distinct
     end
 
     # 获取匹配kols
     # Notice : 把不匹配的移开,不在该方法计算
-    def get_matching_kol_ids(kols = nil)
-      kols ||= Kol.active
+    def get_matching_kol_ids(kols = nil, target_types = nil)
+      kols = get_matching_kols(kols, target_types)
 
-      self.campaign_targets.each do |target|
-        if target.target_type == 'region'
-          unless target.target_content == '全部' || target.target_content == '全部 全部'
-            cities = target.target_content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en }
-            kols = kols.where(:app_city => cities)
-          end
-        elsif target.target_type == 'tags'
-          unless target.target_content == '全部'
-            kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
-            kols = kols.where("`kol_tags`.`tag_id` IN (?)", target.get_tags)
-          end
-        elsif target.target_type == 'sns_platforms' and !self.is_recruit_type?
-          unless target.target_content == '全部'
-            kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
-            kols = kols.where("`social_accounts`.`provider` IN (?)", target.get_sns_platforms)
-          end
-        elsif target.target_type == 'age'
-          unless target.target_content == '全部'
-            min_age = target.target_content.split(/[,\/]/).map(&:to_i).first
-            max_age = target.target_content.split(/[,\/]/).map(&:to_i).last
-            kols = kols.where(age: Range.new(min_age, max_age))
-          end
-        elsif target.target_type == 'gender'
-          unless target.target_content == '全部'
-            kols = kols.where(gender: target.target_content.to_i)
-          end
-        end
-      end
-
-      kols.select("id").distinct.collect{|t| t.id}
+      kols.select("id").map(&:id)
     end
 
-    def get_append_kol_ids(record = false)
-      if self.is_invite_type?  || self.specified_kol_targets.present?  ||  self.newbie_kol_target.present?
-        return nil
-      else
-        normal_push_kol_ids = CampaignPushRecord.where(campaign_id: self.id, push_type: 'normal' ).first.kol_ids.split(",")  rescue []
-        approved_kol_ids = CampaignInvite.where(campaign_id: self.id).collect{|t| t.kol_id}
-        get_platform_kol_ids = get_platform_kols.map(&:id)
-        kol_ids = get_platform_kol_ids - normal_push_kol_ids - approved_kol_ids - self.get_unmatched_kol_ids rescue []
-        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'append', filter_type: 'match', filter_reason: 'match')          if record
-        CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'append', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
-        kol_ids
-      end
+    def get_remaining_kol_ids(target_types)
+      return [] if self.is_invite_type? ||
+         self.specified_kol_targets.present? ||
+         self.newbie_kol_target.present?
+
+      kols = get_platform_kols
+      kols = get_matching_kols(kols, target_types)
+      kols = get_unmatched_kols(kols)
+      kol_ids = kols.select("id").map(&:id) rescue []
+
+      records = CampaignPushRecord.where(campaign_id: self.id, filter_type: 'match')
+      pushed_kol_ids   = records.inject([]) {|s, r| s += r.kol_ids.split(",") rescue [] }.uniq
+      approved_kol_ids = CampaignInvite.where(campaign_id: self.id).map(&:kol_id)
+
+      kol_ids = kol_ids - pushed_kol_ids - approved_kol_ids
     end
 
     #TODO imporve this
@@ -136,10 +137,14 @@ module Campaigns
         kol_ids = get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
       elsif self.newbie_kol_target.present?          #新手活动
-        CampaignPushRecord.create(campaign_id: self.id, kol_ids: "", push_type: push_type, filter_type: 'match', filter_reason: 'newbie_kol')                    if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: "", push_type: "newbie_kol", filter_type: 'match', filter_reason: 'newbie_kol')                    if record
         kol_ids = []
       else
-        kol_ids = get_matching_kol_ids(get_platform_kols) - get_unmatched_kol_ids rescue []
+        kols = get_platform_kols
+        kols = get_matching_kols(kols)
+        kols = get_unmatched_kols(kols)
+        kol_ids = kols.select("id").map(&:id) rescue []
+
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
