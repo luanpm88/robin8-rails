@@ -192,11 +192,17 @@
   .notice {
     position: absolute;
     top: -32px;
-    right: 10px;
     height: 32px;
     color: #999;
     font-size: 14px;
     line-height: 32px;
+    width: 100%;
+    text-align: center;
+    &.right {
+      width: auto;
+      text-align: right;
+      right: 10px;
+    }
     em {
       margin-left: 10px;
       color: #333;

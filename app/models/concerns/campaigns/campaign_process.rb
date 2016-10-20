@@ -7,7 +7,7 @@ module Campaigns
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
       KolBudgetRate = 0.7
-      AppendWaitTime =  Rails.env.production?  ? 5.hours  : 5.minutes
+      AppendWaitTime =  Rails.env.production?  ? 6.hours  : 5.minutes
     end
 
     def pay
@@ -141,7 +141,8 @@ module Campaigns
       )
 
       unless filter_types.blank?
-        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, "timed_append_kols")
+        timed_at = CampaignPushRecord.restrict_to_time_range(AppendWaitTime)
+        CampaignWorker.perform_at(timed_at, self.id, "timed_append_kols")
       end
     end
 
