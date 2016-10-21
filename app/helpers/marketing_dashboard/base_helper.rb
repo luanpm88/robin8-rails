@@ -17,6 +17,17 @@ module MarketingDashboard::BaseHelper
     Rails.cache.fetch("super_visitor_token")
   end
 
+  def link_to_switch_user_active(user, opts={})
+    if user.is_active
+      btn_txt = "设置为未激活"
+      btn_clz = "btn-danger"
+    else
+      btn_txt = "设置为激活"
+      btn_clz = "btn-success"
+    end
+    link_to btn_txt, active_marketing_dashboard_user_path(user), class: "btn #{btn_clz}", method: :put
+  end
+
   def link_to_switch_user_live(user, opts={})
     if user.is_live
       btn_txt = "指定为实验数据"
