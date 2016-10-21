@@ -136,8 +136,6 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
       where("start_time >= '#{1.month.ago}'").where(:status => ['agreed', 'executing', 'executed', 'settled']).
       group("DATE(start_time)").
       order("DATE(start_time) desc")
-    puts "----323-------"
-    puts @campaign_releases
   end
 
   private

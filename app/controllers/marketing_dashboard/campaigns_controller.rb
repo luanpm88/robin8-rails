@@ -139,6 +139,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def agree
     authorize! :manage, Campaign
     @campaign = Campaign.find params[:campaign_id]
+    if @campaign.status != 'unexecute'
+      flash[:error] =  '请刷新后重试'
+      redirect_to :action => :index
+    end
     @campaign.update(:status => :agreed)
     if @campaign.user.mobile_number.present?
       SmsMessage.send_by_resource_to(@campaign.user, "您在Robin8发布的活动 #{@campaign.name} 已审核通过", @campaign, {mode: "general", admin: current_admin_user})
