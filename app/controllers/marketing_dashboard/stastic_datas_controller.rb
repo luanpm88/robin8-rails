@@ -133,7 +133,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
 
   def campaign_release_count
     @campaign_releases = Campaign.select("DATE(start_time) as date, count(*) as count, sum(budget) as budget").
-      where("start_time >= '#{1.month.ago}'").where(:status => ['agreed', 'executing', 'executed', 'settled']).where("name not like '%测试%'")
+      where("start_time >= '#{1.month.ago}'").where(:status => ['agreed', 'executing', 'executed', 'settled']).where("name not like '%测试%'").
       group("DATE(start_time)").
       order("DATE(start_time) desc")
   end
