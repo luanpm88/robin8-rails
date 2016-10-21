@@ -103,6 +103,7 @@ Rails.application.routes.draw do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
       member do
         put 'live'
+        put 'active'
       end
       collection do
         get 'search'
