@@ -14,6 +14,11 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignInviteAnalysis
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
+  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+                       'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+                       'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg'
+  }
+
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
@@ -402,7 +407,15 @@ class Campaign < ActiveRecord::Base
   end
 
   def deal_wechat_auth_type
-    self.sub_type = 'wechat' if self.sub_type.blank?
+    if self.sub_type == 'weibo'
+      self.example_screenshot = ExampleScreenshots['weibo']
+    elsif self.sub_type == 'qq'
+      self.example_screenshot = ExampleScreenshots['qq']
+    elsif
+      self.sub_type = 'wechat'
+      self.example_screenshot = ExampleScreenshots['wechat']
+    end
+
     if self.sub_type == 'wechat' && self.per_budget_type != 'simple_cpi'
       self.wechat_auth_type = 'base'
     else
