@@ -15,7 +15,7 @@
         <i class="fa fa-user fa-fw"></i> <%= current_admin_user.email %>  <i class="fa fa-caret-down"></i>
       </a>
       <ul class="dropdown-menu dropdown-user">
-        <% if params[:locale] == 'zh' || params[:locale].blank?  %>
+        <% if session[:locale] == 'zh' || session[:locale].blank?  %>
           <li>
             <%= link_to "设置为英文(Change English)", marketing_dashboard_path(:locale => 'en') %>
           </li>
@@ -126,7 +126,7 @@
           <a href="#"><%= t('menu.kol_management') %><span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to t('kol_management.blocked_kols'), marketing_dashboard_kols_path %>
+              <%= link_to t('kol_management.all_kols'), marketing_dashboard_kols_path %>
             </li>
             <li>
               <%= link_to t('kol_management.blocked_kols'), banned_marketing_dashboard_kols_path %>
