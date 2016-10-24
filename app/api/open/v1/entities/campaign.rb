@@ -6,6 +6,7 @@ module Open
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
 
           expose :id, :status, :budget, :per_action_budget
+          expose :url, :poster_url, :name
 
           expose :tags do |object|
             target = object.tag_target
@@ -33,15 +34,41 @@ module Open
             expose :deadline
             expose :start_time
           end
+
+          expose :invalid_reasons do |object|
+            if object.invalid_reasons.present?
+              object.invalid_reasons.split("\n")
+            else
+              []
+            end
+          end
         end
 
         class CampaignDetail < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :status, :url, :per_action_budget, :budget
+          expose :name, :description
+          expose :take_budget, :share_times
+
+          expose :poster_url do |object|
+            object.img_url
+          end
+
+          expose :screenshot_url do |object|
+            object.example_screenshot
+          end
 
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
+          end
+
+          expose :invalid_reasons do |object|
+            if object.invalid_reasons.present?
+              object.invalid_reasons.split("\n")
+            else
+              []
+            end
           end
 
           expose :total_click do |object|

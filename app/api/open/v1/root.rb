@@ -8,6 +8,7 @@ module Open
 
       mount KolAPI
       mount CampaignAPI
+      mount TransactionAPI
     end
   end
 end

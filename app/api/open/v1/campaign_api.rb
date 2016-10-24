@@ -10,11 +10,16 @@ module Open
 
         desc 'create an campaign'
         params do
+          optional :name,              type: String
+          optional :description,       type: String
           requires :url,               type: String
           requires :budget,            type: Float
           requires :per_action_budget, type: Float
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
+
+          requires :poster,     type: Hash
+          requires :screenshot, type: Hash
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -65,14 +70,30 @@ module Open
             params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
           end
 
-          service = KolCreateCampaignService.new current_user, declared(params).merge(
+          declared_params = declared(params)
+
+          if params[:poster]
+            poster = AvatarUploader.new
+            poster.store!(params[:poster])
+            declared_params.merge!(:img_url => poster.url)
+          end
+
+          if params[:screenshot]
+            screenshot = AvatarUploader.new
+            screenshot.store!(params[:screenshot])
+            declared_params.merge!(:example_screenshot => screenshot)
+          end
+
+          declared_params.reverse_merge!({
             :name => "新的开放接口创建的CPI活动",
             :description => "无",
             :per_budget_type => "simple_cpi",
             :img_url => "-",
             :need_pay_amount => params[:budget],
             :campaign_from => "open"
-          )
+          })
+
+          service = KolCreateCampaignService.new(current_user, declared_params)
 
           if service.perform and service.errors.empty?
             @campaign = service.campaign
@@ -93,10 +114,16 @@ module Open
         desc "update existed campaign"
         params do
           requires :id,                type: Integer
+          optional :name,              type: String
+          optional :description,       type: String
           optional :url,               type: String
           optional :per_action_budget, type: Float
           optional :start_time,        type: DateTime
           optional :deadline,          type: DateTime
+          # optional :budget,            type: Float
+
+          optional :poster,     type: Hash
+          optional :screenshot, type: Hash
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -109,6 +136,10 @@ module Open
           unless %w(unexecute rejected).include?(@campaign.status)
             error!({success: false, error: "活动已经开始不能修改!"}) and return
           end
+
+          # if params[:budget] and params[:budget].to_f < 100
+          #   error!({success: false, error: "总预算不能低于100元!"}) and return
+          # end
 
           if params[:start_time] and (params[:start_time].to_time - Time.now) < 2.hours
             error!({success: false, error: "活动开始时间必须是两个小时之后!"}) and return
@@ -141,7 +172,24 @@ module Open
             params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
           end
 
-          declared_params = declared(params)
+          # fix required params bug
+          declared_params = declared(params).compact.reverse_merge({
+            url: @campaign.url,
+            name: @campaign.name,
+            per_action_budget: @campaign.per_action_budget
+          })
+
+          if params[:poster]
+            poster = AvatarUploader.new
+            poster.store!(params[:poster])
+            declared_params.merge!(:img_url => poster.url)
+          end
+
+          if params[:screenshot]
+            screenshot = AvatarUploader.new
+            screenshot.store!(params[:screenshot])
+            declared_params.merge!(:example_screenshot => screenshot)
+          end
 
           if @campaign.status == "rejected"
             @campaign.status = "unexecute"
