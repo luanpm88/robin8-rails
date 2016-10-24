@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react'
 // import echarts from 'echarts'
 import elementResizeEvent from 'element-resize-event'
 
+import chinaMap from './echart/ChinaMap'
+
 class ReactEcharts extends React.Component {
   componentDidMount() {
     const _this = this;
