@@ -1,7 +1,13 @@
 class MarketingDashboard::BaseController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :current_admin_ability
+  before_action :set_locale
   layout 'admin'
+
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
 
   def current_admin_ability
     #TODO cache current_ability

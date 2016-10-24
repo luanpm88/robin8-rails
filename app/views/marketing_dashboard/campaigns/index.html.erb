@@ -244,9 +244,9 @@
                     <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                   <% end %>
                 <% end %>
-                  <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
-                    <a href="" onclick="return false;" class="btn btn-warning reject-campaign btn-sm" data-campaign-id=<%= c.id %> >不通过</a>
-                  <% end %>
+                <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
+                  <a href="" onclick="return false;" class="btn btn-warning reject-campaign btn-sm" data-campaign-id=<%= c.id %> >不通过</a>
+                <% end %>
               <% end %>
             </div>
           </td>
