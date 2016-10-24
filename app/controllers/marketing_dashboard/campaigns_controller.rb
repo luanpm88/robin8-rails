@@ -11,7 +11,20 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
                  end.realable
 
     @q = @campaigns.ransack(params[:q])
-    @campaigns = @q.result.order('created_at DESC').paginate(paginate_params)
+    @campaigns = @q.result.order('created_at DESC')
+
+    respond_to do |format|
+      format.html do
+        @campaigns = @campaigns.paginate(paginate_params)
+        render 'index'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"发布活动记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
   end
 
   def pending
