@@ -407,6 +407,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_example_screenshot
+    return self.example_screenshot if self.example_screenshot.present?
     if self.sub_type == 'weibo'
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
