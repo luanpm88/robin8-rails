@@ -36,7 +36,7 @@ module Concerns
         campaign_invite.sale_price =  social_account.sale_price
         campaign_invite.price =  social_account.price
         campaign_invite.social_account_id = social_account.id
-        campaign_invite.save
+        campaign_invite.save!
       end
       campaign_invite
     end
@@ -53,7 +53,7 @@ module Concerns
         campaign_invite.img_status = 'pending'
         campaign_invite.uuid = uuid
         # Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
-        campaign_invite.save
+        campaign_invite.save!
       end
       campaign_invite
     end
@@ -68,9 +68,9 @@ module Concerns
         campaign_invite.uuid = uuid
         campaign_invite.status = 'running'            if  campaign_invite.status.blank?
         campaign_invite.img_status = 'pending'        if  campaign_invite.img_status.blank?
-        campaign_invite.save
+        campaign_invite.save!
       end
-      campaign_invite
+      campaign_invite.reload
     end
 
 
@@ -80,7 +80,7 @@ module Concerns
       if campaign_invite && campaign_invite.status == 'running'
         campaign_invite.status = 'approved'
         campaign_invite.approved_at = Time.now    if campaign_invite.approved_at.blank?
-        campaign_invite.save
+        campaign_invite.save!
         campaign_invite.reload
       else
         nil

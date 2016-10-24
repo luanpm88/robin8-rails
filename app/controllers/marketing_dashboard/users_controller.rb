@@ -54,6 +54,13 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     redirect_to marketing_dashboard_user_path(@user)
   end
 
+  def active
+    authorize! :read, User
+    @user = User.find params[:id]
+    @user.update(is_active: !@user.is_active)
+    redirect_to marketing_dashboard_user_path(@user)
+  end
+
   def recharge
     authorize! :update, User
 

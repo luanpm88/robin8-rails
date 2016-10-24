@@ -17,7 +17,7 @@ class CampaignInvite < ActiveRecord::Base
   # Ocr_detail  'unfound','time','group','owner']
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
-  CanAutoCheckInterval = Rails.env.production? ? 3.hours : 2.minutes
+  CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
