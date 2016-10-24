@@ -183,6 +183,8 @@ class CampaignInvite < ActiveRecord::Base
       $weixin_client.authorize_url url
     elsif self.campaign.wechat_auth_type == 'self_info' ||  self.campaign.wechat_auth_type == 'friends_info'
       $weixin_client.authorize_url url, 'snsapi_userinfo'
+    else
+      url
     end
   end
 
