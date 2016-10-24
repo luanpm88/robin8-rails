@@ -117,7 +117,7 @@ module Campaigns
       kol_ids = kols.select("id").map(&:id) rescue []
 
       records = CampaignPushRecord.where(campaign_id: self.id, filter_type: 'match')
-      pushed_kol_ids   = records.inject([]) {|s, r| s += r.kol_ids.split(",") rescue [] }.uniq
+      pushed_kol_ids   = records.inject([]) {|s, r| s += r.kol_ids.split(",").map(&:to_i) rescue [] }.uniq
       approved_kol_ids = CampaignInvite.where(campaign_id: self.id).map(&:kol_id)
 
       kol_ids = kol_ids - pushed_kol_ids - approved_kol_ids
