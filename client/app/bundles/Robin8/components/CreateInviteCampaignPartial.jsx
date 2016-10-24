@@ -14,12 +14,22 @@ import KolSelectPartial      from './invite_campaigns/form/KolSelectPartial';
 import initToolTip           from './shared/InitToolTip';
 import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 import CreateMaterialsPartial  from './shared/campaign_material/CreateMaterialsPartial'
+import getUrlQueryParams from '../helpers/GetUrlQueryParams'
 
 const initCampaign = {
   start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
   deadline: moment().add(10, "days").format("YYYY-MM-DD HH:mm"),
   budget: 0,
   social_accounts: []
+}
+
+function initCampaignFun(state){
+  const copy_campaign_id = getUrlQueryParams()['copy_id'];
+  if (!!copy_campaign_id){
+    return state.campaignReducer.get("campaign").toJSON()
+  }else{
+    return initCampaign
+  }
 }
 
 const validate = new CampaignFormValidate({
@@ -50,7 +60,17 @@ class CreateInviteCampaign extends React.Component{
 
   componentDidMount() {
     initToolTip({placement:'bottom', html: true});
+    const copy_campaign_id = getUrlQueryParams()['copy_id'];
+    if (!!copy_campaign_id){
+      this._fetchCampaign(copy_campaign_id)
+    }
   }
+
+  _fetchCampaign(copy_campaign_id) {
+    const { fetchCampaign } = this.props.actions;
+    fetchCampaign(copy_campaign_id);
+  }
+
 
   render(){
     const { name, description, img_url, start_time, deadline,
@@ -96,7 +116,7 @@ CreateInviteCampaign = reduxForm({
   validate
 },
   state => ({
-    initialValues: initCampaign
+    initialValues: initCampaignFun(state)
   })
 )(CreateInviteCampaign);
 
