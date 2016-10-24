@@ -17,11 +17,11 @@
       <ul class="dropdown-menu dropdown-user">
         <% if params[:locale] == 'zh' || params[:locale].blank?  %>
           <li>
-            <%= link_to "设置为英文(Change English)", marketing_dashboard_path(:locale => 'en') %>
+            <%= link_to "切换为英文(Switch To English)", marketing_dashboard_path(:locale => 'en') %>
           </li>
         <% else %>
           <li>
-            <%= link_to "设置为中文(Change Chinese)", marketing_dashboard_path(:locale => 'zh') %>
+            <%= link_to "切换为中文(Switch To Chinese)", marketing_dashboard_path(:locale => 'zh') %>
           </li>
         <% end %>
         <li>
