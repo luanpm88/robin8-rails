@@ -406,16 +406,18 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def deal_wechat_auth_type
+  def get_example_screenshot
     if self.sub_type == 'weibo'
-      self.example_screenshot = ExampleScreenshots['weibo']
+      ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
-      self.example_screenshot = ExampleScreenshots['qq']
-    elsif
-      self.sub_type = 'wechat'
-      self.example_screenshot = ExampleScreenshots['wechat']
+      ExampleScreenshots['qq']
+    else
+      ExampleScreenshots['wechat']
     end
+  end
 
+  def deal_wechat_auth_type
+    self.sub_type ||= 'wechat'
     if self.sub_type == 'wechat' && self.per_budget_type != 'simple_cpi'
       self.wechat_auth_type = 'base'
     else
