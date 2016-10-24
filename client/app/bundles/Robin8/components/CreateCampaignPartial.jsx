@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
+import getUrlQueryParams from '../helpers/GetUrlQueryParams'
 
 import "campaign/activity/form.scss";
 
@@ -32,6 +33,15 @@ const initCampaign = {
   sub_type: 'wechat'
 }
 
+function initCampaignFun(state){
+  const copy_campaign_id = getUrlQueryParams()['copy_id'];
+  if (!!copy_campaign_id){
+    return state.campaignReducer.get("campaign").toJSON()
+  }else{
+    return initCampaign
+  }
+}
+
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
@@ -53,7 +63,9 @@ const validateFailed = (errors) => {
 }
 
 function select(state) {
-  return { brand: state.profileReducer.get("brand") };
+  return {
+    brand: state.profileReducer.get("brand"),
+  };
 }
 
 class CreateCampaignPartial extends React.Component {
@@ -62,9 +74,18 @@ class CreateCampaignPartial extends React.Component {
     super(props, context);
   }
 
+  _fetchCampaign(copy_campaign_id) {
+    const { fetchCampaign } = this.props.actions;
+    fetchCampaign(copy_campaign_id);
+  }
+
   componentDidMount() {
     beforeUnload(this.props);
     initToolTip({placement:'bottom', html: true});
+    const copy_campaign_id = getUrlQueryParams()['copy_id'];
+    if (!!copy_campaign_id){
+      this._fetchCampaign(copy_campaign_id)
+    }
   }
 
   render() {
@@ -97,15 +118,17 @@ class CreateCampaignPartial extends React.Component {
   }
 }
 
-CreateCampaignPartial = reduxForm({
-  form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
-  returnRejectedSubmitPromise: true,
-  validate
-},
-state => ({
-  initialValues: initCampaign
-})
+CreateCampaignPartial = reduxForm(
+  {
+    form: 'activity_form',
+    fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
+    returnRejectedSubmitPromise: true,
+    validate
+  },
+  state => (
+  {
+    initialValues: initCampaignFun(state)
+  })
 )(CreateCampaignPartial);
 
 export default connect(select)(CreateCampaignPartial)

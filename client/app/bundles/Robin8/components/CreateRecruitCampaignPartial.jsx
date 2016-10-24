@@ -18,6 +18,7 @@ import SubTypePartial           from './recruit_campaigns/form/SubTypePartial';
 
 import initToolTip              from './shared/InitToolTip';
 import CampaignFormValidate     from './shared/validate/CampaignFormValidate'
+import getUrlQueryParams from '../helpers/GetUrlQueryParams'
 
 
 const initCampaign = {
@@ -36,6 +37,15 @@ const initCampaign = {
   age: '全部',
   gender: '全部',
   sns_platforms: "全部"
+}
+
+function initCampaignFun(state){
+  const copy_campaign_id = getUrlQueryParams()['copy_id'];
+  if (!!copy_campaign_id){
+    return state.campaignReducer.get("campaign").toJSON()
+  }else{
+    return initCampaign
+  }
 }
 
 const validate = new CampaignFormValidate({
@@ -69,6 +79,15 @@ class CreateRecruitCampaign extends React.Component{
 
   componentDidMount() {
     initToolTip({placement:'bottom', html: true});
+    const copy_campaign_id = getUrlQueryParams()['copy_id'];
+    if (!!copy_campaign_id){
+      this._fetchCampaign(copy_campaign_id)
+    }
+  }
+
+  _fetchCampaign(copy_campaign_id) {
+    const { fetchCampaign } = this.props.actions;
+    fetchCampaign(copy_campaign_id);
   }
 
   renderMaterialsPartial() {
@@ -123,7 +142,7 @@ CreateRecruitCampaign = reduxForm({
   validate
 },
   state => ({
-    initialValues: initCampaign
+    initialValues: initCampaignFun(state)
   })
 )(CreateRecruitCampaign);
 

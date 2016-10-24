@@ -24,6 +24,17 @@ export default class Campaign extends React.Component {
     }
   }
 
+  getCopyAddUrl(){
+    const { campaign } = this.props;
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return `/brand/recruits/new?copy_id=${campaign.get("id")}`;
+    } else if(isInviteCampaign(campaign.get("per_budget_type"))) {
+      return `/brand/invites/new?copy_id=${campaign.get("id")}`;
+    } else {
+      return `/brand/campaigns/new?copy_id=${campaign.get("id")}`;
+    }
+  }
+
   renderStatusImage() {
     const { campaign } = this.props;
 
@@ -42,6 +53,12 @@ export default class Campaign extends React.Component {
         <div>
           <Link to={this.getUrl() + "/edit"} className="before-pay-edit-campaign-btn">编辑</Link>
           <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn pay-campaign-btn">支付</Link>
+        </div>
+      )
+    } else{
+      return (
+        <div>
+          <Link to={this.getCopyAddUrl()} className="btn add-campaign-from-copy-btn">再次发布</Link>
         </div>
       )
     }
@@ -186,7 +203,6 @@ export default class Campaign extends React.Component {
   }
 
   render() {
-
     const { campaign, tagColor, index } = this.props;
     const imgUrl = !!campaign.get('img_url') ? campaign.get('img_url') : require('campaign-list-pic.jpg');
     const classes = tagColor + " " + ((isRecruitCampaign(campaign.get("per_budget_type")) || isInviteCampaign(campaign.get("per_budget_type")))  ? "recruit" : "");
