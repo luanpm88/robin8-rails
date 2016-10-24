@@ -60,13 +60,24 @@ module Campaigns
         cities.join(",")
       end
 
+      def get_img_url(analysis_res)
+        if analysis_res['article_image']
+          image = Image.new
+          image.remote_avatar_url = analysis_res['article_image']
+          image.save
+          image.avatar.url(:cover)
+        else
+          nil
+        end
+      end
+
       #获取输入tab 内容,封装成campaign
       def get_campaign_input_info(url, analysis_res, expect_effect)
         per_budget_type = get_effect_budget_type(expect_effect)
         per_action_budget = MinPerActionBudget[per_budget_type.to_sym]
         start_time = get_start_time
         input_info = {name: analysis_res['article_title'], url: url, per_budget_type: per_budget_type, per_action_budget: per_action_budget, budget: MinBudget,
-                      start_time: start_time, deadline: (start_time + CampaignDuration), img_url: analysis_res['article_image'],
+                      start_time: start_time, deadline: (start_time + CampaignDuration), img_url: get_img_url(analysis_res),
                       description: ((analysis_res['article_text'][0..60]  rescue nil)), sub_type: 'wechat'  }
         campaign = Campaign.new(input_info)
         tags = analysis_res["industries"][0..5].collect{|t| t['label'] if t['probability'].to_i >= 3}.compact.join(",") rescue nil

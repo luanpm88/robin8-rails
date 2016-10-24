@@ -21,7 +21,7 @@ zh:
     app_banner:              'APP首页滚动栏'
     app_help_doc:            'APP帮助文档'
     admin_management:        '管理员管理' 
-  campaign_managment:
+  campaign_management:
     all_campaign:             '所有的活动'
     need_a_price_quote:       '待询价的活动'
     need_to_be_approved:      '待审核的活动'

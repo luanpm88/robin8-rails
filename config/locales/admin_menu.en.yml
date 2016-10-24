@@ -21,7 +21,7 @@ en:
     app_banner:              'App Banner'
     app_help_doc:            'App Help Doc' 
     admin_management:         'Admin Management'
-  campaign_managment:
+  campaign_management:
     all_campaign:             'all campaigns'
     need_a_price_quote:       'need a price quote'
     need_to_be_approved:      'need to be approved'
