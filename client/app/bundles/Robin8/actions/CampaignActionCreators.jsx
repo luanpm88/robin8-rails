@@ -265,6 +265,13 @@ export function analysisCampaign(url){
   }
 }
 
+export function AnalysisInvitesOfCampaign(campaign_id){
+  return {
+    type: actionTypes.ANALYSIS_INVITES_OF_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaign_invites/analysis?campaign_id=${campaign_id}`, {'credentials': 'include'})
+  }
+}
+
 export function clearAnalysisCampaign() {
   return {
     type: actionTypes.CLEAR_ANALYSIS_CAMPAIGN

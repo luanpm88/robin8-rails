@@ -12,6 +12,7 @@ export const initialState = Immutable.fromJS({
   campaign_installs: [],
   agreed_invites_of_invite_campaign: [],
   analysis_result: {},
+  analysis_invite_result: {},
   paginate: {},
   error: ""
 });
@@ -173,7 +174,6 @@ export default function campaignReducer($$state = initialState, action=nil) {
     case actionTypes.ANALYSIS_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === "success"){
-        console.log(action.result)
         $$state = $$state.merge({
           "analysis_result": Immutable.fromJS(action.result),
         })
@@ -181,6 +181,14 @@ export default function campaignReducer($$state = initialState, action=nil) {
       return $$state;
     case actionTypes.CLEAR_ANALYSIS_CAMPAIGN:
       $$state = $$state.set("analysis_result", Immutable.Map());
+      return $$state;
+    case actionTypes.ANALYSIS_INVITES_OF_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success"){
+        $$state = $$state.merge({
+          "analysis_invite_result": Immutable.fromJS(action.result),
+        })
+      }
       return $$state;
     default:
       return $$state;
