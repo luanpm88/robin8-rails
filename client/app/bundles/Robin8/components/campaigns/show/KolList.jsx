@@ -109,14 +109,22 @@ export default class KolList extends React.Component {
     )
   }
 
-  render(){
+  render_kol_analysis_button() {
+    const campaign = this.props.campaign
+    if (campaign.get('status') == "settled" || campaign.get('status') == "executed" )
+      return <Link to={`/brand/campaigns/${this.props.campaign_id}/analysis_invite`} className="analysis-invite" target="_blank">KOL分析</Link>
+  }
 
+  render(){
     return(
       <div className="panel ">
         <div className="panel-heading">
           <a href="#panelKolsBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">KOL列表</h4>
-            {this.render_kol_list()}
+          <h4 className="panel-title">
+            KOL列表
+            {this.render_kol_analysis_button()}
+          </h4>
+          {this.render_kol_list()}
         </div>
       </div>
     )

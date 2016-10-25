@@ -10,11 +10,11 @@ module Campaigns
       [
         {
           name: "男性",
-          ratio: 1.0 * male_count / total_count
+          ratio: (total_count > 0 ? 1.0 * male_count / total_count : 0)
         },
         {
           name: "女性",
-          ratio: 1.0 * female_count / total_count
+          ratio: (total_count > 0 ? 1.0 * female_count / total_count : 0)
         }
       ]
     end
@@ -25,10 +25,11 @@ module Campaigns
       [[0, 20], [20, 40], [40, 60], [60, 100]].map do |min, max|
         age_count = self.kols.where("age > ? AND age <= ?", min, max).count
 
+        ratio = total_count > 0 ? 1.0 * age_count / total_count : 0
         {
           name: "#{min}岁-#{max}岁",
           count: age_count,
-          ratio: 1.0 * age_count / total_count
+          ratio: ratio
         }
       end
     end
@@ -48,7 +49,7 @@ module Campaigns
           name: tag.label,
           code: tag.name,
           count: tc[1],
-          ratio: 1.0 * tc[1] / total_count
+          ratio: (total_count > 0 ? 1.0 * tc[1] / total_count : 0)
         }
       end
     end
@@ -65,6 +66,7 @@ module Campaigns
           city_name: city.short_name,
           city_code: city.name_en,
           province_name: province.name,
+          province_short_name: province.short_name,
           province_code: province.name_en
         }
       end.compact.sort_by { |c| c[:province_code] } rescue []
