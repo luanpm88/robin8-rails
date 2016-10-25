@@ -7,7 +7,7 @@ module Campaigns
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
       KolBudgetRate = 0.7
-      AppendWaitTime =  Rails.env.production?  ? 5.hours  : 5.minutes
+      AppendWaitTime =  Rails.env.production?  ? 6.hours  : 5.minutes
     end
 
     def pay
@@ -112,17 +112,37 @@ module Campaigns
         Message.new_campaign(self, kol_ids)
       end
       if self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?
-        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'append_kols')
+        CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
     end
 
-    def append_kols
-      return if self.status == 'executed'
-      kol_ids = self.get_append_kol_ids(true)
+    def timed_append_kols
+      return unless self.status == 'executing'
+
+      filter_types = ["tags", "age", "region", "gender"]
+      filter_types = filter_types & self.campaign_targets.where.not(target_content: "全部").map(&:target_type)
+      filter_types = filter_types - self.campaign_push_records.map(&:converted_target_type)
+      return if filter_types.blank?
+
+      removed_type = filter_types.shift
+      kol_ids = self.get_remaining_kol_ids(filter_types)
+
       if kol_ids.present?
-        Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id self.id, true
-        end
+        Kol.where(id: kol_ids).each { |k| k.add_campaign_id(self.id, true) }
+        Message.new_campaign(self, kol_ids)
+      end
+
+      CampaignPushRecord.create(
+        campaign_id: self.id,
+        kol_ids: kol_ids.join(","),
+        push_type: "append",
+        filter_type: "match",
+        filter_reason: "#{removed_type}_target_removed"
+      )
+
+      unless filter_types.blank?
+        timed_at = CampaignPushRecord.restrict_to_time_range(AppendWaitTime)
+        CampaignWorker.perform_at(timed_at, self.id, "timed_append_kols")
       end
     end
 
