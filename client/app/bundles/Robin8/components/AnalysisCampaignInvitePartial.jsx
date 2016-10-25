@@ -242,7 +242,7 @@ class AnalysisCampaignInvitePartial extends React.Component {
     let regions = data.toJS();
     regions = _.map(regions, (obj) => {
       return {
-        name: obj["city_name"],
+        name: obj["province_short_name"],
         selected: true
       }
     });

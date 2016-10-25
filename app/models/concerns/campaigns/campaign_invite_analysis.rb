@@ -66,6 +66,7 @@ module Campaigns
           city_name: city.short_name,
           city_code: city.name_en,
           province_name: province.name,
+          province_short_name: province.short_name,
           province_code: province.name_en
         }
       end.compact.sort_by { |c| c[:province_code] } rescue []
