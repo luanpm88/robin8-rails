@@ -232,7 +232,7 @@ module Campaigns
        #剩下的邀请  状态全设置为拒绝
        self.campaign_invites.should_reject.update_all({:status => 'rejected', :img_status => 'rejected', :auto_check => true})
        settle_accounts_for_kol
-       self.update_column(:status, 'settled')
+       self.update_columns(status: 'settled', evaluation_status: 'evaluating')
        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
        if is_click_type?  || is_cpa_type? || is_cpi_type?
          pay_total_click = self.settled_invites.sum(:avail_click)

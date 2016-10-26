@@ -10,7 +10,7 @@
     <col width="200" />
   </colgroup>
 
-  <% %w(id user_id user.email name description start_time deadline budget take_budget per_action_budget per_budget_type img_url url avail_click total_click status actual_deadline_time).each do |v| %>
+  <% %w(id user_id user.email name description start_time deadline created_at budget take_budget per_action_budget per_budget_type img_url url avail_click total_click status actual_deadline_time evaluation_status).each do |v| %>
     <tr>
       <td> <%= v.classify %> </td>
       <% if v.end_with?("url") %>
@@ -20,15 +20,27 @@
       <% end %>
     </tr>
   <% end %>
+  <tr>
+    <td> Effect Score </td>
+    <td> <%= @campaign.effect_evaluation.score rescue nil %> </td>
+  </tr>
+  <tr>
+    <td> Experience Score </td>
+    <td> <%= @campaign.experience_evaluation.score rescue nil %> </td>
+  </tr>
+  <tr>
+    <td> Review content</td>
+    <td> <%= @campaign.review_evaluation.content rescue nil %></td>
+  </tr>
 
   <% if @campaign.is_cpa_type? %>
-  <tr>
-    <td>CPA短链</td>
-    <td>
-      <% @campaign.campaign_action_urls.each do |action| %>
-        <%= link_to action.action_url %> <br />
-      <% end %>
-    </td>
-  </tr>
+    <tr>
+      <td>CPA短链</td>
+      <td>
+        <% @campaign.campaign_action_urls.each do |action| %>
+          <%= link_to action.action_url %> <br />
+        <% end %>
+      </td>
+    </tr>
   <% end %>
 </table>

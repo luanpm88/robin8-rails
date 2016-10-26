@@ -73,6 +73,7 @@ module API
             expose :recruit_start_time
             expose :recruit_end_time
           end
+          expose :evaluation_status
         end
       end
     end
