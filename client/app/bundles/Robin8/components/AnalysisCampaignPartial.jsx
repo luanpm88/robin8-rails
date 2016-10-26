@@ -336,14 +336,13 @@ class AnalysisCampaignPartial extends React.Component {
     return (
       <div className="page page-activity page-analysis">
         <div className="container">
-          {/*
           <ol className="breadcrumb">
             <li>
               <i className="caret-arrow left" />
-              <Link to={`/brand/campaigns/new`}>去发布活动</Link>
+              {/*<Link to={`/brand/campaigns/new`}>返回去发布活动</Link>*/}
+              <a onClick={window.close}>返回去发布活动</a>
             </li>
           </ol>
-          */}
           <div className="analysis-section">
             <div className="feature feature-link">
               <h5>文章链接</h5>
