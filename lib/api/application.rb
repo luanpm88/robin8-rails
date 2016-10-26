@@ -13,7 +13,6 @@ module API
     logger Logger.new(Rails.root.join("log/grape.log"))
 
     rescue_from :all do |exception|
-      trace = exception.backtrace
 
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
