@@ -24,8 +24,8 @@
         (campaign.start_time.strftime("%Y-%m-%d %H:%M") rescue nil),
         (campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue nil),
         campaign.status,
-        campaign.user.smart_name,
-        campaign.user.seller.try(:name)
+        campaign.try(:user).try(:smart_name),
+        campaign.try(:user).try(:seller).try(:name)
       ]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
