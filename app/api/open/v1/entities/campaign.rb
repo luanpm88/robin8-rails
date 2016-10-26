@@ -75,6 +75,10 @@ module Open
             object.get_total_click
           end
 
+          expose :avail_click do |object|
+            object.get_avail_click
+          end
+
           expose :tags do |object|
             target = object.tag_target
             if target

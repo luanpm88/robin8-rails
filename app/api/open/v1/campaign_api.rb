@@ -18,8 +18,8 @@ module Open
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
 
-          requires :poster,     type: Hash
-          requires :screenshot, type: Hash
+          optional :poster,     type: Hash
+          optional :screenshot, type: Hash
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -94,7 +94,6 @@ module Open
           })
 
           service = KolCreateCampaignService.new(current_user, declared_params)
-
           if service.perform and service.errors.empty?
             @campaign = service.campaign
             @campaign.update!(
