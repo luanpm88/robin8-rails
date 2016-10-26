@@ -295,3 +295,9 @@ export function clearAnalysisCampaign() {
     type: actionTypes.CLEAR_ANALYSIS_CAMPAIGN
   };
 }
+
+export function clearCampaignInput() {
+  return {
+    type: actionTypes.CLEAR_CAMPAIGN_INPUT
+  };
+}

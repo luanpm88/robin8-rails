@@ -70,7 +70,7 @@ module Brand
             requires :per_budget_type, type: String
           end
           post 'analysis_build' do
-            analysis_res =  Campaign.analyze_url(params[:url])
+            analysis_res = Campaign.analyze_url(params[:url])
             @campaign = Campaign.get_campaign_info(params[:url], analysis_res, params[:per_budget_type])
             present @campaign
           end

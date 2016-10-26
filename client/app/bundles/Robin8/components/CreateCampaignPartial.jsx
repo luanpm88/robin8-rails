@@ -35,8 +35,11 @@ const initCampaign = {
 
 function initCampaignFun(state){
   const copy_campaign_id = getUrlQueryParams()['copy_id'];
+
   if (!!copy_campaign_id){
     return state.campaignReducer.get("campaign").toJSON()
+  } else if (state.campaignReducer.get("campaignInput").size > 0) {
+    return state.campaignReducer.get("campaignInput").toJS()
   }else{
     return initCampaign
   }
@@ -64,7 +67,7 @@ const validateFailed = (errors) => {
 
 function select(state) {
   return {
-    brand: state.profileReducer.get("brand"),
+    brand: state.profileReducer.get("brand")
   };
 }
 
@@ -82,7 +85,7 @@ class CreateCampaignPartial extends React.Component {
 
   _fetchAnalysisCampaign(url) {
     const { analysisBuildCampaign } = this.props.actions;
-    analysisBuildCampaign(url, this.props.fields.per_action_budget);
+    analysisBuildCampaign(url, this.props.fields.per_budget_type.value);
   }
 
   componentDidMount() {
@@ -92,6 +95,11 @@ class CreateCampaignPartial extends React.Component {
     if (!!copy_campaign_id){
       this._fetchCampaign(copy_campaign_id)
     }
+  }
+
+  componentWillUnmount() {
+    const { clearCampaignInput } = this.props.actions;
+    clearCampaignInput();
   }
 
   render() {

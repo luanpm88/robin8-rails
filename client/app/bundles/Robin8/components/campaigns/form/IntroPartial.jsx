@@ -89,7 +89,7 @@ export default class IntroPartial extends React.Component {
 
     if (!!targetUrl) {
       if (this.props.onLinkAnalysis) {
-        this.props.onLinkAnalysis(targetUrl)
+        this.props.onLinkAnalysis($("#promotionUrl").val())
       }
 
       window.open(url);

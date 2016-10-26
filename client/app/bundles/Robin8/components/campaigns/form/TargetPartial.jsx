@@ -86,9 +86,18 @@ export default class TargetPartial extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { region, tags, age, gender } = nextProps;
+
+    if (this.tagSelector) {
+      let tagsValue = tags.value;
+      if (!_.isArray(tagsValue) && tagsValue != "全部") {
+        tagsValue = tagsValue.split(',');
+      }
+      this.tagSelector.set(tagsValue, false);
+    }
+
     if (!_.get(this.props, ['region', 'value']) &&
         _.get(nextProps, ['region', 'value'])) {
-      const { region, tags, age, gender } = nextProps;
 
       this.initConditionComponent();
 
