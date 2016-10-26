@@ -17,14 +17,14 @@ module API
 
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
-      message << "\n\t" << trace.join("\n\t")
 
       if Rails.env.development? or Rails.env.test?
         puts message
       else
-        Airbrake.notify(exception, message)
+        logger.info message
+        Airbrake.notify(exception)
       end
-      rack_response({'message' => '500 Internal Server Error'}, 500)
+      rack_response({'message' => exception.message}, 500)
     end
 
     before do
