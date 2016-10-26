@@ -71,9 +71,7 @@ module Campaigns
         end
       end
 
-      #获取输入tab 内容,封装成campaign
-      def get_campaign_input_info(url, analysis_res, expect_effect)
-        per_budget_type = get_effect_budget_type(expect_effect)
+      def get_campaign_info(url, analysis_res, per_budget_type)
         per_action_budget = MinPerActionBudget[per_budget_type.to_sym]
         start_time = get_start_time
         input_info = {name: analysis_res['article_title'], url: url, per_budget_type: per_budget_type, per_action_budget: per_action_budget, budget: MinBudget,
@@ -88,6 +86,13 @@ module Campaigns
         campaign.build_age_target(target_type: 'age', target_content: "全部")
         campaign.build_gender_target(target_type: 'gender', target_content: "全部")
         campaign
+      end
+
+      #获取输入tab 内容,封装成campaign
+      def get_campaign_input_info(url, analysis_res, expect_effect)
+        per_budget_type = get_effect_budget_type(expect_effect)
+
+        return get_campaign_info(url, analysis_res, per_budget_type)
       end
 
       #获取分析tab 内容
@@ -127,7 +132,3 @@ module Campaigns
     end
   end
 end
-
-# url =  "http://cq.cqnews.net/html/2016-10/09/content_38875155.htm"
-# analysis_res = Campaign.analyze_url(url)
-

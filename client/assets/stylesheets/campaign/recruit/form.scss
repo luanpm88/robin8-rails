@@ -193,6 +193,31 @@
   padding: 20px 40px 0px 40px;
 }
 
+.recruit-basic-info {
+  padding-top: 35px !important;
+
+  .form-group:first-child {
+    min-height: 85px;
+  }
+  .form-group:nth-child(2) {
+    height: 175px;
+
+    .word-limit {
+      bottom: 50px;
+    }
+
+    span.label-success {
+      position: absolute;
+      bottom: 50px !important;
+    }
+
+    span.label-danger {
+      position: absolute;
+      bottom: 50px !important;
+    }
+  }
+}
+
 .recruit-budget-form-area .bootstrap-touchspin-prefix {
   font-family: FuturaStd-Medium;
 }
