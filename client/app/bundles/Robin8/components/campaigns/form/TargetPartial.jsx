@@ -113,11 +113,11 @@ export default class TargetPartial extends React.Component {
   }
 
   renderKolCount(){
-    return <div className="notice right">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
+    return <div className="notice">预计推送KOL人数 <em>{this.state.kol_count} 人</em></div>
   }
 
   renderKolAppendTips() {
-    return <div className="notice">Robin8会优先推送最精准的匹配KOL，6个小时后活动未消耗完会进行补推，推送给第二梯队的匹配KOL，以此类推。</div>
+    return <div className="notice center">Robin8会优先推送最精准的匹配KOL，6个小时后活动未消耗完会进行补推，推送给第二梯队的匹配KOL，以此类推。</div>
   }
 
   render() {

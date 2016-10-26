@@ -265,6 +265,24 @@ export function analysisCampaign(url){
   }
 }
 
+export function analysisBuildCampaign(url, type){
+  var formData = new FormData()
+  formData.append("url", url);
+  formData.append("per_budget_type", type);
+
+  return {
+    type: actionTypes.ANALYSIS_BUILD_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaigns/analysis_build`, {
+      headers: {
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+      },
+      credentials: "same-origin",
+      method: 'POST',
+      body: formData
+    })
+  }
+}
+
 export function AnalysisInvitesOfCampaign(campaign_id){
   return {
     type: actionTypes.ANALYSIS_INVITES_OF_CAMPAIGN,

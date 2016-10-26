@@ -64,6 +64,17 @@ module Brand
             end
           end
 
+          desc 'build new campaign by analysising link url'
+          params do
+            requires :url, type: String
+            requires :per_budget_type, type: String
+          end
+          post 'analysis_build' do
+            analysis_res =  Campaign.analyze_url(params[:url])
+            @campaign = Campaign.get_campaign_info(params[:url], analysis_res, params[:per_budget_type])
+            present @campaign
+          end
+
           desc 'Create a campaign'
           params do
             requires :name, type: String
