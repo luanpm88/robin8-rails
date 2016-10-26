@@ -83,7 +83,7 @@ module Concerns
         campaign_invite.save!
         campaign_invite.reload
       else
-        nil
+        campaign_invite
       end
     end
 
