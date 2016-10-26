@@ -72,11 +72,17 @@ class CreateCampaignPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    _.bindAll(this, ['_fetchAnalysisCampaign']);
   }
 
   _fetchCampaign(copy_campaign_id) {
     const { fetchCampaign } = this.props.actions;
     fetchCampaign(copy_campaign_id);
+  }
+
+  _fetchAnalysisCampaign(url) {
+    const { analysisBuildCampaign } = this.props.actions;
+    analysisBuildCampaign(url, this.props.fields.per_action_budget);
   }
 
   componentDidMount() {
@@ -100,7 +106,7 @@ class CreateCampaignPartial extends React.Component {
           <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
-              <IntroPartial {...{ name, description, img_url, url }}/>
+              <IntroPartial {...{ name, description, img_url, url }} onLinkAnalysis={this._fetchAnalysisCampaign} />
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type }} />
               <DatePartial {...{ start_time, deadline }} />

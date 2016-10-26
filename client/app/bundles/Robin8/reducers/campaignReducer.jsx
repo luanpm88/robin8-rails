@@ -179,6 +179,15 @@ export default function campaignReducer($$state = initialState, action=nil) {
         })
       }
       return $$state;
+    case actionTypes.ANALYSIS_BUILD_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success"){
+        console.log(action.result);
+        $$state = $$state.merge({
+          "campaign": Immutable.fromJS(action.result),
+        })
+      }
+      return $$state;
     case actionTypes.CLEAR_ANALYSIS_CAMPAIGN:
       $$state = $$state.set("analysis_result", Immutable.Map());
       return $$state;

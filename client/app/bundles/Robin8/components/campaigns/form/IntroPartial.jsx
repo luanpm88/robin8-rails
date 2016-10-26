@@ -88,6 +88,10 @@ export default class IntroPartial extends React.Component {
     let url = `/brand/campaigns/analysis?url=${targetUrl}`;
 
     if (!!targetUrl) {
+      if (this.props.onLinkAnalysis) {
+        this.props.onLinkAnalysis(targetUrl)
+      }
+
       window.open(url);
     } else {
       alert("请填写想要分析的链接");
@@ -125,7 +129,13 @@ export default class IntroPartial extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="basic-intro">
+            <div className="basic-intro common-basic-info">
+              <div className="form-group">
+                <label htmlFor="campaign-url" id='campaign-link'>活动链接</label>
+                <input {...url} id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
+                <a className="analysis-link btn btn-blue" onClick={this.openAnalysisUrl}>使用NLP智能发布</a>
+                <ShowError field={url} />
+              </div>
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
                 <input {...name} type="text" className="form-control activity-title-input" maxLength={22} placeholder="请概括您的推广，让您的内容一目了然" />
@@ -137,12 +147,6 @@ export default class IntroPartial extends React.Component {
                 <textarea {...description} className="form-control common-textarea activity-intro-input" maxLength={140} placeholder="生动有趣的活动介绍，能让KOL对你的活动好感倍增"  ></textarea>
                 <span className="word-limit">140</span>
                 <ShowError field={description} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="campaign-url" id='campaign-link'>活动链接</label>
-                <input {...url} id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
-                <a className="analysis-link" onClick={this.openAnalysisUrl}>查看NLP结果</a>
-                <ShowError field={url} />
               </div>
             </div>
           </div>
