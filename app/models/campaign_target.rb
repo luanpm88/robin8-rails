@@ -50,18 +50,80 @@ class CampaignTarget < ActiveRecord::Base
   end
 
   def get_tags
-    return [] if target_type != 'tags' ||  target_content.blank?
-    tag_names = target_content.split(",").reject(&:blank?)
-    Tag.where(name: tag_names).map(&:id)
+    return [] if target_type != 'tags'
+    self.class.find_tags(target_content)
   end
 
   def get_sns_platforms
-    return [] if target_type != 'sns_platforms' ||  target_content.blank?
-    target_content.split(",").reject(&:blank?)
+    return [] if target_type != 'sns_platforms'
+    self.class.find_sns_platforms(target_content)
   end
 
   def get_score_value
     return 0 if target_type != 'influence_score'
     self.target_content.split("_").last.to_i rescue 0
+  end
+
+  def filter(kols)
+    target_filter = "filter_target_#{self.target_type}_kols"
+    return kols unless self.class.respond_to? target_filter
+
+    self.class.send(target_filter, kols, self.target_content)
+  end
+
+  class << self
+
+    def find_tags(content)
+      return [] if content.blank?
+
+      tag_names = content.split(",").reject(&:blank?)
+      Tag.where(name: tag_names).map(&:id)
+    end
+
+    def find_sns_platforms(content)
+      return [] if content.blank?
+
+      content.split(",").reject(&:blank?)
+    end
+
+    def filter_target_region_kols(kols, content)
+      unless content == '全部' || content == '全部 全部'
+        cities = content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en rescue nil }
+        kols = kols.where(:app_city => cities.compact)
+      end
+      kols
+    end
+
+    def filter_target_tags_kols(kols, content)
+      unless content == '全部'
+        kols = kols.joins("INNER JOIN `kol_tags` ON `kols`.`id` = `kol_tags`.`kol_id`")
+        kols = kols.where("`kol_tags`.`tag_id` IN (?)", CampaignTarget.find_tags(content))
+      end
+      kols
+    end
+
+    def filter_target_sns_platforms_kols(kols, content)
+      unless content == '全部'
+        kols = kols.joins("INNER JOIN `social_accounts` ON `kols`.`id` = `social_accounts`.`kol_id`")
+        kols = kols.where("`social_accounts`.`provider` IN (?)", CampaignTarget.find_sns_platforms(content))
+      end
+      kols
+    end
+
+    def filter_target_age_kols(kols, content)
+      unless content == '全部'
+        min_age = content.split(/[,\/]/).map(&:to_i).first
+        max_age = content.split(/[,\/]/).map(&:to_i).last
+        kols = kols.where(age: Range.new(min_age, max_age))
+      end
+      kols
+    end
+
+    def filter_target_gender_kols(kols, content)
+      unless content == '全部'
+        kols = kols.where(gender: content.to_i)
+      end
+      kols
+    end
   end
 end

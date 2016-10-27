@@ -14,7 +14,7 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignInviteAnalysis
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
-  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
                        'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
                        'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg'
   }
@@ -56,9 +56,7 @@ class Campaign < ActiveRecord::Base
   belongs_to :release
   has_many :campaign_applies
   has_many :campaign_materials
-  has_one :effect_evaluation, ->{where(item: 'effect')}, class: CampaignEvaluation
-  has_one :experience_evaluation, ->{where(item: 'experience')}, class: CampaignEvaluation
-  has_one :review_evaluation, ->{where(item: 'review')}, class: CampaignEvaluation
+  has_many :campaign_push_records, class_name: "CampaignPushRecord"
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
@@ -270,7 +268,7 @@ class Campaign < ActiveRecord::Base
     self.budget / self.per_action_budget
   end
 
-  AdminPhones = ['13817164642', '15221773929', '18917797087', '13917397090']
+  AdminPhones = ['15221773929', '18917797087', '13917397090', '15298670933', '13764432765', '13262752287 ']
   def create_job
     raise 'status 不能为空' if self.status.blank?
     if (self.status_changed? && status.to_s == 'unexecute') && Rails.env.production?

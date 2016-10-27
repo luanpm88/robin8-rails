@@ -116,6 +116,9 @@ class Message < ActiveRecord::Base
     PushMessage.create_message_push(message)
   end
 
+  class << self
+    alias_method :push_campaign, :new_campaign
+  end
 end
 
 

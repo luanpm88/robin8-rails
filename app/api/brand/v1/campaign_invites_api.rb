@@ -26,6 +26,17 @@ module Brand
           campaign_invite.update kol_score: declared(params)[:score], brand_opinion: declared(params)[:opinion]
           present campaign_invite
         end
+
+        params do
+          requires :campaign_id, type: Integer
+        end
+        get 'analysis' do
+          campaign = Campaign.find params[:campaign_id]
+          present :gender_analysis, campaign.gender_analysis_of_invitee
+          present :age_analysis, campaign.age_analysis_of_invitee
+          present :tag_analysis, campaign.tag_analysis_of_invitee
+          present :region_analysis, campaign.region_analysis_of_invitee
+        end
       end
     end
   end
