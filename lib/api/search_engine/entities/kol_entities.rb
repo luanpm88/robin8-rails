@@ -7,6 +7,8 @@ module API
           expose :provider
           expose :provider_text
           expose :price
+          expose :second_price
+          expose :repost_price
         end
       end
     end

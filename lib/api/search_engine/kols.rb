@@ -53,6 +53,8 @@ module API
         params do
           requires :social_account_id, type: Integer
           requires :price, type: Float
+          optional :second_price, type: Float
+          optional :repost_price, type: Float
         end
         post 'update_price' do
           social_account = SocialAccount.where(:id => params[:social_account_id]).first rescue nil
@@ -60,7 +62,7 @@ module API
             present :error,1
             present :detail, '该社交账号未找到'
           else
-            social_account.update_column(:price, params[:price])
+            social_account.update_columns(:price =>  params[:price], :second_price => params[:second_price], :repost_price => params[:repost_price])
             present :error,0
           end
         end
