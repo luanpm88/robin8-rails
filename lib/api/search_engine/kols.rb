@@ -39,11 +39,11 @@ module API
         get ':kol_id/detail' do
           social_account = SocialAccount.where(:search_kol_id => params[:kol_id]).first rescue nil
           if social_account.blank?
-            present :error,1
+            present :error, 1
             present :detail, '该用户未找到'
           else
             social_accounts = SocialAccount.where(:kol_id => social_account.kol_id)
-            present :error,1
+            present :error, 0
             present :social_account, social_accounts, with: API::SearchEngine::Entities::KolEntities::SocialAccount
           end
         end

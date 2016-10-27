@@ -77,8 +77,10 @@ module Campaigns
 
       if self.ios_platform_target.present?
         kols = kols.ios
+        kols = kols.where("app_version >= '#{self.ios_platform_target.target_content}'")      if   self.ios_platform_target.target_content.present?
       elsif self.android_platform_target.present?
         kols = kols.android
+        kols = kols.where("app_version >= '#{self.android_platform_target.target_content}'")  if  self.android_platform_target.target_content.present?
       end
 
       kols

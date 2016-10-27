@@ -6,8 +6,8 @@ class CampaignTarget < ActiveRecord::Base
     :specified_kols   => "仅特定的kols(填写(kol_id)",
     :social_accounts  => "特邀活动指定的社交账号(social_account_id)",
     :newbie_kols      => "对于新人的kols可见(填写(any)",
-    :ios_platform      => "IOS平台(过滤content不需要填)",
-    :android_platform  => "Android平台(过滤content不需要填)"
+    :ios_platform      => "IOS平台,版本号大于等于(x.x.x,不填表示不限定版本)",
+    :android_platform  => "Android平台,版本号大于等于(x.x.x,不填表示不限定版本)"
   }
   attr_accessor :target_type_text
 
