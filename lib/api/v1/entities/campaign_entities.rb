@@ -74,6 +74,12 @@ module API
             expose :recruit_end_time
           end
           expose :evaluation_status
+          expose :effect_score do  |campaign|
+            campaign.effect_evaluation.score rescue nil
+          end
+          expose :review_content do  |campaign|
+            campaign.review_evaluation.score rescue nil
+          end
         end
       end
     end

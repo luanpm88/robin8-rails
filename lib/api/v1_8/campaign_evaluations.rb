@@ -10,7 +10,7 @@ module API
         params do
           requires :campaign_id, type: Integer
           requires :effect_score, type: Integer
-          requires :experience_score, type: Integer
+          optional :experience_score, type: Integer
           requires :review_content, type: String
         end
         post 'evaluate' do
