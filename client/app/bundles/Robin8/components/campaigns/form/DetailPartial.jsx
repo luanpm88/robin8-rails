@@ -133,12 +133,12 @@ export default class DetailPartial extends React.Component {
                     <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                     按照点击指定链接奖励KOL
                   </div>
-                  {/*
+                  {
                   <div className="col-md-4">
                     <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
                     按照完成任务奖励KOL
                   </div>
-                  */}
+                  }
                 </div>
               </div>
             </div>
