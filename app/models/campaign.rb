@@ -268,7 +268,7 @@ class Campaign < ActiveRecord::Base
     self.budget / self.per_action_budget
   end
 
-  AdminPhones = ['15221773929', '18917797087', '13917397090', '15298670933', '13764432765', '13262752287 ']
+  AdminPhones = ['18917797087', '13917397090', '15298670933', '13764432765', '13262752287']
   def create_job
     raise 'status 不能为空' if self.status.blank?
     if (self.status_changed? && status.to_s == 'unexecute') && Rails.env.production?
