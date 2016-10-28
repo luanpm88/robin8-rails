@@ -25,7 +25,7 @@ const validate = new CampaignFormValidate({
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
   img_url: { require_img: true },
-  budget: { require: true, min_budget: 100 },
+  budget: { require: true, min_budget: 1000 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
