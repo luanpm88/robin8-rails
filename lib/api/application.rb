@@ -17,6 +17,7 @@ module API
 
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
+      message << trace
 
       if Rails.env.development? or Rails.env.test?
         puts message
@@ -30,9 +31,11 @@ module API
     before do
       params.permit! if params
       @log_start_t = Time.now
-      logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip} ====Authorization:#{headers['Authorization']} === decode:#{AuthToken.decode_data(headers['Authorization'])} "
+      # logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip} ====Authorization:#{headers['Authorization']} === decode:#{AuthToken.decode_data(headers['Authorization'])} "
+      logger.info "Started #{request.request_method} Path #{request.path} IP #{request.ip}  "
       logger.info "  Parameters: #{params.to_hash.except("route_info", :password, :password_confirmation)}"
       current_kol.update_tracked_fields request      if current_kol
+      ActiveRecord::LogSubscriber.reset_runtime
     end
 
     after do
