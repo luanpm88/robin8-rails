@@ -30,6 +30,12 @@ export default (
       }, "updateCampaign");
     }}/>
 
+    <Route path="campaigns/:id/evaluate" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/EvaluateCampaignPartial').default);
+      }, "evaluateCampaign");
+    }}/>
+
     <Route path="campaigns/:id/edit_base" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
         cb(null, require('../components/UpdateCampaignBasePartial').default);

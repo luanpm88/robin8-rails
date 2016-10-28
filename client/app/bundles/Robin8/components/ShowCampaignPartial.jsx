@@ -11,7 +11,7 @@ import Overview                 from './campaigns/show/Overview';
 import Target                   from './campaigns/show/Target';
 import KolList                  from './campaigns/show/KolList';
 import Influnce                 from './campaigns/show/Influnce';
-import Install       from './campaigns/show/Install';
+import Install                  from './campaigns/show/Install';
 
 import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
 

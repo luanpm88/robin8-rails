@@ -140,6 +140,32 @@ export function updateCampaignBase(campaign_id, campaign) {
   };
 }
 
+export function evaluateCampaign(campaign_id, campaign) {
+  var formData = new FormData()
+  for(let key of Object.keys(campaign)) {
+    switch(key) {
+      default:
+        formData.append(`${key}`, campaign[key]);
+        break;
+    }
+  }
+
+  return {
+    type: actionTypes.EVALUATE_CAMPAIGN,
+    promise: fetch(
+      `${baseUrl}/campaigns/${campaign_id}/evaluate`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+        },
+        credentials: "same-origin",
+        method: 'PUT',
+        body: formData
+      }
+    ),
+    redirect: '/brand/campaigns/:id'
+  };
+}
+
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
