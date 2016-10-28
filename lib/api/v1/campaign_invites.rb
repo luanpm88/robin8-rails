@@ -128,7 +128,7 @@ module API
           campaign = campaign_invite.campaign  rescue nil
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
-          elsif campaign_invite.status != 'running'
+          elsif campaign_invite.status != 'running' && !campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该营销活动已转发成功' })
           elsif campaign.need_finish
             CampaignWorker.perform_async(campaign.id, 'fee_end')

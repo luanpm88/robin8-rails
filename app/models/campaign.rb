@@ -62,6 +62,9 @@ class Campaign < ActiveRecord::Base
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :recent_7, ->{ where("deadline > '#{7.days.ago}'")}
   scope :order_by_start, -> { order('start_time desc')}
+  has_one :effect_evaluation, -> {where(item: 'effect')}, class: CampaignEvaluation
+  has_one :experience_evaluation, -> {where(item: 'experience')}, class: CampaignEvaluation
+  has_one :review_evaluation, -> {where(item: 'review')}, class: CampaignEvaluation
 
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
   scope :order_by_status, ->(ids = '""') { order(" case

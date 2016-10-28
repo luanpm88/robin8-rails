@@ -26,6 +26,14 @@ module API
       unauthorized! unless current_kol
     end
 
+    def authenticate_from_engine!
+      if headers["Authorization"] == 'search_engine'
+        return true
+      else
+        error_403!('您无权限访问!')
+      end
+    end
+
     def user_avatar(user, style)
       if user and user.profile and user.profile.avatar?
         profile.avatar.url(style)
