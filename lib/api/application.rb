@@ -16,7 +16,6 @@ module API
 
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
-      message << trace
 
       if Rails.env.development? or Rails.env.test?
         puts message
