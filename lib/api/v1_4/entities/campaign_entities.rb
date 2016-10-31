@@ -97,7 +97,7 @@ module API
             campaign.effect_evaluation.score rescue nil
           end
           expose :review_content do  |campaign|
-            campaign.review_evaluation.score rescue nil
+            campaign.review_evaluation.content rescue nil
           end
         end
 
