@@ -429,4 +429,12 @@ class Campaign < ActiveRecord::Base
       self.wechat_auth_type = 'no'
     end
   end
+
+  def review_content
+    self.review_evaluation.content rescue nil
+  end
+
+  def effect_score
+    self.effect_evaluation.score rescue nil #'5'   #默认显示5分
+  end
 end

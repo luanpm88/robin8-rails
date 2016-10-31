@@ -11,7 +11,8 @@ import Overview                 from './campaigns/show/Overview';
 import Target                   from './campaigns/show/Target';
 import KolList                  from './campaigns/show/KolList';
 import Influnce                 from './campaigns/show/Influnce';
-import Install       from './campaigns/show/Install';
+import Install                  from './campaigns/show/Install';
+import Evaluation               from './campaigns/show/Evaluation';
 
 import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
 
@@ -107,6 +108,7 @@ class ShowCampaignPartial extends Component {
             }
           }
           { this.renderRevokeBtn() }
+          <Evaluation {...{campaign, actions, campaign_id}}  />
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>

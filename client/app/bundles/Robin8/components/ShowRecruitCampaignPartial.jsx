@@ -117,6 +117,7 @@ class ShowRecruitCampaignPartial extends Component {
           { this.render_state_text(campaign, campaign_id, actions) }
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           { this.renderRevokeBtn() }
+          <Evaluation {...{campaign, actions, campaign_id}}  />
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>

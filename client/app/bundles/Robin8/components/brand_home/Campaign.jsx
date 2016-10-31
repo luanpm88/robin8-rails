@@ -55,7 +55,14 @@ export default class Campaign extends React.Component {
           <Link to={`/brand/campaigns/${campaign.get("id")}/preview`} className="btn pay-campaign-btn">支付</Link>
         </div>
       )
-    } else{
+    } else if (campaign.get("status") == 'settled' && campaign.get("evaluation_status") == 'evaluating'){
+      return (
+        <div>
+          <Link to={this.getUrl() + "/evaluate"} className="before-pay-edit-campaign-btn">评价</Link>
+          <Link to={this.getCopyAddUrl()} className="btn add-campaign-from-copy-btn">再次发布</Link>
+        </div>
+      )
+    }else {
       return (
         <div>
           <Link to={this.getCopyAddUrl()} className="btn add-campaign-from-copy-btn">再次发布</Link>

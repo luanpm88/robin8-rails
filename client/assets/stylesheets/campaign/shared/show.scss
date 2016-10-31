@@ -501,3 +501,17 @@
   margin-left: 15px;
   border-left: 2px solid #ead003;
 }
+
+#panelEvaluationShow .evaluation-items{
+  .item{
+    overflow: auto;
+    padding: 8px 0px;
+     .name{
+       width: 90px;
+       float: left;
+     }
+    .value{
+      float: left;
+    }
+  }
+}

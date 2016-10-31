@@ -220,6 +220,21 @@ module Brand
             campaign.update_columns({name: params[:name], description: params[:description], url: params[:url], img_url: params[:img_url]})
             present campaign
           end
+
+
+          desc 'evaluate  campaign  info'
+          params do
+            requires :review_content, type: String
+            requires :effect_score, type: Integer
+          end
+          put ':id/evaluate' do
+            @campaign = Campaign.find params[:id]
+            # if @campaign.evaluation_status != "evaluating"
+            #   error_unprocessable! "该活动你已评价,或暂时不能评价!" and return
+            # end
+            CampaignEvaluation.evaluate(@campaign, params[:effect_score], params[:experience_score], params[:review_content])
+            present @campaign
+          end
         end
 
         desc 'Create a recruit campaign'

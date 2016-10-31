@@ -15,15 +15,10 @@ import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
-  url: { require: true, url: { require_protocol: false } },
-  img_url: { require_img: true },
 })
 
 const validateFailed = (errors) => {
   $('[name="' + Object.keys(errors)[0] + '"]').focus();
-  if ( (Object.keys(errors).length === 1) && errors["img_url"]) {
-    $("html,body").animate({scrollTop: $(".cover-photo").offset().top}, 100);
-  }
 }
 
 function select(state) {
