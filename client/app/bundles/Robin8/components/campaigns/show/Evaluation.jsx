@@ -41,18 +41,6 @@ export default class Evaluation extends React.Component {
     }
   }
 
-  getUrl() {
-    const { campaign } = this.props;
-
-    if(campaign.get("per_budget_type") == 'recruit') {
-      return `/brand/recruits/${campaign.get("id")}`;
-    } else if(campaign.get("per_budget_type") == 'invite') {
-      return `/brand/invites/${campaign.get("id")}`;
-    } else {
-      return `/brand/campaigns/${campaign.get("id")}`;
-    }
-  }
-
 
   render_kol_list(){
     const campaign = this.props.campaign
@@ -83,7 +71,7 @@ export default class Evaluation extends React.Component {
     }else if (campaign.get("evaluation_status") == 'evaluating'){
       return(
         <div className="panel-body showMiddleTip">
-          活动已结算,速速去评价! <Link to={this.getUrl() + "/evaluate"} className="before-pay-edit-campaign-btn">评价</Link>
+          活动已结算,速速去评价! <Link to={`/brand/campaigns/${campaign.get("id")}/evaluate`} className="before-pay-edit-campaign-btn">评价</Link>
         </div>
       )
     }else{
