@@ -58,6 +58,7 @@ class EvaluateCampaignPartial extends Component {
   _fetchCampaign() {
     const campaign_id = this.props.params.id;
     const { fetchCampaign } = this.props.actions;
+    fetchCampaign(campaign_id);
   }
 
 
