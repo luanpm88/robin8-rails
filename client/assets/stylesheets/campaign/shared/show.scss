@@ -495,3 +495,18 @@
     }
   }
 }
+
+#panelEvaluationShow .evaluation-items{
+  .item{
+    overflow: auto;
+    padding: 8px 0px;
+     .name{
+       width: 90px;
+       float: left;
+     }
+    .value{
+      float: left;
+    }
+  }
+
+}

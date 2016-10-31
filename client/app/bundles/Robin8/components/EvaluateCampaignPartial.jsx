@@ -12,13 +12,14 @@ import BreadCrumb               from './shared/BreadCrumb';
 import Basic                    from './campaigns/show/Basic';
 import Evaluate                 from './campaigns/form/EvaluatePartial.jsx';
 import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
+import initToolTip              from './shared/InitToolTip';
 import EvaluateCampaignFormValidate    from './shared/validate/EvaluateCampaignFormValidate'
 
 import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
 function select(state){
   return {
-    campaign: state.campaignReducer.get('campaign'),
+    campaign: state.campaignReducer.get('campaign')
   };
 }
 
@@ -39,6 +40,7 @@ class EvaluateCampaignPartial extends Component {
   }
 
   componentDidMount() {
+    initToolTip({placement:'bottom', html: true});
     this._fetchCampaign();
   }
 
@@ -56,7 +58,6 @@ class EvaluateCampaignPartial extends Component {
   _fetchCampaign() {
     const campaign_id = this.props.params.id;
     const { fetchCampaign } = this.props.actions;
-    fetchCampaign(campaign_id);
   }
 
 
@@ -65,6 +66,7 @@ class EvaluateCampaignPartial extends Component {
     const campaign_id = this.props.params.id
     const { review_content, evaluation_status, effect_score } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
+    const { saveCampaign } = this.props.actions;
 
     return (
     <div className="page page-activity page-activity-new">

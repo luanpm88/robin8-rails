@@ -437,6 +437,6 @@ class Campaign < ActiveRecord::Base
   end
 
   def effect_score
-    self.effect_evaluation.score rescue nil
+    self.effect_evaluation.score rescue nil #'5'   #默认显示5分
   end
 end

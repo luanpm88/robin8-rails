@@ -45,6 +45,7 @@ export default function campaignReducer($$state = initialState, action=nil) {
     case actionTypes.UPDATE_CAMPAIGN:
     case actionTypes.UPDATE_CAMPAIGN_BASE:
     case actionTypes.UPDATE_RECRUIT:
+    case actionTypes.EVALUATE_CAMPAIGN:
     case actionTypes.UPDATE_INVITE_CAMPAIGN:
       if(fetchState === "failure"){
         $$state = $$state.merge({ "readyState": fetchState, "error": action.error });

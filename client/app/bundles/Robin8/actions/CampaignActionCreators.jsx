@@ -162,7 +162,7 @@ export function evaluateCampaign(campaign_id, campaign) {
         body: formData
       }
     ),
-    redirect: '/brand/campaigns/:id'
+    redirect: `/brand/campaigns/${campaign_id}`
   };
 }
 
