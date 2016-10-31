@@ -4,6 +4,8 @@ module API
       module KolEntities
         class SocialAccount < Grape::Entity
           expose :id, as: 'social_account_id'
+          expose :username
+          expose :followers_count
           expose :provider
           expose :provider_text
           expose :price
