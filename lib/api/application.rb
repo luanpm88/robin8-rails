@@ -20,7 +20,7 @@ module API
       if Rails.env.development? or Rails.env.test?
         puts message
       else
-        logger.info message
+        Rails.logger.api.info message
         Airbrake.notify(exception)
       end
       rack_response({'message' => exception.message}, 500)
