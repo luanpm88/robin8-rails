@@ -111,6 +111,7 @@ module Open
           expose :avail_click do |invite|
             invite.get_avail_click
           end
+          expose :earn_money
           expose :total_click do |invite|
             invite.get_total_click
           end
