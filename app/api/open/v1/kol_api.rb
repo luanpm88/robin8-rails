@@ -46,6 +46,40 @@ module Open
           present :success, true
           present :kol,     @kol, with: Open::V1::Entities::Kol::Detail
         end
+
+
+        desc '获取kol数量'
+        get "search_count" do
+          @kols = Kol.personal_big_v
+
+          if params[:region] and params[:region] != "全部"
+            regions = params[:region].split(",").reject(&:blank?)
+            cities = City.where(name: regions).map(&:name_en)
+
+            @kols = @kols.where(app_city: cities)
+          end
+
+          if params[:tag] and params[:tag] != "全部"
+            tag_params = params[:tag].split(",").reject(&:blank?)
+            tags = Tag.where(name: tag_params).map(&:id)
+
+            join_table(:kol_tags)
+            @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
+          end
+
+          if params[:age] && params[:age] != '全部'
+            min_age = params[:age].split(',').map(&:to_i).first
+            max_age = params[:age].split(',').map(&:to_i).last
+            @kols = @kols.ransack({age_in: Range.new(min_age, max_age)}).result
+          end
+
+          if params[:gender] && params[:gender] != '全部'
+            @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
+          end
+
+          present :success, true
+          present :count, @kols.distinct.count
+        end
       end
     end
   end
