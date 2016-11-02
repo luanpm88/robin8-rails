@@ -18,8 +18,8 @@ module Open
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
 
-          requires :poster,     type: Hash
-          requires :screenshot, type: Hash
+          requires :poster_url,        type: String
+          optional :screenshot_url,    type: String
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -72,17 +72,8 @@ module Open
 
           declared_params = declared(params)
 
-          if params[:poster]
-            poster = AvatarUploader.new
-            poster.store!(params[:poster])
-            declared_params.merge!(:img_url => poster.url)
-          end
-
-          if params[:screenshot]
-            screenshot = AvatarUploader.new
-            screenshot.store!(params[:screenshot])
-            declared_params.merge!(:example_screenshot => screenshot)
-          end
+          declared_params.merge!(:img_url => params[:poster_url])
+          declared_params.merge!(:example_screenshot => params[:screenshot_url])
 
           declared_params.reverse_merge!({
             :name => "新的开放接口创建的CPI活动",
@@ -122,8 +113,8 @@ module Open
           optional :deadline,          type: DateTime
           # optional :budget,            type: Float
 
-          optional :poster,     type: Hash
-          optional :screenshot, type: Hash
+          optional :poster_url,         type: String
+          optional :screenshot_url,     type: String
 
           optional :age,    type: String, default: '全部'
           optional :gender, type: String, default: '全部'
@@ -179,17 +170,8 @@ module Open
             per_action_budget: @campaign.per_action_budget
           })
 
-          if params[:poster]
-            poster = AvatarUploader.new
-            poster.store!(params[:poster])
-            declared_params.merge!(:img_url => poster.url)
-          end
-
-          if params[:screenshot]
-            screenshot = AvatarUploader.new
-            screenshot.store!(params[:screenshot])
-            declared_params.merge!(:example_screenshot => screenshot)
-          end
+          declared_params.merge!(:img_url => params[:poster_url])   if params[:poster_url]
+          declared_params.merge!(:example_screenshot => params[:screenshot_url])   if params[:screenshot_url]
 
           if @campaign.status == "rejected"
             @campaign.status = "unexecute"
@@ -284,6 +266,21 @@ module Open
           present :total_count,  @invites.count
           present :current_page, @invites.current_page
           present :total_pages,  @invites.total_pages
+        end
+
+        desc "statist campaign click"
+        params do
+          requires :id, type: Integer
+          requires :starttime, type: Date
+          requires :endtime, type: Date
+        end
+        post "click_stats" do
+          @campaign = current_user.campaigns.find(params[:id])
+          @campaign_show = CampaignShow.where(created_at: (params[:starttime]..params[:endtime])).where(campaign_id: @campaign.id).
+            group("date(created_at)").
+            select("date(created_at) as date, sum(status) as avail_click, count(status) as total_click")
+          present :success, true
+          present :data, @campaign_show.collect{|t| {time: t.date, avail_click: t.avail_click, total_click: t.total_click}}
         end
       end
     end
