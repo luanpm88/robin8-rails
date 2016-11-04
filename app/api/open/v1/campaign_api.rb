@@ -17,6 +17,7 @@ module Open
           requires :per_action_budget, type: Float
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
+          requires :per_budget_type,   type: String, values: ['simple_cpi', 'post', 'click']
 
           requires :poster_url,        type: String
           optional :screenshot_url,    type: String
@@ -39,8 +40,12 @@ module Open
             error!({ success: false, error: '结束时间需要晚于开始时间' }, 400) and return
           end
 
-          if params[:per_action_budget] and params[:per_action_budget].to_f < 3
-            error!({ success: false, error: '活动单价不能小于3元' }, 400) and return
+          if params[:per_budget_type] == 'simple_cpi' and params[:per_action_budget].to_f < 3
+            error!({ success: false, error: 'simple_cpi 活动单价不能小于3元' }, 400) and return
+          elsif params[:per_budget_type] == 'post' and params[:per_action_budget].to_f < 2
+              error!({ success: false, error: 'post 活动单价不能小于2元' }, 400) and return
+          elsif params[:per_budget_type] == 'click' and params[:per_action_budget].to_f < 0.2
+            error!({ success: false, error: 'click 活动单价不能小于0.2元' }, 400) and return
           end
 
           if current_user.avail_amount < params[:budget].to_f
@@ -76,7 +81,7 @@ module Open
           declared_params.merge!(:example_screenshot => params[:screenshot_url])
 
           declared_params.reverse_merge!({
-            :name => "新的开放接口创建的CPI活动",
+            :name => "新的开放接口创建的活动",
             :description => "无",
             :per_budget_type => "simple_cpi",
             :img_url => "-",
@@ -111,6 +116,7 @@ module Open
           optional :per_action_budget, type: Float
           optional :start_time,        type: DateTime
           optional :deadline,          type: DateTime
+          optional :per_budget_type,   type: String, values: ['simple_cpi', 'post', 'click']
           # optional :budget,            type: Float
 
           optional :poster_url,         type: String
@@ -140,8 +146,12 @@ module Open
             error!({success: false, error: "结束时间需要晚于开始时间!"}) and return
           end
 
-          if params[:per_action_budget] and params[:per_action_budget].to_f < 3
-            error!({ success: false, error: '活动单价不能小于3元' }, 400) and return
+          if params[:per_budget_type] == 'simple_cpi' and (params[:per_action_budget].to_f < 3  || params[:per_action_budget].blank?)
+            error!({ success: false, error: 'simple_cpi 活动单价不能小于3元' }, 400) and return
+          elsif params[:per_budget_type] == 'post' and (params[:per_action_budget].to_f < 2  || params[:per_action_budget].blank?)
+            error!({ success: false, error: 'post 活动单价不能小于2元' }, 400) and return
+          elsif params[:per_budget_type] == 'click' and (params[:per_action_budget].to_f < 0.2 || params[:per_action_budget].blank?)
+            error!({ success: false, error: 'click 活动单价不能小于0.2元' }, 400) and return
           end
 
           if params[:tags] and params[:tags] != "全部"
