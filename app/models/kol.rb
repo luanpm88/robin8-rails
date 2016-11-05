@@ -227,15 +227,16 @@ class Kol < ActiveRecord::Base
   end
 
 
-  def self.fetch_kol(kol_id)
-    Kol.find(kol_id)
-    # Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
-    #   Kol.find(kol_id)
-    # end    rescue nil
+
+
+  def self.fetch_kol_with_level(kol_id)
+    Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
+      Kol.find(kol_id)
+    end    rescue nil
   end
 
   def update_click_threshold
-    if five_click_threshold_changed? || total_click_threshold_changed?
+    if five_click_threshold_changed? || kol_level_changed?
       Rails.cache.delete("kol_#{self.id}")
     end
   end

@@ -14,8 +14,8 @@ stderr_path "log/unicorn.stderr.log"
 stdout_path "log/unicorn.stdout.log"
 
 # workers
-ENV['UNICORN_PROCESSES'] ||= '8'
-worker_processes ENV['UNICORN_PROCESSES'].to_i
+# ENV['UNICORN_PROCESSES'] ||= '8'
+worker_processes 8
 
 # To save some memory and improve performance
 GC.respond_to?(:copy_on_write_friendly=) and

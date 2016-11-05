@@ -44,7 +44,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
   scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time < '#{CanAutoCheckInterval.ago}'))")}
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
-
+  after_save :update_invite
 
   delegate :name, to: :campaign
   def upload_start_at
@@ -332,6 +332,18 @@ class CampaignInvite < ActiveRecord::Base
     end
     total_count ||= campaign_invites.count
     [total_count, campaign_invites]
+  end
+
+  def self.fetch_invite_with_uuid(uuid)
+    Rails.cache.fetch("campaign_invite_#{uuid}", :expires_in => 2.hours) do
+      CampaignInvite.where(:uuid => uuid).first     rescue nil
+    end
+  end
+
+  def update_invite
+    if status_changed? || img_status_changed?
+      Rails.cache.delete("campaign_invite_#{self.uuid}")
+    end
   end
 
 end

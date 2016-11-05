@@ -44,9 +44,9 @@ class CampaignShowController < ApplicationController
       redirect_to @campaign.url
     else
       if Rails.env.development?
-        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url, openid, {})
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url, openid, Time.now,  {})
       else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url,openid, {})
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], visit_url, openid, Time.now,  {})
       end
       redirect_to @campaign.url
     end
@@ -64,7 +64,7 @@ class CampaignShowController < ApplicationController
     other_options[:step] = (uuid_params[:step] || 1).to_i
 
     unless ["unpay", "unexecute", "agreed"].include?(@campaign.status)
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, other_options)
+      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, Time.now, other_options)
     end
 
     if other_options[:step] == 1
