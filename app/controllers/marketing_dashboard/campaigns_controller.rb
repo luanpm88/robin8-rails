@@ -101,7 +101,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def stop
     authorize! :manage, Campaign
     @campaign = Campaign.find params[:id]
-    @campaign.finish("stop by admin")
+    @campaign.finish("expired; stop by admin")
     redirect_to :action => :index
   end
 

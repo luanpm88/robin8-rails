@@ -341,7 +341,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def update_invite
-    if status_changed? || img_status_changed?
+    if status_changed? || img_status_changed? || avail_click_changed?
       Rails.cache.delete("campaign_invite_#{self.uuid}")
     end
   end
