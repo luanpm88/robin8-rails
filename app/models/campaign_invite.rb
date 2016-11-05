@@ -266,7 +266,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #目前只是CPC会自动审核,且会在活动结束后审核
   #campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
-  def self.schedule_day_settle(async = true)
+  def self.schedule_day_settle(async = false)
     Rails.logger.settle.info "----schedule_day_settle---async:#{async}"
     if async
       ::CampaignDaySettleWorker.perform_async

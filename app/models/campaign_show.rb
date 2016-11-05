@@ -22,6 +22,7 @@ class CampaignShow < ActiveRecord::Base
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, visit_time, options={})
+    visit_time = visit_time.to_time
     if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
       return [false, 'wechat_crawler']
     end
@@ -147,7 +148,7 @@ class CampaignShow < ActiveRecord::Base
     end
     return false if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
 
-    visitor_ip = proxy_ips.split(",").first || visitor_ip
+    visitor_ip = (proxy_ips.split(",").first rescue nil) || visitor_ip
     campaign_show = CampaignShow.new(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
                                      :visit_time => visit_time, :visitor_ip => visitor_ip, :request_url => request_uri, :visitor_agent => visitor_agent, :visitor_referer => visitor_referer,
                                      :other_options => options.inspect, :proxy_ips => proxy_ips, :openid => openid)
