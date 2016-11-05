@@ -284,6 +284,11 @@ class CampaignInvite < ActiveRecord::Base
       CampaignInvite.where(:campaign_id => campaign_ids).can_day_settle.each do |invite|
         invite.settle(true, transaction_time)
       end
+
+      #对所有的结束的活动,看看所有的接受者是否都处理完毕,处理完毕就可以立即结算(没结算的活动进行检查,看看能否对品牌主结算)
+      Campaign.where(:status => 'executed').each do |campaign|
+        campaign.settle_accounts_for_brand if CampaignInvite.where(:campaign_id => campaign.id).where.not(:status => ['settled', 'rejected']).size == 0
+      end
     end
   end
 
