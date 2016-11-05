@@ -631,13 +631,14 @@ class Kol < ActiveRecord::Base
 
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
-    if imei.present?
-      return Kol.where(:IMEI => imei).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
-    elsif idfa.present?
-      return Kol.where(:IDFA => idfa).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
-    else
-      return false
-    end
+    return false
+    # if imei.present?
+    #   return Kol.where(:IMEI => imei).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
+    # elsif idfa.present?
+    #   return Kol.where(:IDFA => idfa).where("mobile_number != '#{Kol::TouristMobileNumber}'").size >= BindMaxCount
+    # else
+    #   return false
+    # end
   end
 
   def is_forbid?

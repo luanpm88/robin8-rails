@@ -75,14 +75,15 @@ module Campaigns
     def get_platform_kols
       kols = Kol.active
 
-      if self.ios_platform_target.present?
-        kols = kols.ios
-        kols = kols.where("app_version >= '#{self.ios_platform_target.target_content}'")      if   self.ios_platform_target.target_content.present?
+      android_app_version =  self.android_platform_target.target_content  rescue nil || '1.0.0'
+      ios_app_version =  self.ios_platform_target.target_content rescue nil || '1.0.0'
+      if self.ios_platform_target.present? && self.android_platform_target.present?
+        kols = kols.where("(app_platform = 'IOS' and app_version >= '#{ios_app_version}') or (app_platform = 'Android' and app_version >= '#{android_app_version}')")
+      elsif self.ios_platform_target.present?
+        kols = kols.ios.where("app_version >= '#{ios_app_version}'")
       elsif self.android_platform_target.present?
-        kols = kols.android
-        kols = kols.where("app_version >= '#{self.android_platform_target.target_content}'")  if  self.android_platform_target.target_content.present?
+        kols = kols.android.where("app_version >= '#{android_app_version}'")
       end
-
       kols
     end
 

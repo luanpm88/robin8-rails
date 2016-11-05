@@ -39,7 +39,7 @@ class CampaignShow < ActiveRecord::Base
       cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s
       if options[:step] != 2
         if openid
-          Rails.cache.write(cpa_first_step_key, openid, :expired_at => campaign.deadline)
+          Rails.cache.write(cpa_first_step_key, openid, :expires_at => campaign.deadline)
         end
         return [false, 'is_first_step_of_cpa_campaign']
       end
@@ -58,7 +58,7 @@ class CampaignShow < ActiveRecord::Base
     if openid_current_count >= OpenidMaxCount
       return [false, 'openid_reach_max_count']
     else
-      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
+      Rails.cache.write(store_key, openid_current_count + 1, :expires_at => campaign.deadline)
     end
 
     # check_ip?
@@ -106,7 +106,7 @@ class CampaignShow < ActiveRecord::Base
       if current_total_click >= level_threshold
         return [false, "exceed_kol_level_threshold"]
       else
-        Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
+        Rails.cache.write(store_key,current_total_click + 1, :expires_at => campaign.deadline)
       end
     end
 
@@ -145,8 +145,8 @@ class CampaignShow < ActiveRecord::Base
         campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
       else
         campaign_invite = CampaignInvite.where(:uuid => uuid).first  rescue nil
-        expired_at = (campaign.deadline > Time.now ? campaign.deadline : Time.now)
-        Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expired_at => expired_at) if campaign_invite
+        expires_at = (campaign.deadline > Time.now ? campaign.deadline : Time.now)
+        Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_at => expires_at) if campaign_invite
       end
     else
       campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil

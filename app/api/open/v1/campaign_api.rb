@@ -90,7 +90,6 @@ module Open
           })
 
           service = KolCreateCampaignService.new(current_user, declared_params)
-
           if service.perform and service.errors.empty?
             @campaign = service.campaign
             @campaign.update!(

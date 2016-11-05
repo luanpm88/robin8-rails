@@ -6,6 +6,7 @@ export const initialState = Immutable.fromJS({
   readyState: 'init',
   campaignList: [],
   campaign: {},
+  campaignInput: {},
   campaign_invites: [],
   hasfetchedInvite: false,
   campaign_statistics: [],
@@ -180,8 +181,20 @@ export default function campaignReducer($$state = initialState, action=nil) {
         })
       }
       return $$state;
+    case actionTypes.ANALYSIS_BUILD_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success"){
+        console.log(action.result);
+        $$state = $$state.merge({
+          "campaignInput": Immutable.fromJS(action.result),
+        })
+      }
+      return $$state;
     case actionTypes.CLEAR_ANALYSIS_CAMPAIGN:
       $$state = $$state.set("analysis_result", Immutable.Map());
+      return $$state;
+    case actionTypes.CLEAR_CAMPAIGN_INPUT:
+      $$state = $$state.set("campaignInput", Immutable.Map());
       return $$state;
     case actionTypes.ANALYSIS_INVITES_OF_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);

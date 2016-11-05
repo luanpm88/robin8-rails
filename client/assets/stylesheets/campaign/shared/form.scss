@@ -196,12 +196,13 @@
     color: #999;
     font-size: 14px;
     line-height: 32px;
-    width: 100%;
-    text-align: center;
-    &.right {
-      width: auto;
-      text-align: right;
-      right: 10px;
+    width: auto;
+    text-align: right;
+    right: 10px;
+    &.center {
+      width: 100%;
+      text-align: center;
+      right: 0;
     }
     em {
       margin-left: 10px;
@@ -242,29 +243,6 @@
   .form-group {
     position: relative;
   }
-
-  .form-group:first-child {
-    height: 85px;
-  }
-
-  .form-group:nth-child(2) {
-    height: 196px;
-    margin-bottom: 10px;
-
-    .word-limit {
-      bottom: 50px;
-    }
-
-    span.label-success {
-      position: absolute;
-      bottom: 50px !important;
-    }
-
-    span.label-danger {
-      position: absolute;
-      bottom: 50px !important;
-    }
-  }
 }
 .creat-activity-form .word-limit {
   position: absolute;
@@ -278,7 +256,7 @@
 }
 .creat-activity-form .analysis-link {
   position: absolute;
-  top: 8px;
+  top: -4px;
   right: 0;
   color: #fff;
   padding: 0 12px;

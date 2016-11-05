@@ -1,2 +1,28 @@
 @import "../shared/form.scss";
 @import "../shared/modal.scss";
+
+
+.common-basic-info {
+  padding-top: 35px !important;
+
+  .form-group {
+    min-height: 85px;
+  }
+  .form-group:last-child {
+    height: 196px;
+
+    .word-limit {
+      bottom: 50px;
+    }
+
+    span.label-success {
+      position: absolute;
+      bottom: 50px !important;
+    }
+
+    span.label-danger {
+      position: absolute;
+      bottom: 50px !important;
+    }
+  }
+}

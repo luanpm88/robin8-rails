@@ -37,9 +37,9 @@
   <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
       <ul class="nav" id="side-menu">
-        <% if false && can?(:write, AdminUser) %>
+        <% if  can?(:write, AdminUser) %>
           <li>
-            <%= link_to "CRM管理", crm_dashboard_path, :target => '_blank' %>
+            <%= link_to "CRM Management", crm_dashboard_path, :target => '_blank' %>
           </li>
         <% end %>
         <% if can?(:write, AdminUser) %>
