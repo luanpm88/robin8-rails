@@ -14,7 +14,7 @@ stderr_path "log/unicorn.stderr.log"
 stdout_path "log/unicorn.stdout.log"
 
 # workers
-ENV['UNICORN_PROCESSES'] ||= '16'
+ENV['UNICORN_PROCESSES'] ||= '8'
 worker_processes ENV['UNICORN_PROCESSES'].to_i
 
 # To save some memory and improve performance
