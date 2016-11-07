@@ -280,8 +280,8 @@ module Open
         desc "statist campaign click"
         params do
           requires :id, type: Integer
-          requires :starttime, type: Date
-          requires :endtime, type: Date
+          requires :starttime, type: DateTime
+          requires :endtime, type: DateTime
         end
         post "click_stats" do
           @campaign = current_user.campaigns.find(params[:id])
