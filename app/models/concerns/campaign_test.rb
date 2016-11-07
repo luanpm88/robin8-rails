@@ -6,7 +6,7 @@ module Concerns
 
     class_methods do
       Pre = "http://7xozqe.com2.z0.glb.qiniucdn.com/"
-      def get_img_url
+      def get_img_url2
         order = rand(21)
         "#{Pre}test#{order}.jpg"
       end
@@ -71,7 +71,7 @@ module Concerns
           campaign_attrs = TestCampaigns[rand(12)]
           long = rand(2) == 1                            if long.nil?
           campaign = Campaign.create(:status => 'unexecute', :user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :start_time => Time.now + 2.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
-                                     :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => per_budget_type)
+                                     :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url2, :per_budget_type => per_budget_type)
           campaign.status = 'agreed'
           campaign.save
         end

@@ -222,10 +222,10 @@ module Campaigns
           invite.avail_click = invite.redis_avail_click.value
           invite.total_click = invite.redis_total_click.value
           # recruit campaign upload img after campaign finished
-          if invite.total_click == 0 && invite.img_status == 'pending' && (campaign.is_post_type?  || campaign.is_click_type? || campaign.is_cpa_type?)
-            invite.img_status = 'rejected'
-            invite.reject_reason = '活动一次点击都没有'
-          end
+          # if invite.total_click == 0 && invite.img_status == 'pending' && (campaign.is_post_type?  || campaign.is_click_type? || campaign.is_cpa_type?)
+          #   invite.img_status = 'rejected'
+          #   invite.reject_reason = '活动一次点击都没有'
+          # end
           invite.save!
         else
           # receive but not apporve  we must delete
