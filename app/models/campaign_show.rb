@@ -114,7 +114,9 @@ class CampaignShow < ActiveRecord::Base
         campaign_invite.increment!(:avail_click)
         campaign_invite.increment!(:total_click)
         return [true, nil]
-      elsif (['cpa', 'click'].include?(campaign.per_budget_type) && campaign.redis_avail_click.value.to_i > campaign.max_action.to_i)
+      elsif (['cpa', 'click'].include?(campaign.per_budget_type) && campaign.redis_avail_click.value.to_i >= campaign.max_action.to_i)
+        return [false, CampaignExecuted]
+      else
         return [false, CampaignExecuted]
       end
     end
