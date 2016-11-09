@@ -12,7 +12,7 @@ module Campaigns
                        {:name => 'input_weibo_follower', :label => "增加微博粉丝", :budget_type => "cpt"},
                        {:name => 'complete_task', :label => "完成指定任务", :budget_type => "cpt"}]
       MinPerActionBudget = {:simple_cpi => 3, :cpt => 1, :click => 0.2, :post => 2}
-      MinBudget = 1000
+      MinBudget = MySettings.campaign_min_budget
       CampaignDuration = 4.days
     end
 

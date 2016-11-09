@@ -113,6 +113,17 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     end
   end
 
+  def edit
+    @user = User.find params[:id]
+  end
+
+  def update
+    @user = User.find params[:id]
+    @user.update_column(:show_count, params[:user][:show_count].to_i)
+    flash[:notice] = "修改成功"
+    redirect_to :action => :index
+  end
+
   private
   def set_user
     @user = User.find params[:user_id]

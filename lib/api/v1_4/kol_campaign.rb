@@ -35,8 +35,8 @@ module API
             img_url = uploader.url
           end
 
-          if params[:budget].to_i < 1000
-            error_403!({error: 1, detail: "总预算不能低于1000元!"})  and return
+          if params[:budget].to_i < MySettings.campaign_min_budget
+            error_403!({error: 1, detail: "总预算不能低于#{MySettings.campaign_min_budget}元!"})  and return
           end
 
           # if (params[:start_time].to_time - Time.now) < 2.hours
@@ -101,8 +101,8 @@ module API
           unless %w(unpay unexecute rejected).include?(campaign.status)
             error_403!({error: 1, detail: "活动已经开始不能修改!"})  and return
           end
-          if params[:budget].to_i < 1000
-            error_403!({error: 1, detail: "总预算不能低于1000元!"})  and return
+          if params[:budget].to_i < MySettings.campaign_min_budget
+            error_403!({error: 1, detail: "总预算不能低于#{MySettings.campaign_min_budget}元!"})  and return
           end
 
           # if (params[:start_time].to_time - Time.now) < 2.hours
