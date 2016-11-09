@@ -371,7 +371,7 @@ class Campaign < ActiveRecord::Base
         self.url = "http://" + self.url
       end
 
-      if URI(self.url).host == "mp.weixin.qq.com"
+      if URI(URI.encode(self.url)).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
           self.url = self.url + "#wechat_redirect"
@@ -403,7 +403,7 @@ class Campaign < ActiveRecord::Base
 
   def deal_with_campaign_img_url
     if self.img_url.present? and self.img_url_changed?
-      file_name = URI(self.img_url).path.downcase[1..-1]
+      file_name = URI(URI.encode(self.img_url)).path.downcase[1..-1]
       if file_name.end_with?("png") || file_name.end_with?("jpg") || file_name.end_with?("jpeg")
         CampaignImgWorker.perform_async(self.id, self.img_url)
       end

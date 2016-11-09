@@ -156,6 +156,7 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
 gem 'qiniu', '~> 6.5.1'
+gem "rails-settings-cached"
 
 
 group :development, :test do
@@ -244,4 +245,3 @@ gem 'groupdate', '~> 3.0', '>= 3.0.2'
 
 gem 'crm', path: 'crm'
 gem 'airbrake', '~> 5.0'
-gem "rails-settings-cached"
