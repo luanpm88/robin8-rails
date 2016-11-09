@@ -7,7 +7,7 @@ module Open
     def request_limit!
       reqcount_key = "robin8:open:access_token:#{@token}:reqcount"
       $redis.setex(reqcount_key, 1, 0) unless $redis.exists(reqcount_key)
-      raise Open::LimitationError.new if $redis.incr(reqcount_key) > 5
+      # raise Open::LimitationError.new if $redis.incr(reqcount_key) > 5
     end
 
     def current_user
