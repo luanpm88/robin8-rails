@@ -9,9 +9,9 @@ export default class BudgetPartial extends React.Component {
     _.bindAll(this, ['_initTouchSpin', '_handleBudgetInputChange']);
   }
 
-  _initTouchSpin() {
+  _initTouchSpin(min_budget) {
     $('.budget-input').TouchSpin({
-      min: 1000,
+      min: min_budget,
       max: 1000000,
     })
   }
@@ -33,14 +33,22 @@ export default class BudgetPartial extends React.Component {
   }
 
   componentDidMount() {
-    this._initTouchSpin();
+    const { budget, min_budget } = this.props
+    this._initTouchSpin(min_budget);
     this._handleBudgetInputChange();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { budget, min_budget } = nextProps
+    if (min_budget > 100 && budget.value == 100) {
+      //if (min_budget > 100 && this.props.min_budget == undefined) {
+      budget.onChange(min_budget);
+    }
   }
 
   componentDidUpdate() {
     this.hideTouchSpinButton();
   }
-
 
   renderAvailAmount(){
     return(
@@ -54,15 +62,26 @@ export default class BudgetPartial extends React.Component {
     )
   }
 
+  renderMinBudget(){
+    const min_budget  = this.props.min_budget
+    if(min_budget){
+      return <p className="stat">最低费用<strong className="stat-num">{min_budget}</strong>元</p>
+    }else{
+      return <p></p>
+    }
+
+
+  }
+
   renderBudgetTips(){
-    const tip = "<p>1.&nbsp;为保障活动效果, Robin8每次活动推广费必须大于1000元。\
+    const tip = "<p>1.&nbsp;为保障活动效果, Robin8每次活动推广费有最低限额。\
                  <p>2.&nbsp;活动发布后, 推广金额将被冻结; 活动结束后, 剩余金额会在4天后返回账户。\
-                 <p>3.&nbsp;请注意, 由于账户已充值的余额不能提现, 如您目前账户余额大于100, 请尽量在一次活动中用完。"
+                 <p>3.&nbsp;请注意, 由于账户已充值的余额不能提现, 如您目前账户余额较少, 请尽量在一次活动中用完。"
     return tip
   }
 
   render() {
-    const { budget } = this.props
+    const { budget, min_budget } = this.props
     return (
       <div className="creat-activity-form creat-budget">
         <div className="header">
@@ -76,7 +95,7 @@ export default class BudgetPartial extends React.Component {
               <span className="symbol">$</span>
               <input {...budget} type="text" data-is-edit={this.props.isEdit} data-origin-budget={budget.defaultValue} className="spinner-input budget-input" style={{display: 'block'}} />
             </div>
-            <p className="stat">最低费用<strong className="stat-num">1000</strong>元</p>
+            {this.renderMinBudget()}
             <ShowError field={budget}/>
             <div><a href="/brand/financial/recharge" className="budget-show-error" target="_blank">账户余额不足, 请充值</a></div>
           </div>

@@ -242,6 +242,7 @@ Rails.application.routes.draw do
       resource  "marketing_message"
       resources "sms_messages"
       resources "open_tokens"
+      resources "settings"
     end
   end
 end

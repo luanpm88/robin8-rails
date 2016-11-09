@@ -14,6 +14,7 @@ module Brand
             credits = params[:credits]
             tax = params[:tax]
             actual_credits = credits + tax
+            return error_unprocessable! "充值最低金额为#{MySettings.recharge_min_budget}" if MySettings.recharge_min_budget > actual_credits
             invite_code = params[:invite_code]
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"

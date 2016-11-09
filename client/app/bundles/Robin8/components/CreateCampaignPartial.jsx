@@ -24,7 +24,7 @@ const initCampaign = {
   tags: "全部",
   gender: '全部',
   message: '',
-  budget: 1000,
+  budget: 100,
   per_budget_type: 'click',
   per_action_budget: 0.2,
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
@@ -50,7 +50,7 @@ const validate = new CampaignFormValidate({
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
   img_url: { require_img: true },
-  budget: { require: true, min_budget: 1000 },
+  budget: { require: true },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
@@ -105,6 +105,7 @@ class CreateCampaignPartial extends React.Component {
   render() {
     const { name, description, img_url, url, age, gender, region, tags, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type} = this.props.fields;
     const brand = this.props.brand
+    const min_budget = brand.get("campaign_min_budget")
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
 
@@ -115,7 +116,7 @@ class CreateCampaignPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }} onLinkAnalysis={this._fetchAnalysisCampaign} />
-              <BudgetPartial {...{ budget }} />
+              <BudgetPartial {...{ budget, min_budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type }} />
               <DatePartial {...{ start_time, deadline }} />
               <TargetPartial {...{region, tags, age, gender}} />

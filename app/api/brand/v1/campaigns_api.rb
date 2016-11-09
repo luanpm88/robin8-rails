@@ -102,7 +102,7 @@ module Brand
           end
           post do
             if params[:budget].to_i < MySettings.campaign_min_budget
-              error_unprocessable "总预算不能低于#{MySettings.campaign_min_budget}元!"
+              error_unprocessable! "活动总预算不能低于#{MySettings.campaign_min_budget}元!"
               return
             end
 
