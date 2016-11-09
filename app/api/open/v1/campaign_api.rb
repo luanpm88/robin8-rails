@@ -71,7 +71,7 @@ module Open
           end
 
           if params[:region] and params[:region] != "全部"
-            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
+            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take rescue nil }.compact
             params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
           end
 
