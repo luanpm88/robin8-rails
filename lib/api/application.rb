@@ -16,12 +16,14 @@ module API
 
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
+      message << "path: #{@env['PATH_INFO']}\n"
+      message << "params: #{@env['api.endpoint'].params.to_hash.except("route_info", :password, :password_confirmation) rescue nil}\n"
 
       if Rails.env.development? or Rails.env.test?
         puts message
       else
         Rails.logger.api.info message
-        Airbrake.notify(exception)
+        Airbrake.notify(exception, @env)
       end
       rack_response({'message' => exception.message}, 500)
     end
