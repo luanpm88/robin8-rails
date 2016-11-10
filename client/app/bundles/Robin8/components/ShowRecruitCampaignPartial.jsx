@@ -15,6 +15,7 @@ import ResultView  from './recruit_campaigns/show/ResultView';
 import KolList     from './recruit_campaigns/show/KolList';
 import StateText   from './recruit_campaigns/show/StateText';
 import RevokeConfirmModal       from './campaigns/modals/RevokeConfirmModal';
+import Evaluation               from './campaigns/show/Evaluation';
 
 import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
