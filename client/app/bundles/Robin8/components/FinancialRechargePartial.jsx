@@ -51,20 +51,18 @@ class FinancialRechargePartial extends React.Component {
     //this.refs.price_2000.style.border = '1px solid #dce4e6';
     //$('button i').hide();
     const price = this.refs.priceInput.value;
-    const brand = this.props.profileData.get('brand')
-    const recharge_min_budget = brand.get("recharge_min_budget")
+    const brand = this.props.profileData.get('brand');
+    const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
     } else if(!validator.isInt(price)) {
       $(".error-tips p").hide();
       $(".must-be-integer").show();
-    }
-    else if(!validator.isInt(price, {min: recharge_min_budget})) {
+    }else if(!validator.isInt(price, {min: recharge_min_budget})) {
       $(".error-tips p").hide();
       $(".must-greater-than").show();
-    }
-  else {
+    }else {
       $(".error-tips p").hide();
     }
   }
@@ -167,7 +165,7 @@ class FinancialRechargePartial extends React.Component {
                       <p className="must-input">请输入金额</p>
                       <p className="must-input-or-check">请选择或输入金额</p>
                       <p className="must-be-integer">金额必须为整数</p>
-                      <p className="must-greater-than">最低金额为{brand.get("recharge_min_budget")}元</p>
+                      <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
                     </div>
                     <div>
                       <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>
