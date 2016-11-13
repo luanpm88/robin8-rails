@@ -42,6 +42,7 @@ module Open
               []
             end
           end
+          expose :budget_stats_by_day
         end
 
         class CampaignDetail < Grape::Entity
@@ -115,7 +116,9 @@ module Open
           expose :avail_click do |invite|
             invite.get_avail_click
           end
-          expose :earn_money
+          expose :earn_money do |invite|
+            invite.earn_money(true)
+          end
           expose :total_click do |invite|
             invite.get_total_click
           end

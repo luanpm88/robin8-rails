@@ -218,6 +218,20 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  #根据点击量  #only cpc cpp
+  def budget_stats_by_day
+    return [] unless ['executing', 'executed', 'settled'].include? self.status
+    campaign = self
+    if self.is_click_type?
+      avail_stats = CampaignShow.where(campaign_id: self.id).group("date(created_at)").
+        select("date(created_at) as date, sum(status) as avail")
+    elsif self.is_post_type? || self.is_simple_cpi_type?  || self.is_cpt_type?
+      avail_stats = CampaignInvite.where(campaign_id: self.id, status: ['approved', 'finished', 'settled'])
+                      .group("date(approved_at)").select("date(approved_at) as date, count(*) as avail")
+    end
+    avail_stats.collect{|t| {time: t.date, avail: t.avail, take_budget: t.avail * campaign.per_action_budget}}   rescue []
+  end
+
   def remain_budget(from_brand = true)
     return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)  rescue nil
   end

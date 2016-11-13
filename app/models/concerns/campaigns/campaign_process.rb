@@ -178,6 +178,12 @@ module Campaigns
             CampaignObserverWorker.new.perform(self.id)
           end
         end
+      elsif self.status == 'agreed'
+        ActiveRecord::Base.transaction do
+          self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
+                                 :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
+          settle_accounts_for_brand
+        end
       end
     end
 

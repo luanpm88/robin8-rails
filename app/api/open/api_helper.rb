@@ -15,7 +15,7 @@ module Open
 
       @token = params[:token] || request.headers["Authorization"]
       user_id = $redis.hget("robin8:open:access_tokens", @token)
-      user_id = 829 if Rails.env.development?
+      user_id = 829 if Rails.env.development? && current_user.blank?
       @current_user = User.where(id: user_id).take if user_id
     end
 

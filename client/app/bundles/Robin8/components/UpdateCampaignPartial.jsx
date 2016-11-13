@@ -25,7 +25,6 @@ const validate = new CampaignFormValidate({
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
   img_url: { require_img: true },
-  budget: { require: true, min_budget: 1000 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
@@ -110,6 +109,7 @@ class UpdateCampaignPartial extends React.Component {
     const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
+    const min_budget = brand.get("campaign_min_budget");
     const { handleSubmit, submitting, invalid } = this.props;
     const { updateCampaign } = this.props.actions;
 

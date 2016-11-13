@@ -188,16 +188,16 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def earn_money
+  def earn_money(from_brand = false)
     return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
     if campaign.is_click_type? or campaign.is_cpa_type? || campaign.is_cpi_type?
-      (get_avail_click * campaign.get_per_action_budget(false)).round(2)       rescue 0
+      (get_avail_click * campaign.get_per_action_budget(from_brand)).round(2)       rescue 0
     elsif campaign.is_invite_type?
       self.price
     else
-      campaign.get_per_action_budget(false).round(2) rescue 0
+      campaign.get_per_action_budget(from_brand).round(2) rescue 0
     end
   end
 
