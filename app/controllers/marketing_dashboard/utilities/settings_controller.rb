@@ -2,7 +2,8 @@ class MarketingDashboard::Utilities::SettingsController < MarketingDashboard::Ba
   def index
   end
 
-  def update
-
+  def update_value
+    MySettings.send("#{params[:key]}=", params[:value])
+    render :js => "alert('更新成功');window.location.reload();"
   end
 end
