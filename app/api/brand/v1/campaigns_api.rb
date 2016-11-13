@@ -214,7 +214,7 @@ module Brand
             end
           end
           put ':id' do
-            if params[:budget].to_i < MySettings.campaign_min_budget
+            if params[:budget].to_i < MySettings.campaign_min_budget.to_i
               error_unprocessable "总预算不能低于#{MySettings.campaign_min_budget}元!"
               return
             end
@@ -281,6 +281,9 @@ module Brand
         end
         post 'recruit_campaigns' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
+          if params[:budget].to_i < MySettings.campaign_min_budget.to_i
+            error_unprocessable! "总预算不能低于#{MySettings.campaign_min_budget}元!"
+          end
           service = CreateRecruitCampaignService.new current_user, declared(params)
           if service.perform
             present service.campaign
@@ -313,9 +316,8 @@ module Brand
         end
         put '/recruit_campaigns/:id' do
           params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
-          if params[:budget].to_i < MySettings.campaign_min_budget
-            error_unprocessable "总预算不能低于#{MySettings.campaign_min_budget}元!"
-            return
+          if params[:budget].to_i < MySettings.campaign_min_budget.to_i
+            error_unprocessable! "总预算不能低于#{MySettings.campaign_min_budget}元!"
           end
           service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
           if service.perform
