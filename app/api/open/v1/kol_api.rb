@@ -55,11 +55,11 @@ module Open
           if params[:region] and params[:region] != "全部"
             city_name_ens = []
             params[:region].split(",").each do |region|
-              city = City.where("name like '#{region[0,2]}%'").first
+              city = City.where("name like '#{region[0,2]}%'").first  rescue nil
               if city
                 city_name_ens << city.name_en
               else
-                province = Province.where("name like '#{region[0,2]}%'").first
+                province = Province.where("name like '#{region[0,2]}%'").first  rescue nil
                 if province
                   province.cities.each do |city|
                     city_name_ens << city.name_en
