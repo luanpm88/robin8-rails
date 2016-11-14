@@ -53,10 +53,22 @@ module Open
           @kols = Kol.personal_big_v
 
           if params[:region] and params[:region] != "全部"
-            regions = params[:region].split(",").reject(&:blank?)
-            cities = City.where(name: regions).map(&:name_en)
+            city_name_ens = []
+            params[:region].split(",").each do |region|
+              city = City.where("name like '#{region[0,2]}%'").first
+              if city
+                city_name_ens << city.name_en
+              else
+                province = Province.where("name like '#{region[0,2]}%'").first
+                if province
+                  province.cities.each do |city|
+                    city_name_ens << city.name_en
+                  end
+                end
+              end
+            end
 
-            @kols = @kols.where(app_city: cities)
+            @kols = @kols.where(app_city: city_name_ens)
           end
 
           if params[:tag] and params[:tag] != "全部"
