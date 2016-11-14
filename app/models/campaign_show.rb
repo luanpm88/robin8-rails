@@ -119,6 +119,8 @@ class CampaignShow < ActiveRecord::Base
       else
         return [false, CampaignExecuted]
       end
+    elsif campaign.status != 'executing'
+      return [false, CampaignExecuted]
     end
 
     from_group = (request_uri.include?("groupmessage") ||  request_uri.include?("singlemessage")) ? "from_group" : nil
