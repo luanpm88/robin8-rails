@@ -52,9 +52,9 @@ module Open
             error!({ success: false, error: '账户余额不够，请联系客服充值' }, 400) and return
           end
 
-          if current_user.campaigns.where(status: %w(unpay unexecute), name: params[:name]).exists?
-            error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return
-          end
+          # if current_user.campaigns.where(status: %w(unpay unexecute), name: params[:name]).exists?
+          #   error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return
+          # end
 
           if params[:tags] and params[:tags] != "全部"
             params[:tags] = Tag.where(label: params[:tags].split(",")).map(&:label).join(",")
