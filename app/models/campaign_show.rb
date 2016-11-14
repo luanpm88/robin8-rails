@@ -117,6 +117,8 @@ class CampaignShow < ActiveRecord::Base
       elsif (['cpa', 'click'].include?(campaign.per_budget_type) && campaign.redis_avail_click.value.to_i > campaign.max_action.to_i)
         return [false, CampaignExecuted]
       end
+    elsif campaign.status == 'settled'
+      return [false, CampaignExecuted]
     end
 
     from_group = (request_uri.include?("groupmessage") ||  request_uri.include?("singlemessage")) ? "from_group" : nil
