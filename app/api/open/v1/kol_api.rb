@@ -71,11 +71,11 @@ module Open
             @kols = @kols.where(app_city: city_name_ens)
           end
 
-          if params[:tag] and params[:tag] != "全部"
-            tag_params = params[:tag].split(",").reject(&:blank?)
-            tags = Tag.where(name: tag_params).map(&:id)
+          if params[:tags] and params[:tags] != "全部"
+            tag_params = params[:tags].split(",").reject(&:blank?)
+            tag_ids = Tag.where(label: tag_params).map(&:id)
 
-            @kols = @kols.joins(:kol_tags).where("`kol_tags`.`tag_id` IN (?)", tags)
+            @kols = @kols.joins(:kol_tags).where("`kol_tags`.`tag_id` IN (?)", tag_ids)
           end
 
           if params[:age] && params[:age] != '全部'
