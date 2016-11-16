@@ -52,7 +52,7 @@ module Campaigns
           end
 
           Rails.logger.transaction.info "--------活动撤销退款给user, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
-          self.update_attributes!(status: 'revoked', revoke_time: Time.now)   unless self.status == 'rejected'
+          self.update_attributes!(status: 'revoked', revoke_time: Time.now)
         end
       end
     end
