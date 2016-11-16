@@ -210,7 +210,7 @@ module Open
             error!({ success: false, error: '活动已经撤销,不能重复撤销!' }, 400) and return
           end
 
-          if %w(unpay unexecute).exclude? @campaign.status
+          if %w(unpay unexecute rejected).exclude? @campaign.status
             error!({success: false, error: "活动已经通过审核,不能撤销!"}, 400) and return
           end
 
