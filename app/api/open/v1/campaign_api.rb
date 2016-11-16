@@ -229,7 +229,7 @@ module Open
         delete "/:id/stop" do
           @campaign = current_user.campaigns.find(params[:id])
 
-          if @campaign.status != "executing"  || @campaign.status != 'agreed'
+          if @campaign.status != "executing"  && @campaign.status != 'agreed'
             error!({ success: false, error: '该活动不能不能被中止!' }, 400) and return
           end
 
