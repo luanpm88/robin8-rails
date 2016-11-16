@@ -297,7 +297,6 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
-      self.revoke
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
     end
   end
