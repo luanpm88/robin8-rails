@@ -58,13 +58,7 @@ module Open
             expose :start_time
           end
 
-          expose :invalid_reasons do |object|
-            if object.invalid_reasons.present?
-              object.invalid_reasons.split("\n")
-            else
-              []
-            end
-          end
+          expose :invalid_reasons
 
           expose :total_click do |object|
             object.get_total_click
