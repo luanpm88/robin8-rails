@@ -25,8 +25,8 @@ module API
         desc '充值'
         post '/recharge' do
           brand_user = current_kol.find_or_create_brand_user
-          if params[:credits].to_i < 100
-            error_403!({error: 1, detail: "充值金额不能小于100"})  and return
+          if params[:credits].to_i < MySettings.recharge_min_budget.to_i
+            error_403!({error: 1, detail: "充值金额不能小于#{MySettings.recharge_min_budget}"})  and return
           end
           alipay_url = brand_user.generate_alipay_recharge_order_for_app params[:credits]
           present :error, 0

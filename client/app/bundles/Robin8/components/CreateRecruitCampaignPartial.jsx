@@ -26,8 +26,8 @@ const initCampaign = {
   recruit_end_time: moment().add(1, "days").format("YYYY-MM-DD HH:mm"),
   start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
-  budget: 1000,
-  per_action_budget: 1000,
+  budget: 300,
+  per_action_budget: 300,
   recruit_person_count: 1,
   hide_brand_name: false,
   sub_type: null,
@@ -106,6 +106,8 @@ class CreateRecruitCampaign extends React.Component{
         } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
+    const brand = this.props.brand
+    const min_budget = brand.get("campaign_min_budget")
 
     return(
       <div className="page page-recruit page-recruit-new">
@@ -118,7 +120,7 @@ class CreateRecruitCampaign extends React.Component{
               { this.renderMaterialsPartial() }
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
-              <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
+              <RecruitBudgetPartial {...{budget, min_budget, per_action_budget, recruit_person_count}} />
               <RecruitTargetPartial {...{age, gender, region, tags, sns_platforms}} />
               <div className="creat-form-footer">
                 <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当天18:00前提交的订单，其余时间段提交的订单次日审核</p>

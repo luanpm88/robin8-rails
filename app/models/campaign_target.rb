@@ -88,8 +88,21 @@ class CampaignTarget < ActiveRecord::Base
 
     def filter_target_region_kols(kols, content)
       unless content == '全部' || content == '全部 全部'
-        cities = content.split(/[,\/]/).collect { |name| City.where("name like '#{name}%'").first.name_en rescue nil }
-        kols = kols.where(:app_city => cities.compact)
+        city_name_ens = []
+        content.split(/[,\/]/).each do |region|
+          city = City.where("name like '#{region[0,2]}%'").first  rescue nil
+          if city
+            city_name_ens << city.name_en
+          else
+            province = Province.where("name like '#{region[0,2]}%'").first  rescue nil
+            if province
+              province.cities.each do |city|
+                city_name_ens << city.name_en
+              end
+            end
+          end
+        end
+        kols = kols.where(:app_city => city_name_ens.compact)
       end
       kols
     end

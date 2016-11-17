@@ -134,6 +134,10 @@
           font-size: 14px;
         }
 
+        .price-input{
+          margin-top: -20px;
+        }
+
         input {
           margin-left: 96px;
           width: 138px;
@@ -146,6 +150,13 @@
           float: right;
           margin-right: 376px;
           margin-top: -26px;
+        }
+        .recharge-min-budget{
+          float: right;
+          margin-right: 226px;
+          margin-top: -26px;
+          color: #999;
+          font-size: 12px;
         }
         .error-tips {
           margin-left: 96px;

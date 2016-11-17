@@ -70,7 +70,7 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'rails-assets-font-awsome', '4.3'
   gem 'rails-assets-momentjs'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.17.37'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '>=4.17'
   gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
@@ -156,6 +156,7 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
 gem 'qiniu', '~> 6.5.1'
+gem "rails-settings-cached"
 
 
 group :development, :test do
@@ -172,8 +173,6 @@ group :development, :test do
   gem 'pry-stack_explorer', '0.4.9.1'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
   gem 'rspec-rails'
   gem 'shoulda-matchers', '~> 3.0'
   gem 'rspec-activemodel-mocks'

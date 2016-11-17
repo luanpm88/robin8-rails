@@ -82,6 +82,11 @@
           <%= f.text_field :memo, class: "form-control" %>
         </div>
 
+        <div class="field form-group">
+          <%= f.label "查看大V上限" %><br />
+          <%= f.number_field :show_count, autofocus: true, class: "form-control" %>
+        </div>
+
 
         <div class="actions">
           <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>

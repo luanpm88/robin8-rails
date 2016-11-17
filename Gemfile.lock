@@ -149,8 +149,6 @@ GEM
     bson (3.2.6)
     buftok (0.2.0)
     builder (3.2.2)
-    byebug (5.0.0)
-      columnize (= 0.9.0)
     cancancan (1.13.1)
     capistrano (3.4.0)
       i18n
@@ -212,7 +210,6 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     colorize (0.7.7)
-    columnize (0.9.0)
     connection_pool (2.2.0)
     countries (0.11.4)
       currencies (~> 0.4.2)
@@ -609,6 +606,8 @@ GEM
       loofah (~> 2.0)
     rails-observers (0.1.2)
       activemodel (~> 4.0)
+    rails-settings-cached (0.4.1)
+      rails (>= 4.0.0)
     railties (4.2.0)
       actionpack (= 4.2.0)
       activesupport (= 4.2.0)
@@ -829,7 +828,6 @@ DEPENDENCIES
   aylien_text_api
   bootstrap-sass (~> 3.3.6)
   bundler (>= 1.7.0)
-  byebug
   cancancan (~> 1.10)
   capistrano-bundler (~> 1.1.4)
   capistrano-faster-assets (~> 1.0)
@@ -925,7 +923,7 @@ DEPENDENCIES
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
   rails-assets-datejs!
-  rails-assets-eonasdan-bootstrap-datetimepicker (= 4.17.37)!
+  rails-assets-eonasdan-bootstrap-datetimepicker (>= 4.17)!
   rails-assets-font-awsome (= 4.3)!
   rails-assets-momentjs!
   rails-assets-please-wait!
@@ -937,6 +935,7 @@ DEPENDENCIES
   rails-assets-timeago!
   rails-assets-underscore.inflection!
   rails-assets-underscore.string!
+  rails-settings-cached
   ransack!
   react_on_rails (~> 5.2.0)
   redis-objects

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025074648) do
+ActiveRecord::Schema.define(version: 20161109012627) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -292,11 +292,12 @@ ActiveRecord::Schema.define(version: 20161025074648) do
   add_index "campaign_categories", ["iptc_category_id"], name: "index_campaign_categories_on_iptc_category_id", using: :btree
 
   create_table "campaign_evaluations", force: :cascade do |t|
-    t.string   "item",       limit: 255
-    t.integer  "score",      limit: 4
-    t.string   "content",    limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "item",        limit: 255
+    t.integer  "score",       limit: 4
+    t.string   "content",     limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "campaign_id", limit: 4
   end
 
   create_table "campaign_invites", force: :cascade do |t|
@@ -1665,6 +1666,17 @@ ActiveRecord::Schema.define(version: 20161025074648) do
 
   add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
 
+  create_table "settings", force: :cascade do |t|
+    t.string   "var",        limit: 90,    null: false
+    t.text     "value",      limit: 65535
+    t.integer  "thing_id",   limit: 4
+    t.string   "thing_type", limit: 30
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
+
   create_table "sms_messages", force: :cascade do |t|
     t.string   "phone",         limit: 255
     t.string   "content",       limit: 255
@@ -2008,6 +2020,7 @@ ActiveRecord::Schema.define(version: 20161025074648) do
     t.float    "historical_recharge",    limit: 24,                           default: 0.0
     t.integer  "seller_id",              limit: 4
     t.boolean  "is_live",                limit: 1,                            default: true
+    t.integer  "show_count",             limit: 4,                            default: 30
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

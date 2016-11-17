@@ -25,65 +25,61 @@ class FinancialRechargePartial extends React.Component {
     this.setState({showRechargeModal: false});
   }
 
-  choose_price(e) {
-    this.refs.priceInput.value = "";
-    this.refs.price_500.style.border = '1px solid #dce4e6';
-    this.refs.price_1000.style.border = '1px solid #dce4e6';
-    this.refs.price_2000.style.border = '1px solid #dce4e6';
-    $('button i').hide();
-    $(".error-tips p").hide();
-    if(e.target.value === '500') {
-      this.refs.price_500.style.borderColor = "rgb(40, 182, 187)";
-      this.refs.price_500.children[0].style.display = "block"
-    } else if (e.target.value === '1000') {
-      this.refs.price_1000.style.borderColor = "rgb(40, 182, 187)";
-      this.refs.price_1000.children[0].style.display = "block"
-    } else if (e.target.value === '2000'){
-      this.refs.price_2000.style.borderColor = "rgb(40, 182, 187)";
-      this.refs.price_2000.children[0].style.display = "block"
-    }
-  }
+  //choose_price(e) {
+  //  this.refs.priceInput.value = "";
+  //  this.refs.price_500.style.border = '1px solid #dce4e6';
+  //  this.refs.price_1000.style.border = '1px solid #dce4e6';
+  //  this.refs.price_2000.style.border = '1px solid #dce4e6';
+  //  $('button i').hide();
+  //  $(".error-tips p").hide();
+  //  if(e.target.value === '500') {
+  //    this.refs.price_500.style.borderColor = "rgb(40, 182, 187)";
+  //    this.refs.price_500.children[0].style.display = "block"
+  //  } else if (e.target.value === '1000') {
+  //    this.refs.price_1000.style.borderColor = "rgb(40, 182, 187)";
+  //    this.refs.price_1000.children[0].style.display = "block"
+  //  } else if (e.target.value === '2000'){
+  //    this.refs.price_2000.style.borderColor = "rgb(40, 182, 187)";
+  //    this.refs.price_2000.children[0].style.display = "block"
+  //  }
+  //}
 
   check_price() {
     // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元
-    this.refs.price_500.style.border = '1px solid #dce4e6';
-    this.refs.price_1000.style.border = '1px solid #dce4e6';
-    this.refs.price_2000.style.border = '1px solid #dce4e6';
-    $('button i').hide();
+    //this.refs.price_500.style.border = '1px solid #dce4e6';
+    //this.refs.price_1000.style.border = '1px solid #dce4e6';
+    //this.refs.price_2000.style.border = '1px solid #dce4e6';
+    //$('button i').hide();
     const price = this.refs.priceInput.value;
+    const brand = this.props.profileData.get('brand');
+    const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
     } else if(!validator.isInt(price)) {
       $(".error-tips p").hide();
       $(".must-be-integer").show();
-    } else if(!validator.isInt(price, {min: 500})) {
+    }else if(!validator.isInt(price, {min: recharge_min_budget})) {
       $(".error-tips p").hide();
-      $(".must-greater-than-500").show();
-    } else {
+      $(".must-greater-than").show();
+    }else {
       $(".error-tips p").hide();
     }
   }
 
   recharge() {
-    // // ======
-    // // const { alipayRecharge } = this.props.actions;
-    // const credits = this.refs.priceInput.value;
-    // // ======
-
-
     const price = this.refs.priceInput.value;
     const invite_code = this.refs.marketingInviteCode.value;
     // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
     let checked_price = "";
     let credits = "";
-    if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '500';
-    } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '1000';
-    } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '2000';
-    }
+    //if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
+    //  checked_price = '500';
+    //} else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
+    //  checked_price = '1000';
+    //} else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
+    //  checked_price = '2000';
+    //}
     if (validator.isNull(price) && validator.isNull(checked_price)) {
       $(".error-tips p").hide();
       $(".must-input-or-check").show();
@@ -96,9 +92,9 @@ class FinancialRechargePartial extends React.Component {
       return ;
     }
 
-    if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
-      return ;
-    }
+    //if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
+    //  return ;
+    //}
 
     if(this.refs.invoice_checkbox.checked) {
       this.setState({checkInvoice: true})
@@ -117,6 +113,13 @@ class FinancialRechargePartial extends React.Component {
       return <img ref="avatar" src={brand.get("avatar_url")} />
     } else {
       return <img ref='avatar' src={require('brand-profile-pic.jpg')} />
+    }
+  }
+
+  render_min_recharge_budget(){
+    const brand = this.props.profileData.get('brand')
+    if (brand.get("recharge_min_budget")) {
+      return <span className="recharge-min-budget">(最低充值金额: {brand.get("recharge_min_budget")} 元)</span>
     }
   }
 
@@ -156,33 +159,13 @@ class FinancialRechargePartial extends React.Component {
                   </div>
                   <div className="recharge-amount">
                     <span>支付金额:</span>
-                    <ul className="list-inline">
-                      <li>
-                        <button value="500" ref='price_500' className='price price-500' onClick={this.choose_price.bind(this)}>
-                          500元
-                          <i className="icon icon-check"></i>
-                        </button>
-                      </li>
-                      <li>
-                        <button value="1000" ref='price_1000' className='price price-1000' onClick={this.choose_price.bind(this)}>
-                          1000元
-                          <i className="icon icon-check"></i>
-                        </button>
-                      </li>
-                      <li>
-                        <button value="2000" ref="price_2000" className='price price-2000' onClick={this.choose_price.bind(this)}>
-                          2000元
-                          <i className="icon icon-check"></i>
-                        </button>
-                      </li>
-                    </ul>
-                    <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control" placeholder="请输入金额" />
+                    <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control price-input" placeholder="请输入金额" />
                     <span className="yuan">元</span>
                     <div className='error-tips'>
                       <p className="must-input">请输入金额</p>
                       <p className="must-input-or-check">请选择或输入金额</p>
                       <p className="must-be-integer">金额必须为整数</p>
-                      <p className="must-greater-than-500">最小金额为500元</p>
+                      <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
                     </div>
                     <div>
                       <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>

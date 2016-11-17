@@ -25,7 +25,6 @@ const validate = new CampaignFormValidate({
   description: { require: true },
   url: { require: true, url: { require_protocol: false } },
   img_url: { require_img: true },
-  budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
@@ -110,6 +109,7 @@ class UpdateCampaignPartial extends React.Component {
     const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
+    const min_budget = brand.get("campaign_min_budget");
     const { handleSubmit, submitting, invalid } = this.props;
     const { updateCampaign } = this.props.actions;
 
@@ -121,7 +121,7 @@ class UpdateCampaignPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
-              <BudgetPartial {...{ budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
+              <BudgetPartial {...{ budget, min_budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type }} />
               <DatePartial {...{ start_time, deadline }} />
               <TargetPartial {...{region, tags, age, gender}} />

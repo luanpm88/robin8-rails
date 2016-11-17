@@ -52,9 +52,9 @@ module Open
             error!({ success: false, error: '账户余额不够，请联系客服充值' }, 400) and return
           end
 
-          if current_user.campaigns.where(status: %w(unpay unexecute), name: params[:name]).exists?
-            error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return
-          end
+          # if current_user.campaigns.where(status: %w(unpay unexecute), name: params[:name]).exists?
+          #   error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return
+          # end
 
           if params[:tags] and params[:tags] != "全部"
             params[:tags] = Tag.where(label: params[:tags].split(",")).map(&:label).join(",")
@@ -71,7 +71,7 @@ module Open
           end
 
           if params[:region] and params[:region] != "全部"
-            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
+            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take rescue nil }.compact
             params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
           end
 
@@ -222,6 +222,25 @@ module Open
           end
         end
 
+        desc "stop campaign"
+        params do
+          requires :id, type: Integer
+        end
+        delete "/:id/stop" do
+          @campaign = current_user.campaigns.find(params[:id])
+
+          if @campaign.status != "executing"  && @campaign.status != 'agreed'
+            error!({ success: false, error: '该活动不能被中止!' }, 400) and return
+          end
+
+          if @campaign.finish("stop from api")
+            present :success, true
+            present :msg, "活动中止成功!"
+          else
+            error!({success: false, error: "活动中止失败,发生异常!"}, 400) and return
+          end
+        end
+
         desc "get all campaign of current user"
         params do
           optional :campaign_type, type: String
@@ -280,8 +299,8 @@ module Open
         desc "statist campaign click"
         params do
           requires :id, type: Integer
-          requires :starttime, type: DateTime
-          requires :endtime, type: DateTime
+          requires :starttime, type: String
+          requires :endtime, type: String
         end
         post "click_stats" do
           @campaign = current_user.campaigns.find(params[:id])

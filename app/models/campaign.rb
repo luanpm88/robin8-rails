@@ -218,6 +218,20 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  #根据点击量  #only cpc cpp
+  def budget_stats_by_day
+    return [] unless ['executing', 'executed', 'settled'].include? self.status
+    campaign = self
+    if self.is_click_type?
+      avail_stats = CampaignShow.where(campaign_id: self.id).group("date(created_at)").
+        select("date(created_at) as date, sum(status) as avail")
+    elsif self.is_post_type? || self.is_simple_cpi_type?  || self.is_cpt_type?
+      avail_stats = CampaignInvite.where(campaign_id: self.id, status: ['approved', 'finished', 'settled'])
+                      .group("date(approved_at)").select("date(approved_at) as date, count(*) as avail")
+    end
+    avail_stats.collect{|t| {time: t.date, avail: t.avail, take_budget: t.avail * campaign.per_action_budget}}   rescue []
+  end
+
   def remain_budget(from_brand = true)
     return (self.actual_budget(from_brand) - self.take_budget(from_brand)).round(2)  rescue nil
   end
@@ -283,7 +297,6 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
-      self.revoke
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
     end
   end
@@ -371,7 +384,7 @@ class Campaign < ActiveRecord::Base
         self.url = "http://" + self.url
       end
 
-      if URI(self.url).host == "mp.weixin.qq.com"
+      if URI(URI.encode(self.url)).host == "mp.weixin.qq.com"
         self.url = self.url.gsub("#rd", "")
         if not self.url.include?("#wechat_redirect")
           self.url = self.url + "#wechat_redirect"
@@ -403,7 +416,7 @@ class Campaign < ActiveRecord::Base
 
   def deal_with_campaign_img_url
     if self.img_url.present? and self.img_url_changed?
-      file_name = URI(self.img_url).path.downcase[1..-1]
+      file_name = URI(URI.encode(self.img_url)).path.downcase[1..-1]
       if file_name.end_with?("png") || file_name.end_with?("jpg") || file_name.end_with?("jpeg")
         CampaignImgWorker.perform_async(self.id, self.img_url)
       end

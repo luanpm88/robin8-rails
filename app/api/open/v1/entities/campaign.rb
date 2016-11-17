@@ -35,13 +35,8 @@ module Open
             expose :start_time
           end
 
-          expose :invalid_reasons do |object|
-            if object.invalid_reasons.present?
-              object.invalid_reasons.split("\n")
-            else
-              []
-            end
-          end
+          expose :invalid_reasons
+          expose :budget_stats_by_day
         end
 
         class CampaignDetail < Grape::Entity
@@ -63,13 +58,7 @@ module Open
             expose :start_time
           end
 
-          expose :invalid_reasons do |object|
-            if object.invalid_reasons.present?
-              object.invalid_reasons.split("\n")
-            else
-              []
-            end
-          end
+          expose :invalid_reasons
 
           expose :total_click do |object|
             object.get_total_click
@@ -115,7 +104,9 @@ module Open
           expose :avail_click do |invite|
             invite.get_avail_click
           end
-          expose :earn_money
+          expose :earn_money do |invite|
+            invite.earn_money(true)
+          end
           expose :total_click do |invite|
             invite.get_total_click
           end

@@ -50,18 +50,23 @@ export default class RecruitBudgetPartial extends React.Component{
     this.hideTouchSpinButton();
   }
 
-  renderBudgetTips(){
+  renderBudgetTips(min_budget){
     const tip = "<p>1.&nbsp;选择预计招募的人数，以及人均的奖励金额；</p>\
-                 <p>2.&nbsp;招募预算总额 = 预计招募人数 x 人均奖励</p>"
+                 <p>2.&nbsp;招募预算总额 = 预计招募人数 x 人均奖励</p>\
+                 <p>3.&nbsp;招募预算总额最低为 {min_budget} </p>"
     return tip
   }
 
+  renderTotalBudgetTitle(min_budget){
+   return <label className="creat-campaign-total-budget form-common-label">招募预算(最低:{min_budget})</label>
+  }
+
   render(){
-    const { budget, per_action_budget, recruit_person_count} = this.props;
+    const { budget, min_budget, per_action_budget, recruit_person_count} = this.props;
     return(
       <div className="creat-activity-form creat-budget">
         <div className="header">
-          <h3 className="tit">招募预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips()}><span className="question-sign">?</span></span>
+          <h3 className="tit">招募预算&nbsp;<span className="what" data-toggle="tooltip" title={this.renderBudgetTips(min_budget)}><span className="question-sign">?</span></span>
           </h3>
         </div>
         <div className="content">
@@ -79,7 +84,7 @@ export default class RecruitBudgetPartial extends React.Component{
               </div>
             </div>
             <div className="budget-box">
-              <label className="creat-campaign-total-budget form-common-label">招募预算</label>
+              {this.renderTotalBudgetTitle(min_budget)}
               <div className="spinner-box">
                 <label type="text" className="recruit-total-target-label" style={{display: 'block'}} >{(recruit_person_count.value * per_action_budget.value) || 0}</label>
               </div>

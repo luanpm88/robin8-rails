@@ -1,0 +1,44 @@
+<h1>定价设置</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>值</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>充值最低金额</td>
+      <td><%= text_field_tag :recharge_min_budget, MySettings.recharge_min_budget, :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'recharge_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+    <tr>
+      <td>活动最低金额</td>
+      <td><%= text_field_tag :campaign_min_budget, MySettings.campaign_min_budget, :class => "data-value" %>
+        <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'campaign_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'POST',
+        url: '/marketing_dashboard/utilities/settings/update_value',
+        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
+//        success: function(){
+//          alert("修改成功");
+//          window.location.reload();
+//        }
+      })
+
+    })
+  })
+</script>

@@ -14,6 +14,12 @@ module Brand
         expose :amount
         expose :frozen_amount
         expose :avail_amount
+        expose :recharge_min_budget do |user|
+          MySettings.recharge_min_budget
+        end
+        expose :campaign_min_budget do |user|
+          MySettings.campaign_min_budget
+        end
       end
     end
   end

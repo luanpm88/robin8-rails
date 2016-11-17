@@ -53,17 +53,29 @@ module Open
           @kols = Kol.personal_big_v
 
           if params[:region] and params[:region] != "全部"
-            regions = params[:region].split(",").reject(&:blank?)
-            cities = City.where(name: regions).map(&:name_en)
+            city_name_ens = []
+            params[:region].split(",").each do |region|
+              city = City.where("name like '#{region[0,2]}%'").first  rescue nil
+              if city
+                city_name_ens << city.name_en
+              else
+                province = Province.where("name like '#{region[0,2]}%'").first  rescue nil
+                if province
+                  province.cities.each do |city|
+                    city_name_ens << city.name_en
+                  end
+                end
+              end
+            end
 
-            @kols = @kols.where(app_city: cities)
+            @kols = @kols.where(app_city: city_name_ens)
           end
 
-          if params[:tag] and params[:tag] != "全部"
-            tag_params = params[:tag].split(",").reject(&:blank?)
-            tags = Tag.where(name: tag_params).map(&:id)
+          if params[:tags] and params[:tags] != "全部"
+            tag_params = params[:tags].split(",").reject(&:blank?)
+            tag_ids = Tag.where(label: tag_params).map(&:id)
 
-            @kols = @kols.joins(:kol_tags).where("`kol_tags`.`tag_id` IN (?)", tags)
+            @kols = @kols.joins(:kol_tags).where("`kol_tags`.`tag_id` IN (?)", tag_ids)
           end
 
           if params[:age] && params[:age] != '全部'
