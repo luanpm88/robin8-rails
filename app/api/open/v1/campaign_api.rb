@@ -70,10 +70,10 @@ module Open
             params[:age] = min < max ? [min, max].join(',') : "全部"
           end
 
-          if params[:region] and params[:region] != "全部"
-            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take rescue nil }.compact
-            params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
-          end
+          # if params[:region] and params[:region] != "全部"
+          #   cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take rescue nil }.compact
+          #   params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
+          # end
 
           declared_params = declared(params)
 
@@ -167,10 +167,11 @@ module Open
             params[:age] = min < max ? [min, max].join(',') : "全部"
           end
 
-          if params[:region] and params[:region] != "全部"
-            cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
-            params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
-          end
+          #在取kol时候处理
+          # if params[:region] and params[:region] != "全部"
+          #   cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }
+          #   params[:region] = cities.present? ? cities.map(&:name).join(',') : "全部"
+          # end
 
           # fix required params bug
           declared_params = declared(params).compact.reverse_merge({
