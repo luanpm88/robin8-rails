@@ -230,7 +230,7 @@ module Open
           @campaign = current_user.campaigns.find(params[:id])
 
           if @campaign.status != "executing"  && @campaign.status != 'agreed'
-            error!({ success: false, error: '该活动不能不能被中止!' }, 400) and return
+            error!({ success: false, error: '该活动不能被中止!' }, 400) and return
           end
 
           if @campaign.finish("stop from api")
