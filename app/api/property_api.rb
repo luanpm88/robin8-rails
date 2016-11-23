@@ -1,5 +1,4 @@
 class PropertyAPI < Grape::API
-  include Grape::PresentCache
 
   format :json
 

@@ -42,14 +42,6 @@ GIT
       sort_alphabetical (~> 1.0)
 
 GIT
-  remote: https://github.com/u2/grape-present_cache.git
-  revision: 4bfca2249e48a39c46ef0c9a673f9fb67fad1300
-  specs:
-    grape-present_cache (0.0.2)
-      activesupport
-      grape
-
-GIT
   remote: https://github.com/yangsr/omniauth-wechat-oauth2.git
   revision: 63e9ca5bd51d84bb554b3f22098b39347a710970
   specs:
@@ -300,6 +292,9 @@ GEM
     grape-kaminari (0.1.8)
       grape
       kaminari
+    grape-rails-cache (0.1.2)
+      activesupport
+      grape
     grape-raketasks (0.0.3)
       activesupport
       grape
@@ -863,7 +858,7 @@ DEPENDENCIES
   grape (~> 0.9.0)
   grape-entity (~> 0.4.3)
   grape-kaminari
-  grape-present_cache!
+  grape-rails-cache
   grape-raketasks
   groupdate (~> 3.0, >= 3.0.2)
   guard-rspec

@@ -14,7 +14,7 @@ module Property
           obj.union_access_token.expires_in
         end
         expose :show_count do |obj|
-          obj.kol.show_count rescue 30
+          obj.show_count
         end
       end
     end
