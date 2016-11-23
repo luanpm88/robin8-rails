@@ -26,7 +26,10 @@ module API
           end
           present :error, 0
           to_paginate(big_vs)
-          present :big_vs, big_vs, with: API::V1_6::Entities::BigVEntities::Summary
+          big_vs_key = Digest::SHA1.hexdigest(big_vs.to_json)
+          cache(key: "api:big_vs:#{big_vs_key}", etag: big_vs_key, expires_in: 2.hours) do
+            present :big_vs, big_vs, with: API::V1_6::Entities::BigVEntities::Summary
+          end
         end
 
         desc '详情'

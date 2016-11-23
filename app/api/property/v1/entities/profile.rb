@@ -34,7 +34,7 @@ module Property
           obj.identities.where(provider: "wechat").take
         end
         expose :show_count do |obj|
-          obj.kol.show_count rescue 30
+          obj.show_count rescue 30
         end
       end
     end

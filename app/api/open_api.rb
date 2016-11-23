@@ -1,5 +1,4 @@
 class OpenAPI < Grape::API
-  include Grape::PresentCache
 
   STORE_KEY = "robin8:open:access_tokens"
 
