@@ -92,6 +92,9 @@ module Open
         end
 
         class CampaignInviteList < Grape::Entity
+          expose :status  do |invite|
+            invite.status
+          end
           expose :avatar_url  do |invite|
             invite.kol.avatar_url
           end

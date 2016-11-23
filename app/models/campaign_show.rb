@@ -27,7 +27,7 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'wechat_crawler']
     end
 
-    if campaign.wechat_auth_token != 'no' && openid.blank?  && options[:step] != 2
+    if campaign.wechat_auth_type != 'no' && openid.blank?  && options[:step] != 2
       return [false, 'had_no_openid']
     end
 
