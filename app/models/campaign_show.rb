@@ -27,7 +27,7 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'wechat_crawler']
     end
 
-    if campaign.wechat_auth_token != 'no' && openid.blank?  && options[:step] != 2
+    if campaign.wechat_auth_type != 'no' && openid.blank?  && options[:step] != 2
       return [false, 'had_no_openid']
     end
 
@@ -115,6 +115,7 @@ class CampaignShow < ActiveRecord::Base
         campaign_invite.increment!(:total_click)
         return [true, nil]
       end
+      return [false, CampaignExecuted]
     end
 
     if campaign.status != 'executing' || (['cpa', 'click'].include?(campaign.per_budget_type) && campaign.redis_avail_click.value.to_i > campaign.max_action.to_i)

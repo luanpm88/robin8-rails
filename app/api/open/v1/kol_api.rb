@@ -50,7 +50,7 @@ module Open
 
         desc '获取kol数量'
         get "search_count" do
-          @kols = Kol.personal_big_v
+          @kols = Kol.active.personal_big_v
 
           if params[:region] and params[:region] != "全部"
             city_name_ens = []

@@ -288,7 +288,7 @@ module Open
         end
         get "/:id/invites" do
           @campaign = current_user.campaigns.find(params[:id])
-          @invites  = @campaign.valid_invites({:include => :kol }).page(params[:page]).per_page(20)
+          @invites  = @campaign.campaign_invites({:include => :kol }).page(params[:page]).per_page(20)
 
           present :success, true
           present :invites, @invites, with: Open::V1::Entities::Campaign::CampaignInviteList
