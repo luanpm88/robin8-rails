@@ -12,22 +12,22 @@ module API
         end
         get '/' do
           order_by = params[:order] || 'order_by_hot'
-          per_page = order_by == 'order_by_hot' ? 20 : 40
-          if params[:tag_name].blank?
-            big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
-          else
-            tag_id = Tag.find_by(:name => params[:tag_name]).id
-            big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
-                       send("#{order_by}").page(params[:page]).per_page(per_page)
-          end
-          if params[:with_kol_announcement] == 'Y'
-            kol_announcements = KolAnnouncement.enable.order_by_position
-            present :kol_announcements, kol_announcements, with: API::V1_6::Entities::KolAnnouncementEntities::Summary
-          end
-          present :error, 0
-          to_paginate(big_vs)
-          big_vs_key = Digest::SHA1.hexdigest(big_vs.to_json)
-          cache(key: "api:big_vs:#{big_vs_key}", etag: big_vs_key, expires_in: 2.hours) do
+          params_key = Digest::SHA1.hexdigest(params.to_s)
+          cache(key: "api:big_vs:#{params_key}", expires_in: 2.hours) do
+            per_page = order_by == 'order_by_hot' ? 20 : 40
+            if params[:tag_name].blank?
+              big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").includes(:kol_tags => [:tag]).send("#{order_by}").page(params[:page]).per_page(per_page)
+            else
+              tag_id = Tag.find_by(:name => params[:tag_name]).id
+              big_vs = Kol.where("kol_role = 'mcn_big_v' or kol_role = 'big_v'").where("kols.name like '%#{params[:name]}%'").joins(:kol_tags => [:tag]).where("kol_tags.tag_id = #{tag_id}").
+                         send("#{order_by}").page(params[:page]).per_page(per_page)
+            end
+            if params[:with_kol_announcement] == 'Y'
+              kol_announcements = KolAnnouncement.enable.order_by_position
+              present :kol_announcements, kol_announcements, with: API::V1_6::Entities::KolAnnouncementEntities::Summary
+            end
+            present :error, 0
+            to_paginate(big_vs)
             present :big_vs, big_vs, with: API::V1_6::Entities::BigVEntities::Summary
           end
         end

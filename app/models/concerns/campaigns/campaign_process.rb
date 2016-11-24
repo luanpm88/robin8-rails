@@ -76,6 +76,12 @@ module Campaigns
       Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
       return if self.status != 'agreed'
       self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
+      if self.is_invite_type?
+        self.update_columns(:max_action => 1)
+      else
+        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
+        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
+      end
       # make sure those execute late (after invite create)
       #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
       if  is_recruit_type?
@@ -87,6 +93,7 @@ module Campaigns
         CampaignWorker.perform_at(_start_time, self.id, 'start')
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+
     end
 
     def go_start(kol_ids = nil)
@@ -94,12 +101,6 @@ module Campaigns
       return if self.status != 'agreed'
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
-        if self.is_invite_type?
-          self.update_columns(:max_action => 1)
-        else
-          self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
-          self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
-        end
         self.update_columns(:status => 'executing')
         campaign_id = self.id
         kol_ids = get_kol_ids(true, kol_ids)
@@ -260,6 +261,7 @@ module Campaigns
        settle_accounts_for_kol
        self.update_columns(status: 'settled', evaluation_status: 'evaluating')
        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+       actual_per_action_budget ||= per_action_budget
        if is_click_type?  || is_cpa_type? || is_cpi_type?
          pay_total_click = self.settled_invites.sum(:avail_click)
          User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)

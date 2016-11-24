@@ -4,7 +4,6 @@
 
 module API
   class Application < Grape::API
-    include Grape::Rails::Cache
 
     rescue_from ActiveRecord::RecordNotFound do
       rack_response({'message' => '404 Not found'}.to_json, 404)
