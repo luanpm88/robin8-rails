@@ -261,7 +261,7 @@ module Campaigns
        settle_accounts_for_kol
        self.update_columns(status: 'settled', evaluation_status: 'evaluating')
        Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-       actual_per_action_budget ||= per_action_budget
+       actual_per_action_budget = (self.actual_per_action_budget ||  self.per_action_budget)
        if is_click_type?  || is_cpa_type? || is_cpi_type?
          pay_total_click = self.settled_invites.sum(:avail_click)
          User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
