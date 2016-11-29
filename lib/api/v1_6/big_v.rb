@@ -12,7 +12,7 @@ module API
         end
         get '/' do
           order_by = params[:order] || 'order_by_hot'
-          params_key = Digest::SHA1.hexdigest(params.to_s)
+          params_key = Digest::SHA1.hexdigest(declared(params).to_s)
           cache(key: "api:big_vs:#{params_key}", expires_in: 2.hours) do
             per_page = order_by == 'order_by_hot' ? 20 : 40
             if params[:tag_name].blank?
