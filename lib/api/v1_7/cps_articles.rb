@@ -11,10 +11,13 @@ module API
           optional :page, type: Integer
         end
         get '/' do
-          cps_articles = CpsArticle.passed.enabled.includes(:kol).order("updated_at desc").page(params[:page]).per_page(10)
-          present :error, 0
-          to_paginate(cps_articles)
-          present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::Summary
+          cps_articles = CpsArticle.passed.enabled.includes(:author).order("updated_at desc").page(params[:page]).per_page(10)
+          params_key = Digest::SHA1.hexdigest(cps_articles.to_s)
+          cache(key: "api:cps_articles:#{params_key}", expires_in: 2.hours) do
+            present :error, 0
+            to_paginate(cps_articles)
+            present :cps_articles, cps_articles, with: API::V1_7::Entities::CpsArticles::WithoutWriteCommission
+          end
         end
 
         #我的创作列表
