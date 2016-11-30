@@ -90,7 +90,7 @@ end
 # 定时检查 unicorn 是否存在,如果不存在 自动启动
 every 1.minutes do
   command "-----exec check unicorn"
-  command "/home/deployer/robin8/current/config/check_unicorn.sh"
+  command "/home/deployer/apps/robin8/current/config/check_unicorn.sh"
 end
 
 
