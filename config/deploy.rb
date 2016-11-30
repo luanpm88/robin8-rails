@@ -135,11 +135,21 @@ namespace :deploy do
   #   end
   # end
 
-  #after :publishing, :restart
+  desc 'grant_permission check_unicorn.sh 文件为可执行'
+  task :grant_permission do
+    on roles(:app) do
+      within "#{current_path}" do
+        run "chmod a+x config/check_unicorn.sh"
+      end
+    end
+  end
+  after :publishing, :grant_permission
+
   # after :publishing, :upload_localization
   if fetch(:rails_env) == "production"
     after :publishing, 'sidekiq:reload'
   end
+  after :publishing, :update_crontab
   after :publishing, :update_crontab
   after :publishing, :sync_assets
   if fetch(:rails_env) == "production"
