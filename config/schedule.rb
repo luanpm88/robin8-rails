@@ -87,7 +87,7 @@ every 1.day, :at => '0:40 am' do
   runner "Jd::OffShelf.go"
 end
 
-# 定时检查 unicorn 是否存在,如果不存在 自动启动
+# auto check and  start unicorn when unicorn is down
 every 1.minutes do
   command "-----exec check unicorn"
   command "/home/deployer/apps/robin8/current/config/check_unicorn.sh"
