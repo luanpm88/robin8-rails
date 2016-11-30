@@ -16,7 +16,6 @@ module API
         #TODO 使用搜索插件
         get '/' do
           present :error, 0
-          present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           present :announcements, Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary  if params[:with_announcements] == 'y'
           if  params[:status] == 'all'
             applied_recruit_campaign_ids = current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
