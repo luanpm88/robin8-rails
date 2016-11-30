@@ -138,9 +138,7 @@ namespace :deploy do
   desc 'grant_permission check_unicorn.sh 文件为可执行'
   task :grant_permission do
     on roles(:app) do
-      within "#{current_path}" do
-        run "chmod a+x config/check_unicorn.sh"
-      end
+      execute "cd #{current_path} && chmod a+x config/check_unicorn.sh"
     end
   end
   after :publishing, :grant_permission
