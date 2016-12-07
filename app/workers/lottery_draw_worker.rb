@@ -2,7 +2,7 @@ class LotteryDrawWorker
   include Sidekiq::Worker
   sidekiq_options :retry => 3
   sidekiq_retry_in do |count|
-    10 * (count + 1)
+    50 * (count + 1) * (count + 1)
   end
 
   def perform(code)
