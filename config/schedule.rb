@@ -65,7 +65,7 @@ end
 #   runner "PushMessage.push_campaign_message"
 # end
 
-every 1.day, :at => '17:30 pm' do
+every 1.day, :at => '20:30 pm' do
   runner "PushMessage.push_campaign_message"
 end
 
@@ -88,6 +88,8 @@ every 1.day, :at => '0:40 am' do
 end
 
 # auto check and  start unicorn when unicorn is down
+#Notice :slave server not exec crontab(no join whenever role),admin need manual exec(need delete others task)
+#        or link from shared directory, not from github
 every 1.minutes do
   command "-----exec check unicorn"
   command "/home/deployer/apps/robin8/current/config/check_unicorn.sh"

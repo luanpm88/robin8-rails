@@ -80,14 +80,11 @@ class PushMessage < ActiveRecord::Base
 
   Robin8Logo = "http://7xozqe.com2.z0.glb.qiniucdn.com/robin8_log-2016-3-30.jpg"
   def self.push_campaign_message
-    return if Campaign.today_had_pushed_message
     executing_campaigns = Campaign.where(:status => 'executing', :end_apply_check => false)
     return if  executing_campaigns.size == 0
     should_push_kol_ids = []
     executing_campaigns.each {|t| should_push_kol_ids += t.get_kol_ids }
-    all_receive_kol_ids =  CampaignInvite.where(:campaign_id => executing_campaigns.collect{|t| t.id}).select("kol_id")
-                             .group("kol_id").having("count(kol_id) >= #{executing_campaigns.size}").collect{|t| t.kol_id}
-    push_kol_ids = should_push_kol_ids.uniq -  all_receive_kol_ids
+    push_kol_ids = should_push_kol_ids.uniq
     # 个推限定list 最大为1000
     title =  '你还有未参与的活动，速去转发赚钱！'
     device_tokens =  Kol.where(:id => push_kol_ids ).collect{|t| t.device_token}.uniq

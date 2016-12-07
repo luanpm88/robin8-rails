@@ -35,7 +35,9 @@ module Campaigns
       (get_remove_kol_ids_of_campaign_by_target +
        get_remove_kol_ids_by_target +
        get_black_list_kols +
-       three_hours_had_receive_kol_ids).uniq -
+       # three_hours_had_receive_kol_ids +
+        get_approved_kol_ids
+      ).uniq -
        add_kols_by_targets
     end
 
@@ -51,6 +53,10 @@ module Campaigns
       get_ids_from_target_content self.add_kol_targets.map(&:target_content)
     end
 
+    def get_approved_kol_ids
+      self.campaign_invites.map(&:kol_id)
+    end
+
     def get_remove_kol_ids_of_campaign_by_target
       campaign_ids = get_ids_from_target_content self.remove_campaign_targets.map(&:target_content)
       CampaignInvite.where(:campaign_id => campaign_ids).where(:status => ['approved', 'finished', 'settled']).map(&:kol_id)
@@ -64,6 +70,7 @@ module Campaigns
       SocialAccount.where(id: account_ids).map(&:kol_id).presence
     end
 
+    #这个条件过滤出来的人 根据时候可能会变动，除去
     def three_hours_had_receive_kol_ids
       if self.budget >= 500
         return []
