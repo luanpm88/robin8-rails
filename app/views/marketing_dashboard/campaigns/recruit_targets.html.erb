@@ -17,119 +17,143 @@
   </tr>
 </table>
 
+<div class="container-fluid" style="padding: 20px 0;">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding: 0;">
+      <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
+        搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
+      </a>
+    </div>
+    <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>审核类型</label>
+              <%= f.select :status_eq, [], {include_blank: true}, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Kol等级</label>
+              <%= f.select :kol_kol_level_eq, options_for_select([['未设置', nil], ['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'S']]), {include_blank: true}, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
 <span class="pull-right">按报名先后顺序</span>
 <span class="pull-left">注意：品牌主只能确认平台筛选通过的KOL</span>
 <table class='table table-bordered'>
   <thead>
-    <tr>
-      <th>KOL ID</th>
-      <th>头像</th>
-      <th>KOL名称</th>
-      <th>电话号码</th>
-      <th>微博号</th>
-      <th>微博粉丝数</th>
-      <th>微信号</th>
-      <th>微信粉丝数</th>
-      <th>平均点击</th>
-      <th>最高点击</th>
-      <th>性别</th>
-      <th>城市</th>
-      <th><%= sort_link(@q, :status, "选中状态") %></th>
-      <th>推荐理由-素材</th>
-      <th>平台筛选</th>
-    </tr>
+  <tr>
+    <th>KOL ID</th>
+    <th>头像</th>
+    <th>昵称/电话</th>
+    <th>等级</th>
+    <th>微博号</th>
+    <th><%= sort_link(@q, :weibo_followers_count, "微博粉丝数") %></th>
+    <th>微信号</th>
+    <th><%= sort_link(@q, :wechat_followers_count, "微信粉丝数") %></th>
+    <th><%= sort_link(@q, :kol_avg_click, "平均点击") %></th>
+    <th><%= sort_link(@q, :kol_max_click, "最高点击") %></th>
+    <th>性别/城市</th>
+    <th><%= sort_link(@q, :status, "选中状态") %></th>
+    <th>操作理由</br>素材</th>
+    <th>后台筛选</th>
+  </tr>
   </thead>
   <tbody>
-    <% @campaign_applies.includes(:kol).each do |campaign_apply| %>
-      <% kol = campaign_apply.kol %>
-      <% weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
-      <% wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
-      <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
-        <td>
-          <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank"  %>
-        </td>
-        <td>
-          <%= image_tag kol.avatar, style: "width: 40px; height: 40px;" rescue "" %>
-        </td>
-        <td> <%= kol.name %> </td>
-        <td> <%= kol.mobile_number %> </td>
-        <td>
-          <% if weibo %>
-            <a href="<%= weibo.homepage %>" target="_blank"> <%= weibo.username %></a>
+  <% @campaign_applies.each do |campaign_apply| %>
+    <% kol = campaign_apply.kol %>
+    <% social_accounts = kol.social_accounts.group(:provider).select("max(followers_count) as followers_count, provider, username, homepage")
+       weibo = social_accounts.detect{|t| t.provider == 'weibo'}
+       wechat = social_accounts.detect{|t| t.provider == 'wechat'}
+    %>
+    <%# weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
+    <%# wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
+    <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
+      <td>
+        <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank" %>
+      </td>
+      <td>
+        <%= image_tag kol.avatar, style: "width: 40px; height: 40px;" rescue "" %>
+      </td>
+      <td> <%= kol.name %><br> <%= kol.mobile_number %></td>
+      <td> <%= link_to (kol.kol_level || '未设置'), "/marketing_dashboard/kols/#{kol.id}/ban", target: "_blank" %></td>
+      <td>
+        <% if weibo %>
+          <a href="<%= weibo.homepage %>" target="_blank"> <%= weibo.username %></a>
+        <% end %>
+      </td>
+      <td><%= weibo.followers_count if weibo %></td>
+      <td> <%= wechat.username if wechat %> </td>
+      <td> <%= wechat.followers_count if wechat %></td>
+      <td> <%= kol.average_click_of_campaigns %></td>
+      <td> <%= kol.maximum_click_of_campaigns %></td>
+      <td> <%= kol.gender_text %><br><%= kol.app_city_label %></td>
+      <td>
+        <% if campaign_apply.status == "brand_passed" %>
+          <span class="label label-success"> 品牌√ </span>
+        <% elsif campaign_apply.status == "option" %>
+          <span class="label label-info">备选</span>
+        <% elsif campaign_apply.status == "platform_passed"%>
+          <span class="label label-success">通过</span>
+        <% elsif campaign_apply.status == "applying"%>
+          <span class="label label-default">未处理</span>
+        <% else %>
+          <span class="label label-danger">拒绝</span>
+        <% end %>
+      </td>
+      <td>
+        <input class="agree_reason" type='text' value="<%= campaign_apply.agree_reason %>">
+        <% if campaign_apply.status != 'brand_passed' %>
+          <% @campaign_materials.each do |material| %>
+            <div><%= CampaignMaterial.get_track_url(material, campaign_apply.kol) %></div>
           <% end %>
-        </td>
-        <td><%= weibo.followers_count if weibo %></td>
-        <td> <%= wechat.username if wechat %> </td>
-        <td> <%= wechat.followers_count if wechat %></td>
-        <td> <%= kol.average_click_of_campaigns %></td>
-        <td> <%= kol.maximum_click_of_campaigns %></td>
-        <td> <%= kol.gender_text %></td>
-        <td> <%= kol.app_city_label %> </td>
-        <td>
-          <% if campaign_apply.status == "brand_passed" %>
-            <span class="label label-success">品牌确认</span>
-          <% elsif campaign_apply.status == "platform_passed" %>
-            <span class="label label-info">平台选中</span>
-          <% elsif campaign_apply.status = "brand_rejected" %>
-            <span class="label label-warning">未选中</span>
-          <% else %>
-            <span class="label label-default">未选中</span>
-          <% end %>
-        </td>
-        <td>
-          <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
-             <input class="agree_reason <%= campaign_apply.kol.id %>" type='text' value="<%= campaign_apply.agree_reason %>"> <br>
-             <% @campaign_materials.each do |material| %>
-               <div><%= CampaignMaterial.get_track_url(material, campaign_apply.kol) %></div>
-             <% end %>
-          <% else %>
-            <input class="agree_reason <%= campaign_apply.kol.id %>" type='text'>
-          <% end %>
-        </td>
-        <td>
-          <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
-            <button class="btn btn-default agree-btn <%= campaign_apply.kol.id %> " value="agree" style="background-color: grey; color: white">取消</button>
-          <% else %>
-            <button class="btn btn-default agree-btn <%= campaign_apply.kol.id %> " value="cancel" style="background-color: #00b38a; color: white">同意</button>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
+        <% end %>
+      </td>
+      <td>
+        <% if campaign_apply.status == 'applying'  %>
+          <button class="btn btn-success btn-xs check-btn <%= kol.id %> " value="pass">同意</button>
+          <button class="btn btn-danger btn-xs check-btn <%= kol.id %> " value="reject">拒绝</button>
+          <button class="btn btn-info btn-xs check-btn <%= kol.id %> " value="option">备选</button>
+        <% elsif campaign_apply.status == 'platform_rejected' %>
+          <button class="btn btn-default btn-xs check-btn <%= kol.id %> " value="cancel">取消</button>
+        <% end %>
+          <%= link_to 'kol截图', marketing_dashboard_campaign_invites_path(q: {kol_id_eq: kol.id}), target: "_blank" %>
+      </td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 
 <script>
-$(function() {
-  $('.agree-btn').click(function(){
-    var row = $(this).parents('tr');
-    var kol_id = row.data("kol-id");
-    var campaign_id = row.data("campaign-id");
-    var agree_reason = row.find('.agree_reason').val();
-    if ($(this).val() == 'cancel') {
-      if (agree_reason.length) {
-        var operate = $(this).val('agree').val()
-      } else {
-        alert("请填写推荐理由~~~");
-        return false;
-      }
-    } else {
-      var operate = $(this).val('cancel').val()
-    }
+  $(function () {
+    $('.check-btn').click(function () {
+      var row = $(this).parents('tr');
+      var kol_id = row.data("kol-id");
+      var campaign_id = row.data("campaign-id");
+      var agree_reason = row.find('.agree_reason').val();
+      var operate = $(this).val();
 
-    $.ajax({
-      method: "POST",
-      url: "/marketing_dashboard/campaigns/"+ campaign_id +"/add_or_remove_recruit_kol",
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-      },
-      data: { "kol_id": kol_id, "campaign_id": campaign_id, "agree_reason": agree_reason, "operate": operate }
-    })
-      .done(function(data) {
-        if(data['result'] == 'succeed'){
-          if(data['operate'] === 'agree') {
+      $.ajax({
+        method: "POST",
+        url: "/marketing_dashboard/campaigns/" + campaign_id + "/add_or_remove_recruit_kol",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        data: {"kol_id": kol_id, "campaign_id": campaign_id, "agree_reason": agree_reason, "operate": operate}
+      }).done(function (data) {
+        if (data['result'] == 'succeed') {
+          if (data['operate'] === 'pass') {
             $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "grey"}).text("取消");
           }
-          if(data['operate'] === 'cancel') {
+          if (data['operate'] === 'cancel') {
             $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "#00b38a"}).text("同意");
             $(".agree_reason").parents('td').find('.' + data['kol_id']).val("")
           }
@@ -138,10 +162,6 @@ $(function() {
           alert("出现错误，请重试，多次失败请找开发人员~~~");
         }
       });
-
+    })
   })
-})
-
-
-
 </script>

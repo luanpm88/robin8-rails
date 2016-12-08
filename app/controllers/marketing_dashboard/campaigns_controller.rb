@@ -142,10 +142,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def recruit_targets
     @campaign = Campaign.find params[:id]
     @campaign_applies = @campaign.campaign_applies
-    @q = @campaign_applies.ransack(params[:q])
-    @campaign_applies = @q.result.order("created_at asc")
     @platform_passed_count = @campaign_applies.where(:status => 'platform_passed').count
     @brand_passed_count = @campaign_applies.where(:status => 'brand_passed').count
+
+    @q = @campaign_applies.ransack(params[:q])
+    @campaign_applies = @q.result.includes(:kol).order("created_at asc").page(params[:page]).per_page(50)
+
     @campaign_materials = @campaign.campaign_materials
   end
 
@@ -186,28 +188,24 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def add_or_remove_recruit_kol
     authorize! :update, Campaign
 
-    kol_id = params[:kol_id]
-    campaign_id = params[:campaign_id]
-    agree_reason = params[:agree_reason]
     operate = params[:operate]
-
     @campaign_apply = CampaignApply.find_by(campaign_id: params[:campaign_id], kol_id: params[:kol_id])
 
-    if operate == 'agree'
-      begin
-        @campaign_apply.update_attributes(status: "platform_passed", agree_reason: agree_reason)
-        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
-      rescue
-        return render json: {result: 'save status and reason failed'}
-      end
+    if operate == 'pass'
+      status = 'platform_passed'
+    elsif operate == 'reject'
+      status = 'platform_rejected'
+    elsif operate == 'option'
+      status = 'option'
+    elsif operate == 'cancel'
+      status = 'applying'
     end
-    if operate == 'cancel'
-      begin
-        @campaign_apply.update_attributes(status: "applying", agree_reason: nil)
-        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
-      rescue
-        return render json: {result: 'save status and reason failed'}
-      end
+
+    begin
+      @campaign_apply.update_attributes(status: status, agree_reason: params[:agree_reason])
+      return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
+    rescue
+      return render json: {result: 'save status and reason failed'}
     end
   end
 

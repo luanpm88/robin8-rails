@@ -4,17 +4,32 @@ class CampaignApply < ActiveRecord::Base
   has_one :campaign_invite
   has_many :images, :as => :referable
 
+  # 12-8 重新定义 status:
+  #   applying:未处理, option: 备选， platform_passed: 通过, platform_rejected : 拒绝
   scope :applying, -> {where(:status => 'applying')}
+  scope :option, -> {where(:status => 'option')}
   scope :platform_passed, -> {where(:status => 'platform_passed')}
   scope :brand_passed, -> {where(:status => 'brand_passed')}
   scope :brand_not_passed, -> {where("status != 'brand_passed'")}
 
-  validates_inclusion_of :status, :in => %w(applying platform_passed platform_rejected brand_passed brand_rejected)
+  validates_inclusion_of :status, :in => %w(applying platform_passed platform_rejected platform_optional brand_passed brand_rejected)
 
   #kol_ids 审核通过的用户, 运营后台也实现了相同逻辑
   def self.platform_pass_kols(campaign_id, kol_ids = [], agree_reason = nil)
     CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'platform_passed', :agree_reason => agree_reason)
   end
+
+  scope :sort_by_kol_max_click, -> (dir){
+    joins(%Q| left join (select campaign_applies.kol_id as kol_id, max(campaign_invites.avail_click) as max_click
+                          from campaign_applies
+                          left join campaign_invites on campaign_applies.kol_id=campaign_invites.kol_id
+                          group by campaign_applies.kol_id
+                        ) as kol_clicks
+              on campaign_applies.kol_id=kol_clicks.kol_id |).
+    order("kol_clicks.max_click #{dir}") }
+  scope :sort_by_kol_avg_click, -> (dir){ joins(%Q| inner join campaign_invites on campaign_invites.kol_id=campaign_applies.kol_id  |).order("AVG(campaign_invites.avail_click) #{dir}") }
+  scope :sort_by_weibo_followers_count, -> (dir){ joins(%Q| left join social_accounts on social_accounts.kol_id=campaign_applies.kol_id and social_accounts.provider='weibo' |).order("MAX(social_accounts.followers_count) #{dir}") }
+  scope :sort_by_wechat_followers_count, -> (dir){ joins(%Q| left join social_accounts on social_accounts.kol_id=campaign_applies.kol_id and social_accounts.provider ='wechat' |).order("MAX(social_accounts.followers_count) #{dir}") }
 
   #kol_ids 审核通过的用户
   # def self.brand_pass_kols(campaign_id, kol_ids = [])
