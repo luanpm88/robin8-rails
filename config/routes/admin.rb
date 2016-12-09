@@ -50,6 +50,8 @@ Rails.application.routes.draw do
         get 'agreed'
         get 'rejected'
         get 'testable'
+        put :reject
+        post :batch_add_or_remove_recruit_kol
       end
       member do
         get :targets
@@ -65,9 +67,6 @@ Rails.application.routes.draw do
         match 'add_seller', via: [:post, :get]
         get :push_record
         match :set_auth_type, via: [:put, :get]
-      end
-      collection do
-        put :reject
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]

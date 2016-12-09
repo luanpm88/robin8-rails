@@ -1,0 +1,14 @@
+<% @campaign_applies.each do |campaign_apply| %>
+//更新操作栏
+$('#check-groups-<%= campaign_apply.id %>').
+html("<%= escape_javascript (render 'check_buttons', campaign_apply: campaign_apply ) %>");
+
+//更新状态
+$('#check-status-<%= campaign_apply.id %>').
+html("<%= escape_javascript (render 'check_status', campaign_apply: campaign_apply ) %>");
+
+// 更新勾选框
+$('#checkbox-<%= campaign_apply.id %>').
+html("<%= escape_javascript (render 'checkbox', campaign_apply: campaign_apply ) %>");
+
+<% end %>

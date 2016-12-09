@@ -188,25 +188,38 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def add_or_remove_recruit_kol
     authorize! :update, Campaign
 
-    operate = params[:operate]
+    @operate = params[:operate]
     @campaign_apply = CampaignApply.find_by(campaign_id: params[:campaign_id], kol_id: params[:kol_id])
 
-    if operate == 'pass'
+    if @operate == 'pass'
       status = 'platform_passed'
-    elsif operate == 'reject'
+    elsif @operate == 'reject'
       status = 'platform_rejected'
-    elsif operate == 'option'
+    elsif @operate == 'option'
       status = 'option'
-    elsif operate == 'cancel'
+    elsif @operate == 'cancel'
       status = 'applying'
     end
 
-    begin
-      @campaign_apply.update_attributes(status: status, agree_reason: params[:agree_reason])
-      return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
-    rescue
-      return render json: {result: 'save status and reason failed'}
+    @campaign_apply.update_attributes(status: status, agree_reason: params[:agree_reason])
+  end
+
+  def batch_add_or_remove_recruit_kol
+    authorize! :update, Campaign
+
+    @operate = params[:operate]
+    apply_ids =   params[:apply_ids].split(",")
+    @campaign_applies = CampaignApply.where(id: apply_ids)
+    return :js => "alert('你选择的申请中，有状态不在未审核中的')"  if @campaign_applies.size < apply_ids.size
+
+    if @operate == 'pass'
+      status = 'platform_passed'
+    elsif @operate == 'reject'
+      status = 'platform_rejected'
+    elsif @operate == 'option'
+      status = 'option'
     end
+    @campaign_applies.update_all(:status => status)
   end
 
   def add_seller

@@ -5,7 +5,7 @@
 <table class="table" style="text-align: left;">
   <tr>
     <td width="150px;">合格报名人数：</td>
-    <td><span class="label label-default"><%= @campaign_applies.count %></span></td>
+    <td><span class="label label-default"><%#= @campaign_applies.count %></span></td>
     <td width="150px;">平台通过人数:</td>
     <td><span class="label label-info"><%= @platform_passed_count + @brand_passed_count %></span></td>
   </tr>
@@ -46,11 +46,17 @@
 </div>
 
 
-<span class="pull-right">按报名先后顺序</span>
-<span class="pull-left">注意：品牌主只能确认平台筛选通过的KOL</span>
+<div style="padding-bottom: 6px;">
+  <button class="btn btn-success btn-sm batch-check-btn" value="pass">批量通过</button>
+  <button class="btn btn-danger btn-sm batch-check-btn" value="reject">批量拒绝</button>
+  <button class="btn btn-info btn-sm batch-check-btn" value="option">批量备选</button>
+</div>
+<!--<span class="pull-right">按报名先后顺序</span>-->
+<!--<span class="pull-left">注意：品牌主只能确认平台筛选通过的KOL</span>-->
 <table class='table table-bordered'>
   <thead>
   <tr>
+    <th>勾选</th>
     <th>KOL ID</th>
     <th>头像</th>
     <th>昵称/电话</th>
@@ -77,6 +83,9 @@
     <%# weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
     <%# wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
     <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
+      <td id="checkbox-<%= campaign_apply.id %>">
+        <%= render 'checkbox', campaign_apply: campaign_apply %>
+      </td>
       <td>
         <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank" %>
       </td>
@@ -96,21 +105,11 @@
       <td> <%= kol.average_click_of_campaigns %></td>
       <td> <%= kol.maximum_click_of_campaigns %></td>
       <td> <%= kol.gender_text %><br><%= kol.app_city_label %></td>
-      <td>
-        <% if campaign_apply.status == "brand_passed" %>
-          <span class="label label-success"> 品牌√ </span>
-        <% elsif campaign_apply.status == "option" %>
-          <span class="label label-info">备选</span>
-        <% elsif campaign_apply.status == "platform_passed"%>
-          <span class="label label-success">通过</span>
-        <% elsif campaign_apply.status == "applying"%>
-          <span class="label label-default">未处理</span>
-        <% else %>
-          <span class="label label-danger">拒绝</span>
-        <% end %>
+      <td id="check-status-<%= campaign_apply.id %>">
+        <%= render "check_status", campaign_apply: campaign_apply %>
       </td>
       <td>
-        <input class="agree_reason" type='text' value="<%= campaign_apply.agree_reason %>">
+        <%= text_area_tag :agree_reason, campaign_apply.agree_reason, :style => "width: 120px;height: 50px"%>
         <% if campaign_apply.status != 'brand_passed' %>
           <% @campaign_materials.each do |material| %>
             <div><%= CampaignMaterial.get_track_url(material, campaign_apply.kol) %></div>
@@ -118,14 +117,9 @@
         <% end %>
       </td>
       <td>
-        <% if campaign_apply.status == 'applying'  %>
-          <button class="btn btn-success btn-xs check-btn <%= kol.id %> " value="pass">同意</button>
-          <button class="btn btn-danger btn-xs check-btn <%= kol.id %> " value="reject">拒绝</button>
-          <button class="btn btn-info btn-xs check-btn <%= kol.id %> " value="option">备选</button>
-        <% elsif campaign_apply.status == 'platform_rejected' %>
-          <button class="btn btn-default btn-xs check-btn <%= kol.id %> " value="cancel">取消</button>
-        <% end %>
-          <%= link_to 'kol截图', marketing_dashboard_campaign_invites_path(q: {kol_id_eq: kol.id}), target: "_blank" %>
+        <div class="check-groups" id="check-groups-<%= campaign_apply.id %>">
+          <%= render "check_buttons", campaign_apply: campaign_apply %>
+        </div>
       </td>
     </tr>
   <% end %>
@@ -134,7 +128,8 @@
 
 <script>
   $(function () {
-    $('.check-btn').click(function () {
+    $(document).on("click", '.check-btn', function () {
+      console.log("----check-btn");
       var row = $(this).parents('tr');
       var kol_id = row.data("kol-id");
       var campaign_id = row.data("campaign-id");
@@ -143,24 +138,36 @@
 
       $.ajax({
         method: "POST",
+        dataType: 'script',
         url: "/marketing_dashboard/campaigns/" + campaign_id + "/add_or_remove_recruit_kol",
         beforeSend: function (xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
         data: {"kol_id": kol_id, "campaign_id": campaign_id, "agree_reason": agree_reason, "operate": operate}
-      }).done(function (data) {
-        if (data['result'] == 'succeed') {
-          if (data['operate'] === 'pass') {
-            $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "grey"}).text("取消");
-          }
-          if (data['operate'] === 'cancel') {
-            $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "#00b38a"}).text("同意");
-            $(".agree_reason").parents('td').find('.' + data['kol_id']).val("")
-          }
-        }
-        else {
-          alert("出现错误，请重试，多次失败请找开发人员~~~");
-        }
+      });
+    });
+
+    $(document).on("click", '.batch-check-btn', function () {
+      var selected_size = $("input[type='checkbox']:checked").length;
+      if(selected_size == 0){
+        alert("当前未选中任何申请！");
+        return false;
+      }
+      var apply_ids = [];
+      $("input[type='checkbox']:checked").each(function(){
+        apply_ids.push($(this).val());
+      });
+      console.log(apply_ids);
+
+      var operate = $(this).val();
+      $.ajax({
+        method: "POST",
+        dataType: 'script',
+        url: "/marketing_dashboard/campaigns/batch_add_or_remove_recruit_kol",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        data: {"apply_ids": apply_ids,  "operate": operate}
       });
     })
   })

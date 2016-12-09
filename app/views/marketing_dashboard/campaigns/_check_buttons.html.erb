@@ -1,0 +1,7 @@
+<% if campaign_apply.status == 'applying'  %>
+  <button class="btn btn-success btn-sm check-btn" value="pass">通过</button>
+  <button class="btn btn-danger btn-sm check-btn" value="reject">拒绝</button>
+  <button class="btn btn-info btn-sm check-btn" value="option">备选</button>
+<% elsif ['option', 'platform_passed', 'platform_rejected'].include? campaign_apply.status  %>
+  <button class="btn btn-default btn-sm check-btn" value="cancel">取消</button>
+<% end %>

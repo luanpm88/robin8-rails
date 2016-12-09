@@ -1,0 +1,11 @@
+<% if campaign_apply.status == "brand_passed" %>
+  <span class="label label-success"> 品牌√ </span>
+<% elsif campaign_apply.status == "option" %>
+  <span class="label label-info">备选</span>
+<% elsif campaign_apply.status == "platform_passed"%>
+  <span class="label label-success">通过</span>
+<% elsif campaign_apply.status == "applying"%>
+  <span class="label label-default">未处理</span>
+<% else %>
+  <span class="label label-danger">拒绝</span>
+<% end %>
