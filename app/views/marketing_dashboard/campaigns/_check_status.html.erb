@@ -1,5 +1,7 @@
 <% if campaign_apply.status == "brand_passed" %>
-  <span class="label label-success"> 品牌√ </span>
+    <span class="label label-success"> 品牌√ </span>
+<% elsif campaign_apply.status == "brand_reject" %>
+    <span class="label label-success"> 品牌× </span>
 <% elsif campaign_apply.status == "option" %>
   <span class="label label-info">备选</span>
 <% elsif campaign_apply.status == "platform_passed"%>

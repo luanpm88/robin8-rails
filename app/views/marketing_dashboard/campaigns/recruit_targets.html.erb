@@ -30,13 +30,23 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>审核类型</label>
-              <%= f.select :status_eq, [], {include_blank: true}, class: "form-control" %>
+              <%= f.select :status_eq, [['未处理', 'applying'], ['备选', 'option'], ['通过', 'platform_passed'], ['拒绝', 'platform_rejected'],
+                                        ['品牌√', 'brand_passed'], ['品牌×', 'brand_rejected']],
+                           {include_blank: true}, class: "form-control" %>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Kol等级</label>
-              <%= f.select :kol_kol_level_eq, options_for_select([['未设置', nil], ['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'S']]), {include_blank: true}, class: "form-control" %>
+              <%= f.select :kol_kol_level_eq, options_for_select([['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'S']]), {include_blank: true}, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div>
+                <%= f.submit "搜索", class: "btn btn-primary" %>
+              </div>
             </div>
           </div>
         </div>
@@ -68,7 +78,7 @@
     <th><%= sort_link(@q, :kol_avg_click, "平均点击") %></th>
     <th><%= sort_link(@q, :kol_max_click, "最高点击") %></th>
     <th>性别/城市</th>
-    <th><%= sort_link(@q, :status, "选中状态") %></th>
+    <th><%= sort_link(@q, :status, "审核状态") %></th>
     <th>操作理由</br>素材</th>
     <th>后台筛选</th>
   </tr>
@@ -79,6 +89,7 @@
     <% social_accounts = kol.social_accounts.group(:provider).select("max(followers_count) as followers_count, provider, username, homepage")
        weibo = social_accounts.detect{|t| t.provider == 'weibo'}
        wechat = social_accounts.detect{|t| t.provider == 'wechat'}
+       campaign_avail_clicks = kol.campaign_invites.collect{|t| t.avail_click}
     %>
     <%# weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
     <%# wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
@@ -102,8 +113,8 @@
       <td><%= weibo.followers_count if weibo %></td>
       <td> <%= wechat.username if wechat %> </td>
       <td> <%= wechat.followers_count if wechat %></td>
-      <td> <%= kol.average_click_of_campaigns %></td>
-      <td> <%= kol.maximum_click_of_campaigns %></td>
+      <td> <%= campaign_avail_clicks.max %></td>
+      <td> <%= campaign_avail_clicks.sum / campaign_avail_clicks.size.to_f %></td>
       <td> <%= kol.gender_text %><br><%= kol.app_city_label %></td>
       <td id="check-status-<%= campaign_apply.id %>">
         <%= render "check_status", campaign_apply: campaign_apply %>
@@ -120,6 +131,7 @@
         <div class="check-groups" id="check-groups-<%= campaign_apply.id %>">
           <%= render "check_buttons", campaign_apply: campaign_apply %>
         </div>
+        <%= link_to '截图', marketing_dashboard_campaign_invites_path(q: { kol_id_eq: kol.id }), target: "_blank"  %>
       </td>
     </tr>
   <% end %>
