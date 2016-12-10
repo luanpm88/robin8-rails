@@ -107,8 +107,8 @@ class ShowCampaignPartial extends Component {
               }
             }
           }
-          { this.renderRevokeBtn() }
           <Evaluation {...{campaign, actions, campaign_id}}  />
+          { this.renderRevokeBtn() }
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>

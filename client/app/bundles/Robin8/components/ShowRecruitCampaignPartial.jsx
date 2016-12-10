@@ -101,6 +101,16 @@ class ShowRecruitCampaignPartial extends Component {
     }
   }
 
+  renderLoadEvalution() {
+    const {campaign, actions} = this.props;
+    const campaign_id = _.toInteger(this.props.params.id);
+    if (campaign.get("status") == 'executed' || campaign.get("status") == 'settled' ) {
+      return (
+        <Evaluation {...{campaign, actions, campaign_id}}  />
+      )
+    }
+  }
+
   render() {
     const { campaign, actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
@@ -117,8 +127,8 @@ class ShowRecruitCampaignPartial extends Component {
           { this.render_result_view() }
           { this.render_state_text(campaign, campaign_id, actions) }
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
+          { this.renderLoadEvalution() }
           { this.renderRevokeBtn() }
-          <Evaluation {...{campaign, actions, campaign_id}}  />
         </div>
         <RevokeConfirmModal show={this.state.showRevokeConfirmModal} onHide={this.closeRevokeConfirmModal.bind(this)} actions={this.props.actions} campaignId={campaign.get("id")} />
       </div>

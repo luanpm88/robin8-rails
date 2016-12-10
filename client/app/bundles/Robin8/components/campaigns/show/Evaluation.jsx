@@ -46,17 +46,15 @@ export default class Evaluation extends React.Component {
     const campaign = this.props.campaign
     if(campaign.get("evaluation_status") == 'evaluated'){
       return(
-        <div id="panelEvaluationShow" className="panel-collapse collapse in">
-          <div className="panel-body">
-            <div className="evaluation-items">
-              <div className="item">
-                <div className="name">效果评分:</div>
-                <div className="value">{campaign.get("effect_score")} 分</div>
-              </div>
-              <div className="item">
-                <div className="name">评价内容:</div>
-                <div className="value">{campaign.get("review_content")}</div>
-              </div>
+        <div className="panel-body">
+          <div className="evaluation-items">
+            <div className="item">
+              <div className="name">效果评分:</div>
+              <div className="value">{campaign.get("effect_score")} 分</div>
+            </div>
+            <div className="item">
+              <div className="name">评价内容:</div>
+              <div className="value">{campaign.get("review_content")}</div>
             </div>
           </div>
         </div>
@@ -89,7 +87,9 @@ export default class Evaluation extends React.Component {
         <div className="panel-heading">
           <a href="#panelEvaluationShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
           <h4 className="panel-title">评价详情</h4>
-          {this.render_kol_list()}
+          <div id="panelEvaluationShow" className="panel-collapse collapse in">
+            {this.render_kol_list()}
+          </div>
         </div>
       </div>
     )
