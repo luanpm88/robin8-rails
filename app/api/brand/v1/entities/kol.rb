@@ -7,7 +7,18 @@ module Brand
         expose :name do |object|
           object.safe_name
         end
-        
+
+        expose :city do |object|
+          object.app_city_label
+        end
+      end
+
+      class KolWithoutSocial < Entities::Base
+        expose :id, :avatar_url, :influence_score
+        expose :name do |object|
+          object.safe_name
+        end
+
         expose :city do |object|
           object.app_city_label
         end

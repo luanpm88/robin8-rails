@@ -3,7 +3,7 @@ class CampaignImgWorker
 
   def perform(campaign_id, img_url)
     begin
-      file_name = URI(img_url).path.downcase[1..-1]
+      file_name = URI(img_url).path.downcase.split("/").last
       local_path = "#{Rails.root}/public/assets/#{file_name}"
       system("wget #{img_url} -O #{local_path}")
       if(File.size?(local_path))

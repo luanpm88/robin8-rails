@@ -79,16 +79,6 @@ module Brand
           target.target_content if target
         end
 
-        # expose :province do |object, opts|
-        #   target = object.campaign_targets.find_by(target_type: "region")
-        #   target.target_content.split(" ").first if target
-        # end
-
-        # expose :city do |object, opts|
-        #   target = object.campaign_targets.find_by(target_type: "region")
-        #   target.target_content.split(" ").last if target
-        # end
-
         expose :gender do |object, opts|
           target = object.gender_target
           target.target_content if target

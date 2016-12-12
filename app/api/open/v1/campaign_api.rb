@@ -167,6 +167,7 @@ module Open
             params[:age] = min < max ? [min, max].join(',') : "全部"
           end
 
+          error!({ success: false, error: '封面图片不能超过1M' }, 400)  if  img_size(params[:poster_url]) > 1000
           #在取kol时候处理
           # if params[:region] and params[:region] != "全部"
           #   cities = params[:region].split(',').collect { |name| City.where("name like '#{name}%'").take }

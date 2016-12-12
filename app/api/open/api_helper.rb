@@ -22,5 +22,14 @@ module Open
     def logger
       OpenAPI.logger
     end
+
+    #return kb
+    def img_size(remote_url)
+      filename = "/tmp/#{Time.now.to_i}.png"
+      open(filename, 'wb') do |file|
+        file << open(remote_url).read
+      end
+      File.size?(filename) / 1000
+    end
   end
 end

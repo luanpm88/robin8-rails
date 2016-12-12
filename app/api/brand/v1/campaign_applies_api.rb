@@ -28,7 +28,7 @@ module Brand
 
         get '/' do
           @campaign = Campaign.find_by :id => params[:campaign_id]
-          @campaign_applies = @campaign.valid_applies({:include => :kol})
+          @campaign_applies = @campaign.valid_applies.includes(:kol, :campaign_invite)
           present @campaign_applies
         end
 
