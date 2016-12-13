@@ -81,6 +81,7 @@ class PushMessage < ActiveRecord::Base
   Robin8Logo = "http://7xozqe.com2.z0.glb.qiniucdn.com/robin8_log-2016-3-30.jpg"
   def self.push_campaign_message
     executing_campaigns = Campaign.where(:status => 'executing', :end_apply_check => false)
+    Rails.logger.pusher.info "=======push_campaign_message======"
     return if  executing_campaigns.size == 0
     should_push_kol_ids = []
     executing_campaigns.each {|t| should_push_kol_ids += t.get_kol_ids }

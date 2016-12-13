@@ -6,7 +6,7 @@ module Jd
     def self.schedule_settle
       should_settle_time = (Time.now - SettleInterval).strftime("%Y%m%d%H")
       CpsPromotionOrder.where("receipt_query_time <= '#{should_settle_time}'").where(:status => ['finished', 'part_return']).each do |order|
-        order.order_settle
+        Settle.order_settle(order)
       end
     end
 
