@@ -29,6 +29,21 @@ module Brand
           present @campaign_apply
         end
 
+        # params do
+        #   requires :campaign_id , type: Integer
+        # end
+        put ":id/pass_all_kols" do
+          @campaign = Campaign.find_by :id => params[:id]
+          @campaign_applies = @campaign.campaign_applies
+          if  @campaign_applies.size > @campaign.recruit_person_count
+            return error_unprocessable! "当前报名人数超过招募人数，不能全部通过！"
+          else
+            @campaign_applies.update_all(status: 'brand_passed')
+          end
+
+          present @campaign_applies
+        end
+
         get '/' do
           @campaign = Campaign.find_by :id => params[:campaign_id]
           @campaign_applies = @campaign.valid_applies.includes(:kol, :campaign_invite)

@@ -105,6 +105,21 @@ export function updateRecruitCompaignKols(campaign_id) {
   }
 }
 
+export function passAllKols(campaign_id) {
+  return {
+    type: actionTypes.PASS_RECRUIT_CAMPAIGN_ALL_KOLS,
+    promise: fetch(`${baseUrl}/campaign_applies/${campaign_id}/pass_all_kols`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT'
+    })
+  }
+}
+
 export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, status) {
   const data = { campaign_id, kol_id, status };
 

@@ -78,6 +78,17 @@ export default function campaignReducer($$state = initialState, action=nil) {
       }
       return $$state;
 
+    case actionTypes.PASS_RECRUIT_CAMPAIGN_ALL_KOLS:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        console.log("---PASS_RECRUIT_CAMPAIGN_ALL_KOLS---")
+        $$state = $$state.merge({
+          "campaign_invites": Immutable.fromJS(action.result.items),
+        });
+        $$state = $$state.mergeIn(['campaign', 'brand_passed_count'], action.result.items[0].brand_passed_count);
+      }
+      return $$state;
+
     case actionTypes.UPDATE_KOL_SCORE_AND_BRAND_OPINION_OF_RECRUIT:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {

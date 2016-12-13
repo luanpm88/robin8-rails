@@ -50,6 +50,24 @@ export default class KolList extends React.Component {
     }
   }
 
+  passAllKols() {
+    const { passAllKols } = this.props.actions;
+    const { campaign_id } = this.props;
+
+    passAllKols(campaign_id);
+  }
+
+  render_pass_all_kols() {
+    const { campaign } = this.props;
+    if(campaign.get("recruit_status") == 'choosing'){
+      return (
+        <div className="kol-form">
+          <button className="btn-common btn-success" onClick={this.passAllKols.bind(this)}>全部通过</button>
+        </div>
+      )
+    }
+  }
+
   render_super_vistor_header() {
     if (isSuperVistor()) {
       return (
@@ -121,6 +139,7 @@ export default class KolList extends React.Component {
       return(
         <div id="panelKolsBigShow" className="kols-list-wrapper">
           <div className="panel-body">
+            { this.render_pass_all_kols() }
             <table className="table table-hover panelKolsTable">
               <thead>
                 {this.render_kol_list_header()}
@@ -187,9 +206,6 @@ export default class KolList extends React.Component {
                 <span className="bold">{ campaign.get("recruit_person_count") }</span>
               </li>
             </ul>
-          </div>
-          <div className="kol-form">
-            <button className="btn btn-primary kol-submit" onClick={this.updateKols.bind(this)}>提交名单</button>
           </div>
         </div>
       </div>
