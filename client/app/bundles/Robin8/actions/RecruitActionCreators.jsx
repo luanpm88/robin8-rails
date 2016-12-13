@@ -106,8 +106,7 @@ export function updateRecruitCompaignKols(campaign_id) {
 }
 
 export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, status) {
-  const operation = !!status ? "agree" : "cancel";
-  const data = { campaign_id, kol_id, operation };
+  const data = { campaign_id, kol_id, status };
 
   return {
     type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS,

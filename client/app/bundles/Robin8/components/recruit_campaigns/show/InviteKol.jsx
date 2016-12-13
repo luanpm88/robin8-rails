@@ -53,19 +53,26 @@ export default class InviteKol extends React.Component {
     )
   }
 
-  render_screenshot_or_switchbox() {
+  render_screenshot() {
     const { campaign, campaign_id, campaign_invite, actions } = this.props;
     const status = campaign.get("recruit_status");
 
     if (status === "choosing") {
-      return (
-        <td>
-          <SwitchBox
-            onUserClick={this.updateKolStatus.bind(this)}
-            activeValue={campaign_invite.get("status") === "brand_passed"}
-          />
-        </td>
-      );
+      const check_status = campaign_invite.get("status");
+      if(check_status == 'platform_passed'){
+        return(
+          <td><span className="label label-default">未处理</span></td>
+        )
+      }else if (check_status == 'brand_passed'){
+        return(
+          <td><span className="label label-success">已通过</span></td>
+        )
+      }
+      else {
+        return(
+          <td><span className="label label-danger">已拒绝</span></td>
+        )
+      }
     } else if (status === "settling" || status === "settled") {
       if(campaign_invite.get("img_status") == "passed"){
         return (
@@ -85,6 +92,29 @@ export default class InviteKol extends React.Component {
       return (
         <td className={ passed ? "" : "grey" } >{ !!passed ? "已招募" : "未招募" }</td>
       );
+    }
+  }
+
+  // this.updateKolStatus('brand_rejected').bind(this)
+  render_operate(){
+    const { campaign, campaign_invite } = this.props;
+    const status = campaign.get("recruit_status");
+    const check_status = campaign_invite.get("status");
+    if (status === "choosing") {
+      if (check_status === 'platform_passed') {
+        return (
+          <td>
+            <button className="btn-common btn-success" onClick={this.updateKolStatus.bind(this, 'brand_passed')}>通过</button>&nbsp;
+            <button className="btn-common btn-danger"  onClick={this.updateKolStatus.bind(this, 'brand_rejected')}>拒绝</button>
+          </td>
+        )
+      } else {
+        return (
+          <td>
+            <button className="btn-common btn-default" onClick={this.updateKolStatus.bind(this, 'platform_passed')}>取消</button>
+          </td>
+        )
+      }
     }
   }
 
@@ -129,7 +159,8 @@ export default class InviteKol extends React.Component {
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
         {/* <td>{campaign_invite.get("get_avail_click") || "-"}</td> */}
         {this.render_remark_and_pictures()}
-        {this.render_screenshot_or_switchbox()}
+        {this.render_screenshot()}
+        {this.render_operate()}
         {this.renderScoreMarkButton()}
         <KolDetailModal show={this.state.showKolDetailModal} onHide={this.closeShowKolDetailModal.bind(this)} actions={this.props.actions} campaignInvite={campaign_invite} />
         <KolScoreModal show={this.state.showKolScoreModal} onHide={this.closeShowKolScoreModal.bind(this)} index={this.props.index} isRecuritCampaign={true} actions={this.props.actions} campaignInvite={campaign_invite} />

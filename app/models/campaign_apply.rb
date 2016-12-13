@@ -47,6 +47,10 @@ class CampaignApply < ActiveRecord::Base
   end
 
   def brand_reject_kol
+    self.update_column(:status, 'brand_rejected')
+  end
+
+  def brand_cancel_kol
     self.update_column(:status, 'platform_passed')
   end
 

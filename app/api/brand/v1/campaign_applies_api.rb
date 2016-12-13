@@ -11,18 +11,21 @@ module Brand
         params do
           requires :campaign_id , type: Integer
           requires :kol_id      , type: Integer
-          requires :operation   , type: String
+          requires :status   , type: String
         end
         put "change_status" do
 
           @campaign_apply = CampaignApply.find_by :campaign_id => declared(params)[:campaign_id], :kol_id => declared(params)[:kol_id]
 
           @campaign = @campaign_apply.campaign
-
-          return error_unprocessable! "已超过预计招募人数" if declared(params)[:operation] == 'agree' and @campaign.brand_passed_applies.count >= @campaign.recruit_person_count
-
-          @campaign_apply.brand_pass_kol if declared(params)[:operation] == 'agree'
-          @campaign_apply.brand_reject_kol if declared(params)[:operation] == 'cancel'
+          if declared(params)[:status] == 'brand_passed'
+            return error_unprocessable! "已超过预计招募人数" if @campaign.brand_passed_applies.count >= @campaign.recruit_person_count
+            @campaign_apply.brand_pass_kol
+          elsif declared(params)[:status] == 'brand_rejected'
+            @campaign_apply.brand_reject_kol
+          elsif declared(params)[:status] == 'platform_passed'
+            @campaign_apply.brand_cancel_kol
+          end
           present @campaign_apply
         end
 
