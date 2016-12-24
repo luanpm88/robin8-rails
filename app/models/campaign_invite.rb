@@ -5,7 +5,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_total_click        #所有点击
   counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
-  lock :settle
+  lock :settle, :expiration => 10
 
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]

@@ -30,7 +30,7 @@ export default class InviteKol extends React.Component {
 
   render_total_click(){
     const { campaign_invite, campaign } = this.props;
-    if(campaign.get("per_budget_type") != "simple_cpi"){
+    if(campaign.get("per_budget_type") != "simple_cpi" || campaign.get("per_budget_type") != "cpt" || campaign.get("per_budget_type") != "recruit"){
       return <td>{campaign_invite.get("get_total_click")}</td>
     }
   }
