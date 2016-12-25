@@ -1,9 +1,9 @@
 class Withdraw < ActiveRecord::Base
   belongs_to :kol
-  validates_presence_of :real_name, :credits
+  belongs_to :user
+  validates_presence_of :real_name, :credits, :if => Proc.new{|t| t.kol_id.present? }
   validates_numericality_of :credits
   validates_presence_of :alipay_no, :if => Proc.new{|t| t.withdraw_type == 'alipay'}
-  validates_presence_of :bank_name, :bank_no, :if => Proc.new{|t| t.withdraw_type == 'bank'}
 
   validate :check_avail_amount, :on => :create
 
@@ -22,6 +22,7 @@ class Withdraw < ActiveRecord::Base
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
 
   def check_avail_amount
+    return true if self.user_id.present?
     avail_amount = Kol.find(kol_id).avail_amount rescue 0
     if avail_amount.to_f < credits.to_f
       self.errors.add(:credits, "超出账户可用金额")
@@ -29,33 +30,39 @@ class Withdraw < ActiveRecord::Base
   end
 
   def check_alipay_account
+    return true if self.user_id.present?
     if AlipayAccountBlacklist.where(account: self.alipay_no).present?
       self.update_attributes(status: :rejected)
     end
   end
 
   def frozen_withdraw_amount
+    return true if self.user_id.present?
     self.kol.frozen(self.credits,'withdraw', self, nil)
   end
 
   def deal_withdraw
-    if self.kol.frozen_amount.to_f < self.credits.to_f
-      self.errors.add(:credits, "超出账户冻结金额")
-      return
-    end
-    if self.status_changed? && self.status == 'paid'
-      # 解冻并提现
+    if self.user_id.present?
+      self.user.payout(self.credits, 'withdraw',self,nil)
+    else
+      if self.kol.frozen_amount.to_f < self.credits.to_f
+        self.errors.add(:credits, "超出账户冻结金额")
+        return
+      end
+      if self.status_changed? && self.status == 'paid'
+        # 解冻并提现
         self.kol.unfrozen(self.credits,'withdraw', self, nil)
         self.kol.payout(self.credits, 'withdraw',self,nil)
         if self.kol.mobile_number.present?
           SmsMessage.send_by_resource_to(self.kol, "恭喜您！你在Robin8的提现已到账！速去支付宝[账单]中查看！", self)
         end
-    elsif self.status_changed? && self.status == 'rejected'
-      # 解冻
-      if self.kol.mobile_number.present?
-        SmsMessage.send_by_resource_to(self.kol, "您在Robin8的提现审核被拒绝，请去APP查看！(原因:#{self.reject_reason})", self)
+      elsif self.status_changed? && self.status == 'rejected'
+        # 解冻
+        if self.kol.mobile_number.present?
+          SmsMessage.send_by_resource_to(self.kol, "您在Robin8的提现审核被拒绝，请去APP查看！(原因:#{self.reject_reason})", self)
+        end
+        self.kol.unfrozen(self.credits,'withdraw', self, nil)
       end
-      self.kol.unfrozen(self.credits,'withdraw', self, nil)
     end
   end
 end

@@ -1,6 +1,8 @@
 class KolCreateCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :age, :region, :gender, :tags, :need_pay_amount, :campaign_from, :example_screenshot, :sub_type]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline,
+                   :message, :campaign_action_url, :age, :region, :gender, :tags, :need_pay_amount, :campaign_from, :example_screenshot,
+                   :sub_type, :enable_append_push]
 
   attr_reader :errors, :campaign
 

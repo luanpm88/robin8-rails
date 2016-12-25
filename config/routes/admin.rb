@@ -100,6 +100,7 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
+      match '/withdraw' => 'users#withdraw' , via: [:post, :get]
       member do
         put 'live'
         put 'active'

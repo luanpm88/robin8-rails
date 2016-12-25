@@ -112,7 +112,7 @@ module Campaigns
         # 发送通知
         Message.new_campaign(self, kol_ids)
       end
-      if self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?
+      if (self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?)  && self.enable_append_push
         CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
     end

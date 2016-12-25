@@ -113,6 +113,35 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     end
   end
 
+  def withdraw
+    authorize! :update, User
+
+    render 'withdraw' and return if request.method.eql? 'GET'
+
+    if params[:credits].to_f.zero?
+      flash[:alert] = "提现金额不能为空"
+      return render 'withdraw'
+    elsif params[:credits].to_f > @user.avail_amount
+      flash[:alert] = "提现金额不能大于可用余额"
+      return render 'withdraw'
+    end
+
+    Withdraw.create!(
+      user_id: params[:user_id],
+      credits: params[:credits],
+      status: "paid",
+      operate_admin: current_admin_user.email,
+      remark: params[:remark]
+    )
+
+    flash[:notice] = '为品牌主提现成功'
+
+    respond_to do |format|
+      format.html { redirect_to marketing_dashboard_users_path }
+      format.json { head :no_content }
+    end
+  end
+
   def edit
     @user = User.find params[:id]
   end

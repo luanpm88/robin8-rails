@@ -86,6 +86,8 @@
           /
           <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id), :target => "_blank" %>
           /
+          <%= link_to '提现', marketing_dashboard_user_withdraw_path(u.id), :target => "_blank" %>
+          /
           <%= link_to '以品牌主身份登录', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "_blank" %>
         </td>
       </tr>

@@ -18,6 +18,7 @@ module Open
           requires :start_time,        type: DateTime
           requires :deadline,          type: DateTime
           requires :per_budget_type,   type: String, values: ['simple_cpi', 'post', 'click']
+          optional :enable_append_push,type: Boolean, default: true
 
           requires :poster_url,        type: String
           optional :screenshot_url,    type: String
@@ -116,6 +117,7 @@ module Open
           optional :start_time,        type: DateTime
           optional :deadline,          type: DateTime
           optional :per_budget_type,   type: String, values: ['simple_cpi', 'post', 'click']
+          optional :enable_append_push,type: Boolean, default: true
           # optional :budget,            type: Float
 
           optional :poster_url,         type: String
