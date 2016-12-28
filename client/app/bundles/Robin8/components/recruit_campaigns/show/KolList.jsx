@@ -71,7 +71,7 @@ export default class KolList extends React.Component {
   render_super_vistor_header() {
     if (isSuperVistor()) {
       return (
-        <th>kol id</th>
+        <th>KOL_ID</th>
       )
     }
   }

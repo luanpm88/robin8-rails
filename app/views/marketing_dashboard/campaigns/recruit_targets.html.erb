@@ -27,7 +27,7 @@
     <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
       <%= search_form_for @q, url: request.path, class: "form" do |f| %>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-2">
             <div class="form-group">
               <label>审核类型</label>
               <%= f.select :status_eq, [['未处理', 'applying'], ['备选', 'option'], ['通过', 'platform_passed'], ['拒绝', 'platform_rejected'],
@@ -35,20 +35,32 @@
                            {include_blank: true}, class: "form-control" %>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <div class="form-group">
               <label>Kol等级</label>
               <%= f.select :kol_kol_level_eq, options_for_select([['A', 'A'], ['B', 'B'], ['C', 'C'], ['S', 'S']]), {include_blank: true}, class: "form-control" %>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <div class="form-group">
-              <label>&nbsp;</label>
-              <div>
-                <%= f.submit "搜索", class: "btn btn-primary" %>
-              </div>
+              <label>性别</label>
+              <%= f.select :kol_gender_eq, options_for_select([['男', '1'], ['女', '2'], ['未知', '0']]), {include_blank: true}, class: "form-control" %>
             </div>
           </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>地区（拼音）</label>
+              <%= f.search_field :kol_app_city_cont, class: "form-control", placeholder: "请输入城市拼音" %>
+            </div>
+          </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <div>
+              <%= f.submit "搜索", class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
         </div>
       <% end %>
     </div>

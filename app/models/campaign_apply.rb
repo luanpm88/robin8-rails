@@ -28,11 +28,11 @@ class CampaignApply < ActiveRecord::Base
       group("campaign_applies.kol_id").
       order("avg(campaign_invites.avail_click) #{dir}") }
   scope :sort_by_weibo_followers_count, -> (dir){
-    joins(%Q| left join  social_accounts on social_accounts.kol_id=campaign_invites.kol_id and social_accounts.provider='weibo'|).
+    joins(%Q| left join  social_accounts on social_accounts.kol_id=campaign_applies.kol_id and social_accounts.provider='weibo'|).
       group("campaign_applies.kol_id").
       order("MAX(social_accounts.followers_count) #{dir}") }
   scope :sort_by_wechat_followers_count, -> (dir){
-    joins(%Q| left join  social_accounts on social_accounts.kol_id=campaign_invites.kol_id and social_accounts.provider='wechat'|).
+    joins(%Q| left join  social_accounts on social_accounts.kol_id=campaign_applies.kol_id and social_accounts.provider='wechat'|).
       group("campaign_applies.kol_id").
       order("MAX(social_accounts.followers_count) #{dir}") }
 

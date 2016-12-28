@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109012627) do
+ActiveRecord::Schema.define(version: 20161225131633) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -455,6 +455,7 @@ ActiveRecord::Schema.define(version: 20161109012627) do
     t.string   "forward_platform",             limit: 255,                               default: "moments"
     t.string   "wechat_auth_type",             limit: 255,                               default: "base"
     t.string   "evaluation_status",            limit: 255,                               default: "pending"
+    t.boolean  "enable_append_push",           limit: 1,                                 default: true
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -1196,6 +1197,7 @@ ActiveRecord::Schema.define(version: 20161109012627) do
     t.integer  "is_hot",                 limit: 4,                              default: 0
     t.text     "memo",                   limit: 65535
     t.float    "historical_income",      limit: 24,                             default: 0.0
+    t.integer  "show_count",             limit: 4,                              default: 30
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -2082,6 +2084,8 @@ ActiveRecord::Schema.define(version: 20161109012627) do
     t.string   "check_remark",  limit: 255
     t.datetime "check_time"
     t.string   "reject_reason", limit: 255
+    t.integer  "user_id",       limit: 4
+    t.string   "operate_admin", limit: 255
   end
 
   add_foreign_key "campaign_targets", "campaigns"

@@ -165,7 +165,7 @@
           <th><%= sort_link(@q, :total_invite_count, "总接单人数") %></th>
           <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
           <th><%= sort_link(@q, :total_click, "总点击") %></th>
-          <th><%= sort_link(@q, :evaluation_status, "评价状态") %></th>
+          <th>补推</th>
           <th>销售人员</th>
           <th>操作</th>
         </tr>
@@ -188,7 +188,7 @@
           <td><%= c.campaign_invites.count %></td>
           <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
           <td><%= c.get_total_click > 0 ? c.get_total_click : c.get_total_click  %></td>
-          <td><%= c.evaluation_status %> </td>
+          <td><%= c.enable_append_push ? '是' : '否' %> </td>
           <td>
             <% if seller = get_campaign_seller(c) %>
               <%= seller.name %>
