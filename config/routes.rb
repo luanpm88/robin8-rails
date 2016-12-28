@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   mount Crm::Engine, at: "/crm"
   # mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
-  mount OpenAPI => '/open_api', as: :open_api#, constraints: {subdomain: 'open'}
+  mount OpenAPI => '/api', as: :open_api, constraints: {subdomain: 'open'}
+  # mount OpenAPI => '/open_api', as: :open_api#, constraints: {subdomain: 'open'}
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
   mount BrandAPI => '/brand_api'
