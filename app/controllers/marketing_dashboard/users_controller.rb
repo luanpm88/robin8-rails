@@ -121,7 +121,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     if params[:credits].to_f.zero?
       flash[:alert] = "提现金额不能为空"
       return render 'withdraw'
-    elsif params[:credits].to_f > @user.avail_amount
+    elsif params[:credits].to_f > @user.avail_amount.to_f
       flash[:alert] = "提现金额不能大于可用余额"
       return render 'withdraw'
     end
