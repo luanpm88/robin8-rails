@@ -126,7 +126,7 @@
       <td> <%= wechat.username if wechat %> </td>
       <td> <%= wechat.followers_count if wechat %></td>
       <td> <%= campaign_avail_clicks.max %></td>
-      <td> <%= campaign_avail_clicks.sum / campaign_avail_clicks.size.to_f %></td>
+      <td> <%= (campaign_avail_clicks.sum / campaign_avail_clicks.size.to_f).round(1) %></td>
       <td> <%= kol.gender_text %><br><%= kol.app_city_label %></td>
       <td id="check-status-<%= campaign_apply.id %>">
         <%= render "check_status", campaign_apply: campaign_apply %>
