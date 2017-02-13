@@ -22,7 +22,7 @@ if $*.include? "new_qa"
 else
   server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
   set :branch, 'QA'
-  set :server_name, 'robin8-staging.cn'
+  set :server_name, 'test.robin8.net'
 end
 
 set :stage, "staging"

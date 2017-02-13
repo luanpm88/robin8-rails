@@ -25,7 +25,7 @@ module Campaigns
       end
 
       #调用nlp api 获取分析结果
-      NlpServer = "http://robin8-staging.cn:5000/kol/v1.0/analyze"
+      NlpServer = "http://test.robin8.net:5000/kol/v1.0/analyze"
       def analyze_url(url)
         params = {url: url}
         res = RestClient.post NlpServer, params.to_json,  :content_type => :json, :accept => :json, :timeout => 5      rescue nil
