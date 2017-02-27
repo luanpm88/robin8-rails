@@ -137,7 +137,7 @@
           <% end %>
         </td>
         <td><%= w.id %></td>
-        <td><%= link_to w.kol_id, marketing_dashboard_kol_path(:id => w.kol_id), :target => "_blank" %></td>
+        <td><%= link_to w.kol_id, marketing_dashboard_kol_path(:id => w.kol_id), :target => "_blank" rescue "" %></td>
         <td><%= w.kol.name rescue "" %></td>
         <td><%= w.kol.mobile_number rescue "" %></td>
         <td><%= w.credits %></td>
@@ -147,10 +147,10 @@
             <%= link_to kol_id, "/marketing_dashboard/kols/#{kol_id}", :target => "_blank" %>&nbsp;&nbsp;&nbsp;
           <% end %>
         </td>
-        <td><%= w.kol.withdraws.count %></td>
+        <td><%= w.kol.withdraws.count rescue "" %></td>
         <td><%= w.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         <td><%= w.kol.kol_level rescue "" %></td>
-        <td><%= color_time(w.kol.forbid_campaign_time) %></td>
+        <td><%= color_time(w.kol.forbid_campaign_time) rescue "" %></td>
         <td><%= w.kol.app_platform rescue "" %></td>
         <td><%= w.alipay_no %></td>
         <td><%= w.real_name %></td>
@@ -169,7 +169,7 @@
           <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
           <% end %>
           <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
-          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" %>
+          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" rescue "" %>
         </td>
       </tr>
     <% end %>
