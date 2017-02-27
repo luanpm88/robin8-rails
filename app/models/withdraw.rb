@@ -11,8 +11,6 @@ class Withdraw < ActiveRecord::Base
   after_create :check_alipay_account
   after_save :deal_withdraw
 
-  belongs_to :kol
-
   STATUS = %w(pending paid rejected checked permanent_frozen)
 
   scope :whole, ->{order('created_at desc')}
@@ -20,6 +18,7 @@ class Withdraw < ActiveRecord::Base
   scope :checked, -> { where(:status => 'checked').order('created_at desc') }
   scope :approved, -> {where(:status => 'paid').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
+  scope :of_kols, -> { where.not(kol_id: nil) }
 
   def check_avail_amount
     return true if self.user_id.present?

@@ -3,7 +3,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def index
     authorize! :read, Withdraw
-    @withdraws = Withdraw.all
+    @withdraws = Withdraw.of_kols
     formated_response "全部"
   end
 
