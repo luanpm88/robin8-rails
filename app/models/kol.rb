@@ -1,3 +1,4 @@
+# coding: utf-8
 class Kol < ActiveRecord::Base
   include Redis::Objects
   # kol_role:  %w{public big_v mcn_big_v mcn}
@@ -83,6 +84,12 @@ class Kol < ActiveRecord::Base
   #cps
   has_many :cps_articles
   has_many :cps_article_shares
+  has_many :cps_promotion_orders do
+    def cps_promotion_order_items
+      cps_promotion_order_ids = proxy_association.select(:id)
+      CpsPromotionOrderItem.where(cps_promotion_order_id: cps_promotion_order_ids)
+    end
+  end
 
   has_one  :registered_invitation,  foreign_key: :invitee_id, inverse_of: :invitee
   has_many :registered_invitations, foreign_key: :inviter_id, inverse_of: :inviter
