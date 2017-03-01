@@ -1,3 +1,4 @@
+# coding: utf-8
 # config valid only for Capistrano 3.1
 lock '3.4.0'
 set :application, 'robin8'
@@ -175,11 +176,3 @@ task :noassets do
   end
 end
 
-desc "new_qa"
-task :new_qa do
-  if $*.include? "new_qa"
-    puts '-'*80
-    puts "部署在新的测试环境"
-    puts '-'*80
-  end
-end
