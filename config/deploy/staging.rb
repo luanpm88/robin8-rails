@@ -15,15 +15,10 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-if $*.include? "new_qa"
-  server '139.196.44.225', user: 'deployer', roles: %w{web app db master}
-  set :branch, 'master_cn'
-  set :server_name, '139.196.44.225'
-else
-  server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-  set :branch, 'QA'
-  set :server_name, 'test.robin8.net'
-end
+
+server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
+set :branch, 'master_cn'
+set :server_name, 'test.robin8.net'
 
 set :stage, "staging"
 set :unicorn_env, "staging"
