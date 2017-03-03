@@ -12,8 +12,12 @@ Rails.application.routes.draw do
   mount Crm::Engine, at: "/crm"
   # mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
-  mount OpenAPI => '/api', as: :open_api, constraints: {subdomain: 'open'}
-  # mount OpenAPI => '/open_api', as: :open_api#, constraints: {subdomain: 'open'}
+  if Rails.env.production?
+    # TODO: 要将生产环境的 Open API `open.robin8.net/api/v1` 命名空间迁也移成 `robin8.net/api/open_v1`
+    mount OpenAPI => '/api', as: :open_api, constraints: {subdomain: 'open'}
+  else
+    mount OpenAPI => '/open_api', as: :open_api
+  end
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
   mount BrandAPI => '/brand_api'
