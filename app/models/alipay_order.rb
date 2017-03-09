@@ -34,7 +34,7 @@ class AlipayOrder < ActiveRecord::Base
       self.user.income(credits, 'alipay_recharge', self)
       update_attributes!(status: 'paid')
       Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 更改订单状态成功(支付成功)  --------------"
-      increase_user_appliable_credits if need_invoice
+      increase_user_appliable_credits
     end
   end
 
