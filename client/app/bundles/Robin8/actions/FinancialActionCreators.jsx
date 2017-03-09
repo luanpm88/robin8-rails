@@ -1,22 +1,22 @@
 import actionTypes from '../constants/brandConstants';
 
-const baseUrl = "/brand_api/v1"
+const baseUrl = '/brand_api/v1';
 
-export function alipayRecharge(credits, tax, need_invoice, invite_code) {
-  const data = { credits, tax, need_invoice, invite_code};
+export function alipayRecharge(credits, invite_code) {
+  const data = { credits, invite_code };
   return {
     type: actionTypes.ALIPAY_RECHARGE,
     promise: fetch(`${baseUrl}/alipay_orders`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
       },
       credentials: 'same-origin',
       method: 'POST',
-      body: JSON.stringify(data)
-    })
-  }
+      body: JSON.stringify(data),
+    }),
+  };
 }
 
 export function fetchTransactions(current_page) {
