@@ -5,10 +5,10 @@ export default class InvoiceHistory extends React.Component {
     const invoiceHistory = this.props.invoiceHistory
     return (
       <tr align="center">
-        <td className="invoice-amount">
+        <td>
           { invoiceHistory.get("credits") }
         </td>
-        <td className="invoice-type">
+        <td>
           { do
             {
               if (invoiceHistory.get("invoice_type") === 'common'){
@@ -19,22 +19,22 @@ export default class InvoiceHistory extends React.Component {
             }
           }
         </td>
-        <td className="invoice-title">
+        <td>
           <div>
             { invoiceHistory.get("title") }
           </div>
         </td>
-        <td className="invoice-address">
+        <td>
           <div>
             { invoiceHistory.get("address") }
           </div>
         </td>
-        <td className="invoice-create_time" >
+        <td>
           <div>
             { invoiceHistory.get("created_at") }
           </div>
         </td>
-        <td className="express-status">
+        <td>
           { do
             {
               if (invoiceHistory.get("tracking_number")){
@@ -44,6 +44,9 @@ export default class InvoiceHistory extends React.Component {
               }
             }
           }
+        </td>
+        <td>
+          {invoiceHistory.get('tracking_number')}
         </td>
       </tr>
     )
