@@ -59,14 +59,14 @@ zh:
     already_rejected:          '已拒绝提现'
     alipay_blocked_list:       '支付宝黑名单'
   recharge_management:
-    pc_all_recharge:           'PC所有的充值'
+    pc_all_recharge:           'PC线上的充值'
     pc_to_be_paid:             'PC待付款充值'
     pc_already_paid:           'PC已付款充值'
     pc_offline_recharge:       'PC线下的充值'
     app_all_recharge:           'APP所有的充值'
     app_to_be_paid:             'APP待付款充值'
     app_already_paid:           'APP已付款充值'
-    app_paid_from_campaign:     'APP发活动时直接付款'
+    app_paid_from_campaign:     'APP直接付款发起的活动'
     paid_with_50_red:           '50元红包充值'
   receipts_management:
     all_receipts:               '所有发票'
@@ -94,9 +94,8 @@ zh:
     manage_prize:                    '管理奖品'
     manage_activities:               '管理活动'
     list_of_winners:                 '中奖名单'
-  untities:  
+  untities:
     registration_sms_code:           '获取注册验证码'
     send_sms_to_mobile:              '指定手机发营销短信'
     sms_log:                         '短信发送日志'
     open_api:                        '开放API'
-    
