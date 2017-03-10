@@ -124,23 +124,26 @@ class FinancialInvoicePartial extends React.Component {
       return (
         <tbody>
           <tr align="center">
-            <td className="invoice-amount">
+            <td>
               金额
             </td>
-            <td className="invoice-type" >
+            <td>
               类型
             </td>
-            <td className="invoice-title">
+            <td>
               抬头
             </td>
-            <td className="invoice-address">
+            <td>
               地址
             </td>
-            <td className="invoice-create_time" >
+            <td>
               创建时间
             </td>
-            <td className="express-status">
+            <td>
               状态
+            </td>
+            <td>
+              快递单号
             </td>
           </tr>
           { do
