@@ -1,6 +1,6 @@
 # coding: utf-8
 module API
-  module V1
+  module V2_0
     module Entities
       module KolOverviewEntities
         class Campaigns < Grape::Entity

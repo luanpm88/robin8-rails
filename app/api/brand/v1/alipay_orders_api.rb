@@ -11,20 +11,22 @@ module Brand
           desc 'Create a alipay order'
           post do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
-            credits = params[:credits]
-            tax = params[:tax]
-            actual_credits = credits + tax
-            return error_unprocessable! "充值最低金额为#{MySettings.recharge_min_budget}" if MySettings.recharge_min_budget > actual_credits.to_f
+            credits = params[:credits].to_f
+            return error_unprocessable! "充值最低金额为#{MySettings.recharge_min_budget}" if MySettings.recharge_min_budget > credits
+
             invite_code = params[:invite_code]
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
             notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/alipay_orders/alipay_notify"
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax, need_invoice: params[:need_invoice], invite_code: invite_code})
+
+            # 账户充值页面 (/brand/financial/recharge) 不再提供开具发票选项，
+            # 所以 need_invoice 为 false，tax 为零
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: 0, need_invoice: false, invite_code: invite_code})
             if @alipay_order.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
                                         subject: 'Robin8账户充值',
-                                        total_fee: (ENV["total_fee"] || actual_credits).to_f,
+                                        total_fee: (ENV["total_fee"] || credits).to_f,
                                         return_url: return_url,
                                         notify_url: notify_url
                                       },

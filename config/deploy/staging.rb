@@ -17,7 +17,7 @@
 
 
 server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-set :branch, 'master_cn'
+set :branch, 'develop_cn'
 set :server_name, 'test.robin8.net'
 
 set :stage, "staging"

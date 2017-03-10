@@ -6,7 +6,7 @@ module Campaigns
       SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
       SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
       RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
-      KolBudgetRate = 0.7
+      KolBudgetRate = 0.6
       AppendWaitTime =  Rails.env.production?  ? 6.hours  : 5.minutes
     end
 
@@ -290,12 +290,7 @@ module Campaigns
      end
 
     def cal_actual_per_action_budget
-      if self.user_id == 1240
-        kol_budget_rate = 0.9
-      else
-        kol_budget_rate = KolBudgetRate
-      end
-      actual_per_action_budget = (self.per_action_budget * kol_budget_rate).round(2)  rescue nil
+      actual_per_action_budget = (self.per_action_budget * KolBudgetRate).round(2)  rescue nil
       actual_per_action_budget
     end
 

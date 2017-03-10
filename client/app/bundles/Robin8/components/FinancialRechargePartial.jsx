@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
 import validator from 'validator';
 
-import BreadCrumb   from './shared/BreadCrumb';
-import FinancialMenu  from './shared/FinancialMenu';
-import OfflineRecharge from './financial/OfflineRecharge';
+import BreadCrumb from './shared/BreadCrumb';
+import FinancialMenu from './shared/FinancialMenu';
 import RechargeModal from './financial/modals/RechargeModal';
 
 import 'recharge/recharge.scss';
@@ -17,7 +15,6 @@ class FinancialRechargePartial extends React.Component {
       showRechargeModal: false,
       credits: "",
       inviteCode: "",
-      checkInvoice: false
     };
   }
 
@@ -96,11 +93,6 @@ class FinancialRechargePartial extends React.Component {
     //  return ;
     //}
 
-    if(this.refs.invoice_checkbox.checked) {
-      this.setState({checkInvoice: true})
-    } else {
-      this.setState({checkInvoice: false})
-    }
     this.setState({credits: credits});
     this.setState({inviteCode: invite_code});
     this.setState({showRechargeModal: true});
@@ -167,9 +159,6 @@ class FinancialRechargePartial extends React.Component {
                       <p className="must-be-integer">金额必须为整数</p>
                       <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
                     </div>
-                    <div>
-                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>
-                    </div>
                     <div className="invite-code">
                       <span>邀请码(选填):</span>
                       <input ref='marketingInviteCode' type="text" className="form-control" placeholder="请输入邀请码(选填)" />
@@ -182,9 +171,9 @@ class FinancialRechargePartial extends React.Component {
           </div>
         </div>
 
-        <RechargeModal show={this.state.showRechargeModal} onHide={this.closeRechargeModal.bind(this)} actions={this.props.actions} credits={this.state.credits} checkInvoice={this.state.checkInvoice} inviteCode={this.state.inviteCode} />
+        <RechargeModal show={this.state.showRechargeModal} onHide={this.closeRechargeModal.bind(this)} actions={this.props.actions} credits={this.state.credits} inviteCode={this.state.inviteCode} />
       </div>
-    )
+    );
   }
 }
 
