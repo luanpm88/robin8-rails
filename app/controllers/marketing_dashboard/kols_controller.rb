@@ -138,7 +138,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     authorize! :update, Kol
     @kol = Kol.find params[:id]
 
-    @kol.update_attributes(params.require(:kol).permit(:mobile_number, :name, :forbid_campaign_time, :kol_level))
+    @kol.update_attributes(params.require(:kol).permit(:mobile_number, :name, :forbid_campaign_time, :kol_level, :alipay_account, :alipay_name))
     flash[:notice] = "保存成功"
     redirect_to marketing_dashboard_kols_path
   end

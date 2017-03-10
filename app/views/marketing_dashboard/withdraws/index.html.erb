@@ -152,8 +152,18 @@
         <td><%= w.kol.kol_level rescue "" %></td>
         <td><%= color_time(w.kol.forbid_campaign_time) rescue "" %></td>
         <td><%= w.kol.app_platform rescue "" %></td>
-        <td><%= w.alipay_no %></td>
-        <td><%= w.real_name %></td>
+        <td>
+          <%= w.alipay_no %>
+          <%= link_to edit_marketing_dashboard_kol_path(w.kol), target: "_blank" do %>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <% end %>
+        </td>
+        <td>
+          <%= w.real_name %>
+          <%= link_to edit_marketing_dashboard_kol_path(w.kol), target: "_blank" do %>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <% end %>
+        </td>
         <td><%= w.kol.id_card rescue "" %></td>
         <td><%= w.kol.avail_amount rescue "" %></td>
         <td><%= w.kol.total_income rescue "" %></td>
