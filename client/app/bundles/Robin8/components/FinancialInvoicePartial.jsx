@@ -10,7 +10,7 @@ import InvoiceInfo from './financial/InvoiceInfo';
 import InvoiceHistory from './financial/InvoiceHistory';
 import getUrlQueryParams    from '../helpers/GetUrlQueryParams';
 
-import 'recharge/invoice.scss'
+import 'recharge/invoice.scss';
 
 function select(state) {
   return {
@@ -160,6 +160,7 @@ class FinancialInvoicePartial extends React.Component {
       return (
         <div>
           <p className="avail-invoice-amount">可申请额度: &nbsp;&nbsp;&nbsp;{this.props.appliableCredits.get('appliable_credits')}元</p>
+          <p className="invoice-amount-hint">已申请发票的金额不可以申请退款！</p>
           <ul className="list-inline">
             <li>
               申请金额
