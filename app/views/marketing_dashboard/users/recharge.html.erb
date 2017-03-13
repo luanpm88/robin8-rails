@@ -30,15 +30,6 @@
                   class: 'form-control form-group') %>
           <% end %>
         </div>
-        <div class="form-group">
-          <label>是否需要发票</label>
-          <div class="checkbox">
-            <label>
-              <%= check_box_tag :need_invoice, true, false, class: 'checkbox' %>
-              如果需要发票请勾选
-            </label>
-          </div>
-        </div>
 
         <%= submit_tag '确认并充值', :class => 'btn btn-primary' %>
       <% end %>
