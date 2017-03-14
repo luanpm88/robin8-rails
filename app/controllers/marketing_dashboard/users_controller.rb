@@ -72,30 +72,22 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     end
 
     credits = params[:credits].to_f
-    tax = 0
-
-    if params[:need_invoice]
-      tax = credits * 0.06
-      credits = credits - tax
-    end
 
     recharge_record = RechargeRecord.create(
       credits: credits,
-      tax: tax,
+      tax: 0,
+      need_invoice: false,
       status: "pending",
       receiver_name: params[:receiver_name],
       receiver: @user,
       operator: current_admin_user.email,
       admin_user: current_admin_user,
-      need_invoice: params[:need_invoice],
       remark: params[:remark]
     )
 
     if @user.income(credits, 'manual_recharge', recharge_record)
       recharge_record.update(status: "success")
-      if params[:need_invoice]
-        @user.increment!(:appliable_credits, (tax + credits))
-      end
+      @user.increment!(:appliable_credits, credits)
 
       if params[:seller_id]
         @user.update(seller_id: params[:seller_id])
