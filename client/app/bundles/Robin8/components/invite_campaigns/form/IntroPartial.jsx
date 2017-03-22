@@ -50,7 +50,7 @@ const initBootstrapMaxLength = function() {
   });
 
   $('.activity-intro-input').maxlength({
-    threshold: 139,
+    threshold: 499,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
