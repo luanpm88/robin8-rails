@@ -50,7 +50,7 @@ const initBootstrapMaxLength = function() {
   });
 
   $('.activity-intro-input').maxlength({
-    threshold: 139,
+    threshold: 499,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
@@ -130,10 +130,10 @@ export default class IntroPartial extends React.Component {
                 <label htmlFor="activityIntro">活动简介</label>
                 <textarea {...description}
                   className="form-control common-textarea activity-intro-input"
-                  maxLength={140}
+                  maxLength={500}
                   placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮助您传播，请给出适当的例子，如：请先评论棒极了，再给出买家秀">
                 </textarea>
-                <span className="word-limit">140</span>
+                <span className="word-limit">500</span>
                 <ShowError field={description} />
               </div>
             </div>

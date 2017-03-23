@@ -70,9 +70,9 @@ export default class EvaluatePartial extends React.Component {
             <div className="row review-content-row">
               <p className="action-mode">效果评价:</p>
               <div className="sources-check">
-                <textarea {...review_content} className="form-control common-textarea activity-intro-input" maxLength={140} placeholder="活动效果评价或者建议, 可以帮助我们提升服务" ></textarea>
+                <textarea {...review_content} className="form-control common-textarea activity-intro-input" maxLength={500} placeholder="活动效果评价或者建议, 可以帮助我们提升服务" ></textarea>
                 <ShowError field={review_content} />
-                <span className="word-limit">5-140</span>
+                <span className="word-limit">10-500</span>
               </div>
             </div>
           </div>

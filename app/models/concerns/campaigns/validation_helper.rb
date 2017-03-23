@@ -12,8 +12,8 @@ module Campaigns
       end
       
       if self.description_changed?
-        if self.description.to_s.size > 140
-          self.errors[:description] = "活动描述不能超过140个字!"
+        if self.description.to_s.size > 500
+          self.errors[:description] = "活动描述不能超过500个字!"
         end
       end
       if self.per_action_budget_changed?
