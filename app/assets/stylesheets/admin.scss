@@ -39,3 +39,9 @@ td {
     display: inline-block;
   }
 }
+
+.expandCheck {
+  input {
+    pointer-events: none;
+  }
+}

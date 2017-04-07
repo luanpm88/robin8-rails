@@ -132,7 +132,7 @@
   <tbody>
     <% @withdraws.each do |w| %>
       <tr>
-        <td>
+        <td class="expandCheck">
           <% if w.status.in? ['pending', 'checked'] %>
             <%= check_box_tag "withdraw_id[]", w.id, false, :class => 'withdraw_checkbox' %>
           <% end %>
@@ -226,6 +226,13 @@
       }
     })
   })
+
+  $(".expandCheck").on('click', function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var cb = $(event.target).children(":checkbox");
+    cb.attr("checked", !cb.attr("checked"));
+  });
 
   $(".reject_withdraw").click(function(event){
      $('.admin-withdraw-modal').modal("show")
