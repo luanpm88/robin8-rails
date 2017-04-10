@@ -50,13 +50,13 @@ const initBootstrapMaxLength = function() {
   });
 
   $('.activity-intro-input').maxlength({
-    threshold: 139,
+    threshold: 499,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
 
   $('.activity-task-input-input').maxlength({
-    threshold: 139,
+    threshold: 499,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
@@ -157,16 +157,16 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
-                <textarea {...description} className="form-control common-textarea activity-intro-input" maxLength={140} placeholder="生动有趣的活动介绍，能让KOL对你的活动好感倍增"  ></textarea>
-                <span className="word-limit">140</span>
+                <textarea {...description} className="form-control common-textarea activity-intro-input" maxLength={500} placeholder="生动有趣的活动介绍，能让KOL对你的活动好感倍增"  ></textarea>
+                <span className="word-limit">500</span>
                 <ShowError field={description} />
               </div>
               {/*
                 <div className="form-group">
                 <label htmlFor="activityIntro">任务描述</label>
                 <span className="changeTaskDescTemplate pull-right" data-current-template="1" onClick={this.handleChangeTaskTemplate}>换个模板</span>
-                <textarea {...task_description} className="form-control  common-textarea activity-task-input-input" maxLength={140} placeholder="描述KOL需要完成的活动及推广任务。不会填写？点击“换个模板”试试看"  ></textarea>
-                <span className="word-limit">140</span>
+                <textarea {...task_description} className="form-control  common-textarea activity-task-input-input" maxLength={500} placeholder="描述KOL需要完成的活动及推广任务。不会填写？点击“换个模板”试试看"  ></textarea>
+                <span className="word-limit">500</span>
                 <ShowError field={task_description} />
                 </div>
                 <div className="form-group">
