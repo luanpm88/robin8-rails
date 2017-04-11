@@ -16,7 +16,7 @@
 # used to set extended properties on the server.
 
 server '139.196.14.144', user: 'deployer', roles: %w{web app db master}
-server '139.196.169.53', user: 'deployer', roles: %w{app slave}
+# server '139.196.169.53', user: 'deployer', roles: %w{app slave}
 set :branch, 'master_cn'
 
 set :unicorn_env, "production"
@@ -38,7 +38,7 @@ namespace :assets_chores do
   end
 end
 
-after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
+# after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
