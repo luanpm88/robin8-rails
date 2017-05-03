@@ -456,6 +456,7 @@ ActiveRecord::Schema.define(version: 20161225131633) do
     t.string   "wechat_auth_type",             limit: 255,                               default: "base"
     t.string   "evaluation_status",            limit: 255,                               default: "pending"
     t.boolean  "enable_append_push",           limit: 1,                                 default: true
+    t.string   "activity_id",                  limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
