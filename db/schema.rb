@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504062900) do
+ActiveRecord::Schema.define(version: 20170504091015) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -330,6 +330,7 @@ ActiveRecord::Schema.define(version: 20170504062900) do
     t.float    "price",             limit: 24
     t.string   "kol_score",         limit: 255
     t.string   "brand_opinion",     limit: 255
+    t.integer  "lock_version",      limit: 4,     default: 0,     null: false
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
