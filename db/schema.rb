@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161225131633) do
+ActiveRecord::Schema.define(version: 20170504091015) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -330,6 +330,7 @@ ActiveRecord::Schema.define(version: 20161225131633) do
     t.float    "price",             limit: 24
     t.string   "kol_score",         limit: 255
     t.string   "brand_opinion",     limit: 255
+    t.integer  "lock_version",      limit: 4,     default: 0,     null: false
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -1199,6 +1200,7 @@ ActiveRecord::Schema.define(version: 20161225131633) do
     t.text     "memo",                   limit: 65535
     t.float    "historical_income",      limit: 24,                             default: 0.0
     t.integer  "show_count",             limit: 4,                              default: 30
+    t.integer  "lock_version",           limit: 4,                              default: 1
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
