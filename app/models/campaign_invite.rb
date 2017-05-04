@@ -81,7 +81,7 @@ class CampaignInvite < ActiveRecord::Base
 
   # 进行中的活动 审核通过时  仅仅更新它状态
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
-  def screenshot_pass
+  def screenshot_pass_without_lock
     return false if self.img_status == 'passed' || self.status == 'settled'  ||  self.status == 'rejected'
     if campaign.status == 'executing'
       self.update_attributes(:img_status => 'passed', :check_time => Time.now)
@@ -90,6 +90,13 @@ class CampaignInvite < ActiveRecord::Base
       self.settle
     end
     Message.new_check_message('screenshot_passed', self, campaign)
+  end
+  
+  def screenshot_pass
+    # 防止在发送相同的多次请求时生成多条记录
+    self.with_lock do
+      screenshot_pass_without_lock
+    end
   end
 
   #审核拒绝
