@@ -245,4 +245,4 @@ gem "rolify"
 gem 'groupdate', '~> 3.0', '>= 3.0.2'
 
 gem 'crm', path: 'crm'
-gem 'airbrake', '~> 5.0'
+gem 'airbrake', '~> 6.0'
