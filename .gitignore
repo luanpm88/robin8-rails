@@ -60,3 +60,5 @@ npm-debug.log*
 config/selector_city.txt
 config/new_selector_city.txt
 db/schema.rb
+
+config/secrets.yml_staging.yml

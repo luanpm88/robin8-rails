@@ -37,16 +37,20 @@ module API
           requires :kol_id, type: String
         end
         get ':kol_id/detail' do
-          kol = Kol.find params[:kol_id]
-          social_account = SocialAccount.where(:search_kol_id => params[:kol_id]).first rescue nil
-          if social_account.blank?
-            present :error, 1
-            present :detail, '该用户未找到'
-          else
-            social_accounts = SocialAccount.where(:kol_id => social_account.kol_id)
-            present :error, 0
-            present :social_account, social_accounts, with: API::SearchEngine::Entities::KolEntities::SocialAccount
-            present :show_count, kol.show_count
+          begin
+            kol = Kol.find params[:kol_id]
+            social_account = SocialAccount.where(:search_kol_id => params[:kol_id]).first rescue nil
+            if social_account.blank?
+              present :error, 1
+              present :detail, '该用户未找到'
+            else
+              social_accounts = SocialAccount.where(:kol_id => social_account.kol_id)
+              present :error, 0
+              present :social_account, social_accounts, with: API::SearchEngine::Entities::KolEntities::SocialAccount
+              present :show_count, kol.show_count
+            end
+          rescue ActiveRecord::RecordNotFound
+            present :detail, 'KOL id not found'
           end
         end
 
