@@ -295,6 +295,13 @@ module Open
           requires :id, type: Integer
         end
         get "/:id/invites" do
+          if Campaign.find(params[:id])
+            begin
+              @campaign = current_user.campaigns.find(params[:id])
+            rescue ActiveRecord::RecordNotFound
+              error!({ success: false, error: '客户已撤销活动' }, 400) and return
+            end
+          end
           @campaign = current_user.campaigns.find(params[:id])
           @invites  = @campaign.campaign_invites({:include => :kol }).page(params[:page]).per_page(20)
 
