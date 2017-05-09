@@ -12,8 +12,11 @@ module API
 
     logger Logger.new(Rails.root.join("log/grape.log"))
 
-    rescue_from :all do |exception|
+    rescue_from Grape::Exceptions::ValidationErrors do |e|
+      rack_response({'message' => e.message}.to_json, 500)
+    end
 
+    rescue_from :all do |exception|
       message = "\n #{exception.class} (#{exception.message}): \n"
       message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
       message << "path: #{@env['PATH_INFO']}\n"
