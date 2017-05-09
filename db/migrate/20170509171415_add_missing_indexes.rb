@@ -1,5 +1,5 @@
-# class AddMissingIndexes < ActiveRecord::Migration
-#   def change
+class AddMissingIndexes < ActiveRecord::Migration
+  def change
 #     ### add_index :addresses, [:addressable_id, :addressable_type], name: 'i_addr_on_addrable_id_type'
 #
 #     # add_index :admin_users_admin_roles, :admin_user_id
@@ -50,7 +50,9 @@
 #     add_index :kol_profile_screens, :kol_id
 #     add_index :kol_shows, :kol_id
 #     add_index :kols_lists, :user_id
-#     add_index :kols_lists_contacts, :kols_lists_id
+#     add_index :kols_lists_contacts
+#     # PRODUCTION END
+
 #     add_index :lottery_activities, :lottery_product_id
 #     add_index :lottery_activities, :lucky_kol_id
 #     add_index :lottery_activity_orders, [:lottery_activity_id, :lottery_activity_ticket_id]
@@ -81,5 +83,35 @@
 #     add_index :wechat_article_performances, [:sender_id, :sender_type]
 #     add_index :withdraws, :kol_id
 #     add_index :withdraws, :user_id
-#   end
-# end
+  end
+end
+
+
+# PRODUCTION
+# == 20170509171415 AddMissingIndexes: migrating ================================
+#   -- add_index(:interested_campaigns, :campaign_id)
+# -> 0.0176s
+# -- add_index(:interested_campaigns, :kol_id)
+# -> 0.0247s
+# -- add_index(:interested_campaigns, :user_id)
+# -> 0.0121s
+# -- add_index(:invoice_histories, :user_id)
+# -> 0.0123s
+# -- add_index(:invoice_receivers, :user_id)
+# -> 0.0211s
+# -- add_index(:invoices, :user_id)
+# -> 0.0124s
+# -- add_index(:kol_categories, :identity_id)
+# -> 0.0429s
+# -- add_index(:kol_influence_values, :kol_id)
+# -> 0.0968s
+# -- add_index(:kol_profile_screens, :kol_id)
+# -> 0.0099s
+# -- add_index(:kol_shows, :kol_id)
+# -> 0.0189s
+# -- add_index(:kols_lists, :user_id)
+# -> 0.0138s
+# -- add_index(:kols_lists_contacts, :kols_lists_id)
+# rake aborted!
+# StandardError: An error has occurred, all later migrations canceled:
+# Mysql2::Error: Key column 'kols_lists_id' doesn't exist in table: CREATE  INDEX `index_kols_lists_contacts_on_kols_lists_id`  ON `kols_lists_contacts` (`kols_lists_id`)
