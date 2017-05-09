@@ -12,9 +12,7 @@ module API
 
     logger Logger.new(Rails.root.join("log/grape.log"))
 
-    rescue_from Grape::Exceptions::ValidationErrors do |e|
-      rack_response({'message' => e.message}.to_json, 500)
-    end
+    rescue_from Grape::Exceptions::ValidationErrors
 
     rescue_from :all do |exception|
       message = "\n #{exception.class} (#{exception.message}): \n"
@@ -28,7 +26,7 @@ module API
         Rails.logger.api.info message
         Airbrake.notify(exception, @env)
       end
-      rack_response({'message' => exception.message}, 500)
+      rack_response({'message' => exception.message}.to_json, 500)
     end
 
     before do

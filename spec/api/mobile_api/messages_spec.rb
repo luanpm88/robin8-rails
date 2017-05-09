@@ -26,7 +26,7 @@ RSpec.describe "V1 Messages" do
         get '/api/v1/messages', {status: 'bla', with_message_stat: 'y'}
 
         expect(JSON.parse(response.body)['message']).to eq 'status does not have a valid value'
-        expect(response.status).to eq 400
+        expect(response.status).to eq 500
       end
     end
   end
