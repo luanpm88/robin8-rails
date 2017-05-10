@@ -40,7 +40,11 @@ class AddNewMissingIndexes < ActiveRecord::Migration
     add_index :lottery_activities, :lottery_product_id
     add_index :lottery_activities, :lucky_kol_id
     add_index :messages, [:item_id, :item_type]
+    add_index :messages, :item_id
+    add_index :messages, :item_type
     add_index :messages, [:receiver_id, :receiver_type]
+    add_index :messages, :receiver_type
+    add_index :messages, :created_at
     add_index :oauth_access_grants, :application_id
     add_index :oauth_access_tokens, :application_id
     add_index :payments, :discount_id
@@ -52,9 +56,18 @@ class AddNewMissingIndexes < ActiveRecord::Migration
     add_index :task_records, :invitees_id
     add_index :task_records, :task_type
     add_index :test_emails, :draft_pitch_id
+
     add_index :transactions, [:account_id, :account_type]
+    add_index :transactions, :account_id
+    add_index :transactions, :account_type
     add_index :transactions, [:item_id, :item_type]
+    add_index :transactions, :item_id
+    add_index :transactions, :item_type
     add_index :transactions, [:opposite_id, :opposite_type]
+    add_index :transactions, :opposite_id
+    add_index :transactions, :opposite_type
+    add_index :transactions, :created_at
+
     add_index :users, :kol_id
     add_index :users, :seller_id
     add_index :users, [:invited_by_id, :invited_by_type]

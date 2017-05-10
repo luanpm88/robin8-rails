@@ -394,50 +394,63 @@ class Kol < ActiveRecord::Base
 
   #所有消息
   def messages
-    kol_id = self.id
-    list_message_ids = self.list_message_ids.values.size == 0 ? "''" : self.list_message_ids.values.join(',')
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
-                   (messages.receiver_type = 'All') or
-                   (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + "))
-                 )  and
-                 messages.created_at > '#{self.created_at}'
-                 order by messages.created_at desc "
-    Message.find_by_sql sql
+    all_messages = Message.where("created_at > '#{self.created_at}' and receiver_type='All'")
+
+    list_message_ids_values = self.list_message_ids.values
+    if list_message_ids_values.size == 0
+      list_messages = []
+    else
+      list_messages = Message.where("created_at > '#{self.created_at}' and receiver_type='List'")
+                             .where(id: list_message_ids_values)
+    end
+
+    kol_messages = Message.where(receiver_id: self.id)
+                          .where("created_at > '#{self.created_at}' and receiver_type='Kol'")
+
+    (all_messages + list_messages + kol_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #所有未读消息
   def unread_messages
-    kol_id = self.id
-    list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
-    list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
-    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
-                   (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
-                   (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
-                 ) and
-                 messages.created_at > '#{message_limit_at}'
-           order by messages.created_at desc "
-    Message.find_by_sql sql
+
+    list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
+    if list_unread_message_ids.size == 0
+      list_unread_messages = []
+    else
+      list_unread_messages = Message.where(receiver_type: 'List').where(id: list_unread_message_ids)
+                                    .where("created_at > '#{message_limit_at}'")
+    end
+
+    read_message_ids_values = self.read_message_ids.values
+    if read_message_ids_values.size == 0
+      all_unread_messages = []
+    else
+      all_unread_messages = Message.where(receiver_type: 'All').where.not(id: read_message_ids_values)
+                                   .where("created_at > '#{message_limit_at}'")
+    end
+
+    kol_unread_messages = Message.where(receiver_id: self.id).where(receiver_type: 'Kol', is_read: 0)
+                                 .where("created_at > '#{message_limit_at}'")
+
+    (kol_unread_messages + list_unread_messages + all_unread_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #所有已读消息
   def read_messages
-    kol_id = self.id
-    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
-                   (messages.id in (" + read_message_ids + "))
-                 ) and
-                 messages.created_at > '#{message_limit_at}'
-           order by messages.created_at desc "
-    Message.find_by_sql sql
+
+    read_message_ids_values = self.read_message_ids.values
+    if read_message_ids_values.size == 0
+      read_messages = []
+    else
+      read_messages = Message.where(id: read_message_ids_values).where("created_at > '#{message_limit_at}'")
+    end
+
+    kol_read_messages = Message.where(receiver_type: 'Kol', receiver_id: self.id, is_read: 1)
+                               .where("created_at > '#{message_limit_at}'")
+
+    (read_messages + kol_read_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #当前用户新收入总计

@@ -1402,9 +1402,13 @@ ActiveRecord::Schema.define(version: 20170509171420) do
     t.string   "sub_message_type", limit: 255
   end
 
+  add_index "messages", ["created_at"], name: "index_messages_on_created_at", using: :btree
   add_index "messages", ["item_id", "item_type"], name: "index_messages_on_item_id_and_item_type", using: :btree
+  add_index "messages", ["item_id"], name: "index_messages_on_item_id", using: :btree
+  add_index "messages", ["item_type"], name: "index_messages_on_item_type", using: :btree
   add_index "messages", ["receiver_id", "receiver_type"], name: "index_messages_on_receiver_id_and_receiver_type", using: :btree
   add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
+  add_index "messages", ["receiver_type"], name: "index_messages_on_receiver_type", using: :btree
 
   create_table "news_rooms", force: :cascade do |t|
     t.integer  "user_id",            limit: 4
@@ -1997,8 +2001,15 @@ ActiveRecord::Schema.define(version: 20170509171420) do
   end
 
   add_index "transactions", ["account_id", "account_type"], name: "index_transactions_on_account_id_and_account_type", using: :btree
+  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
+  add_index "transactions", ["account_type"], name: "index_transactions_on_account_type", using: :btree
+  add_index "transactions", ["created_at"], name: "index_transactions_on_created_at", using: :btree
   add_index "transactions", ["item_id", "item_type"], name: "index_transactions_on_item_id_and_item_type", using: :btree
+  add_index "transactions", ["item_id"], name: "index_transactions_on_item_id", using: :btree
+  add_index "transactions", ["item_type"], name: "index_transactions_on_item_type", using: :btree
   add_index "transactions", ["opposite_id", "opposite_type"], name: "index_transactions_on_opposite_id_and_opposite_type", using: :btree
+  add_index "transactions", ["opposite_id"], name: "index_transactions_on_opposite_id", using: :btree
+  add_index "transactions", ["opposite_type"], name: "index_transactions_on_opposite_type", using: :btree
   add_index "transactions", ["trade_no"], name: "index_transactions_on_trade_no", unique: true, using: :btree
 
   create_table "unsubscribe_emails", force: :cascade do |t|
