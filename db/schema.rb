@@ -1407,8 +1407,8 @@ ActiveRecord::Schema.define(version: 20170509171420) do
   add_index "messages", ["item_id"], name: "index_messages_on_item_id", using: :btree
   add_index "messages", ["item_type"], name: "index_messages_on_item_type", using: :btree
   add_index "messages", ["receiver_id", "receiver_type"], name: "index_messages_on_receiver_id_and_receiver_type", using: :btree
-  add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
-  add_index "messages", ["receiver_type"], name: "index_messages_on_receiver_type", using: :btree
+  add_index "messages", ["receiver_id"], name: "idx_messages_receiver_id", using: :btree
+  add_index "messages", ["receiver_type"], name: "idx_messages_receiver_type", using: :btree
 
   create_table "news_rooms", force: :cascade do |t|
     t.integer  "user_id",            limit: 4
