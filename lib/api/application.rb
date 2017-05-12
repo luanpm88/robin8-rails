@@ -21,11 +21,6 @@ module API
       rack_response({'message' => e.message}.to_json, 500)
     end
 
-    rescue_from ActiveRecord::StaleObjectError do |e|
-      Airbrake.notify(e, @env)
-      rack_response({'message' => e.message}.to_json, 500)
-    end
-
     # rescue_from :all do |exception|
     #   message = "\n #{exception.class} (#{exception.message}): \n"
     #   message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
