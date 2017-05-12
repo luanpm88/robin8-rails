@@ -17,6 +17,12 @@ module API
     end
 
     rescue_from StandardError do |e|
+      Airbrake.notify(e, @env)
+      rack_response({'message' => e.message}.to_json, 500)
+    end
+
+    rescue_from ActiveRecord::StaleObjectError do |e|
+      Airbrake.notify(e, @env)
       rack_response({'message' => e.message}.to_json, 500)
     end
 
