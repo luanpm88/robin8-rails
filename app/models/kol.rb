@@ -560,6 +560,7 @@ class Kol < ActiveRecord::Base
 
   #override devise  request.remote_ip is null
   def update_tracked_fields(request)
+    self.reload
     return if self.current_sign_in_at.present? && Date.today == self.current_sign_in_at.to_date
     old_current, new_current = self.current_sign_in_at, Time.now.utc
     self.last_sign_in_at     = old_current || new_current
@@ -576,18 +577,7 @@ class Kol < ActiveRecord::Base
     begin
       self.save
     rescue ActiveRecord::StaleObjectError => e
-      self.reload
-      self.last_sign_in_at     = old_current || new_current
-      self.current_sign_in_at  = new_current
 
-      ip = (request.remote_ip rescue nil) || request.ip
-      old_current, new_current = self.current_sign_in_ip, ip
-      self.last_sign_in_ip     = old_current || new_current
-      self.current_sign_in_ip  = new_current
-
-      self.sign_in_count ||= 0
-      self.sign_in_count += 1
-      self.save
     end
   end
 
