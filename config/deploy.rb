@@ -176,3 +176,26 @@ task :noassets do
   end
 end
 
+
+desc 'Invoke a rake command on the remote server'
+
+# How to invoke with params:
+# cap <stage> invoke['task:name_in_quotation_marks','option_1 option_2']
+# notice spaces between options!
+# In case when there's only single option just do
+# cap <stage> invoke['task:name_in_quotation_marks','option_1']
+task :invoke, [:command, :params] => 'deploy:set_rails_env' do |task, args|
+  on primary(:app) do
+    within current_path do
+      with :rails_env => fetch(:rails_env) do
+        if args[:params]
+          params_string = "'" + args[:params].split(' ').join("','") + "'"
+          rake "#{args[:command]}[#{params_string}]"
+        else
+          rake args[:command]
+        end
+
+      end
+    end
+  end
+end
