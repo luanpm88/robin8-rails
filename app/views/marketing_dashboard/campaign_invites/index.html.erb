@@ -254,7 +254,12 @@ $(function(){
     event.stopPropagation();
     event.preventDefault();
     var cb = $(event.target).children(":checkbox");
-    cb.attr("checked", !cb.attr("checked"));
+    //cb.attr("checked", !cb.attr("checked"));
+	if (cb.is(':checked') ){
+		cb.prop('checked', false);
+	} else{
+		cb.prop('checked', true);		
+	}
   });
 
   $(".agree").click(function(){
