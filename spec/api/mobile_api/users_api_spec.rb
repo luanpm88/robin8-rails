@@ -11,11 +11,30 @@ RSpec.describe "V1 Users" do
     allow_any_instance_of(Kol).to receive(:update_attributes).and_raise(ActiveRecord::StaleObjectError.new('erorr', 'msg'))
   end
 
-  describe "POST sign_in for existing user when it fails to update atributes" do
+  describe "v1 POST sign_in for existing user when it fails to update atributes" do
     it "raises exception" do
       post '/api/v1/kols/sign_in', {mobile_number: '123456', code: '123',
                                     app_platform: 'new_platform', app_version: 1,
                                     device_token: 123}
+
+      expect(response.code).to eq '201'
+    end
+  end
+
+  describe "v2 POST sign_in for existing user when it fails to update atributes" do
+
+    before do
+      allow(Kol).to receive(:reg_or_sign_in).and_return(kol)
+      allow_any_instance_of(Kol).to receive(:update_influence_result)
+                                .and_raise(ActiveRecord::StaleObjectError.new('erorr', 'msg'))
+      allow(KolInfluenceValue).to receive(:get_score)
+                              .and_raise(ActiveRecord::StaleObjectError.new('erorr', 'msg'))
+    end
+
+    it "raises exception" do
+      post '/api/v2/kols/sign_in', {mobile_number: '123456', code: '123',
+                                    app_platform: 'new_platform', app_version: 1,
+                                    device_token: 123, kol_uuid: 123}
 
       expect(response.code).to eq '201'
     end

@@ -20,7 +20,7 @@ module API
                 kol.reload
                 retry
               else
-                Airbrake.notify(e)
+                ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
               end
             end
           else

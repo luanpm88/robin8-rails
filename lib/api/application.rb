@@ -17,7 +17,7 @@ module API
     end
 
     rescue_from StandardError do |e|
-      Airbrake.notify(e, @env)
+      ::NewRelic::Agent.record_metric('Robin8/Errors/StandardError', e)
       rack_response({'message' => e.message}.to_json, 500)
     end
 
