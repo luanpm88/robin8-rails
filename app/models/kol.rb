@@ -465,10 +465,21 @@ class Kol < ActiveRecord::Base
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
-      kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
-                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
-                            longitude: params[:longitude], latitude: params[:latitude])
+      retries = true
+      begin
+        kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                              device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
+                              os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
+                              longitude: params[:longitude], latitude: params[:latitude])
+      rescue ActiveRecord::StaleObjectError => e
+        if retries == true
+          retries = false
+          kol.reload
+          retry
+        else
+          ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+        end
+      end
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],

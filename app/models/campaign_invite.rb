@@ -91,7 +91,7 @@ class CampaignInvite < ActiveRecord::Base
     end
     Message.new_check_message('screenshot_passed', self, campaign)
   end
-  
+
   def screenshot_pass
     # 防止在发送相同的多次请求时生成多条记录
     self.with_lock do
@@ -103,7 +103,18 @@ class CampaignInvite < ActiveRecord::Base
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
-      self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      retries = true
+      begin
+        self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      rescue ActiveRecord::StaleObjectError => e
+        if retries == true
+          retries = false
+          self.reload
+          retry
+        else
+          ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+        end
+      end
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
