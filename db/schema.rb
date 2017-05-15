@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170509171420) do
+ActiveRecord::Schema.define(version: 20170515095434) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -965,11 +965,13 @@ ActiveRecord::Schema.define(version: 20170509171420) do
   add_index "invoices", ["user_id"], name: "index_invoices_on_user_id", using: :btree
 
   create_table "ip_scores", force: :cascade do |t|
-    t.string   "ip",         limit: 255
+    t.string   "ip",         limit: 25
     t.integer  "score",      limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
+
+  add_index "ip_scores", ["ip"], name: "index_ip_scores_on_ip", using: :btree
 
   create_table "iptc_categories", force: :cascade do |t|
     t.string   "label",      limit: 255

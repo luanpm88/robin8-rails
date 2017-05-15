@@ -10,10 +10,21 @@ class CampaignObserverWorker
         next
       end
       invalid_reasons = CampaignObserver.observer_campaign_and_kol campaign_id, invite.kol_id
-      if invalid_reasons.present?
-        invite.update(:observer_status => 2, :observer_text => invalid_reasons.join("\n"))
-      else
-        invite.update(:observer_status => 1)
+      retries = true
+      begin
+        if invalid_reasons.present?
+          invite.update(:observer_status => 2, :observer_text => invalid_reasons.join("\n"))
+        else
+          invite.update(:observer_status => 1)
+        end
+      rescue ActiveRecord::StaleObjectError => e
+        if retries == true
+          retries = false
+          invite.reload
+          retry
+        else
+          ::NewRelic::Agent.record_metric('Robin8/Errors/CampaignObserverWorker/ActiveRecord::StaleObjectError', e)
+        end
       end
     end
   end

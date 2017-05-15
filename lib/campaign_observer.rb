@@ -124,7 +124,7 @@ module CampaignObserver
 
     clicks_group_by_visit_time.keys.each do |key|
       values = clicks_group_by_visit_time[key]
-      puts values.map(&:to_s)
+      # puts values.map(&:to_s)
       if values.count > MinAverageSecondTotalClickCount
         total_space = 0
         values.each_with_index do |item, index|
