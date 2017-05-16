@@ -111,6 +111,9 @@ class Kol < ActiveRecord::Base
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
+  # Push message will send it only to users with 'device_token' (who are also fulfilling other params set in campaign: age, etc.)
+  scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
+
   AdminKolIds = [79,48587]
   TouristMobileNumber = "13000000000"
 

@@ -45,10 +45,7 @@ class Message < ActiveRecord::Base
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     elsif unmatch_kol_id.size > 0
-      # was sending to only active within last 3 months
-      #kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
-      kol_ids = Kol.where('updated_at > ?', DateTime.now - 1.year).where.not(:id => unmatch_kol_id).collect{|t| t.id }
-
+      kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save

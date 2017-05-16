@@ -80,7 +80,8 @@ module Campaigns
     end
 
     def get_platform_kols
-      kols = Kol.active
+      # modified from: Kol.active
+      kols = Kol.campaign_message_suitable
 
       android_app_version =  self.android_platform_target.target_content  rescue nil || '1.0.0'
       ios_app_version =  self.ios_platform_target.target_content rescue nil || '1.0.0'
