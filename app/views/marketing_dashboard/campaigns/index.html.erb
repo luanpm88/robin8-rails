@@ -181,10 +181,10 @@
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
-          <td><%= c.remain_budget #doesn't match valid_invites because calculation is based on settled_invites %></td>
+          <td><%= c.remain_budget %></td>
           <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
-          <td><%= c.valid_invites.count # for settled should be c.settled_invites.count  %></td>
+          <td><%= c.valid_invites.count %></td>
           <td><%= c.campaign_invites.count %></td>
           <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click  %></td>
           <td><%= c.settled_invites.sum(:avail_click) > 0 ? c.settled_invites.sum(:avail_click) : '-'  %></td>
