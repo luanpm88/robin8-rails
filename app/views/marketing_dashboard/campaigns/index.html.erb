@@ -181,12 +181,13 @@
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
-          <td><%= c.remain_budget %></td>
+          <td><%= c.remain_budget #doesn't match valid_invites because calculation is based on settled_invites %></td>
           <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
-          <td><%= c.valid_invites.count %></td>
+          <td><%= c.valid_invites.count # ??? should be c.settled_invites.count  %></td>
           <td><%= c.campaign_invites.count %></td>
-          <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click %></td>
+              <%= # (if campaign is settled) get_avail_click is based on redis but this amount is sometimes incorrect %>
+          <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click  %></td>
           <td><%= c.get_total_click > 0 ? c.get_total_click : c.get_total_click  %></td>
           <td><%= c.enable_append_push ? '是' : '否' %> </td>
           <td>

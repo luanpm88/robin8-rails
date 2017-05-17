@@ -1,3 +1,4 @@
+# actual_per_action_budget: amount paid to KOL (currently 60% of per_action_budget)
 class Campaign < ActiveRecord::Base
   include Redis::Objects
   include Concerns::CampaignTest
