@@ -218,7 +218,9 @@ module Campaigns
                              :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
     end
 
-    # 更新invite 状态和点击数
+    # 更新invite 状态和点击数 (Update the invite state and the number of hits)
+    # Changes campaign invites status from approved=>finished
+    # and updates number of clicks basing on clicks collected in Redis
     def end_invites
       # ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
       campaign = self
@@ -235,7 +237,7 @@ module Campaigns
           # end
           invite.save!
         else
-          # receive but not apporve  we must delete
+          # receive but not approved should be removed
           invite.delete
         end
       end
