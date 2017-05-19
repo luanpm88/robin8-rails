@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170515095434) do
+ActiveRecord::Schema.define(version: 20170519050759) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -344,10 +344,12 @@ ActiveRecord::Schema.define(version: 20170515095434) do
     t.string   "kol_score",         limit: 255
     t.string   "brand_opinion",     limit: 255
     t.integer  "lock_version",      limit: 4,     default: 0,     null: false
+    t.boolean  "deleted",           limit: 1,     default: false
   end
 
   add_index "campaign_invites", ["campaign_apply_id"], name: "index_campaign_invites_on_campaign_apply_id", using: :btree
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
+  add_index "campaign_invites", ["deleted"], name: "index_campaign_invites_on_deleted", using: :btree
   add_index "campaign_invites", ["kol_id"], name: "index_campaign_invites_on_kol_id", using: :btree
   add_index "campaign_invites", ["status"], name: "index_campaign_invites_on_status", using: :btree
   add_index "campaign_invites", ["uuid"], name: "index_campaign_invites_on_uuid", unique: true, using: :btree
@@ -1409,8 +1411,8 @@ ActiveRecord::Schema.define(version: 20170515095434) do
   add_index "messages", ["item_id"], name: "index_messages_on_item_id", using: :btree
   add_index "messages", ["item_type"], name: "index_messages_on_item_type", using: :btree
   add_index "messages", ["receiver_id", "receiver_type"], name: "index_messages_on_receiver_id_and_receiver_type", using: :btree
-  add_index "messages", ["receiver_id"], name: "idx_messages_receiver_id", using: :btree
-  add_index "messages", ["receiver_type"], name: "idx_messages_receiver_type", using: :btree
+  add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
+  add_index "messages", ["receiver_type"], name: "index_messages_on_receiver_type", using: :btree
 
   create_table "news_rooms", force: :cascade do |t|
     t.integer  "user_id",            limit: 4

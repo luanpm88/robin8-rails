@@ -25,6 +25,8 @@ class CampaignInvite < ActiveRecord::Base
   belongs_to :campaign_apply
   belongs_to :campaign
   belongs_to :kol
+
+  default_scope { where(deleted: false) }
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
   # scope :running, -> {where(:status => 'running')}
 
@@ -375,6 +377,10 @@ class CampaignInvite < ActiveRecord::Base
     if status_changed? || img_status_changed? || avail_click_changed?
       Rails.cache.delete("campaign_invite_#{self.uuid}")
     end
+  end
+
+  def self.remove_old_invitations
+    RemoveOldInvitationsWorker.perform_async()
   end
 
 end

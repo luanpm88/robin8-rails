@@ -237,8 +237,9 @@ module Campaigns
           # end
           invite.save!
         else
-          # receive but not approved should be removed
-          invite.delete
+          # Received but not approved should be removed. Here we're only soft-deleting it,
+          # cronjob removes old invitations after few days
+          invite.unscoped.update(deleted: true)
         end
       end
     end
