@@ -10,8 +10,19 @@ module API
           kol = Kol.find_by(mobile_number: params[:mobile_number])
           kol.remove_same_device_token(params[:device_token])
           if kol.present?
-            kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                                  device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+            retries = true
+            begin
+              kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                                    device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+            rescue ActiveRecord::StaleObjectError => e
+              if retries == true
+                retries = false
+                kol.reload
+                retry
+              else
+                ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+              end
+            end
           else
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
             app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil

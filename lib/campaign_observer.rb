@@ -41,14 +41,13 @@ module CampaignObserver
     end
 
     if lines.present?
-      ['18917797087', '13917397090', '15298670933', '13764432765', '13262752287', '18725575397'].each do |tel|
+      ['18817774892', '15298670933', '13764432765', '13262752287'].each do |tel|
         Emay::SendSms.to tel, lines.join(";\n")
       end
     end
   end
 
   def observer_campaign_and_kol campaign_id, kol_id
-    campaign = Campaign.where(:id => campaign_id).first
     invalid_reasons = []
     cookie_and_user_agents = {}
     user_agents_count = {}
@@ -77,12 +76,13 @@ module CampaignObserver
         morning_visit_count += 1
       end
 
-      ip_score = IpScore.where(:ip => show.visitor_ip).first
-      if ip_score
-        if ip_score.score <= 50
-          ip_score_less_50_count += 1
-        end
-      end
+      # Note: Commented out because code related to ip_score_less_50_count is currently not being used
+      # ip_score = IpScore.where(:ip => show.visitor_ip).first
+      # if ip_score
+      #   if ip_score.score <= 50
+      #     ip_score_less_50_count += 1
+      #   end
+      # end
 
       user_agents_count[show.visitor_agent] = user_agents_count[show.visitor_agent].to_i + 1
 
@@ -124,7 +124,7 @@ module CampaignObserver
 
     clicks_group_by_visit_time.keys.each do |key|
       values = clicks_group_by_visit_time[key]
-      puts values.map(&:to_s)
+      # puts values.map(&:to_s)
       if values.count > MinAverageSecondTotalClickCount
         total_space = 0
         values.each_with_index do |item, index|
@@ -135,7 +135,7 @@ module CampaignObserver
         end
         averageClickTime << (total_space/(values.count-1))
       end
-    end;nil
+    end
 
     if averageClickTime.size > 10
       cleanAverageClickTime = averageClickTime - averageClickTime.min(3) - averageClickTime.max(3)
@@ -149,12 +149,12 @@ module CampaignObserver
         end
       end
     end
-    puts kol_id, "kol_id"
-    puts campaign_id
+    # puts kol_id, "kol_id"
+    # puts campaign_id
 
     kol = Kol.find_by(:id => kol_id)
     if kol
-      campaign_ids = kol.campaigns.where(:status => ['executed','settled']).map(&:id)
+      campaign_ids = kol.campaigns.where(:status => ['executed','settled']).pluck(:id)
       index = campaign_ids.index(campaign_id)
       indexs = []
       unless index.nil?

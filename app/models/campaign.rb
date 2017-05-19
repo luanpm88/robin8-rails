@@ -1,3 +1,4 @@
+# actual_per_action_budget: amount paid to KOL (currently 60% of per_action_budget)
 class Campaign < ActiveRecord::Base
   include Redis::Objects
   include Concerns::CampaignTest
@@ -282,7 +283,7 @@ class Campaign < ActiveRecord::Base
     self.budget / self.per_action_budget
   end
 
-  AdminPhones = ['18917797087', '13917397090', '15298670933', '13764432765', '13262752287', '18725575397']
+  AdminPhones = ['18817774892', '15298670933', '13764432765', '13262752287']
   def create_job
     raise 'status 不能为空' if self.status.blank?
     if (self.status_changed? && status.to_s == 'unexecute') && Rails.env.production?

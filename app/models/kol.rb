@@ -111,6 +111,9 @@ class Kol < ActiveRecord::Base
     # scope :mcn_big_v, -> {where("kol_role = 'mcn_big_v'")}
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
+  # Push message will send it only to users with 'device_token' (who are also fulfilling other params set in campaign: age, etc.)
+  scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
+
   AdminKolIds = [79,48587]
   TouristMobileNumber = "13000000000"
 
@@ -394,50 +397,63 @@ class Kol < ActiveRecord::Base
 
   #所有消息
   def messages
-    kol_id = self.id
-    list_message_ids = self.list_message_ids.values.size == 0 ? "''" : self.list_message_ids.values.join(',')
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
-                   (messages.receiver_type = 'All') or
-                   (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + "))
-                 )  and
-                 messages.created_at > '#{self.created_at}'
-                 order by messages.created_at desc "
-    Message.find_by_sql sql
+    all_messages = Message.where("created_at > '#{self.created_at}' and receiver_type='All'")
+
+    list_message_ids_values = self.list_message_ids.values
+    if list_message_ids_values.size == 0
+      list_messages = []
+    else
+      list_messages = Message.where("created_at > '#{self.created_at}' and receiver_type='List'")
+                        .where(id: list_message_ids_values)
+    end
+
+    kol_messages = Message.where(receiver_id: self.id)
+                     .where("created_at > '#{self.created_at}' and receiver_type='Kol'")
+
+    (all_messages + list_messages + kol_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #所有未读消息
   def unread_messages
-    kol_id = self.id
-    list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
-    list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
-    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
-                   (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
-                   (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
-                 ) and
-                 messages.created_at > '#{message_limit_at}'
-           order by messages.created_at desc "
-    Message.find_by_sql sql
+
+    list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
+    if list_unread_message_ids.size == 0
+      list_unread_messages = []
+    else
+      list_unread_messages = Message.where(receiver_type: 'List').where(id: list_unread_message_ids)
+                               .where("created_at > '#{message_limit_at}'")
+    end
+
+    read_message_ids_values = self.read_message_ids.values
+    if read_message_ids_values.size == 0
+      all_unread_messages = []
+    else
+      all_unread_messages = Message.where(receiver_type: 'All').where.not(id: read_message_ids_values)
+                              .where("created_at > '#{message_limit_at}'")
+    end
+
+    kol_unread_messages = Message.where(receiver_id: self.id).where(receiver_type: 'Kol', is_read: 0)
+                            .where("created_at > '#{message_limit_at}'")
+
+    (kol_unread_messages + list_unread_messages + all_unread_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #所有已读消息
   def read_messages
-    kol_id = self.id
-    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     message_limit_at = self.created_at < 10.days.ago ? 10.days.ago :  self.created_at
-    sql = "select * from messages
-           where (
-                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
-                   (messages.id in (" + read_message_ids + "))
-                 ) and
-                 messages.created_at > '#{message_limit_at}'
-           order by messages.created_at desc "
-    Message.find_by_sql sql
+
+    read_message_ids_values = self.read_message_ids.values
+    if read_message_ids_values.size == 0
+      read_messages = []
+    else
+      read_messages = Message.where(id: read_message_ids_values).where("created_at > '#{message_limit_at}'")
+    end
+
+    kol_read_messages = Message.where(receiver_type: 'Kol', receiver_id: self.id, is_read: 1)
+                          .where("created_at > '#{message_limit_at}'")
+
+    (read_messages + kol_read_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
   #当前用户新收入总计
@@ -452,10 +468,21 @@ class Kol < ActiveRecord::Base
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
-      kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
-                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
-                            longitude: params[:longitude], latitude: params[:latitude])
+      retries = true
+      begin
+        kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                              device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
+                              os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
+                              longitude: params[:longitude], latitude: params[:latitude])
+      rescue ActiveRecord::StaleObjectError => e
+        if retries == true
+          retries = false
+          kol.reload
+          retry
+        else
+          ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+        end
+      end
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
@@ -481,29 +508,29 @@ class Kol < ActiveRecord::Base
   def create_info_from_test_influence(kol_uuid)
     Rails.logger.info "--create_info_from_test_influence---#{kol_uuid}---"
     return if kol_uuid.blank?
-      kol_id = self.id
-      # sync contacts
-      if !self.has_contacts
-        KolContact.where(:kol_id => kol_id).delete_all
-        TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
-          next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
-          contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
-                                    :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
-          contact.save!(:validate => false)
-        end
+    kol_id = self.id
+    # sync contacts
+    if !self.has_contacts
+      KolContact.where(:kol_id => kol_id).delete_all
+      TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
+        next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
+        contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
+                                 :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
+        contact.save!(:validate => false)
       end
+    end
 
-      # sync identity
-      TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
-        identity = Identity.find_or_initialize_by :uid => tmp_identity.uid
-        attrs = tmp_identity.attributes
-        attrs.delete("id")
-        attrs.delete("kol_uuid")
-        identity.attributes = attrs
-        identity.kol_id = kol_id   if identity.kol_id.blank?
-        identity.save!
-        # Weibo.update_identity_info(identity)
-      end
+    # sync identity
+    TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
+      identity = Identity.find_or_initialize_by :uid => tmp_identity.uid
+      attrs = tmp_identity.attributes
+      attrs.delete("id")
+      attrs.delete("kol_uuid")
+      identity.attributes = attrs
+      identity.kol_id = kol_id   if identity.kol_id.blank?
+      identity.save!
+      # Weibo.update_identity_info(identity)
+    end
   end
 
   def get_kol_uuid
@@ -547,6 +574,7 @@ class Kol < ActiveRecord::Base
 
   #override devise  request.remote_ip is null
   def update_tracked_fields(request)
+    self.reload
     return if self.current_sign_in_at.present? && Date.today == self.current_sign_in_at.to_date
     old_current, new_current = self.current_sign_in_at, Time.now.utc
     self.last_sign_in_at     = old_current || new_current
@@ -560,7 +588,11 @@ class Kol < ActiveRecord::Base
 
     self.sign_in_count ||= 0
     self.sign_in_count += 1
-    self.save
+    begin
+      self.save
+    rescue ActiveRecord::StaleObjectError => e
+
+    end
   end
 
   def self.hide_real_mobile_number(mobile_number)
@@ -584,7 +616,7 @@ class Kol < ActiveRecord::Base
   end
 
   def remove_same_device_token(device_token)
-      Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)
+    Kol.where(:device_token => device_token).where.not(:id => self.id).update_all(:device_token => nil)
   end
 
   def get_avatar_url
@@ -617,23 +649,23 @@ class Kol < ActiveRecord::Base
 
   def is_hot_text
     case self.is_hot
-    when 1
-      "热门"
-    when 0
-      "普通"
-    when -1
-      "不热门"
+      when 1
+        "热门"
+      when 0
+        "普通"
+      when -1
+        "不热门"
     end
   end
 
   def gender_text
     case self.gender
-    when 1
-      "男"
-    when 2
-      "女"
-    else
-      "未知"
+      when 1
+        "男"
+      when 2
+        "女"
+      else
+        "未知"
     end
   end
 

@@ -4,11 +4,11 @@ lock '3.4.0'
 set :application, 'robin8'
 
 # chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bash_profile
-if ENV['china_instance'] == 'Y'
-  set :repo_url, "git@code.robin8.net:andy/robin8.git"
-else
-  set :repo_url, "git@github.com:AYLIEN/robin8.git"
-end
+# if ENV['china_instance'] == 'Y'
+set :repo_url, "git@bitbucket.org:robin8/robin8.git" #"git@code.robin8.net:andy/robin8.git"
+# else
+#   set :repo_url, "git@github.com:AYLIEN/robin8.git"
+# end
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -176,3 +176,26 @@ task :noassets do
   end
 end
 
+
+desc 'Invoke a rake command on the remote server'
+
+# How to invoke with params:
+# cap <stage> invoke['task:name_in_quotation_marks','option_1 option_2']
+# notice spaces between options!
+# In case when there's only single option just do
+# cap <stage> invoke['task:name_in_quotation_marks','option_1']
+task :invoke, [:command, :params] => 'deploy:set_rails_env' do |task, args|
+  on primary(:app) do
+    within current_path do
+      with :rails_env => fetch(:rails_env) do
+        if args[:params]
+          params_string = "'" + args[:params].split(' ').join("','") + "'"
+          rake "#{args[:command]}[#{params_string}]"
+        else
+          rake args[:command]
+        end
+
+      end
+    end
+  end
+end

@@ -13,12 +13,23 @@ module API
           kol = Kol.reg_or_sign_in(params)
           kol.remove_same_device_token(params[:device_token])
           if params[:kol_uuid].present?
-            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
-              kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-              KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
+            retries = true
+            begin
+              kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+              if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
+                kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
+                KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
+              end
+              SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+            rescue ActiveRecord::StaleObjectError => e
+              if retries == true
+                retries = false
+                kol.reload
+                retry
+              else
+                ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+              end
             end
-            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
