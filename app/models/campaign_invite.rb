@@ -83,17 +83,23 @@ class CampaignInvite < ActiveRecord::Base
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass_without_lock
     return false if self.img_status == 'passed' || self.status == 'settled'  ||  self.status == 'rejected'
-    if campaign.status == 'executing'
-      self.update_attributes(:img_status => 'passed', :check_time => Time.now)
-    elsif campaign.status == 'executed'
-      self.update_attributes!(:img_status => 'passed', :status => 'finished', :check_time => Time.now)
-      self.settle
+    begin
+      if campaign.status == 'executing'
+        self.update_attributes(:img_status => 'passed', :check_time => Time.now)
+      elsif campaign.status == 'executed'
+        self.update_attributes!(:img_status => 'passed', :status => 'finished', :check_time => Time.now)
+        self.settle
+      end
+      Message.new_check_message('screenshot_passed', self, campaign)
+    rescue ActiveRecord::StaleObjectError
+      # was already updated so we can ignore the exception
+      return nil
     end
-    Message.new_check_message('screenshot_passed', self, campaign)
   end
 
   def screenshot_pass
     # 防止在发送相同的多次请求时生成多条记录
+    # EN: Prevents multiple records from being generated when the same multiple requests are sent
     self.with_lock do
       screenshot_pass_without_lock
     end
