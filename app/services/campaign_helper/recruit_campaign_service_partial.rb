@@ -9,7 +9,7 @@ module CampaignHelper
     end
 
     def validate_recruit_time
-      return if Rails.env.staging?
+      return if Rails.env.staging? or Rails.env.qa?
 
       if (@campaign_params[:recruit_end_time].to_time - @campaign_params[:recruit_start_time].to_time) < 24.hours
         @errors << '报名时间不能小于24小时'
