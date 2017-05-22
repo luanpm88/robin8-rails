@@ -3,11 +3,11 @@ app_root = File.expand_path("../../..", __FILE__)
 working_directory app_root
 
 # pid
-pid "#{app_root}/tmp/pids/unicorn.pid"
+pid "#{app_root}/tmp/pids/unicorn-qa.pid"
 
 # listen
 listen 8182
-listen "/tmp/unicorn-express.socket", backlog: 64
+listen "/tmp/unicorn-express-qa.socket", backlog: 64
 
 # logging
 stderr_path "log/unicorn_qa.stderr.log"
