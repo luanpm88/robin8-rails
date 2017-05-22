@@ -10,7 +10,7 @@ staging:
 
 qa:
   adapter: redis
-  url: redis://redis:Robin888@r-uf6d53dca20b3694.redis.rds.aliyuncs.com:6379
+  url: redis://redis:Robin888@r-uf6d9c3d046d1384.redis.rds.aliyuncs.com:6379
   timeout: 5
 
 development: &development
