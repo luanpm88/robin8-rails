@@ -20,8 +20,6 @@ set :bundle_binstubs, nil
 # Default value for :scm is :git
 # set :scm, :git
 
-set :sidekiq_config, 'config/sidekiq.yml'
-
 set :slack_webhook, 'https://hooks.slack.com/services/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'
 set :slack_username, -> { '千反田 える' }
 set :slack_icon_url, -> { 'https://avatars3.githubusercontent.com/u/7478427?v=3&s=460' }
@@ -39,7 +37,7 @@ set :slack_msg_updated, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branc
 set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml config/redis.yml config/mongoid.yml}
+set :linked_files, %w{config/database.yml config/secrets.yml config/redis.yml config/mongoid.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system client/node_modules}
