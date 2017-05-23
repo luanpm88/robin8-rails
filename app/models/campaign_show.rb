@@ -41,7 +41,11 @@ class CampaignShow < ActiveRecord::Base
       if options[:step] != 2
         if openid
           expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-          Rails.cache.write(cpa_first_step_key, openid, :expires_in => expiry_time.seconds)
+          begin
+            Rails.cache.write(cpa_first_step_key, openid, :expires_in => expiry_time.seconds)
+          rescue Redis::CommandError
+            Rails.cache.write(cpa_first_step_key, openid, :expires_in => 30.hours)
+          end
         end
         return [false, 'is_first_step_of_cpa_campaign']
       end
@@ -60,7 +64,11 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'openid_reach_max_count']
     else
       expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-      Rails.cache.write(store_key, openid_current_count + 1, :expires_in => expiry_time.seconds)
+      begin
+        Rails.cache.write(store_key, openid_current_count + 1, :expires_in => expiry_time.seconds)
+      rescue Redis::CommandError
+        Rails.cache.write(store_key, openid_current_count + 1, :expires_in => 30.hours)
+      end
     end
 
     # check_ip?
@@ -103,7 +111,11 @@ class CampaignShow < ActiveRecord::Base
         return [false, "exceed_kol_level_threshold"]
       else
         expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-        Rails.cache.write(store_key,current_total_click + 1, :expires_in => expiry_time.seconds)
+        begin
+          Rails.cache.write(store_key,current_total_click + 1, :expires_in => expiry_time.seconds)
+        rescue Redis::CommandError
+          Rails.cache.write(store_key,current_total_click + 1, :expires_in => 30.hours)
+        end
       end
     end
 
@@ -152,8 +164,11 @@ class CampaignShow < ActiveRecord::Base
         else
           expiry_time = (visit_time.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
         end
-        expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-        Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_in => expiry_time.seconds) if campaign_invite
+        begin
+          Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_in => expiry_time.seconds) if campaign_invite
+        rescue Redis::CommandError
+          Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_in => 30.hours) if campaign_invite
+        end
       end
     else
       campaign_invite = CampaignInvite.fetch_invite_with_uuid(uuid)
