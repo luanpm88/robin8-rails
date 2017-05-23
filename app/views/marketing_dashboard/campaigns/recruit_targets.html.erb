@@ -69,6 +69,8 @@
 
 
 <div style="padding-bottom: 6px;">
+  <button class="choose-all btn btn-default">全选</button>
+  <button class="revert-all btn btn-default">反选</button>
   <button class="btn btn-success btn-sm batch-check-btn" value="pass">批量通过</button>
   <button class="btn btn-danger btn-sm batch-check-btn" value="reject">批量拒绝</button>
   <button class="btn btn-info btn-sm batch-check-btn" value="option">批量备选</button>
@@ -106,9 +108,9 @@
     <%# weibo = kol.social_accounts.where(provider: 'weibo').order("followers_count DESC").first %>
     <%# wechat = kol.social_accounts.where(provider: 'wechat').order("followers_count DESC").first %>
     <tr class=<%= kol.id %> data-kol-id="<%= campaign_apply.kol_id %>" data-campaign-id="<%= campaign_apply.campaign_id %>">
-      <td id="checkbox-<%= campaign_apply.id %>">
-        <%= render 'checkbox', campaign_apply: campaign_apply %>
-      </td>
+	  <td class="expandCheck">
+	    <%= check_box_tag "campaign_apply_ids[]", campaign_apply.id %>
+	  </td>
       <td>
         <%= link_to kol.id, marketing_dashboard_kol_path(kol), :target => "_blank" %>
       </td>
@@ -150,8 +152,28 @@
   </tbody>
 </table>
 
+<%= will_paginate @campaign_applies, renderer: BootstrapPagination::Rails  %>
+
 <script>
   $(function () {
+	  
+	  $('.choose-all').click(function(){
+	    $(':checkbox').each(function(){
+	      this.checked = true;
+	    });
+	  })
+
+	  $('.revert-all').click(function(){
+	    $(':checkbox').each(function(){
+	      if(this.checked == true) {
+	        this.checked = false;
+	      } else {
+	        this.checked = true;
+	      }
+	    });
+	  })
+	  
+	  
     $(document).on("click", '.check-btn', function () {
       console.log("----check-btn");
       var row = $(this).parents('tr');
@@ -170,7 +192,19 @@
         data: {"kol_id": kol_id, "campaign_id": campaign_id, "agree_reason": agree_reason, "operate": operate}
       });
     });
-
+  
+	$(".expandCheck").on('click', function (event) {
+   	 event.stopPropagation();
+	 event.preventDefault();
+	   var cb = $(event.target).children(":checkbox");
+	   //cb.attr("checked", !cb.attr("checked"));
+	   if (cb.is(':checked') ){
+		   cb.prop('checked', false);
+		} else{
+		   cb.prop('checked', true);		
+		}
+	  });
+  
     $(document).on("click", '.batch-check-btn', function () {
       var selected_size = $("input[type='checkbox']:checked").length;
       if(selected_size == 0){
@@ -182,6 +216,7 @@
         apply_ids.push($(this).val());
       });
       console.log(apply_ids);
+
 
       var operate = $(this).val();
       $.ajax({
