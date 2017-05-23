@@ -107,7 +107,7 @@ gem 'active_model_serializers', "~> 0.8.0"
 gem 'qy_wechat', '~> 1.0.1'
 
 gem 'sinatra', require: nil
-gem 'sidekiq', '~> 4.0.0'
+gem 'sidekiq', '~> 4.2.10'
 gem 'sidetiq'
 gem 'sidekiq-limit_fetch', '~> 3.0.0'
 gem 'will_paginate', '~> 3.0.6'

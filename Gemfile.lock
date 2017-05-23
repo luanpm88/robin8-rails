@@ -697,9 +697,10 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
-    sidekiq (4.0.2)
+    sidekiq (4.2.10)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
       redis (~> 3.2, >= 3.2.1)
     sidekiq-limit_fetch (3.0.1)
       sidekiq (>= 4)
@@ -940,7 +941,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   shoulda-matchers (~> 3.0)
-  sidekiq (~> 4.0.0)
+  sidekiq (~> 4.2.10)
   sidekiq-limit_fetch (~> 3.0.0)
   sidetiq
   sinatra
