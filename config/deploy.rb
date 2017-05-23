@@ -20,6 +20,8 @@ set :bundle_binstubs, nil
 # Default value for :scm is :git
 # set :scm, :git
 
+:sidekiq_config => 'config/sidekiq.yml'
+
 set :slack_webhook, 'https://hooks.slack.com/services/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'
 set :slack_username, -> { '千反田 える' }
 set :slack_icon_url, -> { 'https://avatars3.githubusercontent.com/u/7478427?v=3&s=460' }
