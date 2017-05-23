@@ -37,7 +37,7 @@ class Transaction < ActiveRecord::Base
                         check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
-                        cps_share_commission cps_tax cps_writing_commission campaign_income_revoke)
+                        cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate)
 
   # subject
   # manual_recharge manual_withdraw
