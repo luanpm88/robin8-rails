@@ -107,9 +107,9 @@ gem 'active_model_serializers', "~> 0.8.0"
 gem 'qy_wechat', '~> 1.0.1'
 
 gem 'sinatra', require: nil
-gem 'sidekiq'
+gem 'sidekiq', '~> 4.0.0'
 gem 'sidetiq'
-gem 'sidekiq-limit_fetch'
+gem 'sidekiq-limit_fetch', '~> 3.0.0'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
 gem 'has_scope'
@@ -164,7 +164,7 @@ group :development, :test do
   gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-rbenv', '~> 2.0.3'
   gem 'capistrano-bundler', '~> 1.1.4'
-  gem 'capistrano-sidekiq', '~> 0.4.0'
+  gem 'capistrano-sidekiq'#, '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
   gem 'capistrano3-unicorn', '~> 0.2.0'
   gem 'capistrano-faster-assets', '~> 1.0'
