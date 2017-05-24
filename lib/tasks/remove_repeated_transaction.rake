@@ -6,7 +6,9 @@ namespace :hotfix do
     repeat_transaction_attrs = File.exists?(attr_file) ? YAML.load(File.read(attr_file)) : {}
 
     repeat_transaction_attrs.each do |key, value|
+      puts "• " + key
       value["campaign_name"].each do |campaign_name|
+        puts campaign_name
         campaign_ids = Campaign.where("name LIKE '%#{campaign_name}%'").ids
         transactions = Transaction.where(
           account_id: value['kol_id'], 
@@ -14,10 +16,14 @@ namespace :hotfix do
           item_type: 'Campaign'
         ).group_by {|t| [t.account_id, t.item_id, t.direct]}  # 可能会有相同名字，不同id的活动
         repeat_transactions = transactions.values.map{|arr| arr if arr.count > 1}.compact
+        puts "  transactions: " + transactions.to_s
+        puts "  repeat transactions: " + repeat_transactions.to_s
 
         repeat_transactions.each do |trans|
+          puts "  " + trans.to_s
           trans_count = trans.count
           deleted_trans = trans[0..(trans_count - 2)]
+          puts "  " + deleted_trans.to_s
           deleted_trans_credits = deleted_trans.map(&:credits).sum
           kol = trans.first.account
           if kol.avail_amount > deleted_trans_credits

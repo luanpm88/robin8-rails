@@ -50,3 +50,7 @@ staging:
 production:
   app_name: Robin8-CN (Production)
   <<: *default_settings
+
+qa:
+  <<: *default_settings
+  app_name: Robin8-CN (QA)
