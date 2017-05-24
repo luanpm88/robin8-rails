@@ -3,6 +3,10 @@
 :pidfile: tmp/pids/sidekiq.pid
 production:
   :concurrency: 4
+staging:
+  :concurrency: 2
+qa:
+  :concurrency: 2
 :queues:
   - [default, 10]
   - [campaign, 40]

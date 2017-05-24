@@ -2,7 +2,7 @@ require 'rubygems'
 require "spreadsheet"
 module ImportKols
   class PartnerKols < Base
-    if Rails.env.production?  || Rails.env.staging?
+    if Rails.env.production?  || Rails.env.staging? || Rails.env.qa?
       Path = '/home/deployer/partner_cellphone.xls'
     else
       Path = '/Users/huxl/partner_cellphone.xls'

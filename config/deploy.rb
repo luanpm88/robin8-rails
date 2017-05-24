@@ -3,12 +3,7 @@
 lock '3.4.0'
 set :application, 'robin8'
 
-# chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bash_profile
-# if ENV['china_instance'] == 'Y'
-set :repo_url, "git@bitbucket.org:robin8/robin8.git" #"git@code.robin8.net:andy/robin8.git"
-# else
-#   set :repo_url, "git@github.com:AYLIEN/robin8.git"
-# end
+set :repo_url, "git@bitbucket.org:robin8/robin8.git"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -42,7 +37,7 @@ set :slack_msg_updated, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branc
 set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml config/redis.yml config/mongoid.yml}
+set :linked_files, %w{config/database.yml config/secrets.yml config/redis.yml config/mongoid.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system client/node_modules}

@@ -1,6 +1,7 @@
 ActiveAdmin.register CampaignInvite do
   remove_filter :kol
 
+  #Version 1.1
 
   actions :all, :except => [:destroy]
 

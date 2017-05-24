@@ -3,18 +3,18 @@ app_root = File.expand_path("../../..", __FILE__)
 working_directory app_root
 
 # pid
-pid "#{app_root}/tmp/pids/unicorn.pid"
+pid "#{app_root}/tmp/pids/unicorn-qa.pid"
 
 # listen
-listen 8181
-listen "/tmp/unicorn-express.socket", backlog: 64
+listen 8182
+listen "/tmp/unicorn-express-qa.socket", backlog: 64
 
 # logging
-stderr_path "log/unicorn.stderr.log"
-stdout_path "log/unicorn.stdout.log"
+stderr_path "log/unicorn_qa.stderr.log"
+stdout_path "log/unicorn_qa.stdout.log"
 
 # workers
-worker_processes 5
+worker_processes 2
 
 # To save some memory and improve performance
 preload_app true
@@ -26,9 +26,6 @@ GC.respond_to?(:copy_on_write_friendly=) and
 before_exec do |_|
   ENV["BUNDLE_GEMFILE"] = File.join(app_root, 'Gemfile')
 end
-
-# preload
-preload_app true
 
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
@@ -50,7 +47,9 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  GC.disable
+  # http://ee.riaos.com/?m=201306&paged=12
+  # 禁止GC, 配合后续的OOB，来减少请求的执行时间
+  # GC.disable
 
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.establish_connection
