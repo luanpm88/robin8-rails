@@ -74,7 +74,8 @@ module Concerns
     end
     
     
-    # The function deducts money from the KOL account, but does not result 
+    # The function deducts money from the KOL account, but does not result in a payout. The avail_amount for this consifcate transaction is currently incorrent, 
+    # but since the operation team does not need that, so I will leave it this way for now. 
     def confiscate(credits, subject, item = nil, opposite)
       #ActiveRecord::Base.transaction do
         self.lock!

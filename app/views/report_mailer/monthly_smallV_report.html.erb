@@ -1,0 +1,30 @@
+<html>
+<body>
+Dear Miranda,
+
+<p>
+  First day of the month! Time for a monthly report!
+  <br/>
+</p>
+  We have <b><%=@count%></b></font> campaigns started during the last month.<br/>
+  The total budget is <b><%=@budget.round(1)%></b></font> RMB.<br/>
+  <% if @budget_increase > 0 %>
+  -----An increase of <b><%=@budget_increase.round(0)%>%</b>! Good job, sales team!-----</br>
+  <% end %>
+  Out of that, <b><%=@total_consumed.round(1)%></b> RMB is consumed.<br/><br/>
+  
+  
+  There are <b><%=@kol_count%></b> new KOLs joined the platform. <br/>
+  <%if @kol_increase > 0%>
+  -----An increase of <b><%=@kol_increase.round(0)%>%</b>! Good job, user acqusition team!-----</br>
+  <% end %>
+  Out of those, <b><%=@real_kol_count%></b> made more than 1RMB (likely took a campaign effectively!)<br/>
+  <%if @real_kol_increase > 0 %>
+  -----An increase of <b><%=@real_kol_increase.round(0)%>%</b>! Good job, user acqusition and product team!-----</br>
+  <% end %>
+<p>
+  Love, <br/>
+  The Little Robin
+</p>
+</body>
+</html>
