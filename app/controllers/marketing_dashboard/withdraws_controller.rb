@@ -1,5 +1,5 @@
 class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseController
-  before_action :set_withdraw, only: [:check, :agree, :reject, :permanent_frozen, :permanent_frozen_alipay]
+  before_action :set_withdraw, only: [:check, :agree, :reject, :permanent_frozen, :permanent_frozen_alipay, :confiscate]
 
   def index
     authorize! :read, Withdraw
@@ -80,6 +80,20 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
     flash[:notice] = "拒绝成功, 已移到拒绝列表"
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Reject sucessfully!' }
+      format.json { head :no_content }
+    end
+  end
+  
+  # This button (rendered in views/marketing_dashboard/withdraws/index.html.erb)
+  # allows the admin to confiscate the money from a particular when they reuqest a withdrawal, possibly due to cheating of clicks or inivitation.
+  
+  def confiscate
+    authorize! :update, Withdraw
+    @withdraw.update_attributes(:status => 'confiscated', :reject_reason => params[:confiscate_reason])
+    #flash[:notice] = "拒绝成功, 已移到拒绝列表"
+    flash[:notice] = "已经没收了该提现。"
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'Confiscate sucessfully!' }
       format.json { head :no_content }
     end
   end

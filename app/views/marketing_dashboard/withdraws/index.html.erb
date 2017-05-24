@@ -22,6 +22,32 @@
   </div>
 </div>
 
+<!-- This class is created to make the "confiscation" button. Copied from the button for refusal. -Martin -->
+<div class="modal admin-confiscate-modal fade" tabindex="-1" role="dialog">
+  <h5><%= devise_error_messages! %></h5>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写没收理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <h3>请输入没收理由（非必填）</h3>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input type="text" name='confiscate_reason' class='confiscate_reason form-control'>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn check_confiscate btn-primary">确认没收</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <h3>提现列表</h3>
 
 <div class="panel panel-default">
@@ -100,6 +126,10 @@
   </div>
 </div>
 
+<div class="contianer-fluid">
+    <button class="choose-all btn btn-default">全选</button>
+    <button class="revert-all btn btn-default">反选</button>
+</div>
 
 <table class="table table-bordered">
   <thead>
@@ -174,14 +204,15 @@
         <td><%= w.reject_reason %></td>
         <td>
           <% if w.status == 'pending' %>
-            <%= link_to '通过审核', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
+            <%= link_to '通过', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
             <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
+			<%= link_to '没收', "javascript:void(0)", :class => "confiscate btn-danger", "data-url" => marketing_dashboard_withdraw_confiscate_path(w.id)  %> /
           <% elsif w.status == 'checked' %>
-          <%= link_to '同意付款', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
+          <%= link_to '同意', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
           <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
           <% end %>
-          <%= link_to '拉入支付宝黑名单', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
-          <%= link_to "资金流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" rescue "" %>
+          <%= link_to '拉黑', "javascript:void(0)", :class => "reject_withdraw", "data-url" =>marketing_dashboard_withdraw_permanent_frozen_alipay_path(w.id)  %> /
+          <%= link_to "流水", transaction_marketing_dashboard_kol_path(w.kol_id), :target => "_blank" rescue "" %>
         </td>
       </tr>
     <% end %>
@@ -202,6 +233,23 @@
 </div>
 
 <script type="text/javascript">
+	
+    $('.choose-all').click(function(){
+      $(':checkbox').each(function(){
+        this.checked = true;
+      });
+    })
+
+    $('.revert-all').click(function(){
+      $(':checkbox').each(function(){
+        if(this.checked == true) {
+          this.checked = false;
+        } else {
+          this.checked = true;
+        }
+      });
+    })
+	
   $(function(){
     $(".batch").click(function(e){
       e.preventDefault();
@@ -226,6 +274,17 @@
       }
     })
   })
+  
+  $(".expandCheck").on('click', function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var cb = $(event.target).children(":checkbox");
+	if (cb.is(':checked') ){
+		cb.prop('checked', false);
+	} else{
+		cb.prop('checked', true);		
+	}
+  });
 
   $(".expandCheck").on('click', function (event) {
     event.stopPropagation();
@@ -239,6 +298,13 @@
      $('.admin-withdraw-modal').attr("data-url", $(this).attr("data-url"))
      event.stopPropagation()
    })
+   
+   // Same as reject button to make the confiscate button. 
+   $(".confiscate").click(function(event){
+      $('.admin-confiscate-modal').modal("show")
+      $('.admin-confiscate-modal').attr("data-url", $(this).attr("data-url"))
+      event.stopPropagation()
+    })
 
 
   $(".check_reject").click(function(e){
@@ -259,4 +325,25 @@
         location.reload();
       });
   });
+  
+  // Same as reject. This button allows the admin to confiscate the money from a particular when they reuqest a withdrawal, possibly due to cheating of clicks or inivitation.
+  $(".check_confiscate").click(function(e){
+    e.preventDefault();
+    if( ! $('.confiscate_reason').val()){
+      alert("没收理由不能为空")
+      return
+    }
+    $.ajax({
+      method: "POST",
+      url: $('.admin-confiscate-modal').attr("data-url"),
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "confiscate_reason":  $('.confiscate_reason').val()}
+    })
+      .done(function(data) {
+        location.reload();
+      });
+  });
+  
 </script>

@@ -72,6 +72,25 @@ module Concerns
         transaction.save!
       end
     end
+    
+    
+    # The function deducts money from the KOL account, but does not result in a payout. The avail_amount for this consifcate transaction is currently incorrent, 
+    # but since the operation team does not need that, so I will leave it this way for now. 
+    def confiscate(credits, subject, item = nil, opposite)
+      #ActiveRecord::Base.transaction do
+        self.lock!
+        if item.present? && item.is_a?(Campaign)
+          if item.status != 'unpay'
+            Rails.logger.transaction.info "-------- 重复没收: #{item.inspect} -----------}"
+            raise Exception.new("\n重复没收: #{item.inspect}\n")
+          end
+        end
+        puts "Decreasing #{credits}-------------------------------------------------------------------------------------------------------------"
+        self.decrement!(:amount, credits)
+        transaction = build_transaction(credits, subject, 'confiscate', item , opposite)
+        transaction.save!
+        #end
+    end      
 
     def payout_by_alipay(credits, subject, item, opposite=nil)
       ActiveRecord::Base.transaction do

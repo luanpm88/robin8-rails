@@ -99,4 +99,18 @@ every 1.minutes do
   command "/home/deployer/apps/robin8/current/config/check_unicorn.sh"
 end
 
+# Auto report system
+# This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours 
+
+every 1.day, :at => '7:00 pm' do
+  rake "daily_report:daily_send"
+end
+
+every :friday, :at => '7:05pm' do
+  rake "daily_report:weekly_send"
+end
+
+every '10 19 1 * *' do
+  rake "daily_report:monthly_send"
+end
 

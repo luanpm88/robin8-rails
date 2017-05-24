@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       member do
         get :targets
         get :add_example_screenshot
+        get :add_applying_description
         get :recruit_targets
         post :add_target
         post :add_or_remove_recruit_kol
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
         get :push_all
         post :refresh_budget
         patch :save_example_screenshot_and_remark
+        patch :save_applying_description
         match 'add_seller', via: [:post, :get]
         get :push_record
         match :set_auth_type, via: [:put, :get]
@@ -169,6 +171,7 @@ Rails.application.routes.draw do
       match '/check' => 'withdraws#check', via: [:post]
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
+      match '/confiscate' => 'withdraws#confiscate', via: [:post]
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
       match '/permanent_frozen_alipay' => 'withdraws#permanent_frozen_alipay', via: [:post]
     end
