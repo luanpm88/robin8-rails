@@ -6,7 +6,7 @@ class ReportMailer < ApplicationMailer
     puts "Prepare for daily email"
     @count = count
     @budget = budget
-    mail(:to => 'report@robin8.com', :subject => "Report from Robin8 team",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Daily email sent"
   end
   
@@ -18,7 +18,7 @@ class ReportMailer < ApplicationMailer
     @total_consumed = total_consumed
     @kol_count = kol_count
     @real_kol_count = real_kol_count
-    mail(:to => 'mliu@robin8.com', :subject => "Report from Robin8 team",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Weekly email sent"
   end
   
@@ -33,7 +33,7 @@ class ReportMailer < ApplicationMailer
     @kol_increase = kol_increase
     @real_kol_count = real_kol_count
     @real_kol_increase = real_kol_increase
-    mail(:to => 'mliu@robin8.com', :subject => "Report from Robin8 team",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V monthly report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Monthly email sent"
   end
   
