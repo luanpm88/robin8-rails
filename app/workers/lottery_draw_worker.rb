@@ -33,9 +33,10 @@ class LotteryDrawWorker
         number_b = data["opencode"].split(",").join("").to_i
         number_b_issue = data["expect"]
       rescue => e
-        if e.inspect == 'Request Timeout' and retries < 3
+        # response code 408 is 'Request Timeout'
+        if (res.code == 408) and retries < 3
           retries += 1
-          resume
+          retry
         else
           raise "夺宝活动开奖异常，获取网络上彩票开奖号码出错: #{e.inspect}"
         end

@@ -62,6 +62,10 @@ every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
 end
 
+every 1.day, :at => '0:30 am', :roles => [:prod_server] do
+  rake "sidekiq:restart"
+end
+
 # every 12.hours do
 #   runner "KolStatus.schedule_update_status"
 # end
@@ -100,7 +104,7 @@ every 1.minutes do
 end
 
 # Auto report system
-# This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours 
+# This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours
 
 every 1.day, :at => '7:00 pm' do
   rake "daily_report:daily_send"
