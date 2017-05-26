@@ -15,7 +15,7 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '139.196.14.144', user: 'deployer', roles: %w{web app db master}
+server '139.196.14.144', user: 'deployer', roles: %w{web app db master prod_server}
 # server '139.196.169.53', user: 'deployer', roles: %w{app slave}
 set :branch, 'master_cn'
 

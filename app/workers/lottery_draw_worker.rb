@@ -18,12 +18,14 @@ class LotteryDrawWorker
 
       number_b = '%05d' % rand(10 **5).to_i
       number_b_issue = ""
+
+      retries = 0
       begin
         # 接口来自 http://www.opencai.net/apifree/
         res = RestClient::Request.execute(:method => :get,
                                   :url => Rails.application.secrets[:lottery][:api_url],
-                                  :timeout => 5,
-                                  :open_timeout => 5)
+                                  :timeout => 10,
+                                  :open_timeout => 10)
 
         rest = JSON.parse(res)
         raise "获取网络上彩票开奖号码数据解析异常" unless rest["data"] and rest["data"].size > 0
@@ -31,8 +33,15 @@ class LotteryDrawWorker
         number_b = data["opencode"].split(",").join("").to_i
         number_b_issue = data["expect"]
       rescue => e
-       raise "夺宝活动开奖异常，获取网络上彩票开奖号码出错: #{e.inspect}"
+        # response code 408 is 'Request Timeout'
+        if (res.code == 408) and retries < 3
+          retries += 1
+          retry
+        else
+          raise "夺宝活动开奖异常，获取网络上彩票开奖号码出错: #{e.inspect}"
+        end
       end
+
 
       lucky_number = activity.generate_lucky_number(number_a + number_b)
       ticket = activity.tickets.where(code: lucky_number).take
