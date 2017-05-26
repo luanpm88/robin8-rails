@@ -7,7 +7,7 @@ namespace :daily_report  do
   task :daily_send => :environment do
     
     ending = DateTime.now.change({ hour: 19 })
-    c = Campaign.where("start_time > ? and start_time < ?", ending - 1.day, ending)
+    c = Campaign.where("start_time > ? and start_time < ?", ending - 1.day, ending).where(:status => ['settled', 'executing', 'executed'])
     total_budget = c.sum("budget")
     campaign_count = c.count
     
@@ -24,7 +24,7 @@ namespace :daily_report  do
     
     # Set the time to from now to 1 week ago.
     ending = DateTime.now.change({ hour: 19 })
-    cs = Campaign.where("start_time > ? and start_time < ?", ending - 1.week, ending)
+    cs = Campaign.where("start_time > ? and start_time < ?", ending - 1.week, ending).where(:status => ['settled', 'executing', 'executed'])
     
     # Calculate the total budget and campaign
     total_budget = cs.sum("budget")
@@ -54,8 +54,8 @@ namespace :daily_report  do
     
     # Set the time to from now to 1 week ago.
     ending = DateTime.now.change({ hour: 19 })
-    cs = Campaign.where("start_time > ? and start_time < ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month)
-    last_cs = Campaign.where("start_time > ? and start_time < ?", 2.month.ago.beginning_of_month, 2.month.ago.end_of_month)
+    cs = Campaign.where("start_time > ? and start_time < ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month).where(:status => ['settled', 'executing', 'executed'])
+    last_cs = Campaign.where("start_time > ? and start_time < ?", 2.month.ago.beginning_of_month, 2.month.ago.end_of_month).where(:status => ['settled', 'executing', 'executed'])
     
     # Calculate the total budget and campaign
     total_budget = cs.sum("budget")
