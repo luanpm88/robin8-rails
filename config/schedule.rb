@@ -62,7 +62,7 @@ every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
 end
 
-every 5.minutes, :roles => [:prod_server] do
+every 1.day, :at => '0:30 am', :roles => [:prod_server] do
   rake "schedule:sidekiq_restart"
 end
 
