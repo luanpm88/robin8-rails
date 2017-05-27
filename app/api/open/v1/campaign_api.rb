@@ -319,7 +319,12 @@ module Open
           requires :endtime, type: String
         end
         post "click_stats" do
-          @campaign = current_user.campaigns.find(params[:id])
+          begin
+            @campaign = current_user.campaigns.find(params[:id])
+          rescue ActiveRecord::RecordNotFound
+            error!({ success: false, error: 'Campaign have been revoked' }, 400) and return
+          end
+
           @campaign_show = CampaignShow.where(created_at: (params[:starttime]..params[:endtime])).where(campaign_id: @campaign.id).
             group("date(created_at)").
             select("date(created_at) as date, sum(status) as avail_click, count(status) as total_click")

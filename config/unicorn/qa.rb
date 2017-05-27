@@ -3,7 +3,7 @@ app_root = File.expand_path("../../..", __FILE__)
 working_directory app_root
 
 # pid
-pid "#{app_root}/tmp/pids/unicorn-qa.pid"
+pid "#{app_root}/tmp/pids/unicorn.pid"
 
 # listen
 listen 8182
