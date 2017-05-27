@@ -63,7 +63,7 @@ every 1.day, :at => '1:00 am' do
 end
 
 every 1.day, :at => '0:30 am', :roles => [:prod_server] do
-  rake "sidekiq:restart"
+  rake "schedule:sidekiq_restart"
 end
 
 # every 12.hours do
@@ -107,14 +107,14 @@ end
 # This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours
 
 every 1.day, :at => '7:00 pm' do
-  rake "daily_report:daily_send"
+  rake "daily_report:daily_send", :environment => 'production'
 end
 
 every :friday, :at => '7:05pm' do
-  rake "daily_report:weekly_send"
+  rake "daily_report:weekly_send", :environment => 'production'
 end
 
 every '10 19 1 * *' do
-  rake "daily_report:monthly_send"
+  rake "daily_report:monthly_send", :environment => 'production'
 end
 
