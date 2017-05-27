@@ -62,3 +62,4 @@ config/new_selector_city.txt
 db/schema.rb
 
 config/secrets.yml_staging.yml
+nohup*
