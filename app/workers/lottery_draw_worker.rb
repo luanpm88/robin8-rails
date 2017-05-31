@@ -34,7 +34,7 @@ class LotteryDrawWorker
         number_b_issue = data["expect"]
       rescue => e
         # response code 408 is 'Request Timeout'
-        if (res.code == 408) and retries < 3
+        if (res.nil? or res.code == 408) and retries < 3
           retries += 1
           retry
         else
