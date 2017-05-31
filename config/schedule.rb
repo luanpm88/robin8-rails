@@ -45,6 +45,10 @@ every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
 end
 
+every 1.day, :at => '0:30 am' do
+  runner "CampaignInvite.remove_old_invitations", :environment => 'production'
+end
+
 every 5.minutes do
   runner "CampaignInvite.schedule_day_settle", :environment => 'staging'
 end
