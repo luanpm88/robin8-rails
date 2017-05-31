@@ -6,9 +6,9 @@ class CampaignShowController < ApplicationController
   def visit
     Rails.logger.info "------referer:#{request.referer}"
     Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
-    campaign_invite = CampaignInvite.find params[:id]
     # Includes invitation which were soft-deleted after campaign has ended
-    redirect_to campaign_invite.unscoped.origin_share_url
+    campaign_invite = CampaignInvite.unscoped.find params[:id]
+    redirect_to campaign_invite.origin_share_url
   end
 
   def show
