@@ -138,9 +138,9 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
-                <input {...name} type="text" className="form-control activity-title-input" maxLength={22} placeholder="请概括您的推广，让您的内容一目了然" />
+                <input {...name} type="text" className="form-control activity-title-input" maxLength={62} placeholder="请概括您的推广，让您的内容一目了然" />
                 <ShowError field={name} />
-                <span className="word-limit">22</span>
+                <span className="word-limit">62</span>
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
