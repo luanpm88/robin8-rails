@@ -44,7 +44,7 @@ const getUploader = function() {
 
 const initBootstrapMaxLength = function() {
   $('.activity-title-input').maxlength({
-    threshold: 21,
+    threshold: 61,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
