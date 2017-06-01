@@ -51,7 +51,7 @@ export default class PhonePreviewCampaignPartial extends React.Component {
             <img className="campaign-img" src={ campaign.get('img_url') } />
           </div>
           <div className="campaign-detail">
-            <p className="campaign-name">{campaign.get("name")}</p>
+            <p className="campaign-name" style='word-wrap: break-word'>{campaign.get("name")}</p>
             <p className="brand-name">{brand.get("name")}</p>
             <p className="time">{campaign.get("start_time")}&nbsp;-&nbsp;{campaign.get("deadline")}</p>
             <p className="description">{campaign.get("description")}</p>
