@@ -12,6 +12,9 @@ namespace :daily_report  do
     campaign_count = c.count
     
     ReportMailer.daily_smallV_report(campaign_count, total_budget).deliver
+    
+    notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
+    notifier.ping "Hey guys! We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB."
     # render json: {:status => :ok}
   # rescue
   #   render json: {:status => 'Cant send daily reporting email!'}
@@ -46,6 +49,11 @@ namespace :daily_report  do
     
     ReportMailer.weekly_smallV_report(campaign_count, total_budget, total_consumed, kol_count, real_kol_count).deliver
     
+    # Send to slack useracquistion channel. 
+    notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
+    notifier.ping "Happy Friday! We have #{campaign_count} campaigns started in the last 7 days. The total budget is #{total_budget.round(1)} RMB. #{total_consumed.round(1)}RMB is consumed."
+    notifier.ping "#{kol_count} new KOLs joined. #{real_kol_count} made more than 1 RMB."
+    
 
     puts "\nWeekly report is now generated."
   end
@@ -62,11 +70,19 @@ namespace :daily_report  do
     campaign_count = cs.count
     budget_increase = (campaign_count - last_cs.count) / last_cs.count.to_f * 100
     total_consumed = 0
+    last_total_consumed = 0
     
     # Calculate how much budget is consumed in total.
     cs.each do |c|
       total_consumed = total_consumed + (c.budget - c.remain_budget)
     end
+    
+    # Calculate consumption from last month.
+    last_cs.each do |c|
+      last_total_consumed = last_total_consumed + (c.budget - c.remain_budget)
+    end
+    
+    consumed_increase = (total_consumed - last_total_consumed) / last_total_consumed.to_f * 100
     
     # Calculate the number of new KOLs, and how many of those took a campaign.
     k = Kol.where("created_at > ? and created_at < ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month)
@@ -81,6 +97,14 @@ namespace :daily_report  do
     real_kol_increase = (real_kol_count - last_real_kol.count)/ last_real_kol.count.to_f * 100
     
     ReportMailer.monthly_smallV_report(campaign_count, total_budget, budget_increase, total_consumed, kol_count, kol_increase, real_kol_count, real_kol_increase).deliver
+    
+    # Send to slack useracquistion channel.
+    notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
+    notifier.ping "-----------------------------------Test--------------------------------------------------------"
+    notifier.ping "First day of the month! We have #{campaign_count} campaigns started in the last 7 days. The total budget is #{total_budget.round(1)} RMB. #{total_consumed.round(1)}RMB is consumed."
+    notifier.ping "Count changed by #{budget_increase.round(1)}%. Consumption increased by #{consumed_increase.round(1)}%."
+    notifier.ping "#{kol_count} new KOLs joined. A change of #{kol_increase.round(1)}%. #{real_kol_count} made more than 1 RMB. A change of #{real_kol_increase.round(1)}%."
+    notifier.ping "-----------------------------------Test--------------------------------------------------------"
     
 
     puts "\nMonthly report is now generated."

@@ -4,13 +4,16 @@ namespace :idfa_check  do
   
   desc "Check IDFA to see what channels the KOLs come from "
 
-  task :check_idfa => :environment do
+  task :check_idfa, [:fileName, :startTime] => [:environment] do |t, args|
     
     # Read a csv file from 小鱼 or others, where the second column is the IDFA list
-    c = CSV.read('config/data_attrs/170524_xiaoyu.csv', 'rb') { |r| puts r }
+    # c = CSV.read('config/data_attrs/170524_xiaoyu.csv', 'rb') { |r| puts r }
+    c = CSV.read(args[:fileName], 'rb') { |r| puts r }
     
     # Check if the KOLs are new or registered before the campaign starts.
-    campaign_start_time = DateTime.new(2017, 05, 22, 19, 30, 00)
+    # campaign_start_time = DateTime.new(2017, 05, 22, 19, 30, 00)
+    campaign_start_time = DateTime.parse(args[:startTime])
+    #puts "Args were: #{args}"
     
     idfas = c[1..-1].map { |r| r[1] }
     kol_from_this_channel = Kol.where(IDFA: idfas)
