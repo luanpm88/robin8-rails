@@ -44,7 +44,7 @@ const getUploader = function() {
 
 const initBootstrapMaxLength = function() {
   $('.activity-title-input').maxlength({
-    threshold: 61,
+    threshold: 59,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
@@ -138,9 +138,9 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
-                <input {...name} type="text" className="form-control activity-title-input" maxLength={62} placeholder="请概括您的推广，让您的内容一目了然" />
+                <input {...name} type="text" className="form-control activity-title-input" maxLength={60} placeholder="请概括您的推广，让您的内容一目了然" />
                 <ShowError field={name} />
-                <span className="word-limit">62</span>
+                <span className="word-limit">60</span>
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
