@@ -113,7 +113,7 @@ class UpdateCampaignService
   end
 
   def update_campaign_targets
-    @campaign.campaign_targets.destroy_all
+    @campaign.campaign_targets.where.not(target_type: 'specified_kols').destroy_all
 
     @campaign_params[:target].each do |k,v|
       @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
