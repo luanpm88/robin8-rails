@@ -6,7 +6,7 @@ module Campaigns
     end
     def validate_columns_if_changed
       if self.name_changed?
-        if self.name.to_s.size > 62
+        if self.name.to_s.size > 60
           self.errors[:name] = "活动标题不能超过62个字!"
         end
       end
