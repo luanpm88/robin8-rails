@@ -9,7 +9,6 @@ module API
         get 'show' do
           kol_value = KolInfluenceValue.get_score(current_kol.kol_uuid)
           present :error, 0
-          present :hide, 0
           tasks = RewardTask.all
           present :tasks, tasks, with: API::V1_3::Entities::RewardTaskEntities::Summary, kol: current_kol
           if kol_value.present?
