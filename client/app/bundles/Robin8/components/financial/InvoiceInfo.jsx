@@ -90,6 +90,15 @@ export default class InvoiceInfo extends React.Component {
     }
   }
 
+  create_or_edit() {
+    const invoiceReceiver = this.props.invoiceReceiver
+    if (invoiceReceiver && invoiceReceiver.get('name')){
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     const specialInvoice = this.props.specialInvoice;
     return (
@@ -97,7 +106,9 @@ export default class InvoiceInfo extends React.Component {
         <div className="invoice_img">
         {/* <img src={require("financial_invoice_bg.png")} /> */}
         </div>
+        {/*
         <div className="invoice-nav" data-example-id="togglable-tabs">
+
           <ul className="nav nav-tabs" id="invoice-tabs" role="tablist">
             <li role="presentation" className="active">
               <a href="#common-invoice" id="common-invoice-tab" role="tab" data-toggle="tab" aria-controls="common_invoice" aria-expanded="false">普通增值税发票</a>
@@ -108,7 +119,7 @@ export default class InvoiceInfo extends React.Component {
           </ul>
 
           <div className="tab-content">
-            <div className="tab-pane fade in active" id="common-invoice" aria-labelledby="common-invoice-tab">
+            <div className="tab-pane fade" id="common-invoice" aria-labelledby="common-invoice-tab">
               <div className="invoice-table">
                 <table>
                   <tbody>
@@ -130,7 +141,7 @@ export default class InvoiceInfo extends React.Component {
               </div>
             </div>
 
-            <div className="tab-pane fade" id="special-invoice" aria-labelledby="special-invoice-tab">
+            <div className="tab-pane fade sin sactive" id="special-invoice" aria-labelledby="special-invoice-tab">
               <div className="invoice-table">
                 <table>
                   <tbody>
@@ -158,7 +169,60 @@ export default class InvoiceInfo extends React.Component {
             </div>
           </div>
         </div>
-
+        */}
+        {
+          do {
+            if (this.create_or_edit()) {
+              <div className="invoice-receiver-table">
+                <table>
+                  <tbody>
+                    <tr align="center">
+                      <td className="express-address row-1">
+                        发票类型
+                      </td>
+                      <td className="receiver-info row-1" >
+                        <div className="inside-receiver-info-td">
+                          <p style={{height: '30px', lineHeight: '36px'}}>
+                            <label style={{fontWeight: 'normal', lineHeight: '17px', marginRight: '20px', marginBotton: 0}}>
+                              <input type="checkbox" value='common'/> 普通增值税发票
+                            </label>
+                            <label style={{fontWeight: 'normal', lineHeight: '17px', marginBotton: 0}}>
+                              <input type="checkbox" value='special'/> 增值税专用发票
+                            </label>
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            }
+          }
+        }
+        <div className="invoice-table-outside">
+          <table>
+            <tbody>
+              <tr align="center">
+                <td className="invoice-info row-1">
+                  发票信息
+                </td>
+                <td className="invoice-detail row-1" >
+                  <div className="inside-invoice-detail-td">
+                    <p>发票抬头: <span className={specialInvoice.get('title') ? null : 'no-info'}> {specialInvoice.get('title') ? specialInvoice.get('title') : '请填写发票抬头'}</span></p>
+                    <p>纳税人识别号: <span className={specialInvoice.get('taxpayer_id') ? null : 'no-info'}> {specialInvoice.get('taxpayer_id') ? specialInvoice.get('taxpayer_id') : '请填写纳税人识别号'}</span></p>
+                    <p>公司地址: <span className={specialInvoice.get('company_address') ? null : 'no-info'}> {specialInvoice.get('company_address') ? specialInvoice.get('company_address') : '请填写公司地址'}</span></p>
+                    <p>公司电话: <span className={specialInvoice.get('company_mobile') ? null : 'no-info'}> {specialInvoice.get('company_mobile') ? specialInvoice.get('company_mobile') : '请填写公司电话'}</span></p>
+                    <p>开户行: <span className={specialInvoice.get('bank_name') ? null : 'no-info'}> {specialInvoice.get('bank_name') ? specialInvoice.get('bank_name') : '请填写开户行'}</span></p>
+                    <p>开户行帐号: <span className={specialInvoice.get('bank_account') ? null : 'no-info'}> {specialInvoice.get('bank_account') ? specialInvoice.get('bank_account') : '请填写开户行帐号'}</span></p>
+                  </div>
+                </td>
+                <td className="action row-1">
+                  { this.render_save_or_edit_special_invoice_button() }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="invoice-receiver-table">
           <table>
             <tbody>
