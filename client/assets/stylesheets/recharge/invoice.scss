@@ -122,7 +122,76 @@
         }
       }
     }
+    .invoice-table-outside {
+      padding: 0px 101px;
+      // padding-top: 65px;
+      table {
+        width: 100%;
+        position: relative;
+        table-layout:fixed !important;
+        td {
+          overflow: auto;
+          white-space: nowrap !important;
+          &:first-child {
+            font-size: 14px;
+            color: #181616;
+          }
+        }
+        td {
+          border: solid 1px #ddd;
+          text-align: center;
+          white-space: nowrap;
+        }
+        .row-1 {
+          height: 104px;
+        }
 
+        .row-2 {
+          height: 120px;
+        }
+
+        .invoice-info {
+          width: 109px;
+          font-size: 18px !important;
+        }
+        .invoice-detail {
+          font-size: 14px;
+          text-align: left;
+          padding-left: 15px;
+
+          span.no-info {
+            color: #aaa;
+          }
+        }
+
+        .invoice-detail {
+          .inside-invoice-detail-td {
+            width: 100%;
+            overflow: auto;
+            padding-top: 10px;
+          }
+        }
+
+        .receiver-info {
+          .inside-receiver-info-td {
+            width: 100%;
+            overflow: auto;
+          }
+        }
+        .action {
+          width: 142px;
+
+          .edit, .save {
+            border-color: #36cdd3;
+            background-color: transparent;
+            color: #36cdd3;
+            width: 88px;
+            height: 36px;
+            box-shadow: none;
+          }
+        }
+      }
+    }
     .invoice-receiver-table {
       position: relative;
       padding: 0px 101px;
