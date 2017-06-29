@@ -244,7 +244,7 @@ export default class InvoiceInfo extends React.Component {
         </div>
 
 
-        // <InvoiceInfoModal show={this.state.showInvoiceInfoModal} onHide={this.closeInvoiceInfoModal.bind(this)} actions={this.props.actions}  invoice={this.props.invoice} />
+        <InvoiceInfoModal show={this.state.showInvoiceInfoModal} onHide={this.closeInvoiceInfoModal.bind(this)} actions={this.props.actions}  invoice={this.props.invoice} />
         <SpecialInvoiceInfoModal show={this.state.showSpecialInvoiceInfoModal} onHide={this.closeSpecialInvoiceInfoModal.bind(this)} actions={this.props.actions}  specialInvoice={this.props.specialInvoice} />
         <InvoiceReceiverInfoModal show={this.state.showInvoiceReceiverInfoModal} onHide={this.closeInvoiceReceiverModal.bind(this)} actions={this.props.actions}  invoiceReceiver={this.props.invoiceReceiver} />
 
