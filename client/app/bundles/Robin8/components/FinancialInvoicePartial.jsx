@@ -60,7 +60,8 @@ class FinancialInvoicePartial extends React.Component {
 
   displayPaginator(props) {
     const { fetchInvoiceHistories } = this.props.actions;
-    if (this.props.paginate.get("X-Page")) {
+    const PaginateV = this.props.paginate;
+    if (PaginateV && PaginateV.get("X-Page")) {
       const pagination_options = {
         currentPage: this.props.paginate.get("X-Page"),
         totalPages: this.props.paginate.get("X-Total-Pages"),
@@ -74,7 +75,7 @@ class FinancialInvoicePartial extends React.Component {
           fetchInvoiceHistories({ page: page });
         }
       }
-      $("#invoice-paginator").bootstrapPaginator(pagination_options);
+      // $("#invoice-paginator").bootstrapPaginator(pagination_options);
     }
   }
 

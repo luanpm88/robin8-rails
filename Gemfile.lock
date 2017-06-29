@@ -493,7 +493,7 @@ GEM
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    puma (2.13.4)
+    puma (3.9.1)
     qiniu (6.5.1)
       json (~> 1.8)
       mime-types (~> 2.4.3)
