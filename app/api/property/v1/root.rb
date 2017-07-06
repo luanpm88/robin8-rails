@@ -9,6 +9,7 @@ module Property
       mount Profile
       mount Account
       mount Identity
+      mount Provinces
     end
   end
 end

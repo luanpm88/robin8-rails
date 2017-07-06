@@ -47,20 +47,20 @@ module API
             error_403!({error: 1, detail: "结束时间需要晚于开始时间!"})  and return
           end
 
-          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.5
-            error_403!({error: 1, detail: "单次点击不能低于0.5元!"})  and return
+          if params[:per_budget_type] == "click" and params[:per_action_budget] < 0.2
+            error_403!({error: 1, detail: "单次点击不能低于0.2元!"})  and return
           end
 
-          if params[:per_budget_type] == "post" and params[:per_action_budget] < 3
-            error_403!({error: 1, detail: "单次转发不能低于3元!"})  and return
+          if params[:per_budget_type] == "post" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次转发不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 3
-            error_403!({error: 1, detail: "单次下载不能低于3元!"})  and return
+          if params[:per_budget_type] == "simple_cpi" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次下载不能低于2元!"})  and return
           end
 
-          if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 3
-            error_403!({error: 1, detail: "单次任务不能低于3元!"})  and return
+          if params[:per_budget_type] == "cpt" and params[:per_action_budget] < 2
+            error_403!({error: 1, detail: "单次任务不能低于2元!"})  and return
           end
 
           service = KolCreateCampaignService.new brand_user, declared(params).merge(:img_url => img_url, :need_pay_amount => params[:budget], :campaign_from => "app")
