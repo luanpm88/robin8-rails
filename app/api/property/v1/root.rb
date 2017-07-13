@@ -10,6 +10,7 @@ module Property
       mount Account
       mount Identity
       mount Provinces
+      mount TalkingData
     end
   end
 end
