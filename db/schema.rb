@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170711100403) do
+ActiveRecord::Schema.define(version: 20170713092657) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -1166,95 +1166,95 @@ ActiveRecord::Schema.define(version: 20170711100403) do
   end
 
   create_table "kols", force: :cascade do |t|
-    t.string   "email",                   limit: 191
-    t.string   "encrypted_password",      limit: 255
-    t.string   "reset_password_token",    limit: 191
+    t.string   "email",                  limit: 191
+    t.string   "encrypted_password",     limit: 255
+    t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",           limit: 4,                              default: 0,         null: false
+    t.integer  "sign_in_count",          limit: 4,                              default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",      limit: 255
-    t.string   "last_sign_in_ip",         limit: 255
-    t.string   "confirmation_token",      limit: 255
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "confirmation_token",     limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email",       limit: 255
+    t.string   "unconfirmed_email",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "first_name",              limit: 255
-    t.string   "last_name",               limit: 255
-    t.string   "location",                limit: 255
-    t.string   "locale",                  limit: 255
-    t.boolean  "is_public",               limit: 1,                              default: true
+    t.string   "first_name",             limit: 255
+    t.string   "last_name",              limit: 255
+    t.string   "location",               limit: 255
+    t.string   "locale",                 limit: 255
+    t.boolean  "is_public",              limit: 1,                              default: true
     t.date     "date_of_birthday"
-    t.string   "title",                   limit: 255
-    t.string   "industry",                limit: 255
-    t.string   "mobile_number",           limit: 191
-    t.integer  "gender",                  limit: 4,                              default: 0
-    t.string   "country",                 limit: 255
-    t.string   "province",                limit: 255
-    t.string   "city",                    limit: 255
-    t.string   "audience_gender_ratio",   limit: 255
-    t.string   "audience_age_groups",     limit: 255
-    t.integer  "wechat_personal_fans",    limit: 4
-    t.string   "wechat_public_name",      limit: 255
-    t.string   "wechat_public_id",        limit: 255
-    t.integer  "wechat_public_fans",      limit: 4
-    t.string   "audience_regions",        limit: 255
-    t.string   "avatar",                  limit: 255
-    t.integer  "stats_total",             limit: 4,                              default: 0
+    t.string   "title",                  limit: 255
+    t.string   "industry",               limit: 255
+    t.string   "mobile_number",          limit: 191
+    t.integer  "gender",                 limit: 4,                              default: 0
+    t.string   "country",                limit: 255
+    t.string   "province",               limit: 255
+    t.string   "city",                   limit: 255
+    t.string   "audience_gender_ratio",  limit: 255
+    t.string   "audience_age_groups",    limit: 255
+    t.integer  "wechat_personal_fans",   limit: 4
+    t.string   "wechat_public_name",     limit: 255
+    t.string   "wechat_public_id",       limit: 255
+    t.integer  "wechat_public_fans",     limit: 4
+    t.string   "audience_regions",       limit: 255
+    t.string   "avatar",                 limit: 255
+    t.integer  "stats_total",            limit: 4,                              default: 0
     t.datetime "stats_total_changed"
-    t.decimal  "amount",                                precision: 12, scale: 2, default: 0.0
-    t.decimal  "frozen_amount",                         precision: 12, scale: 2, default: 0.0
-    t.string   "provider",                limit: 255
-    t.string   "social_name",             limit: 255
-    t.string   "social_uid",              limit: 255
-    t.string   "from_which_campaign",     limit: 255
+    t.decimal  "amount",                               precision: 12, scale: 2, default: 0.0
+    t.decimal  "frozen_amount",                        precision: 12, scale: 2, default: 0.0
+    t.string   "provider",               limit: 255
+    t.string   "social_name",            limit: 255
+    t.string   "social_uid",             limit: 255
+    t.string   "from_which_campaign",    limit: 255
     t.datetime "forbid_campaign_time"
-    t.integer  "five_click_threshold",    limit: 4
-    t.integer  "total_click_threshold",   limit: 4
-    t.string   "app_platform",            limit: 255
-    t.string   "app_version",             limit: 255
-    t.string   "private_token",           limit: 80
-    t.string   "device_token",            limit: 80
-    t.text     "desc",                    limit: 65535
-    t.string   "alipay_account",          limit: 255
-    t.string   "name",                    limit: 255
-    t.string   "app_country",             limit: 255
-    t.string   "app_province",            limit: 255
-    t.string   "app_city",                limit: 255
-    t.string   "IMEI",                    limit: 255
-    t.string   "IDFA",                    limit: 255
-    t.string   "phone_city",              limit: 255
-    t.string   "utm_source",              limit: 255
-    t.float    "influence_score",         limit: 24,                             default: -1.0
-    t.string   "kol_uuid",                limit: 255
+    t.integer  "five_click_threshold",   limit: 4
+    t.integer  "total_click_threshold",  limit: 4
+    t.string   "app_platform",           limit: 255
+    t.string   "app_version",            limit: 255
+    t.string   "private_token",          limit: 80
+    t.string   "device_token",           limit: 80
+    t.text     "desc",                   limit: 65535
+    t.string   "alipay_account",         limit: 255
+    t.string   "name",                   limit: 255
+    t.string   "app_country",            limit: 255
+    t.string   "app_province",           limit: 255
+    t.string   "app_city",               limit: 255
+    t.string   "IMEI",                   limit: 255
+    t.string   "IDFA",                   limit: 255
+    t.string   "phone_city",             limit: 255
+    t.string   "utm_source",             limit: 255
+    t.float    "influence_score",        limit: 24,                             default: -1.0
+    t.string   "kol_uuid",               limit: 255
     t.datetime "cal_time"
-    t.string   "rongcloud_token",         limit: 255
-    t.string   "os_version",              limit: 255
-    t.string   "device_model",            limit: 255
-    t.string   "alipay_name",             limit: 255
-    t.string   "invite_code",             limit: 10
-    t.integer  "age",                     limit: 4
-    t.integer  "weixin_friend_count",     limit: 4
-    t.string   "kol_level",               limit: 255
-    t.string   "id_card",                 limit: 255
-    t.string   "job_info",                limit: 255
-    t.string   "avatar_url",              limit: 255
-    t.string   "kol_role",                limit: 80,                             default: "public"
-    t.string   "role_apply_status",       limit: 255,                            default: "pending"
+    t.string   "rongcloud_token",        limit: 255
+    t.string   "os_version",             limit: 255
+    t.string   "device_model",           limit: 255
+    t.string   "alipay_name",            limit: 255
+    t.string   "invite_code",            limit: 10
+    t.integer  "age",                    limit: 4
+    t.integer  "weixin_friend_count",    limit: 4
+    t.string   "kol_level",              limit: 255
+    t.string   "id_card",                limit: 255
+    t.string   "job_info",               limit: 255
+    t.string   "avatar_url",             limit: 255
+    t.string   "kol_role",               limit: 80,                             default: "public"
+    t.string   "role_apply_status",      limit: 255,                            default: "pending"
     t.datetime "role_apply_time"
     t.datetime "role_check_time"
-    t.string   "role_check_remark",       limit: 255
-    t.float    "longitude",               limit: 24
-    t.float    "latitude",                limit: 24
-    t.integer  "is_hot",                  limit: 4,                              default: 0
-    t.text     "memo",                    limit: 65535
-    t.float    "historical_income",       limit: 24,                             default: 0.0
-    t.integer  "show_count",              limit: 4,                              default: 30
-    t.integer  "lock_version",            limit: 4,                              default: 1
-    t.string   "talkingdata_campaign_id", limit: 255
+    t.string   "role_check_remark",      limit: 255
+    t.float    "longitude",              limit: 24
+    t.float    "latitude",               limit: 24
+    t.integer  "is_hot",                 limit: 4,                              default: 0
+    t.text     "memo",                   limit: 65535
+    t.float    "historical_income",      limit: 24,                             default: 0.0
+    t.integer  "show_count",             limit: 4,                              default: 30
+    t.integer  "lock_version",           limit: 4,                              default: 1
+    t.string   "talkingdata_channel_id", limit: 255
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
