@@ -6,11 +6,12 @@ module Property
           requires :channel_id, type: String
           requires :idfa, type: String
         end
-        get '/activate' do
+        get '/login' do
           kol = Kol.find_by IDFA: params[:idfa]
-          if kol
-            kol.update_attributes(channel_id: params[:channel_id])
+          if kol and !kol.talkingdata_channel_id
+            kol.update_attributes(talkingdata_channel_id: params[:channel_id])
           end
+          present :error, 0
         end
       end
     end
