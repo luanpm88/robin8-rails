@@ -84,6 +84,25 @@ module API
             present :detail, '该用户不存在'
           end
         end
+
+        params do
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
+          requires :uid, type: Integer
+          requires :kol_id, type: Integer
+        end
+        post 'unbind_social_account' do
+          social_account = SocialAccount.find_by(uid: params[:uid], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
+          kol = Kol.find(params[:kol_id]) rescue nil
+          if social_account and social_account.kol_id == kol.id
+            social_account.delete
+            present :error, 0
+            present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
+          else
+            present :error, 1
+            present :detail, 'Social Account not found'
+          end
+        end
+
       end
     end
   end
