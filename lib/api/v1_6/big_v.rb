@@ -87,11 +87,11 @@ module API
 
         params do
           requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
-          requires :uid, type: Integer
+          requires :id, type: Integer
           requires :kol_id, type: Integer
         end
         post 'unbind_social_account' do
-          social_account = SocialAccount.find_by(uid: params[:uid], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
+          social_account = SocialAccount.find_by(id: params[:id], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
           kol = Kol.find(params[:kol_id]) rescue nil
           if social_account and social_account.kol_id == kol.id
             social_account.delete
