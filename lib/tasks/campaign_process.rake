@@ -1,4 +1,4 @@
-task :campaign  do
+namespace :campaign  do
   desc "Manually execute campaign tasks"
 
   # Example usage:
