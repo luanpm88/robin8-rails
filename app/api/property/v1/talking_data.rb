@@ -17,7 +17,7 @@ module Property
           else
             kol = Kol.find_by IMEI: params[:imei]
             if kol and !kol.talkingdata_promotion_name
-              kol.update_attributes(talkingdata_channel_id: params[:talkingdata_promotion_name])
+              kol.update_attributes(talkingdata_promotion_name: params[:talkingdata_promotion_name])
             end
           end
           present :error, 0
