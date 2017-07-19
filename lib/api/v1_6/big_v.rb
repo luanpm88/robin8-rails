@@ -86,7 +86,7 @@ module API
         end
 
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
+          requires :provider, type: String, values: ['yizhibo','yingke','xiaohongshu','weibo','wechat','tieba','tianya','taobao','qq','public_wechat','other','nice','miaopai','meipai','meila','huajiao','douyu','douban']
           requires :id, type: Integer
           requires :kol_id, type: Integer
         end
