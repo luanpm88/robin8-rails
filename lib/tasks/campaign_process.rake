@@ -1,4 +1,4 @@
-space :campaign  do
+task :campaign  do
   desc "Manually execute campaign tasks"
 
   # Example usage:
