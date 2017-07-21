@@ -10,15 +10,23 @@ module Property
           api_token_password = 'no-country-for-old-man'
 
           if params[:api_token] == api_token_password
+            $weixin_client ||= WeixinAuthorize::Client.new(Rails.application.secrets.wechat[:app_id],
+                                                           Rails.application.secrets.wechat[:app_secret])
             encoding_password = 'IFU%DbfHsdJVu6ytv#ueiervq'
             access_token = $weixin_client.access_token
+            expired_at = $weixin_client.expired_at
+            time_now = DateTime.now.to_i
 
             cipher = Gibberish::AES.new(encoding_password)
             encrypted_access_token = cipher.encrypt(access_token)
 
-            present :access_token, access_token
+            # un-encrypted version of access token
+            # present :access_token, access_token
+
             present :encrypted_access_token, encrypted_access_token
-            present :expired_at, $weixin_client.expired_at
+            present :expired_at, expired_at
+            present :expired_at_date, Time.at(expired_at).strftime('%Y-%m-%d %H:%M:%s')
+            present :time_now, time_now
           else
             present :error, 1
           end
@@ -28,6 +36,7 @@ module Property
     end
   end
 end
+
 
 # DECODE USING JAVASCRIPT
 
