@@ -3,7 +3,7 @@ module API
     module Entities
       module IdentityEntities
         class Summary < Grape::Entity
-          expose :provider, :uid, :token, :name, :url, :avatar_url, :desc
+          expose :provider, :uid, :token, :name, :url, :avatar_url, :desc  if :token
         end
       end
     end

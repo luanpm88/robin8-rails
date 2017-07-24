@@ -143,20 +143,23 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          if identity.blank?
-            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
-            # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
-            current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
-            present :error, 0
-            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-          else
+          if identity
+            time_gap = Time.now.strftime("%j").to_i - identity.updated_at.strftime("%j").to_i
             if identity.kol_id == current_kol.id
               return error_403!({error: 1, detail: '您已经绑定了该账号!'})
+            elsif time_gap < 30 
+              return error_403!({error: 1, detail: "每次解绑后须30天才能重新绑定,距离下次解绑还剩#{30 - time_gap}天"}) 
             else
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+              current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             end
+          else
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+            current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+            present :error, 0
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           end
         end
 
@@ -167,7 +170,7 @@ module API
         put 'identity_unbind' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
-            identity.delete
+            identity.update(token: nil)
             current_kol.reload
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
