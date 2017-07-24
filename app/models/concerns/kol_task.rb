@@ -52,14 +52,15 @@ module Concerns
       else
         device_exist = true
       end
+      # Inviter isn't rewarded unless Kol got approved in admin panel
+      return unless self.role_apply_status == 'passed'
+
       Rails.logger.transaction.info "--------generate_invite_task_record---#{self.id}-----IMEI:#{self.IMEI}---IDFA:#{self.IDFA}---exist:#{device_exist}"
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 
       invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
 
-      # Inviter isn't rewarded unless Kol got approved in admin panel
-      return unless self.role_apply_status == 'passed'
 
       return unless invitation
 
