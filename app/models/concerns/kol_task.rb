@@ -58,6 +58,9 @@ module Concerns
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 
+      # does not allow to proceed if user already had completed invitation
+      return if RegisteredInvitation.completed.where(mobile_number: self.mobile_number).size > 0
+
       invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
       return unless invitation
 
