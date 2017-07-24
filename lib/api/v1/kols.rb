@@ -139,7 +139,7 @@ module API
           optional :is_yellow_vip, type: Boolean
           optional :bind_type, type: String
         end
-        post 'identity_bind' do
+           post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
