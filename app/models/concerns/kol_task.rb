@@ -5,7 +5,11 @@ module Concerns
       has_many :task_records
       has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account, :class_name => 'Transaction'
       # after_create :generate_invite_code
-      after_create :generate_invite_task_record
+
+      #after_create :generate_invite_task_record
+
+      # Kol's inviter is rewarded only after Kol gets approved
+      after_update :generate_invite_task_record
     end
 
     class_methods do
@@ -53,6 +57,10 @@ module Concerns
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 
       invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
+
+      # Inviter isn't rewarded unless Kol got approved in admin panel
+      return unless self.role_apply_status == 'passed'
+
       return unless invitation
 
       ActiveRecord::Base.transaction do
