@@ -6,7 +6,7 @@ module Concerns
       has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account, :class_name => 'Transaction'
       # after_create :generate_invite_code
 
-      #after_create :generate_invite_task_record
+      after_create :generate_invite_task_record
 
       # Kol's inviter is rewarded only after Kol gets approved
       # after_update :generate_invite_task_record
