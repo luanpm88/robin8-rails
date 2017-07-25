@@ -79,7 +79,8 @@ module API
           if !kol
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
 
-            if Identity.is_valid_identity?(params[:provider], params[:token], params[:uid])
+            unless Identity.is_valid_identity?(params[:provider], params[:token], params[:uid])
+              Rails.logger.info "---- oauth_login --- invalid login data: #{params}"
               return error!({error: 1, detail: 'Invalid oauth login data'}, 403)
             end
 
