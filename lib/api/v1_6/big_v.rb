@@ -94,7 +94,7 @@ module API
           social_account = SocialAccount.find_by(id: params[:id], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
           kol = Kol.find(params[:kol_id]) rescue nil
           if social_account and social_account.kol_id == kol.id
-            social_account.delete
+            social_account.update(username: nil)
             present :error, 0
             present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
           else

@@ -49,22 +49,35 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
-          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
-          social_account.homepage = params[:homepage]  if params[:homepage].present?
-          if provider == 'weibo' && social_account.homepage.blank?
-            uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
-            social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+          social_account = SocialAccount.find_by(:kol_id => current_kol.id, :provider => provider)
+          if social_account
+            time_gap = Time.now.strftime("%j").to_i - social_account.updated_at.strftime("%j").to_i
+          else 
+            time_gap = 30
           end
-          social_account.price = params[:price]           if params[:price].present?
-          social_account.username = params[:username]     if params[:username].present?
-          social_account.uid = params[:uid]               if params[:uid].present?
-          social_account.repost_price = params[:repost_price]
-          social_account.second_price = params[:second_price]
-          social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
-          social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
-          social_account.save
-          current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
-          present :error, 0
+
+          if time_gap < 30
+            return error_403!({error: 1, detail: "每次解绑后须30天才能重新绑定,距离下次解绑还剩#{30 - time_gap}天"})
+          else
+            social_account = SocialAccount.new
+            social_account.kol_id = current_kol.id
+            social_account.provider = provider
+            social_account.homepage = params[:homepage]  if params[:homepage].present?
+            if provider == 'weibo' && social_account.homepage.blank?
+              uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+              social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+            end
+            social_account.price = params[:price]           if params[:price].present?
+            social_account.username = params[:username]     if params[:username].present?
+            social_account.uid = params[:uid]               if params[:uid].present?
+            social_account.repost_price = params[:repost_price]
+            social_account.second_price = params[:second_price]
+            social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+            social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+            social_account.save
+            current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+            present :error, 0
+          end
         end
 
         desc '提交申请'
