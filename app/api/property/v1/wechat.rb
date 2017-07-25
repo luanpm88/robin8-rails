@@ -10,12 +10,16 @@ module Property
           api_token_password = 'no-country-for-old-man'
 
           if params[:api_token] == api_token_password
-            #$weixin_client ||= WeixinAuthorize::Client.new(Rails.application.secrets.wechat[:app_id],
-            #                                               Rails.application.secrets.wechat[:app_secret])
+            time_now = DateTime.now.to_i
+
+            if $weixin_client.expired_at < time_now
+              $weixin_client ||= WeixinAuthorize::Client.new(Rails.application.secrets.wechat[:app_id],
+                                                             Rails.application.secrets.wechat[:app_secret])
+            end
+
             encoding_password = 'IFU%DbfHsdJVu6ytv#ueiervq'
             access_token = $weixin_client.access_token
             expired_at = $weixin_client.expired_at
-            time_now = DateTime.now.to_i
 
             cipher = Gibberish::AES.new(encoding_password)
             encrypted_access_token = cipher.encrypt(access_token)
