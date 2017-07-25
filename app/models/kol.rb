@@ -93,7 +93,7 @@ class Kol < ActiveRecord::Base
 
   has_one  :registered_invitation,  foreign_key: :invitee_id, inverse_of: :invitee
   has_many :registered_invitations, foreign_key: :inviter_id, inverse_of: :inviter
-  
+
   # Admin tags
   has_and_belongs_to_many :admintags
 
@@ -468,6 +468,7 @@ class Kol < ActiveRecord::Base
 
 
   def self.reg_or_sign_in(params, kol = nil)
+    Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
