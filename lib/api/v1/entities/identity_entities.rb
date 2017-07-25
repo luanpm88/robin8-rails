@@ -3,7 +3,7 @@ module API
     module Entities
       module IdentityEntities
         class Summary < Grape::Entity
-          if :uid
+          unless :uid.blank?
             expose :provider, :uid, :token, :name, :url, :avatar_url, :desc 
           end
         end
