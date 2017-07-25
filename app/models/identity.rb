@@ -110,6 +110,34 @@ class Identity < ActiveRecord::Base
     self.url || "http://weibo.com/#{self.uid}"
   end
 
+  # Checks cridentials againtst wechat/weibo/qq api
+  def self.is_valid_identity? provider, client_access_token, uid
+    if provider == 'weibo'
+      weibo_url = "https://api.weibo.com/2/users/show.json?access_token=#{client_access_token}&uid=#{uid}"
+      json_response = RestClient.get(weibo_url)
+      if json_response.code == 200
+        body = JSON.parse(json_response.body)
+        # client is valid if returned JSON contains e.g. client 'id'
+        body.has_key? "id"
+      else
+        false
+      end
+    elsif provider == 'wechat'
+      # uid is wechat openid, token is token returned by wechat oauth process
+      res = $weixin_client.get_oauth_userinfo(uid, client_access_token)
+      # valid if response returns openid, and it is the same as client's openid
+      openid = res.result['openid'] rescue false
+      openid == uid
+    elsif provider == 'qq'
+      # TODO: implement validating using qq API
+      # documentation: http://wiki.open.qq.com/wiki/website/OpenAPI调用说明_OAuth2.0
+      # req_url = "https://graph.qq.com/user/get_user_info?access_token=#{access_token}&oauth_consumer_key=#{app_id}&openid=#{openid}"
+      # res_json = RestClient.get(req_url)
+      return true
+    end
+
+  end
+
   private
   def spider_weibo_data
     if self.provider == "weibo" and self.kol_id.present? and self.has_grabed == false

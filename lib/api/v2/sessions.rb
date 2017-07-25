@@ -78,6 +78,11 @@ module API
           kol = identity.kol   rescue nil
           if !kol
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
+
+            if Identity.is_valid_identity?(params[:provider], params[:token], params[:uid])
+              return error!({error: 1, detail: 'Invalid oauth login data'}, 403)
+            end
+
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
