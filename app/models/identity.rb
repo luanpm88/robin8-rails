@@ -39,22 +39,22 @@ class Identity < ActiveRecord::Base
 
   def self.create_identity(auth, origin_auth = {})
     create!(uid: auth[:uid], provider: auth[:provider], token: auth[:token], url: auth[:url],
-           token_secret: auth[:token_secret], name: auth[:name], avatar_url: auth[:avatar_url],
-           desc: auth[:desc], service_type_info: auth[:service_type_info],
-           verify_type_info: auth[:verify_type_info], wx_user_name: auth[:wx_user_name],
-           alias: auth[:alias], unionid:auth[:unionid], serial_params: origin_auth.to_json
+            token_secret: auth[:token_secret], name: auth[:name], avatar_url: auth[:avatar_url],
+            desc: auth[:desc], service_type_info: auth[:service_type_info],
+            verify_type_info: auth[:verify_type_info], wx_user_name: auth[:wx_user_name],
+            alias: auth[:alias], unionid:auth[:unionid], serial_params: origin_auth.to_json
     )
   end
 
   def self.create_identity_from_app(params, identity = nil)
     if identity
       identity.update_attributes(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
-                      name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
-                      followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
-                      registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                      kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now,
-                      service_type_info: params[:service_type_info], verify_type_info: params[:verify_type_info],
-                      wx_user_name: params[:wx_user_name], alias: params[:alias])
+                                 name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                                 followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                                 registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                                 kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now,
+                                 service_type_info: params[:service_type_info], verify_type_info: params[:verify_type_info],
+                                 wx_user_name: params[:wx_user_name], alias: params[:alias])
     else
       Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
                       name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
@@ -83,7 +83,7 @@ class Identity < ActiveRecord::Base
     value = 5
     value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, (self.iptc_categories.size > 0 ? '1' : nil)].compact.size > 0
     value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
-                    undertake_activity, image_speak,  give_speech].compact.size > 0
+                     undertake_activity, image_speak,  give_speech].compact.size > 0
     value
   end
 
@@ -108,6 +108,34 @@ class Identity < ActiveRecord::Base
 
   def get_weibo_url
     self.url || "http://weibo.com/#{self.uid}"
+  end
+
+  # Checks cridentials againtst wechat/weibo/qq api
+  def self.is_valid_identity? provider, client_access_token, uid
+    if provider == 'weibo'
+      weibo_url = "https://api.weibo.com/2/users/show.json?access_token=#{client_access_token}&uid=#{uid}"
+      json_response = RestClient.get(weibo_url)
+      if json_response.code == 200
+        body = JSON.parse(json_response.body)
+        # client is valid if returned JSON contains e.g. client 'id'
+        body.has_key? "id"
+      else
+        false
+      end
+    elsif provider == 'wechat'
+      # uid is wechat openid, token is token returned by wechat oauth process
+      res = $weixin_client.get_oauth_userinfo(uid, client_access_token)
+      # valid if response returns openid, and it is the same as client's openid
+      openid = res.result['openid'] rescue false
+      openid == uid
+    elsif provider == 'qq'
+      # TODO: implement validating using qq API
+      # documentation: http://wiki.open.qq.com/wiki/website/OpenAPI调用说明_OAuth2.0
+      # req_url = "https://graph.qq.com/user/get_user_info?access_token=#{access_token}&oauth_consumer_key=#{app_id}&openid=#{openid}"
+      # res_json = RestClient.get(req_url)
+      return true
+    end
+
   end
 
   private
