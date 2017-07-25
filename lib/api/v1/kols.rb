@@ -111,8 +111,9 @@ module API
 
         #第三方账号列表
         get 'identities' do
-          present :error, 0
-          present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          render json: "ok"
+        #   present :error, 0
+        #   present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #用户绑定第三方账号
