@@ -129,13 +129,24 @@ class Identity < ActiveRecord::Base
       openid = res.result['openid'] rescue false
       openid == uid
     elsif provider == 'qq'
-      # TODO: implement validating using qq API
-      # documentation: http://wiki.open.qq.com/wiki/website/OpenAPI调用说明_OAuth2.0
-      # req_url = "https://graph.qq.com/user/get_user_info?access_token=#{access_token}&oauth_consumer_key=#{app_id}&openid=#{openid}"
-      # res_json = RestClient.get(req_url)
-      return true
-    end
+      # Based on documentation: http://wiki.open.qq.com/wiki/website/OpenAPI调用说明_OAuth2.0
+      req1_url = "https://graph.qq.com/oauth2.0/me?access_token=#{client_access_token}"
+      res1 = RestClient.get(req1_url)
+      if res1.code == 200
+        cleaned_response = res1.match(/{.+}/)[0] rescue nil
+        res1_body = JSON.parse(cleaned_response)
+        oauth_consumer_key = res1_body['client_id']
+        openid =res1_body['openid']
 
+        req2_url = "https://graph.qq.com/user/get_user_info?access_token=#{client_access_token}&oauth_consumer_key=#{oauth_consumer_key}&openid=#{openid}"
+        res2 = RestClient.get(req2_url)
+        if res2.code == 200
+          res2_body = JSON.parse(res2.body)
+          return (res2_body.has_key?('ret') and res2_body['ret'] == 0)
+        end
+      end
+      return false
+    end
   end
 
   private
