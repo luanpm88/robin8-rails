@@ -111,9 +111,10 @@ module API
 
         #第三方账号列表
         get 'identities' do
-          render json: "ok"
-        #   present :error, 0
-        #   present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :error, 0
+          if Identity.find_by(:uid => params[:uid]).token
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          end
         end
 
         #用户绑定第三方账号
