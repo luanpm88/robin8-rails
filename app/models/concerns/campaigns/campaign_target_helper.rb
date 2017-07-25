@@ -21,6 +21,7 @@ module Campaigns
       has_many :admintag_targets, -> {where(:target_type => 'admintags')}, class_name: "CampaignTarget"
       has_one :td_promo_targets, -> {where(:target_type => 'td_promo')}, class_name: "CampaignTarget"
       has_one :remove_td_promo_targets, -> {where(:target_type => 'remove_td_promo')}, class_name: "CampaignTarget"
+      has_many :cell_phones_targets, -> {where(:target_type => 'cell_phones')}, class_name: "CampaignTarget"
     end
 
     def get_unmatched_kols(kols)

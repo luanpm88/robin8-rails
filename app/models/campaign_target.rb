@@ -8,9 +8,10 @@ class CampaignTarget < ActiveRecord::Base
     :newbie_kols       => "对于新人的kols可见(填写(any)",
     :ios_platform      => "IOS平台,版本号大于等于(x.x.x,不填表示不限定版本)",
     :android_platform  => "Android平台,版本号大于等于(x.x.x,不填表示不限定版本)",
-    :admintags         => "仅特定的标签用户（admintag)",
-    :td_promo          => "仅特定的渠道用户（talkingdata promotion)",
-    :remove_td_promo   => "删除特定的渠道用户（talkingdata promotion)"
+    :admintags         => "仅特定的标签kols（admintag)",
+    :td_promo          => "仅特定的渠道kols（talkingdata promotion)",
+    :remove_td_promo   => "删除特定的渠道kols（talkingdata promotion)",
+    :cell_phones       => "仅特定的手机号码kols (mobile_number)"
   }
   attr_accessor :target_type_text
 
@@ -19,7 +20,7 @@ class CampaignTarget < ActiveRecord::Base
 
   validates_presence_of :target_type
   validates_presence_of :target_content, :if => Proc.new{|t| t.target_type != 'ios_platform' && t.target_type != 'android_platform' }
-  validates_inclusion_of :target_type, :in => %w(age region gender influence_score tags sns_platforms remove_campaigns remove_kols add_kols specified_kols newbie_kols social_accounts ios_platform android_platform admintags td_promo remove_td_promo)
+  validates_inclusion_of :target_type, :in => %w(age region gender influence_score tags sns_platforms remove_campaigns remove_kols add_kols specified_kols newbie_kols social_accounts ios_platform android_platform admintags td_promo remove_td_promo cell_phones)
 
 
 
@@ -161,10 +162,19 @@ class CampaignTarget < ActiveRecord::Base
     # Target campaigns based on manual Admintags
     def filter_target_admintags_kols(kols, content)
       unless content == '全部'
-        desired_tags = content.split(",").reject(&:blank?)
+        desired_tags = content.split(",").reject(&:blank?).map! {|x| x.strip }
         
         # For each KOL, if any of KOL's admintags appear in desired_tags, then keep KOL
         kols = kols.includes(:admintags).where(admintags: { tag: desired_tags })
+      end
+      kols
+    end
+
+    # Target campaigns based on cell phone numbers
+    def filter_target_cell_phones_kols(kols, content)
+      unless content == '全部'
+        numbers = content.split(",").reject(&:blank?).map! {|x| x.strip }
+        kols = kols.where(mobile_number: numbers)
       end
       kols
     end
