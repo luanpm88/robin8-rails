@@ -106,15 +106,15 @@
         <td><%= color_time(k.forbid_campaign_time) %></td>
         <td><%= k.avail_amount %></td>
         <td><%= k.historical_income %></td>
-        <th><%= k.show_count %></th>
-        <th><%= k.talkingdata_promotion_name %></th>
-        <th>
+        <td><%= k.show_count %></th>
+        <td><%= k.talkingdata_promotion_name %></th>
+        <td>
           <!-- Add an Admintag -->
           <%= link_to "+", marketing_dashboard_kol_add_admintag_path(k.id), style: "float: right;" %>
           
           <!-- Display each Admintag -->
           <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
-        </th>
+        </td>
         <td>
           <%= link_to '资料编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %> /
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %> /
