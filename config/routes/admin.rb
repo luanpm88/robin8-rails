@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       match '/ban' => 'kols#ban', via: [:post, :get]
       match '/disban' => 'kols#disban', via: [:post]
       match '/withdraw' => 'kols#withdraw' , via: [:post, :get]
+      match '/remove_admintag' => 'kols#remove_admintag', via: [:post]
 
       collection do
         get 'banned'

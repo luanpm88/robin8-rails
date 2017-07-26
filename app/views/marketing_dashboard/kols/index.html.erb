@@ -46,6 +46,18 @@
           </div>
         </div>
         <div class="col-md-3">
+          <div class="form-group">
+            <label>TalkingData 广告</label>
+            <%= f.search_field :talkingdata_promotion_name_cont, class: "form-control", placeholder: "Talkingdata 广告名" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Admintag</label>
+            <%= f.select :admintags_tag_eq, Admintag.pluck(:tag).uniq, { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -97,7 +109,8 @@
         <th><%= k.show_count %></th>
         <th><%= k.talkingdata_promotion_name %></th>
         <th>
-          <%= render partial: "admintag", collection: k.admintags %>
+          <!-- Display each Admintag -->
+          <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
         </th>
         <td>
           <%= link_to '资料编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %> /

@@ -142,6 +142,20 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     flash[:notice] = "保存成功"
     redirect_to marketing_dashboard_kols_path
   end
+  
+  def remove_admintag
+    # Remove Kol's relationship to Admintag
+    @kol = Kol.find params[:kol_id]
+    @admintag = Admintag.find params[:admintag_id]
+    @kol.admintags.delete(@admintag)
+    
+    # If the Admintag no longer has any Kols, then destroy the Admintag also
+    if !@admintag.kols.present?
+      @admintag.destroy
+    end
+    
+    redirect_to marketing_dashboard_kols_path
+  end
 
   def campaign_compensation
     authorize! :update, Kol
