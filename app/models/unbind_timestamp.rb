@@ -5,7 +5,7 @@ class UnbindTimestamp < ActiveRecord::Base
 	  if unbind_timestamp
 		UnbindTimestamp.update(:unbind_at => Time.now)
 	  else
-		UnbindTimestamp.create(:kol_id => kol_id , :provider => provider , :unbind => Time.now , :unbind_api => unbind_api)
+		UnbindTimestamp.create(:kol_id => kol_id , :provider => provider , :unbind_at => Time.now , :unbind_api => unbind_api)
 	  end
    end
 end
