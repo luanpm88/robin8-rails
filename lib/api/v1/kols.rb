@@ -118,7 +118,7 @@ module API
         params do
           requires :uid, type: String
         end
-        get 'bind_count' do
+        put 'bind_count' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           bind_record = UnbindTimestamp.find_by(:kol_id => identity.kol_id , :provider => identity.provider )
           if bind_record.blank?
@@ -138,7 +138,7 @@ module API
         params do
           requires :uid , type: String
         end
-        get 'unbind_count' do
+        put 'unbind_count' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           unbind_record = UnbindTimestamp.find_by(:kol_id => identity.kol_id , :provider => identity.provider )
           if unbind_record.blank?
