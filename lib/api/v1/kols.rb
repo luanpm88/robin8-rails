@@ -179,7 +179,7 @@ module API
             if unbind_timestamp
               UnbindTimestamp.update(:unbind_at => Time.now)
             else
-              UnbindTimestamp.create(:kol_id => identity.kol_id , :provider => identity.provider , :unbind => Time.now , :unbind_api => "identity_unbind")
+              UnbindTimestamp.create(:kol_id => identity.kol_id , :provider => identity.provider , :unbind_at => Time.now , :unbind_api => "identity_unbind")
             end
             current_kol.reload
             present :error, 0
