@@ -49,8 +49,8 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
-          unbind_timestamp = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => provider)
-          if unbind_timestamp.bind_conut == true
+          bind_record = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => provider)
+          if unbind_record.bind_count == true
             social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
             social_account.homepage = params[:homepage]  if params[:homepage].present?
             if provider == 'weibo' && social_account.homepage.blank?
@@ -68,10 +68,10 @@ module API
             current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
             present :error, 0
           else
-            return error_403!({error: 1, detail: '本月无法再次绑定'})
+            return error_403!({erroe: 1, detail: '本月无法再次绑定'})
           end
         end
-
+        
         desc '提交申请'
         params do
           optional :kol_shows, type: String
