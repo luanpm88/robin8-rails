@@ -49,13 +49,10 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
-          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
-          unbind_timestamp = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => provider , :unbind_api => "unbind_social_account")
-          social_account.homepage = params[:homepage]  if params[:homepage].present?
-          if unbind_timestamp
-            time_gap = Time.now.strftime("%j").to_i - unbind_timestamp.unbind_at.strftime("%j").to_i
-            return error_403!({error: 1, detail: "每次解绑后须30天才能重新绑定,距离下次解绑还剩#{30 - time_gap}天"}) if time_gap < 30 
-          else
+          unbind_timestamp = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => provider)
+          if unbind_timestamp.bind_conut == true
+            social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
+            social_account.homepage = params[:homepage]  if params[:homepage].present?
             if provider == 'weibo' && social_account.homepage.blank?
               uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
               social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
@@ -70,6 +67,8 @@ module API
             social_account.save
             current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
             present :error, 0
+          else
+            return error_403!({error: 1, detail: '本月无法再次绑定'})
           end
         end
 

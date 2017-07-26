@@ -2026,7 +2026,7 @@ ActiveRecord::Schema.define(version: 20170726044855) do
   create_table "unbind_timestamps", force: :cascade do |t|
     t.integer  "kol_id",     limit: 4
     t.string   "provider",   limit: 255
-    t.string   "unbind_api", limit: 255
+    t.integer  "count",      limit: 4
     t.date     "unbind_at"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
