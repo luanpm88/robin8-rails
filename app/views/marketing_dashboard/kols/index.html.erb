@@ -109,6 +109,9 @@
         <th><%= k.show_count %></th>
         <th><%= k.talkingdata_promotion_name %></th>
         <th>
+          <!-- Add an Admintag -->
+          <%= link_to "+", marketing_dashboard_kol_add_admintag_path(k.id), style: "float: right;" %>
+          
           <!-- Display each Admintag -->
           <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
         </th>

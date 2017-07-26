@@ -142,6 +142,22 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     flash[:notice] = "保存成功"
     redirect_to marketing_dashboard_kols_path
   end
+
+  def add_admintag
+    render 'add_admintag' and return if request.method.eql? 'GET'
+    
+    @kol = Kol.find params[:kol_id]
+    tag = params[:tag]
+
+    # Add Admintag if it doesn't already exist. If it does already exist, then just reuse the original.
+    if !Admintag.find_by(tag: tag).present?
+      @kol.admintags.create(tag: tag)
+    else
+      @kol.admintags << Admintag.find_by(tag: tag)
+    end
+
+    redirect_to marketing_dashboard_kols_path
+  end
   
   def remove_admintag
     # Remove Kol's relationship to Admintag
