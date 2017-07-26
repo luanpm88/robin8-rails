@@ -94,15 +94,19 @@ module API
           social_account = SocialAccount.find_by(id: params[:id], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
           kol = Kol.find(params[:kol_id]) rescue nil
           if social_account and social_account.kol_id == kol.id
-            social_account.delete
-            present :error, 0
-            present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
+            unbind_timestamp = UnbindTimestamp.find_by(:kol_id => params[:kol_id] , :provider =>  params[:provider])
+            if unbind_timestamp.unbind_count == true
+              social_account.delete
+              present :error, 0
+              present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
+            else
+              present :detail, "本月无法再次解绑"
+            end
           else
             present :error, 1
             present :detail, 'Social Account not found'
           end
         end
-
       end
     end
   end

@@ -2023,6 +2023,15 @@ ActiveRecord::Schema.define(version: 20170718082934) do
   add_index "transactions", ["opposite_type"], name: "index_transactions_on_opposite_type", using: :btree
   add_index "transactions", ["trade_no"], name: "index_transactions_on_trade_no", unique: true, using: :btree
 
+  create_table "unbind_timestamps", force: :cascade do |t|
+    t.integer  "kol_id",     limit: 4
+    t.string   "provider",   limit: 255
+    t.integer  "count",      limit: 4
+    t.date     "unbind_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "unsubscribe_emails", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
     t.string   "email",      limit: 191
