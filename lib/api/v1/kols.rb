@@ -143,25 +143,29 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          if identity.blank?
-            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
-            current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
-            present :error, 0
-            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          unbind_timestamp = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => params[:provider] , :unbind_api => "identity_unbind")
+          if unbind_timestamp
+            time_gap = Time.now.strftime("%j").to_i - unbind_timestamp.unbind_at.strftime("%j").to_i
+            return error_403!({error: 1, detail: "每次解绑后须30天才能重新绑定,距离下次解绑还剩#{30 - time_gap}天"}) if time_gap < 30 
           else
-            time_gap = Time.now.strftime("%j").to_i - identity.updated_at.strftime("%j").to_i
-            if identity.kol_id == current_kol.id
-              return error_403!({error: 1, detail: '您已经绑定了该账号!'})
-            elsif time_gap < 30 
-              return error_403!({error: 1, detail: "每次解绑后须30天才能重新绑定,距离下次解绑还剩#{30 - time_gap}天"}) 
-            else
-              Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+            if identity.blank?
+              Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
+              # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
               current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            else
+              if identity.kol_id == current_kol.id
+                return error_403!({error: 1, detail: '您已经绑定了该账号!'})
+              else
+                Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+                present :error, 0
+                present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+              end
             end
           end
         end
+
 
         #第三方账号解除绑定
         params do
@@ -170,7 +174,8 @@ module API
         put 'identity_unbind' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
-            identity.update(token: nil)
+            identity.delete
+            UnbindTimestamp.unbind_record(identity.kol_id , identity.provider , "identity_unbind")
             current_kol.reload
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
