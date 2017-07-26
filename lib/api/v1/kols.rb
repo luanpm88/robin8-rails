@@ -116,13 +116,13 @@ module API
         end
 
         params do
-          requires :uid, type: String
+          requires :kol_id , type: String
+          requires :provider , type: String
         end
         put 'bind_count' do
-          identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
-          bind_record = UnbindTimestamp.find_by(:kol_id => identity.kol_id , :provider => identity.provider )
+          bind_record = UnbindTimestamp.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if bind_record.blank?
-            UnbindTimestamp.create(:kol_id => identity.kol_id , :provider => identity.provider , :bind_count => true)
+            UnbindTimestamp.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => true)
             present :error, 0
             present :detail, "绑定后,你本月还有 0 次解绑机会"
           else
@@ -136,13 +136,13 @@ module API
         end
 
         params do
-          requires :uid , type: String
+          requires :kol_id , type: String
+          requires :provider , type: String
         end
         put 'unbind_count' do
-          identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
-          unbind_record = UnbindTimestamp.find_by(:kol_id => identity.kol_id , :provider => identity.provider )
+          unbind_record = UnbindTimestamp.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if unbind_record.blank?
-            UnbindTimestamp.create(:kol_id => identity.kol_id , :provider => identity.provider ,:unbind_count => true)
+            UnbindTimestamp.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
             present :error, 0
             present :detail, "解绑后,你还有 1 次解绑机会"
           else
