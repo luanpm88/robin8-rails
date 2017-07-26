@@ -120,9 +120,9 @@ module API
           requires :provider , type: String
         end
         put 'bind_count' do
-          bind_record = UnbindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
+          bind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if bind_record.blank?
-            UnbindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 2)
+            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 2)
             present :error, 0
             present :detail, "绑定后,你本月还有 1 次绑定机会"
           else
@@ -147,9 +147,9 @@ module API
           requires :provider , type: String
         end
         put 'unbind_count' do
-          unbind_record = UnbindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
+          unbind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if unbind_record.blank?
-            UnbindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
+            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
             present :error, 0
             present :detail, "解绑后,你还有 1 次解绑机会"
           else
@@ -206,7 +206,7 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          unbind_record = UnbindRecord.find_by(:kol_id => current_kol.id, :provider => provider[:provider])
+          unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => provider[:provider])
           bind_count = unbind_record.bind_count
           if bind_count > 0
             if identity.blank?
@@ -240,7 +240,7 @@ module API
         put 'identity_unbind' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
-            unbind_record = UnbindRecord.find_by(:kol_id => identity.kol_id , :provider => identity.provider)
+            unbind_record = BindRecord.find_by(:kol_id => identity.kol_id , :provider => identity.provider)
             if unbind_record.unbind_count == true
               identity.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)

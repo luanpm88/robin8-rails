@@ -49,7 +49,7 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
-          bind_record = UnbindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
+          bind_record = BindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
           bind_count = bind_record.bind_count
           if unbind_record.bind_count > 0
             social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
