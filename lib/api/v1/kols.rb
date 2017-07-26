@@ -175,7 +175,12 @@ module API
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
             identity.delete
-            UnbindTimestamp.unbind_record(identity.kol_id , identity.provider , "identity_unbind")
+            unbind_timestamp = UnbindTimestamp.find_by(:kol_id => identity.kol_id , :provider => identity.provider , :unbind_api => "identity_unbind")
+            if unbind_timestamp
+              UnbindTimestamp.update(:unbind_at => Time.now)
+            else
+              UnbindTimestamp.create(:kol_id => identity.kol_id , :provider => identity.provider , :unbind => Time.now , :unbind_api => "identity_unbind")
+            end
             current_kol.reload
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary

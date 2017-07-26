@@ -95,7 +95,12 @@ module API
           kol = Kol.find(params[:kol_id]) rescue nil
           if social_account and social_account.kol_id == kol.id
             social_account.delete
-            UnbindTimestamp.unbind_record(params[:kol_id] , params[:provider] , "unbind_social_account")
+            unbind_timestamp = UnbindTimestamp.find_by(:kol_id => params[:kol_id] , :provider => params[:provider], :unbind_api => "unbind_social_account")
+            if unbind_timestamp
+              UnbindTimestamp.update(:unbind_at => Time.now)
+            else
+              UnbindTimestamp.create(:kol_id => params[:kol_id] , :provider => iparams[:provider] , :unbind => Time.now , :unbind_api => "unbind_social_account")
+            end
             present :error, 0
             present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
           else

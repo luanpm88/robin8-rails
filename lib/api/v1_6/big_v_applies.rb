@@ -49,7 +49,7 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
-          social_account = SocialAccount.find_by(:kol_id => current_kol.id, :provider => provider)
+          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
           unbind_timestamp = UnbindTimestamp.find_by(:kol_id => current_kol.id , :provider => provider , :unbind_api => "unbind_social_account")
           social_account.homepage = params[:homepage]  if params[:homepage].present?
           if unbind_timestamp
