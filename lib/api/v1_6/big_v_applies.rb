@@ -50,7 +50,8 @@ module API
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
           bind_record = UnbindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
-          if unbind_record.bind_count == true
+          bind_count = bind_record.bind_count
+          if unbind_record.bind_count > 0
             social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
             social_account.homepage = params[:homepage]  if params[:homepage].present?
             if provider == 'weibo' && social_account.homepage.blank?
@@ -66,6 +67,8 @@ module API
             social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
             social_account.save
             current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+            bind_count = bind_count - 1
+            unbind_record.update(:bind_count => bind_count)
             present :error, 0
           else
             return error_403!({erroe: 1, detail: '本月无法再次绑定'})

@@ -122,13 +122,20 @@ module API
         put 'bind_count' do
           bind_record = UnbindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if bind_record.blank?
-            UnbindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => true)
+            UnbindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 2)
             present :error, 0
-            present :detail, "绑定后,你本月还有 0 次解绑机会"
+            present :detail, "绑定后,你本月还有 1 次绑定机会"
           else
-            if bind_record.bind_count == true
+            if bind_record.bind_counts == 2
               present :error , 0
-              present :detail , "绑定后,你本月还有 0 次解绑机会"
+              present :detail , "绑定后,你本月还有 1 次绑定机会"
+            elsif bind_record.bind_counts == 1
+              present :error , 0
+              present :detail , "绑定后,你本月还有 0 次绑定机会"
+            elsif bind_record.bind_count.blank?
+              bind_record.update(:bind_count => 2)
+              present :error , 0
+              present :detail , "绑定后,你本月还有 1 次绑定机会"
             else
               return error_403!({error: 1, detail: '本月无法再次绑定'})
             end
@@ -200,12 +207,14 @@ module API
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           unbind_record = UnbindRecord.find_by(:kol_id => current_kol.id, :provider => provider[:provider])
-          if unbind_record.bind_count == true
+          bind_count = unbind_record.bind_count
+          if bind_count > 0
             if identity.blank?
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
               # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
               current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
-              unbind_record.update(:bind_count => false)
+              bind_count = bind_count - 1
+              unbind_record.update(:bind_count => bind_count)
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             else
@@ -213,7 +222,8 @@ module API
                 return error_403!({error: 1, detail: '您已经绑定了该账号!'})
               else
                 Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
-                unbind_record.update(:bind_count => false)
+                bind_count = bind_count - 1
+                unbind_record.update(:bind_count => bind_count)
                 present :error, 0
                 present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
               end
@@ -233,7 +243,7 @@ module API
             unbind_record = UnbindRecord.find_by(:kol_id => identity.kol_id , :provider => identity.provider)
             if unbind_record.unbind_count == true
               identity.delete
-              unbind_record.update(:bind_count => true , :unbind_at => Time.now , :unbind_count => false)
+              unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               current_kol.reload
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
