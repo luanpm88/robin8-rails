@@ -151,25 +151,25 @@ module API
           if unbind_record.blank?
             BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
             present :error, 0
-            present :detail, "解绑后,你还有 1 次解绑机会"
+            present :detail, "解绑后,本月你还有 1 次解绑机会"
           else
             if unbind_record.unbind_count == true
               present :error, 0
-              present :detail, "解绑后,你还有 1 次解绑机会"
+              present :detail, "解绑后,本月你还有 1 次解绑机会"
             else
               if unbind_record.unbind_at.blank?
                 unbind_record.update(:unbind_count => true) 
                 present :error, 0
-                present :detail, "解绑后,你还有 1 次解绑机会"
+                present :detail, "解绑后,本月你还有 1 次解绑机会"
               else
                 if unbind_record.unbind_at.strftime("%Y").to_i < Time.now.strftime("%Y").to_i
                   unbind_timestamp.update(:unbind_count => true)
                   present :error, 0
-                  present :detail, "解绑后,你还有 1 次解绑机会"
+                  present :detail, "解绑后,本月你还有 1 次解绑机会"
                 elsif unbind_record.unbind_at.strftime("%m").to_i < Time.now.strftime("%m").to_i
                   unbind_timestamp.update(:unbind_count => true)
                   present :error, 0
-                  present :detail, "解绑后,你还有 1 次解绑机会"
+                  present :detail, "解绑后,本月你还有 1 次解绑机会"
                 else
                   return error_403!({error: 1, detail: '本月无法再次解绑'})
                 end       
@@ -220,12 +220,14 @@ module API
             else
               if identity.kol_id == current_kol.id
                 return error_403!({error: 1, detail: '您已经绑定了该账号!'})
-              else
+              elsif unbind_record.unbind_count.blank? || unbind_record.unbind_count == true
                 Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
                 bind_count = bind_count - 1
-                unbind_record.update(:bind_count => bind_count)
+                unbind_record.update(:bind_count => bind_count , :unbind_count => false)
                 present :error, 0
                 present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+              else
+                return error_403!({error: 1, detail: '因解绑次数不足,本月无法重新绑定'})
               end
             end
           else
@@ -248,7 +250,7 @@ module API
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             else
-              return error_403!({error: 1, detail: '本月无法在解绑'})
+              return error_403!({error: 1, detail: '本月无法再次解绑'})
             end
           else
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})

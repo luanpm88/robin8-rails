@@ -52,24 +52,49 @@ module API
           bind_record = BindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
           bind_count = bind_record.bind_count
           if bind_count > 0
-            social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
-            social_account.homepage = params[:homepage]  if params[:homepage].present?
-            if provider == 'weibo' && social_account.homepage.blank?
-              uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
-              social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+            social_account = SocialAccount.find_by(:kol_id => current_kol.id, :provider => provider)
+            if social_account.blank?
+              social_account = SocialAccount.new(:kol_id => current_kol.id, :provider => provider)
+              social_account.homepage = params[:homepage]  if params[:homepage].present?
+              if provider == 'weibo' && social_account.homepage.blank?
+                uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+                social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+              end
+
+              social_account.price = params[:price]           if params[:price].present?
+              social_account.username = params[:username]     if params[:username].present?
+              social_account.uid = params[:uid]               if params[:uid].present?
+              social_account.repost_price = params[:repost_price]
+              social_account.second_price = params[:second_price]
+              social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+              social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+              social_account.save
+              current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+              bind_count = bind_count - 1
+              bind_record.update(:bind_count => bind_count)
+              present :error, 0
+            elsif bind_record.unbind_count.blank? || bind_record.unbind_count == true
+              social_account = SocialAccount.new(:kol_id => current_kol.id, :provider => provider)
+              social_account.homepage = params[:homepage]  if params[:homepage].present?
+              if provider == 'weibo' && social_account.homepage.blank?
+                uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+                social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+              end
+              social_account.price = params[:price]           if params[:price].present?
+              social_account.username = params[:username]     if params[:username].present?
+              social_account.uid = params[:uid]               if params[:uid].present?
+              social_account.repost_price = params[:repost_price]
+              social_account.second_price = params[:second_price]
+              social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+              social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+              social_account.save
+              current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+              bind_count = bind_count - 1
+              bind_record.update(:bind_count => bind_count , unbind_count => false)
+              present :error, 0
+            else
+              return error_403!({error: 1, detail: '因解绑次数不足,本月无法重新绑定'})
             end
-            social_account.price = params[:price]           if params[:price].present?
-            social_account.username = params[:username]     if params[:username].present?
-            social_account.uid = params[:uid]               if params[:uid].present?
-            social_account.repost_price = params[:repost_price]
-            social_account.second_price = params[:second_price]
-            social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
-            social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
-            social_account.save
-            current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
-            bind_count = bind_count - 1
-            bind_record.update(:bind_count => bind_count)
-            present :error, 0
           else
             return error_403!({erroe: 1, detail: '本月无法再次绑定'})
           end
