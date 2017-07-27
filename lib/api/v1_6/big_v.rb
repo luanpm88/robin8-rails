@@ -94,7 +94,7 @@ module API
           social_account = SocialAccount.find_by(id: params[:id], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
           kol = Kol.find(params[:kol_id]) rescue nil
           if social_account and social_account.kol_id == kol.id
-            unbind_timestamp = BindRecord.find_by(:kol_id => params[:kol_id] , :provider =>  params[:provider])
+            unbind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider =>  params[:provider])
             if unbind_timestamp.unbind_count == true
               social_account.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
