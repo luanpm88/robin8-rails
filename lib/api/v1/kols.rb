@@ -206,7 +206,7 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => provider[:provider])
+          unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => params[:provider])
           bind_count = unbind_record.bind_count
           if bind_count > 0
             if identity.blank?
