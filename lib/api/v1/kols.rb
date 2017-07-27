@@ -208,7 +208,7 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => params[:provider])
           bind_count = unbind_record.bind_count
-          if bind_count > 0
+          if true   # if bind_count > 0 测试: 解除次数限制
             if identity.blank?
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
               # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
@@ -243,7 +243,8 @@ module API
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
             unbind_record = BindRecord.find_by(:kol_id => identity.kol_id , :provider => identity.provider)
-            if unbind_record.unbind_count == true
+            if true
+            #if unbind_record.unbind_count == true 测试: 解除次数限制
               identity.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               current_kol.reload

@@ -51,7 +51,8 @@ module API
           provider = SocialAccount::Providers.invert[params[:provider_name]]
           bind_record = BindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
           bind_count = bind_record.bind_count
-          if bind_count > 0
+          if true 
+          #if bind_count > 0 测试:解除次数限制
             social_account = SocialAccount.find_by(:kol_id => current_kol.id, :provider => provider)
             if social_account.blank?
               social_account = SocialAccount.new(:kol_id => current_kol.id, :provider => provider)
