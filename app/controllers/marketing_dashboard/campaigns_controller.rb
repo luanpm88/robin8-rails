@@ -237,6 +237,20 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
     @q = @push_records.ransack(params[:q])
     @push_records = @q.result.paginate(paginate_params)
+
+    respond_to do |format|
+      format.html do
+        @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+        render 'push_record'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"活动推送记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'push_record'
+      end
+    end
+
   end
 
   def set_auth_type

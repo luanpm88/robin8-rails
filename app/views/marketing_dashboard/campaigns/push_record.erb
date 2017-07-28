@@ -65,6 +65,7 @@
   <table class='table'>
     <thead>
       <tr>
+        <th>Push Record ID</th>
         <th>Campaign ID</th>
         <th>Kol IDs</th>
         <th>Push Type</th>
@@ -75,6 +76,7 @@
     <tbody>
       <% @push_records.each do |pr| %>
       <tr>
+        <td><%= pr.id %></td>
         <td><%= pr.campaign_id %></td>
         <td><%= pr.kol_ids %></td>
         <td><%= pr.push_type %></td>
@@ -85,5 +87,7 @@
     </tbody>
   </table>
 </div>
+
+<%= link_to '导出活动CSV', request.path + ".csv", :class => 'btn btn-default' %>
 
 <%= will_paginate @push_records, renderer: BootstrapPagination::Rails  %>

@@ -1,0 +1,55 @@
+<%
+  # 文档标题
+  cols = [
+    'Push Record ID',
+    'Campaign ID',
+    'Kol Id',
+    'Kol Cellphone',
+    'CampaignInvite Status',
+    'Screenshot Approved?',
+    'Screenshot Url',
+    'Avail Clicks',
+    'Total Clicks',
+    'Push Type',
+    'Filter Type',
+    'Filter Reason'
+  ]
+%>
+<%=
+  CSV.generate do |csv|
+    csv << cols
+    @push_records.each do |pr|
+      
+      # Cache certain values since this can get pretty slow for large campaigns
+      pr_id = pr.id
+      campaign_id = pr.campaign_id
+      pr_push_type = pr.push_type
+      pr_filter_type = pr.filter_type
+      pr_filter_reason = pr.filter_reason
+      
+      kol_ids = pr.kol_ids.split(",").reject(&:blank?)
+      
+      kol_ids.each do |kol_id|
+        
+        kol = Kol.find_by(id: kol_id)
+        invite = CampaignInvite.where(campaign_id: campaign_id, kol_id: kol_id).first
+        
+        csv << [
+          pr_id,
+          campaign_id,
+          kol_id,
+          kol.mobile_number,
+          invite.present? ? invite.status : nil,
+          invite.present? ? invite.img_status : nil,
+          invite.present? ? invite.screenshot : nil,
+          invite.present? ? invite.avail_click : nil,
+          invite.present? ? invite.total_click : nil,
+          pr_push_type,
+          pr_filter_type,
+          pr_filter_reason
+        ]
+      end
+      
+    end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>
