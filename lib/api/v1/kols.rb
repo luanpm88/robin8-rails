@@ -124,18 +124,18 @@ module API
           if bind_record.blank?
             BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 4)
             present :error, 0
-            present :detail, "绑定后,你本月还有 1 次绑定机会"
+            present :detail, "本次绑定后,你本月还有 1 次绑定机会"
           else
             if bind_record.bind_count == 4
               present :error , 0
-              present :detail , "绑定后,你本月还有 1 次绑定机会"
+              present :detail , "本次绑定后,你本月还有 1 次绑定机会"
             elsif bind_record.bind_count == 2
               present :error , 0
-              present :detail , "绑定后,你本月还有 0 次绑定机会"
+              present :detail , "本次绑定后,你本月将没有绑定机会"
             elsif bind_record.bind_count.blank?
               bind_record.update(:bind_count => 4)
               present :error , 0
-              present :detail , "绑定后,你本月还有 1 次绑定机会"
+              present :detail , "本次绑定后,你本月还有 1 次绑定机会"
             else
               return error_403!({error: 1, detail: '本月无法再次绑定'})
             end
@@ -151,25 +151,25 @@ module API
           if unbind_record.blank?
             BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
             present :error, 0
-            present :detail, "解绑后,本月你还有 1 次解绑机会"
+            present :detail, "本次解绑后,本月你将没有解绑机会"
           else
             if unbind_record.unbind_count == true
               present :error, 0
-              present :detail, "解绑后,本月你还有 1 次解绑机会"
+              present :detail, "本次解绑后,本月你将没有解绑机会"
             else
               if unbind_record.unbind_at.blank?
                 unbind_record.update(:unbind_count => true) 
                 present :error, 0
-                present :detail, "解绑后,本月你还有 1 次解绑机会"
+                present :detail, "本次解绑后,本月你将没有解绑机会"
               else
                 if unbind_record.unbind_at.strftime("%Y").to_i < Time.now.strftime("%Y").to_i
                   unbind_timestamp.update(:unbind_count => true)
                   present :error, 0
-                  present :detail, "解绑后,本月你还有 1 次解绑机会"
+                  present :detail, "本次解绑后,本月你将没有解绑机会"
                 elsif unbind_record.unbind_at.strftime("%m").to_i < Time.now.strftime("%m").to_i
                   unbind_timestamp.update(:unbind_count => true)
                   present :error, 0
-                  present :detail, "解绑后,本月你还有 1 次解绑机会"
+                  present :detail, "本次解绑后,本月你将没有解绑机会"
                 else
                   return error_403!({error: 1, detail: '本月无法再次解绑'})
                 end       
