@@ -143,6 +143,36 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     redirect_to marketing_dashboard_kols_path
   end
 
+  def add_admintag
+    render 'add_admintag' and return if request.method.eql? 'GET'
+    
+    @kol = Kol.find params[:kol_id]
+    tag = params[:tag]
+
+    # Add Admintag if it doesn't already exist. If it does already exist, then just reuse the original.
+    if !Admintag.find_by(tag: tag).present?
+      @kol.admintags.create(tag: tag)
+    else
+      @kol.admintags << Admintag.find_by(tag: tag)
+    end
+
+    redirect_to marketing_dashboard_kols_path
+  end
+  
+  def remove_admintag
+    # Remove Kol's relationship to Admintag
+    @kol = Kol.find params[:kol_id]
+    @admintag = Admintag.find params[:admintag_id]
+    @kol.admintags.delete(@admintag)
+    
+    # If the Admintag no longer has any Kols, then destroy the Admintag also
+    if !@admintag.kols.present?
+      @admintag.destroy
+    end
+    
+    redirect_to marketing_dashboard_kols_path
+  end
+
   def campaign_compensation
     authorize! :update, Kol
     @kol = Kol.find params[:id]

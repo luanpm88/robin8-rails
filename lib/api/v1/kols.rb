@@ -115,6 +115,69 @@ module API
           present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
+        params do
+          requires :kol_id , type: String
+          requires :provider , type: String
+        end
+        put 'bind_count' do
+          bind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
+          if bind_record.blank?
+            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 4)
+            present :error, 0
+            present :detail, "本次绑定后,你本月还有 1 次绑定机会"
+          else
+            if bind_record.bind_count == 4
+              present :error , 0
+              present :detail , "本次绑定后,你本月还有 1 次绑定机会"
+            elsif bind_record.bind_count == 2
+              present :error , 0
+              present :detail , "本次绑定后,你本月将没有绑定机会"
+            elsif bind_record.bind_count.blank?
+              bind_record.update(:bind_count => 4)
+              present :error , 0
+              present :detail , "本次绑定后,你本月还有 1 次绑定机会"
+            else
+              return error_403!({error: 1, detail: '本月无法再次绑定'})
+            end
+          end
+        end
+
+        params do
+          requires :kol_id , type: String
+          requires :provider , type: String
+        end
+        put 'unbind_count' do
+          unbind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
+          if unbind_record.blank?
+            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] ,:unbind_count => true)
+            present :error, 0
+            present :detail, "本次解绑后,本月你将没有解绑机会"
+          else
+            if unbind_record.unbind_count == true
+              present :error, 0
+              present :detail, "本次解绑后,本月你将没有解绑机会"
+            else
+              if unbind_record.unbind_at.blank?
+                unbind_record.update(:unbind_count => true) 
+                present :error, 0
+                present :detail, "本次解绑后,本月你将没有解绑机会"
+              else
+                if unbind_record.unbind_at.strftime("%Y").to_i < Time.now.strftime("%Y").to_i
+                  unbind_timestamp.update(:unbind_count => true)
+                  present :error, 0
+                  present :detail, "本次解绑后,本月你将没有解绑机会"
+                elsif unbind_record.unbind_at.strftime("%m").to_i < Time.now.strftime("%m").to_i
+                  unbind_timestamp.update(:unbind_count => true)
+                  present :error, 0
+                  present :detail, "本次解绑后,本月你将没有解绑机会"
+                else
+                  return error_403!({error: 1, detail: '本月无法再次解绑'})
+                end       
+              end
+            end
+          end
+        end
+
         #用户绑定第三方账号
         params do
           requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
@@ -143,22 +206,41 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          if identity.blank?
+          unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => params[:provider])
+          bind_count = unbind_record.bind_count
+          if unbind_record.blank?
+            unbind_record = BindRecord.create(:kol_id => current_kol.id, :provider => params[:provider] , :bind_count => 2)
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
-            # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+            bind_count = unbind_record.bind_count - 1
+            unbind_record.update(:bind_count => bind_count)
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-          else
-            if identity.kol_id == current_kol.id
+          elsif  bind_count > 0 #测试: 解除次数限制
+            if identity.blank?
+              bind_count = unbind_record.bind_count
+              Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
+              # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
+              current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+              bind_count = bind_count - 1
+              unbind_record.update(:bind_count => bind_count)
+              present :error, 0
+              present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            elsif identity.kol_id == current_kol.id
               return error_403!({error: 1, detail: '您已经绑定了该账号!'})
-            else
+            elsif unbind_record.unbind_count.blank? || unbind_record.unbind_count == true
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+              bind_count = bind_count - 1
+              unbind_record.update(:bind_count => bind_count , :unbind_count => false)
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             end
+          else
+            return error_403!({error: 1, detail: '因解绑次数不足,本月无法重新绑定'})
           end
         end
+
+
 
         #第三方账号解除绑定
         params do
@@ -167,10 +249,21 @@ module API
         put 'identity_unbind' do
           identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
           if identity
-            identity.delete
-            current_kol.reload
-            present :error, 0
-            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            unbind_record = BindRecord.find_by(:kol_id => identity.kol_id , :provider => identity.provider)
+            if unbind_record.blank?
+              unbind_record = BindRecord.create(:kol_id => identity.kol_id  , :provider => identity.provider , :bind_count => 2)
+              identity.delete
+              unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
+              current_kol.reload
+              present :error, 0
+              present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            else
+              identity.delete
+              unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
+              current_kol.reload
+              present :error, 0
+              present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            end
           else
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})
           end

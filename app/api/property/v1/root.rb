@@ -10,6 +10,8 @@ module Property
       mount Account
       mount Identity
       mount Wechat
+      mount Provinces
+      mount TalkingData
     end
   end
 end

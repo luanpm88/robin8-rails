@@ -84,6 +84,33 @@ module API
             present :detail, '该用户不存在'
           end
         end
+
+        params do
+          requires :provider, type: String, values: ['zhihu', 'yizhibo','yingke','xiaohongshu','weibo','wechat','tieba','tianya','taobao','qq','public_wechat','other','nice','miaopai','meipai','meila','huajiao','douyu','douban']
+          requires :id, type: Integer
+          requires :kol_id, type: Integer
+        end
+        post 'unbind_social_account' do
+          social_account = SocialAccount.find_by(id: params[:id], provider: params[:provider], kol_id: params[:kol_id]) rescue nil
+          kol = Kol.find(params[:kol_id]) rescue nil
+          if social_account and social_account.kol_id == kol.id
+            unbind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider =>  params[:provider])
+            if unbind_record.blank?
+              unbind_record = BindRecord.create(:kol_id => identity.kol_id  , :provider => identity.provider , :bind_count => 2) 
+              social_account.delete
+              unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
+              present :error, 0
+              present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
+            else
+              social_account.delete
+              unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
+              present :error, 0
+              present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
+            end
+          else
+            return error_403!({error: 1, detail: '未找到该第三方账号信息'})
+          end
+        end
       end
     end
   end
