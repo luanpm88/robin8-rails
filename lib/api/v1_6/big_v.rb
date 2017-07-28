@@ -101,8 +101,7 @@ module API
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               present :error, 0
               present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-            elsif true
-            #if unbind_record.unbind_count == true 测试:解除次数限制
+            elsif unbind_record.unbind_count == true #测试:解除次数限制
               social_account.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               present :error, 0

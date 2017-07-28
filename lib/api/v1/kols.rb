@@ -216,7 +216,7 @@ module API
             unbind_record.update(:bind_count => bind_count)
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-          elsif true   # if bind_count > 0 测试: 解除次数限制
+          elsif  bind_count > 0 #测试: 解除次数限制
             if identity.blank?
               bind_count = unbind_record.bind_count
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
@@ -257,7 +257,7 @@ module API
               current_kol.reload
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-            elsif  true     #  unbind_record.unbind_count == true #测试:解除次数限制
+            elsif unbind_record.unbind_count == true #测试:解除次数限制
               identity.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               current_kol.reload

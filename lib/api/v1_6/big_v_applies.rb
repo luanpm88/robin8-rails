@@ -71,7 +71,7 @@ module API
             bind_count = bind_record.bind_count - 1
             bind_record.update(:bind_count => bind_count)
             present :error, 0
-          elsif true # bind_count > 0 测试:解除次数限制
+          elsif bind_count > 0 # 测试:解除次数限制
             social_account = SocialAccount.find_by(:kol_id => current_kol.id, :provider => provider)
             if social_account.blank?
               social_account = SocialAccount.new(:kol_id => current_kol.id, :provider => provider)
