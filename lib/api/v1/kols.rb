@@ -122,18 +122,18 @@ module API
         put 'bind_count' do
           bind_record = BindRecord.find_by(:kol_id => params[:kol_id] , :provider => params[:provider] )
           if bind_record.blank?
-            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 2)
+            BindRecord.create(:kol_id => params[:kol_id] , :provider => params[:provider] , :bind_count => 4)
             present :error, 0
             present :detail, "绑定后,你本月还有 1 次绑定机会"
           else
-            if bind_record.bind_count == 2
+            if bind_record.bind_count == 4
               present :error , 0
               present :detail , "绑定后,你本月还有 1 次绑定机会"
-            elsif bind_record.bind_count == 1
+            elsif bind_record.bind_count == 2
               present :error , 0
               present :detail , "绑定后,你本月还有 0 次绑定机会"
             elsif bind_record.bind_count.blank?
-              bind_record.update(:bind_count => 2)
+              bind_record.update(:bind_count => 4)
               present :error , 0
               present :detail , "绑定后,你本月还有 1 次绑定机会"
             else
