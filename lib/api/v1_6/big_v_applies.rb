@@ -109,7 +109,7 @@ module API
               social_account.save
               current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
               bind_count = bind_count - 1
-              bind_record.update(:bind_count => bind_count , unbind_count => false)
+              bind_record.update(:bind_count => bind_count , :unbind_count => false)
               present :error, 0
             else
               return error_403!({erroe: 1, detail: '因解绑次数不足,本月无法再次绑定'})
