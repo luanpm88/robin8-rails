@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :unbind_timestamp do
+  factory :bind_record do
     
   end
 
