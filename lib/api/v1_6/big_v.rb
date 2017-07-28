@@ -101,13 +101,11 @@ module API
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               present :error, 0
               present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-            elsif unbind_record.unbind_count == true #测试:解除次数限制
+            else
               social_account.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               present :error, 0
               present :social_accounts, kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-            else
-              return error_403!({error: 1, detail: '因解绑次数不足,本月无法再次解绑'})
             end
           else
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})

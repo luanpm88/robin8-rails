@@ -257,14 +257,12 @@ module API
               current_kol.reload
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-            elsif unbind_record.unbind_count == true #测试:解除次数限制
+            else
               identity.delete
               unbind_record.update( :unbind_at => Time.now , :unbind_count => false)
               current_kol.reload
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
-            else
-                return error_403!({error: 1, detail: '因解绑次数不足,本月无法再次解绑'})
             end
           else
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})
