@@ -177,8 +177,7 @@ module API
             end
           end
         end
-
-        #用户绑定第三方账号
+        
         params do
           requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
@@ -206,32 +205,77 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
-          unbind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => params[:provider])
-          bind_count = unbind_record.bind_count
-          if unbind_record.blank?
-            unbind_record = BindRecord.create(:kol_id => current_kol.id, :provider => params[:provider] , :bind_count => 2)
+          if identity.blank?
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
+            # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
+            current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+            present :error, 0
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          else
+            if identity.kol_id == current_kol.id
+              return error_403!({error: 1, detail: '您已经绑定了该账号!'})
+            else
+              Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
+              present :error, 0
+              present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            end
+          end
+        end
+
+        #用户绑定第三方账号
+        params do
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
+          requires :uid, type: String
+          requires :token, type: String
+          optional :name, type: String
+          optional :url, type: String
+          optional :avatar_url, type: String
+          optional :desc, type: String
+          optional :serial_params, type: String
+          optional :followers_count, Integer
+          optional :statuses_count, Integer
+          optional :registered_at, DateTime
+          optional :verified, :boolean
+          optional :refresh_token, :string
+          optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
+          optional :bind_type, type: String
+        end
+        post 'identity_bind_v2' do
+          identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+          #兼容pc端 wechat
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
+          bind_record = BindRecord.find_by(:kol_id => current_kol.id, :provider => params[:provider])
+          bind_count = bind_record.bind_count
+          if bind_record.blank? # 活动界面微信覆盖
+            bind_record = BindRecord.create(:kol_id => current_kol.id, :provider => params[:provider] , :bind_count => 2)
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
-            bind_count = unbind_record.bind_count - 1
-            unbind_record.update(:bind_count => bind_count)
+            bind_count = bind_record.bind_count - 1
+            bind_record.update(:bind_count => bind_count)
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           elsif  bind_count > 0 #测试: 解除次数限制
             if identity.blank?
-              bind_count = unbind_record.bind_count
+              bind_count = bind_record.bind_count
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
               # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
               current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
               bind_count = bind_count - 1
-              unbind_record.update(:bind_count => bind_count)
+              bind_record.update(:bind_count => bind_count)
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             elsif identity.kol_id == current_kol.id
               return error_403!({error: 1, detail: '您已经绑定了该账号!'})
-            elsif unbind_record.unbind_count.blank? || unbind_record.unbind_count == true
+            elsif bind_record.unbind_count.blank? || bind_record.unbind_count == true
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
               bind_count = bind_count - 1
-              unbind_record.update(:bind_count => bind_count , :unbind_count => false)
+              bind_record.update(:bind_count => bind_count , :unbind_count => false)
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             end
