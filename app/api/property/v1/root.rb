@@ -6,6 +6,7 @@ module Property
       default_error_formatter :json
       content_type :json, 'application/json'
 
+
       mount Profile
       mount Account
       mount Identity
