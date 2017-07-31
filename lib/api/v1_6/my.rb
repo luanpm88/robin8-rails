@@ -9,11 +9,11 @@ module API
         get 'show' do
           present :error, 0
           present :hide, 1
-#           present :hide, 0
           present :detail, 5
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
         end
+        
 
         params do
           optional :page, type: Integer

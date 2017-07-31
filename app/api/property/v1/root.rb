@@ -12,6 +12,7 @@ module Property
       mount Wechat
       mount Provinces
       mount TalkingData
+      
     end
   end
 end

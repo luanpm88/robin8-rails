@@ -35,7 +35,6 @@ module API
           present :error, 0
         end
 
-        desc '提交社交账号资料'
         params do
           requires :provider_name, type: String
           optional :homepage, type: String
@@ -49,9 +48,41 @@ module API
         post 'update_social' do
           return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
           provider = SocialAccount::Providers.invert[params[:provider_name]]
+          social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
+          social_account.homepage = params[:homepage]  if params[:homepage].present?
+          if provider == 'weibo' && social_account.homepage.blank?
+            uid = current_kol.identities.where(:name => params[:username]).first.uid  rescue nil
+            social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+          end
+          social_account.price = params[:price]           if params[:price].present?
+          social_account.username = params[:username]     if params[:username].present?
+          social_account.uid = params[:uid]               if params[:uid].present?
+          social_account.repost_price = params[:repost_price]
+          social_account.second_price = params[:second_price]
+          social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+          social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+          social_account.save
+          current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+          present :error, 0
+        end
+
+        desc '提交社交账号资料'
+        params do
+          requires :provider_name, type: String
+          optional :homepage, type: String
+          requires :price, type: String
+          optional :username, type: String
+          optional :uid, type: String
+          optional :repost_price, type: String
+          optional :second_price, type: String
+          optional :followers_count, type: String
+        end
+        post 'update_social_v2' do
+          return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
+          provider = SocialAccount::Providers.invert[params[:provider_name]]
           bind_record = BindRecord.find_by(:kol_id => current_kol.id , :provider => provider)
           bind_count = bind_record.bind_count
-          if bind_record.blank?
+          if bind_record.blank? #活动界面覆盖判断
             bind_record = BindRecord.find_by(:kol_id => current_kol.id , :provider => provider , :bind_count => 2)
             social_account = SocialAccount.new(:kol_id => current_kol.id, :provider => provider)
             social_account.homepage = params[:homepage]  if params[:homepage].present?
