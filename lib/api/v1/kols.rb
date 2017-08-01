@@ -165,11 +165,11 @@ module API
                 present :detail, "本次解绑后,本月你将没有解绑机会"
               else
                 if unbind_record.unbind_at.strftime("%Y").to_i < Time.now.strftime("%Y").to_i
-                  unbind_timestamp.update(:unbind_count => true)
+                  unbind_record.update(:unbind_count => true)
                   present :error, 0
                   present :detail, "本次解绑后,本月你将没有解绑机会"
                 elsif unbind_record.unbind_at.strftime("%m").to_i < Time.now.strftime("%m").to_i
-                  unbind_timestamp.update(:unbind_count => true)
+                  unbind_record.update(:unbind_count => true)
                   present :error, 0
                   present :detail, "本次解绑后,本月你将没有解绑机会"
                 else
