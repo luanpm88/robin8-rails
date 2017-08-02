@@ -192,6 +192,13 @@ Rails.application.routes.draw do
     post :sms, on: :collection
   end
 
+  get 'wechat_campaign/campaign_page'
+  get 'wechat_campaign/kol_register'
+  post 'wechat_campaign/kol_create'
+  post 'wechat_campaign/sms_request'
+  get 'wechat_campaign/campaign_details'
+  get 'wechat_campaign/app_download_page'
+
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
