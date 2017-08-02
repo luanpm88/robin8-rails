@@ -46,6 +46,18 @@
           </div>
         </div>
         <div class="col-md-3">
+          <div class="form-group">
+            <label>TalkingData 广告</label>
+            <%= f.search_field :talkingdata_promotion_name_cont, class: "form-control", placeholder: "Talkingdata 广告名" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Admintag</label>
+            <%= f.select :admintags_tag_eq, Admintag.pluck(:tag).uniq, { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
             <%= f.submit "搜索", class: "btn btn-primary" %>
@@ -72,6 +84,8 @@
       <th><%= sort_link(@q, :avail_amount, "可提现金额") %></th>
       <th><%= sort_link(@q, :historical_income, "历史净收益") %></th>
       <th><%= sort_link(@q, :show_count, "查看大V上限") %></th>
+      <th><%= sort_link(@q, :show_count, "TalkingData 渠道") %></th>
+      <th><%= sort_link(@q, :show_count, "AdminTag") %></th>
       <th>操作</th>
     </tr>
   </thead>
@@ -92,7 +106,15 @@
         <td><%= color_time(k.forbid_campaign_time) %></td>
         <td><%= k.avail_amount %></td>
         <td><%= k.historical_income %></td>
-        <th><%= k.show_count %></th>
+        <td><%= k.show_count %></th>
+        <td><%= k.talkingdata_promotion_name %></th>
+        <td>
+          <!-- Add an Admintag -->
+          <%= link_to "+", marketing_dashboard_kol_add_admintag_path(k.id), style: "float: right;" %>
+          
+          <!-- Display each Admintag -->
+          <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
+        </td>
         <td>
           <%= link_to '资料编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %> /
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %> /

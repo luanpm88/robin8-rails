@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'csv'
 
 namespace :daily_report  do
   
@@ -110,4 +111,20 @@ namespace :daily_report  do
     puts "\nMonthly report is now generated."
   end
   
+  task :pinyou_send => :environment do
+    
+    cs = Campaign.where("actual_deadline_time > ? and actual_deadline_time < ?", 3.month.ago.beginning_of_month, 1.month.ago.end_of_month)
+    .where(:status => ['settled', 'executed']).where('user_id=?', 2237)
+    
+    CSV.open("config/data_attrs/pinyou_results.csv","wb") do |csv|
+      csv << ["id","截止时间","活动名称","预算","单次消耗","有效点击","状态"]
+      cs.all.each_with_index do |cp,index|
+            puts "done #{index}"
+            csv << [cp.id, cp.actual_deadline_time , cp.name, cp.budget, cp.actual_per_action_budget, cp.avail_click, cp.status, cp.user_id, cp.per_budget_type]
+        end
+    end
+    
+    ReportMailer.pinyou_report().deliver
+    puts "Completed"
+  end
 end

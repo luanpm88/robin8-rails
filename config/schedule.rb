@@ -122,3 +122,19 @@ every '10 19 1 * *' do
   rake "daily_report:monthly_send", :environment => 'production'
 end
 
+every '00 10 1 1 *' do
+  rake "daily_report:pinyou_send", :environment => 'production'
+end
+
+every '00 10 1 4 *' do
+  rake "daily_report:pinyou_send", :environment => 'production'
+end
+
+every '00 10 1 7 *' do
+  rake "daily_report:pinyou_send", :environment => 'production'
+end
+
+every '00 10 1 10 *' do
+  rake "daily_report:pinyou_send", :environment => 'production'
+end
+
