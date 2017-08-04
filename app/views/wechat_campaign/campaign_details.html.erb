@@ -60,13 +60,7 @@
               imgUrl: '<%= poster_url %>',
               success: function (res) {
                   window.location.href = '/wechat_campaign/app_download_page';
-              },
-//              cancel: function (res) {
-//                  alert('You should share to download app');
-//              },
-//              fail: function (res) {
-//                  alert('You should share to download app');
-//              }
+              }
           };
 
         wx.onMenuShareAppMessage(shareData);
@@ -75,9 +69,9 @@
         wx.onMenuShareWeibo(shareData);
       });
 
-      wx.error(function (res) {
-        console.log(res.errMsg);
-      });
+//      wx.error(function (res) {
+//        console.log(res.errMsg);
+//      });
     </script>
 
 </head>
