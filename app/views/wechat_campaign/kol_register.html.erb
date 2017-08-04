@@ -1,150 +1,163 @@
-<style>
-    * {
-        box-sizing: border-box;
-    }
-    body {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        font-size: 15px;
-        font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
-    }
-    input, button {
-        font: inherit;
-    }
-    .bg {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-repeat: no-repeat;
-        z-index: -1;
-    }
-    .container {
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding: 15px;
-        position: absolute;
-        background-color: black;
-    }
-    .container:after {
-        content: "";
-        clear: both;
-        display: block;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+  <meta charset="utf-8">
+  <%= favicon_link_tag 'favicon.ico' %>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <%= stylesheet_link_tag 'wechat_campaign' %>
+  <%= csrf_meta_tags %>
 
-    .ft-wrapper {
-        position: fixed;
-        width: 100%;
-        max-width: 430px;
-        height: 240px;
-        top: 270px;
-        left: 50%;
-        padding: 15px 35px;
-        transform: translateX(-50%);
-        -webkit-transform: translateX(-50%);
-    }
+  <style>
+      * {
+          box-sizing: border-box;
+      }
+      body {
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          font-size: 15px;
+          font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+      }
+      input, button {
+          font: inherit;
+      }
+      .bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-repeat: no-repeat;
+          z-index: -1;
+      }
+      .container {
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 15px;
+          position: absolute;
+      }
+      .container:after {
+          content: "";
+          clear: both;
+          display: block;
+      }
 
-    .ft-wrapper .reg-bt {
-        width: 100%;
-        position: relative;
-        margin-top: 20px;
-    }
-    .reg-bt button {
-        display: block;
-        width: 100%;
-        height: 42px;
-        color: #fff;
-        font-size: 15px;
-        line-height: 42px;
-        background-color: #2dcad0;
-        text-align: center;
-        text-decoration: none;
-        border: 0;
-        border-radius: 5px;
-        margin: 0 auto;
-    }
+      .ft-wrapper {
+          position: fixed;
+          width: 100%;
+          max-width: 430px;
+          height: 240px;
+          top: 270px;
+          left: 50%;
+          padding: 15px 35px;
+          transform: translateX(-50%);
+          -webkit-transform: translateX(-50%);
+      }
 
-    .ft-wrapper .f-field {
-        position: relative;
-        width: 100%;
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.1);
-        margin-top: 1px;
-        padding: 5px 15px 5px 60px;
-    }
-    .ft-wrapper .f-field.f-with-req {
-        padding-right: 105px;
-    }
-    .ft-wrapper .f-field input {
-        background-color: transparent;
-        border: 0;
-        line-height: 40px;
-        height: 40px;
-        display: block;
-        width: 100%;
-        color: #fff;
-        font-size: 15px;
-        letter-spacing: 1px;
-    }
-    .ft-wrapper .f-field input:focus {
-        outline: 0;
-    }
-    .ft-wrapper .f-field .f-icon {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 50px;
-        width: 60px;
-        text-align: center;
-        padding-top: 11px;
-    }
-    .ft-wrapper .f-field .f-icon img {
-        width: 28px;
-        height: 28px;
-    }
-    .f-btn-req {
-        position: absolute;
-        top: 9px;
-        right: 9px;
-        display: block;
-        width: 90px;
-        height: 32px;
-        color: #fff;
-        font-size: 14px;
-        line-height: 32px;
-        background-color: #2dcad0;
-        text-align: center;
-        text-decoration: none;
-        border: 0;
-        border-radius: 5px;
-    }
-    .f-btn-req:hover,
-    .f-btn-req:focus,
-    .reg-bt button:hover,
-    .reg-bt button:focus {
-        background-color: #10777b;
-    }
-    .f-error {
-        text-align: center;
-        width: 100%;
-        color: #ff1818;
-        margin-top: 8px;
-    }
-    .f-info {
-        text-align: center;
-        width: 100%;
-        color: #1bb120;
-        margin-top: 8px;
-    }
-</style>
+      .ft-wrapper .reg-bt {
+          width: 100%;
+          position: relative;
+          margin-top: 20px;
+      }
+      .reg-bt button {
+          display: block;
+          width: 100%;
+          height: 42px;
+          color: #fff;
+          font-size: 15px;
+          line-height: 42px;
+          background-color: #2dcad0;
+          text-align: center;
+          text-decoration: none;
+          border: 0;
+          border-radius: 5px;
+          margin: 0 auto;
+      }
+
+      .ft-wrapper .f-field {
+          position: relative;
+          width: 100%;
+          height: 50px;
+          background-color: rgba(255, 255, 255, 0.1);
+          margin-top: 1px;
+          padding: 5px 15px 5px 60px;
+      }
+      .ft-wrapper .f-field.f-with-req {
+          padding-right: 105px;
+      }
+      .ft-wrapper .f-field input {
+          background-color: transparent;
+          border: 0;
+          line-height: 40px;
+          height: 40px;
+          display: block;
+          width: 100%;
+          color: #fff;
+          font-size: 15px;
+          letter-spacing: 1px;
+      }
+      .ft-wrapper .f-field input:focus {
+          outline: 0;
+      }
+      .ft-wrapper .f-field .f-icon {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 50px;
+          width: 60px;
+          text-align: center;
+          padding-top: 11px;
+      }
+      .ft-wrapper .f-field .f-icon img {
+          width: 28px;
+          height: 28px;
+      }
+      .f-btn-req {
+          position: absolute;
+          top: 9px;
+          right: 9px;
+          display: block;
+          width: 90px;
+          height: 32px;
+          color: #fff;
+          font-size: 14px;
+          line-height: 32px;
+          background-color: #2dcad0;
+          text-align: center;
+          text-decoration: none;
+          border: 0;
+          border-radius: 5px;
+      }
+      .f-btn-req:hover,
+      .f-btn-req:focus,
+      .reg-bt button:hover,
+      .reg-bt button:focus {
+          background-color: #10777b;
+      }
+      .f-error {
+          text-align: center;
+          width: 100%;
+          color: #ff1818;
+          margin-top: 8px;
+      }
+      .f-info {
+          text-align: center;
+          width: 100%;
+          color: #1bb120;
+          margin-top: 8px;
+      }
+  </style>
+
 
 <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
-
+</head>
+<body>
+<div class="bg" style="background-image: url(<%= asset_url("invite-bg-02.jpg") %>)"></div>
 <div class="container">
   <div class="ft-wrapper">
       <form>
@@ -165,7 +178,44 @@
           <div class="f-info"></div>
       </form>
   </div>
+
+  <div class="ad-box">
+    <div class="ad-logo"><%= image_tag "wechat_campaign/bottomlogo.png" %></div>您的个人数据管家
+    <a  class="btn-ad"  onclick="showDialog()">下载robin8</a>
+  </div>
+  <!-- 遮罩层 -->
+  <div class="black" id="black">	</div>
+  <!-- 弹出层 -->
+  <div class="dialog top-18" id="dialog">
+    <div class="dia-content ">
+      <h2 class="title-ro">分享成功</h2>
+      20元已经放置于您的钱包，下载APP上传截图即可获得奖励
+      <button class=" btn-blue-ro" id="app-download">去下载</button>
+      <button class=" btn-blue-ro bg-gray" onclick="closeDialog()">知道了</button>
+    </div>
+  </div>
+
 </div>
+
+<script type="text/javascript">
+    var dialog = document.getElementById('dialog');
+    var black = document.getElementById('black');
+    function closeDialog(){
+
+        black.style.display = "none";
+        dialog.style.display = "none";
+    }
+
+    function showDialog(){
+        black.style.display = "block";
+        dialog.style.display = "block";
+    }
+
+    $('#app-download').click(function() {
+        window.location.href = '<%= @app_download_url %>';
+    });
+
+</script>
 
 <script type="text/javascript">
     var smsUrl = "<%= wechat_campaign_sms_request_path %>";

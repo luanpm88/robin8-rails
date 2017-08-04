@@ -3,14 +3,14 @@ class WechatCampaignController < ApplicationController
   before_action :set_campaign, only: [:campaign_page, :kol_register, :campaign_details]
 
   def campaign_page
-
     # TODO: different message for non-executing campaigns
     # TODO: test on non-'executing' campaign
     render :layout => false
   end
 
   def kol_register
-
+    @app_download_url = Rails.application.secrets[:download_url]
+    render :layout => false
   end
 
   def sms_request
@@ -89,6 +89,7 @@ class WechatCampaignController < ApplicationController
     end
     # if auth failed, user will share standard campaign's url
     @share_url ||= campaign.url rescue nil
+    @app_download_url = Rails.application.secrets[:download_url]
     render :layout => false
   end
 
@@ -99,10 +100,6 @@ class WechatCampaignController < ApplicationController
     unless @campaign
       redirect_to '/'
     end
-  end
-
-  def app_download_page
-
   end
 
   def tmp_token kol, campaign
