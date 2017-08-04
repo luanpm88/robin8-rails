@@ -12,16 +12,6 @@ module Property
           if params[:api_token] == api_token_password
             time_now = DateTime.now.to_i
 
-            if $weixin_client.expired_at < (DateTime.now - 10.minutes).to_i
-              token_store = $weixin_client.token_store
-              token_store.refresh_token
-            end
-
-            #if $weixin_client.expired_at < time_now
-            #  $weixin_client = WeixinAuthorize::Client.new(Rails.application.secrets.wechat[:app_id],
-            #                                               Rails.application.secrets.wechat[:app_secret])
-            #end
-
             encoding_password = 'IFU%DbfHsdJVu6ytv#ueiervq'
             access_token = $weixin_client.get_access_token
             expired_at = $weixin_client.expired_at
