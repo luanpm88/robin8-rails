@@ -6,6 +6,7 @@ class WechatCampaignController < ApplicationController
 
     # TODO: different message for non-executing campaigns
     # TODO: test on non-'executing' campaign
+    render :layout => false
   end
 
   def kol_register
