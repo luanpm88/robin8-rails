@@ -64,7 +64,7 @@ gem 'newrelic_rpm'
 gem 'weixin_authorize'
 gem "typhoeus"
 
-# source 'http://rails-assets.org' do
+source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-sass-bootstrap-glyphicons'
@@ -88,7 +88,7 @@ gem "typhoeus"
   gem 'rails-assets-datejs'
   gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
-# end
+end
 
 gem 'devise'
 gem 'devise_invitable'
