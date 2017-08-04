@@ -36,6 +36,10 @@ every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
 
+every 110.minutes do
+  rake "unicorn:restart"
+end
+
 #keep with secret
 # every :tuesday, :at => '0:10 am' do
 #   runner "KolInfluenceValue.schedule_cal_influence"
