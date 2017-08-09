@@ -13,7 +13,7 @@ module API
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
         end
-        
+
 
         params do
           optional :page, type: Integer

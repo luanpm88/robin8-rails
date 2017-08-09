@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <%= stylesheet_link_tag 'wechat_campaign' %>
+        <%= csrf_meta_tag %>
+		<title><%= @campaign.name %></title>
+	</head>
+	<body class="bg-black">
+
+		<section class="content-box">
+            <section class="head-ro">
+              <%= image_tag @campaign.img_url %>
+            </section>
+
+            <section class="content-ro">
+              <h3 class="title-ro-02"><%= @campaign.user.name rescue '' %></h3>
+              <h2 class="title-ro"><%= @campaign.name %></h2>
+              <%= @campaign.description %>
+
+            </section>
+		</section>
+		<section class="bottom-ro bg-black">
+            <%= image_tag "wechat_campaign/gift-tag.png"%>
+			<a class="btn-blue-ro width100 button-introduce" href="<%= wechat_campaign_kol_register_path(campaign_id: @campaign.id) %>">
+				点此测试 >
+			</a>
+
+		</section>
+
+	</body>
+
+</html>

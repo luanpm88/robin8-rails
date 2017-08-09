@@ -10,7 +10,6 @@ class CampaignTarget < ActiveRecord::Base
     :android_platform  => "Android平台,版本号大于等于(x.x.x,不填表示不限定版本)",
     :admintags         => "仅特定的标签kols（admintag)",
     :td_promo          => "仅特定的渠道kols（talkingdata promotion)",
-    :remove_td_promo   => "删除特定的渠道kols（talkingdata promotion)",
     :cell_phones       => "仅特定的手机号码kols (mobile_number)"
   }
   attr_accessor :target_type_text
@@ -146,15 +145,9 @@ class CampaignTarget < ActiveRecord::Base
     # Target campaigns based on Talkingdata promotion name
     def filter_target_td_promo_kols(kols, content)
       unless content == '全部'
-        kols = kols.where(talkingdata_promotion_name: content)
-      end
-      kols
-    end
-
-    # Target campaigns by subtracting on Talkingdata promotion name
-    def filter_target_remove_td_promo_kols(kols, content)
-      unless content == '全部'
-        kols = kols.where.not(talkingdata_promotion_name: content)
+        desired_promos = content.split(",").reject(&:blank?).map! {|x| x.strip }
+        
+        kols = kols.where(talkingdata_promotion_name: desired_promos)
       end
       kols
     end
