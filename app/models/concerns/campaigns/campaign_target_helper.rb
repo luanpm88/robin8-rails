@@ -19,8 +19,8 @@ module Campaigns
       has_one :ios_platform_target, -> {where(:target_type => 'ios_platform')}, class_name: "CampaignTarget"
       has_one :android_platform_target, -> {where(:target_type => 'android_platform')}, class_name: "CampaignTarget"
       has_many :admintag_targets, -> {where(:target_type => 'admintags')}, class_name: "CampaignTarget"
-      has_one :td_promo_targets, -> {where(:target_type => 'td_promo')}, class_name: "CampaignTarget"
-      has_one :remove_td_promo_targets, -> {where(:target_type => 'remove_td_promo')}, class_name: "CampaignTarget"
+      has_many :td_promo_targets, -> {where(:target_type => 'td_promo')}, class_name: "CampaignTarget"
+      has_many :remove_td_promo_targets, -> {where(:target_type => 'remove_td_promo')}, class_name: "CampaignTarget"
       has_many :cell_phones_targets, -> {where(:target_type => 'cell_phones')}, class_name: "CampaignTarget"
     end
 
