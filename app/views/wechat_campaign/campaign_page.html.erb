@@ -11,11 +11,16 @@
 	<body class="bg-black">
 
 		<section class="content-box">
-			<h2 class="title-ro"><%= @campaign.name rescue '' %></h2>
-			<h3 class="title-ro-02"><%= @campaign.user.name rescue '' %></h3>
-            <iframe src="<%= @campaign.url %>" style="border:0px #ffffff none;" name="campaign_iframe" scrolling="no"
-                    frameborder="0" marginheight="0px" marginwidth="0px"
-                    height="400px" width="300px" allowfullscreen></iframe>
+            <section class="head-ro">
+              <%= image_tag @campaign.img_url %>
+            </section>
+
+            <section class="content-ro">
+              <h3 class="title-ro-02"><%= @campaign.user.name rescue '' %></h3>
+              <h2 class="title-ro"><%= @campaign.name %></h2>
+              <%= @campaign.description %>
+
+            </section>
 		</section>
 		<section class="bottom-ro bg-black">
             <%= image_tag "wechat_campaign/gift-tag.png"%>
