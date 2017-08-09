@@ -95,7 +95,7 @@
 		<div class="dialog" id="dialog">
 			<div class="dia-content">
 				<h2 class="title-ro">活动要求</h2>
-				携一壶茶水，走进烈日灼心的午后，踏着清风，乘着绿意，走进山水相依的凉亭，放下茶壶，立身远望，看湖中水草的青色蔓延，在荡漾涟漪的湖面，想载一叶扁舟，靠近它的身旁，看它婀娜的身姿，随风欣喜的舞步和它扎根初夏的梦想，然后俯身，透过水面抚摸它的身躯，感受它的温度，再深入，触碰它奋发向上的灵魂，
+				<%= @campaign_info_box %>
 				<button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
 			</div>
 		</div>
@@ -137,7 +137,9 @@
             }
         }
         window.onload = function () {
-            showDialog(1);
+            <% if @campaign_info_box %>
+                showDialog(1);
+            <% end %>
             $("#dialog3").hide()
         }
 

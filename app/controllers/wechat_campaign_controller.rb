@@ -3,6 +3,8 @@ class WechatCampaignController < ApplicationController
   before_action :set_campaign, only: [:campaign_page, :kol_register, :campaign_details]
 
   def campaign_page
+    #response.headers.delete('X-Frame-Options')
+    #response.headers['X-Frame-Options'] = 'ALLOW' #"ALLOW-FROM http://robin8.net"
     render :layout => false
   end
 
@@ -92,6 +94,7 @@ class WechatCampaignController < ApplicationController
     cache_key = "wechat-campaign-token-#{kol_id}-#{campaign_id}"
     cached_token = Rails.cache.fetch(cache_key)
 
+    @campaign_info_box = campaign.per_budget_type == 'cpt' ? campaign.remark : nil rescue nil
 
     if client_token and cached_token and client_token == cached_token
       kol = Kol.find(kol_id)
