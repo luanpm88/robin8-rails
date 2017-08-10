@@ -123,7 +123,7 @@ class WechatCampaignController < ApplicationController
       if campaign_invite
         campaign_invite_uuid = campaign_invite.uuid
         Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
-        @share_url = CampaignInvite.origin_share_url(campaign_invite_uuid)
+        @share_url = campaign_invite.visit_url
         Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
       end
     end
