@@ -3,13 +3,12 @@ class WechatCampaignController < ApplicationController
   before_action :set_campaign, only: [:campaign_page, :kol_register, :campaign_details]
 
   def campaign_page
-    #response.headers.delete('X-Frame-Options')
-    #response.headers['X-Frame-Options'] = 'ALLOW' #"ALLOW-FROM http://robin8.net"
     render :layout => false
   end
 
   def kol_register
     @app_download_url = Rails.application.secrets[:download_url]
+    Rails.logger.wechat_campaign.info "--kol_register @app_download_url : #{@app_download_url}"
     render :layout => false
   end
 
@@ -27,12 +26,12 @@ class WechatCampaignController < ApplicationController
     total_send_key = "wechat_campaign_kol_register_send_sms_count"
     send_count =  Rails.cache.fetch(total_send_key).to_i || 1
     Rails.cache.write(total_send_key, send_count + 1, :expires_in => 50.hours)
-    Rails.logger.sms_spider.info "Wechat campaign sms count #{send_count}"
+    Rails.logger.wechat_campaign.info "--sms_request: sms count #{send_count}"
 
     sms_client = YunPian::SendRegisterSms.new(mobile_number)
 
     res = sms_client.send_sms  rescue {}
-    Rails.logger.sms_spider.info "send sms code #{res}"
+    Rails.logger.wechat_campaign.info "--sms_request: send sms code #{res}"
     render json: res
   end
 
@@ -46,14 +45,22 @@ class WechatCampaignController < ApplicationController
     kol_exists = Kol.find_by(mobile_number: params[:mobile_number])
     # return render json: {error: "Kol already exists"} if kol_exists
 
+    Rails.logger.wechat_campaign.info "--kol_create: kol_exists: #{kol_exists}"
     if kol_exists
       campaign_id = params[:campaign_id]
+      Rails.logger.wechat_campaign.info "campaign ID: #{campaign_id}"
       campaign = Campaign.find(campaign_id) rescue nil
       token = tmp_token kol_exists, campaign
       cookies[:_robin8_wechat_campaign] = token
       cookies[:_robin8_wechat_campaign_id] = kol_exists.id
+      Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign] : #{token}"
+      Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign_id] : #{kol_exists.id}"
+
       cache_key = "wechat-campaign-token-#{kol_exists.id}-#{campaign_id}"
       Rails.cache.write(cache_key, token , :expires_in => 1.hour)
+      Rails.logger.wechat_campaign.info "--kol_create: cache_key: #{cache_key}"
+
+      Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
       if campaign and campaign.status == 'executing'
         kol_exists.add_campaign_id campaign_id
         kol_exists.approve_campaign(campaign_id)
@@ -71,14 +78,21 @@ class WechatCampaignController < ApplicationController
         token = tmp_token kol, campaign
         cookies[:_robin8_wechat_campaign] = token
         cookies[:_robin8_wechat_campaign_id] = kol.id
+        Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign] : #{token}"
+        Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign_id] : #{kol_exists.id}"
+
         cache_key = "wechat-campaign-token-#{kol.id}-#{campaign_id}"
         Rails.cache.write(cache_key, token , :expires_in => 1.hour)
+        Rails.logger.wechat_campaign.info "--kol_create: cache_key: #{cache_key}"
+
+        Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
         if campaign and campaign.status == 'executing'
           kol.add_campaign_id campaign_id
           kol.approve_campaign(campaign_id)
         end
         return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
       else
+        Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
         return render json: {error: 'Campaign not found'}
       end
     end
@@ -88,24 +102,34 @@ class WechatCampaignController < ApplicationController
   def campaign_details
     client_token = cookies[:_robin8_wechat_campaign]
     kol_id = cookies[:_robin8_wechat_campaign_id]
+    Rails.logger.wechat_campaign.info "--campaign_details: client_token #{client_token}"
+    Rails.logger.wechat_campaign.info "--campaign_details: kol_id #{kol_id}"
     campaign_id = params[:campaign_id]
     campaign = Campaign.find(campaign_id)
+    Rails.logger.wechat_campaign.info "--campaign_details: campaign_id #{campaign_id}"
 
     cache_key = "wechat-campaign-token-#{kol_id}-#{campaign_id}"
     cached_token = Rails.cache.fetch(cache_key)
+    Rails.logger.wechat_campaign.info "--campaign_details: cache_key #{cache_key}"
 
     @campaign_info_box = campaign.per_budget_type == 'cpt' ? campaign.remark : nil rescue nil
+    Rails.logger.wechat_campaign.info "--campaign_details: @campaign_info_box #{@campaign_info_box}"
 
     if client_token and cached_token and client_token == cached_token
       kol = Kol.find(kol_id)
+      Rails.logger.wechat_campaign.info "--campaign_details: kol_id #{kol_id}"
       campaign_invite = campaign.get_campaign_invite(kol.id) rescue nil
+      Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite.id #{campaign_invite.id}"
       if campaign_invite
         campaign_invite_uuid = campaign_invite.uuid
+        Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
         @share_url = CampaignInvite.origin_share_url(campaign_invite_uuid)
+        Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
       end
     end
     # if auth failed, user will share standard campaign's url
     @share_url ||= campaign.url rescue nil
+    Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
     @app_download_url = Rails.application.secrets[:download_url]
     render :layout => false
   end
@@ -121,6 +145,8 @@ class WechatCampaignController < ApplicationController
 
   def tmp_token kol, campaign
     password = "#{kol.id}-#{campaign.id}-wechat-campaign-Robin8"
+    Rails.logger.wechat_campaign.info "--tmp_token: password #{password}"
     Digest::MD5.hexdigest(Digest::MD5.hexdigest(Digest::SHA256.hexdigest(password)))
   end
+
 end
