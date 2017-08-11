@@ -99,6 +99,8 @@ class Kol < ActiveRecord::Base
   # Admin tags
   has_and_belongs_to_many :admintags
 
+  has_many :influence_metrics
+
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :android, ->{ where("app_platform = 'Android'") }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170726150828) do
+ActiveRecord::Schema.define(version: 20170811031344) do
 
   create_table "aa_bbs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -925,6 +925,36 @@ ActiveRecord::Schema.define(version: 20170726150828) do
 
   add_index "industries_news_rooms", ["industry_id"], name: "index_industries_news_rooms_on_industry_id", using: :btree
   add_index "industries_news_rooms", ["news_room_id"], name: "index_industries_news_rooms_on_news_room_id", using: :btree
+
+  create_table "influence_industries", force: :cascade do |t|
+    t.integer  "influence_metric_id", limit: 4
+    t.string   "industry_name",       limit: 255
+    t.float    "industry_score",      limit: 24
+    t.float    "avg_posts",           limit: 24
+    t.float    "avg_comments",        limit: 24
+    t.float    "avg_likes",           limit: 24
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "influence_industries", ["influence_metric_id"], name: "index_influence_industries_on_influence_metric_id", using: :btree
+
+  create_table "influence_metrics", force: :cascade do |t|
+    t.boolean  "calculated",                 limit: 1
+    t.string   "provider",                   limit: 255
+    t.float    "influence_score",            limit: 24
+    t.integer  "influence_level",            limit: 4
+    t.integer  "influence_score_percentile", limit: 4
+    t.date     "calculated_date"
+    t.float    "avg_posts",                  limit: 24
+    t.float    "avg_comments",               limit: 24
+    t.float    "avg_likes",                  limit: 24
+    t.integer  "kol_id",                     limit: 4
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "influence_metrics", ["kol_id"], name: "index_influence_metrics_on_kol_id", using: :btree
 
   create_table "interested_campaigns", force: :cascade do |t|
     t.integer  "kol_id",       limit: 4,   null: false

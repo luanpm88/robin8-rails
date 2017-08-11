@@ -20,6 +20,19 @@ module API
           # 邀请 KOL
           present :kol_invitations, current_kol, with: API::V2_0::Entities::KolOverviewEntities::KolInvitations
         end
+
+
+        get 'influence_score' do
+          kol_influence_metric = current_kol.influence_metrics.first
+          unless kol_influence_metric or kol_influence_metric.try(:calculated) == false
+            present :error, 0
+            present :calculated, false
+            present time, 10
+          else
+            # present
+            present :industries, kol_influence_metric.influence_indistries, with: API::V2_0::Entities::InfluenceEntities::Industries
+          end
+        end
       end
     end
   end

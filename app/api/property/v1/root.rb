@@ -13,6 +13,7 @@ module Property
       mount Wechat
       mount Provinces
       mount TalkingData
+      mount InfluenceMetric
     end
   end
 end

@@ -145,7 +145,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def add_admintag
     render 'add_admintag' and return if request.method.eql? 'GET'
-    
+
     @kol = Kol.find params[:kol_id]
     tag = params[:tag]
 
@@ -158,18 +158,18 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
     redirect_to marketing_dashboard_kols_path
   end
-  
+
   def remove_admintag
     # Remove Kol's relationship to Admintag
     @kol = Kol.find params[:kol_id]
     @admintag = Admintag.find params[:admintag_id]
     @kol.admintags.delete(@admintag)
-    
+
     # If the Admintag no longer has any Kols, then destroy the Admintag also
     if !@admintag.kols.present?
       @admintag.destroy
     end
-    
+
     redirect_to marketing_dashboard_kols_path
   end
 
