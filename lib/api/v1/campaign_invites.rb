@@ -5,6 +5,7 @@ module API
       def phone_filter(current_kol,comapaign_id)
         comapaign_id[:campaign].each do |t|
           target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
+          return campaign_id if target
           unless target[:target_content].split(",").index(current_kol[:mobile_number])
             comapaign_id[:campaign].delete(t)
           end
