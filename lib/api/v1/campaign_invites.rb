@@ -3,17 +3,12 @@ module API
     class CampaignInvites < Grape::API
       
       def phone_filter(current_kol,comapaign_id)
-        comapaign_id.each do |t|
-          target = CampaignTarget.find_by("campaign_id" => t[:campaign][:id] , "target_type" =>  "cell_phones")
-          if target.blank?
-            comapaign_id
-          else
-            unless  target[:target_content].split(",").index(current_kol[:mobile_number])
-              comapaign_id.delete(t)
-            else
-              comapaign_id
-            end
+        comapaign_id[:campaign].each do |t|
+          target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
+          unless target[:target_content].split(",").index(current_kol[:mobile_number])
+            comapaign_id[:campaign].delete(t)
           end
+          campaign_id
         end
       end
 
@@ -42,7 +37,7 @@ module API
               order_by_status(id_str).page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
-            present :campaign_invites, phone_filter(current_kol , @comapaign_invites), with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invites, phone_filter(current_kol,@comapaign_invites), with: API::V1::Entities::CampaignInviteEntities::Summary
           
           elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
