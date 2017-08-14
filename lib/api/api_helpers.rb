@@ -143,8 +143,8 @@ module API
         else
           campaigns_filter.push(t)
         end
-        return campaigns_filter
-      end     
+      end  
+      campaigns_filter   
     end
   end
 end
