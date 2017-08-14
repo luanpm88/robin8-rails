@@ -36,7 +36,7 @@ module API
           #   @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
           #   to_paginate(@campaigns)
           #   present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary         
-          # elsif params[:status] == 'running'
+          elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
             @campaigns_filter = phone_filter(current_kol , @campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
