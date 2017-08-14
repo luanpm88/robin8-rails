@@ -1,22 +1,6 @@
 module API
   module V1
     class CampaignInvites < Grape::API
-      
-      def phone_filter(current_kol,campaigns)
-        begin
-          campaigns.each do |t|
-            target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-            return campaigns if target.blank?
-            unless target[:target_content].split(",").index(current_kol[:mobile_number])
-              campaigns.delete(t)
-            end
-            campaigns
-          end
-        rescue
-          campaigns
-        end
-      end
-
       resources :campaign_invites do
         before do
           authenticate!
@@ -39,26 +23,26 @@ module API
               where("campaign_invites.status = 'approved'  or campaign_invites.status = 'finished'").collect{|t| t.campaign_id}
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).recent_7.
-              order_by_status(id_str)
-            @campaigns_filter = phone_filter(current_kol , @campaigns).page(params[:page]).per_page(10)
+              order_by_status(id_str).page(params[:page]).per_page(10)
+            @campaigns_filter = phone_filter(current_kol , @campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
-            to_paginate(@campaigns_filter)
+            to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary         
           elsif params[:status] == 'running'
-            @campaigns = current_kol.running_campaigns.order_by_start
-            @campaigns_filter = phone_filter(current_kol , @campaigns).page(params[:page]).per_page(10)
+            @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
+            @campaigns_filter = phone_filter(current_kol , @campaigns)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
-            to_paginate(@campaigns_filter)
+            to_paginate(@campaigns)
             present :campaign_invites, @comapaign_invites , with: API::V1::Entities::CampaignInviteEntities::Summary         
           elsif params[:status] == 'waiting_upload'
             @campaign_invites = current_kol.campaign_invites.waiting_upload.page(params[:page]).per_page(10)
             to_paginate(@campaign_invites)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'missed'
-            @campaigns = current_kol.missed_campaigns.recent_7.order_by_start
-            @campaigns_filter = phone_filter(current_kol , @campaigns).page(params[:page]).per_page(10)
+            @campaigns = current_kol.missed_campaigns.recent_7.order_by_start.page(params[:page]).per_page(10)
+            @campaigns_filter = phone_filter(current_kol , @campaigns)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
-            to_paginate(@campaigns_filter)
+            to_paginate(@campaigns)
             present :campaign_invites, @comapaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary         
           else
             @campaign_invites = current_kol.campaign_invites.send(params[:status]).order("campaign_invites.created_at desc")
