@@ -31,7 +31,7 @@ module API
           elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
             @campaigns_filter = phone_filter(current_kol , @campaigns)
-            @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+            @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @comapaign_invites , with: API::V1::Entities::CampaignInviteEntities::Summary         
           elsif params[:status] == 'waiting_upload'
@@ -41,7 +41,7 @@ module API
           elsif params[:status] == 'missed'
             @campaigns = current_kol.missed_campaigns.recent_7.order_by_start.page(params[:page]).per_page(10)
             @campaigns_filter = phone_filter(current_kol , @campaigns)
-            @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+            @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @comapaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary         
           else

@@ -134,19 +134,13 @@ module API
     end
 
     def phone_filter(current_kol,campaigns)
-      begin
-        campaigns.each do |t|
-          target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-          return campaigns if target.blank?
-          unless target[:target_content].split(",").index(current_kol[:mobile_number])
-            campaigns.delete(t)
-          end
-          campaigns
+      campaigns.each do |t|
+        target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
+        unless target.present?&&target[:target_content].split(",").index(current_kol[:mobile_number])
+          campaigns.delete(t)
         end
-        campaigns
-      rescue
-        campaigns
       end
+      campaigns
     end
   end
 end
