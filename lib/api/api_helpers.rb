@@ -139,7 +139,9 @@ module API
         target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
         if target
           filter = target[:target_content].split(",").index(current_kol[:mobile_number])
-          campaigns_filter.push(t) if filter
+          if filter
+            campaigns_filter.push(t)
+          end 
         else
           campaigns_filter.push(t)
         end
