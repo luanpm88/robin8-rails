@@ -4,49 +4,47 @@ RSpec.describe "V2_0 Influence metric" do
 
   let!(:kol) { create(:kol)}
   let!(:identity) { create(:identity, kol_id: kol.id, provider: 'weibo', uid: 'weibo_boss')}
+  let!(:influence_metrics) { create(:influence_metric,
+                                    calculated: true,
+                                    provider: 'weibo',
+                                    kol_id: kol.id,
+                                    influence_score: '88',
+                                    avg_posts: '1234',
+                                    avg_comments: '2342',
+                                    avg_likes: '232')}
+  let!(:influence_industry1) { create(:influence_industry,
+                                     industry_name: 'industry1',
+                                     industry_score: '2342',
+                                     avg_posts: '134',
+                                     avg_comments: '134',
+                                     avg_likes: '23423',
+                                     influence_metric_id: influence_metrics.id)}
+
+  let!(:influence_industry2) { create(:influence_industry,
+                                     industry_name: 'industry2',
+                                     industry_score: '12',
+                                     avg_posts: '3',
+                                     avg_comments: '2',
+                                     avg_likes: '1',
+                                     influence_metric_id: influence_metrics.id)}
 
   before do
-    allow_any_instance_of(@current_kol).to_return(:kol)
+    Grape::Endpoint.before_each do |endpoint|
+      allow(endpoint).to receive(:current_kol).and_return(kol)
+    end
   end
-
-  let(:valid_hash) {
-    {
-      api_token: 'only-heroes-can-create-influence',
-      provider: 'weibo',
-      provider_uid: 'weibo_boss',
-      influence_score: '88',
-      avg_posts: '1234',
-      avg_comments: '2342',
-      avg_likes: '232',
-      industries: [
-        {
-          industry_name: 'industry1',
-          industry_score: '2342',
-          avg_posts: '134',
-          avg_comments: '134',
-          avg_likes: '23423',
-        },
-        {
-          industry_name: 'industry2',
-          industry_score: '1232',
-          avg_posts: '13',
-          avg_comments: '4',
-          avg_likes: '23',
-        }
-      ]
-    }
-  }
 
   describe 'kol with calculated influence score' do
     it 'returns valid json' do
-      # first create influence score from hash
-      post '/prop/v1/influence_metric/save_influence', valid_hash
-
       get '/api/v2_0/kols/influence_score'
-      puts JSON.parse(response.body)
-      expect(JSON.parse(response.body)['error']).to eq 0
-      expect(JSON.parse(response.body)['calculated']).to eq true
       expect(response.status).to eq 200
+
+      res = JSON.parse(response.body)
+      expect(res['error']).to eq 0
+      expect(res['calculated']).to eq true
+      expect(res['influence_level']).to eq '影响力优秀'
+      expect(res['influence_score_percentile']).to eq '超过0%的用户'
+      expect(res['industries'].size).to eq 2
     end
   end
 

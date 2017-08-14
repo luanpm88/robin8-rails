@@ -28,4 +28,11 @@ class InfluenceMetric < ActiveRecord::Base
     end
   end
 
+  def influence_score_percentile
+    total_influence_scores = InfluenceMetric.all.count
+    users_less_than_current_kol = InfluenceMetric.all.where("influence_score < ?", self.influence_score).count
+    users_less_percentile = (users_less_than_current_kol * 1.0 / total_influence_scores * 100).to_i
+    return "超过#{users_less_percentile}%的用户"
+  end
+
 end

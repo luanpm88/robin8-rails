@@ -6,6 +6,7 @@ module API
         before do
           authenticate!
         end
+
         get 'overview' do
           present :error, 0
           present :unread_messages_count, current_kol.unread_messages.count
@@ -21,16 +22,45 @@ module API
           present :kol_invitations, current_kol, with: API::V2_0::Entities::KolOverviewEntities::KolInvitations
         end
 
+        params do
+          requires :provider, type: String, values: ['weibo', 'wechat']
+        end
+        post 'calculate_influence_score' do
+          kol_identity = current_kol.identities.where(provider: params[:provider]).first rescue nil
+
+          unless current_kol.influence_metric.any?
+            if params[:provider] == 'weibo'
+              KolInfluenceMetricsnWorker.perform_async [kol_identity.uid], []
+            else
+              KolInfluenceMetricsnWorker.perform_async [], [kol_identity.uid]
+            end
+          end
+          present :error, 0
+        end
 
         get 'influence_score' do
-          kol_influence_metric = current_kol.influence_metrics.first
-          unless kol_influence_metric or kol_influence_metric.try(:calculated) == false
+          kol_metric = current_kol.influence_metrics.first
+          kol_identity = current_kol.identities.where(provider: 'weibo').first rescue nil
+
+          unless kol_metric or kol_metric.try(:calculated) == true or kol_identity
             present :error, 0
             present :calculated, false
-            present time, 10
+            present :time, 10
           else
-            # present
-            present :industries, kol_influence_metric.influence_indistries, with: API::V2_0::Entities::InfluenceEntities::Industries
+            present :error, 0
+            present :calculated, kol_metric.calculated
+            present :provider, kol_metric.provider
+            present :avatar_url, kol_identity.avatar_url
+            present :name, kol_identity.name
+            present :description, kol_identity.desc
+            present :influence_score, kol_metric.influence_score
+            present :influence_level, kol_metric.influence_level
+            present :influence_score_percentile, kol_metric.influence_score_percentile
+            present :calculated_date, kol_metric.updated_at.strftime('%Y-%m-%d')
+            present :avg_posts, kol_metric.avg_posts
+            present :avg_comments, kol_metric.avg_comments
+            present :avg_likes, kol_metric.avg_likes
+            present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
           end
         end
       end
