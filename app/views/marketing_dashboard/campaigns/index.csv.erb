@@ -2,12 +2,18 @@
   # 文档标题
   cols = [
     'ID',
+    'Actual Deadline Time',
     'Name',
-    'Total Budget',
+    'Budget',
     'Remaining Budget',
+    'User ID',
+    'Per action budget',
+    'Avail click',
+    '结算点击',
     'Start Time',
     'End Time',
     'Status',
+    'Per Budget Type',
     'Brand User Name',
     'Seller'
   ]
@@ -18,12 +24,18 @@
     @campaigns.each do |campaign|
       csv << [
         campaign.id,
+        (campaign.actual_deadline_time.strftime("%Y-%m-%d %H:%M") rescue nil),
         campaign.name,
         campaign.budget,
         campaign.remain_budget,
+        campaign.user_id,
+        campaign.per_action_budget,
+        campaign.avail_click,
+        campaign.settled_invites.sum(:avail_click) > 0 ? campaign.settled_invites.sum(:avail_click) : '-',
         (campaign.start_time.strftime("%Y-%m-%d %H:%M") rescue nil),
         (campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue nil),
         campaign.status,
+        campaign.per_budget_type,
         campaign.try(:user).try(:smart_name),
         campaign.try(:user).try(:seller).try(:name)
       ]

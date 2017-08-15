@@ -39,22 +39,22 @@ class Identity < ActiveRecord::Base
 
   def self.create_identity(auth, origin_auth = {})
     create!(uid: auth[:uid], provider: auth[:provider], token: auth[:token], url: auth[:url],
-           token_secret: auth[:token_secret], name: auth[:name], avatar_url: auth[:avatar_url],
-           desc: auth[:desc], service_type_info: auth[:service_type_info],
-           verify_type_info: auth[:verify_type_info], wx_user_name: auth[:wx_user_name],
-           alias: auth[:alias], unionid:auth[:unionid], serial_params: origin_auth.to_json
+            token_secret: auth[:token_secret], name: auth[:name], avatar_url: auth[:avatar_url],
+            desc: auth[:desc], service_type_info: auth[:service_type_info],
+            verify_type_info: auth[:verify_type_info], wx_user_name: auth[:wx_user_name],
+            alias: auth[:alias], unionid:auth[:unionid], serial_params: origin_auth.to_json
     )
   end
 
   def self.create_identity_from_app(params, identity = nil)
     if identity
       identity.update_attributes(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
-                      name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
-                      followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
-                      registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                      kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now,
-                      service_type_info: params[:service_type_info], verify_type_info: params[:verify_type_info],
-                      wx_user_name: params[:wx_user_name], alias: params[:alias])
+                                 name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                                 followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                                 registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                                 kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now,
+                                 service_type_info: params[:service_type_info], verify_type_info: params[:verify_type_info],
+                                 wx_user_name: params[:wx_user_name], alias: params[:alias])
     else
       Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
                       name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
@@ -83,7 +83,7 @@ class Identity < ActiveRecord::Base
     value = 5
     value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, (self.iptc_categories.size > 0 ? '1' : nil)].compact.size > 0
     value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
-                    undertake_activity, image_speak,  give_speech].compact.size > 0
+                     undertake_activity, image_speak,  give_speech].compact.size > 0
     value
   end
 

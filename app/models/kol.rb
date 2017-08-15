@@ -4,6 +4,8 @@ class Kol < ActiveRecord::Base
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
   # counter :redis_new_income      #unit is cent
+
+  counter :registered_invitation_count
   list :read_message_ids, :maxlength => 40             # 所有阅读过的
   list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)

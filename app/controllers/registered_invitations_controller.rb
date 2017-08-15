@@ -8,6 +8,11 @@ class RegisteredInvitationsController < ApplicationController
     return render json: {error: "短信验证码错误" } unless verify_code == params[:sms_code]
     return render json: {error: "手机号已经被注册" } if Kol.where(mobile_number: params[:mobile_number]).exists?
     @kol = Kol.where(id: params[:invite_code]).take
+    @kol.registered_invitation_count.increment
+    if @kol.registered_invitation_count > 5
+      return render json: {error: "短信错误"}
+    end
+
     return render json: {error: "错误的邀请码" } unless @kol.present?
 
     @invitation = RegisteredInvitation.where(mobile_number: params[:mobile_number]).first_or_create(
