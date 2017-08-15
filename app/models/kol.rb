@@ -714,4 +714,14 @@ class Kol < ActiveRecord::Base
     all_uids
   end
 
+  def similar_influence_kols provider='weibo'
+    metrics = self.influence_metrics.where(provider: provider)
+    return [] unless metrics.any?
+
+    kol_best_industry = metrics.influence_industries.order(industry_score: :desc).first
+    kol_ids_higher_score = InfluenceIndustry.where(industry_name: kol_best_industry.industry_name)
+                                            .order(industry_score: :desc).limit(5)
+                                            .joins(:influence_metric).select('influence_metrics.kol_id')
+  end
+
 end

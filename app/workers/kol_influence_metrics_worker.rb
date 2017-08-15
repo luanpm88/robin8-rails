@@ -30,6 +30,6 @@ class KolInfluenceMetricsWorker
     response = HTTParty.post('http://106.15.52.233/generate_influence_score/', #Rails.application.secrets[:influence_score_api],
                              body: body_hash.to_json,
                              headers: {'Content-Type' => 'application/json'}).parsed_response
-    Rails.logger.info response
+    Rails.logger.info "---KolInfluenceMetricsWorker: #{response}"
   end
 end
