@@ -2,7 +2,7 @@
 *{margin: 0;padding: 0;outline: none;}
 ol,ul{list-style:none;margin:0;padding:0;}
 img{width:100%;display: block;}
-html{font-size:text-decoration:none;font-family: Arial,Microsoft YaHei,Tahoma,sans-serif;color: #696969;font-size: 62.5%;}
+html{text-decoration:none;font-family: Arial,Microsoft YaHei,Tahoma,sans-serif;color: #696969;font-size: 62.5%;}
 h2{font-size:32px ;font-weight: bold;}h3{font-size:24px; font-weight: bold;}h4{font-size:18px;font-weight: bold;margin-bottom: 5px;}h5{font-size:16px;font-weight: bold;}
 textarea{resize:none}
 /*end reset*/
