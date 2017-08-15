@@ -17,7 +17,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
-      <title><%= title %></title>
+      <title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
       <meta name="description" content="<%= description %>">
       <!-- Open Graph meta -->
       <meta property="og:title" content="<%= title %>" />
@@ -87,7 +87,7 @@
 		</section>
 		<section class="bottom-ro">
 			<a class="link-ro" onclick="showDialog(1)">查看活动要求></a>
-			<a class="btn-blue-ro width100" onclick="showDialog(2)">有多少人在悄悄关注你</a>
+			<a class="btn-blue-ro width100" onclick="showDialog(2)">去带盐</a>
 		</section>
 		<!-- 遮罩层 -->
 		<div class="black" id="black">	</div>

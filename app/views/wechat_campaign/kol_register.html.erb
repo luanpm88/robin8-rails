@@ -8,192 +8,30 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <%= stylesheet_link_tag 'wechat_campaign' %>
   <%= csrf_meta_tags %>
-
-  <style>
-      * {
-          box-sizing: border-box;
-      }
-      body {
-          width: 100%;
-          height: 100%;
-          padding: 0;
-          margin: 0;
-          font-size: 15px;
-          font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
-      }
-      input, button {
-          font: inherit;
-      }
-      .bg {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-size: cover;
-          background-repeat: no-repeat;
-          z-index: -1;
-      }
-      .container {
-          display: block;
-          width: 100%;
-          height: 100%;
-          padding: 15px;
-          position: absolute;
-      }
-      .container:after {
-          content: "";
-          clear: both;
-          display: block;
-      }
-
-      .ft-wrapper {
-          position: fixed;
-          width: 100%;
-          max-width: 430px;
-          height: 240px;
-          top: 270px;
-          left: 50%;
-          padding: 15px 35px;
-          transform: translateX(-50%);
-          -webkit-transform: translateX(-50%);
-      }
-
-      .ft-wrapper .reg-bt {
-          width: 100%;
-          position: relative;
-          margin-top: 20px;
-      }
-      .reg-bt button {
-          display: block;
-          width: 100%;
-          height: 42px;
-          color: #fff;
-          font-size: 15px;
-          line-height: 42px;
-          background-color: #2dcad0;
-          text-align: center;
-          text-decoration: none;
-          border: 0;
-          border-radius: 5px;
-          margin: 0 auto;
-      }
-
-      .ft-wrapper .f-field {
-          position: relative;
-          width: 100%;
-          height: 50px;
-          background-color: rgba(255, 255, 255, 0.1);
-          margin-top: 1px;
-          padding: 5px 15px 5px 60px;
-      }
-      .ft-wrapper .f-field.f-with-req {
-          padding-right: 105px;
-      }
-      .ft-wrapper .f-field input {
-          background-color: transparent;
-          border: 0;
-          line-height: 40px;
-          height: 40px;
-          display: block;
-          width: 100%;
-          color: #fff;
-          font-size: 15px;
-          letter-spacing: 1px;
-      }
-      .ft-wrapper .f-field input:focus {
-          outline: 0;
-      }
-      .ft-wrapper .f-field .f-icon {
-          position: absolute;
-          left: 0;
-          top: 0;
-          height: 50px;
-          width: 60px;
-          text-align: center;
-          padding-top: 11px;
-      }
-      .ft-wrapper .f-field .f-icon img {
-          width: 28px;
-          height: 28px;
-      }
-      .f-btn-req {
-          position: absolute;
-          top: 9px;
-          right: 9px;
-          display: block;
-          width: 90px;
-          height: 32px;
-          color: #fff;
-          font-size: 14px;
-          line-height: 32px;
-          background-color: #2dcad0;
-          text-align: center;
-          text-decoration: none;
-          border: 0;
-          border-radius: 5px;
-      }
-      .f-btn-req:hover,
-      .f-btn-req:focus,
-      .reg-bt button:hover,
-      .reg-bt button:focus {
-          background-color: #10777b;
-      }
-      .f-error {
-          text-align: center;
-          width: 100%;
-          color: #ff1818;
-          margin-top: 8px;
-      }
-      .f-info {
-          text-align: center;
-          width: 100%;
-          color: #1bb120;
-          margin-top: 8px;
-      }
-  </style>
-
+  <title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
 
 <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
 </head>
-<body>
-<div class="bg" style="background-image: url(<%= image_url("wechat_campaign/background.jpg") %>)"></div>
-<div class="container">
-  <div class="ft-wrapper">
-      <form>
-          <div class="f-field f-with-req">
-            <span class="f-icon"><%= image_tag "message.png" %></span>
-            <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
-            <%= text_field_tag 'mobileNumber', nil, placeholder: "请填写您的手机号"  %>
-          </div>
-          <div class="f-field">
-            <span class="f-icon"><%= image_tag 'email.png' %></span>
-            <%= text_field_tag 'smsCode' %>
-          </div>
-          <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
-          <div class="reg-bt">
-            <button id="submit" type="submit">立即体验</button>
-          </div>
-          <div class="f-error"></div>
-          <div class="f-info"></div>
-      </form>
-  </div>
 
-  <div class="ad-box">
-    <div class="ad-logo"><%= image_tag "wechat_campaign/bottomlogo.png" %></div>您的个人数据管家
-    <a  class="btn-ad"  onclick="showDialog()">下载robin8</a>
-  </div>
-  </div>
+<body class="bg-red">
+<section >
+  <%= image_tag 'wechat_campaign/red-bag.jpg' %>
+  <form class="form-ro">
+    <!--<input type="text" name="" placeholder="请填写手机号"  class="input-ro width100"/>-->
+    <%= text_field_tag 'mobileNumber', nil, class: "input-ro width100", placeholder: "请填写手机号"  %>
 
-</div>
+    <!--<input type="text" name="" placeholder="请填写验证码"  class="input-ro"/>-->
+    <%= text_field_tag 'smsCode', nil, class: "input-ro", placeholder: "请填写验证码"  %>
+    <a id="request-sms" class="red-bag-btn">获取验证码</a>
 
-<script type="text/javascript">
-    var dialog = document.getElementById('dialog');
-
-    function showDialog(){
-        window.location.href = '<%= @app_download_url %>';
-    }
-</script>
+    <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
+    <button id="submit" class="red-bag-btn width100">立即体验</button>
+  </form>
+  <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
+  <div class="red-bag-ifo f-info"  style="font-size: 2rem; color: blue;"></div>
+  <p class="red-bag-ifo">测试社交影响力并获得品牌带盐福利</p>
+</section>
+</body>
 
 <script type="text/javascript">
     var smsUrl = "<%= wechat_campaign_sms_request_path %>";

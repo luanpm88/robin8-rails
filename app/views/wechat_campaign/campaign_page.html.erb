@@ -6,30 +6,34 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <%= stylesheet_link_tag 'wechat_campaign' %>
         <%= csrf_meta_tag %>
-		<title><%= @campaign.name %></title>
+		<title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
 	</head>
 	<body class="bg-black">
+        <section class="content-box">
+            <div class="content-box-banner"><%= image_tag @campaign.img_url %></div>
+            <h2 class="title-ro"><%= @campaign.user.name rescue '' %></h2>
+            <h3 class="title-ro-02"><%= @campaign.name %></h3>
+            <%= @campaign.description %>
+        </section>
 
-		<section class="content-box">
-            <section class="head-ro">
-              <%= image_tag @campaign.img_url %>
-            </section>
+        <section class="">
+          <%= image_tag "wechat_campaign/bag.png"%>
+          <a class="btn-blue-ro02 " href="<%= wechat_campaign_kol_register_path(campaign_id: @campaign.id) %>">
+            我要为品牌带盐 >
+          </a>
+        </section>
 
-            <section class="content-ro">
-              <h3 class="title-ro-02"><%= @campaign.user.name rescue '' %></h3>
-              <h2 class="title-ro"><%= @campaign.name %></h2>
-              <%= @campaign.description %>
-
-            </section>
-		</section>
-		<section class="bottom-ro bg-black">
-            <%= image_tag "wechat_campaign/gift-tag.png"%>
-			<a class="btn-blue-ro width100 button-introduce" href="<%= wechat_campaign_kol_register_path(campaign_id: @campaign.id) %>">
-				点此测试 >
-			</a>
-
-		</section>
-
+        <section class="">
+          <%= image_tag "wechat_campaign/down.png"%>
+          <div class="description-box">
+            如何成为品牌带盐人：<br/>
+            1.点击上方按钮<br/>
+            2.快速注册并分享品牌活动<br/>
+            3.下载Robin8的APP查看您的社交影响力，例如有多少人阅读了您分享的文章<br/>
+            4.在APP上还可以使您的影响力变现，不同活动形式可获得不同价位的品牌奖励并提现
+          </div>
+          <p class="description-p">本活动解释权归Robin8所有</p>
+        </section>
 	</body>
 
 </html>
