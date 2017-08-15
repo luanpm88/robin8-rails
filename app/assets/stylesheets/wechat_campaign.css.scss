@@ -28,7 +28,7 @@ body{
 	margin: 1.625rem;
 	height: 23rem;
 	font-size: 1.4rem;
-	line-height: 2rem;
+	line-height: 2.25rem;
 	color: #636363;
 	overflow: scroll;
 }
@@ -76,7 +76,7 @@ body{
 	float: left;
 	display: inline-block;
 	color: #fff;
-	text-decoration: none;
+	text-decoration: none;	
 	line-height: 4.625rem;
 	background: #2ddbe2;
 	border: 0 none;
@@ -87,8 +87,8 @@ body{
 	margin:0 1.625rem 1.625rem;
 	display: block;
 	color: #fff;
-	text-decoration: none;
-	line-height: 4rem;
+	text-decoration: none;	
+	line-height: 4.625rem;
 	background: #2ddbe2;
 	border: 0 none;
 	font-size: 1.5rem;
@@ -110,11 +110,11 @@ body{
 	padding:1.625rem 1.625rem 3rem 1.625rem;
 	background: #fff;
 	border-radius:  0.625rem;
-	max-height: 32rem;
+	height: 35rem;
     overflow: scroll;
     font-size: 1.4rem;
     color: #636363;
-    line-height: 2rem;
+    line-height: 2.25rem;
 }
 .content-box-banner{
 	margin-bottom: 1.625rem;
@@ -139,16 +139,16 @@ body{
     width: 100%;
     max-height: 38rem;
     min-height: 17.5rem;
-    border-radius: 0.625rem;
+    border-radius: 0.625rem;      
 }
 .dia-content{
 	position: relative;
 	margin: 0 auto;
 	padding:3rem 1.625rem 5.625rem;
 	width: 70%;
-	overflow-y:scroll;
-	line-height: 2rem;
-	font-size: 1.4rem;
+	overflow-y:scroll; 	
+	line-height: 2.25rem;
+	font-size: 1.4rem;   
     background: #fff;
     border-radius: 0.625rem;
 }
@@ -216,8 +216,8 @@ body{
 .input-ro{
 	float: left;
 	margin: 0 0 1.625rem;
-    display: block;
-    width: 55%;
+    display: block;  
+    width: 55%;   
     color: #555;
     line-height: 4.625rem;
     background: #e6e6e6;
@@ -239,8 +239,8 @@ body{
 	width: 40%;
 	text-decoration: none;
 	line-height: 4.625rem;
-
-
+	
+	
 }
 .red-bag-ifo{
 	clear: both;
@@ -248,12 +248,3 @@ body{
 	font-size: 1.225rem;
 	text-align: center;
 }
-
-
-
-
-
-
-
-
-
