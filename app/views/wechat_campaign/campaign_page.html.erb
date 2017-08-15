@@ -9,30 +9,22 @@
 		<title><%= @campaign.name %></title>
 	</head>
 	<body class="bg-black">
-          <section class="content-box">
+        <section class="content-box">
             <div class="content-box-banner"><%= image_tag @campaign.img_url %></div>
             <h2 class="title-ro"><%= @campaign.user.name rescue '' %></h2>
             <h3 class="title-ro-02"><%= @campaign.name %></h3>
             <%= @campaign.description %>
-          </section>
-
-		<!--<section class="bottom-ro bg-black">-->
-            <!--<%= image_tag "wechat_campaign/bag.png"%>-->
-			<!--<a class="btn-blue-ro width100 button-introduce" href="<%= wechat_campaign_kol_register_path(campaign_id: @campaign.id) %>">-->
-				<!--点此测试 >-->
-			<!--</a>-->
-
-		<!--</section>-->
+        </section>
 
         <section class="">
           <%= image_tag "wechat_campaign/bag.png"%>
           <a class="btn-blue-ro02 " href="<%= wechat_campaign_kol_register_path(campaign_id: @campaign.id) %>">
             我要为品牌带盐 >
           </a>
-
         </section>
+
         <section class="">
-          <img src="images/down.png">
+          <%= image_tag "wechat_campaign/down.png"%>
           <div class="description-box">
             如何成为品牌代盐人：<br/>
             1.点击上方按钮<br/>
@@ -42,9 +34,6 @@
           </div>
           <p class="description-p">本活动解释权归Robin8所有</p>
         </section>
-
-
-
 	</body>
 
 </html>
