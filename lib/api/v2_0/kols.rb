@@ -28,11 +28,11 @@ module API
         post 'calculate_influence_score' do
           kol_identity = current_kol.identities.where(provider: params[:provider]).first rescue nil
 
-          unless current_kol.influence_metric.any?
+          unless current_kol.influence_metrics.any?
             if params[:provider] == 'weibo'
-              KolInfluenceMetricsnWorker.perform_async [kol_identity.uid], []
+              KolInfluenceMetricsWorker.perform_async [kol_identity.uid], []
             else
-              KolInfluenceMetricsnWorker.perform_async [], [kol_identity.uid]
+              KolInfluenceMetricsWorker.perform_async [], [kol_identity.uid]
             end
           end
           present :error, 0
