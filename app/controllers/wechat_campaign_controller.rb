@@ -126,6 +126,9 @@ class WechatCampaignController < ApplicationController
         @share_url = campaign_invite.visit_url
         Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
       end
+    else
+      redirect_to wechat_campaign_campaign_page_url(campaign_id: campaign_id)
+      return nil
     end
     # if auth failed, user will share standard campaign's url
     @share_url ||= campaign.url rescue nil
