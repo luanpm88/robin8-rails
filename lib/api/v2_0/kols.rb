@@ -73,8 +73,28 @@ module API
           if kol
             kol_metric = kol.influence_metrics.first
             kol_identity = kol.identities.where(provider: 'weibo').first rescue nil
-            binding.pry
-            present :error, 0
+
+            unless kol_metric or kol_metric.try(:calculated) == true or kol_identity
+              present :error, 0
+              present :calculated, false
+              present :time, 10
+            else
+              present :error, 0
+              present :calculated, kol_metric.calculated
+              present :provider, kol_metric.provider
+              present :avatar_url, kol_identity.avatar_url
+              present :name, kol_identity.name
+              present :description, kol_identity.desc
+              present :influence_score, kol_metric.influence_score
+              present :influence_level, kol_metric.influence_level
+              present :influence_score_percentile, kol_metric.influence_score_percentile
+              present :calculated_date, kol_metric.updated_at.strftime('%Y-%m-%d')
+              present :avg_posts, kol_metric.avg_posts
+              present :avg_comments, kol_metric.avg_comments
+              present :avg_likes, kol_metric.avg_likes
+              present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
+              present :similar_kols, kol.similar_influence_kol_ids('weibo'), with: API::V2_0::Entities::InfluenceEntities::SimilarKols
+            end
           else
             present :error, 1
             present :error_message, 'Kol not found'

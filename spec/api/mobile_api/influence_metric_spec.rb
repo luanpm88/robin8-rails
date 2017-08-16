@@ -95,7 +95,11 @@ RSpec.describe "V2_0 Influence metric" do
       expect(response.status).to eq 200
 
       res = JSON.parse(response.body)
-      binding.pry
+      expect(res['error']).to eq 0
+      expect(res['calculated']).to eq true
+      expect(res['influence_level']).to eq '影响力优秀'
+      expect(res['influence_score_percentile']).to eq '超过0%的用户'
+      expect(res['industries'].size).to eq 1
     end
   end
 
