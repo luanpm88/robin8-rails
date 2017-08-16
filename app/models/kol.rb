@@ -720,7 +720,7 @@ class Kol < ActiveRecord::Base
     kol_best_industry = metrics.first.influence_industries.order(industry_score: :desc).first
     kol_ids_higher_score = InfluenceIndustry.where(industry_name: kol_best_industry.industry_name)
                                             .where('industry_score > ?', kol_best_industry.industry_score)
-                                            .order(industry_score: :desc).limit(5)
+                                            .order(industry_score: :desc).limit(8)
                                             .joins(:influence_metric)
                                             .pluck('influence_metrics.kol_id')
     kol_ids_higher_score - [self.id]
