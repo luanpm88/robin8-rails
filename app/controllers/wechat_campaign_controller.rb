@@ -103,6 +103,9 @@ class WechatCampaignController < ApplicationController
         campaign_invite_uuid = campaign_invite.uuid
         @share_url = CampaignInvite.origin_share_url(campaign_invite_uuid)
       end
+    else
+      redirect_to wechat_campaign_campaign_page_url(campaign_id: campaign_id)
+      return nil
     end
     # if auth failed, user will share standard campaign's url
     @share_url ||= campaign.url rescue nil
