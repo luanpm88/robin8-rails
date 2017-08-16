@@ -133,5 +133,20 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
+    def phone_filter(current_kol,campaigns)
+      campaigns_filter = Array.new
+      campaigns.each do |t|
+        target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
+        if target
+          filter = target[:target_content].split(",").index(current_kol[:mobile_number])
+          if filter
+            campaigns_filter.push(t)
+          end 
+        else
+          campaigns_filter.push(t)
+        end
+      end  
+      campaigns_filter   
+    end
   end
 end
