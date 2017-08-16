@@ -79,7 +79,7 @@ class WechatCampaignController < ApplicationController
         cookies[:_robin8_wechat_campaign] = token
         cookies[:_robin8_wechat_campaign_id] = kol.id
         Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign] : #{token}"
-        Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign_id] : #{kol_exists.id}"
+        Rails.logger.wechat_campaign.info "--kol_create: cookies[:_robin8_wechat_campaign_id] : #{kol.id}"
 
         cache_key = "wechat-campaign-token-#{kol.id}-#{campaign_id}"
         Rails.cache.write(cache_key, token , :expires_in => 1.hour)

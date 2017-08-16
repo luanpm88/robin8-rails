@@ -61,7 +61,25 @@ module API
             present :avg_comments, kol_metric.avg_comments
             present :avg_likes, kol_metric.avg_likes
             present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
+            present :similar_kols, current_kol.similar_influence_kol_ids('weibo'), with: API::V2_0::Entities::InfluenceEntities::SimilarKols
           end
+        end
+
+        params do
+          requires :kol_id, type: Integer
+        end
+        get ':kol_id/similar_kol_details' do
+          kol = Kol.find params[:kol_id] rescue nil
+          if kol
+            kol_metric = kol.influence_metrics.first
+            kol_identity = kol.identities.where(provider: 'weibo').first rescue nil
+            binding.pry
+            present :error, 0
+          else
+            present :error, 1
+            present :error_message, 'Kol not found'
+          end
+
         end
       end
     end
