@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <%= stylesheet_link_tag 'wechat_campaign' %>
         <%= csrf_meta_tag %>
-		<title><%= @campaign.name %></title>
+		<title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
 	</head>
 	<body class="bg-black">
         <section class="content-box">
@@ -26,7 +26,7 @@
         <section class="">
           <%= image_tag "wechat_campaign/down.png"%>
           <div class="description-box">
-            如何成为品牌代盐人：<br/>
+            如何成为品牌带盐人：<br/>
             1.点击上方按钮<br/>
             2.快速注册并分享品牌活动<br/>
             3.下载Robin8的APP查看您的社交影响力，例如有多少人阅读了您分享的文章<br/>
