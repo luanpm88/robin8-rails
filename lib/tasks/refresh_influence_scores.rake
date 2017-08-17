@@ -1,6 +1,6 @@
 namespace :influence_score do
   task refresh: :environment do
-    uids_to_refresh = InfluenceMetric.where('influence_metrics.updated_at > ?', DateTime.now - 1.day)
+    uids_to_refresh = InfluenceMetric.where('influence_metrics.updated_at < ?', DateTime.now - 1.day)
                          .joins(:kol)
                          .merge(Kol.joins(:identities)
                                   .where('identities.provider="weibo"'))

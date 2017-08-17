@@ -33,6 +33,7 @@ module API
           end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
+          present :kol_identities, kol.identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
 

@@ -90,6 +90,18 @@ RSpec.describe "V2_0 Influence metric" do
       expect(similar_kols.first['avatar_url']).to eq 'http://user2_avatar'
     end
 
+    describe 'with other kol who does not allow to see his influence score' do
+      before do
+        kol2.update_attributes(influence_score_visibility: false)
+      end
+
+      it 'does not return this kol data' do
+        get '/api/v2_0/kols/influence_score'
+        expect(response.status).to eq 200
+        expect(JSON.parse(response.body)['similar_kols'].size).to eq 0
+      end
+    end
+
     it 'returns valid json for other kol IDs' do
       get "/api/v2_0/kols/#{kol2.id}/similar_kol_details"
       expect(response.status).to eq 200

@@ -723,7 +723,11 @@ class Kol < ActiveRecord::Base
                                             .order(industry_score: :desc).limit(8)
                                             .joins(:influence_metric)
                                             .pluck('influence_metrics.kol_id')
-    kol_ids_higher_score - [self.id]
+    # remove kols who didn't allow to view their influence score
+    allowed_kols = Kol.where(id: kol_ids_higher_score).where(influence_score_visibility: [nil, 1]).pluck(:id)
+
+    # remove kol itself from the list
+    allowed_kols - [self.id]
   end
 
 end

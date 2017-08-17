@@ -90,7 +90,7 @@ class Identity < ActiveRecord::Base
 
   SinaUserServer = 'https://api.weibo.com/2/users/show.json'
   def get_value_info
-    return if self.provider != 'weibo' || self.registered_at.present? || Rails.env.development?
+    return if self.provider != 'weibo' || self.registered_at.present? || Rails.env.development? || Rails.env.test?
     respond_json = RestClient.get SinaUserServer , {:params => {:access_token => self.token, :uid => self.uid}}       rescue ""
     respond = JSON.parse respond_json    rescue  {"error" => 1}
     #返回错误

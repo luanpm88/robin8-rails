@@ -101,6 +101,19 @@ module API
           end
 
         end
+
+        params do
+          requires :action, type: String, values: ['on', 'off']
+        end
+        get 'manage_influence_visibility' do
+          action = params[:on] ? true : false
+          current_kol.influence_score_visibility = action
+          if current_kol.save
+            present :error, 0
+          else
+            present :error, 1
+          end
+        end
       end
     end
   end
