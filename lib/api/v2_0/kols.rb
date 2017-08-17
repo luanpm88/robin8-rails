@@ -70,7 +70,7 @@ module API
         end
         get ':kol_id/similar_kol_details' do
           kol = Kol.find params[:kol_id] rescue nil
-          if kol
+          if kol and (kol.influence_score_visibility != false)
             kol_metric = kol.influence_metrics.first
             kol_identity = kol.identities.where(provider: 'weibo').first rescue nil
 
@@ -97,7 +97,7 @@ module API
             end
           else
             present :error, 1
-            present :error_message, 'Kol not found'
+            present :error_message, 'Kol not found OR does not allow to access his influence score'
           end
 
         end
