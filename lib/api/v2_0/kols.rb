@@ -39,14 +39,15 @@ module API
         end
 
         get 'influence_score' do
-          kol_metric = current_kol.influence_metrics.first
-          kol_identity = current_kol.identities.where(provider: 'weibo').first rescue nil
+          # kol_metric = current_kol.influence_metrics.first
+          # kol_identity = current_kol.identities.where(provider: 'weibo').first rescue nil
 
-          unless kol_metric or kol_metric.try(:calculated) == true or kol_identity
-            present :error, 0
-            present :calculated, false
-            present :time, 10
-          else
+          kol_metric = current_kol.influence_metrics.first rescue nil
+          kol_identity = current_kol.identities.where(provider: 'weibo').first rescue nil
+          calculated = kol_metric.calculated rescue nil
+
+          # unless kol_metric or kol_metric.try(:calculated) == true or kol_identity
+          if kol_metric and kol_identity and (calculated==true)
             present :error, 0
             present :calculated, kol_metric.calculated
             present :provider, kol_metric.provider
@@ -62,6 +63,10 @@ module API
             present :avg_likes, kol_metric.avg_likes
             present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
             present :similar_kols, current_kol.similar_influence_kol_ids('weibo'), with: API::V2_0::Entities::InfluenceEntities::SimilarKols
+          else
+            present :error, 0
+            present :calculated, false
+            present :time, 10
           end
         end
 

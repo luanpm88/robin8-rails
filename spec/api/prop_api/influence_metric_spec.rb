@@ -104,4 +104,10 @@ RSpec.describe "influence_metric api" do
       expect(JSON.parse(response.body)["error_message"]).to eq "NoMethodError : undefined method `each' for \"here should be array\":String"
     end
   end
+
+  describe 'saving influence score for KOLs that does not exist in MySQL DB' do
+    it 'saves influence score data' do
+      # TODO: when identity gets created, it has to be linked with existing influence score
+    end
+  end
 end
