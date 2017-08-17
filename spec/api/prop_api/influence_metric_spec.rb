@@ -95,6 +95,7 @@ RSpec.describe "influence_metric api" do
       expect(JSON.parse(response.body)["error"]).to eq 0
       expect(response.status).to eq 201
     end
+
   end
 
   describe 'invalid JSON' do

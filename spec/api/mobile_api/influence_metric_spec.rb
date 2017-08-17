@@ -102,6 +102,35 @@ RSpec.describe "V2_0 Influence metric" do
       end
     end
 
+    describe 'when kol has empty influence industries' do
+      let!(:kol_empty) { create(:kol)}
+      let!(:identity_empty) { create(:identity, kol_id: kol_empty.id, provider: 'weibo', uid: 'weibo_empty')}
+      let!(:influence_metrics_empty) { create(:influence_metric,
+                                        calculated: true,
+                                        provider: 'weibo',
+                                        kol_id: kol_empty.id,
+                                        influence_score: '88',
+                                        avg_posts: '1234',
+                                        avg_comments: '2342',
+                                        avg_likes: '232')}
+
+      before do
+        Grape::Endpoint.before_each do |endpoint|
+          allow(endpoint).to receive(:current_kol).and_return(kol_empty)
+        end
+      end
+
+      it 'returns empty industry influence list' do
+        get '/api/v2_0/kols/influence_score'
+        expect(response.status).to eq 200
+
+        res = JSON.parse(response.body)
+        expect(res['error']).to eq 0
+        expect(res['calculated']).to eq true
+        expect(res['industries'].size).to eq 0
+      end
+    end
+
     it 'returns valid json for other kol IDs' do
       get "/api/v2_0/kols/#{kol2.id}/similar_kol_details"
       expect(response.status).to eq 200
