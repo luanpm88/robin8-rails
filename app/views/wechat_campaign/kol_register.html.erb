@@ -17,14 +17,13 @@
 <section >
   <%= image_tag 'wechat_campaign/red-bag.jpg' %>
   <form class="form-ro">
-    <!--<input type="text" name="" placeholder="请填写手机号"  class="input-ro width100"/>-->
     <%= text_field_tag 'mobileNumber', nil, class: "input-ro width100", placeholder: "请填写手机号"  %>
 
-    <!--<input type="text" name="" placeholder="请填写验证码"  class="input-ro"/>-->
     <%= text_field_tag 'smsCode', nil, class: "input-ro", placeholder: "请填写验证码"  %>
     <a id="request-sms" class="red-bag-btn">获取验证码</a>
 
     <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
+    <%= hidden_field_tag 'tag', params[:tag] %>
     <button id="submit" class="red-bag-btn width100">立即体验</button>
   </form>
   <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
@@ -109,6 +108,7 @@
         var mobileNumber = $("#mobileNumber").val();
         var campaign_id = $("#campaign_id").val();
         var smsCode = $("#smsCode").val();
+        var tag = $("#tag").val();
 
         if (!!submitBtn.attr('disabled'))
             return false;
@@ -120,7 +120,8 @@
             data: {
                 'mobile_number': mobileNumber,
                 'campaign_id': campaign_id,
-                'sms_code': smsCode
+                'sms_code': smsCode,
+                'tag': tag
             },
             beforeSend: function(xhr){
                 var token = $('meta[name="csrf-token"]').attr('content');
