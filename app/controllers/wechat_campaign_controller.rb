@@ -3,13 +3,13 @@ class WechatCampaignController < ApplicationController
   before_action :set_campaign, only: [:campaign_page, :kol_register, :campaign_details]
 
   def campaign_page
-    #response.headers.delete('X-Frame-Options')
-    #response.headers['X-Frame-Options'] = 'ALLOW' #"ALLOW-FROM http://robin8.net"
+    @tag = params[:tag]
     render :layout => false
   end
 
   def kol_register
     @app_download_url = Rails.application.secrets[:download_url]
+    @tag = params[:tag]
     render :layout => false
   end
 
@@ -58,6 +58,10 @@ class WechatCampaignController < ApplicationController
         kol_exists.add_campaign_id campaign_id
         kol_exists.approve_campaign(campaign_id)
       end
+      if params[:tag]
+        kol_exists.admintags.find_or_create_by(tag: params[:tag])
+      end
+
       return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
     else
       ip = (request.remote_ip rescue nil) || request.ip
@@ -76,6 +80,9 @@ class WechatCampaignController < ApplicationController
         if campaign and campaign.status == 'executing'
           kol.add_campaign_id campaign_id
           kol.approve_campaign(campaign_id)
+        end
+        if params[:tag]
+          kol.admintags.find_or_create_by(tag: params[:tag])
         end
         return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
       else
