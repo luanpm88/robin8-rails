@@ -282,7 +282,15 @@ module API
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             end
           else
-            return error_403!({error: 1, detail: '因解绑次数不足,本月无法重新绑定'})
+            ## 解决授权失败
+            if identity.blank?
+              Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
+              current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+              present :error, 0
+              present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+            else
+              return error_403!({error: 1, detail: '因解绑次数不足,本月无法重新绑定'})
+            end
           end
         end
 
