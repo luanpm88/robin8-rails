@@ -132,7 +132,7 @@ class WechatCampaignController < ApplicationController
       if campaign_invite
         campaign_invite_uuid = campaign_invite.uuid
         Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
-        @share_url = campaign_invite.visit_url
+        @share_url = campaign_invite.visit_url if campaign_invite_uuid
         Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
       end
     else
@@ -140,7 +140,7 @@ class WechatCampaignController < ApplicationController
       return nil
     end
     # if auth failed, user will share standard campaign's url
-    @share_url ||= campaign.url rescue nil
+    @share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{campaign.id}" rescue ''
     Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
     @app_download_url = Rails.application.secrets[:download_url]
     render :layout => false

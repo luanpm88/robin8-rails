@@ -4,11 +4,20 @@ class CampaignShowController < ApplicationController
 
   # 先到visit 获取来源, 根据点击量,来决定是否需要手动授权
   def visit
-    Rails.logger.info "------referer:#{request.referer}"
-    Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
-    # Includes invitation which were soft-deleted after campaign has ended
-    campaign_invite = CampaignInvite.unscoped.find params[:id]
-    redirect_to campaign_invite.origin_share_url
+    # if wechat campaign is finished, we're sharing URL with param ?campaign_id
+    # and here redirect on finished campaign URL
+    if params[:campaign_id]
+      campaign = Campaign.find params[:campaign_id] rescue nil
+      if campaign
+        redirect_to campaign.url
+      end
+    else
+      Rails.logger.info "------referer:#{request.referer}"
+      Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
+      # Includes invitation which were soft-deleted after campaign has ended
+      campaign_invite = CampaignInvite.unscoped.find params[:id]
+      redirect_to campaign_invite.origin_share_url
+    end
   end
 
   def show
