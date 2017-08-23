@@ -136,17 +136,14 @@ module API
     def phone_filter(current_kol,campaigns)
       campaigns_filter = Array.new
       campaigns.each do |t|
-        target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-        if target
-          filter = target[:target_content].split(",").index(current_kol[:mobile_number])
-          if filter
-            campaigns_filter.push(t)
-          end 
-        else
-          campaigns_filter.push(t)
+        target = CampaignTarget.where("campaign_id" => t[:id])
+        target.each do |i|
+          ids = i.get_matching_kols_ids(current_kol,t[:target_type])
+          filter = 0 unless ids.index(current_kol[:id])
         end
-      end  
-      campaigns_filter   
+        campaigns_filter.push(t) if filter != 0
+      end
+      campaigns_filter
     end
   end
 end
