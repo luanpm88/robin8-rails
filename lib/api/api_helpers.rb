@@ -141,7 +141,7 @@ module API
         target.each do |i|
           filter = 0 unless i.get_matching_kols_ids(current_kol,t[:target_type]).index(current_kol[:id])
         end
-        campaigns_filter.push(t) if filter != 0
+        campaigns_filter.push(t) if filter = 1
       end
       campaigns_filter
     end
