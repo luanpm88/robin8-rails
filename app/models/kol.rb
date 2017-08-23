@@ -9,6 +9,7 @@ class Kol < ActiveRecord::Base
   list :read_message_ids, :maxlength => 40             # 所有阅读过的
   list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
+  set :invited_users
   include Concerns::PayTransaction
   include Concerns::Unionability
   include Concerns::KolCampaign
@@ -728,6 +729,14 @@ class Kol < ActiveRecord::Base
 
     # remove kol itself from the list
     allowed_kols - [self.id]
+  end
+
+  def get_invited_users
+    invited_converted_to_kol = Kol.where(mobile_number: self.invited_users.members).pluck(:mobile_number)
+    invited_converted_to_kol.each do |existing_kol|
+      self.invited_users.delete(existing_kol.to_s)
+    end
+    self.invited_users.members
   end
 
 end

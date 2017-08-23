@@ -15,16 +15,18 @@ class InfluenceMetric < ActiveRecord::Base
 
   def influence_level
     case self.influence_score
-      when 0..60
+      when 0..300
+        '影响力较差'
+      when 301..600
         '影响力中等'
-      when 60..80
+      when 601..800
         '影响力良好'
-      when 80..90
+      when 801..900
         '影响力优秀'
-      when 90..100
+      when 901..1000
         '影响力极好'
       else
-        '影响力中等'
+        '影响力未知'
     end
   end
 

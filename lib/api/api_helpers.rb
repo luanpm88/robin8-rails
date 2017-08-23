@@ -141,12 +141,12 @@ module API
           filter = target[:target_content].split(",").index(current_kol[:mobile_number])
           if filter
             campaigns_filter.push(t)
-          end 
+          end
         else
           campaigns_filter.push(t)
         end
-      end  
-      campaigns_filter   
+      end
+      campaigns_filter
     end
   end
 end
