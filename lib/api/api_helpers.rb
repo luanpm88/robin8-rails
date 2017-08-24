@@ -145,7 +145,7 @@ module API
               filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
             elsif target[:target_type] == "td_promo"
               filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
-            else
+            elsif target[:target_type] == "admintags"
               admintag = Admintag.where("tag" => target[:target_content].split(","))
               admintag.each do |tag|
                 tag.kols.each do |t|
