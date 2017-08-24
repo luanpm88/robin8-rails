@@ -133,15 +133,30 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-    def phone_filter(current_kol,campaigns)
-      filter = 1 
+    def phone_filter(kol,campaigns)
+      filter = true
+      ids = Array.new
       campaigns_filter = Array.new
-      campaigns.each do |t|
-        target = CampaignTarget.where("campaign_id" => t[:id])
-        target.each do |i|
-          filter = 0 unless i.get_matching_kol_ids(current_kol,t[:target_type]).index(current_kol[:id])
+      campaigns.each do |campaign|
+        targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo" , "admintags"])
+        if targets.present?
+          targets.each do |target|
+            if target[:target_type] = "cell_phones"
+              filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
+            elsif target[:target_type] = "td_promo"
+              filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
+            else
+              admintag = Admintag.where("tag" => target[:target_content].split(","))
+              admintag.each do |tag|
+                tag.kols.select(:id).map(&:id)
+              end
+              filter = false unless ids.index(kol[:id])
+            end
+            campaigns_filter.push(campaign) if filter
+          end
+        else
+          campaigns_filter.push(campaign)
         end
-        campaigns_filter.push(t) if filter = 1
       end
       campaigns_filter
     end
