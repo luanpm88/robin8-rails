@@ -141,9 +141,9 @@ module API
         targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo" , "admintags"])
         if targets.present?
           targets.each do |target|
-            if target[:target_type] = "cell_phones"
+            if target[:target_type] == "cell_phones"
               filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
-            elsif target[:target_type] = "td_promo"
+            elsif target[:target_type] == "td_promo"
               filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
             else
               admintag = Admintag.where("tag" => target[:target_content].split(","))
