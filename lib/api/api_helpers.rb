@@ -148,7 +148,9 @@ module API
             else
               admintag = Admintag.where("tag" => target[:target_content].split(","))
               admintag.each do |tag|
-                tag.kols.select(:id).map(&:id)
+                tag.kols.each do |t|
+                  ids.push(t[:id])
+                end
               end
               filter = false unless ids.index(kol[:id])
             end
