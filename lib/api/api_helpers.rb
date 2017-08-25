@@ -154,8 +154,8 @@ module API
               end
               filter = false unless ids.index(kol[:id])
             end
-            campaigns_filter.push(campaign) if filter
           end
+          campaigns_filter.push(campaign) if filter
         else
           campaigns_filter.push(campaign)
         end
