@@ -47,6 +47,7 @@ module API
             industries = kol_metric.influence_industries rescue []
 
             present :error, 0
+            present :influence_score_visibility, current_kol.influence_score_visibility
             present :calculated, kol_metric.calculated
             present :provider, kol_metric.provider
             present :avatar_url, kol_identity.avatar_url
@@ -67,7 +68,7 @@ module API
               present :industries, []
               present :similar_kols, []
             end
-            
+
           else
             present :error, 0
             present :calculated, false
