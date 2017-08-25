@@ -153,7 +153,7 @@ module API
          if targets.present?
           targets.each do |target|
             if target[:target_type] == "td_promo"
-              filters = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
+              filters = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
             elsif target[:target_type] == "admintags"
               admintag = Admintag.where("tag" => target[:target_content].split(","))
               admintag.each do |tag|
@@ -161,7 +161,7 @@ module API
                   ids.push(t[:id])
                 end
               end
-              filters = false unless ids.index(kol[:id])
+              filters = false unless ids.index(current_kol[:id])
             end
           end
           campaigns_filter_td.push(campaign) if filters
