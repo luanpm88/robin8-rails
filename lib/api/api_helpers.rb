@@ -149,7 +149,7 @@ module API
         end
       end  
       campaigns_filter.each do |i|
-        targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["td_promo" , "admintags"])
+        targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
          if targets.present?
           targets.each do |target|
             if target[:target_type] == "td_promo"
@@ -164,9 +164,9 @@ module API
               filters = false unless ids.index(current_kol[:id])
             end
           end
-          campaigns_filter_td.push(campaign) if filters
+          campaigns_filter_td.push(i) if filters
         else
-          campaigns_filter_td.push(campaign)
+          campaigns_filter_td.push(i)
         end
       end
       campaigns_filter_td
