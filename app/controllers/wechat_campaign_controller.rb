@@ -67,11 +67,12 @@ class WechatCampaignController < ApplicationController
         kol_exists.add_campaign_id campaign_id
         kol_exists.approve_campaign(campaign_id)
       end
-      if params[:tag]
-        kol_exists.admintags.find_or_create_by(tag: params[:tag])
+      if params[:tag].present?
+        kol_exists.admintags << Admintag.find_or_create_by(tag: params[:tag])
+        return render json: {url: wechat_campaign_geometry_path}
+      else
+        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
       end
-
-      return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
     else
       ip = (request.remote_ip rescue nil) || request.ip
       kol = Kol.new(mobile_number: params[:mobile_number],
@@ -96,16 +97,23 @@ class WechatCampaignController < ApplicationController
           kol.add_campaign_id campaign_id
           kol.approve_campaign(campaign_id)
         end
-        if params[:tag]
-          kol.admintags.find_or_create_by(tag: params[:tag])
+        if params[:tag].present?
+          kol.admintags << Admintag.find_or_create_by(tag: params[:tag])
+          return render json: {url: wechat_campaign_geometry_path}
+        else
+          return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }     
         end
-        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
         return render json: {error: 'Campaign not found'}
       end
     end
 
+  end
+
+  def geometry
+    @app_download_url = Rails.application.secrets[:download_url]
+    render "geometry"
   end
 
   def campaign_details
