@@ -69,7 +69,11 @@ class WechatCampaignController < ApplicationController
       end
       if params[:tag].present?
         kol_exists.admintags << Admintag.find_or_create_by(tag: params[:tag])
-        return render json: {url: wechat_campaign_geometry_path}
+        if params[:tag] == 'geometry'
+          return render json: {url: wechat_campaign_geometry_path}
+        else
+          return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+        end
       else
         return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
       end
@@ -99,7 +103,11 @@ class WechatCampaignController < ApplicationController
         end
         if params[:tag].present?
           kol.admintags << Admintag.find_or_create_by(tag: params[:tag])
-          return render json: {url: wechat_campaign_geometry_path}
+          if params[:tag] == 'geometry'
+            return render json: {url: wechat_campaign_geometry_path}
+          else
+            return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+          end
         else
           return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }     
         end
@@ -160,11 +168,7 @@ class WechatCampaignController < ApplicationController
   def set_campaign
     @campaign = Campaign.find(params[:campaign_id]) rescue nil
     unless @campaign
-      if params[:tag].present?
-        @campaign = Campaign.find(1234)
-      else
         redirect_to '/'
-      end
     end
   end
 
