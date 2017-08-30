@@ -113,7 +113,8 @@ class WechatCampaignController < ApplicationController
 
   def geometry
     @app_download_url = Rails.application.secrets[:download_url]
-    render "geometry"
+    render :layout => false
+    # render "geometry"
   end
 
   def campaign_details
