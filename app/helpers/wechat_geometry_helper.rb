@@ -1,0 +1,2 @@
+module WechatGeometryHelper
+end
