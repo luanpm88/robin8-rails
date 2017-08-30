@@ -36,7 +36,7 @@ every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
 
-ever.minutes do
+every 110.minutes do
   rake "unicorn:restart"
 end
 
