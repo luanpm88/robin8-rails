@@ -4,7 +4,17 @@ module API
     module Entities
       module InfluenceEntities
         class Industries < Grape::Entity
-          expose :industry_name, :industry_score, :avg_posts, :avg_comments, :avg_likes
+          expose :industry_name, :industry_score#, :avg_posts, :avg_comments#, :avg_likes
+          expose :avg_likes do |industry|
+            industry.avg_likes.round(2)
+          end
+          expose :avg_posts do |industry|
+            industry.avg_posts.round(2)
+          end
+          expose :avg_comments do |industry|
+            industry.avg_comments.round(2)
+          end
+
         end
 
         class SimilarKols < Grape::Entity

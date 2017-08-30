@@ -57,9 +57,9 @@ module API
             present :influence_level, kol_metric.influence_level
             present :influence_score_percentile, kol_metric.influence_score_percentile
             present :calculated_date, kol_metric.updated_at.strftime('%Y-%m-%d')
-            present :avg_posts, kol_metric.avg_posts
-            present :avg_comments, kol_metric.avg_comments
-            present :avg_likes, kol_metric.avg_likes
+            present :avg_posts, kol_metric.avg_posts.round(2)
+            present :avg_comments, kol_metric.avg_comments.round(2)
+            present :avg_likes, kol_metric.avg_likes.round(2)
 
             if industries.any?
               present :industries, industries, with: API::V2_0::Entities::InfluenceEntities::Industries
@@ -97,9 +97,9 @@ module API
               present :influence_level, kol_metric.influence_level
               present :influence_score_percentile, kol_metric.influence_score_percentile
               present :calculated_date, kol_metric.updated_at.strftime('%Y-%m-%d')
-              present :avg_posts, kol_metric.avg_posts
-              present :avg_comments, kol_metric.avg_comments
-              present :avg_likes, kol_metric.avg_likes
+              present :avg_posts, kol_metric.avg_posts.round(2)
+              present :avg_comments, kol_metric.avg_comments.round(2)
+              present :avg_likes, kol_metric.avg_likes.round(2)
               present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
               present :similar_kols, kol.similar_influence_kol_ids('weibo'), with: API::V2_0::Entities::InfluenceEntities::SimilarKols
             else

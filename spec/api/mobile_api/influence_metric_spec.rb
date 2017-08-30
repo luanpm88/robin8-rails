@@ -11,13 +11,13 @@ RSpec.describe "V2_0 Influence metric" do
                                     influence_score: '88',
                                     avg_posts: '1234',
                                     avg_comments: '2342',
-                                    avg_likes: '232')}
+                                    avg_likes: '232.234234')}
   let!(:influence_industry1) { create(:influence_industry,
                                      industry_name: 'industry1',
                                      industry_score: '2342',
                                      avg_posts: '134',
                                      avg_comments: '134',
-                                     avg_likes: '23423',
+                                     avg_likes: '23423.243234',
                                      influence_metric_id: influence_metrics.id)}
 
   let!(:influence_industry2) { create(:influence_industry,
@@ -25,7 +25,7 @@ RSpec.describe "V2_0 Influence metric" do
                                      industry_score: '12',
                                      avg_posts: '3',
                                      avg_comments: '2',
-                                     avg_likes: '1',
+                                     avg_likes: '1.2342',
                                      influence_metric_id: influence_metrics.id)}
 
   let!(:kol2) { create(:kol)}
@@ -37,13 +37,13 @@ RSpec.describe "V2_0 Influence metric" do
                                     influence_score: '88',
                                     avg_posts: '1234',
                                     avg_comments: '2342',
-                                    avg_likes: '232')}
+                                    avg_likes: '232.3542345')}
   let!(:kol2_influence_industry1) { create(:influence_industry,
                                       industry_name: 'industry1',
                                       industry_score: '3000', # which is more than 'industry1' for main kol
                                       avg_posts: '134',
                                       avg_comments: '134',
-                                      avg_likes: '23423',
+                                      avg_likes: '23423.4534',
                                       influence_metric_id: kol2_influence_metrics.id)}
 
   # Kol with lower influence in industry than "our" kol
@@ -54,15 +54,15 @@ RSpec.describe "V2_0 Influence metric" do
                                          provider: 'weibo',
                                          kol_id: kol3.id,
                                          influence_score: '88',
-                                         avg_posts: '1234',
-                                         avg_comments: '2342',
-                                         avg_likes: '232')}
+                                         avg_posts: '1234.32452',
+                                         avg_comments: '2342.35345',
+                                         avg_likes: '232.243534')}
   let!(:kol3_influence_industry1) { create(:influence_industry,
                                            industry_name: 'industry1',
                                            industry_score: '100', # which is LESS than 'industry1' for main kol
                                            avg_posts: '134',
                                            avg_comments: '134',
-                                           avg_likes: '23423',
+                                           avg_likes: '23423.4444444444',
                                            influence_metric_id: kol3_influence_metrics.id)}
 
 
