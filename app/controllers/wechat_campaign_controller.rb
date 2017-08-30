@@ -160,7 +160,11 @@ class WechatCampaignController < ApplicationController
   def set_campaign
     @campaign = Campaign.find(params[:campaign_id]) rescue nil
     unless @campaign
-      redirect_to '/'
+      if params[:tag].present?
+        @campaign = Campaign.find(1234)
+      else
+        redirect_to '/'
+      end
     end
   end
 
