@@ -85,11 +85,7 @@ module API
             kol_metric = kol.influence_metrics.first
             kol_identity = kol.identities.where(provider: 'weibo').first rescue nil
 
-            unless kol_metric or kol_metric.try(:calculated) == true or kol_identity
-              present :error, 0
-              present :calculated, false
-              present :time, 10
-            else
+            if kol_metric and (kol_metric.try(:calculated) == true) and kol_identity
               present :error, 0
               present :influence_score_visibility, kol.influence_score_visibility
               present :calculated, kol_metric.calculated
@@ -106,6 +102,10 @@ module API
               present :avg_likes, kol_metric.avg_likes
               present :industries, kol_metric.influence_industries, with: API::V2_0::Entities::InfluenceEntities::Industries
               present :similar_kols, kol.similar_influence_kol_ids('weibo'), with: API::V2_0::Entities::InfluenceEntities::SimilarKols
+            else
+              present :error, 0
+              present :calculated, false
+              present :time, 10
             end
           else
             present :error, 1
