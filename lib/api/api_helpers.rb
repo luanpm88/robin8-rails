@@ -133,57 +133,27 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-    def phone_filter(current_kol,campaigns)
-      filters = true
-      campaigns_filter_td = Array.new
-      campaigns_filter = Array.new
-      campaigns.each do |t|
-        target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-        if target
-          filter = target[:target_content].split(",").index(current_kol[:mobile_number])
-          if filter
-            campaigns_filter.push(t)
-          end 
-        else
-          campaigns_filter.push(t)
-        end
-      end  
-      campaigns_filter.each do |i|
-        targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
-         if targets.present?
-          targets.each do |target|
-            if target[:target_type] == "td_promo"
-              filters = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
-            elsif target[:target_type] == "admintags"
-              admintag = Admintag.where("tag" => target[:target_content].split(","))
-              admintag.each do |tag|
-                tag.kols.each do |t|
-                  ids.push(t[:id])
-                end
-              end
-              filters = false unless ids.index(current_kol[:id])
-            end
-          end
-          campaigns_filter_td.push(i) if filters
-        else
-          campaigns_filter_td.push(i)
-        end
-      end
-      campaigns_filter_td
-    end
-
-    # def phone_filter(kol,campaigns)
-    #   filter = true
-    #   ids = Array.new
+    # def phone_filter(current_kol,campaigns)
+    #   filters = true
+    #   campaigns_filter_td = Array.new
     #   campaigns_filter = Array.new
-    #   campaigns.each do |campaign|
-    #     targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo" , "admintags"])
-    #     if targets.present?
+    #   campaigns.each do |t|
+    #     target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
+    #     if target
+    #       filter = target[:target_content].split(",").index(current_kol[:mobile_number])
+    #       if filter
+    #         campaigns_filter.push(t)
+    #       end 
+    #     else
+    #       campaigns_filter.push(t)
+    #     end
+    #   end  
+    #   campaigns_filter.each do |i|
+    #     targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
+    #      if targets.present?
     #       targets.each do |target|
-    #         if target[:target_type] == "cell_phones"
-    #           filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
-    #         elsif target[:target_type] == "td_promo"
-    #           filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
+    #         if target[:target_type] == "td_promo"
+    #           filters = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
     #         elsif target[:target_type] == "admintags"
     #           admintag = Admintag.where("tag" => target[:target_content].split(","))
     #           admintag.each do |tag|
@@ -191,15 +161,45 @@ module API
     #               ids.push(t[:id])
     #             end
     #           end
-    #           filter = false unless ids.index(kol[:id])
+    #           filters = false unless ids.index(current_kol[:id])
     #         end
     #       end
-    #       campaigns_filter.push(campaign) if filter
+    #       campaigns_filter_td.push(i) if filters
     #     else
-    #       campaigns_filter.push(campaign)
+    #       campaigns_filter_td.push(i)
     #     end
     #   end
-    #   campaigns_filter
+    #   campaigns_filter_td
     # end
+
+    def phone_filter(kol,campaigns)
+      filter = true
+      ids = Array.new
+      campaigns_filter = Array.new
+      campaigns.each do |campaign|
+        targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo" , "admintags"])
+        if targets.present?
+          targets.each do |target|
+            if target[:target_type] == "cell_phones"
+              filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
+            elsif target[:target_type] == "td_promo"
+              filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
+            elsif target[:target_type] == "admintags"
+              admintag = Admintag.where("tag" => target[:target_content].split(","))
+              admintag.each do |tag|
+                tag.kols.each do |t|
+                  ids.push(t[:id])
+                end
+              end
+              filter = false unless ids.index(kol[:id])
+            end
+          end
+          campaigns_filter.push(campaign) if filter
+        else
+          campaigns_filter.push(campaign)
+        end
+      end
+      campaigns_filter
+    end
   end
 end
