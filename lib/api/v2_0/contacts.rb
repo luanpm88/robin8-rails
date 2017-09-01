@@ -7,6 +7,7 @@ module API
         end
         post 'kol_contacts' do
           contacts = JSON.parse(params[:contacts])
+          contacts = contacts.map { |c| c['mobile']}
           begin
             existing_kols = Kol.where(mobile_number: contacts).pluck(:mobile_number)
             already_invited = current_kol.get_invited_users
