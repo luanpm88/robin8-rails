@@ -45,6 +45,7 @@ gem 'oauth2'
 gem 'legato'
 gem 'redis-objects'
 gem 'redis-rails'
+gem 'redis-namespace'
 gem 'rest-client'
 
 gem 'mongoid', '~> 5.0.0'
