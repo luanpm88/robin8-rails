@@ -5,6 +5,8 @@ RSpec.describe "V1 Users" do
   let!(:kol) { create(:kol, mobile_number: '123456',
                            app_platform: 'old_platform', app_version: 1,
                            device_token: 123)}
+  let!(:kol_identity) {create(:identity, kol_id: kol.id)}
+
   before do
     allow(YunPian::SendRegisterSms).to receive(:verify_code).and_return(true)
     allow_any_instance_of(Kol).to receive(:get_rongcloud_token).and_return(nil)
@@ -37,6 +39,8 @@ RSpec.describe "V1 Users" do
                                     device_token: 123, kol_uuid: 123}
 
       expect(response.code).to eq '201'
+      expect(JSON.parse(response.body)['kol']['id']).to eq kol.id
+      expect(JSON.parse(response.body)['kol_identities'].size).to eq 1
     end
   end
 end

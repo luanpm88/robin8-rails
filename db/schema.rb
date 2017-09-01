@@ -11,12 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170726150828) do
-
-  create_table "aa_bbs", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 20170817064749) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -940,7 +935,7 @@ ActiveRecord::Schema.define(version: 20170726150828) do
   add_index "influence_industries", ["influence_metric_id"], name: "index_influence_industries_on_influence_metric_id", using: :btree
 
   create_table "influence_metrics", force: :cascade do |t|
-    t.boolean  "calculated",                 limit: 1
+    t.boolean  "calculated",                 limit: 1,   default: false
     t.string   "provider",                   limit: 255
     t.float    "influence_score",            limit: 24
     t.integer  "influence_level",            limit: 4
@@ -950,8 +945,8 @@ ActiveRecord::Schema.define(version: 20170726150828) do
     t.float    "avg_comments",               limit: 24
     t.float    "avg_likes",                  limit: 24
     t.integer  "kol_id",                     limit: 4
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
   end
 
   add_index "influence_metrics", ["kol_id"], name: "index_influence_metrics_on_kol_id", using: :btree
@@ -1312,6 +1307,7 @@ ActiveRecord::Schema.define(version: 20170726150828) do
     t.integer  "show_count",                 limit: 4,                              default: 30
     t.integer  "lock_version",               limit: 4,                              default: 1
     t.string   "talkingdata_promotion_name", limit: 255
+    t.boolean  "influence_score_visibility", limit: 1,                              default: true
   end
 
   add_index "kols", ["device_token"], name: "index_kols_on_device_token", using: :btree
@@ -1660,16 +1656,6 @@ ActiveRecord::Schema.define(version: 20170726150828) do
     t.string   "type",        limit: 255
     t.float    "china_price", limit: 24
   end
-
-  create_table "promo_code_invitations", force: :cascade do |t|
-    t.integer  "inviter_id",             limit: 4
-    t.string   "invitee_wechat_unionid", limit: 255
-    t.string   "status",                 limit: 255
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-  end
-
-  add_index "promo_code_invitations", ["inviter_id"], name: "index_promo_code_invitations_on_inviter_id", using: :btree
 
   create_table "provinces", force: :cascade do |t|
     t.string   "name",       limit: 191

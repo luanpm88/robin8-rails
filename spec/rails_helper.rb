@@ -1,9 +1,13 @@
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require 'spec_helper'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 # https://github.com/chancancode/json_expressions
+
+abort("The Rails environment is not running in test mode!") unless ENV['RAILS_ENV'] == 'test' #Rails.env.test?
+
 require 'json_expressions/rspec'
 
 require 'capybara/rspec'

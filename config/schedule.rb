@@ -40,6 +40,10 @@ every 110.minutes do
   rake "unicorn:restart"
 end
 
+every 1.day, :at => '2:30 am' do
+  rake 'influence_score:refresh'
+end
+
 #keep with secret
 # every :tuesday, :at => '0:10 am' do
 #   runner "KolInfluenceValue.schedule_cal_influence"

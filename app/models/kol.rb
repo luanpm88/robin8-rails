@@ -9,6 +9,7 @@ class Kol < ActiveRecord::Base
   list :read_message_ids, :maxlength => 40             # 所有阅读过的
   list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
+  set :invited_users
   include Concerns::PayTransaction
   include Concerns::Unionability
   include Concerns::KolCampaign
@@ -98,6 +99,8 @@ class Kol < ActiveRecord::Base
 
   # Admin tags
   has_and_belongs_to_many :admintags
+
+  has_many :influence_metrics
 
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
@@ -710,6 +713,30 @@ class Kol < ActiveRecord::Base
     File.open("#{Rails.root}/tmp/uids.txt", 'wb'){|f| f.write all_uids.join(",")}
     File.open("#{Rails.root}/tmp/uids.yaml", 'wb'){|f| f.write YAML::dump(all_uids) }
     all_uids
+  end
+
+  def similar_influence_kol_ids provider='weibo'
+    metrics = self.influence_metrics.where(provider: provider)
+    return [] unless metrics.any?
+    kol_best_industry = metrics.first.influence_industries.order(industry_score: :desc).first
+    kol_ids_higher_score = InfluenceIndustry.where(industry_name: kol_best_industry.industry_name)
+                                            .where('industry_score > ?', kol_best_industry.industry_score)
+                                            .order(industry_score: :desc).limit(8)
+                                            .joins(:influence_metric)
+                                            .pluck('influence_metrics.kol_id')
+    # remove kols who didn't allow to view their influence score
+    allowed_kols = Kol.where(id: kol_ids_higher_score).where(influence_score_visibility: [nil, 1]).pluck(:id)
+
+    # remove kol itself from the list
+    allowed_kols - [self.id]
+  end
+
+  def get_invited_users
+    invited_converted_to_kol = Kol.where(mobile_number: self.invited_users.members).pluck(:mobile_number)
+    invited_converted_to_kol.each do |existing_kol|
+      self.invited_users.delete(existing_kol.to_s)
+    end
+    self.invited_users.members
   end
 
 end
