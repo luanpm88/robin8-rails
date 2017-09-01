@@ -3,7 +3,9 @@
 
 unless Rails.env.test?
   namespace = 'redis_wechat_authorize'
-  $redis_wechat_authorize = Redis::Namespace.new(namespace, :redis => Redis.new(:host => '127.0.0.1'))
+  local_redis = Redis.new(:host => '127.0.0.1', :db => 1,
+                          :password => Rails.application.secrets[:local_redis_password])
+  $redis_wechat_authorize = Redis::Namespace.new(namespace, :redis => local_redis)
 
   # Clean keys from this namespace on application restart
   keys = $redis_wechat_authorize.keys('*')
