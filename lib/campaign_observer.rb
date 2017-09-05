@@ -41,7 +41,7 @@ module CampaignObserver
     end
 
     if lines.present?
-      ['18817774892', '15298670933', '13764432765', '13262752287','15154196577'].each do |tel|
+      ['18817774892', '15298670933', '13764432765', '13262752287','15154196577','18551526463'].each do |tel|
         Emay::SendSms.to tel, lines.join(";\n")
       end
     end
