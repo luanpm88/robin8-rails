@@ -9,7 +9,7 @@ module API
         get 'show' do
           present :error, 0
           present :hide, 1
-          present :detail, 6
+          present :detail, 8
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
         end
