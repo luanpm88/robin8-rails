@@ -56,7 +56,7 @@ PATH
       rails (~> 4.2.0)
 
 GEM
-  remote: https://ruby.taobao.org/
+  remote: https://rubygems.org/
   remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.0)
