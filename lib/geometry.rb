@@ -2,7 +2,7 @@ require 'roo'
 require 'csv'
 begin
   xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
-  geometry = File.new("#{Rails.root}/public/#{Time.now}geometry.txt","w+")
+  geometry = File.new("#{Rails.root}/public/geometry.txt","w+")
   phone = xlsx.column(5)
   phone.each do |t|
     geometry.write("#{t},")
