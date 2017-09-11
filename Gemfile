@@ -136,6 +136,7 @@ gem 'imgkit'
 
 # to create Docx
 gem 'caracal-rails'
+gem 'roo' #parse excel
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
