@@ -5,11 +5,11 @@ begin
   geometry = File.new("#{Rails.root}/public/geometry.txt","w+")
   phone = xlsx.column(5)
   phone.each do |t|
-    geometry.write("#{t},")
 	  kol = Kol.find_by(mobile_number: t)
 	  if kol.present?
+	    kol.admintags << Admintag.find_or_create_by(tag: 'geometry') if kol.admintags.blank?
+    else
       geometry.write("#{t},")
-	    kol.admintags << Admintag.find_or_create_by(tag: 'geometry')
 	  end
   end
   geometry.close
