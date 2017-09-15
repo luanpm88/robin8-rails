@@ -143,11 +143,11 @@ module API
     #       filter = target[:target_content].split(",").index(current_kol[:mobile_number])
     #       if filter
     #         campaigns_filter.push(t)
-    #       end 
+    #       end
     #     else
     #       campaigns_filter.push(t)
     #     end
-    #   end  
+    #   end
     #   campaigns_filter.each do |i|
     #     targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
     #      if targets.present?
@@ -184,14 +184,14 @@ module API
               filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
             elsif target[:target_type] == "td_promo"
               filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
-            elsif target[:target_type] == "admintags"
-              admintag = Admintag.where("tag" => target[:target_content].split(","))
-              admintag.each do |tag|
-                tag.kols.each do |t|
-                  ids.push(t[:id])
-                end
-              end
-              filter = false unless ids.index(kol[:id])
+            # elsif target[:target_type] == "admintags"
+            #   admintag = Admintag.where("tag" => target[:target_content].split(","))
+            #   admintag.each do |tag|
+            #     tag.kols.each do |t|
+            #       ids.push(t[:id])
+            #     end
+            #   end
+            #   filter = false unless ids.index(kol[:id])
             end
           end
           campaigns_filter.push(campaign) if filter
