@@ -4,6 +4,7 @@ require 'csv'
 
 xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
 txt = File.open("#{Rails.root}/public/geometry.txt" ,"r").read.split(",")
+puts txt.count
 phone = xlsx.column(5)
 CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|
 	txt.each do |t|
@@ -13,6 +14,24 @@ CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|
 	end
 end
 
+# xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
+# txt = File.open("#{Rails.root}/public/geometry.txt" ,"r").read.split(",")
+# txt2 = File.new("#{Rails.root}/public/geometry2.txt","w+")
+# phone = xlsx.column(5)
+# phone.each do |t|
+#  number = txt.index(t)
+#  txt2.write("#{t},") unless number 	
+# end
+# txt2.close
+
+
+# CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|
+# 	txt.each do |t|
+# 	  line = phone.index(t.to_i)
+# 	  row = xlsx.row(line.to_i + 1)
+# 	  csv << row
+# 	end
+# end
 # xlsx2 = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
 # txt2 = File.open("#{Rails.root}/public/456.txt" ,"r").read.split(",")
 # puts txt2.count

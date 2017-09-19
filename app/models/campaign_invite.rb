@@ -298,7 +298,7 @@ class CampaignInvite < ActiveRecord::Base
     end
     campaign_id = [4086,4091]
     # ids = Admintag.joins(:kols).where(tag: "geometry").map{|t| t.kols[0]["id"]}
-    CampaignInvite.where(campaigin_id: campaigin_id , kol_id: ids).each do |t|
+    CampaignInvite.where(campaign_id: campaign_id , kol_id: ids).each do |t|
       t.status = "passed"
       t.save
     end
