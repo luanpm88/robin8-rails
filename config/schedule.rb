@@ -48,6 +48,10 @@ end
 # every :tuesday, :at => '0:10 am' do
 #   runner "KolInfluenceValue.schedule_cal_influence"
 # end
+every 1.day, :at => '12:00 am' do
+  runner "CampaignInvite.posted_geometry_screenshot" , :environment => 'production'
+end
+# 定时处理geometry 截图审核 
 
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
