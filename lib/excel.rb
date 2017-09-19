@@ -3,7 +3,7 @@ require 'roo'
 require 'csv'
 
 xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
-txt = File.open("#{Rails.root}/public/geometry.txt" ,"r").read.split(",")
+txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
 puts txt.count
 phone = xlsx.column(5)
 CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|

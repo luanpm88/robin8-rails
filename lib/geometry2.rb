@@ -4,7 +4,7 @@ require 'csv'
 begin
   xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
   weizhuce = File.new("#{Rails.root}/public/weizhuce.txt","w+")
-  yizhuce = File.new("#{Rails.root}/public/yichuce.txt","w+")
+  yizhuce = File.new("#{Rails.root}/public/yizhuce.txt","w+")
   zidongzhuce = File.new("#{Rails.root}/public/zidongzhuce.txt","w+")
   xinxiyouwu = File.new("#{Rails.root}/public/xinxiyouwu.txt","w+")
   phone = xlsx.column(5)
@@ -25,7 +25,7 @@ begin
     if kol_name.present?
       identity = Identity.find_by(name: kol_name)
       if identity 
-        if identity.kol_id.present? 
+        if identity.kol_id.blank?
           # && identity.created_at.strftime("%Y%m").to_i >= 201708
           # user = Kol.create(mobile_number: kol[4] , name: kol[2])
           # identity.kol_id = user.id
@@ -35,7 +35,7 @@ begin
           zidongzhuce.write("#{kol[4]},")
         else
           puts "#{kol[4]}绑定信息有误"
-          weizhuce.write("#{kol[4]},")
+          xinxiyouwu.write("#{kol[4]},")
         end
       else
         weizhuce.write("#{kol[4]},")
