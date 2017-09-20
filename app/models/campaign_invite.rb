@@ -293,7 +293,7 @@ class CampaignInvite < ActiveRecord::Base
   def self.posted_geometry_screenshot
     Rails.logger.settle.info "posted_geometry_screenshot"
     ids = []
-    Admintag.find(425).kols.distinct.each do |t|
+    Admintag.find_by(tag: "geometry").kols.distinct.each do |t|
       ids.push(t.id)
     end
     campaign_id = [4086,4091]
