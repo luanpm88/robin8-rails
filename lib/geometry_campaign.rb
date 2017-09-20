@@ -12,7 +12,7 @@ CampaignInvite.where(campaign_id: campaign_id , kol_id: ids).each do |t|
   	t.status = "passed" 
     t.save
   end
-  detail = "#{t.kol_id}@#{t.kol.mobile_number}@#{t.campaign_id}@#{t.campaign.name}@#{t.status}"
+  detail = "#{t.kol_id}@#{t.kol.mobile_number}@#{t.campaign_id}@#{t.campaign.name}@#{t.total_click}@#{t.avail_click}@#{t.status}"
   geometry_campaign.write("#{detail}&")
 end
 geometry_campaign.close
