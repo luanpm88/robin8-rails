@@ -1,0 +1,54 @@
+<%
+  # 文档标题
+  cols = [
+    'ID',
+    '品牌主 ID',
+    '品牌主昵称',
+    '品牌主手机',
+    '创建时间',
+    '发票类型',
+    '发票金额',
+    '公司抬头',
+    '纳税人识别号',
+    '公司地址',
+    '公司电话',
+    '开户行',
+    '开户行账号',
+    '收件地址',
+    '收件人姓名',
+    '收件人电话',
+    '快递单号'
+  ]
+%>
+<%=
+  CSV.generate do |csv|
+    csv << cols
+    @invoice_histories.each do |i|
+      if i.invoice_type == 'common'
+      	type = "普通增值税发票"
+      elsif i.invoice_type == 'special'
+      	type = "增值税专用发票"
+      end
+
+      csv << [
+        i.id,
+        i.user_id,
+        i.user.smart_name,
+        i.user.mobile_number,
+        (i.created_at.strftime("%Y-%m-%d %H:%M:%S") rescue nil),
+        type,
+        i.credits,
+        i.title,
+        i.taxpayer_id,
+        i.company_address,
+        i.company_mobile,
+        i.bank_name,
+        i.bank_account,
+        i.address,
+        i.name,
+        i.phone_number,
+        i.tracking_number
+      ]
+    end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>

@@ -10,7 +10,19 @@ class MarketingDashboard::InvoiceHistoriesController < MarketingDashboard::BaseC
     end
 
     @q = @invoice_histories.ransack(params[:q])
-    @invoice_histories = @q.result.order('created_at DESC').paginate(paginate_params)
+    @invoice_histories = @q.result.order('created_at DESC')
+    respond_to do |format|
+      format.html do
+        @invoice_histories = @invoice_histories.paginate(paginate_params)
+        render 'index'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"发票记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
   end
 
   def send_express
