@@ -31,7 +31,7 @@
         i.campaign.deadline.strftime("%Y-%m-%d %H:%M"),
         i.kol_id,
         i.kol.kol_level,
-        tags,
+        tags.to_s[1..-1].delete("\"") ,
         i.get_avail_click(true) > 0 ? i.get_avail_click(true) : i.avail_click,
         i.get_total_click > 0 ? i.get_total_click : i.total_click,
         i.approved_at.strftime("%Y-%m-%d %H:%M")
