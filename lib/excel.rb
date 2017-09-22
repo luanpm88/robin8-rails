@@ -3,7 +3,7 @@ require 'roo'
 require 'csv'
 
 # #生成用户表
-xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry2.xlsx")
+xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
 txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
 puts txt.count
 phone = xlsx.column(5)
