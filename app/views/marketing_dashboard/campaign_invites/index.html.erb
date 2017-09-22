@@ -29,6 +29,12 @@
         </div>
         <div class="col-md-3">
           <div class="form-group">
+            <label>Admintag</label>
+            <%= f.search_field :kol_admintags_tag_eq, class: "form-control", placeholder: "Admintag" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
             <label>KOL等级</label>
             <%= f.select :kol_kol_level_eq, [ "A", "B", "C", "S" ], { include_blank: true }, class: "form-control" %>
           </div>
