@@ -8,11 +8,11 @@ end
 campaign_id = [4086,4091]
 # ids = Admintag.joins(:kols).where(tag: "geometry").map{|t| t.kols[0]["id"]}
 CampaignInvite.where(campaign_id: campaign_id , kol_id: ids).each do |t|
-  if t.status != "passed"
-  	t.status = "passed" 
+  if t.img_status != "passed"
+  	t.img_status = "passed" 
     t.save
   end
-  detail = "#{t.kol_id}@#{t.kol.mobile_number}@#{t.campaign_id}@#{t.campaign.name}@#{t.total_click}@#{t.avail_click}@#{t.status}"
+  detail = "#{t.kol_id}@#{t.kol.mobile_number}@#{t.campaign_id}@#{t.campaign.name}@#{t.total_click}@#{t.avail_click}@#{t.img_status}"
   geometry_campaign.write("#{detail}&")
 end
 geometry_campaign.close
