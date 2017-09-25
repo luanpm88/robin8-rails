@@ -142,7 +142,6 @@
       <th>KOL ID</th>
       <th>KOL名称</th>
       <th>KOL等级</th>
-      <th>Admintag</th>
       <th>转发平台</th>
       <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
       <th><%= sort_link(@q, :total_click, "总点击") %></th>
@@ -173,11 +172,6 @@
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
         <td><%= c.kol.name rescue "" %></td>
         <td><%= c.kol.kol_level rescue "" %></td>
-        <% if c.kol %>
-          <td><%= render partial: "admintag", collection: c.kol.admintags.distinct rescue "" , locals: {kol_id: c.kol.id rescue "" } %></td>
-        <% else %>
-          <td><%= nil %></td>
-        <% end %>
         <% if c.sub_type == "weibo" %>
           <td><%= "微博" %></td>
         <% else %>
