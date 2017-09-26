@@ -25,7 +25,7 @@ class Campaign < ActiveRecord::Base
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
   validates_presence_of :url, :if => Proc.new{ |campaign| ['click', 'post', 'cpa', 'simple_cpi','cpt'].include? campaign.per_budget_type }
   validates_presence_of :recruit_start_time, :recruit_end_time, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
-  validates :sub_type, :inclusion => { :in => ["wechat", "qq", "weibo"] }, :allow_nil => true
+  validates :sub_type, :inclusion => { :in => ["wechat", "qq", "weibo" , "wechat,weibo"] }, :allow_nil => true
   # validates :wechat_auth_type, :inclusion => { :in => AuthTypes.keys }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa simple_cpi cpi recruit invite
@@ -430,8 +430,10 @@ class Campaign < ActiveRecord::Base
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
       ExampleScreenshots['qq']
-    else
+    elsif self.sub_type == 'wechat'
       ExampleScreenshots['wechat']
+    else
+      ExampleScreenshots['wechat,weibo']
     end
   end
 
