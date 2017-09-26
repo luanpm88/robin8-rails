@@ -78,7 +78,7 @@ module Concerns
     def share_campaign_invite(campaign_invite_id , sub_type)
       campaign_invite = CampaignInvite.find campaign_invite_id  rescue nil
       if campaign_invite && campaign_invite.status == 'running'
-        campaign_invite.subtype = sub_type
+        campaign_invite.sub_type = sub_type
         campaign_invite.status = 'approved'
         campaign_invite.approved_at = Time.now    if campaign_invite.approved_at.blank?
         campaign_invite.save!
