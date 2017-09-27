@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
+
+  # 往后添加活动和充值的页面
   get "brand", to: "brand#index"
 
   get 'campaign_visit' => "campaign_show#visit"
@@ -122,7 +124,9 @@ Rails.application.routes.draw do
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
+  #发送验证码
   post '/kols/send_sms/' => 'kols#send_sms'
+  #确认验证码
   post '/kols/valid_verify_code/' => 'kols#valid_verify_code'
   get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account"
   get '/users/new' => 'users#new'
@@ -168,18 +172,27 @@ Rails.application.routes.draw do
   post 'share_by_email' => 'share_by_email#create'
 
   get 'home', to: 'pages#moments'
+
+  #点击 “我是网红” 得到的画面
   get 'kols', to: 'pages#kols'
+
+  # 点击"我是广告主-寻找大V"
   get 'brands/bigv', to: 'pages#bigv'
+
+  # 点击”我是广告主——朋友圈推广"
   get 'brands/moments', to: 'pages#moments'
 
   root 'pages#home'
 
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
   get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'
+
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
   get '/privacy_policy', to: 'pages#privacy_policy'
+
+  # 在/brands/bigv页面点击 "了解更多" 出现表单
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
   get '/contact_us', to: "pages#contact_us"
