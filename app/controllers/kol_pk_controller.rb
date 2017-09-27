@@ -8,6 +8,8 @@ class KolPkController < ApplicationController
   end
 
   def new
+    # TODO: 必须用微信直接把它生成新用户
+
     # After weibo login, new KOL comes here
     # 登录微博后来这儿
 
