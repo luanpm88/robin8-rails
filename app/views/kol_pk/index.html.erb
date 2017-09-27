@@ -60,7 +60,11 @@
 				</ul>
 			</div>
 		</section>
-		<section>
+    <section>
+      <!-- Fake section for bottom element to be floating -->
+      <%= image_tag 'kol_pk/influential-04.jpg' %>
+		</section>
+    <section style="position:fixed;bottom: 0;">
 				<%= image_tag 'kol_pk/influential-04.jpg' %>
         <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
 		</section>

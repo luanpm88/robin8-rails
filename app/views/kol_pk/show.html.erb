@@ -75,15 +75,23 @@
 		</section>
 		<section class="btn-group">
       <a class="i-btn" onclick="showDialog()" href="#">
-        <%= image_tag 'kol_pk/btn-03.png' %>
+        <% if challenger_result == 'win' %>
+          <%= image_tag 'kol_pk/btn-03.png' %>
+        <% else %>
+          <%= image_tag 'kol_pk/btn-05.png' %>
+        <% end %>
       </a>
-      <a class="i-btn"  href="#">
+      <a class="i-btn"  href="<%=Rails.application.secrets[:download_url]%>">
         <%= image_tag 'kol_pk/btn-04.png' %>
       </a>
 		</section>
-		<section>
+    <section>
+      <!-- Fake section for bottom element to be floating -->
       <%= image_tag 'kol_pk/influential-04.jpg' %>
-      <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+		</section>
+    <section style="position:fixed;bottom: 0;">
+				<%= image_tag 'kol_pk/influential-04.jpg' %>
+        <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
 		</section>
 		<section>
 			<!-- 遮罩层 -->
