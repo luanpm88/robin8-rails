@@ -2753,3 +2753,30 @@ zh:
         zero: No %{model} found
     page_gap: "&hellip;"
     previous_label: "&#8592; Previous"
+  influence_industry:
+    internet:      互联网
+    games:         游戏
+    fashion:       时尚
+    health:        健康
+    realestate:    房地产
+    digital:       数码
+    appliances:    家电
+    books:         图书
+    sports:        体育
+    entertainment: 娱乐
+    furniture:     家居
+    music:         音乐
+    other:         其他
+    food:          美食
+    babies:        母婴
+    travel:        旅游
+    hotel:         酒店
+    education:     教育
+    fitness:       健身
+    finance:       财经
+    beauty:        美妆
+    auto:          汽车
+    airline:       航空
+    ce:            消费电子
+    camera:        摄影
+    mobile:        手机

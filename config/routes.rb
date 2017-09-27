@@ -198,6 +198,12 @@ Rails.application.routes.draw do
   post 'wechat_campaign/sms_request'
   get 'wechat_campaign/campaign_details'
 
+  get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
+  get 'kol_pk/new/vs/:challengee_id',                     to: 'kol_pk#new'
+  get 'kol_pk/:challenger_id/vs/:challengee_id/fighting', to: 'kol_pk#fighting'
+  get 'kol_pk/:challenger_id/vs/:challengee_id/check',    to: 'kol_pk#check'
+  get 'kol_pk/:pk_id',                                    to: 'kol_pk#show'
+
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'

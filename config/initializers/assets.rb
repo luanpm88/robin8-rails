@@ -24,6 +24,9 @@ Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
 #wechat campaign
 Rails.application.config.assets.precompile += %w( wechat_campaign.css )
 
+# KOL PK
+Rails.application.config.assets.precompile += %w( kol_pk/style.css kol_pk/flexible.js )
+
 Rails.application.config.assets.precompile += %w( cpses/app-webview-v2.css cpses/zepto.js cpses/common.js cpses/app-webview-v2.js cpses/jweixin-1.js cpses/wxUtil.js)
 # react 部分 编译
 Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack").to_s
