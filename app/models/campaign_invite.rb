@@ -18,6 +18,12 @@ class CampaignInvite < ActiveRecord::Base
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
+  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
+                     'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+                     'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
+
+  }
+
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -397,4 +403,14 @@ class CampaignInvite < ActiveRecord::Base
     RemoveOldInvitationsWorker.perform_async()
   end
 
+  def get_example_screenshot
+    return self.campaign.example_screenshot if self.campaign.example_screenshot.present?
+    if self.sub_type == 'weibo'
+      ExampleScreenshots['weibo']
+    elsif self.sub_type == 'qq'
+      ExampleScreenshots['qq']
+    elsif self.sub_type == 'wechat'
+      ExampleScreenshots['wechat']
+    end
+  end
 end
