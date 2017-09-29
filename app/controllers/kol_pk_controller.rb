@@ -5,11 +5,10 @@ class KolPkController < ApplicationController
     # Shows the list of PK challeges that a KOL has had
     # 显示这KOL 已pk 过的历史
     @kol = Kol.find(params[:id])
+    Rails.logger.kol_pk.info "--kol_pk index: #{request.url}"
   end
 
   def new
-    # TODO: 必须用微信直接把它生成新用户
-
     # After weibo login, new KOL comes here
     # 登录微博后来这儿
 
@@ -19,12 +18,14 @@ class KolPkController < ApplicationController
     # 偷偷的开始收集KOL 的weibo influence metric
     # Preliminarily starts the process to get influence score
     KolInfluenceMetricsWorker.perform_async([weibo_uid],[])
+    Rails.logger.kol_pk.info "--kol_pk new: #{request.url}"
   end
 
   def fighting
     # A page for KOL to wait for results
     # 给 KOL 等待PK 结果的地方
     @challenger = Kol.find(params[:challenger_id])
+    Rails.logger.kol_pk.info "--kol_pk fighting: #{request.url}"
   end
 
   def check
@@ -32,6 +33,8 @@ class KolPkController < ApplicationController
     # API 后端来看influence_metrics 好了吗
     challenger         = Kol.find(params[:challenger_id])
     challenger_metrics = challenger.influence_metrics.last
+
+    Rails.logger.kol_pk.info "--kol_pk check: #{request.url}"
 
     if (challenger_metrics.updated_at.to_i rescue 0) > params[:fighting_at].to_i
       challengee         = Kol.find(params[:challengee_id])

@@ -22,6 +22,7 @@ class AuthenticationsController < ApplicationController
             new_kol = Kol.create(name: params[:name], identities: [identity])
             new_kol.update_column 'avatar_url', params[:avatar_url]
             set_union_access_token(new_kol)
+            Rails.logger.kol_pk.info "--kol_pk /auth/weibo/callback: #{request.url}"
             return redirect_to omniauth_params['ok_url']
           end
           return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])
@@ -37,6 +38,7 @@ class AuthenticationsController < ApplicationController
             new_kol = Kol.create(name: params[:name], identities: [identity])
             new_kol.update_column 'avatar_url', params[:avatar_url]
             set_union_access_token(new_kol)
+            Rails.logger.kol_pk.info "--kol_pk /auth/weibo/callback: #{request.url}"
             return redirect_to omniauth_params['ok_url']
           end
           return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])

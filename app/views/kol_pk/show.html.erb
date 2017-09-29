@@ -130,7 +130,7 @@
     %>
 
     wx.config({
-      debug:     false,
+      debug:     true,
       appId:     '<%= app_id %>',
       timestamp: '<%= ts %>',
       nonceStr:  '<%= nonce %>',
@@ -149,7 +149,7 @@
         link:   '<%= "#{root_url}kol/#{current_kol.id}/kol_pk" %>',
         imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
         success: function (res) {
-          window.location.href = '/wechat_campaign/app_download_page';
+          closeDialog();
         }
       };
 

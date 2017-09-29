@@ -98,8 +98,8 @@ class Kol < ActiveRecord::Base
   end
 
   def lost_challenges
-    KolPk.where("(challenger_id = ? and challenger_score > challengee_score) or "+
-                "(challengee_id = ? and challengee_score > challenger_score)",id,id)
+    KolPk.where("(challenger_id = ? and challengee_score > challenger_score) or "+
+                "(challengee_id = ? and challenger_score > challengee_score)",id,id)
   end
 
   #cps
