@@ -129,6 +129,7 @@
         # 转发活动
         params do
           requires :id, type: Integer
+          requires :sub_type , type: String
         end
         put ':id/share' do
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
@@ -141,7 +142,7 @@
             CampaignWorker.perform_async(campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
-            campaign_invite = current_kol.share_campaign_invite(params[:id])
+            campaign_invite = current_kol.share_campaign_invite(params[:id] , params[:sub_type])
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
