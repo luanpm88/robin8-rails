@@ -1,8 +1,8 @@
-/* reset */
+erb/* reset */
 *{margin: 0;padding: 0;outline: none;}
 ol,ul{list-style:none;margin:0;padding:0;}
 img{width:100%;display: block;}
-html{font-size:text-decoration:none;font-family: Arial,huakang,Microsoft YaHei,Tahoma,sans-serif;color: #212121;}
+html{text-decoration:none;font-family: Arial,huakang,Microsoft YaHei,Tahoma,sans-serif;color: #212121;}
 h2{font-size:32px ;font-weight: bold;}h3{font-size:24px; font-weight: bold;}h4{font-size:18px;font-weight: bold;margin-bottom: 5px;}h5{font-size:16px;font-weight: bold;}
 textarea{resize:none}
 /*end reset*/
@@ -76,12 +76,12 @@ section{
 	margin: 0 auto 0.96rem;
 	width: 6.29rem;
 	height: 0.69rem;
-  background: url(<%= asset_path 'kol_pk/influential-05.jpg' %>) no-repeat center center;
+	background: image-url("kol_pk/influential-05.jpg") no-repeat center center;
 	background-size: cover;
 
 }
 .influential-wrap .result-lost{
-  background-image:url(<%= asset_path 'kol_pk/influential-12.jpg' %>) ;
+	background: image-url("kol_pk/influential-12.jpg");
 }
 .influential-wrap .result span{
 	padding-right: 0.53rem;
@@ -233,7 +233,7 @@ section{
 	display: inline-block;
 	height: 0.533rem;
 	width: 5.466rem;
-	background: url(<%= asset_path 'kol_pk/bg-progress.png' %>) no-repeat center center;
+	background: image-url("kol_pk/bg-progress.png") no-repeat center center;
 	background-size: cover;
 }
 .progress-bar span{
