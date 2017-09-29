@@ -19,8 +19,8 @@ class AuthenticationsController < ApplicationController
           identity = Identity.create_identity_from_app(params)
           # For kol_pk use
           if omniauth_params['ok_url'].match(/kol_pk\/new\/vs/)
-            # TODO: params[:avatar_url] 头像
             new_kol = Kol.create(name: params[:name], identities: [identity])
+            new_kol.update_column 'avatar_url', params[:avatar_url]
             set_union_access_token(new_kol)
             return redirect_to omniauth_params['ok_url']
           end
@@ -35,7 +35,7 @@ class AuthenticationsController < ApplicationController
           # For kol_pk use
           if omniauth_params['ok_url'].match(/kol_pk\/new\/vs/)
             new_kol = Kol.create(name: params[:name], identities: [identity])
-            # TODO: params[:avatar_url] 头像
+            new_kol.update_column 'avatar_url', params[:avatar_url]
             set_union_access_token(new_kol)
             return redirect_to omniauth_params['ok_url']
           end

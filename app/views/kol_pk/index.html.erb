@@ -1,5 +1,6 @@
 <%
-    avatar_url = @kol.avatar.url(200)
+    #  avatar_url = (@kol.avatar.url(200) rescue nil) || @kol.read_attribute(:avatar_url)
+    # avatar_url = @kol.read_attribute(:avatar_url)
     # avatar_url = @kol.identities.last.avatar_url
 %>
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
 		<section>
 			<%= image_tag 'kol_pk/influential-02.jpg' %>
 			<div class="influential-wrap">
-        <span class="headshot"><%= image_tag avatar_url %></span>
+        <span class="headshot"><%= image_tag @kol.avatar_url %></span>
         <span class="i-name"><%= @kol.safe_name %></span>
         <div class="score"><%= image_tag 'kol_pk/line.png' %><%= @kol.influence_score %>分<%= image_tag 'kol_pk/line.png' %></div>
 				<div class="result">
@@ -46,7 +47,9 @@
           <% @kol.challenges.limit(6).each do |pk| %>
             <% the_other = pk.the_other(@kol) %>
             <li>
-							<span class="headshot"><%= image_tag the_other.avatar.url(200) %></span>
+              <span class="headshot">
+                <%= image_tag the_other.avatar_url %>
+              </span>
               <span class="i-name"><%= the_other.safe_name %></span>
               <div class="score">
                 <%= image_tag 'kol_pk/line-02.png' %>

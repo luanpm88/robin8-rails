@@ -22,7 +22,9 @@
 		<section>
       <%= image_tag "kol_pk/influential-07.jpg" %>
       <div class="influential-wrap top-i vs-<%=challenger_result%>">
-        <span class="headshot"><%= image_tag challenger.avatar.url(200) %></span>
+        <span class="headshot">
+          <%= image_tag challenger.avatar_url %>
+        </span>
         <% if challenger_result == "win" %>
           <div class="crown"><%= image_tag "kol_pk/crown.png" %></div>
         <% end %>
@@ -62,7 +64,9 @@
 		<section>
       <%= image_tag "kol_pk/influential-08.jpg" %>
       <div class="vs-wrap vs-<%=challengee_result%>">
-        <span class="headshot"><%= image_tag challengee.avatar.url(200) %></span>
+        <span class="headshot">
+          <%= image_tag challengee.avatar_url %>
+        </span>
         <% if challengee_result == "win" %>
           <div class="crown"><%= image_tag "kol_pk/crown.png" %></div>
         <% end %>
@@ -143,7 +147,7 @@
       var shareData = {
         title:  '要和我比拼影响力么？快来Robin8一决高下！',
         link:   '<%= "#{root_url}kol/#{current_kol.id}/kol_pk" %>',
-        imgUrl: 'http://robin8.net',
+        imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
         success: function (res) {
           window.location.href = '/wechat_campaign/app_download_page';
         }
