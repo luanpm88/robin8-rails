@@ -122,15 +122,14 @@
 			dialog.style.display = "block";
 		}
     <%
-       sign_package = ($weixin_client.get_jssign_package(url) rescue {})
+       sign_package = ($weixin_client.get_jssign_package(request.url) rescue {})
        app_id       = sign_package['appId']
        nonce        = sign_package['nonceStr']
        ts           = sign_package['timestamp']
        signature    = sign_package['signature']
     %>
-
     wx.config({
-      debug:     true,
+      debug:     false,
       appId:     '<%= app_id %>',
       timestamp: '<%= ts %>',
       nonceStr:  '<%= nonce %>',
