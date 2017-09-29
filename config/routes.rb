@@ -201,6 +201,10 @@ Rails.application.routes.draw do
   post 'wechat_geometry/kol_create'
   post 'wechat_geometry/sms_request'
   get 'wechat_geometry/geometry'
+  get 'lp_login/kol_register'
+  post 'lp_login/kol_create'
+  post 'lp_login/sms_request'
+  get 'lp_login/download'
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
