@@ -129,7 +129,7 @@
         # 转发活动
         params do
           requires :id, type: Integer
-          requires :sub_type , type: String
+          optional :sub_type , type: String
         end
         put ':id/share' do
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
