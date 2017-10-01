@@ -22,6 +22,12 @@ Starting MailCatcher
 
 
 ### 4-15
+
+## Run on development env
+```
+foreman start -f Procfile.hot
+```
+
 # rongyun
 #  ocr:
    :root_path: /home/deployer/apps/screenshot_approve
@@ -49,4 +55,3 @@ Starting MailCatcher
   1. 先导入k1,vs media .再导入 robin8 weibo public_wechat
   姓名含电话
   complete_info
-
