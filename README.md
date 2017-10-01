@@ -27,6 +27,16 @@ by artificial intelligence.
     * Ignore them, they are node/react errors mostly in /brand
   * run `rails s` to have your server up!
 
+
+# QA Server
+
+  Running rails console in QA server
+
+  * ssh into the server, get access from current senior developers
+  * cd into `/home/deployer/apps/robin8_qa/current`
+  * run `RAILS_ENV=qa bundle exec rails console` and you're in
+
+
 With `mailcatcher` gem, you can debug mailer localy. It not in `Gemfile` for it will caused some problem.
 If you want debug mailer localy, just simple run `gem install mailcatcher`, and fire up the server with `mailcatcher`:
 
