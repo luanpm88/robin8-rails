@@ -105,70 +105,35 @@ export default class DetailPartial extends React.Component {
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type } = this.props
     return (
-      <div className="creat-activity-form creat-content-sources">
+
+      <div className="react-toolbox creat-content-sources">
         <div className="header">
           <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
-            <div className="row">
-              <p className="action-mode">奖励模式选择</p>
-              <div className="sources-check">
-                <div className="row">
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
-                    按照点击奖励KOL
-                  </div>
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
-                    按照转发奖励KOL
-                  </div>
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
-                    按照下载APP奖励KOL
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
-                    按照点击指定链接奖励KOL
-                  </div>
-                  {
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
-                    按照完成任务奖励KOL
-                  </div>
-                  }
-                </div>
-              </div>
-            </div>
-
             <div className="row forward-platform-select">
               <p className="action-mode">推广平台选择</p>
               <div className="sources-check">
                 {
                   do {
-                    let enableSharingAll = false;
+                    let enableSharingAll = true;
                     if (enableSharingAll) {
                       <div className="row">
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  nChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
                           分享到朋友圈
-                        </div>
-                        <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="weibo"  className="formardPlatformType" nChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
-                          分享到微博
                         </div>
 
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="qq" className="formardPlatformType" nChange={sub_type.onChange} checked={sub_type.value === "qq"} />
-                          分享到QQ空间
+                          <input {...sub_type} type="radio" name="sub_type" value="weibo" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
+                          分享到微博 and/or 朋友圈
                         </div>
                       </div>
                     } else {
                       <div className="row">
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  nChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
                           分享到朋友圈
                         </div>
                       </div>
@@ -176,6 +141,60 @@ export default class DetailPartial extends React.Component {
                   }
                 }
               </div>
+            </div>
+            <p className="action-mode">奖励模式选择</p>
+            <div className="sources-check">
+                {
+                  do {
+
+                      if(sub_type.value === "wechat") {
+                        <div className="row">
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
+                            按照点击奖励KOL
+                          </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                            按照转发奖励KOL
+                          </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
+                            按照下载APP奖励KOL
+                          </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
+                            按照点击指定链接奖励KOL
+                          </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            按照完成任务奖励KOL
+                          </div>
+
+                        </div>
+                      } else if(sub_type.value === "weibo") {
+                        <div className="row">
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" id="cpt" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            按照完成任务奖励KOL
+                          </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" id="forwarding" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                            按照转发奖励KOL
+                          </div>
+
+                        </div>
+                      } else {
+                        <div></div>
+                      }
+                  }
+                }
             </div>
 
             <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
