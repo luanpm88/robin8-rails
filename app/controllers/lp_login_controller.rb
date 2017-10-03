@@ -8,6 +8,7 @@ class LpLoginController < ApplicationController
   end
 
   def sms_request
+    @app_download_url = Rails.application.secrets[:download_url]
     if !Rails.env.development? and !sms_request_is_valid?
       return render json: { error: "请求异常，请重新尝试" }
     end
@@ -27,6 +28,7 @@ class LpLoginController < ApplicationController
   end
 
   def kol_create
+    @app_download_url = Rails.application.secrets[:download_url]
     return render json: {error: "请填写短信验证码" } unless params[:sms_code]
     return render json: {error: "必须填写手机号" } unless params[:mobile_number]
 
@@ -54,11 +56,6 @@ class LpLoginController < ApplicationController
       end
     end
 
-  end
-
-  def download
-    @app_download_url = Rails.application.secrets[:download_url]
-    render :layout => false
   end
 
   def add_tag(kol_exists , type)
