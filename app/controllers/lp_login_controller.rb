@@ -69,6 +69,10 @@ class LpLoginController < ApplicationController
   	  	kol_exists.admintags << Admintag.find_or_create_by(tag: 'LP')
   	  	kol_exists.admintags << Admintag.find_or_create_by(tag: 'SMS')
   	  end
+    elsif type == "3"
+      if kol_exists.admintags.blank?
+        kol_exists.admintags << Admintag.find_or_create_by(tag: 'Rodirgo')
+      end     
   	end
   end
 
