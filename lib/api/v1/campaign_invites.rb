@@ -19,8 +19,17 @@ module API
           present :announcements, Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary  if params[:with_announcements] == 'y'
 
           if  params[:status] == 'all'
+=begin
             applied_recruit_campaign_ids = current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
               where("campaign_invites.status = 'approved'  or campaign_invites.status = 'finished'").collect{|t| t.campaign_id}
+=end
+            applied_recruit_campaign_ids =
+              if Campaign.where("deadline > ?", 7.days.ago).where(per_budget_type: 'recruit').blank?
+                []
+              else
+                current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
+                  where("campaign_invites.status in ('approved', 'finished')").collect{|t| t.campaign_id}
+              end
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             ids = current_kol.receive_campaign_ids.values
             if ids.empty?
