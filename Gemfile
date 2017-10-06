@@ -30,7 +30,7 @@ gem 'quiet_assets', group: [:development, :staging, :qa]
 gem 'roadie', '~> 3.0.5'
 
 # Displays page rendering performance
-# gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', group: [:development]
 
 # create multiple log files
 gem 'multi_logger'
