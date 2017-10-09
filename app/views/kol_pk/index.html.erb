@@ -26,6 +26,51 @@
 		</section>
     -->
 
+  <% if current_kol and current_kol == @kol  %>
+    <% influence_metric     = @kol.influence_metrics.last %>
+    <% influence_industries = influence_metric.influence_industries.order(industry_score: :desc).limit(3) %>
+		<section>
+      <%= image_tag "kol_pk/influential-06.jpg" %>
+		</section>
+		<section>
+      <%= image_tag "kol_pk/influential-14.jpg" %>
+      <div class="influential-wrap top-i vs-win">
+        <span class="headshot">
+          <%= image_tag @kol.avatar_url %>
+        </span>
+        <span class="i-name"><%= @kol.safe_name %></span>
+        <div class="score">
+          <%= image_tag "kol_pk/line-win.png" %>
+          <%= influence_metric.influence_score %>分
+          <%= image_tag "kol_pk/line-win.png" %>
+        </div>
+        <div class="result result-win">
+          <span><%= @kol.won_challenges.count %></span>
+          <span><%= @kol.lost_challenges.count %></span>
+        </div>
+				<div class="competition">
+					<p class="progress-title">您最感兴趣的领域：</p>
+					<ul class="progress-box">
+					 	<li>
+              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[0].industry_name}" %></span>
+              <div class="progress-bar"><span style="width:<%=influence_industries[0].industry_score.to_d*0.99%>%;"></span></div>
+              <span class="progress-item"><%=influence_industries[0].industry_score.to_i%></span>
+					 	</li>
+					 	<li>
+              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
+              <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.99%>%;"></span></div>
+              <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
+					 	</li>
+						<li>
+              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
+              <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.99%>%;"></span></div>
+              <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+  <% else %>
 		<section>
 			<%= image_tag 'kol_pk/influential-02.jpg' %>
 			<div class="influential-wrap">
@@ -44,6 +89,7 @@
           <%= image_tag 'kol_pk/btn-01.png' %></a>
 			</div>
 		</section>
+  <% end %>
 		<section>
 			<%= image_tag 'kol_pk/influential-03.jpg' %>
 			<div class="friend-wrap">

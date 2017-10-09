@@ -40,7 +40,8 @@ class KolPkController < ApplicationController
       challengee         = Kol.find(params[:challengee_id])
       challengee_metrics = challengee.influence_metrics.last
 
-      industries = challengee_metrics.influence_industries.order(industry_score: :desc).limit(3)
+      industries = challenger_metrics.influence_industries.
+        order(industry_score: :desc).limit(3)
 
       @kol_pk = KolPk.new(challenger_id:    params[:challenger_id],
                           challengee_id:    params[:challengee_id],

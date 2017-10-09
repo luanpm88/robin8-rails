@@ -216,12 +216,12 @@ section{
     z-index: 3;
     width: 100%;
 }
-
 .progress-box li{
 	margin-bottom: 0.3rem;
 	display: inline-block;
 	line-height: 0.533rem;
 	font-size: 0.4rem;
+  width: 101%;
 }
 .progress-box .progress-item{
 	display: inline-block;float: left;
@@ -232,7 +232,7 @@ section{
 	padding: 0 ;
 	display: inline-block;
 	height: 0.533rem;
-	width: 5.366rem;
+	width: 5rem;
 	background: image-url("kol_pk/bg-progress.png") no-repeat center center;
 	background-size: cover;
 }
@@ -327,5 +327,9 @@ section{
 	border-radius: 0.4rem;
 }
 
-
-
+.left {
+  float: left !important;
+}
+.right {
+  float: right !important;
+}
