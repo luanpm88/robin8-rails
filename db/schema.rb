@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170817064749) do
+ActiveRecord::Schema.define(version: 20170925062844) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -1156,6 +1156,25 @@ ActiveRecord::Schema.define(version: 20170817064749) do
 
   add_index "kol_keywords", ["kol_id"], name: "index_kol_keywords_on_kol_id", using: :btree
   add_index "kol_keywords", ["social_account_id"], name: "index_kol_keywords_on_social_account_id", using: :btree
+
+  create_table "kol_pks", force: :cascade do |t|
+    t.integer  "challenger_id",    limit: 4
+    t.integer  "challengee_id",    limit: 4
+    t.integer  "challenger_score", limit: 4
+    t.integer  "challengee_score", limit: 4
+    t.string   "first_industry",   limit: 255
+    t.string   "second_industry",  limit: 255
+    t.string   "third_industry",   limit: 255
+    t.integer  "first_score",      limit: 4
+    t.integer  "second_score",     limit: 4
+    t.integer  "third_score",      limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "kol_pks", ["challengee_id"], name: "index_kol_pks_on_challengee_id", using: :btree
+  add_index "kol_pks", ["challenger_id"], name: "index_kol_pks_on_challenger_id", using: :btree
+  add_index "kol_pks", ["id"], name: "index_kol_pks_on_id", using: :btree
 
   create_table "kol_profile_screens", force: :cascade do |t|
     t.string   "url",         limit: 255
