@@ -1,6 +1,6 @@
 require 'roo'
 
-# begin
+begin
   xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
   # geometry = File.new("#{Rails.root}/public/geometry.txt","w+")
   # geometry2 = File.new("#{Rails.root}/public/geometry2.txt","w+")
@@ -22,6 +22,6 @@ require 'roo'
   puts "=========分割线========="
   puts "未注册用户#{weizhuce}"
   # geometry.close
-# rescue
-#   puts "出错,请重试"
-# end
+rescue
+  puts "出错,请重试"
+end
