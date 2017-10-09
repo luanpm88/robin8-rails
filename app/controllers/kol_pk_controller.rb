@@ -65,5 +65,6 @@ class KolPkController < ApplicationController
   def show
     # Shows the current KolPk results
     @kol_pk = KolPk.find(params[:pk_id])
+    Rails.logger.kol_pk.info "--kol_pk show: #{request.url}"
   end
 end

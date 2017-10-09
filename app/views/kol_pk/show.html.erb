@@ -44,17 +44,17 @@
 					<ul class="progress-box">
 					 	<li>
             <span class="progress-item"><%= t "influence_industry.#{@kol_pk.first_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.first_score/0.6.to_d%>%;"></span></div>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.first_score%>%;"></span></div>
               <span class="progress-item"><%= @kol_pk.first_score %></span>
 					 	</li>
 					 	<li>
             <span class="progress-item"><%= t "influence_industry.#{@kol_pk.second_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.second_score/0.6.to_d%>%;"></span></div>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.second_score%>%;"></span></div>
               <span class="progress-item"><%= @kol_pk.second_score %></span>
 					 	</li>
 						<li>
             <span class="progress-item"><%= t "influence_industry.#{@kol_pk.third_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.third_score/0.6.to_d%>%;"></span></div>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.third_score%>%;"></span></div>
               <span class="progress-item"><%= @kol_pk.third_score %></span>
 						</li>
 					</ul>

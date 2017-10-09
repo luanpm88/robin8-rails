@@ -31,7 +31,11 @@
 			<div class="influential-wrap">
         <span class="headshot"><%= image_tag @kol.avatar_url %></span>
         <span class="i-name"><%= @kol.safe_name %></span>
-        <div class="score"><%= image_tag 'kol_pk/line.png' %><%= @kol.influence_score %>分<%= image_tag 'kol_pk/line.png' %></div>
+        <div class="score">
+          <%= image_tag 'kol_pk/line.png' %>
+          <%= @kol.influence_metrics.last.influence_score rescue 308 %>分
+          <%= image_tag 'kol_pk/line.png' %>
+      </div>
 				<div class="result">
           <span><%= @kol.won_challenges.count %></span>
           <span><%= @kol.lost_challenges.count %></span>
