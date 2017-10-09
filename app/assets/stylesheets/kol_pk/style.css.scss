@@ -80,7 +80,8 @@ section{
 
 }
 .influential-wrap .result-lost{
-	background: image-url("kol_pk/influential-12.jpg");
+	background: image-url("kol_pk/influential-12.jpg") no-repeat center center;
+  background-size: cover;
 }
 .influential-wrap .result span{
 	padding-right: 0.53rem;
