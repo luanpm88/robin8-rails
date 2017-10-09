@@ -15,6 +15,15 @@ require 'csv'
 # 	end
 # end
 
+#geometry 活动表
+txt = File.open("#{Rails.root}/public/campaign.txt" ,"r").read.split("&")
+CSV.open("#{Rails.root}/public/campaign.csv" ,"wb") do |csv|
+  txt.each do |t|
+	csv << t.split("@")
+  end
+end
+
+
 #插入手机号
 # xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/phone.xlsx")
 # txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
@@ -25,10 +34,3 @@ require 'csv'
 #   end
 # end 
 
-#geometry 活动表
-txt = File.open("#{Rails.root}/public/campaign.txt" ,"r").read.split("&")
-CSV.open("#{Rails.root}/public/campaign.csv" ,"wb") do |csv|
-  txt.each do |t|
-	csv << t.split("@")
-  end
-end
