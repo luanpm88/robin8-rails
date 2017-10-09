@@ -141,7 +141,7 @@ export default class DetailPartial extends React.Component {
                   }
                 }
               </div>
-            </div>
+
             <p className="action-mode">奖励模式选择</p>
             <div className="sources-check">
                 {
@@ -188,7 +188,6 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" id="forwarding" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
                           </div>
-
                         </div>
                       } else {
                         <div></div>
@@ -196,6 +195,7 @@ export default class DetailPartial extends React.Component {
                   }
                 }
             </div>
+          </div>
 
             <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
               {
