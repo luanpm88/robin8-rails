@@ -1,6 +1,6 @@
 require 'roo'
 
-begin
+# begin
   xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
   # geometry = File.new("#{Rails.root}/public/geometry.txt","w+")
   # geometry2 = File.new("#{Rails.root}/public/geometry2.txt","w+")
@@ -11,7 +11,7 @@ begin
 	  kol = Kol.find_by(mobile_number: t)
 	  if kol.present?
 	    kol.admintags << Admintag.find_or_create_by(tag: 'geometry') if kol.admintags.blank?
-      yichuce.push t.to_i
+      yizhuce.push t.to_i
       # geometry2.write("#{t},")
     else
       weizhuce.push t.to_i
@@ -22,7 +22,6 @@ begin
   puts "=========分割线========="
   puts "未注册用户#{weizhuce}"
   # geometry.close
-  # puts "标签打完了哟"
-rescue
-  puts "出错,请重试"
-end
+# rescue
+#   puts "出错,请重试"
+# end

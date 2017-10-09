@@ -23,7 +23,7 @@ begin
 	  detail = "#{t.kol_id}@#{t.kol.mobile_number}@#{t.campaign_id}@#{t.total_click}@#{t.avail_click}&" + detail
 	  # geometry_campaign.write("#{detail}&")
 	end
-	puts "detail"
+	puts detail
 	# geometry_campaign.close
 rescue
     puts "出错,请重试"
