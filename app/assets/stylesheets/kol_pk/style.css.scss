@@ -238,9 +238,8 @@ section{
 }
 .progress-bar span{
 	float: left;
-	 margin: 0.06rem 0 0 0.06rem;
 	display: inline-block;
-	height: 0.266rem;
+	height: 0.3rem;
 	width: 1rem;
 	background: #ffb600;
 }
@@ -332,4 +331,12 @@ section{
 }
 .right {
   float: right !important;
+}
+.headshot {
+  z-index: 1;
+}
+
+.download-prompt {
+  position:fixed;bottom: 0;
+  z-index: 999;
 }
