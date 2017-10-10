@@ -111,7 +111,7 @@ export default class DetailPartial extends React.Component {
           <h3 className="tit" style={{textAlign: "center"}}>推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
         </div>
         <div className="content" style={{backgroundColor: "white"}}>
-          <div className="form-item form-horizontal" style={{marginLeft: '50px'}}>
+          <div className="form-item form-horizontal" style={{marginLeft: '3em'}}>
             <div className="row">
               <p className="action-mode">推广平台选择</p>
               <div className="sources-check">
@@ -152,27 +152,27 @@ export default class DetailPartial extends React.Component {
                       if(sub_type.value === "wechat") {
                         <div className="row">
 
-                          <div className="col-md-4" style={{marginBottom: '15px'}}>
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                             按照点击奖励KOL
                           </div>
 
-                          <div className="col-md-4" style={{marginBottom: '15px'}}>
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
                           </div>
 
-                          <div className="col-md-4" style={{marginBottom: '15px'}}>
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
                             按照下载APP奖励KOL
                           </div>
 
-                          <div className="col-md-4" style={{marginBottom: '15px'}}>
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                             按照点击指定链接奖励KOL
                           </div>
 
-                          <div className="col-md-4" style={{marginBottom: '15px'}}>
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
                             按照完成任务奖励KOL
                           </div>
