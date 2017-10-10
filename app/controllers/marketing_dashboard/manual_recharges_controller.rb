@@ -15,12 +15,12 @@ class MarketingDashboard::ManualRechargesController < MarketingDashboard::BaseCo
       format.html
       format.csv {
         csv_string = CSV.generate do |csv|
-          csv << ["品牌主ID", "品牌主名称", "流水ID", "充值方式", "充值金额", "创建时间", "品牌主公司", "操作人", "销售人员", "状态", "备注"]
+          csv << ["品牌主ID", "品牌主名称", "流水ID", "充值方式", "充值金额", "税费(6%)","创建时间", "品牌主公司", "操作人", "销售人员", "状态", "备注"]
           @transactions.each do |c|
-            csv << [c.account.id, c.account.smart_name, c.id, c.subject, c.credits.to_f, c.created_at.strftime("%Y-%m-%d %H:%M:%S"), c.item.receiver_name, c.item.operator, c.account.seller.name, c.item.status, c.item.remark ]
+            csv << [c.account.id, c.account.smart_name, c.id, c.subject, c.credits.to_f, c.tax.to_f, c.created_at.strftime("%Y-%m-%d %H:%M:%S"), c.item.receiver_name, c.item.operator, c.account.seller.name, c.item.status, c.item.remark ]
           end
         end
-        send_data csv_string, :filename => "手动充值列表##{Time.current.strftime("%Y-%m-%d")}.csv"
+        send_data csv_string, :filename => "PC手动充值列表##{Time.current.strftime("%Y-%m-%d")}.csv"
       }
     end
   end
