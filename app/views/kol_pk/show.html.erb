@@ -131,6 +131,11 @@
        nonce        = sign_package['nonceStr']
        ts           = sign_package['timestamp']
        signature    = sign_package['signature']
+       url_to_share = if current_kol
+                        "#{root_url}kol/#{current_kol.id}/kol_pk"
+                      else
+                        request.url
+                      end
     %>
     wx.config({
       debug:     false,
@@ -149,7 +154,7 @@
     wx.ready(function () {
       var shareData = {
         title:  '要和我比拼影响力么？快来Robin8一决高下！',
-        link:   '<%= "#{root_url}kol/#{current_kol.id}/kol_pk" %>',
+        link:   '<%= url_to_share %>',
         imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
         success: function (res) {
           closeDialog();
