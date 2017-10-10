@@ -17,6 +17,14 @@ class AuthenticationsController < ApplicationController
           return redirect_to omniauth_params['ok_url'] || brand_path
         else
           identity = Identity.create_identity_from_app(params)
+          # For kol_pk use
+          if omniauth_params['ok_url'].match(/kol_pk\/new\/vs/)
+            new_kol = Kol.create(name: params[:name], identities: [identity])
+            new_kol.update_column 'avatar_url', params[:avatar_url]
+            set_union_access_token(new_kol)
+            Rails.logger.kol_pk.info "--kol_pk /auth/weibo/callback: #{request.url}"
+            return redirect_to omniauth_params['ok_url']
+          end
           return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])
         end
       elsif identity.kol.nil?
@@ -25,6 +33,14 @@ class AuthenticationsController < ApplicationController
           identity.update(kol: current_kol)
           return redirect_to omniauth_params['ok_url'] || brand_path
         else
+          # For kol_pk use
+          if omniauth_params['ok_url'].match(/kol_pk\/new\/vs/)
+            new_kol = Kol.create(name: params[:name], identities: [identity])
+            new_kol.update_column 'avatar_url', params[:avatar_url]
+            set_union_access_token(new_kol)
+            Rails.logger.kol_pk.info "--kol_pk /auth/weibo/callback: #{request.url}"
+            return redirect_to omniauth_params['ok_url']
+          end
           return redirect_to register_bind_path(identity_code: identity.id, ok_url: omniauth_params['ok_url'])
         end
       else

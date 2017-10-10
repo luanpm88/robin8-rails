@@ -1,0 +1,335 @@
+erb/* reset */
+*{margin: 0;padding: 0;outline: none;}
+ol,ul{list-style:none;margin:0;padding:0;}
+img{width:100%;display: block;}
+html{text-decoration:none;font-family: Arial,huakang,Microsoft YaHei,Tahoma,sans-serif;color: #212121;}
+h2{font-size:32px ;font-weight: bold;}h3{font-size:24px; font-weight: bold;}h4{font-size:18px;font-weight: bold;margin-bottom: 5px;}h5{font-size:16px;font-weight: bold;}
+textarea{resize:none}
+/*end reset*/
+body{
+	width: 100%;
+	margin: 0 auto;
+	background: #ffc935;
+}
+/*.influential-wrap{
+	width: 100%;
+	background: url(../images/influential-02.jpg) no-repeat center top;
+	background-size: cover;
+}
+.bg-01{
+	height: 12.26rem;
+}
+.bg-02{
+	height: 13.33rem;
+	background-image: url(../images/influential-03.jpg)
+}
+.bg-03{
+	height: 2.13rem;
+	background-image: url(../images/influential-04.jpg)
+}*/
+section{
+	position: relative;
+}
+.influential-wrap{
+	position: absolute;
+	top: 4rem;
+	padding: 0 1.2rem;
+	width: 100%;
+	text-align: center;
+    box-sizing: border-box;
+}
+.top-i{
+	top: 0.4rem;
+}
+.influential-wrap .headshot{
+	position: relative;
+	display: block;
+	margin: 0 auto 0.2rem;
+	height: 1.28rem;
+	width: 1.28rem;
+	border: 0.08rem solid #ff940a;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.win-wrap .influential-wrap .headshot{
+	border-color:#ff6e0b;
+}
+.influential-wrap .i-name{
+	font-size: 0.4rem;
+	font-weight: bold;
+}
+.influential-wrap .score{
+	margin: 0.32rem 0 0.5rem;
+	font-size: 0.8rem;
+	line-height: 0.8rem;
+	text-align: center;
+	font-weight: bold;
+	color: #212121!important;
+}
+.influential-wrap .score img{
+	display: inline-block;
+	width: 0.32rem;
+	padding:0 0.32rem;
+}
+.influential-wrap .result{
+	margin: 0 auto 0.96rem;
+	width: 6.29rem;
+	height: 0.69rem;
+	background: image-url("kol_pk/influential-05.jpg") no-repeat center center;
+	background-size: cover;
+
+}
+.influential-wrap .result-lost{
+	background: image-url("kol_pk/influential-12.jpg") no-repeat center center;
+  background-size: cover;
+}
+.influential-wrap .result span{
+	padding-right: 0.53rem;
+	float: left;
+	display: inline-block;
+	width: 2.615rem;
+	line-height: 0.75rem;
+	text-align: right;
+	font-size: 0.4rem;
+	color: #ff950b;
+	font-weight: bold;
+}
+.influential-wrap  .result-lost span{
+	color: #bcbcbc
+}
+.i-btn{
+	margin: 0 auto;
+	display: inline-block;
+	width: 4.4rem;
+	height: 1.23rem;
+	border: 0 none;
+	background: 0 none;
+}
+.btn-group{
+	margin-bottom: 1.066rem;
+	text-align: center;
+}
+.btn-group .i-btn{
+	margin: 0 auto;
+	padding: 0 0.2rem;
+	width: 4.053rem;
+
+}
+.i-bottom{
+	position: absolute!important;
+	left: 0;
+	bottom: 0;
+}
+.crown{
+	position: absolute;
+	top: -0.6rem;
+	left: 3.93rem;
+	width: 2.4rem;
+	height: 1.146rem;
+}
+.influential-wrap .i-tag{
+	margin: 0.32rem auto 0;
+	width: 1.33rem;
+	height: 0.8rem;
+}
+.friend-wrap{
+	position: absolute;
+	top: 3.9rem;
+	width: 100%;
+	padding: 0 0.84rem;
+	box-sizing: border-box;
+}
+.friend-wrap li{
+	float: left;
+	margin: 0 0.1rem 1.6rem ;
+	display: block;
+	width: 2.4rem;
+	height: 2.4rem;
+	background: #ffb600;
+	border: 0.08rem solid #ff940a;
+	text-align: center;
+}
+.friend-wrap .headshot{
+	display: block;
+	margin: -0.65rem auto 0.2rem;
+	width: 0.96rem;
+	height: 0.96rem;
+	border: 0.08rem solid #ff940a;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.friend-wrap .score{
+	margin: 0;
+	font-size: 0.45rem;
+	line-height: 0.45rem;
+	text-align: center;
+    font-weight: bold;
+}
+.friend-wrap .score img{
+	display: inline-block;
+	width: 0.24rem;
+	padding:0 0.1rem;
+
+}
+.friend-wrap .i-name{
+	padding: 0 0.2rem 0.1rem;
+	display:block;
+	width: 2rem;
+	height: 0.8rem;
+	word-break:break-all;
+	font-weight:bold;
+}
+.friend-wrap .result-02{
+	margin: 0.2rem auto 0;
+	width: 1.44rem;
+	height: 0.9rem;
+}
+.btn-download{
+	position: absolute;
+	right: 0.37rem;
+	top: 0.6rem;
+	display: block;
+	width: 2.6rem;
+	background: #ffc935;
+	line-height: 0.93rem;
+	border-radius: 3rem;
+	color: #212121;
+	text-decoration: none;
+	text-align: center;
+	font-weight: bold;
+}
+.black{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	background: rgba(0,0,0,0.68);
+	top: 0;
+	left: 0;
+}
+.dialog{
+	overflow: hidden;
+	display: none;
+	position: fixed;
+    top: 0.3rem;
+    z-index: 3;
+    width: 100%;
+}
+.progress-box li{
+	margin-bottom: 0.3rem;
+	display: inline-block;
+	line-height: 0.533rem;
+	font-size: 0.4rem;
+  width: 101%;
+}
+.progress-box .progress-item{
+	display: inline-block;float: left;
+}
+.progress-bar{
+	float: left;
+	margin: 0 0.4rem;
+	padding: 0 ;
+	display: inline-block;
+	height: 0.533rem;
+	width: 5rem;
+	background: image-url("kol_pk/bg-progress.png") no-repeat center center;
+	background-size: cover;
+}
+.progress-bar span{
+	float: left;
+	 margin: 0.06rem 0 0 0.06rem;
+	display: inline-block;
+	height: 0.266rem;
+	width: 1rem;
+	background: #ffb600;
+}
+.progress-title{
+	margin:-0.4rem 0 0.3rem;
+	text-align: left;
+	font-size: 0.4rem;
+
+}
+.vs-wrap{
+	position: absolute;
+	left: 0;
+	top: 1rem;
+	padding: 0 1.2rem;
+	width: 7.6rem;
+}
+.vs-wrap .headshot{
+	position: relative;
+    display: block;
+    float: left;
+    height: 1.2rem;
+    width: 1.2rem;
+    border: 0.08rem solid  #ff940a;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.vs-wrap .i-name{
+	float: left;
+	display: block;
+	margin-left: 0.4rem;
+	font-size: 0.4rem;
+}
+.vs-wrap .score{
+	float: right;
+	margin: 0 -0.3rem 0 0;
+	width: 3.5rem;
+	line-height: 1.4rem;
+	font-size: 0.6rem;
+	text-align: right;
+}
+.vs-wrap .score img {
+    display: inline-block;
+    width: 0.3rem;
+    padding: 0 0.32rem;
+}
+.vs-wrap .i-tag{
+	position: absolute;
+    left: 3rem;
+    top: 0.7rem;
+	width: 0.98rem;
+	height: 0.58rem;
+}
+.vs-lost .score{
+	color: #bcbcbc;
+}
+.vs-lost .headshot{
+	border-color: #bab8b9;
+}
+.vs-wrap .crown{
+	left: 0.8rem;
+}
+.vs-win .headshot{
+	border-color: #ff6d0b;
+}
+.loading-icon{
+	margin: -2rem auto 1rem;
+	width: 1.2rem;
+	height: 3.2rem;
+}
+.loading-bar{
+	position: relative;
+	margin:0.5rem 0.8rem;
+	height: 0.266rem;
+	background: #fff;
+	border-radius: 0.4rem;
+}
+.loading-bar span{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 0.266rem;
+	width:  30%;
+	background: #ff950b;
+	border-radius: 0.4rem;
+}
+
+.left {
+  float: left !important;
+}
+.right {
+  float: right !important;
+}
