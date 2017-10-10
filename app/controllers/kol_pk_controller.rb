@@ -14,10 +14,12 @@ class KolPkController < ApplicationController
 
     @fighting_at = Time.now.to_i
     weibo_uid = current_kol.identities.where(provider: 'weibo').last.uid
+    challengee_weibo_uid = Kol.find(params[:challengee_id]).identities.
+      where(provider: 'weibo').last.uid
 
     # 偷偷的开始收集KOL 的weibo influence metric
     # Preliminarily starts the process to get influence score
-    KolInfluenceMetricsWorker.perform_async([weibo_uid],[])
+    KolInfluenceMetricsWorker.perform_async([weibo_uid, challengee_weibo_uid],[])
     Rails.logger.kol_pk.info "--kol_pk new: #{request.url}"
   end
 
