@@ -117,11 +117,66 @@
       <!-- Fake section for bottom element to be floating -->
       <%= image_tag 'kol_pk/influential-04.jpg' %>
 		</section>
-    <section style="position:fixed;bottom: 0;">
+    <section class="download-prompt">
 				<%= image_tag 'kol_pk/influential-04.jpg' %>
         <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
 		</section>
 
 	</body>
   <%= javascript_include_tag 'kol_pk/flexible' %>
+  <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+	<script type="text/javascript">
+		var dialog = document.getElementById('dialog');
+		var black = document.getElementById('black');
+		function closeDialog(){
+
+			black.style.display = "none";
+			dialog.style.display = "none";
+		}
+
+		function showDialog(){
+			black.style.display = "block";
+			dialog.style.display = "block";
+		}
+    <%
+       sign_package = ($weixin_client.get_jssign_package(request.url) rescue {})
+       app_id       = sign_package['appId']
+       nonce        = sign_package['nonceStr']
+       ts           = sign_package['timestamp']
+       signature    = sign_package['signature']
+       url_to_share = if current_kol
+                        "#{root_url}kol/#{current_kol.id}/kol_pk"
+                      else
+                        request.url
+                      end
+    %>
+    wx.config({
+      debug:     false,
+      appId:     '<%= app_id %>',
+      timestamp: '<%= ts %>',
+      nonceStr:  '<%= nonce %>',
+      signature: '<%= signature %>',
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo'
+      ]
+    });
+
+    wx.ready(function () {
+      var shareData = {
+        title:  '要和我比拼影响力么？快来Robin8一决高下！',
+        link:   '<%= "#{root_url}kol/#{current_kol.id}/kol_pk" %>',
+        imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
+        success: function (res) {
+          closeDialog();
+        }
+      };
+
+      wx.onMenuShareAppMessage(shareData);
+      wx.onMenuShareTimeline(shareData);
+      wx.onMenuShareQQ(shareData);
+      wx.onMenuShareWeibo(shareData);
+    });
 </html>

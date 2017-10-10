@@ -333,3 +333,11 @@ section{
 .right {
   float: right !important;
 }
+.headshot {
+  z-index: 1;
+}
+
+.download-prompt {
+  position:fixed;bottom: 0;
+  z-index: 999;
+}
