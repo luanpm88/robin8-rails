@@ -223,7 +223,21 @@ Rails.application.routes.draw do
   get 'wechat_geometry/kol_register' #成为品牌带盐人
   post 'wechat_geometry/kol_create'
   post 'wechat_geometry/sms_request'
+<<<<<<< HEAD
   get 'wechat_geometry/geometry' #进入APP下载页面
+=======
+  get 'wechat_geometry/geometry'
+  get 'lp_login/kol_register'
+  post 'lp_login/kol_create'
+  post 'lp_login/sms_request'
+  get 'lp_login/download'
+
+  get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
+  get 'kol_pk/new/vs/:challengee_id',                     to: 'kol_pk#new'
+  get 'kol_pk/:challenger_id/vs/:challengee_id/fighting', to: 'kol_pk#fighting'
+  get 'kol_pk/:challenger_id/vs/:challengee_id/check',    to: 'kol_pk#check'
+  get 'kol_pk/:pk_id',                                    to: 'kol_pk#show'
+>>>>>>> 476c2119e057067c22f02927a06820e512a370f9
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
