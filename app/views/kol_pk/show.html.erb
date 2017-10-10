@@ -71,10 +71,14 @@
           <div class="crown"><%= image_tag "kol_pk/crown.png" %></div>
         <% end %>
         <span class="i-name"><%= challengee.safe_name %></span>
-        <div class="i-tag"><%= image_tag "kol_pk/#{challengee_result}-02.png" %></div>
-        <div class="score"><%= image_tag "kol_pk/line-#{challengee_result}.png" %>
-        <%= @kol_pk.challengee_score %>分
-        <%= image_tag "kol_pk/line-#{challengee_result}.png" %></div>
+        <div class="i-tag">
+          <%=image_tag "kol_pk/#{challengee_result}-02.png" -%>
+        </div>
+        <div class="score">
+          <%=image_tag("kol_pk/line-#{challengee_result}.png")+
+             @kol_pk.challengee_score.to_s+'分'+
+             image_tag("kol_pk/line-#{challengee_result}.png")-%>
+        </div>
 			</div>
 		</section>
 		<section class="btn-group">
