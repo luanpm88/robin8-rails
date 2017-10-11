@@ -48,7 +48,6 @@ gem 'redis-objects'
 gem 'redis-rails'
 gem 'redis-namespace'
 gem 'rest-client'
-gem 'redis-namespace'
 
 gem 'mongoid', '~> 5.0.0'
 
@@ -161,7 +160,6 @@ gem 'geocoder'
 gem 'china_sms'
 gem 'qiniu', '~> 6.5.1'
 gem "rails-settings-cached"
-
 
 group :development, :test do
   # Deploy with Capistrano

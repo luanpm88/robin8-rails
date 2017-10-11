@@ -131,6 +131,8 @@
   </tbody>
 </table>
 
+<%= link_to "汇出 CSV", campaigns_marketing_dashboard_alipay_orders_path(:format => :csv), :class => "btn btn-default" %>
+
 <%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>
 
 <script>
