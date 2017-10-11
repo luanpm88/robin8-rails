@@ -1,0 +1,2 @@
+module LeaderClubHelper
+end

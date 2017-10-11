@@ -84,6 +84,9 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_keywords
 
+  #社团
+  has_one :leader_club
+
   # PK's
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
   has_many :sent_challenges,     class_name: "KolPk", foreign_key: "challenger_id", inverse_of: :challengee
