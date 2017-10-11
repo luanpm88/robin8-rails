@@ -85,7 +85,7 @@ class Kol < ActiveRecord::Base
   has_many :kol_keywords
 
   #社团
-  has_one :leader_club
+  has_and_belongs_to_many :clubs
 
   # PK's
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger

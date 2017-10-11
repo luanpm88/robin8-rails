@@ -81,7 +81,7 @@ module API
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
             present :invitees_count, invitees_count
             present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
-            present :leader_club, current_kol.leader_club
+            present :leader_club, "123"
           end
         end
 

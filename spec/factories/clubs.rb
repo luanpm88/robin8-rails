@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :leader_club do
+  factory :club do
     
   end
 

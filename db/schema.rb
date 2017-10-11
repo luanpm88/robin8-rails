@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010023849) do
+ActiveRecord::Schema.define(version: 20171011075713) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 20171010023849) do
 
   add_index "campaign_invites", ["campaign_apply_id"], name: "index_campaign_invites_on_campaign_apply_id", using: :btree
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
+  add_index "campaign_invites", ["deleted", "campaign_id", "status"], name: "index_campaign_invites_on_deleted_and_campaign_id_and_status", using: :btree
   add_index "campaign_invites", ["deleted"], name: "index_campaign_invites_on_deleted", using: :btree
   add_index "campaign_invites", ["kol_id"], name: "index_campaign_invites_on_kol_id", using: :btree
   add_index "campaign_invites", ["status"], name: "index_campaign_invites_on_status", using: :btree
@@ -539,6 +540,18 @@ ActiveRecord::Schema.define(version: 20171010023849) do
   end
 
   add_index "cities", ["province_id"], name: "index_cities_on_province_id", using: :btree
+
+  create_table "clubs", force: :cascade do |t|
+    t.integer  "kol_id",     limit: 4
+    t.string   "club_name",  limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "clubs_kols", id: false, force: :cascade do |t|
+    t.integer "club_id", limit: 4, null: false
+    t.integer "kol_id",  limit: 4, null: false
+  end
 
   create_table "contacts", force: :cascade do |t|
     t.integer  "author_id",           limit: 4
@@ -1492,12 +1505,6 @@ ActiveRecord::Schema.define(version: 20171010023849) do
     t.string   "email",        limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-  end
-
-  create_table "leader_admins", force: :cascade do |t|
-    t.integer  "kol_id",     limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
   end
 
   create_table "lottery_activities", force: :cascade do |t|

@@ -191,7 +191,11 @@ Rails.application.routes.draw do
   resources :registered_invitations do
     post :sms, on: :collection
   end
-
+  get 'club_campaign/campaign_page'
+  get 'club_campaign/kol_register'
+  post 'club_campaign/kol_create'
+  post 'club_campaign/sms_request'
+  get 'club_campaign/campaign_details'
   get 'wechat_campaign/campaign_page'
   get 'wechat_campaign/kol_register'
   post 'wechat_campaign/kol_create'
