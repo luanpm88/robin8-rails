@@ -1,0 +1,166 @@
+<%
+    challenger = @kol_pk.challenger
+    challengee = @kol_pk.challengee
+    challenger_result = @kol_pk.result_for(challenger)
+    challengee_result = @kol_pk.result_for(challengee)
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="flexible" content="initial-dpr=2,maximum-dpr=3" />
+    <%= stylesheet_link_tag 'kol_pk/style' %>
+    <%= csrf_meta_tag %>
+		<title>影响力大比拼</title>
+	</head>
+	<body style="margin-bottom: 3rem">
+		<section>
+      <%= image_tag "kol_pk/influential-06.jpg" %>
+		</section>
+		<section>
+      <%= image_tag "kol_pk/influential-07.jpg" %>
+      <div class="influential-wrap top-i vs-<%=challenger_result%>">
+        <span class="headshot">
+          <%= image_tag challenger.avatar_url %>
+        </span>
+        <% if challenger_result == "win" %>
+          <div class="crown"><%= image_tag "kol_pk/crown.png" %></div>
+        <% end %>
+        <span class="i-name"><%= challenger.safe_name %></span>
+        <div class="i-tag"><%= image_tag "kol_pk/#{challenger_result}-02.png" %></div>
+        <div class="score">
+          <%= image_tag "kol_pk/line-#{challenger_result}.png" %>
+          <%= @kol_pk.challenger_score %>分
+          <%= image_tag "kol_pk/line-#{challenger_result}.png" %>
+        </div>
+        <div class="result result-<%=challenger_result%>">
+          <span><%= challenger.won_challenges.count %></span>
+          <span><%= challenger.lost_challenges.count %></span>
+        </div>
+				<div class="competition">
+					<p class="progress-title">您最感兴趣的领域：</p>
+					<ul class="progress-box">
+					 	<li>
+              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.first_industry}" %></span>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.first_score*0.978%>%"></span></div>
+              <span class="progress-item right"><%= @kol_pk.first_score %></span>
+					 	</li>
+					 	<li>
+              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.second_industry}" %></span>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.second_score*0.978%>%"></span></div>
+              <span class="progress-item right"><%= @kol_pk.second_score %></span>
+					 	</li>
+						<li>
+              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.third_industry}" %></span>
+              <div class="progress-bar"><span style="width:<%=@kol_pk.third_score*0.978%>%"></span></div>
+              <span class="progress-item right"><%= @kol_pk.third_score %></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section>
+      <%= image_tag "kol_pk/influential-08.jpg" %>
+      <div class="vs-wrap vs-<%=challengee_result%>">
+        <span class="headshot">
+          <%= image_tag challengee.avatar_url %>
+        </span>
+        <% if challengee_result == "win" %>
+          <div class="crown"><%= image_tag "kol_pk/crown.png" %></div>
+        <% end %>
+        <span class="i-name"><%= challengee.safe_name %></span>
+        <div class="i-tag">
+          <%=image_tag "kol_pk/#{challengee_result}-02.png" -%>
+        </div>
+        <div class="score">
+          <%=image_tag("kol_pk/line-#{challengee_result}.png")+
+             @kol_pk.challengee_score.to_s+'分'+
+             image_tag("kol_pk/line-#{challengee_result}.png")-%>
+        </div>
+			</div>
+		</section>
+		<section class="btn-group">
+      <a class="i-btn" onclick="showDialog()" href="#">
+        <% if challenger_result == 'win' %>
+          <%= image_tag 'kol_pk/btn-03.png' %>
+        <% else %>
+          <%= image_tag 'kol_pk/btn-05.png' %>
+        <% end %>
+      </a>
+      <a class="i-btn"  href="<%=Rails.application.secrets[:download_url]%>">
+        <%= image_tag 'kol_pk/btn-04.png' %>
+      </a>
+		</section>
+    <section class="download-prompt">
+				<%= image_tag 'kol_pk/influential-04.jpg' %>
+        <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+		</section>
+		<section>
+			<!-- 遮罩层 -->
+			<div class="black" id="black">	</div>
+			<!-- 弹出层 -->
+			<div class="dialog" id="dialog">
+        <%= image_tag 'kol_pk/share-02.png' %>
+			</div>
+		</section>
+	</body>
+  <%= javascript_include_tag 'kol_pk/flexible' %>
+  <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+	<script type="text/javascript">
+		var dialog = document.getElementById('dialog');
+		var black = document.getElementById('black');
+		function closeDialog(){
+
+			black.style.display = "none";
+			dialog.style.display = "none";
+		}
+
+		function showDialog(){
+			black.style.display = "block";
+			dialog.style.display = "block";
+		}
+    <%
+       sign_package = ($weixin_client.get_jssign_package(request.url) rescue {})
+       app_id       = sign_package['appId']
+       nonce        = sign_package['nonceStr']
+       ts           = sign_package['timestamp']
+       signature    = sign_package['signature']
+       url_to_share = if current_kol
+                        "#{root_url}kol/#{current_kol.id}/kol_pk"
+                      else
+                        request.url
+                      end
+    %>
+    wx.config({
+      debug:     false,
+      appId:     '<%= app_id %>',
+      timestamp: '<%= ts %>',
+      nonceStr:  '<%= nonce %>',
+      signature: '<%= signature %>',
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo'
+      ]
+    });
+
+    wx.ready(function () {
+      var shareData = {
+        title:  '要和我比拼影响力么？快来Robin8一决高下！',
+        link:   '<%= url_to_share %>',
+        imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
+        success: function (res) {
+          closeDialog();
+        }
+      };
+
+      wx.onMenuShareAppMessage(shareData);
+      wx.onMenuShareTimeline(shareData);
+      wx.onMenuShareQQ(shareData);
+      wx.onMenuShareWeibo(shareData);
+    });
+	</script>
+</html>
