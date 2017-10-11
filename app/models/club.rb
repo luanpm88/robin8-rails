@@ -1,3 +1,4 @@
 class Club < ActiveRecord::Base
-	has_and_belongs_to_many :kols
+ belongs_to :kol
+ has_many :club_numbers
 end

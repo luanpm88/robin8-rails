@@ -66,8 +66,9 @@ class ClubCampaignController < ApplicationController
         kol_exists.add_campaign_id campaign_id
         kol_exists.approve_campaign(campaign_id)
       end
-
-      kol_exists.clubs << Club.find_or_create_by(club_name: params[:club]) if params[:club].present?
+      club = Club.find_by(club_name: params[:club])
+      ClubMember.create(club_id: club.id , kol_id: kol_exists.id)
+      # kol_exists.clubs << Club.find_or_create_by(club_name: params[:club]) if params[:club].present?
       return render json: {url: club_campaign_campaign_details_path(campaign_id: campaign_id) }
     else
       ip = (request.remote_ip rescue nil) || request.ip
@@ -93,7 +94,8 @@ class ClubCampaignController < ApplicationController
           kol.add_campaign_id campaign_id
           kol.approve_campaign(campaign_id)
         end
-        kol.clubs << Club.find_or_create_by(club_name: params[:club]) if params[:club].present?
+        club = Club.find_by(club_name: params[:club])
+        ClubMember.create(club_id: club.id , kol_id: kol.id)
         return render json: {url: club_campaign_campaign_details_path(campaign_id: campaign_id) }     
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
