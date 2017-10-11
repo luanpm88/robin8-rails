@@ -28,38 +28,42 @@ Rails.application.routes.draw do
 
   get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
+
+  # 网红添加活动和充值的页面
   get "brand", to: "brand#index"
 
-  get 'campaign_visit' => "campaign_show#visit"
-  get 'campaign_show' => "campaign_show#show"
-  get 'campaign_share' => "campaign_show#share"
-  get 'read_hot_item' => 'commons#read_hot_item'
-  get 'commons/material' =>  'commons#material'
+  get 'campaign_visit' => "campaign_show#visit" #无法访问
+  get 'campaign_show' => "campaign_show#show"  #不存在
+  get 'campaign_share' => "campaign_show#share" #无法访问
+  get 'read_hot_item' => 'commons#read_hot_item' #无法访问
+  get 'commons/material' =>  'commons#material' #无法访问
 
 
-  get "cps_articles/:id" => "cps_articles#show"
-  get "cps_article_shares/:id" => "cps_articles#share_show"
+  get "cps_articles/:id" => "cps_articles#show" #是图文，链接到京东
+  get "cps_article_shares/:id" => "cps_articles#share_show"#文章、链接
 
+  #无法访问
   resources :identities do
     member do
       get 'current_categories'
     end
   end
-  put 'identities/:id' => "identities#update"
-  get 'identities/influence/:id' => 'identities#influence'
-  get 'identities/discover/:labels' => 'identities#discover'
-  get 'identities/labels/:user_id' => 'identities#labels'
 
-  get 'articles/:id/show' => "articles#show"
+  put 'identities/:id' => "identities#update"
+  get 'identities/influence/:id' => 'identities#influence' #无法访问
+  get 'identities/discover/:labels' => 'identities#discover'
+  get 'identities/labels/:user_id' => 'identities#labels' #无法访问
+
+  get 'articles/:id/show' => "articles#show" #直接跳转到微信公众号文章
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
-  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_hl_and_campaign'
-  get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
-  get "campaign/valid_campaigns" => "campaign#valid_campaigns"
-  get "campaign/campaign_targets" => "campaign#campaign_targets"
+  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_hl_and_campaign' #无法访问
+  get 'mark_as_running/:id' => 'campaign_invite#mark_as_running' #:id为1时返回error
+  get "campaign/valid_campaigns" => "campaign#valid_campaigns" #返回error, api key not right
+  get "campaign/campaign_targets" => "campaign#campaign_targets"#返回error, api key not right
 
-  match '/wechat_third/notify', :via => [:get, :post]
-  match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
+  match '/wechat_third/notify', :via => [:get, :post]#get返回success
+  match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]#get返回success
 
   # devise_for :admin_users, controllers: {
   #   sessions: 'admin_users/sessions'
@@ -75,8 +79,8 @@ Rails.application.routes.draw do
     sessions: 'admin_users/sessions'
   }
 
-  get    '/users/sign_in', to: redirect('/login')
-  get    '/users/sign_up', to: redirect('/register')
+  get    '/users/sign_in', to: redirect('/login') #进入登录页面
+  get    '/users/sign_up', to: redirect('/register')#注册页面
 
   devise_for :users
 
@@ -98,20 +102,20 @@ Rails.application.routes.draw do
   end
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
-  match "/auth/wechat_third" => "authentications#wechat_third", :via => [:get, :post]
-  match "/auth/wechat_third_callback" => "authentications#wechat_third_callback", :via => [:get, :post]
+  match "/auth/wechat_third" => "authentications#wechat_third", :via => [:get, :post] #微信公众平台授权登录？
+  match "/auth/wechat_third_callback" => "authentications#wechat_third_callback", :via => [:get, :post] #第三方登录？ 返回failure
 
   get "/auth/:action/callback", to: "authentications#:action", constraints: { action: /weibo|wechat|qq_connect/ }
 
-  get 'set_locale' => 'pages#set_locale'
-  get '/users/manageable_users' => 'users#manageable_users'
+  get 'set_locale' => 'pages#set_locale'  #redirect_to到root页
+  get '/users/manageable_users' => 'users#manageable_users'#返回[]
   delete '/users/delete_user' => 'users#delete_user'
   delete '/users/delete_kols_list' => 'kols_lists#delete_kols_list'
-  get 'users/get_current_user' => 'users#get_current_user'
-  get 'users/get_active_subscription' => 'users#get_active_subscription'
-  get 'users/private_kol' => 'users#get_private_kols'
-  get 'users/kols_lists' => 'kols_lists#get_contacts_list'
-  get 'users/qiniu_uptoken' => 'users#qiniu_uptoken'
+  get 'users/get_current_user' => 'users#get_current_user' #无法访问
+  get 'users/get_active_subscription' => 'users#get_active_subscription' #无法访问
+  get 'users/private_kol' => 'users#get_private_kols'#返回[],要的是current_user的kols，可能是因为我这个用户的kols就是空的吧？
+  get 'users/kols_lists' => 'kols_lists#get_contacts_list'#进入了登录页
+  get 'users/qiniu_uptoken' => 'users#qiniu_uptoken' # 产生了一串随机码
   post "users/set_avatar_url" => 'users#set_avatar_url'
   post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
@@ -122,15 +126,17 @@ Rails.application.routes.draw do
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
+  #发送验证码
   post '/kols/send_sms/' => 'kols#send_sms'
+  #确认验证码
   post '/kols/valid_verify_code/' => 'kols#valid_verify_code'
-  get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account"
-  get '/users/new' => 'users#new'
-  get '/kols/new' => 'kols#create'
+  get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account" #无法访问
+  get '/users/new' => 'users#new' #无法访问
+  get '/kols/new' => 'kols#create' #无法访问
   put '/kols/monetize' => 'kols#update_monetize'
-  get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
-  get '/kols/valid_phone_number'
-  get 'kol_value' => 'kols#kol_value'
+  get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail' #error
+  get '/kols/valid_phone_number' #false
+  get 'kol_value' => 'kols#kol_value' #无法访问
 
   # kols
   devise_for :kols, controllers: {
@@ -142,7 +148,7 @@ Rails.application.routes.draw do
 
   resources :users do
     collection do
-      get 'get_user_by_token'
+      get 'get_user_by_token' #找不到对应的action
       get 'identities'
       get 'get_identities'
       get 'info'
@@ -161,33 +167,50 @@ Rails.application.routes.draw do
   end
 
   resources :alerts, only: [:create, :show, :update]
-  resources :contacts, only: [:index, :create, :show]
+  resources :contacts, only: [:index, :create, :show] #和后面的路径重复了
   resources :export_influencers, only: [:create]
 
-  get 'share_by_email/show'
+  get 'share_by_email/show' # 无法访问
   post 'share_by_email' => 'share_by_email#create'
 
   get 'home', to: 'pages#moments'
+
+  #点击 “我是网红” 得到的画面
   get 'kols', to: 'pages#kols'
+
+  # 点击"我是广告主-寻找大V"
   get 'brands/bigv', to: 'pages#bigv'
+
+  # 点击”我是广告主——朋友圈推广"
   get 'brands/moments', to: 'pages#moments'
 
   root 'pages#home'
 
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
   get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'
+
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
   get '/privacy_policy', to: 'pages#privacy_policy'
+
+  # 在/brands/bigv页面点击 "了解更多" 出现表单
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
-  get '/contact_us', to: "pages#contact_us"
+  get '/contact_us', to: "pages#contact_us" #无法访问
+
+  #无法访问
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
+
+  #进入APP下载页面
   get '/download_invitation', to: 'pages#download_invitation'
-  get '/invite', to: 'pages#invite'
-  get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help'
+  get '/invite', to: 'pages#invite' #进入填写手机号、验证码的页面
+  get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help' #填写活动帮助说明
+
+  #无法访问
   resources :campaign, only: [:index, :create, :update, :show]
+
+  #无法访问
   resources :registered_invitations do
     post :sms, on: :collection
   end
@@ -197,9 +220,12 @@ Rails.application.routes.draw do
   post 'wechat_campaign/kol_create'
   post 'wechat_campaign/sms_request'
   get 'wechat_campaign/campaign_details'
-  get 'wechat_geometry/kol_register'
+  get 'wechat_geometry/kol_register' #成为品牌带盐人
   post 'wechat_geometry/kol_create'
   post 'wechat_geometry/sms_request'
+
+  get 'wechat_geometry/geometry' #进入APP下载页面
+
   get 'wechat_geometry/geometry'
   get 'lp_login/kol_register'
   post 'lp_login/kol_create'

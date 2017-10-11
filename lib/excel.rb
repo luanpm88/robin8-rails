@@ -34,16 +34,16 @@ end
 #   end
 # end
 
-#rodirgo 打标签
-all = File.open("#{Rails.root}/public/all_rodirgo.txt" ,"r").read.split(",")
-xinyonghu = File.open("#{Rails.root}/public/xinyonghu_rodirgo.txt" ,"r").read.split(",")
+#Rodrigo 打标签
+all = File.open("#{Rails.root}/public/all_rodrigo.txt" ,"r").read.split(",")
+xinyonghu = File.open("#{Rails.root}/public/xinyonghu_rodrigo.txt" ,"r").read.split(",")
 CSV.open("#{Rails.root}/public/all_redirgo.csv" ,"wb") do |csv|
   all.each do |t|
-	  csv <<  t
+	  csv <<  [t]
   end
 end
 CSV.open("#{Rails.root}/public/xinyonghu_redirgo.csv" ,"wb") do |csv|
   xinyonghu.each do |t|
-	  csv << t
+	  csv << [t]
   end
 end
