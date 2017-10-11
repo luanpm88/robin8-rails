@@ -234,13 +234,13 @@ section{
 	height: 0.533rem;
 	width: 5rem;
 	background: image-url("kol_pk/bg-progress.png") no-repeat center center;
-	background-size: cover;
+	background-size: contain;
 }
 .progress-bar span{
 	float: left;
 	display: inline-block;
 	height: 0.3rem;
-	width: 1rem;
+	width: 1.5rem;
 	background: #ffb600;
 }
 .progress-title{
@@ -325,12 +325,20 @@ section{
 	background: #ff950b;
 	border-radius: 0.4rem;
 }
-
+// flexbox
+// .wrapper {
+// 	display: flex;
+// }
+// .progress-bar {
+// 	width: 63%;
+// }
 .left {
   float: left !important;
+	// width: 16%;
 }
 .right {
   float: right !important;
+	// width: 7%;
 }
 .headshot {
   z-index: 1;
@@ -338,5 +346,7 @@ section{
 
 .download-prompt {
   position:fixed;bottom: 0;
-  z-index: 999;
+  z-index: 3;
+	height: 1.5rem;
+	opacity: 0.7;
 }
