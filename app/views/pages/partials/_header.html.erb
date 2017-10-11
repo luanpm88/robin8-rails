@@ -42,7 +42,8 @@
                 <a href="/accounts/<%= current_kol.id %>/edit" data-no-turbolink="true" target="_top">个人中心</a>
               </li>
               <li>
-                <%= link_to logout_url(subdomain: :passport, ok_url: root_url) do %>
+                <% lout_url = Rails.env.development? ? logout_url(ok_url: root_url) : logout_url(subdomain: :passport, ok_url: root_url) %>
+                   <%= link_to lout_url do %>
                   退出
                 <% end %>
               </li>
@@ -50,7 +51,8 @@
           </li>
         <% else %>
           <li>
-            <%= link_to login_url(subdomain: :passport, ok_url: root_url) do %>
+            <% lin_url = Rails.env.development? ? login_url(ok_url: root_url) : login_url(subdomain: :passport, ok_url: root_url) %>
+            <%= link_to lin_url do %>
               <i class="icon-login"></i> 登录/注册
             <% end %>
           </li>

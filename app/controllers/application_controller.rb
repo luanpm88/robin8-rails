@@ -121,7 +121,11 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       super
     else
-      redirect_to login_url(subdomain: :passport, ok_url: brand_url(subdomain: false))
+      if Rails.env.development?
+        redirect_to login_url(ok_url: brand_url(subdomain: false))
+      else
+        redirect_to login_url(subdomain: :passport, ok_url: brand_url(subdomain: false))
+      end
     end
   end
 
