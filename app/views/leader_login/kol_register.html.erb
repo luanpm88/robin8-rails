@@ -21,6 +21,7 @@
 
     <%= text_field_tag 'smsCode', nil, class: "input-ro", placeholder: "请填写验证码"  %>
     <a id="request-sms" class="red-bag-btn">获取验证码</a>
+    <%= hidden_field_tag 'type', params[:type] %>
     <button id="submit" class="red-bag-btn width100">立即体验</button>
   </form>
   <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
@@ -30,8 +31,8 @@
 </body>
 
 <script type="text/javascript">
-    var smsUrl = "<%= lp_login_sms_request_path %>";
-    var createUrl = "<%= lp_login_kol_create_path %>";
+    var smsUrl = "<%= leader_login_sms_request_path %>";
+    var createUrl = "<%= leader_login_kol_create_path %>";
     var smsBtn = $("#request-sms");
     var submitBtn = $("#submit");
     var remainingNumber = smsBtn.data("remaining");
@@ -104,6 +105,7 @@
     $("form").submit(function(event) {
         var mobileNumber = $("#mobileNumber").val();
         var smsCode = $("#smsCode").val();
+        var type = $("#type").val();
 
         if (!!submitBtn.attr('disabled'))
             return false;
@@ -115,6 +117,7 @@
             data: {
                 'mobile_number': mobileNumber,
                 'sms_code': smsCode,
+                'type' : type
             },
             beforeSend: function(xhr){
                 var token = $('meta[name="csrf-token"]').attr('content');

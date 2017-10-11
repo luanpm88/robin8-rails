@@ -208,9 +208,11 @@ Rails.application.routes.draw do
   get 'lp_login/kol_register'
   post 'lp_login/kol_create'
   post 'lp_login/sms_request'
+  get 'lp_login/download'
   get 'leader_login/kol_register'
   post 'leader_login/kol_create'
   post 'leader_login/sms_request'
+  get 'leader_login/download'
   
 
 
