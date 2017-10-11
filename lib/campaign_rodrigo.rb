@@ -5,12 +5,12 @@ begin
 
   #number = []
   #找出10月6号和7号这两天新注册的用户
-  kols = Kol.where("created_at > ? and created_at < ?","2015-10-15 00:00:00" ,"2016-10-15 23:59:59")
+  kols = Kol.where("created_at > ? and created_at < ?","2017-10-06 00:00:00" ,"2017-10-07 23:59:59")
   #puts kols
   ids = []
   kols.each do |t|
     #判断这两天新注册的用户是否参加了4221这个活动
-    cam = CampaignInvite.find_by(campaign_id: 122, kol_id: t.id)
+    cam = CampaignInvite.find_by(campaign_id: 4221, kol_id: t.id)
     if cam.present? && t.admintags.blank?
       t.admintags << Admintag.find_or_create_by(tag:'Rodrigo')
       ids.push t.mobile_number.to_i unless old_number.include?(t.mobile_number)
