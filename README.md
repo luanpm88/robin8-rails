@@ -28,13 +28,15 @@ by artificial intelligence.
   * run `rails s` to have your server up!
 
 
-# QA Server
+# QA Server and Production server
 
   Running rails console in QA server
 
   * ssh into the server, get access from current senior developers
   * cd into `/home/deployer/apps/robin8_qa/current`
   * run `RAILS_ENV=qa bundle exec rails console` and you're in
+  * or `RAILS_ENV=production bundle exec rails console --sandbox` if this is production
+  * NOTE! Always use `--sandbox` so it's read only on production
 
 
 With `mailcatcher` gem, you can debug mailer localy. It not in `Gemfile` for it will caused some problem.
