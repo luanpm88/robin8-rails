@@ -68,8 +68,8 @@ class LpLoginController < ApplicationController
   	  end
     elsif type == "3"
       if kol_exists.admintags.blank?
-        kol_exists.admintags << Admintag.find_or_create_by(tag: 'Rodirgo')
-      end     
+        kol_exists.admintags << Admintag.find_or_create_by(tag: 'Rodrigo')
+      end
   	end
   end
 

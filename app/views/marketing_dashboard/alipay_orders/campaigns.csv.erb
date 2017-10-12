@@ -1,0 +1,25 @@
+<%
+  cols = [
+    "活动ID",
+    "活动名称",
+    "品牌主ID",
+    "品牌名称",
+    "订单号",
+    "支付宝订单号",
+    "支付金额",
+    "支付状态",
+    "下单时间",
+    "销售人员",
+    "备注",
+    "修改备注"
+  ]
+%>
+
+<%=
+  CSV.generate do |csv|
+      csv << cols
+      @campaigns.each do |c|
+        csv << [c.id, c.name, c.user.id, c.user.name, c.trade_number, c.alipay_trade_no, c.alipay_amount, c.alipay_status.zero?, c.created_at.strftime("%Y-%m-%d %H:%M") ]
+      end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>

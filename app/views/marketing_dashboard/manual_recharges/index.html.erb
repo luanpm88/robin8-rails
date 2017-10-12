@@ -85,4 +85,20 @@
   </tbody>
 </table>
 
+<p>
+  <% zong = 0 %>
+  <% @transactions.each do |a| %>
+    <% cam_amount = a.credits rescue 0 %>
+    <% zong = zong + cam_amount %>
+  <% end %>
+  <%= "总金额#{zong}" %>
+</p>
+
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to "导出CSV", csv_url, :class => "btn btn-default" %>
+
 <%= will_paginate @transactions, renderer: BootstrapPagination::Rails  %>

@@ -17,6 +17,7 @@ class PagesController < ApplicationController
   end
 
   def kols
+    # app/views/pages/kol.html.erb
     render 'kol', :layout => 'brand_v2'
   end
 
