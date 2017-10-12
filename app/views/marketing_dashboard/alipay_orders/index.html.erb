@@ -125,7 +125,19 @@
     <% end %>
   </tbody>
 </table>
+<p>
+  <% zong = 0 %>
+  <% @alipay_orders.each do |a| %>
+    <%  zong = zong + a.credits %>
+  <% end %>
+  <%= "总金额#{zong}" %>
+</p>
 
-<%= link_to "汇出 CSV", marketing_dashboard_alipay_orders_path(:format => :csv), :class => "btn btn-default" %>
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to "导出CSV", csv_url, :class => "btn btn-default" %>
 
 <%= will_paginate @alipay_orders, renderer: BootstrapPagination::Rails  %>

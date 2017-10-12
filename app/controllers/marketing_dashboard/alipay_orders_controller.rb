@@ -27,15 +27,10 @@ class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseContr
 
     respond_to do |format|
       format.html
-      format.csv {
-        csv_string = CSV.generate do |csv|
-          csv << ["活动ID", "活动名称", "品牌主ID", "品牌名称", "订单号", "支付宝订单号", "支付金额", "支付状态", "下单时间", "销售人员", "备注", "修改备注"]
-          @campaigns.each do |c|
-            csv << [c.id, c.name, c.user.id, c.user.name, c.trade_number, c.alipay_trade_no, c.alipay_amount, c.alipay_status.zero?, c.created_at.strftime("%Y-%m-%d %H:%M") ]
-          end
-        end
-        send_data csv_string, :filename => "支付宝直接付款发起的活动 #{Time.current.strftime("%Y-%m-%d")}.csv"
-    }
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"发布活动记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+      end
     end
   end
 

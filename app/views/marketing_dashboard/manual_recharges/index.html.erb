@@ -85,6 +85,11 @@
   </tbody>
 </table>
 
-<%= link_to "汇出 CSV", marketing_dashboard_manual_recharges_path(:format => :csv), :class => "btn btn-default" %>
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to "导出CSV", csv_url, :class => "btn btn-default" %>
 
 <%= will_paginate @transactions, renderer: BootstrapPagination::Rails  %>
