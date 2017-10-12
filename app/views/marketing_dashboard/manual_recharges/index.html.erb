@@ -85,6 +85,14 @@
   </tbody>
 </table>
 
+<p>
+  <% zong = 0 %>
+  <% @transactions.each do |a| %>
+    <% zong = zong + a.credits %>
+  <% end %>
+  <%= "总金额#{zong}" %>
+</p>
+
 <%
   csv_url = request.path + ".csv"
   csv_url += "?" + request.query_string if request.query_string
