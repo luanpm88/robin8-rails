@@ -34,7 +34,8 @@
 <p>
   <% zong = 0 %>
   <% @transactions.each do |a| %>
-    <% zong = zong + a.account.historical_recharge %>
+    <% cam_amount = a.account.historical_recharge rescue 0 %>
+    <% zong = zong + cam_amount %>
   <% end %>
   <%= "总金额#{zong}" %>
 </p>

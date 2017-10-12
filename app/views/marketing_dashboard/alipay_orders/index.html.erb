@@ -128,7 +128,8 @@
 <p>
   <% zong = 0 %>
   <% @alipay_orders.each do |a| %>
-    <%  zong = zong + a.credits %>
+    <% cam_amount = a.credits rescue 0 %>
+    <%  zong = zong + cam_amount %>
   <% end %>
   <%= "总金额#{zong}" %>
 </p>

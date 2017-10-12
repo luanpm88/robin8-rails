@@ -134,7 +134,8 @@
 <p>
   <% zong = 0 %>
   <% @campaigns.each do |a| %>
-    <% zong = zong + a.alipay_amount %>
+    <% cam_amount = a.alipay_amount rescue 0 %>
+    <% zong = zong + cam_amount %>
   <% end %>
   <%= "总金额#{zong}" %>
 </p>
