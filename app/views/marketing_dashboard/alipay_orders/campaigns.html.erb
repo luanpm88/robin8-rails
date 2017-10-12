@@ -131,7 +131,21 @@
   </tbody>
 </table>
 
-<%= link_to "汇出 CSV", campaigns_marketing_dashboard_alipay_orders_path(:format => :csv), :class => "btn btn-default" %>
+<p>
+  <% zong = 0 %>
+  <% @campaigns.each do |a| %>
+    <% cam_amount = a.alipay_amount rescue 0 %>
+    <% zong = zong + cam_amount %>
+  <% end %>
+  <%= "总金额#{zong}" %>
+</p>
+
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to "导出CSV", csv_url , :class => "btn btn-default" %>
 
 <%= will_paginate @campaigns, renderer: BootstrapPagination::Rails  %>
 
