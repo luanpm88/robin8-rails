@@ -58,8 +58,8 @@ Rails.application.configure do
   # # uncomment to avoid caching during dev
   # # config.cache_store = :null_store
   #
-  
-  # Uncomment to enable emailing on localhost. 
+
+  # Uncomment to enable emailing on localhost.
   # ActionMailer::Base.delivery_method = :smtp
   # ActionMailer::Base.smtp_settings = {
   #   :user_name => Rails.application.secrets[:smtp][:user_name],

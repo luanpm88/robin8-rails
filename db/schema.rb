@@ -361,6 +361,7 @@ ActiveRecord::Schema.define(version: 20170925062844) do
     t.string   "brand_opinion",     limit: 255
     t.integer  "lock_version",      limit: 4,     default: 0,     null: false
     t.boolean  "deleted",           limit: 1,     default: false
+    t.string   "sub_type",          limit: 255
   end
 
   add_index "campaign_invites", ["campaign_apply_id"], name: "index_campaign_invites_on_campaign_apply_id", using: :btree

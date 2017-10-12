@@ -514,6 +514,8 @@ GEM
     rack-attack (4.4.1)
       rack
     rack-cors (0.4.0)
+    rack-mini-profiler (0.10.5)
+      rack (>= 1.2.0)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
     rack-protection (1.5.3)
@@ -908,6 +910,7 @@ DEPENDENCIES
   qy_wechat (~> 1.0.1)
   rack-attack
   rack-cors
+  rack-mini-profiler
   rack-test
   railroady
   rails (= 4.2.0)

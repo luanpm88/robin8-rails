@@ -69,6 +69,8 @@
   </div>
 </div>
 
+<%= "共有#{@kols.count}个搜索结果" %>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
@@ -111,7 +113,7 @@
         <td>
           <!-- Add an Admintag -->
           <%= link_to "+", marketing_dashboard_kol_add_admintag_path(k.id), style: "float: right;" %>
-          
+
           <!-- Display each Admintag -->
           <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
         </td>
@@ -141,7 +143,6 @@
       </tr>
     <% end %>
   </tbody>
-
 </table>
 
 <%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

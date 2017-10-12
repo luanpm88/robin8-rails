@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="flexible" content="initial-dpr=2,maximum-dpr=3" />
+      <%= stylesheet_link_tag 'kol_pk/style' %>
+      <%= csrf_meta_tag %>
+		<title>影响力大比拼</title>
+	</head>
+	<body>
+		<section class="content-wrap" style="text-align: center">
+			<div><%= image_tag "kol_pk/influential-13.jpg" %></div>
+			<div class="loading-box">
+        <a class="i-btn" onclick="showDialog()">
+          <%= image_tag "kol_pk/btn-02.png" %>
+        </a>
+			</div>
+		</section>
+		<section class="i-bottom">
+      <%= image_tag 'kol_pk/influential-04.jpg' %>
+      <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+		</section>
+		<section>
+			<!-- 遮罩层 -->
+			<div class="black" id="black"></div>
+			<!-- 弹出层 -->
+			<div class="dialog" id="dialog">
+        <%= image_tag 'kol_pk/share-01.png' %>
+			</div>
+		</section>
+
+	</body>
+  <%= javascript_include_tag 'kol_pk/flexible' %>
+  <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+	<script type="text/javascript">
+		var dialog = document.getElementById('dialog');
+		var black = document.getElementById('black');
+		function closeDialog(){
+
+			black.style.display = "none";
+			dialog.style.display = "none";
+		}
+
+		function showDialog(){
+			black.style.display = "block";
+			dialog.style.display = "block";
+		}
+    <%
+       sign_package = ($weixin_client.get_jssign_package(request.url) rescue {})
+       app_id       = sign_package['appId']
+       nonce        = sign_package['nonceStr']
+       ts           = sign_package['timestamp']
+       signature    = sign_package['signature']
+    %>
+    wx.config({
+      debug:     false,
+      appId:     '<%= app_id %>',
+      timestamp: '<%= ts %>',
+      nonceStr:  '<%= nonce %>',
+      signature: '<%= signature %>',
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo'
+      ]
+    });
+
+    wx.ready(function () {
+      var shareData = {
+        title:  '要和我比拼影响力么？快来Robin8一决高下！',
+        link:   '<%= "#{root_url}kol/#{current_kol.id}/kol_pk" %>',
+        imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
+        success: function (res) {
+          window.location.href = '<%="/kol_pk/#{current_kol.id}/vs/#{params[:challengee_id]}/fighting?at=#{@fighting_at}"%>';
+        }
+      };
+
+      wx.onMenuShareAppMessage(shareData);
+      wx.onMenuShareTimeline(shareData);
+      wx.onMenuShareQQ(shareData);
+      wx.onMenuShareWeibo(shareData);
+    });
+	</script>
+</html>

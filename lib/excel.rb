@@ -3,17 +3,26 @@ require 'roo'
 require 'csv'
 
 # #生成用户表
-xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
-txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
-puts txt.count
-phone = xlsx.column(5)
-CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|
-	txt.each do |t|
-	  line = phone.index(t.to_i)
-	  row = xlsx.row(line.to_i + 1)
-	  csv << row
-	end
+# xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
+# txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
+# puts txt.count
+# phone = xlsx.column(5)
+# CSV.open("#{Rails.root}/public/123.csv" ,"wb") do |csv|
+# 	txt.each do |t|
+# 	  line = phone.index(t.to_i)
+# 	  row = xlsx.row(line.to_i + 1)
+# 	  csv << row
+# 	end
+# end
+
+#geometry 活动表
+txt = File.open("#{Rails.root}/public/campaign.txt" ,"r").read.split("&")
+CSV.open("#{Rails.root}/public/campaign.csv" ,"wb") do |csv|
+  txt.each do |t|
+	csv << t.split("@")
+  end
 end
+
 
 #插入手机号
 # xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/phone.xlsx")
@@ -23,12 +32,18 @@ end
 #   	row = xlsx.row(t+1).push(txt[t])
 #   	csv << row
 #   end
-# end 
+# end
 
-#geometry 活动表
-# txt = File.open("#{Rails.root}/public/campaign.txt" ,"r").read.split("&")
-# CSV.open("#{Rails.root}/public/campaign.csv" ,"wb") do |csv|
-#   txt.each do |t|
-# 	csv << t.split("@")
+#Rodrigo 打标签
+# all = File.open("#{Rails.root}/public/all_rodrigo.txt" ,"r").read.split(",")
+# xinyonghu = File.open("#{Rails.root}/public/xinyonghu_rodrigo.txt" ,"r").read.split(",")
+# CSV.open("#{Rails.root}/public/all_redirgo.csv" ,"wb") do |csv|
+#   all.each do |t|
+# 	  csv <<  [t]
+#   end
+# end
+# CSV.open("#{Rails.root}/public/xinyonghu_redirgo.csv" ,"wb") do |csv|
+#   xinyonghu.each do |t|
+# 	  csv << [t]
 #   end
 # end

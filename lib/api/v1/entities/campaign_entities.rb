@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :message, :max_action, :remark, :sub_type, :wechat_auth_type
+          expose :id, :name, :description, :status, :message, :max_action, :remark, :wechat_auth_type
           expose :cpi_example_screenshot do |campaign|
             campaign.get_example_screenshot
           end
