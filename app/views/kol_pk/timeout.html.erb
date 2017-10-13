@@ -15,9 +15,11 @@
 			<div style="text-align: center;">
         <h1>服务器走丢了，请稍后重试哦！</h1>
 			</div>
-      <a class="i-btn" href='<%= params[:was] %>'>
-        <%= image_tag "kol_pk/retry.jpg" %></a>
-      </a>
+      <div class="loading-box" style="text-align: center;">
+        <a class="i-btn" href='<%= params[:was] %>'>
+          <%= image_tag "kol_pk/retry.png" %></a>
+        </a>
+      </div>
 		</section>
 		<section class="i-bottom">
       <%= image_tag "kol_pk/influential-04.jpg" %>
