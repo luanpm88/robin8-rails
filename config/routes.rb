@@ -239,13 +239,14 @@ Rails.application.routes.draw do
   post 'leader_login/kol_create'
   post 'leader_login/sms_request'
   get 'leader_login/download'
-  
+
 
 
   get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
   get 'kol_pk/new/vs/:challengee_id',                     to: 'kol_pk#new'
   get 'kol_pk/:challenger_id/vs/:challengee_id/fighting', to: 'kol_pk#fighting'
   get 'kol_pk/:challenger_id/vs/:challengee_id/check',    to: 'kol_pk#check'
+  get 'kol_pk/timeout',                                   to: 'kol_pk#timeout'
   get 'kol_pk/:pk_id',                                    to: 'kol_pk#show'
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'

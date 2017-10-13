@@ -43,19 +43,25 @@
 					<p class="progress-title">您最感兴趣的领域：</p>
 					<ul class="progress-box">
 					 	<li>
-              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.first_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.first_score*0.978%>%"></span></div>
-              <span class="progress-item right"><%= @kol_pk.first_score %></span>
+              <% if @kol_pk.first_score.present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.first_industry}" %></span>
+                <div class="progress-bar"><span style="width:<%=@kol_pk.first_score*0.978%>%"></span></div>
+                <span class="progress-item right"><%= @kol_pk.first_score %></span>
+              <% end %>
 					 	</li>
 					 	<li>
-              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.second_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.second_score*0.978%>%"></span></div>
-              <span class="progress-item right"><%= @kol_pk.second_score %></span>
+              <% if @kol_pk.second_score.present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.second_industry}" %></span>
+                <div class="progress-bar"><span style="width:<%=@kol_pk.second_score*0.978%>%"></span></div>
+                <span class="progress-item right"><%= @kol_pk.second_score %></span>
+              <% end %>
 					 	</li>
 						<li>
-              <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.third_industry}" %></span>
-              <div class="progress-bar"><span style="width:<%=@kol_pk.third_score*0.978%>%"></span></div>
-              <span class="progress-item right"><%= @kol_pk.third_score %></span>
+              <% if @kol_pk.third_score.present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{@kol_pk.third_industry}" %></span>
+                <div class="progress-bar"><span style="width:<%=@kol_pk.third_score*0.978%>%"></span></div>
+                <span class="progress-item right"><%= @kol_pk.third_score %></span>
+              <% end %>
 						</li>
 					</ul>
 				</div>

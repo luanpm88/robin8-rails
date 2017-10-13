@@ -45,16 +45,16 @@ class KolPkController < ApplicationController
       industries = challenger_metrics.influence_industries.
         order(industry_score: :desc).limit(3)
 
-      @kol_pk = KolPk.new(challenger_id:    params[:challenger_id],
-                          challengee_id:    params[:challengee_id],
-                          challenger_score: challenger_metrics.influence_score,
-                          challengee_score: challengee_metrics.influence_score,
-                          first_industry:   industries[0].industry_name,
-                          first_score:      industries[0].industry_score,
-                          second_industry:  industries[1].industry_name,
-                          second_score:     industries[1].industry_score,
-                          third_industry:   industries[2].industry_name,
-                          third_score:      industries[2].industry_score)
+      @kol_pk = KolPk.find_or_create_by(challenger_id: params[:challenger_id], challengee_id: params[:challengee_id])
+      @kol_pk[:challenger_score] = challenger_metrics.influence_score rescue nil
+      @kol_pk[:challengee_score] = challengee_metrics.influence_score rescue nil
+      @kol_pk[:first_industry]   = industries[0].industry_name        rescue nil
+      @kol_pk[:first_score]      = industries[0].industry_score       rescue nil
+      @kol_pk[:second_industry]  = industries[1].industry_name        rescue nil
+      @kol_pk[:second_score]     = industries[1].industry_score       rescue nil
+      @kol_pk[:third_industry]   = industries[2].industry_name        rescue nil
+      @kol_pk[:third_score]      = industries[2].industry_score       rescue nil
+
       if @kol_pk.save
         render json: {last_pk_at: @kol_pk.created_at.to_i, new_pk_id: @kol_pk.id}
       else

@@ -56,16 +56,20 @@
               <div class="progress-bar"><span style="width:<%=influence_industries[0].industry_score.to_d*0.978%>%;"></span></div>
               <span class="progress-item"><%=influence_industries[0].industry_score.to_i%></span>
 					 	</li>
-					 	<li>
-              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
-              <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.978%>%;"></span></div>
-              <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
-					 	</li>
-						<li>
-              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
-              <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.978%>%;"></span></div>
-              <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
-						</li>
+            <li>
+              <% if influence_industries[1].present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
+              <% end %>
+            </li>
+            <li>
+              <% if influence_industries[2].present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
+              <% end %>
+            </li>
 					</ul>
 				</div>
 			</div>
@@ -94,7 +98,7 @@
 			<%= image_tag 'kol_pk/influential-03.jpg' %>
 			<div class="friend-wrap">
 				<ul>
-          <% @kol.challenges.limit(6).each do |pk| %>
+          <% @kol.challenges.group(:challengee_id).uniq.limit(6).each do |pk| %>
             <% the_other = pk.the_other(@kol) %>
             <li>
               <span class="headshot">
