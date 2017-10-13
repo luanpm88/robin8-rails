@@ -2,7 +2,7 @@
 require 'roo'
 require 'csv'
 
-# #生成用户表
+#生成用户表
 # xlsx = Roo::Spreadsheet.open("#{Rails.root}/public/geometry.xlsx")
 # txt = File.open("#{Rails.root}/public/1.txt" ,"r").read.split(",")
 # puts txt.count
@@ -15,7 +15,7 @@ require 'csv'
 # 	end
 # end
 
-#geometry 活动表
+# #geometry 活动表
 txt = File.open("#{Rails.root}/public/campaign.txt" ,"r").read.split("&")
 CSV.open("#{Rails.root}/public/campaign.csv" ,"wb") do |csv|
   txt.each do |t|
