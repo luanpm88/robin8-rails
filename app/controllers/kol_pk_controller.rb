@@ -54,6 +54,7 @@ class KolPkController < ApplicationController
       @kol_pk[:second_score]     = industries[1].industry_score       rescue nil
       @kol_pk[:third_industry]   = industries[2].industry_name        rescue nil
       @kol_pk[:third_score]      = industries[2].industry_score       rescue nil
+
       if @kol_pk.save
         render json: {last_pk_at: @kol_pk.created_at.to_i, new_pk_id: @kol_pk.id}
       else

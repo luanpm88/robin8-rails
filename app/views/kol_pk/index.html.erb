@@ -56,16 +56,20 @@
               <div class="progress-bar"><span style="width:<%=influence_industries[0].industry_score.to_d*0.978%>%;"></span></div>
               <span class="progress-item"><%=influence_industries[0].industry_score.to_i%></span>
 					 	</li>
-					 	<li>
-              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
-              <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.978%>%;"></span></div>
-              <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
-					 	</li>
-						<li>
-              <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
-              <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.978%>%;"></span></div>
-              <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
-						</li>
+            <% if influence_industries[1].present? %>
+              <li>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
+              </li>
+            <% end %>
+            <% if influence_industries[2].present? %>
+              <li>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
+              </li>
+            <% end %>
 					</ul>
 				</div>
 			</div>

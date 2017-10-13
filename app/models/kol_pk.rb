@@ -3,8 +3,7 @@ class KolPk < ActiveRecord::Base
   belongs_to :challengee, class_name: "Kol", inverse_of: :sent_challenges
 
   validates_presence_of :challenger_id, :challengee_id, :challenger_score,
-    :challengee_score, :first_industry, :first_score, :second_industry,
-    :second_score, :third_industry, :third_score
+    :challengee_score
 
   default_scope { order(id: :desc) }
 
