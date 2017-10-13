@@ -37,11 +37,18 @@
       xmlHttp.send(null);
     }
 
+    var counter = 0;
     setInterval(function(e){
       httpGetAsync('<%= "/kol_pk/#{params[:challenger_id]}/vs/#{params[:challengee_id]}/check?fighting_at=#{params[:at]}" %>', function(resp){
         response = JSON.parse(resp);
-        if (response.last_pk_at > <%= params[:at] %>)
+        if (response.last_pk_at > <%= params[:at] %>) {
           window.location.href = "/kol_pk/"+response.new_pk_id;
+        } else {
+          counter += 1;
+        }
+        if (counter >= 3) {
+          window.location.href = "/kol_pk/timeout?was=<%=URI.encode(request.url)%>";
+        }
       })
     },2000)
   </script>
