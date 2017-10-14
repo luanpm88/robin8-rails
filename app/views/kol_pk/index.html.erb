@@ -98,7 +98,7 @@
 			<%= image_tag 'kol_pk/influential-03.jpg' %>
 			<div class="friend-wrap">
 				<ul>
-          <% @kol.challenges.group(:challengee_id).uniq.limit(6).each do |pk| %>
+          <% @kol.challenges.group("challenger_id + challengee_id").uniq.limit(6).each do |pk| %>
             <% the_other = pk.the_other(@kol) %>
             <li>
               <span class="headshot">
