@@ -24,6 +24,10 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  # config.action_controller.asset_host = 'https://static-robin8-staging-com.akamaized.net/'
+  config.action_controller.asset_host = 'http://7xtngn.com2.z0.glb.qiniucdn.com'
+
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
@@ -44,14 +48,14 @@ Rails.application.configure do
   # Action Cable endpoint configuration
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
-  config.action_cable.allowed_request_origins = [/http:\/\/passport.robin8.net/, 'http://test.robin8.net']
+  config.action_cable.allowed_request_origins = [/http:\/\/passport.robin8.net/, 'http://staging.robin8.net']
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = false
+  #config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -62,9 +66,7 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'https://static-robin8-staging-com.akamaized.net/'
-  config.action_controller.asset_host = 'http://7xtngn.com2.z0.glb.qiniucdn.com'
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -93,4 +95,6 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   ActionMailer::Base.delivery_method = :smtp
+
+  
 end

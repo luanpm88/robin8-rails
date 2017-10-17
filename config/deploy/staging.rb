@@ -15,12 +15,12 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
+server '101.132.222.75', user: 'deployer', roles: %w{web app db master}
+set :branch, 'staging'
 
-server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-set :branch, 'develop_cn'
-set :server_name, 'test.robin8.net'
-
+set :server_name, 'staging.robin8.net'
 set :stage, "staging"
+
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 set :rails_env, "staging"
@@ -40,7 +40,7 @@ namespace :assets_chores do
   end
 end
 
-after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
+#after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
