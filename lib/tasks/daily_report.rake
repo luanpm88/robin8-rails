@@ -12,10 +12,31 @@ namespace :daily_report  do
     total_budget = c.sum("budget")
     campaign_count = c.count
     
-    ReportMailer.daily_smallV_report(campaign_count, total_budget).deliver
+    # Calculate the number of new KOLs, and how many of those took a campaign.
+    k = Kol.where("created_at > ? and created_at < ?", ending - 1.day, ending)
+    kol_count = k.count
+    
+    # Get number of new clubs
+    new_clubs = Club.where("created_at>?", ending-1.day)
+    club_count = new_clubs.count
+    
+    # Get number of new club members (Used to verify how many people the student leader can bring)
+    new_club_members = ClubMember.where('created_at>?', ending-1.day)
+    cm_count = new_club_members.count
+    
+    # Get WAU & DAU
+    dau = CampaignInvite.where('created_at>?', ending-1.day).pluck(:kol_id).uniq.count
+    wau = CampaignInvite.where('created_at>?', ending-7.day).pluck(:kol_id).uniq.count
+    
+    ReportMailer.daily_smallV_report(campaign_count, total_budget, kol_count, club_count, cm_count, dau, wau).deliver
     
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
-    notifier.ping "Hey guys! We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB."
+    notifier.ping "Hey guys! 
+    We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB. 
+    #{kol_count} joined the platform.
+    DAU is #{dau}, WAU is #{wau}.
+    For sponsorship layer, #{club_count} new leaders joined, while #{cm_count} new members joined.
+    "
     # render json: {:status => :ok}
   # rescue
   #   render json: {:status => 'Cant send daily reporting email!'}
@@ -101,11 +122,9 @@ namespace :daily_report  do
     
     # Send to slack useracquistion channel.
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
-    notifier.ping "-----------------------------------Test--------------------------------------------------------"
     notifier.ping "First day of the month! We have #{campaign_count} campaigns started in the last 7 days. The total budget is #{total_budget.round(1)} RMB. #{total_consumed.round(1)}RMB is consumed."
     notifier.ping "Count changed by #{budget_increase.round(1)}%. Consumption increased by #{consumed_increase.round(1)}%."
     notifier.ping "#{kol_count} new KOLs joined. A change of #{kol_increase.round(1)}%. #{real_kol_count} made more than 1 RMB. A change of #{real_kol_increase.round(1)}%."
-    notifier.ping "-----------------------------------Test--------------------------------------------------------"
     
 
     puts "\nMonthly report is now generated."

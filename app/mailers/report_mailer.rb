@@ -2,11 +2,16 @@ class ReportMailer < ApplicationMailer
 
 
   # This report will contains the data of small-v campaign count and budget to report daily. 
-  def daily_smallV_report(count, budget)
+  def daily_smallV_report(count, budget, kol_count, club_count, cm_count, dau, wau)
     puts "Prepare for daily email"
     @count = count
     @budget = budget
-    mail(:to => 'mliu@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <no-reply@robin8.com>")
+    @dau = dau
+    @wau = wau
+    @clubs = club_count
+    @members = cm_count
+    @kol = kol_count
+    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Daily email sent"
   end
   
@@ -18,7 +23,7 @@ class ReportMailer < ApplicationMailer
     @total_consumed = total_consumed
     @kol_count = kol_count
     @real_kol_count = real_kol_count
-    mail(:to => 'mliu@robin8.com', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Weekly email sent"
   end
   
@@ -33,7 +38,7 @@ class ReportMailer < ApplicationMailer
     @kol_increase = kol_increase
     @real_kol_count = real_kol_count
     @real_kol_increase = real_kol_increase
-    mail(:to => 'mliu@robin8.com', :subject => "【Robin8】Small-V monthly report",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'monthly_report@robin8.com', :subject => "【Robin8】Small-V monthly report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Monthly email sent"
   end
   
