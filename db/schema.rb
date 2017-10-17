@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(version: 20171011091313) do
   add_index "admin_users_admin_roles", ["admin_user_id", "admin_role_id"], name: "index_admin_users_admin_roles_on_admin_user_id_and_admin_role_id", using: :btree
 
   create_table "admintags", force: :cascade do |t|
-    t.string   "tag",        limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "tag",        limit: 255, default: "", null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "admintags_kols", id: false, force: :cascade do |t|
