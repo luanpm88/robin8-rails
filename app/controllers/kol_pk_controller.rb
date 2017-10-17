@@ -45,7 +45,8 @@ class KolPkController < ApplicationController
       industries = challenger_metrics.influence_industries.
         order(industry_score: :desc).limit(3)
 
-      @kol_pk = KolPk.find_or_create_by(challenger_id: params[:challenger_id], challengee_id: params[:challengee_id])
+      @kol_pk = KolPk.new(challenger_id: params[:challenger_id],
+                          challengee_id: params[:challengee_id])
       @kol_pk[:challenger_score] = challenger_metrics.influence_score rescue nil
       @kol_pk[:challengee_score] = challengee_metrics.influence_score rescue nil
       @kol_pk[:first_industry]   = industries[0].industry_name        rescue nil

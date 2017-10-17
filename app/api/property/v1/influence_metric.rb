@@ -44,6 +44,7 @@ module Property
                                                      avg_posts: params[:avg_posts],
                                                      avg_comments: params[:avg_comments],
                                                      avg_likes: params[:avg_likes]
+                  influence_metric.touch
                   influence_metric.create_or_update_industries params[:industries]
                 else
                   influence_metric = kol.influence_metrics.create! calculated: true,
@@ -75,7 +76,6 @@ module Property
                                                              avg_likes: params[:avg_likes]
             influence_metric.create_or_update_industries params[:industries]
           end
-
         end
       end
     end
