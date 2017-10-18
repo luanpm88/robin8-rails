@@ -34,7 +34,7 @@
         tags.to_s[1..-2],
         i.get_avail_click(true) > 0 ? i.get_avail_click(true) : i.avail_click,
         i.get_total_click > 0 ? i.get_total_click : i.total_click,
-        i.approved_at.strftime("%Y-%m-%d %H:%M")
+        (i.approved_at.strftime("%Y-%m-%d %H:%M") rescue nil)
       ]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
