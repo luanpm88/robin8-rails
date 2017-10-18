@@ -17,7 +17,7 @@
 
 
 server '101.132.222.75', user: 'deployer', roles: %w{web app db master}
-set :branch, ENV['BRANCH_NAME'] || 'qa'
+set :branch, 'staging'
 set :server_name, 'staging.robin8.net'
 
 set :stage, "staging"
