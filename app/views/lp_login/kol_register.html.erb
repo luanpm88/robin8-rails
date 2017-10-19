@@ -22,7 +22,7 @@
     <%= text_field_tag 'smsCode', nil, class: "input-ro", placeholder: "请填写验证码"  %>
     <a id="request-sms" class="red-bag-btn">获取验证码</a>
     <%= hidden_field_tag 'type', params[:type] %>
-    <%= hidden_field_tag 'type', params[:campaign_id] %>
+    <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
     <button id="submit" class="red-bag-btn width100">立即体验</button>
   </form>
   <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>

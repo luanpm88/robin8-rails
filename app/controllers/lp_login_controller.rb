@@ -70,7 +70,7 @@ class LpLoginController < ApplicationController
     elsif type == "3"
       if kol_exists.admintags.blank?
         tag = "Rodrigo"
-        tag = tag + "_#{campaign_id}" if campaign_id
+        tag = tag + "#{campaign_id}" if campaign_id
         kol_exists.admintags << Admintag.find_or_create_by(tag: tag)
       end
   	end
