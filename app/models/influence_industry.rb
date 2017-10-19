@@ -8,6 +8,8 @@ class InfluenceIndustry < ActiveRecord::Base
                 'furniture', 'games', 'health', 'hotel', 'internet', 'mobile', 'music', 'other',
                 'realestate', 'sports', 'travel']
 
+  default_scope { order(industry_score: :desc) }
+
   def name_cn
     #INDUSTRIES_CN[self.industry_id]
   end
