@@ -4,6 +4,7 @@ class LpLoginController < ApplicationController
     @app_download_url = Rails.application.secrets[:download_url]
     Rails.logger.wechat_campaign.info "--kol_register @app_download_url : #{@app_download_url}"
     @type = params[:type]
+    @campaign_id = params[:campaign_id] rescue nil
     render :layout => false
   end
 
@@ -39,7 +40,7 @@ class LpLoginController < ApplicationController
     # return render json: {error: "Kol already exists"} if kol_exists
 
     if kol_exists
-      add_tag(kol_exists , params[:type])
+      add_tag(kol_exists , params[:type] , params[:campaign_id])
       return render json: {url: lp_login_download_path}
     else
       ip = (request.remote_ip rescue nil) || request.ip
@@ -48,7 +49,7 @@ class LpLoginController < ApplicationController
                     current_sign_in_ip: ip)
 
       if kol.save
-      	add_tag(kol_exists , params[:type])
+      	add_tag(kol_exists , params[:type] , params[:campaign_id])
         return render json: {url: lp_login_download_path}
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
@@ -58,7 +59,7 @@ class LpLoginController < ApplicationController
 
   end
 
-  def add_tag(kol_exists , type)
+  def add_tag(kol_exists , type , campaign_id = nil)
   	if type == "1"
   	  kol_exists.admintags << Admintag.find_or_create_by(tag: 'LP')  if kol_exists.admintags.blank?
   	elsif type == "2"
@@ -68,7 +69,9 @@ class LpLoginController < ApplicationController
   	  end
     elsif type == "3"
       if kol_exists.admintags.blank?
-        kol_exists.admintags << Admintag.find_or_create_by(tag: 'Rodrigo')
+        tag = "Rodrigo"
+        tag = tag + "_#{campaign_id}" if campaign_id
+        kol_exists.admintags << Admintag.find_or_create_by(tag: tag)
       end
   	end
   end
