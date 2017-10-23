@@ -31,6 +31,13 @@ module API
               end
             end
           end
+          if params[:invite_code].present?
+            if params[:invite_code] == '768888'
+              add_admintag
+            else
+              return error!({error: 1, detail: '无效的邀请码'}, 403)
+            end
+          end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
           present :kol_identities, kol.identities, with: API::V1::Entities::IdentityEntities::Summary

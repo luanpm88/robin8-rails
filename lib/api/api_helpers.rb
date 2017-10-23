@@ -172,6 +172,10 @@ module API
     #   campaigns_filter_td
     # end
 
+    def add_admintag(tag = 'Rodrigo')
+       current_kol.admintags << Admintag.find_or_create_by(tag: tag)  if current_kol.admintags.blank?
+    end
+
     def phone_filter(kol,campaigns)
       filter = true
       ids = Array.new
