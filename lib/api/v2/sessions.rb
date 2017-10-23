@@ -12,6 +12,13 @@ module API
           return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
           kol = Kol.reg_or_sign_in(params)
           kol.remove_same_device_token(params[:device_token])
+          if params[:invite_code].present?
+            if params[:invite_code] == '768888'
+              kol.admintags << Admintag.find_or_create_by(tag: 'Rodrigo')  if kol.admintags.blank?
+            else
+              return error!({error: 1, detail: '无效的邀请码'}, 403)
+            end
+          end
           if params[:kol_uuid].present?
             retries = true
             begin
@@ -29,13 +36,6 @@ module API
               else
                 ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
               end
-            end
-          end
-          if params[:invite_code].present?
-            if params[:invite_code] == '768888'
-              kol.admintags << Admintag.find_or_create_by(tag: 'Rodrigo')  if kol.admintags.blank?
-            else
-              return error!({error: 1, detail: '无效的邀请码'}, 403)
             end
           end
           present :error, 0
