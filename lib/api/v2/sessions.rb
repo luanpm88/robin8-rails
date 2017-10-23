@@ -33,7 +33,7 @@ module API
           end
           if params[:invite_code].present?
             if params[:invite_code] == '768888'
-              add_admintag
+              kol.admintags << Admintag.find_or_create_by(tag: 'Rodrigo')  if kol.admintags.blank?
             else
               return error!({error: 1, detail: '无效的邀请码'}, 403)
             end

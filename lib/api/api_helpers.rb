@@ -133,48 +133,6 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-    # def phone_filter(current_kol,campaigns)
-    #   filters = true
-    #   campaigns_filter_td = Array.new
-    #   campaigns_filter = Array.new
-    #   campaigns.each do |t|
-    #     target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-    #     if target
-    #       filter = target[:target_content].split(",").index(current_kol[:mobile_number])
-    #       if filter
-    #         campaigns_filter.push(t)
-    #       end
-    #     else
-    #       campaigns_filter.push(t)
-    #     end
-    #   end
-    #   campaigns_filter.each do |i|
-    #     targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
-    #      if targets.present?
-    #       targets.each do |target|
-    #         if target[:target_type] == "td_promo"
-    #           filters = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
-    #         elsif target[:target_type] == "admintags"
-    #           admintag = Admintag.where("tag" => target[:target_content].split(","))
-    #           admintag.each do |tag|
-    #             tag.kols.each do |t|
-    #               ids.push(t[:id])
-    #             end
-    #           end
-    #           filters = false unless ids.index(current_kol[:id])
-    #         end
-    #       end
-    #       campaigns_filter_td.push(i) if filters
-    #     else
-    #       campaigns_filter_td.push(i)
-    #     end
-    #   end
-    #   campaigns_filter_td
-    # end
-
-    def add_admintag(tag = 'Rodrigo')
-       current_kol.admintags << Admintag.find_or_create_by(tag: tag)  if current_kol.admintags.blank?
-    end
 
     def phone_filter(kol,campaigns)
       filter = true
