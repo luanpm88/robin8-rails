@@ -51,7 +51,15 @@ end
 every 1.day, :at => '12:00 am' do
   runner "CampaignInvite.posted_geometry_screenshot" , :environment => 'production'
 end
-# 定时处理geometry 截图审核 
+# 定时处理geometry 截图审核
+
+# every 1.day, :at => '20:15 pm' do
+#   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'development'
+# end
+
+every 1.day, :at => '20:15 pm' do
+  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+end
 
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
@@ -149,4 +157,3 @@ end
 every '00 10 1 10 *' do
   rake "daily_report:pinyou_send", :environment => 'production'
 end
-
