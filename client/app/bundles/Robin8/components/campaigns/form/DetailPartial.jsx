@@ -251,9 +251,7 @@ export default class DetailPartial extends React.Component {
                 <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
                   <input {...per_action_budget} type="text"
-                    className="clearfix spinner-input per-budget-input"
-                    min="3"
-                    max="5.5"
+                    className="clearfix spinner-input per-budget-input-dianji"
                     style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
