@@ -61,7 +61,7 @@ export default class DetailPartial extends React.Component {
         per_action_budget.onChange("2.0")
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("0.2")
+        per_action_budget.onChange("0.2") // initial min value is 0.2
         sub_type.onChange("wechat")
       }
       if(per_budget_type.value == 'simple_cpi') {
@@ -153,16 +153,24 @@ export default class DetailPartial extends React.Component {
                         <div className="row">
 
                           <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
+                            <input {...per_budget_type} type="radio"
+                              name="action_type"
+                              value="click" className="commonPerBudgetType"
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "click"} />
                             按照点击奖励KOL
                           </div>
 
                           <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                            <input {...per_budget_type} type="radio"
+                              name="action_type"
+                              value="post" className="commonPerBudgetType"
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
                           </div>
 
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                          {/* <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
                             按照下载APP奖励KOL
                           </div>
@@ -175,16 +183,16 @@ export default class DetailPartial extends React.Component {
                           <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
                             按照完成任务奖励KOL
-                          </div>
+                          </div> */}
 
                         </div>
                       } else if(sub_type.value === "weibo") {
                         <div className="row">
 
-                          <div className="col-md-4">
+                          {/* <div className="col-md-4">
                             <input {...per_budget_type} type="radio" name="action_type" id="cpt" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
                             按照完成任务奖励KOL
-                          </div>
+                          </div> */}
 
                           <div className="col-md-4">
                             <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" id="forwarding" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
@@ -242,7 +250,11 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input " style={{display: 'block'}} />
+                  <input {...per_action_budget} type="text"
+                    className="clearfix spinner-input per-budget-input"
+                    min="3"
+                    max="5.5"
+                    style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                   </div>
