@@ -5,6 +5,9 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+
+
+
     _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
@@ -56,13 +59,16 @@ export default class DetailPartial extends React.Component {
 
   _listenPerBudgetTypeChange() {
     $("input[name='action_type']").change(function(){
+
       const { per_action_budget, per_budget_type, sub_type } = this.props;
       if(per_budget_type.value == 'post') {
         per_action_budget.onChange("2.0")
+        $('.per-budget-input').trigger("touchspin.updatesettings", {min: 3});
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("0.2") // initial min value is 0.2
+        per_action_budget.onChange("10.2") // initial min value is 0.2
         sub_type.onChange("wechat")
+        $('.per-budget-input').trigger("touchspin.updatesettings", {min: 3.3});
       }
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
@@ -93,6 +99,20 @@ export default class DetailPartial extends React.Component {
   componentWillUnmount() {
     $('.spinner-input').off('change');
   }
+
+  // componentWillUpdate() {
+  //   var asdf = 0;
+  //   if(this.props.per_budget_type.value == 'click') {
+  //     console.log('click');
+  //     asdf = 3;
+  //     // $('.per-budget-input').trigger("touchspin.updatesettings", {min: asdf});
+  //   }
+  //   if(this.props.per_budget_type.value == 'post') {
+  //     asdf = 3.3;
+  //     console.log('post');
+  //   }
+  //   console.log(asdf)
+  // }
 
   renderDetailTips(){
     const tip = "<p>1.&nbsp;按照转发奖励KOL: 按照KOL转发一次性付费。\
@@ -156,6 +176,7 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio"
                               name="action_type"
                               value="click" className="commonPerBudgetType"
+                              id="budgetType"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "click"} />
                             按照点击奖励KOL
@@ -250,8 +271,9 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
+
                   <input {...per_action_budget} type="text"
-                    className="clearfix spinner-input per-budget-input-dianji"
+                    className="clearfix spinner-input per-budget-input"
                     style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
