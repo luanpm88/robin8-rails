@@ -120,6 +120,8 @@ module API
         post "invite_code" do
           if current_kol.invite_code_dispose(params[:invite_code])
             present :error, 0
+          else
+            return error_403!({error: 1, detail: '无效的邀请码'})
           end
         end
 
