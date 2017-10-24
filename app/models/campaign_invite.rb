@@ -116,6 +116,14 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  def self.auto_change_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' AND campaign_invites.status = 'pending' ").limit(30)
+    @campaign_invites.each do |c|
+      c.screenshot_pass
+    end
+  end
+
+
   #
   # def self.reback_img_status
   #   @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.status = 'executed'").where("screenshot is not NULL").where(:img_status => :passed)
@@ -123,15 +131,6 @@ class CampaignInvite < ActiveRecord::Base
   #     c.update_attributes!(:img_status => 'pending', :status => 'pending', :check_time => Time.now)
   #   end
   # end
-
-  def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' AND campaigns.per_budget_type = 'click' AND campaigns.status = 'executed'").limit(30)
-    @campaign_invites.each do |c|
-      c.screenshot_pass
-    end
-  end
-
-  #AND campaign_invites.status = 'pending'
 
   #审核拒绝
   def screenshot_reject rejected_reason=nil
@@ -368,9 +367,9 @@ class CampaignInvite < ActiveRecord::Base
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
-        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
+        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id)
         if campaign_shows.size > 0
-          credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
+          credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
