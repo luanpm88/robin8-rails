@@ -27,6 +27,8 @@ set :rails_env, "staging"
 set :rbenv_ruby, '2.2.0'
 set :environment, 'staging'
 
+set :deploy_to, '/home/deployer/apps/robin8_staging'
+
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :pull_manifest_from_master do
