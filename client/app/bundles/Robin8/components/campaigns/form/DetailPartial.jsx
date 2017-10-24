@@ -54,7 +54,12 @@ export default class DetailPartial extends React.Component {
     const { onChange } = this.props.per_action_budget;
     $('.per-budget-input').change(function() {
       onChange($(this).val());
-    })
+    });
+    // let min = 3
+    // if(this.props.per_budget_type.value === 'post') {
+    //   min = 2.5;
+    //   $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
+    // }
   }
 
   _listenPerBudgetTypeChange() {
