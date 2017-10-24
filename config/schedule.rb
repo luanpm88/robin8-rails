@@ -52,7 +52,6 @@ every 1.day, :at => '12:00 am' do
   runner "CampaignInvite.posted_geometry_screenshot" , :environment => 'production'
 end
 
-
 every 1.day, :at => '0:01 am' do
   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
 end
