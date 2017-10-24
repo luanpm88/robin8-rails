@@ -63,12 +63,10 @@ export default class DetailPartial extends React.Component {
       const { per_action_budget, per_budget_type, sub_type } = this.props;
       if(per_budget_type.value == 'post') {
         per_action_budget.onChange("2.0")
-        $('.per-budget-input').trigger("touchspin.updatesettings", {min: 3});
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("10.2") // initial min value is 0.2
+        per_action_budget.onChange("0.2") // initial min value is 0.2
         sub_type.onChange("wechat")
-        $('.per-budget-input').trigger("touchspin.updatesettings", {min: 3.3});
       }
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
@@ -105,7 +103,7 @@ export default class DetailPartial extends React.Component {
   //   if(this.props.per_budget_type.value == 'click') {
   //     console.log('click');
   //     asdf = 3;
-  //     // $('.per-budget-input').trigger("touchspin.updatesettings", {min: asdf});
+      // $('.per-budget-input').trigger("touchspin.updatesettings", {min: 2.5});
   //   }
   //   if(this.props.per_budget_type.value == 'post') {
   //     asdf = 3.3;
