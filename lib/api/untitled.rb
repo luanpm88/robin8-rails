@@ -1,0 +1,1 @@
+Admintag.where("tag" => "Rodrigo").map {|t| t.kols.id}
