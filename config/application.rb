@@ -60,7 +60,7 @@ module Robin8
     puts "Start China Instance ....  value: #{config.china_instance} "
 
     # echo 'export redis_host="localhost"/"#{ip}" >> /etc/enviroment
-    config.cache_store = :redis_store, { :host => ENV['redis_host'],
+    config.cache_store = :redis_store, { :host => Rails.application.secrets[:redis][:host],
                                          :port => 6379,
                                          :db => 0,
                                          :namespace => "robcache",
