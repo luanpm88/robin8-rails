@@ -99,7 +99,7 @@ class CampaignInvite < ActiveRecord::Base
         self.update_attributes(:img_status => 'passed', :check_time => Time.now)
       elsif campaign.status == 'executed'
         self.update_attributes!(:img_status => 'passed', :status => 'finished', :check_time => Time.now)
-        #self.settle
+        self.settle
       end
       Message.new_check_message('screenshot_passed', self, campaign)
     rescue ActiveRecord::StaleObjectError
@@ -369,9 +369,9 @@ class CampaignInvite < ActiveRecord::Base
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
-        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
+        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id)
         if campaign_shows.size > 0
-          credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
+          credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
