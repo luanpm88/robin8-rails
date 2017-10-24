@@ -118,7 +118,9 @@ module API
           requires :invite_code , type: Integer
         end
         post "invite_code" do
-          current_kol.invite_code_dispose(params[:invite_code])
+          if current_kol.invite_code_dispose(params[:invite_code])
+            present :error, 0
+          end
         end
 
         params do

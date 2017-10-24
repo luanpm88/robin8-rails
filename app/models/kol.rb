@@ -764,7 +764,6 @@ class Kol < ActiveRecord::Base
   end
 
   def invite_code_dispose(code)
-    InviteCode.find_or_create_by(code: 768888 , invite_type: "admintag" , invite_value: "Rodrigo")
     invite_code = InviteCode.find_by(code: code)
     if invite_code.present?
       if invite_code.invite_type == "admintag"
@@ -781,5 +780,6 @@ class Kol < ActiveRecord::Base
         ClubMember.create(club_id: club.id , kol_id: self.id)
       end
     end
+    true
   end
 end
