@@ -116,6 +116,16 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  def self.auto_change_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending'  ").limit(30)
+    @campaign_invites.each do |c|
+      c.screenshot_pass
+    end
+  end
+
+  #AND campaign_invites.status = 'pending'
+
+
   #
   # def self.reback_img_status
   #   @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.status = 'executed'").where("screenshot is not NULL").where(:img_status => :passed)
@@ -123,15 +133,6 @@ class CampaignInvite < ActiveRecord::Base
   #     c.update_attributes!(:img_status => 'pending', :status => 'pending', :check_time => Time.now)
   #   end
   # end
-
-  def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' AND campaigns.per_budget_type = 'click' AND campaigns.status = 'executed'").limit(30)
-    @campaign_invites.each do |c|
-      c.screenshot_pass
-    end
-  end
-
-  #AND campaign_invites.status = 'pending'
 
   #审核拒绝
   def screenshot_reject rejected_reason=nil

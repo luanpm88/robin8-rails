@@ -53,13 +53,17 @@ every 1.day, :at => '12:00 am' do
 end
 # 定时处理geometry 截图审核
 
-# every 1.day, :at => '20:15 pm' do
+# every 1.day, :at => '10:16 am' do
 #   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'development'
 # end
 
-every 1.day, :at => '20:15 pm' do
-  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+every 1.day, :at => '10:40 am' do
+  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'qa'
 end
+#
+# every 1.day, :at => '20:15 pm' do
+#   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+# end
 
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
