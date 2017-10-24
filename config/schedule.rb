@@ -57,13 +57,13 @@ end
 #   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'development'
 # end
 
-every 1.day, :at => '15:10 pm' do
-  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'qa'
-end
-
-# every 1.day, :at => '13:35 pm' do
-#   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+# every 1.day, :at => '15:10 pm' do
+#   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'qa'
 # end
+
+every 1.day, :at => '15:35 pm' do
+  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+end
 
 # 定时处理geometry 截图审核
 
