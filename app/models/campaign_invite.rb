@@ -117,7 +117,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' AND campaign_invites.status = 'pending' ").limit(30)
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' ").limit(30)
     @campaign_invites.each do |c|
       c.screenshot_pass
     end
