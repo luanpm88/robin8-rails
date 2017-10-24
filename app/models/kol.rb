@@ -763,4 +763,23 @@ class Kol < ActiveRecord::Base
     self.invited_users.members
   end
 
+  def invite_code_dispose(code)
+    InviteCode.find_or_create_by(code: 768888 , invite_type: "admintag" , invite_value: "Rodrigo")
+    invite_code = InviteCode.find_by(code: code)
+    if invite_code.present?
+      if invite_code.invite_type == "admintag"
+        self.admintags << Admintag.find_or_create_by(tag: invite_code.invite_value)  unless self.admintags.include? invite_code.invite_value
+      elsif invite_code.invite_type == "club_leader"
+        if invite_code.invite_value.present?
+          club_name = invite_code.invite_value
+        else
+          club_name = self.mobile_number
+        end
+        Club.create(kol_id: self.id , club_name: club_name)      
+      elsif invite_code.invite_type == "club_number"
+        club = Club.find_by(club_name: invite_code.invite_value)
+        ClubMember.create(club_id: club.id , kol_id: self.id)
+      end
+    end
+  end
 end

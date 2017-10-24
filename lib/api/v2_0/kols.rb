@@ -115,6 +115,13 @@ module API
         end
 
         params do
+          requires :invite_code , type: Integer
+        end
+        post "invite_code" do
+          current_kol.invite_code_dispose(params[:invite_code])
+        end
+
+        params do
           requires :action, type: String, values: ['on', 'off']
         end
         get 'manage_influence_visibility' do

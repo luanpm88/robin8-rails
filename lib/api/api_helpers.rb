@@ -133,7 +133,6 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-
     def phone_filter(kol,campaigns)
       filter = true
       ids = Array.new
@@ -147,7 +146,7 @@ module API
             elsif target[:target_type] == "td_promo"
               filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
             # elsif target[:target_type] == "admintags"
-            #   admintag = Admintag.where("tag" => target[:target_content].split(","))
+            #   admintag = Admintag.where("tag" => target[:target_content].split(","))            
             #   admintag.each do |tag|
             #     tag.kols.each do |t|
             #       ids.push(t[:id])
