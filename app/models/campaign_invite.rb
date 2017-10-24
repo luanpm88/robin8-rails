@@ -99,7 +99,7 @@ class CampaignInvite < ActiveRecord::Base
         self.update_attributes(:img_status => 'passed', :check_time => Time.now)
       elsif campaign.status == 'executed'
         self.update_attributes!(:img_status => 'passed', :status => 'finished', :check_time => Time.now)
-        self.settle
+        #self.settle
       end
       Message.new_check_message('screenshot_passed', self, campaign)
     rescue ActiveRecord::StaleObjectError

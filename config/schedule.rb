@@ -57,7 +57,7 @@ end
 #   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'development'
 # end
 
-every 1.day, :at => '10:40 am' do
+every 1.day, :at => '11:00 am' do
   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'qa'
 end
 #
