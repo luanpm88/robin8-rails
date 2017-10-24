@@ -123,15 +123,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-
-  #
-  # def self.reback_img_status
-  #   @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.status = 'executed'").where("screenshot is not NULL").where(:img_status => :passed)
-  #   @campaign_invites.each do |c|
-  #     c.update_attributes!(:img_status => 'pending', :status => 'pending', :check_time => Time.now)
-  #   end
-  # end
-
   #审核拒绝
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
@@ -359,7 +350,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def settle(auto = false, transaction_time = Time.now)
+  def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'rejected'
     self.settle_lock.lock  do
@@ -367,7 +358,7 @@ class CampaignInvite < ActiveRecord::Base
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
-        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id)
+        campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         if campaign_shows.size > 0
           credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
