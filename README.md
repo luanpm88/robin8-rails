@@ -46,8 +46,7 @@ by artificial intelligence.
   * You can still use qa to test your own branch with
     `BRANCH_NAME=new-feature-name cap qa deploy` but do not merge your feature
     into QA in bitbucket until it has been reviewed
-
-  [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
+  * [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
   Style-Guide
 
@@ -84,12 +83,24 @@ by artificial intelligence.
   * or you can try `foreman start -f Procfile.hot`
 
 
-# QA Server and Production server
+# QA, Staging, Production server
+
+  Logs
+  * `/home/deployer/apps/robin8_qa/current/log`, `robin8_staging` or `robin8`
+  * For each log file, eg `kol_pk.log`, search on the codebase for
+    `Rails.logger.kol_pk` and you will see where it's called
 
   Running rails console in server
 
   * ssh into the server, get access from current senior developers
-  * cd into `/home/deployer/apps/robin8_qa/current`
-  * run `RAILS_ENV=qa bundle exec rails console` and you're in
+  * cd into `/home/deployer/apps/robin8_qa/current` or `robin8_staging` or
+    `robin8`
+  * run `RAILS_ENV=qa bundle exec rails console` or `RAILS_ENV=staging`
   * or `RAILS_ENV=production bundle exec rails console --sandbox` if this is production
   * NOTE! Always use `--sandbox` so it's read only on production
+
+  Database dumps
+
+  * production database dumps are available at staging.robin8.net server at
+    `/home/deployer/apps/robin8_staging/tmp/prod.tar.gz`
+    * this dump is refreshed every night at 12:01 am
