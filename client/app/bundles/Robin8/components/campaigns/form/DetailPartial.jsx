@@ -5,9 +5,6 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-
-
     _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
@@ -51,27 +48,29 @@ export default class DetailPartial extends React.Component {
   }
 
   _handlePerBudgetInputChange() {
+    const { per_action_budget, per_budget_type, sub_type } = this.props;
     const { onChange } = this.props.per_action_budget;
     $('.per-budget-input').change(function() {
       onChange($(this).val());
-    });
-    // let min = 3
-    // if(this.props.per_budget_type.value === 'post') {
-    //   min = 2.5;
-    //   $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
-    // }
+      console.log(onChange($(this).val()))
+      console.log($('#dianji').prop('checked'))
+    });// not working
+
+    // $( ".per-budget-input" ).trigger("touchspin.updatesettings", {min: $('#dianji').prop('checked') ? 3.5 : 4});
+
+
   }
 
   _listenPerBudgetTypeChange() {
-    $("input[name='action_type']").change(function(){
+    const { per_action_budget, per_budget_type, sub_type } = this.props;
 
-      const { per_action_budget, per_budget_type, sub_type } = this.props;
+    $("input[name='action_type']").change(function(){
       if(per_budget_type.value == 'post') {
         per_action_budget.onChange("2.0")
       }
       if(per_budget_type.value == 'click') {
         per_action_budget.onChange("0.2") // initial min value is 0.2
-        sub_type.onChange("wechat")
+        sub_type.onChange("wechat");
       }
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
@@ -93,10 +92,50 @@ export default class DetailPartial extends React.Component {
     }.bind(this))
   }
 
+  // _checkPerBudgetTypeChange() {
+  //   var min = 3;
+  //
+  //   $("input[name='action_type']").change(function(){
+  //     console.log('oops')
+  //     min = 3.5;
+  //     $( ".per-budget-input" ).trigger("touchspin.updatesettings", {min: min});
+  //   });
+  // }
+
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
+    // this._checkPerBudgetTypeChange();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('v0003');
+    //console.log("prevProps are : ", prevProps);
+    let oldValue = prevProps.per_budget_type.value;
+    console.log("oldValue", oldValue);
+    let newValue = this.props.per_budget_type.value;
+    console.log("newValue", newValue);
+    let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2;
+
+    if(oldValue==newValue) return console.log('escape');
+    // unable to change min value with this method
+    // $('.per-budget-input').TouchSpin({
+    //   min: min,
+    //   max: 10000000,
+    //   step: 0.1,
+    //   decimals: 1,
+    // })
+    // trigger method will cause infinite loop
+    // because per_budget_type.value is not fully loaded in the initial rendering
+    // its value become valid after the birth phase of the component
+    // which then exit the loop
+    if(true){
+      console.log('calling .trigger');
+      $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
+    }
+
   }
 
   componentWillUnmount() {
@@ -179,7 +218,7 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio"
                               name="action_type"
                               value="click" className="commonPerBudgetType"
-                              id="budgetType"
+                              id="dianji"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "click"} />
                             按照点击奖励KOL
@@ -189,6 +228,7 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio"
                               name="action_type"
                               value="post" className="commonPerBudgetType"
+                              id="zhuanfa"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
