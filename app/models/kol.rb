@@ -767,7 +767,7 @@ class Kol < ActiveRecord::Base
     invite_code = InviteCode.find_by(code: code)
     return false  unless invite_code
     if invite_code.invite_type == "admintag"
-      self.admintags << Admintag.find_or_create_by(tag: invite_code.invite_value)  unless self.admintags.include? invite_code.invite_value
+      self.admintags << Admintag.find_or_create_by(tag: invite_code.invite_value)  unless self.admintags.include?(Admintag.find_or_create_by(tag: invite_code.invite_value))
     elsif invite_code.invite_type == "club_leader"
       if invite_code.invite_value.present?
         club_name = invite_code.invite_value
