@@ -16,9 +16,7 @@ class CampaignShow < ActiveRecord::Base
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
-  scope :invite_need_settle, ->(campaign_id,kol_id,settle_deadline) {where("created_at <= '#{settle_deadline}'")
-                                                                       .where("transaction_id is null")
-                                                                       .where(:status => 1, :campaign_id => campaign_id, :kol_id => kol_id)}
+  scope :invite_need_settle, ->(campaign_id,kol_id,settle_deadline) {where("created_at <= '#{settle_deadline}'").where("transaction_id is null").where(:status => 1, :campaign_id => campaign_id, :kol_id => kol_id)}
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, visit_time, options={})

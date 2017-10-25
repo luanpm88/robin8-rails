@@ -27,6 +27,8 @@ set :rails_env, "staging"
 set :rbenv_ruby, '2.2.0'
 set :environment, 'staging'
 
+set :deploy_to, '/home/deployer/apps/robin8_staging'
+
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :pull_manifest_from_master do
@@ -40,7 +42,7 @@ namespace :assets_chores do
   end
 end
 
-#after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
+after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
