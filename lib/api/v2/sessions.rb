@@ -12,7 +12,7 @@ module API
           return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
           kol = Kol.reg_or_sign_in(params)
           kol.remove_same_device_token(params[:device_token])
-          return error!({error: 1, detail: '无效的邀请码'}, 403) unless kol.invite_code_dispose(params[:invite_code])
+          return error!({error: 1, detail: '无效的邀请码'}, 403) if params[:invite_code] && kol.invite_code_dispose(params[:invite_code]) == false
           if params[:kol_uuid].present?
             retries = true
             begin
