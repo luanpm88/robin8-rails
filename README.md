@@ -39,6 +39,9 @@ by artificial intelligence.
     * once pushed to bitbucket master_cn, you must deploy to production (will be
       automated)
     * 一部署到master cn 就得部署到服务器里，（这以后会自动化）
+  * You can still use qa to test your own branch with
+    `BRANCH_NAME=new-feature-name cap qa deploy` but do not merge your feature
+    into QA in bitbucket until it has been reviewed
 
   [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
