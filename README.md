@@ -6,6 +6,7 @@ by artificial intelligence.
 # Development and Deployment Process
 
   When building a new feature
+
   1. `git checkout qa` branch and pull the latest from bitbucket by
      `git pull --rebase origin qa:qa`
   2. `git checkout -b new-feature-name`
@@ -15,6 +16,7 @@ by artificial intelligence.
      new-feature-name branch into qa
 
   When deploying a new feature
+
   * Merge `qa` into `staging`, deploy to staging.robin8.net
   * Tina (and some automated tests) run tests on staging.robin8.net
   * Merge `staging` into `master_cn`, deploy to robin8.net
@@ -26,6 +28,7 @@ by artificial intelligence.
   * Next phase is to automate the deployment process
 
   Notes on the three main branches
+
   * qa branch will always have the latest features that is working
     * qa 是有我们app最新的功能，但还没上线
   * staging branch is the pre-release branch for us to test on production data
@@ -46,6 +49,7 @@ by artificial intelligence.
   [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
   Style-Guide
+
   * Commit messages should explain both the "what", "why" of code changes
     * The first line must provide a summary of the changes
     * add more paragraph if necessary
