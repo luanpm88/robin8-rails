@@ -133,7 +133,7 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-    def phone_filter(kol,campaigns)
+    def phone_filter(campaigns)
       filter = true
       campaigns_filter = Array.new
       campaigns.each do |campaign|
@@ -141,9 +141,9 @@ module API
         if targets.present?
           targets.each do |target|
             if target[:target_type] == "cell_phones"
-              filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
+              filter = false unless target[:target_content].split(",").index(current_kol[:mobile_number])
             elsif target[:target_type] == "td_promo"
-              filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
+              filter = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
             end
           end
           campaigns_filter.push(campaign) if filter

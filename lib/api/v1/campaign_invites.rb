@@ -37,13 +37,13 @@ module API
             else
               @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
             end
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
@@ -53,7 +53,7 @@ module API
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'missed'
             @campaigns = current_kol.missed_campaigns.recent_7.order_by_start.page(params[:page]).per_page(10)
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
