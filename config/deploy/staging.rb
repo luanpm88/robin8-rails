@@ -42,7 +42,7 @@ namespace :assets_chores do
   end
 end
 
-#after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
+after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
