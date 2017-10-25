@@ -211,7 +211,7 @@ module API
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
-            current_kol.update_attribute(:name , params[:name]) if params[name].present? && current_kol.name.blank?
+            current_kol.update_attribute(:name , params[:name]) if params[:name].present? && current_kol.name.blank?
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else

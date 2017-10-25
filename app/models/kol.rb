@@ -781,4 +781,9 @@ class Kol < ActiveRecord::Base
     end
     true
   end
+
+  def get_share_proportion(credits)
+    proportion = self.club_number.club.proportion
+    [proportion * credits , (1 - proportion) * credits]
+  end
 end
