@@ -13,7 +13,8 @@ by artificial intelligence.
   3. When you have completed your feature, create a pull-request from your
      new-feature-name branch to qa
   4. Someone else from the team must review your code and merge the
-     new-feature-name branch into qa
+     new-feature-name branch into qa, you must find someone else to review
+     your code, assign it to them on bitbucket
 
   When deploying a new feature
 
