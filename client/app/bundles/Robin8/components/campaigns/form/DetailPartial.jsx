@@ -53,10 +53,7 @@ export default class DetailPartial extends React.Component {
     $('.per-budget-input').change(function() {
       onChange($(this).val());
       console.log(onChange($(this).val()))
-      console.log($('#dianji').prop('checked'))
-    });// not working
-
-    // $( ".per-budget-input" ).trigger("touchspin.updatesettings", {min: $('#dianji').prop('checked') ? 3.5 : 4});
+    });
 
 
   }
@@ -92,22 +89,11 @@ export default class DetailPartial extends React.Component {
     }.bind(this))
   }
 
-  // _checkPerBudgetTypeChange() {
-  //   var min = 3;
-  //
-  //   $("input[name='action_type']").change(function(){
-  //     console.log('oops')
-  //     min = 3.5;
-  //     $( ".per-budget-input" ).trigger("touchspin.updatesettings", {min: min});
-  //   });
-  // }
-
 
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
-    // this._checkPerBudgetTypeChange();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -218,7 +204,6 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio"
                               name="action_type"
                               value="click" className="commonPerBudgetType"
-                              id="dianji"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "click"} />
                             按照点击奖励KOL
@@ -228,7 +213,6 @@ export default class DetailPartial extends React.Component {
                             <input {...per_budget_type} type="radio"
                               name="action_type"
                               value="post" className="commonPerBudgetType"
-                              id="zhuanfa"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
