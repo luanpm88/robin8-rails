@@ -28,6 +28,16 @@ end
 #   rake "-s sitemap:refresh"
 # end
 
+# Syncs the database into QA and STAGING every night
+every 1.day, :at => '12:01 am', roles: [:db_syncer] do
+  rake "db:export_prod"
+end
+
+every 1.day, :at => '2:00 am', roles: [:db_syncer] do
+  rake "db:import_to_staging"
+  rake "db:import_to_qa"
+end
+
 every 1.day, :at => '12:00 am' do
   command "backup perform --trigger robin8_backup_local"
 end
@@ -75,7 +85,6 @@ end
 every 1.day, :at => '17:01 pm' do
   runner "CampaignObserver.notify_operational_staff", :environment => 'production'
 end
-
 
 every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
