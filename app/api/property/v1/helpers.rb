@@ -12,7 +12,7 @@ module Property
           end
 
           def current_kol
-            return @current_kol if @current_kol
+            return @current_kol if @current_kol        
             @current_kol = Kol.where(id: current_token.resource_owner_id).take
           end
 
