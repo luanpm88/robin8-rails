@@ -97,6 +97,7 @@ module API
             # 如果该手机号码在系统存在，此时需要把当前用户的identity 转移到mobil_kol身上，同时把当前用户删除
             if mobile_kol
               Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              SocialAccount.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
               mobile_kol.reset_private_token
               present :error, 0
               present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary
