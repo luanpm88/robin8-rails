@@ -5,7 +5,7 @@ module API
       resources :kols do
         before do
           action_name =  @options[:path].join("")
-          authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
+          # authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
           params[:gender] = params[:gender].to_i    if params[:gender].present?
         end
 

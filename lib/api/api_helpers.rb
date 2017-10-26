@@ -155,8 +155,13 @@ module API
     end
 
     def update_social(params)
-      return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? params[:provider_name]
-      provider = SocialAccount::Providers.invert[params[:provider_name]]
+      if params[:provider_name]
+        provider = params[:provider_name]
+      else
+        provider = params[:provider]
+      end
+      return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? provider
+      provider = SocialAccount::Providers.invert[provider]
       # 第三方登录时判断
       current_kol ||= Kol.find params[:kol_id] if params[:kol_id]
       if params[:username]
