@@ -20,7 +20,7 @@ module API
             return error_403!({error: 1, detail: errors_message(current_kol)})
           end
         end
-        
+
 
         get 'account' do
           present :error, 0
@@ -160,7 +160,7 @@ module API
               present :detail, "本次解绑后,本月你将没有解绑机会"
             else
               if unbind_record.unbind_at.blank?
-                unbind_record.update(:unbind_count => true) 
+                unbind_record.update(:unbind_count => true)
                 present :error, 0
                 present :detail, "本次解绑后,本月你将没有解绑机会"
               else
@@ -174,12 +174,12 @@ module API
                   present :detail, "本次解绑后,本月你将没有解绑机会"
                 else
                   return error_403!({error: 1, detail: '本月无法再次解绑'})
-                end       
+                end
               end
             end
           end
         end
-        
+
         params do
           requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
@@ -195,7 +195,6 @@ module API
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :unionid, type: String
-
           optional :province, type: String
           optional :city, type: String
           optional :gender, type: String
@@ -211,6 +210,7 @@ module API
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
+            current_kol.update(name: params[:name]) if params[:name].present? && current_kol.name.include?("****")
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else
@@ -270,6 +270,7 @@ module API
               current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
               bind_count = bind_count - 1
               bind_record.update(:bind_count => bind_count)
+
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             elsif identity.kol_id == current_kol.id
