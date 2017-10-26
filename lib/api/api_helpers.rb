@@ -156,12 +156,12 @@ module API
 
     def update_social(params)
       if params[:provider_name]
-        provider = params[:provider_name]
+        provider = SocialAccount::Providers.invert[params[:provider_name]]
       else
         provider = params[:provider]
       end
-      return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.values.include? provider
-      provider = SocialAccount::Providers.invert[provider]
+      return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
+      # provider = SocialAccount::Providers.invert[provider]
       # 第三方登录时判断
       current_kol ||= Kol.find params[:kol_id] if params[:kol_id]
       if params[:username]
@@ -174,13 +174,13 @@ module API
       social_account.homepage = params[:homepage]  if params[:homepage].present?
       if provider == 'weibo' && social_account.homepage.blank?
         uid = current_kol.identities.where(:name => kol_name).first.uid  rescue nil
-        social_account.homepage = "http://m.weibo.cn/u/#{uid}"       if   uid.present?
+        social_account.homepage = "http://m.weibo.cn/u/#{uid}"    if uid.present?
       end
-      social_account.price = params[:price]           if params[:price].present?
-      social_account.username = params[:username]     if params[:username].present?
-      social_account.uid = params[:uid]               if params[:uid].present?
-      social_account.repost_price = params[:repost_price] if params[:repost_price].present?
-      social_account.second_price = params[:second_price] if params[:second_price].present?
+      social_account.price = params[:price]                       if params[:price].present?
+      social_account.username = params[:username]                 if params[:username].present?
+      social_account.uid = params[:uid]                           if params[:uid].present?
+      social_account.repost_price = params[:repost_price]         if params[:repost_price].present?
+      social_account.second_price = params[:second_price]         if params[:second_price].present?
       social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
       social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
       social_account.save
