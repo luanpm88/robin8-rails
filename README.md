@@ -104,3 +104,8 @@ by artificial intelligence.
   * production database dumps are available at staging.robin8.net server at
     `/home/deployer/apps/robin8_staging/tmp/prod.tar.gz`
     * this dump is refreshed every night at 12:01 am
+    * to download and import to your local database
+      * `scp deployer@staging.robin8.net:/home/deployer/apps/robin8_staging/current/tmp/prod.tar.gz
+        ~/you-own-directory`
+      * `tar -cvzf ~/you-own-directory/prod.tar.gz`
+      * mysql -u username -ppassword database-name < prod.sql
