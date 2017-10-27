@@ -154,6 +154,7 @@ module API
         desc '提交申请'
         params do
           optional :kol_shows, type: String
+
         end
         post 'submit_apply' do
           params[:kol_shows].split(",").each do |link|

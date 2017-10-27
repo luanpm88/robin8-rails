@@ -8,7 +8,7 @@ namespace :db do
 
       system "rm #{sql}"
       system "rm #{sql[0..-5]}.tar.gz"
-      system "mysqldump -u #{db['username']} -h #{db['host']} -p #{db['password']} #{db['database']} > #{sql}"
+      system "mysqldump -u #{db['username']} -h #{db['host']} -p#{db['password']} #{db['database']} > #{sql}"
       system "tar -cvzf #{sql[0..-5]}.tar.gz #{sql}"
     end
   end
@@ -16,14 +16,14 @@ namespace :db do
   task import_to_staging: :environment do
     if Rails.env.staging?
       db = Rails.configuration.database_configuration["staging"]
-      system "mysql -u #{db['username']} -h #{db['host']} -p #{db['password']} -f #{db['database']} < #{sql}"
+      system "mysql -u #{db['username']} -h #{db['host']} -p#{db['password']} -f #{db['database']} < #{sql}"
     end
   end
 
   task import_to_qa: :environment do
     if Rails.env.staging?
       db = Rails.configuration.database_configuration["qa"]
-      system "mysql -u #{db['username']} -h #{db['host']} -p #{db['password']} -f #{db['database']} < #{sql}"
+      system "mysql -u #{db['username']} -h #{db['host']} -p#{db['password']} -f #{db['database']} < #{sql}"
     end
   end
 end
