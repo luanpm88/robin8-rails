@@ -31,8 +31,8 @@ module API
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           return error_403!({error: 1, detail: '请先绑定手机号'}) unless current_kol.mobile_number
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
-          current_kol.save
           #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+          current_kol.save
           present :error, 0
         end
 
@@ -120,7 +120,7 @@ module API
               social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
               social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
               social_account.save
-              #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+              current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
               bind_count = bind_count - 1
               bind_record.update(:bind_count => bind_count)
               present :error, 0
@@ -160,7 +160,9 @@ module API
           params[:kol_shows].split(",").each do |link|
             current_kol.kol_shows.find_or_create_by(:link => link)
           end if params[:kol_shows].present?
-          current_kol.update_columns(:role_apply_status => 'passed', :role_apply_time => Time.now)
+
+          current_kol.update_columns(:role_apply_status => 'passed', :kol_role => 'big_v', :role_apply_time => Time.now)
+
           # if current_kol.kol_keywords.size == 0  && current_kol.tags.size > 0
           #   current_kol.tags.each do |tag|
           #     KolKeyword.create!(:kol_id => current_kol.id, :keyword => tag.label)
