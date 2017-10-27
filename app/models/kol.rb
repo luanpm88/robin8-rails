@@ -767,7 +767,11 @@ class Kol < ActiveRecord::Base
     invite_code = InviteCode.find_by(code: code)
     return false  unless invite_code
     if invite_code.invite_type == "admintag"
-      self.admintags << Admintag.find_or_create_by(tag: invite_code.invite_value)  unless self.admintags.include?(Admintag.find_or_create_by(tag: invite_code.invite_value))
+      admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
+      unless self.admintags.include? admintag
+        self.admintags << admintag
+        self.callback_geometry if code == 468888
+      end
     elsif invite_code.invite_type == "club_leader"
       if invite_code.invite_value.present?
         club_name = invite_code.invite_value
@@ -776,10 +780,15 @@ class Kol < ActiveRecord::Base
       end
       Club.create(kol_id: self.id , club_name: club_name)      
     elsif invite_code.invite_type == "club_number"
-      club = Club.find_by(club_name: invite_code.invite_value)
+      club = Club.find invite_code.invite_value
       ClubMember.create(club_id: club.id , kol_id: self.id)
     end
     true
+  end
+
+  def callback_geometry
+    URL = "假装有链接"
+    HTTParty.post(URL , {body: {mobile_number: self.mobile_number , signup_time: self.created_at}})
   end
 
   # def get_share_proportion(credits)
