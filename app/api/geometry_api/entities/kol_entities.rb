@@ -3,6 +3,7 @@ module GeometryApi
   	  module KolEntities
 	      class Summary < Grape::Entity
           expose :mobile_number
+          expose :name
           expose :signup_time do |kol|
   	        kol.created_at
           end

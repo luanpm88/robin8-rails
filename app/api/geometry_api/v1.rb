@@ -1,21 +1,21 @@
 # coding: utf-8
 module GeometryApi
-    class V1 < Grape::API
-      prefix :api
-      format :json
+  class V1 < Grape::API
+    prefix :api
+    format :json
 
-      # params do
-      # 	requires :token , type: String
-      # end
-	  get :geometry_users do 
-	  	return error!('401 Unauthorized', 401) unless params[:token]
+    params do
+      requires :token , type: String
+    end
+
+	  get :geometry_users do
 	  	if params[:token] == "aOzeCuIjKLqb"
-	      kol = Admintag.find_by(tag: "Geometry").kols
+        kols = Admintag.find_by(tag: "Geometry").kols rescue []
 	      present :error , 0
-	      present :count , kol.count
-	      present :users , kol , with: GeometryApi::Entities::KolEntities::Summary
+	      present :count , kols.count
+	      present :users , kols , with: GeometryApi::Entities::KolEntities::Summary
 	    else
-	      present :error , 403
+        error!('401 Unauthorized', 401)
 	    end
 	  end
 	end

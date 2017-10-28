@@ -778,7 +778,7 @@ class Kol < ActiveRecord::Base
       else
         club_name = self.mobile_number
       end
-      Club.create(kol_id: self.id , club_name: club_name)      
+      Club.create(kol_id: self.id , club_name: club_name)
     elsif invite_code.invite_type == "club_number"
       club = Club.find invite_code.invite_value
       ClubMember.create(club_id: club.id , kol_id: self.id)
@@ -787,8 +787,8 @@ class Kol < ActiveRecord::Base
   end
 
   def callback_geometry
-    URL = "假装有链接"
-    HTTParty.post(URL , {body: {mobile_number: self.mobile_number , signup_time: self.created_at}})
+    url = "假装有链接"
+    HTTParty.post(url , {body: {mobile_number: self.mobile_number , signup_time: self.created_at}})
   end
 
   # def get_share_proportion(credits)
