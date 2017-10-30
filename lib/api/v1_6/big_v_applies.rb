@@ -120,7 +120,7 @@ module API
               social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
               social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
               social_account.save
-              current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+              #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
               bind_count = bind_count - 1
               bind_record.update(:bind_count => bind_count)
               present :error, 0
