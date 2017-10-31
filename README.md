@@ -30,16 +30,19 @@ by artificial intelligence.
 
   Notes on the three main branches
 
-  * qa branch will always have the latest features that is working
+  * `qa` branch will always have the latest features that is working
     * qa 是有我们app最新的功能，但还没上线
-  * staging branch is the pre-release branch for us to test on production data
+    * anything in `qa` will be deployed at the next deployment, only put code
+      that is ready to be released
+    * 在 qa 的代码是准备要上线的
+  * `staging` branch is the pre-release branch for us to test on production data
     * staging's data from the database is 24 hours behind our production
     * once pushed to bitbucket staging, you must deploy to staging (will be
       automated)
     * 一部署到staging 就得部署到staging 服务器里，（也将会自动化）
     * staging 是给Tina 或测试用的，there will be scripts to test on production
       data
-  * master_cn branch is always the code for production
+  * `master_cn` branch is always the code for production
     * once pushed to bitbucket master_cn, you must deploy to production (will be
       automated)
     * 一部署到master cn 就得部署到服务器里，（这以后会自动化）
@@ -108,4 +111,5 @@ by artificial intelligence.
       * `scp deployer@staging.robin8.net:/home/deployer/apps/robin8_staging/current/tmp/prod.tar.gz
         ~/you-own-directory`
       * `tar -cvzf ~/you-own-directory/prod.tar.gz`
-      * mysql -u username -ppassword database-name < prod.sql
+      * `mysql -u username -ppassword database-name < prod.sql`, look for your
+        username and password for development at `config/database.yml`
