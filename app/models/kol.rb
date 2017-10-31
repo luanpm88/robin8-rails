@@ -770,7 +770,7 @@ class Kol < ActiveRecord::Base
       admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
       unless self.admintags.include? admintag
         self.admintags << admintag
-        CallbackGeometryWorker.perform_async(self.id) if code == 778888
+        CallbackGeometryWorker.perform_async(self.id) if code == "778888"
       end
     elsif invite_code.invite_type == "club_leader"
       if invite_code.invite_value.present?
