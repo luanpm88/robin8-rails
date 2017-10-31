@@ -10,7 +10,7 @@ module GeometryApi
 
 	  get :geometry_users do
 	  	if params[:token] == "aOzeCuIjKLqb"
-        kols = Admintag.find_by(tag: "Geometry").kols rescue []
+        kols = Admintag.find_by(tag: "geometry_oct_31").kols rescue []
 	      present :error , 0
 	      present :count , kols.count
 	      present :users , kols , with: GeometryApi::Entities::KolEntities::Summary
