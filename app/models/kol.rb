@@ -770,7 +770,7 @@ class Kol < ActiveRecord::Base
       admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
       unless self.admintags.include? admintag
         self.admintags << admintag
-        self.callback_geometry if code == 468888
+        self.callback_geometry if code == 778888
       end
     elsif invite_code.invite_type == "club_leader"
       if invite_code.invite_value.present?
@@ -787,8 +787,12 @@ class Kol < ActiveRecord::Base
   end
 
   def callback_geometry
-    url = "假装有链接"
-    HTTParty.post(url , {body: {mobile_number: self.mobile_number , signup_time: self.created_at}})
+    url              = "http://callback.onemorething.net.cn/robin8/newreg"
+    data             = {cell: self.mobile_number, regtime: self.created_at.strftime("%F %T")}.to_json
+    public_key       = OpenSSL::PKey::RSA.new(File.read("config/geometry.pem"))
+    encrypted_string = Base64.encode64(public_key.public_encrypt(data, OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING))
+
+    HTTParty.post(url, {body: {data: encrypted_string}})
   end
 
   # def get_share_proportion(credits)
