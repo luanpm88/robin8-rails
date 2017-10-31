@@ -6,11 +6,13 @@ module GeometryApi
 
     params do
       requires :token , type: String
+      optional :page  , type: Integer
     end
 
 	  get :geometry_users do
 	  	if params[:token] == "aOzeCuIjKLqb"
-        kols = Admintag.find_by(tag: "geometry_oct_31").kols rescue []
+        kols = Admintag.find_by(tag: "geometry_oct_31").kols.order("id desc").
+          page(params[:page]).per_page(30) rescue []
 	      present :error , 0
 	      present :count , kols.count
 	      present :users , kols , with: GeometryApi::Entities::KolEntities::Summary
