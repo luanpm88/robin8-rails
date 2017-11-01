@@ -8,11 +8,45 @@ namespace :daily_report  do
   task :daily_send => :environment do
     
     ending = DateTime.now.change({ hour: 19 })
+    staff_ids = [103985, 71239, 173, 74730, 12275, 61209, 74069]
+    
     c = Campaign.where("start_time > ? and start_time < ?", ending - 1.day, ending).where(:status => ['settled', 'executing', 'executed'])
     total_budget = c.sum("budget")
     campaign_count = c.count
+
+    # Calculate the number of new KOLs, and how many of those took a campaign.
+    k = Kol.where("created_at > ? and created_at < ?", ending - 1.day, ending)
+    kol_count = k.count
     
-    ReportMailer.daily_smallV_report(campaign_count, total_budget).deliver
+    # Get number of new clubs
+    new_clubs = Club.where("created_at>?", ending-1.day)
+    club_count = new_clubs.count
+    # Get number of new club members (Used to verify how many people the student leader can bring)
+    new_club_members = ClubMember.where('created_at>?', ending-1.day)
+    cm_count = new_club_members.count
+    
+    day_leader = (Club.where("created_at>?", ending-1.day).pluck(:kol_id) - staff_ids).uniq
+    week_leader = (Club.where("created_at>?", ending-7.day).pluck(:kol_id) - staff_ids).uniq
+    all_leader = (Club.pluck(:kol_id) - staff_ids).uniq
+    
+    day_active_leader = CampaignInvite.where(:kol_id => day_leader).pluck(:kol_id).uniq
+    week_active_leader = CampaignInvite.where(:kol_id => week_leader).pluck(:kol_id).uniq
+    all_active_leader = CampaignInvite.where(:kol_id => all_leader).pluck(:kol_id).uniq
+    
+    # Get all member throughs the sponsorship layer
+    leaders_and_members = (Club.pluck(:kol_id) + ClubMember.pluck(:kol_id) - staff_ids).uniq
+    day_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-1.day).uniq
+    week_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-7.day).uniq
+    all_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).uniq
+    
+    # Get WAU & DAU
+    dau = CampaignInvite.where('created_at>?', ending-1.day).pluck(:kol_id).uniq.count
+    wau = CampaignInvite.where('created_at>?', ending-7.day).pluck(:kol_id).uniq.count
+    
+    ReportMailer.daily_smallV_report(campaign_count, total_budget, kol_count, club_count, cm_count, dau, wau,
+        day_leader.count, week_leader.count, all_leader.count,
+        day_active_leader.count, week_active_leader.count, all_active_leader.count,
+        day_student_invite.count, week_student_invite.count, all_student_invite.count).deliver
     
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
     notifier.ping "Hey guys! We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB."
