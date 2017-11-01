@@ -65,10 +65,6 @@ every 1.day, :at => '0:01 am' do
 end
 
 #cpp截图定时自动审核通过
-every 1.day, :at => '10:50 am' do
-  runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'qa'
-end
-
 every 1.day, :at => '0:10 am' do
   runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
 end
