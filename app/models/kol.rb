@@ -268,9 +268,6 @@ class Kol < ActiveRecord::Base
     self.sync_campaigns
   end
 
-
-
-
   def self.fetch_kol_with_level(kol_id)
     Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
       Kol.find(kol_id)
