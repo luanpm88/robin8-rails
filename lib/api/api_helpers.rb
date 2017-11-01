@@ -168,8 +168,8 @@ module API
       # 第三方登录时判断
       social_account = SocialAccount.find_or_initialize_by(:kol_id => kol.id , :provider => params[:provider])
       social_account.homepage = params[:homepage]  if params[:homepage].present?
-      if provider == 'weibo' && social_account.homepage.blank?
-        uid = current_kol.identities.where(:name => params[:name]).first.uid  rescue nil
+      if params[:provider] == 'weibo' && social_account.homepage.blank?
+        uid = kol.identities.where(:name => params[:name]).first.uid  rescue nil
         social_account.homepage = "http://m.weibo.cn/u/#{uid}"    if uid.present?
       end
       social_account.price = params[:price]                       if params[:price].present?
