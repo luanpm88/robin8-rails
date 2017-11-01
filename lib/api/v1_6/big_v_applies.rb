@@ -39,7 +39,7 @@ module API
         params do
           requires :provider_name, type: String
           optional :homepage, type: String
-          requires :price, type: String
+          optional :price, type: String
           optional :username, type: String
           optional :uid, type: String
           optional :repost_price, type: String
@@ -63,8 +63,8 @@ module API
           social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
           social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
           social_account.save
-          #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
-          present :error, 0
+          current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
+          present :error, 0 
         end
 
         desc '提交社交账号资料'
