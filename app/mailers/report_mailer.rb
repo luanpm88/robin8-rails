@@ -2,7 +2,8 @@ class ReportMailer < ApplicationMailer
 
 
   # This report will contains the data of small-v campaign count and budget to report daily. 
-  def daily_smallV_report(count, budget, kol_count, club_count, cm_count, dau, wau)
+  def daily_smallV_report(count, budget, kol_count, club_count, cm_count, dau, wau, day_leader, week_leader, all_leader, \
+      day_active_leader, week_active_leader, all_active_leader, day_invite, week_invite, all_invite)
     puts "Prepare for daily email"
     @count = count
     @budget = budget
@@ -11,6 +12,15 @@ class ReportMailer < ApplicationMailer
     @clubs = club_count
     @members = cm_count
     @kol = kol_count
+    @day_leader = day_leader
+    @week_leader = week_leader
+    @all_leader = all_leader
+    @day_active_leader = day_active_leader
+    @week_active_leader = week_active_leader
+    @all_active_leader = all_active_leader
+    @day_invite = day_invite
+    @week_invite = week_invite
+    @all_invite = all_invite
     mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <no-reply@robin8.com>")
     puts "Daily email sent"
   end

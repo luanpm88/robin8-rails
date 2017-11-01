@@ -59,9 +59,14 @@ end
 #   runner "KolInfluenceValue.schedule_cal_influence"
 # end
 
-
+#cpc截图定时自动审核通过
 every 1.day, :at => '0:01 am' do
   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+end
+
+#cpp截图定时自动审核通过
+every 1.day, :at => '0:10 am' do
+  runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
 end
 
 # 定时处理geometry 截图审核
