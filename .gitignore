@@ -22,6 +22,8 @@ public/system
 .rvmrc
 app/assets/javascripts/generated/
 
+.editorconfig
+
 *.sublime-project
 *.sublime-workspace
 .DS_Store

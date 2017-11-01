@@ -1,0 +1,30 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  reconnect: true
+  pool: 30
+  timeout: 5000
+
+staging:
+  <<: *default
+  database: robin8_pro4
+  username: root
+  password: root
+
+qa:
+  <<: *default
+  database: robin8_development
+  username: root
+  password: root
+
+development:
+  <<: *default
+  database: robin8_development
+  username: root
+  password: root
+
+test:
+  <<: *default
+  database: robin8_test
+  username: root
+  password: root

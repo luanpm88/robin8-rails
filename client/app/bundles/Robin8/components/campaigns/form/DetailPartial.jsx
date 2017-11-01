@@ -48,21 +48,26 @@ export default class DetailPartial extends React.Component {
   }
 
   _handlePerBudgetInputChange() {
+    const { per_action_budget, per_budget_type, sub_type } = this.props;
     const { onChange } = this.props.per_action_budget;
     $('.per-budget-input').change(function() {
       onChange($(this).val());
-    })
+      console.log(onChange($(this).val()))
+    });
+
+
   }
 
   _listenPerBudgetTypeChange() {
+    const { per_action_budget, per_budget_type, sub_type } = this.props;
+
     $("input[name='action_type']").change(function(){
-      const { per_action_budget, per_budget_type, sub_type } = this.props;
       if(per_budget_type.value == 'post') {
         per_action_budget.onChange("2.0")
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("0.2")
-        sub_type.onChange("wechat")
+        per_action_budget.onChange("0.2") // initial min value is 0.2
+        sub_type.onChange("wechat");
       }
       if(per_budget_type.value == 'simple_cpi') {
         per_action_budget.onChange("2.0")
@@ -84,15 +89,58 @@ export default class DetailPartial extends React.Component {
     }.bind(this))
   }
 
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('v0003');
+    //console.log("prevProps are : ", prevProps);
+    let oldValue = prevProps.per_budget_type.value;
+    console.log("oldValue", oldValue);
+    let newValue = this.props.per_budget_type.value;
+    console.log("newValue", newValue);
+    let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2;
+
+    if(oldValue==newValue) return console.log('escape');
+    // unable to change min value with this method
+    // $('.per-budget-input').TouchSpin({
+    //   min: min,
+    //   max: 10000000,
+    //   step: 0.1,
+    //   decimals: 1,
+    // })
+    // trigger method will cause infinite loop
+    // because per_budget_type.value is not fully loaded in the initial rendering
+    // its value become valid after the birth phase of the component
+    // which then exit the loop
+    if(true){
+      console.log('calling .trigger');
+      $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
+    }
+
+  }
+
   componentWillUnmount() {
     $('.spinner-input').off('change');
   }
+
+  // componentWillUpdate() {
+  //   var asdf = 0;
+  //   if(this.props.per_budget_type.value == 'click') {
+  //     console.log('click');
+  //     asdf = 3;
+      // $('.per-budget-input').trigger("touchspin.updatesettings", {min: 2.5});
+  //   }
+  //   if(this.props.per_budget_type.value == 'post') {
+  //     asdf = 3.3;
+  //     console.log('post');
+  //   }
+  //   console.log(asdf)
+  // }
 
   renderDetailTips(){
     const tip = "<p>1.&nbsp;按照转发奖励KOL: 按照KOL转发一次性付费。\
@@ -105,70 +153,35 @@ export default class DetailPartial extends React.Component {
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type } = this.props
     return (
-      <div className="creat-activity-form creat-content-sources">
-        <div className="header">
-          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
-        </div>
-        <div className="content">
-          <div className="form-item form-horizontal">
-            <div className="row">
-              <p className="action-mode">奖励模式选择</p>
-              <div className="sources-check">
-                <div className="row">
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="click" className="commonPerBudgetType"  onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
-                    按照点击奖励KOL
-                  </div>
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
-                    按照转发奖励KOL
-                  </div>
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
-                    按照下载APP奖励KOL
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
-                    按照点击指定链接奖励KOL
-                  </div>
-                  {
-                  <div className="col-md-4">
-                    <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
-                    按照完成任务奖励KOL
-                  </div>
-                  }
-                </div>
-              </div>
-            </div>
 
-            <div className="row forward-platform-select">
+      <div className="react-toolbox creat-content-sources">
+        <div className="header">
+          <h3 className="tit" style={{textAlign: "center"}}>推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
+        </div>
+        <div className="content" style={{backgroundColor: "white"}}>
+          <div className="form-item form-horizontal" style={{marginLeft: '3em'}}>
+            <div className="row">
               <p className="action-mode">推广平台选择</p>
               <div className="sources-check">
                 {
                   do {
-                    let enableSharingAll = false;
+                    let enableSharingAll = true;
                     if (enableSharingAll) {
                       <div className="row">
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  nChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
                           分享到朋友圈
-                        </div>
-                        <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="weibo"  className="formardPlatformType" nChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
-                          分享到微博
                         </div>
 
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="qq" className="formardPlatformType" nChange={sub_type.onChange} checked={sub_type.value === "qq"} />
-                          分享到QQ空间
+                          <input {...sub_type} type="radio" name="sub_type" value="weibo" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
+                          分享到微博
                         </div>
                       </div>
                     } else {
                       <div className="row">
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  nChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
                           分享到朋友圈
                         </div>
                       </div>
@@ -177,6 +190,70 @@ export default class DetailPartial extends React.Component {
                 }
               </div>
             </div>
+
+            <div className="row forward-platform-select">
+              <p className="action-mode">奖励模式选择</p>
+              <div className="sources-check">
+                {
+                  do {
+
+                      if(sub_type.value === "wechat") {
+                        <div className="row">
+
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                            <input {...per_budget_type} type="radio"
+                              name="action_type"
+                              value="click" className="commonPerBudgetType"
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "click"} />
+                            按照点击奖励KOL
+                          </div>
+
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                            <input {...per_budget_type} type="radio"
+                              name="action_type"
+                              value="post" className="commonPerBudgetType"
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "post"} />
+                            按照转发奖励KOL
+                          </div>
+
+                          {/* <div className="col-md-4" style={{marginBottom: '1em'}}>
+                            <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
+                            按照下载APP奖励KOL
+                          </div>
+
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                            <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
+                            按照点击指定链接奖励KOL
+                          </div>
+
+                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                            <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            按照完成任务奖励KOL
+                          </div> */}
+
+                        </div>
+                      } else if(sub_type.value === "weibo") {
+                        <div className="row">
+
+                          {/* <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" id="cpt" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            按照完成任务奖励KOL
+                          </div> */}
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" id="forwarding" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                            按照转发奖励KOL
+                          </div>
+                        </div>
+                      } else {
+                        <div></div>
+                      }
+                  }
+                }
+            </div>
+          </div>
 
             <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
               {
@@ -221,7 +298,10 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input " style={{display: 'block'}} />
+
+                  <input {...per_action_budget} type="text"
+                    className="clearfix spinner-input per-budget-input"
+                    style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                   </div>

@@ -115,6 +115,17 @@ module API
         end
 
         params do
+          requires :invite_code , type: Integer
+        end
+        post "invite_code" do
+          if current_kol.invite_code_dispose(params[:invite_code])
+            present :error, 0
+          else
+            return error_403!({error: 1, detail: '无效的邀请码'})
+          end
+        end
+
+        params do
           requires :action, type: String, values: ['on', 'off']
         end
         get 'manage_influence_visibility' do

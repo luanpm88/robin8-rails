@@ -1,5 +1,6 @@
-source 'https://gems.ruby-china.org'
+source 'http://gems.ruby-china.org'
 # source 'https://ruby.taobao.org'
+#source 'http://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bundler', '>= 1.7.0'
@@ -30,7 +31,7 @@ gem 'quiet_assets', group: [:development, :staging, :qa]
 gem 'roadie', '~> 3.0.5'
 
 # Displays page rendering performance
-# gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', group: [:development]
 
 # create multiple log files
 gem 'multi_logger'
@@ -45,8 +46,8 @@ gem 'oauth2'
 gem 'legato'
 gem 'redis-objects'
 gem 'redis-rails'
-gem 'rest-client'
 gem 'redis-namespace'
+gem 'rest-client'
 
 gem 'mongoid', '~> 5.0.0'
 
@@ -135,6 +136,7 @@ gem 'imgkit'
 
 # to create Docx
 gem 'caracal-rails'
+gem 'roo' #parse excel
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -158,7 +160,6 @@ gem 'geocoder'
 gem 'china_sms'
 gem 'qiniu', '~> 6.5.1'
 gem "rails-settings-cached"
-
 
 group :development, :test do
   # Deploy with Capistrano

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="flexible" content="initial-dpr=2,maximum-dpr=3" />
+    <%= stylesheet_link_tag 'kol_pk/style' %>
+    <%= csrf_meta_tag %>
+		<title>影响力大比拼</title>
+	</head>
+	<body>
+		<section class="content-wrap">
+			<div><%= image_tag "kol_pk/influential-01.jpg" %></div>
+			<div class="loading-box">
+        <div class="loading-icon"><%= image_tag "kol_pk/loading.gif" %></div>
+        <%= image_tag "kol_pk/loading-02.png" %>
+			</div>
+		</section>
+    <!--
+		<section class="i-bottom">
+      <%= image_tag "kol_pk/influential-04.jpg" %>
+      <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+		</section>
+    -->
+	</body>
+  <%= javascript_include_tag 'kol_pk/flexible' %>
+	<script type="text/javascript">
+    function httpGetAsync(theUrl, callback)
+    {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+          callback(xmlHttp.responseText);
+      }
+      xmlHttp.open("GET", theUrl, true);
+      xmlHttp.send(null);
+    }
+
+    var counter = 0;
+    setInterval(function(e){
+      httpGetAsync('<%= "/kol_pk/#{params[:challenger_id]}/vs/#{params[:challengee_id]}/check?fighting_at=#{params[:at]}" %>', function(resp){
+        response = JSON.parse(resp);
+        if (response.last_pk_at > <%= params[:at] %>) {
+          window.location.href = "/kol_pk/"+response.new_pk_id;
+        } else {
+          counter += 1;
+        }
+        if (counter >= 14) {
+          window.location.href = "/kol_pk/timeout?was=<%=URI.encode(request.url)%>";
+        }
+      })
+    },2000)
+  </script>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+  <meta charset="utf-8">
+  <%= favicon_link_tag 'favicon.ico' %>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <%= stylesheet_link_tag 'wechat_campaign' %>
+  <%= csrf_meta_tags %>
+  <title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
+
+<script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+</head>
+
+<body class="bg-red">
+<section >
+  <%= image_tag 'wechat_campaign/red-bag.jpg' %>
+  <form class="form-ro">
+    <%= text_field_tag 'mobileNumber', nil, class: "input-ro width100", placeholder: "请填写手机号"  %>
+
+    <%= text_field_tag 'smsCode', nil, class: "input-ro", placeholder: "请填写验证码"  %>
+    <a id="request-sms" class="red-bag-btn">获取验证码</a>
+    <button id="submit" class="red-bag-btn width100">立即体验</button>
+  </form>
+  <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
+  <div class="red-bag-ifo f-info"  style="font-size: 2rem; color: blue;"></div>
+  <p class="red-bag-ifo">测试社交影响力并获得品牌带盐福利</p>
+</section>
+</body>
+
+<script type="text/javascript">
+    var smsUrl = "<%= wechat_geometry_sms_request_path %>";
+    var createUrl = "<%= wechat_geometry_kol_create_path %>";
+    var smsBtn = $("#request-sms");
+    var submitBtn = $("#submit");
+    var remainingNumber = smsBtn.data("remaining");
+    var errorAlert = $(".f-error");
+    var infoAlert = $(".f-info");
+
+    var smsTimeCounter = (function(element) {
+        var counter, countNumber;
+
+        return {
+            run: function(number) {
+                if (!!counter) return;
+
+                countNumber = number || 60;
+                element.data("txt", element.html());
+                element.attr('disabled', true);
+
+                counter = setInterval(function() {
+                    element.html(countNumber + " (秒)");
+                    countNumber -= 1;
+                    if (countNumber < 0) {
+                        clearInterval(counter);
+                        counter = null;
+                        element.html(element.data("txt"));
+                        element.attr('disabled', false);
+                    }
+                }, 1000);
+            }
+        }
+    })(smsBtn);
+
+    if (remainingNumber) {
+        smsTimeCounter.run(remainingNumber);
+    }
+
+    smsBtn.click(function() {
+        var mobileNumber = $("#mobileNumber").val();
+
+        if (!!smsBtn.attr('disabled'))
+            return false;
+
+        smsBtn.attr('disabled', true);
+        $.ajax({
+            method: 'POST',
+            url: smsUrl,
+            data: {
+                'mobile_number': mobileNumber
+            },
+            beforeSend: function(xhr){
+                var token = $('meta[name="csrf-token"]').attr('content');
+                xhr.setRequestHeader('X-CSRF-Token', token);
+            }
+        }).done(function(data){
+            if (!!data.error) {
+                errorAlert.html(data.error).fadeIn();
+                errorAlert.delay(3000).fadeOut()
+                smsBtn.attr('disabled', false);
+            } else {
+                infoAlert.html("短信验证码发送成功").fadeIn();
+                infoAlert.delay(3000).fadeOut()
+                smsTimeCounter.run();
+            }
+        }).fail(function(xhr, status) {
+            errorAlert.html("发生错误了，请重新尝试").fadeIn();
+            errorAlert.delay(3000).fadeOut();
+            smsBtn.attr('disabled', false);
+        });
+    });
+
+    $("form").submit(function(event) {
+        var mobileNumber = $("#mobileNumber").val();
+        var smsCode = $("#smsCode").val();
+        var tag = $("#tag").val();
+
+        if (!!submitBtn.attr('disabled'))
+            return false;
+
+        submitBtn.attr('disabled', true);
+        $.ajax({
+            method: 'POST',
+            url: createUrl,
+            data: {
+                'mobile_number': mobileNumber,
+                'sms_code': smsCode,
+            },
+            beforeSend: function(xhr){
+                var token = $('meta[name="csrf-token"]').attr('content');
+                xhr.setRequestHeader('X-CSRF-Token', token);
+            }
+        }).done(function(data){
+            if (!!data.error) {
+                errorAlert.html(data.error).fadeIn();
+                errorAlert.delay(3000).fadeOut()
+            } else {
+                infoAlert.html("成功接受邀请，正在跳转...").fadeIn();
+                infoAlert.delay(3000).fadeOut()
+                window.location.href = data.url;
+            }
+            submitBtn.attr('disabled', false);
+        }).fail(function(xhr, status) {
+            errorAlert.html("发生错误了，请重新尝试").fadeIn();
+            errorAlert.delay(3000).fadeOut();
+            submitBtn.attr('disabled', false);
+        });
+
+        event.preventDefault();
+        return false;
+    });
+
+</script>
+
+</body>
+</html>

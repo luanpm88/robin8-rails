@@ -31,4 +31,13 @@
   </tbody>
 </table>
 
+<p>
+  <% zong = 0 %>
+  <% @transactions.each do |a| %>
+    <% cam_amount = a.account.historical_recharge rescue 0 %>
+    <% zong = zong + cam_amount %>
+  <% end %>
+  <%= "总金额#{zong}" %>
+</p>
+
 <%= will_paginate @transactions, renderer: BootstrapPagination::Rails  %>

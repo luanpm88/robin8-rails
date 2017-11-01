@@ -48,14 +48,42 @@ module Concerns
         self.lock!
         self.increment!(:amount, credits)
          # only count net income if need
-        self.increment!(:historical_income, (self.get_income_of(item) || credits)) if self.is_a? Kol and Transaction::KOL_INCOME_SUBJECTS.include?(subject)
-        self.increment!(:historical_recharge, credits) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
-        self.decrement!(:historical_payout, credits)   if self.is_a? User and Transaction::USER_CAMPAIGN_INCOME_SUBJECTS.include?(subject)
+        self.increment!(:historical_income, (self.get_income_of(item) || credits )) if self.is_a? Kol and Transaction::KOL_INCOME_SUBJECTS.include?(subject)
+        self.increment!(:historical_recharge, credits ) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
+        self.decrement!(:historical_payout, credits )   if self.is_a? User and Transaction::USER_CAMPAIGN_INCOME_SUBJECTS.include?(subject)
         transaction = build_transaction(credits, subject, 'income', item , opposite, created_at)
         transaction.save!
         transaction
       end
     end
+
+#     def income_v2(credits,  subject, item = nil, opposite = nil, created_at = nil)
+#       ActiveRecord::Base.transaction do
+#         self.lock!
+#         self.increment!(:amount, credits)
+#          # only count net income if need
+#         self.increment!(:historical_income, (self.get_income_of(item) || credits )) if self.is_a? Kol and Transaction::KOL_INCOME_SUBJECTS.include?(subject)
+#         self.increment!(:historical_recharge, credits ) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
+#         self.decrement!(:historical_payout, credits )   if self.is_a? User and Transaction::USER_CAMPAIGN_INCOME_SUBJECTS.include?(subject)
+#         transaction = build_transaction(credits, subject, 'income', item , opposite, created_at)
+#         transaction.save!
+#         transaction
+#       end
+#     end
+
+# # 判断是否是社团成员,社团成员按百分比算钱
+# # 入账代码移至 income_v2
+#     def income(credits,  subject, item = nil, opposite = nil, created_at = nil)
+#       if self.club_member
+#         leader_credits , member_credits = self.get_share_proportion(credits)
+#         transaction = self.income_v2(member_credits , subject, item , opposite , created_at)
+#         # leader 算钱
+#         self.club_member.club.kol.income_v2(leader_credits , subject, item , opposite , created_at)
+#       else
+#         transaction = self.income_v2(credits, subject, item , opposite , created_at )
+#       end
+#       transaction
+#     end
 
     def payout(credits,  subject, item = nil, opposite = nil)
       ActiveRecord::Base.transaction do

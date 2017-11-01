@@ -9,7 +9,7 @@ class RegisteredInvitationsController < ApplicationController
     return render json: {error: "手机号已经被注册" } if Kol.where(mobile_number: params[:mobile_number]).exists?
     @kol = Kol.where(id: params[:invite_code]).take
     @kol.registered_invitation_count.increment
-    if @kol.registered_invitation_count > 5
+    if @kol.registered_invitation_count > 100
       return render json: {error: "短信错误"}
     end
 

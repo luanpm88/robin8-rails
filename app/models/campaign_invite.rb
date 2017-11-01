@@ -18,6 +18,12 @@ class CampaignInvite < ActiveRecord::Base
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
+  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
+                     'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+                     'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
+
+  }
+
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -81,6 +87,9 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+
+
+
   # 进行中的活动 审核通过时  仅仅更新它状态
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass_without_lock
@@ -106,6 +115,23 @@ class CampaignInvite < ActiveRecord::Base
       screenshot_pass_without_lock
     end
   end
+
+  #cpc截图自动审核
+  def self.auto_change_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' ")
+    @campaign_invites.each do |c|
+      c.screenshot_pass
+    end
+  end
+
+  #cpp截图自动审核
+  def self.auto_change_cpp_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click >= 1 AND img_status = 'pending' ")
+    @campaign_invites.each do |c|
+      c.screenshot_pass
+    end
+  end
+
 
   #审核拒绝
   def screenshot_reject rejected_reason=nil
@@ -320,7 +346,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def settle(auto = false, transaction_time = Time.now)
+  def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'rejected'
     self.settle_lock.lock  do
@@ -330,7 +356,7 @@ class CampaignInvite < ActiveRecord::Base
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         if campaign_shows.size > 0
-          credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
+          credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
@@ -383,4 +409,14 @@ class CampaignInvite < ActiveRecord::Base
     RemoveOldInvitationsWorker.perform_async()
   end
 
+  def get_example_screenshot
+    return self.campaign.example_screenshot if self.campaign.example_screenshot.present?
+    if self.sub_type == 'weibo'
+      ExampleScreenshots['weibo']
+    elsif self.sub_type == 'qq'
+      ExampleScreenshots['qq']
+    elsif self.sub_type == 'wechat'
+      ExampleScreenshots['wechat']
+    end
+  end
 end

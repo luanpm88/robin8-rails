@@ -4,13 +4,7 @@ module Campaigns
 
     included do
       ExpectEffects = [{:name => 'incr_exposure', :label => "增加文章曝光", :budget_type => "click" },
-                       {:name => 'incr_forward', :label => "增加文章转发", :budget_type => "post"},
-                       {:name => 'incr_wechat_follower', :label => "增加公众号粉丝", :budget_type => "cpt"},
-                       {:name => 'incr_download', :label => "增加APP下载量", :budget_type => "simple_cpi"},
-                       {:name => 'input_questionnaire', :label => "填写问卷调查", :budget_type => "cpt"},
-                       {:name => 'input_application', :label => "填写试用申请", :budget_type => "cpt"},
-                       {:name => 'input_weibo_follower', :label => "增加微博粉丝", :budget_type => "cpt"},
-                       {:name => 'complete_task', :label => "完成指定任务", :budget_type => "cpt"}]
+                       {:name => 'incr_forward', :label => "增加文章转发", :budget_type => "post"}]
       # MinPerActionBudget = {:simple_cpi => 3, :cpt => 1, :click => 0.2, :post => 2}
       MinPerActionBudget = {:simple_cpi => 3, :cpt => 3, :click => 0.5, :post => 3}
       MinBudget = MySettings.campaign_min_budget  rescue nil || 100

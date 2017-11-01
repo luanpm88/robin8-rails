@@ -1,0 +1,184 @@
+<%
+    #  avatar_url = (@kol.avatar.url(200) rescue nil) || @kol.read_attribute(:avatar_url)
+    # avatar_url = @kol.read_attribute(:avatar_url)
+    # avatar_url = @kol.identities.last.avatar_url
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="flexible" content="initial-dpr=2,maximum-dpr=3" />
+        <%= stylesheet_link_tag 'kol_pk/style' %>
+        <%= csrf_meta_tag %>
+		<title>影响力大比拼</title>
+	</head>
+	<body>
+    <!--
+		<section class="content-wrap">
+      <div><%= image_tag 'kol_pk/influential-01.jpg' %></div>
+			<div class="loading-box">
+        <%= image_tag 'kol_pk/loading-01.png' %>
+
+				<div class="loading-bar"><span></span></div>
+			</div>
+		</section>
+    -->
+
+  <% if current_kol and current_kol == @kol  %>
+    <% influence_metric     = @kol.influence_metrics.last %>
+    <% influence_industries = influence_metric.influence_industries.order(industry_score: :desc).limit(3) %>
+		<section>
+      <%= image_tag "kol_pk/influential-06.jpg" %>
+		</section>
+		<section>
+      <%= image_tag "kol_pk/influential-14.jpg" %>
+      <div class="influential-wrap top-i vs-win">
+        <span class="headshot">
+          <%= image_tag @kol.avatar_url %>
+        </span>
+        <span class="i-name"><%= @kol.safe_name %></span>
+        <div class="score">
+          <%= image_tag "kol_pk/line-win.png" %>
+          <%= influence_metric.influence_score %>分
+          <%= image_tag "kol_pk/line-win.png" %>
+        </div>
+        <div class="result result-win">
+          <span><%= @kol.won_challenges.count %></span>
+          <span><%= @kol.lost_challenges.count %></span>
+        </div>
+				<div class="competition">
+					<p class="progress-title">您最感兴趣的领域：</p>
+					<ul class="progress-box">
+					 	<li>
+              <% if influence_industries[0].present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[0].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[0].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[0].industry_score.to_i%></span>
+              <% end %>
+					 	</li>
+            <li>
+              <% if influence_industries[1].present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[1].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[1].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[1].industry_score.to_i%></span>
+              <% end %>
+            </li>
+            <li>
+              <% if influence_industries[2].present? %>
+                <span class="progress-item left"><%= t "influence_industry.#{influence_industries[2].industry_name}" %></span>
+                <div class="progress-bar"><span style="width:<%=influence_industries[2].industry_score.to_d*0.978%>%;"></span></div>
+                <span class="progress-item"><%=influence_industries[2].industry_score.to_i%></span>
+              <% end %>
+            </li>
+					</ul>
+				</div>
+			</div>
+		</section>
+  <% else %>
+		<section>
+			<%= image_tag 'kol_pk/influential-02.jpg' %>
+			<div class="influential-wrap">
+        <span class="headshot"><%= image_tag @kol.avatar_url %></span>
+        <span class="i-name"><%= @kol.safe_name %></span>
+        <div class="score">
+          <%= image_tag 'kol_pk/line.png' %>
+          <%= @kol.influence_metrics.last.influence_score rescue 300 %>分
+          <%= image_tag 'kol_pk/line.png' %>
+      </div>
+				<div class="result">
+          <span><%= @kol.won_challenges.count %></span>
+          <span><%= @kol.lost_challenges.count %></span>
+				</div>
+        <a class="i-btn" href='/auth/weibo?ok_url=<%= "#{root_url}kol_pk/new/vs/#{params[:id]}" %>'>
+          <%= image_tag 'kol_pk/btn-01.png' %></a>
+			</div>
+		</section>
+  <% end %>
+		<section>
+			<%= image_tag 'kol_pk/influential-03.jpg' %>
+			<div class="friend-wrap">
+				<ul>
+          <% @kol.challenges.group("challenger_id + challengee_id").uniq.limit(6).each do |pk| %>
+            <% the_other = pk.the_other(@kol) %>
+            <li>
+              <span class="headshot">
+                <%= image_tag the_other.avatar_url %>
+              </span>
+              <span class="i-name"><%= the_other.safe_name %></span>
+              <div class="score">
+                <%= image_tag 'kol_pk/line-02.png' %>
+                <%= pk.score_for the_other %>分
+                <%= image_tag 'kol_pk/line-02.png' %></div>
+              <div class="result-02">
+                <%= image_tag "kol_pk/#{pk.result_for(@kol)}.png" %>
+              </div>
+            </li>
+          <% end %>
+				</ul>
+			</div>
+		</section>
+    <section class="download-prompt">
+				<%= image_tag 'kol_pk/influential-04.jpg' %>
+        <a class="btn-download" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+		</section>
+
+	</body>
+  <%= javascript_include_tag 'kol_pk/flexible' %>
+  <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+	<script type="text/javascript">
+		var dialog = document.getElementById('dialog');
+		var black = document.getElementById('black');
+		function closeDialog(){
+
+			black.style.display = "none";
+			dialog.style.display = "none";
+		}
+
+		function showDialog(){
+			black.style.display = "block";
+			dialog.style.display = "block";
+		}
+    <%
+       sign_package = ($weixin_client.get_jssign_package(request.url) rescue {})
+       app_id       = sign_package['appId']
+       nonce        = sign_package['nonceStr']
+       ts           = sign_package['timestamp']
+       signature    = sign_package['signature']
+       url_to_share = if current_kol
+                        "#{root_url}kol/#{current_kol.id}/kol_pk"
+                      else
+                        request.url
+                      end
+    %>
+    wx.config({
+      debug:     false,
+      appId:     '<%= app_id %>',
+      timestamp: '<%= ts %>',
+      nonceStr:  '<%= nonce %>',
+      signature: '<%= signature %>',
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo'
+      ]
+    });
+
+    wx.ready(function () {
+      var shareData = {
+        title:  '要和我比拼影响力么？快来Robin8一决高下！',
+        link:   '<%= url_to_share %>',
+        imgUrl: 'http://pp.myapp.com/ma_icon/0/icon_42248507_1505726963/256',
+        success: function (res) {
+          closeDialog();
+        }
+      };
+
+      wx.onMenuShareAppMessage(shareData);
+      wx.onMenuShareTimeline(shareData);
+      wx.onMenuShareQQ(shareData);
+      wx.onMenuShareWeibo(shareData);
+    });
+</html>

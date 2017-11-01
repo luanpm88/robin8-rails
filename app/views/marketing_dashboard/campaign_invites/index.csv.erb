@@ -1,0 +1,38 @@
+<%
+  # 文档标题
+  cols = [
+    '截图状态',
+    '活动 ID',
+    '活动名称',
+    '活动类型',
+    '活动状态',
+    '活动结束时间',
+    'KOL ID',
+    'KOL 名称',
+    'Admintag',
+    '有效点击',
+    '总点击',
+    '接单时间'
+  ]
+%>
+<%=
+  CSV.generate do |csv|
+    csv << cols
+    @campaign_invites.each do |i|
+      csv << [
+        i.img_status,
+        i.campaign_id,
+        i.campaign.name,
+        i.campaign.per_budget_type,
+        i.campaign.status,
+        i.campaign.deadline.strftime("%Y-%m-%d %H:%M"),
+        i.kol_id,
+        i.kol.kol_level,
+        i.kol.admintags.map(&:tag).join(" & "),
+        i.get_avail_click(true) > 0 ? i.get_avail_click(true) : i.avail_click,
+        i.get_total_click > 0 ? i.get_total_click : i.total_click,
+        (i.approved_at.strftime("%Y-%m-%d %H:%M") rescue nil)
+      ]
+    end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>

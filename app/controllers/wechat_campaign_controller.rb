@@ -3,12 +3,14 @@ class WechatCampaignController < ApplicationController
   before_action :set_campaign, only: [:campaign_page, :kol_register, :campaign_details]
 
   def campaign_page
+    @tag = params[:tag]
     render :layout => false
   end
 
   def kol_register
     @app_download_url = Rails.application.secrets[:download_url]
     Rails.logger.wechat_campaign.info "--kol_register @app_download_url : #{@app_download_url}"
+    @tag = params[:tag]
     render :layout => false
   end
 
@@ -65,6 +67,7 @@ class WechatCampaignController < ApplicationController
         kol_exists.add_campaign_id campaign_id
         kol_exists.approve_campaign(campaign_id)
       end
+      kol_exists.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
       return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
     else
       ip = (request.remote_ip rescue nil) || request.ip
@@ -90,7 +93,8 @@ class WechatCampaignController < ApplicationController
           kol.add_campaign_id campaign_id
           kol.approve_campaign(campaign_id)
         end
-        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+        kol.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
+        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }     
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
         return render json: {error: 'Campaign not found'}
@@ -123,12 +127,15 @@ class WechatCampaignController < ApplicationController
       if campaign_invite
         campaign_invite_uuid = campaign_invite.uuid
         Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
-        @share_url = campaign_invite.visit_url
+        @share_url = campaign_invite.visit_url if campaign_invite_uuid
         Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
       end
+    else
+      redirect_to wechat_campaign_campaign_page_url(campaign_id: campaign_id)
+      return nil
     end
     # if auth failed, user will share standard campaign's url
-    @share_url ||= campaign.url rescue nil
+    @share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{campaign.id}" rescue ''
     Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
     @app_download_url = Rails.application.secrets[:download_url]
     render :layout => false
@@ -139,7 +146,7 @@ class WechatCampaignController < ApplicationController
   def set_campaign
     @campaign = Campaign.find(params[:campaign_id]) rescue nil
     unless @campaign
-      redirect_to '/'
+        redirect_to '/'
     end
   end
 

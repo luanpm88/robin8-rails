@@ -84,6 +84,30 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_keywords
 
+  #社团
+  has_one :club
+  # belongs_to :club_member
+  has_one :club_member
+  # has_and_belongs_to_many :clubs
+
+  # PK's
+  has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
+  has_many :sent_challenges,     class_name: "KolPk", foreign_key: "challenger_id", inverse_of: :challengee
+
+  def challenges
+    KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
+  end
+
+  def won_challenges
+    KolPk.where("(challenger_id = ? and challenger_score > challengee_score) or "+
+                "(challengee_id = ? and challengee_score > challenger_score)",id,id)
+  end
+
+  def lost_challenges
+    KolPk.where("(challenger_id = ? and challengee_score > challenger_score) or "+
+                "(challengee_id = ? and challenger_score > challengee_score)",id,id)
+  end
+
   #cps
   has_many :cps_articles
   has_many :cps_article_shares
@@ -739,4 +763,31 @@ class Kol < ActiveRecord::Base
     self.invited_users.members
   end
 
+  def invite_code_dispose(code)
+    invite_code = InviteCode.find_by(code: code)
+    return false  unless invite_code
+    if invite_code.invite_type == "admintag"
+      admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
+      unless self.admintags.include? admintag
+        self.admintags << admintag
+        CallbackGeometryWorker.perform_async(self.id) if code == "778888"
+      end
+    elsif invite_code.invite_type == "club_leader"
+      if invite_code.invite_value.present?
+        club_name = invite_code.invite_value
+      else
+        club_name = self.mobile_number
+      end
+      Club.create(kol_id: self.id , club_name: club_name)
+    elsif invite_code.invite_type == "club_number"
+      club = Club.find invite_code.invite_value
+      ClubMember.create(club_id: club.id , kol_id: self.id)
+    end
+    true
+  end
+
+  # def get_share_proportion(credits)
+  #   proportion = self.club_number.club.proportion
+  #   [proportion * credits , (1 - proportion) * credits]
+  # end
 end

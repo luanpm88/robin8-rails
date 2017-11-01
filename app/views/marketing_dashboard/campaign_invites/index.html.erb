@@ -29,6 +29,12 @@
         </div>
         <div class="col-md-3">
           <div class="form-group">
+            <label>Admintag</label>
+            <%= f.search_field :kol_admintags_tag_eq, class: "form-control", placeholder: "Admintag" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
             <label>KOL等级</label>
             <%= f.select :kol_kol_level_eq, [ "A", "B", "C", "S" ], { include_blank: true }, class: "form-control" %>
           </div>
@@ -116,7 +122,7 @@
 
 <div class="alert alert-danger" style="display:none;">操作失败，请重试</div>
 
-<div class="contianer-fluid">
+<div class="container-fluid">
   <h4 class="pull-right">截图总数: <%= @campaign_invites.count %></h4>
   <% if @batch_visible %>
     <button class="choose-all btn btn-default">全选</button>
@@ -142,6 +148,8 @@
       <th>KOL ID</th>
       <th>KOL名称</th>
       <th>KOL等级</th>
+      <th>Admintag</th>
+      <th>转发平台</th>
       <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
       <th><%= sort_link(@q, :total_click, "总点击") %></th>
       <th><%= sort_link(@q, :approved_at, "接单时间") %></th>
@@ -171,6 +179,12 @@
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
         <td><%= c.kol.name rescue "" %></td>
         <td><%= c.kol.kol_level rescue "" %></td>
+        <td><%= render partial: "admintag", collection: c.kol.admintags.distinct , locals: {kol_id: c.kol.id} %></td>
+        <% if c.sub_type == "weibo" %>
+          <td><%= "微博" %></td>
+        <% else %>
+          <td><%= "微信" %></td>
+        <% end %>
         <td><%= c.get_avail_click(true) > 0 ? c.get_avail_click(true) : c.avail_click %></td>
         <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click %></td>
         <td><%= c.approved_at.strftime("%Y-%m-%d %H:%M") rescue "" %></td>
@@ -200,6 +214,14 @@
 </table>
 
 <%= will_paginate @campaign_invites, renderer: BootstrapPagination::Rails  %>
+</br>
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to '导出列表CSV', csv_url, :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
+
 
 <div class="modal admin-campaign-invite-modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
@@ -258,7 +280,7 @@ $(function(){
 	if (cb.is(':checked') ){
 		cb.prop('checked', false);
 	} else{
-		cb.prop('checked', true);		
+		cb.prop('checked', true);
 	}
   });
 
