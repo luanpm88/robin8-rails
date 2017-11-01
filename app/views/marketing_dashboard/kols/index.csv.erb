@@ -1,0 +1,43 @@
+<%
+    cols = [
+      'kol_id',
+      'name',
+      'mobile_number',
+      'utm_source',
+      'kol_level',
+      'kol_role',
+      'role_apply_status',
+      'is_hot',
+      'forbid_campaign_time',
+      'avail_amount',
+      'historical_income',
+      'show_count',
+      'talkingdata_promotion_name',
+      'admintag',
+      'created_at'
+    ]
+%>
+<%=
+  CSV.generate do |csv|
+    csv << cols
+    @kols.each do |k|
+      csv << [
+        k.id,
+        k.name,
+        k.mobile_number,
+        k.utm_source,
+        k.kol_level,
+        k.kol_role,
+        k.role_apply_status,
+        k.is_hot,
+        k.forbid_campaign_time,
+        k.avail_amount,
+        k.historical_income,
+        k.show_count,
+        k.talkingdata_promotion_name,
+        k.admintags.map(&:tag).join(" & "),
+        k.created_at
+      ]
+    end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>
