@@ -7,7 +7,7 @@ module Concerns
       # after_create :generate_invite_code
 
       # Kol's inviter is rewarded only after Kol gets approved
-      after_create :generate_invite_task_record
+      #after_create :generate_invite_task_record
       #after_update :generate_invite_task_record
     end
 
@@ -62,8 +62,8 @@ module Concerns
       # does not allow to proceed if user already had completed invitation
       return if RegisteredInvitation.completed.where(mobile_number: self.mobile_number).size > 0
 
-      #invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
-      #return unless invitation
+      invitation = RegisteredInvitation.pending.where(mobile_number: self.mobile_number).take
+      return unless invitation
 
       Rails.logger.transaction.info "--------generate_invite_task_record---#{self.id}-----IMEI:#{self.IMEI}---IDFA:#{self.IDFA}---exist:#{device_exist}"
 
