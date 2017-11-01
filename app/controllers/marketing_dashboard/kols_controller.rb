@@ -198,9 +198,21 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     authorize! :read, Kol
     @kols = Campaign.find(params[:campaign_id]).kols if params[:campaign_id]
 
-    @q = @kols.ransack(params[:q])
-    @kols = @q.result.order('created_at DESC').paginate(paginate_params)
-    render "index"
+    @q    = @kols.includes(:admintags).ransack(params[:q])
+    @kols = @q.result.order('id DESC')
+
+    respond_to do |format|
+      format.html do
+        @kols = @kols.paginate(paginate_params)
+        render 'index'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"KOL记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
   end
 
   def update_tag_ids
