@@ -19,9 +19,6 @@
   CSV.generate do |csv|
     csv << cols
     @campaign_invites.each do |i|
-    tags = i.kol.admintags.distinct.map{|t| t.tag }
-    tags = nil if tags.blank?
-
       csv << [
         i.img_status,
         i.campaign_id,
@@ -31,7 +28,7 @@
         i.campaign.deadline.strftime("%Y-%m-%d %H:%M"),
         i.kol_id,
         i.kol.kol_level,
-        tags.to_s[1..-2],
+        i.kol.admintags.map(&:tag).join(" & "),
         i.get_avail_click(true) > 0 ? i.get_avail_click(true) : i.avail_click,
         i.get_total_click > 0 ? i.get_total_click : i.total_click,
         (i.approved_at.strftime("%Y-%m-%d %H:%M") rescue nil)
