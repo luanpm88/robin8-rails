@@ -98,6 +98,7 @@ module API
             if mobile_kol
               Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
               SocialAccount.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              current_kol.destroy
               mobile_kol.reset_private_token
               present :error, 0
               present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary

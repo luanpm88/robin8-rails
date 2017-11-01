@@ -154,7 +154,7 @@ module API
       campaigns_filter
     end
 
-    def update_social(params)
+    def update_social(params , kol_id = nil )
       if params[:provider_name]
         provider = SocialAccount::Providers.invert[params[:provider_name]]
       else
@@ -163,14 +163,10 @@ module API
       return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
       # provider = SocialAccount::Providers.invert[provider]
       # 第三方登录时判断
-      current_kol ||= Kol.find params[:kol_id] if params[:kol_id]
-      if params[:username]
-        kol_name = params[:username]
-      else
-        kol_name = params[:name]
-      end
+      kol_id = Kol.find(params[:kol_id]).id unless kol
+      kol_name = params[:username] || params[:name]
       # 第三方登录时判断
-      social_account = SocialAccount.find_or_initialize_by(:kol_id => current_kol.id, :provider => provider)
+      social_account = SocialAccount.find_or_initialize_by(:kol_id => kol_id , :provider => provider)
       social_account.homepage = params[:homepage]  if params[:homepage].present?
       if provider == 'weibo' && social_account.homepage.blank?
         uid = current_kol.identities.where(:name => kol_name).first.uid  rescue nil

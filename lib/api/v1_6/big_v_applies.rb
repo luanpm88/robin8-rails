@@ -64,7 +64,7 @@ module API
           # social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
           # social_account.save
           #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
-          present :error, 0   if  update_social(params)
+          present :error, 0   if  update_social(params , current_kol.id )
         end
 
         desc '提交社交账号资料'
