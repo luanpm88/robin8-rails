@@ -154,22 +154,22 @@ module API
       campaigns_filter
     end
 
-    def update_social(params , kol_id = nil )
-      if params[:provider_name]
-        provider = SocialAccount::Providers.invert[params[:provider_name]]
-      else
-        provider = params[:provider]
-      end
-      return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
+    def update_social(params)
+      # if params[:provider_name]
+      #   provider = SocialAccount::Providers.invert[params[:provider_name]]
+      # else
+      #   provider = params[:provider]
+      # end
+      # return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
       # provider = SocialAccount::Providers.invert[provider]
       # 第三方登录时判断
-      kol_id = Kol.find(params[:kol_id]).id unless kol
-      kol_name = params[:username] || params[:name]
+      kol = Kol.find(params[:kol_id])
+      # kol_name = params[:name]
       # 第三方登录时判断
-      social_account = SocialAccount.find_or_initialize_by(:kol_id => kol_id , :provider => provider)
+      social_account = SocialAccount.find_or_initialize_by(:kol_id => kol.id , :provider => params[:provider])
       social_account.homepage = params[:homepage]  if params[:homepage].present?
       if provider == 'weibo' && social_account.homepage.blank?
-        uid = current_kol.identities.where(:name => kol_name).first.uid  rescue nil
+        uid = current_kol.identities.where(:name => params[:name]).first.uid  rescue nil
         social_account.homepage = "http://m.weibo.cn/u/#{uid}"    if uid.present?
       end
       social_account.price = params[:price]                       if params[:price].present?
