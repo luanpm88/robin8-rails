@@ -152,6 +152,8 @@
         <tr>
           <th>活动ID</th>
           <th>活动名称</th>
+          <th>筛选条件</th>
+          <th>筛选内容</th>
           <th>创建人ID</th>
           <th>创建人名称</th>
           <th>活动状态</th>
@@ -174,7 +176,17 @@
         <% @campaigns.each do |c| %>
         <tr>
           <td><%= link_to c.id, marketing_dashboard_campaign_path(c), target: "_blank" %></td>
-          <td><%= c.name %></td>
+          <td><%= c.name %>  </td>
+
+          <td>
+            <% abc = c.manual_campaign_targets %>
+            <% abc.group('target_type').map do |i| %>
+              <%= i.get_target_type_text %>
+              <%= abc.where('target_type = ?', i.target_type).map {|i| i.target_content}.join(', ') %>
+            <br />
+            <% end %>
+          </td>
+
           <td><%= link_to c.user_id, marketing_dashboard_user_path(c.user_id), target: "_blank" rescue "未知" %></td>
           <td><%= c.user.smart_name rescue "未知" %></td>
           <td><%= c.status %></td>
