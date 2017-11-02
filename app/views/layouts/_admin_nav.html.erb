@@ -364,6 +364,12 @@
         </li>
         <% end %>
 
+     
+        <li>
+          <%= link_to t('menu.invite_code_management'), marketing_dashboard_invite_code_path %>
+        </li>
+
+
         <% if can?(:read, Kol) %>
         <li>
           <a href="#"><%= t('menu.untities') %> <span class="fa arrow"></span></a>

@@ -1,0 +1,2 @@
+module MarketingDashboard::InviteCodeHelper
+end
