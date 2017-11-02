@@ -47,7 +47,6 @@ class MarketingDashboard::InviteCodeController < MarketingDashboard::BaseControl
   private
 
   def find_invite_code
-  	puts "========================================="
   	@invite_code = InviteCode.find params[:id]
   end
 
