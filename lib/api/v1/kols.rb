@@ -5,7 +5,7 @@ module API
       resources :kols do
         before do
           action_name =  @options[:path].join("")
-          authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
+          # authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
           params[:gender] = params[:gender].to_i    if params[:gender].present?
         end
 
@@ -97,6 +97,8 @@ module API
             # 如果该手机号码在系统存在，此时需要把当前用户的identity 转移到mobil_kol身上，同时把当前用户删除
             if mobile_kol
               Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              SocialAccount.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              current_kol.destroy
               mobile_kol.reset_private_token
               present :error, 0
               present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary

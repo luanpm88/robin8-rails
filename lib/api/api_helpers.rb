@@ -153,5 +153,33 @@ module API
       end
       campaigns_filter
     end
+
+    def update_social(params)
+      # if params[:provider_name]
+      #   provider = SocialAccount::Providers.invert[params[:provider_name]]
+      # else
+      #   provider = params[:provider]
+      # end
+      # return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
+      # provider = SocialAccount::Providers.invert[provider]
+      # 第三方登录时判断
+      kol = Kol.find(params[:kol_id])
+      # kol_name = params[:name]
+      # 第三方登录时判断
+      social_account = SocialAccount.find_or_initialize_by(:kol_id => kol.id , :provider => params[:provider])
+      social_account.homepage = params[:homepage]  if params[:homepage].present?
+      if params[:provider] == 'weibo' && social_account.homepage.blank?
+        uid = kol.identities.where(:name => params[:name]).first.uid  rescue nil
+        social_account.homepage = "http://m.weibo.cn/u/#{uid}"    if uid.present?
+      end
+      social_account.price = params[:price]                       if params[:price].present?
+      social_account.username = params[:username]                 if params[:username].present?
+      social_account.uid = params[:uid]                           if params[:uid].present?
+      social_account.repost_price = params[:repost_price]         if params[:repost_price].present?
+      social_account.second_price = params[:second_price]         if params[:second_price].present?
+      social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+      social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+      social_account.save
+    end
   end
 end
