@@ -90,6 +90,7 @@ module API
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
+              social = update_social(params.merge(:from_type => 'app', :kol_id => kol.id))
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           else
