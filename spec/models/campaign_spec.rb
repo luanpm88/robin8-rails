@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe Campaign, :type => :model do
@@ -20,9 +21,9 @@ RSpec.describe Campaign, :type => :model do
 
         budget = 2
         campaign = create_campaign brand_1, :per_budget_type => :cpa, :budget => budget, per_action_budget: 1
-        
+
         brand_1.reload
-        
+
         expect(brand_1.amount).to eq old_amount
         expect(brand_1.frozen_amount).to eq (old_frozen_amount + budget)
       end
@@ -35,3 +36,4 @@ RSpec.describe Campaign, :type => :model do
     FactoryGirl.create(:campaign, campaign_params.merge(:user_id => user.id))
   end
 end
+=end

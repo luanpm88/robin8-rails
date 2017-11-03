@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "influence_metric api" do
-  before do
-  end
 
   let!(:kol) { create(:kol)}
   let!(:identity) { create(:identity, kol_id: kol.id, provider: 'weibo', uid: 'weibo_boss')}
@@ -69,13 +67,14 @@ RSpec.describe "influence_metric api" do
     }
   }
 
+
   describe 'valid JSON' do
     it 'creates user influence data' do
       post "/prop/v1/influence_metric/save_influence", valid_hash
 
       im = kol.influence_metrics
       expect(im.size).to eq 1
-      expect(im.first.influence_level).to eq '影响力优秀'
+      expect(im.first.influence_level).to eq '影响力较差'
       expect(im.first.influence_industries.size).to eq 2
       expect(JSON.parse(response.body)["error"]).to eq 0
       expect(response.status).to eq 201

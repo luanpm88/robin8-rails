@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe Brand::V1::CampaignsAPI do
@@ -182,3 +183,4 @@ RSpec.describe Brand::V1::CampaignsAPI do
     end
   end
 end
+=end
