@@ -45,7 +45,7 @@ class Transaction < ActiveRecord::Base
   def get_subject
     case subject
       when 'campaign'
-        "营销活动(#{self.item.name rescue nil})"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil})"
       when 'manual_recharge'
         '人工充值'
       when 'manual_recharge', 'manaual_recharge'
@@ -67,21 +67,21 @@ class Transaction < ActiveRecord::Base
       when RewardTask::FavorableComment
         '好评'
       when 'campaign_used_voucher'
-        "营销活动(#{self.item.name}) 任务奖金抵用"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}) 任务奖金抵用"
       when 'campaign_tax'
-        "活动税费(#{self.item.name})"
+        "活动税费(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil})"
       when "campaign_revoke"
-        "营销活动(#{self.item.name}) 撤销"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}) 撤销"
       when "campaign_pay_by_alipay"
-        "营销活动(#{self.item.name}) 支付宝支付"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}) 支付宝支付"
       when "campaign_used_voucher_and_revoke"
-        "营销活动(#{self.item.name}) 撤销"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}) 撤销"
       when "campaign_refund"
-        "营销活动(#{self.item.name}) 退款"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}}) 退款"
       when "campaign_income_revoke"
-        "营销活动(#{self.item.name}) 审核失败"
+        "营销活动(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil}) 审核失败"
       when 'campaign_compensation'
-        "活动补偿红包(#{self.item.name})"
+        "活动补偿红包(ID:#{self.item.id rescue nil}  #{self.item.name rescue nil})"
       when 'limited_discount'
         "限时优惠"
       when 'lottery_reward'

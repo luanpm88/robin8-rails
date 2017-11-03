@@ -1,0 +1,82 @@
+<style type="text/css">
+  .table-responsive table {
+  	margin-bottom: 0;
+  }
+</style>
+
+<h3>
+  邀请码管理
+  <%= link_to '新增邀请码', new_marketing_dashboard_invite_code_path, :class => 'btn btn-primary pull-right' %>
+</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>邀请码</label>
+            <%= f.search_field :code_eq, class: "form-control", placeholder: "邀请码" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>邀请码类型</label>
+            <%= f.select :invite_type_eq, InviteCode::InviteType.keys , { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>标签名/社团名</label>
+            <%= f.search_field :invite_value_cont, class: "form-control", placeholder: "标签名/社团名" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="container-fluid" style="padding: 20px 0;">
+  <div>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>邀请码ID</th>
+          <th>邀请码</th>
+          <th>邀请码类型</th>
+          <th>标签名/社团名</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      	<% @invite_codes.each do |t| %>
+      	<tr>
+      	  <td><%= t.id %></td>
+      	  <td><%= t.code %></td>
+      	  <td><%= t.invite_type %></td>
+      	  <td><%= t.invite_value %></td>
+      	  <td>
+      	  	<%= link_to '修改' , edit_marketing_dashboard_invite_code_path(id: t.id) %> /
+      	  	<%= link_to '删除' ,"/marketing_dashboard/invite_code/#{t.id}", method: :delete, action: "destroy", data: { confirm: '确定要删除吗?' } %>
+      	  </td>
+      	</tr>
+      	<% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pull-right">
+  <%= will_paginate @invite_codes, renderer: BootstrapPagination::Rails  %>
+</div>
