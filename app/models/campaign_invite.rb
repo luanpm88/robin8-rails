@@ -126,7 +126,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #cpp截图自动审核
   def self.auto_change_cpp_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click >= 1 AND img_status = 'pending' ")
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.total_click >= 1 AND img_status = 'pending' ")
     @campaign_invites.each do |c|
       c.screenshot_pass
     end
