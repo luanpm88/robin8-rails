@@ -34,8 +34,11 @@ class MarketingDashboard::InviteCodeController < MarketingDashboard::BaseControl
   	@invite_code = InviteCode.find(params[:id].to_i)
   	puts params[:invite_code]
   	@invite_code.update(code: params[:invite_code][:code].to_i , invite_type: InviteCode::InviteType.invert[params[:invite_code][:invite_type]] , invite_value: params[:invite_code][:invite_value])
-  	@invite_code.save
-  	redirect_to :action => :index
+	if @invite_code.save
+      redirect_to :action => :index
+	else
+	  render :action => :edit
+	end
   end
 
   def destroy
