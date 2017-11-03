@@ -64,9 +64,18 @@ every 1.day, :at => '0:01 am' do
   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
 end
 
+every 1.day, :at => '11:59 am' do
+  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'qa'
+end
+
+
 #cpp截图定时自动审核通过
 every 1.day, :at => '0:10 am' do
   runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
+end
+
+every 1.day, :at => '12:09 pm' do
+  runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'qa'
 end
 
 # 定时处理geometry 截图审核
