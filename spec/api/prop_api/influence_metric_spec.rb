@@ -67,6 +67,10 @@ RSpec.describe "influence_metric api" do
     }
   }
 
+  before do
+    Grape::Endpoint.before_each do |endpoint|
+    end
+  end
 
   describe 'valid JSON' do
     it 'creates user influence data' do
