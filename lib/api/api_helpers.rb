@@ -134,22 +134,35 @@ module API
     end
 
     def phone_filter(campaigns)
-      filter = true
       campaigns_filter = Array.new
       campaigns.each do |campaign|
-        targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo"])
+        filter  = true
+        targets = CampaignTarget.where(campaign_id: campaign[:id],
+                                       target_type: %w(cell_phones td_promo admintags))
         if targets.present?
           targets.each do |target|
+            index = case target[:target_type]
+                    when "cell_phones"
+                      [:mobile_number]
+                    when "td_promo"
+                      [:talkingdata_promotion_name]
+                    when "admintags"
+                      [:admintags, :first, :tag]
+                    end
+            unless target[:target_content].split(",").include?(index.inject(current_kol, :try))
+              filter = false
+              break
+            end
+=begin
             if target[:target_type] == "cell_phones"
               filter = false unless target[:target_content].split(",").index(current_kol[:mobile_number])
             elsif target[:target_type] == "td_promo"
               filter = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
             end
+=end
           end
-          campaigns_filter.push(campaign) if filter
-        else
-          campaigns_filter.push(campaign)
         end
+        campaigns_filter.push(campaign) if filter
       end
       campaigns_filter
     end
