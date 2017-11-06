@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :marketing_dashboard do
+    get 'invite_code' => 'invite_code#index'
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
@@ -188,6 +189,9 @@ Rails.application.routes.draw do
         get :switch
       end
     end
+
+    resources :invite_code 
+
     resources :alipay_orders do
       collection do
         get "from_pc"
@@ -241,6 +245,8 @@ Rails.application.routes.draw do
         get :disban
       end
     end
+
+    
 
     namespace :utilities do
       resource  "verify_code"

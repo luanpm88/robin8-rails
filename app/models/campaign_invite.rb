@@ -87,9 +87,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-
-
-
   # 进行中的活动 审核通过时  仅仅更新它状态
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass_without_lock
@@ -118,20 +115,19 @@ class CampaignInvite < ActiveRecord::Base
 
   #cpc截图自动审核
   def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click < 50 AND img_status = 'pending' ")
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
     @campaign_invites.each do |c|
-      c.screenshot_pass
+      c.screenshot_pass if c.redis_avail_click < 50
     end
   end
 
   #cpp截图自动审核
   def self.auto_change_cpp_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND campaign_invites.avail_click >= 1 AND img_status = 'pending' ")
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
     @campaign_invites.each do |c|
-      c.screenshot_pass
+      c.screenshot_pass if c.redis_total_click >= 1
     end
   end
-
 
   #审核拒绝
   def screenshot_reject rejected_reason=nil

@@ -60,17 +60,16 @@ end
 # end
 
 #cpc截图定时自动审核通过
-every 1.day, :at => '0:01 am' do
+every 1.day, :at => '0:15 am' do
   runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
 end
 
 #cpp截图定时自动审核通过
-every 1.day, :at => '0:10 am' do
+every 1.day, :at => '0:45 am' do
   runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
 end
 
 # 定时处理geometry 截图审核
-
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
 end
