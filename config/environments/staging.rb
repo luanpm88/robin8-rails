@@ -25,8 +25,7 @@ Rails.application.configure do
   config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'https://static-robin8-staging-com.akamaized.net/'
-  config.action_controller.asset_host = 'http://7xtngn.com2.z0.glb.qiniucdn.com'
+  config.action_controller.asset_host = '//cdn-staging.robin8.net'
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -66,8 +65,6 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-
-
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -96,5 +93,4 @@ Rails.application.configure do
   }
   ActionMailer::Base.delivery_method = :smtp
 
-  
 end
