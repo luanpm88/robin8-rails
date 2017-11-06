@@ -1,7 +1,8 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe UpdateCampaignService, :type => :service do
-  
+
   let(:user) { FactoryGirl.create :user }
   let(:campaign) { FactoryGirl.create :cpa_campaign, user: user }
   let(:update_campaign_params) do
@@ -54,3 +55,4 @@ RSpec.describe UpdateCampaignService, :type => :service do
     end
   end
 end
+=end
