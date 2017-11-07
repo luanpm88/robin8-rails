@@ -76,6 +76,7 @@ module API
           else
             kol_campaigns = current_kol.campaign_invites.where(status: ['settled','rejected'] , img_status: params[:status]).order(updated_at: :desc).page(params[:page]).per_page(10)
           end
+          present :error, 0
           to_paginate( kol_campaigns )
           present :my_campaigns, kol_campaigns , with: API::V1::Entities::CampaignInviteEntities::MyCampaigns
         end
