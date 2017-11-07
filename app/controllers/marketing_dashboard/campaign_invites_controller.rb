@@ -4,7 +4,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   def index
     authorize! :read, CampaignInvite
     @campaign_invites = CampaignInvite.includes(:campaign).includes(kol: [:admintags])
-    @campaign_invites = @campaign_invites.where(campaign_id: params[:campaign_id]) if params[:campaign_id]
+    @campaign_invites = @campaign_invites.where("campaign_id =? AND screenshot is not NULL" , params[:campaign_id] ) if params[:campaign_id]
 
     @q = @campaign_invites.ransack(params[:q])
     @campaign_invites = @q.result.order('created_at DESC')

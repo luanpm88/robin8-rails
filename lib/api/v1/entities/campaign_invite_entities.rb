@@ -43,6 +43,13 @@ module API
           expose  :campaign_name do |my_campaigns|
             my_campaigns.campaign.name
           end
+          expose :per_action_type do |my_campaign|
+            if my_campaign.campaign.is_cpi_type?
+              'cpi'
+            else
+              my_campaign.campaign.sub_type
+            end
+          end
 
         end
       end
