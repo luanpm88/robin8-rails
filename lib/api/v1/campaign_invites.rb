@@ -65,6 +65,21 @@ module API
           end
         end
 
+        # 我的活动
+        params do
+          requires :status , type: String , values: ['pending','passed','rejected']
+          optional :page, type: Integer
+        end
+        get 'my_campaigns' do
+          if params[:state] == 'pending'
+            kol_campaigns = current_kol.campaign_invites.where(status: ['running','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
+          else
+            kol_campaigns = current_kol.campaign_invites.where(status: ['settled','rejected'] , img_status: params[:status]).order(updated_at: :desc).page(params[:page]).per_page(10)
+          end
+          to_paginate( kol_campaigns )
+          present :my_campaigns, kol_campaigns , with: API::V1::Entities::CampaignInviteEntities::MyCampaigns
+        end
+
         #活动邀请详情
         params do
           requires :id, type: Integer

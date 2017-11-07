@@ -37,6 +37,11 @@ module API
             API::V1::Entities::CampaignEntities::Summary.represent campaign_invite.campaign, options.merge({campaign_invite: campaign_invite})
           end
         end
+
+        class MyCampaigns < Grape::Entity
+          expose  :id , :campaign_id , :status , :img_status , :reject_reason , :earn_money
+
+        end
       end
     end
   end
