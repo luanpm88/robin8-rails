@@ -289,6 +289,8 @@ module API
           if params[:pay_way] == "alipay"
             campaign.pay_way = "alipay"
             campaign.save
+            campaign.user.generate_alipay_recharge_order_for_app(campaign.need_pay_amount,
+              Rails.application.secrets[:alipay][:notify_url])
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignAlipayEntity
           end
