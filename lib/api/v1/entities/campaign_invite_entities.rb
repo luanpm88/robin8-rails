@@ -39,7 +39,7 @@ module API
         end
 
         class MyCampaigns < Grape::Entity
-          expose  :id , :campaign_id , :status , :img_status , :reject_reason , :earn_money
+          expose  :id , :campaign_id , :status , :img_status , :screenshot , :reject_reason , :earn_money 
           expose  :campaign_name do |my_campaigns|
             my_campaigns.campaign.name
           end
