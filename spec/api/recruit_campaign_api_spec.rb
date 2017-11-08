@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe "recruit campaign api" do
@@ -216,3 +217,4 @@ RSpec.describe "recruit campaign api" do
   end
 
 end
+=end

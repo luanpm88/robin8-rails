@@ -7,10 +7,8 @@ describe 'Kol PK feature' do
   it 'should allow anyone to login with weibo and start a kol_pk' do
     visit "/kol/#{kol.id}/kol_pk"
 
-    File.open("public/test.html",'w') {|f| f.write(page.body)}
-
     expect(page).to have_css "a[href^='/auth/weibo']"
 
-    visit "/kol_pk/new/vs/#{kol.id}"
+    visit "/kol/#{kol.id}/kol_pk"
   end
 end

@@ -10,6 +10,7 @@ RSpec.describe "campaign_apply api" do
     login_as(@rich_user, :scope => :user)
   end
 
+=begin
   describe "PUT /brand_api/v1/campaign_applies/change_status" do
     it "change status to 'applying' if this campaign apply has been canceld and return 200" do
       @campaign_apply.update_attributes(status: "brand_passed")
@@ -27,6 +28,7 @@ RSpec.describe "campaign_apply api" do
     end
 
   end
+=end
 
   describe "Get all campaign applies" do
     it "return 200" do

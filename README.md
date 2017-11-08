@@ -85,6 +85,16 @@ by artificial intelligence.
   * run `rails s` to have your server up!
   * or you can try `foreman start -f Procfile.hot`
 
+# Running tests 自动化测试
+
+  To run tests
+
+  * run `rake db:test:prepare` to dump the schema into your test environment
+    database, 这命令会把数据库的schema 导入本地测试环境里
+  * run `spring rspec` to run the tests, 这会开始本地测试
+  * for individual tests, eg. run `spring rspec
+    spec/api/prop_api/influence_metric_spec.rb`, 单独的自动测试
+
 
 # QA, Staging, Production server
 
