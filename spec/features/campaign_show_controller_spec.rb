@@ -19,4 +19,3 @@ describe 'Campaign show pages', :type => :feature do
     expect(page.current_path).to eq '/'
   end
 end
-

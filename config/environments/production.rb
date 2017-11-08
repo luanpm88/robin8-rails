@@ -24,7 +24,7 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  #config.action_controller.asset_host = 'http://7xqim6.com2.z0.glb.qiniucdn.com/'
+  #config.action_controller.asset_host = '//cdn.robin8.net'
   config.action_controller.asset_host = 'http://7xqim6.com2.z0.glb.qiniucdn.com/'
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier

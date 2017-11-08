@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe CreateCampaignService, :type => :service do
@@ -144,3 +145,4 @@ RSpec.describe CreateCampaignService, :type => :service do
     end
   end
 end
+=end
