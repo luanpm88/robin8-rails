@@ -5,7 +5,7 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange', '_onBudgetChange']);
   }
 
 
@@ -40,6 +40,7 @@ export default class DetailPartial extends React.Component {
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
+      initval: 0.3,
       min: 0.2,
       max: 10000000,
       step: 0.1,
@@ -52,10 +53,17 @@ export default class DetailPartial extends React.Component {
     const { onChange } = this.props.per_action_budget;
     $('.per-budget-input').change(function() {
       onChange($(this).val());
-      console.log(onChange($(this).val()))
+      console.log("per-budget-input changing", onChange($(this).val()))
     });
+  }
 
-
+  _onBudgetChange() {
+    const { per_action_budget, per_budget_type } = this.props;
+    $("input[name='action_type']").change(function(){
+      if(per_budget_type.value === 'click') {
+        console.log("click is activated")
+      }
+    })
   }
 
   _listenPerBudgetTypeChange() {
@@ -66,7 +74,7 @@ export default class DetailPartial extends React.Component {
         per_action_budget.onChange("2.0")
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("0.2") // initial min value is 0.2
+        per_action_budget.onChange("0.3") // initial min value is 0.2
         sub_type.onChange("wechat");
       }
       if(per_budget_type.value == 'simple_cpi') {
@@ -94,16 +102,25 @@ export default class DetailPartial extends React.Component {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
+    this._onBudgetChange();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    $()
     console.log('v0003');
     //console.log("prevProps are : ", prevProps);
     let oldValue = prevProps.per_budget_type.value;
     console.log("oldValue", oldValue);
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
+    let self = this; // store this object to a variable for the jquery function to use;
+    $("input[name='action_type']").change(function(){
+      if(newValue === 'click') {
+        self.props.per_action_budget.onChange('0.3')
+      } else {
+        self.props.per_action_budget.onChange('5.0')
+      }
+    })
+
     // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
     // for three or more min values;
     let min = 5;
@@ -114,6 +131,7 @@ export default class DetailPartial extends React.Component {
     } else {
       min = 3;
     }
+
 
     if(oldValue==newValue) return console.log('escape');
     // unable to change min value with this method
