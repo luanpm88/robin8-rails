@@ -289,8 +289,9 @@ module API
           if params[:pay_way] == "alipay"
             campaign.pay_way = "alipay"
             campaign.save
-            campaign.user.generate_alipay_recharge_order_for_app(campaign.need_pay_amount,
-              Rails.application.secrets[:alipay][:notify_url])
+
+            campaign.user.generate_alipay_recharge_order_for_app campaign.need_pay_amount, Rails.application.secrets[:alipay][:notify_url]
+
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignAlipayEntity
           end
@@ -324,6 +325,7 @@ module API
         end
         post '/notify' do
           # 走frozen 充值流程
+          alipay_order = AlipayOrder.find_by :trade_no =>  params[:out_trade_no]
           campaign = Campaign.find_by :trade_number =>  params[:out_trade_no]
           content_type 'text/plain'
           unless campaign.present?
@@ -336,6 +338,8 @@ module API
           if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
             campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
             campaign.pay
+            # alipay_order.pay
+            # alipay_order.save_alipay_trade_no(params[:trade_no])
             body "success"
             return
           end

@@ -100,10 +100,10 @@ module Concerns
         transaction.save!
       end
     end
-    
-    
-    # The function deducts money from the KOL account, but does not result in a payout. The avail_amount for this consifcate transaction is currently incorrent, 
-    # but since the operation team does not need that, so I will leave it this way for now. 
+
+
+    # The function deducts money from the KOL account, but does not result in a payout. The avail_amount for this consifcate transaction is currently incorrent,
+    # but since the operation team does not need that, so I will leave it this way for now.
     def confiscate(credits, subject, item = nil, opposite)
       #ActiveRecord::Base.transaction do
         self.lock!
@@ -118,13 +118,14 @@ module Concerns
         transaction = build_transaction(credits, subject, 'confiscate', item , opposite)
         transaction.save!
         #end
-    end      
+    end
 
     def payout_by_alipay(credits, subject, item, opposite=nil)
       ActiveRecord::Base.transaction do
         self.lock!
         self.increment!(:historical_recharge, credits) if self.is_a? User and Transaction::RECHARGE_SUBJECTS.include?(subject)
         self.increment!(:historical_payout, credits) if self.is_a? User and Transaction::USER_CAMPAIGN_PAYOUT_SUBJECTS.include?(subject)
+        self.increment!(:appliable_credits, credits)
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
         transaction.save!
       end
