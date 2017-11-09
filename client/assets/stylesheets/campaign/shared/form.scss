@@ -508,9 +508,10 @@
   .per-budget-group {
     .price-tip {
       width: 816px;
-      box-sizing: border-box;
+      position: relative;
       span {
-        box-sizing: border-box;
+        position: absolute;
+        left: 12em;
       }
     }
   }
