@@ -97,6 +97,7 @@ export default class DetailPartial extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    $()
     console.log('v0003');
     //console.log("prevProps are : ", prevProps);
     let oldValue = prevProps.per_budget_type.value;
