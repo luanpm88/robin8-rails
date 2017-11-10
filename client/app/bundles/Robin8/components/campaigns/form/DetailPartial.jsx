@@ -5,7 +5,8 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin',
+    '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
 
@@ -40,6 +41,7 @@ export default class DetailPartial extends React.Component {
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
+      initval: 0.3,
       min: 0.2,
       max: 10000000,
       step: 0.1,
@@ -52,10 +54,8 @@ export default class DetailPartial extends React.Component {
     const { onChange } = this.props.per_action_budget;
     $('.per-budget-input').change(function() {
       onChange($(this).val());
-      console.log(onChange($(this).val()))
+      console.log("per-budget-input changing", onChange($(this).val()))
     });
-
-
   }
 
   _listenPerBudgetTypeChange() {
@@ -63,10 +63,10 @@ export default class DetailPartial extends React.Component {
 
     $("input[name='action_type']").change(function(){
       if(per_budget_type.value == 'post') {
-        per_action_budget.onChange("2.0")
+        per_action_budget.onChange("5.0")
       }
       if(per_budget_type.value == 'click') {
-        per_action_budget.onChange("0.2") // initial min value is 0.2
+        per_action_budget.onChange("0.3") // initial min value is 0.2
         sub_type.onChange("wechat");
       }
       if(per_budget_type.value == 'simple_cpi') {
@@ -80,7 +80,7 @@ export default class DetailPartial extends React.Component {
       }
       per_action_budget.onFocus();
       per_action_budget.onBlur();
-    }.bind(this))
+    })
 
     $(".commonPerBudgetType").click(function(){
       // 修改safari 下面的不兼容情况
@@ -103,7 +103,25 @@ export default class DetailPartial extends React.Component {
     console.log("oldValue", oldValue);
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
-    let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2;
+    let self = this; // store this object to a variable for the jquery function to use;
+    // $("input[name='action_type']").change(function(){
+    //   if(newValue === 'click') {
+    //     self.props.per_action_budget.onChange('0.3')
+    //   } else {
+    //     self.props.per_action_budget.onChange('5.0')
+    //   }
+    // })
+    // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
+    // for three or more min values;
+    let min = 5;
+    if (this.props.per_budget_type.value === 'post') {
+      min = 2.5;
+    } else if (this.props.per_budget_type.value === 'click') {
+      min = 0.2;
+    } else {
+      min = 3;
+    }
+
 
     if(oldValue==newValue) return console.log('escape');
     // unable to change min value with this method
@@ -226,26 +244,31 @@ export default class DetailPartial extends React.Component {
                           <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                             按照点击指定链接奖励KOL
-                          </div>
+                          </div> */}
 
                           <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio" name="action_type" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            <input {...per_budget_type} type="radio"
+                              name="action_type"
+                              value="cpt"
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "cpt"} />
                             按照完成任务奖励KOL
-                          </div> */}
+                          </div>
 
                         </div>
                       } else if(sub_type.value === "weibo") {
                         <div className="row">
 
-                          {/* <div className="col-md-4">
-                            <input {...per_budget_type} type="radio" name="action_type" id="cpt" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
-                            按照完成任务奖励KOL
-                          </div> */}
-
                           <div className="col-md-4">
                             <input {...per_budget_type} type="radio" name="action_type" className="commonPerBudgetType" id="forwarding" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                             按照转发奖励KOL
                           </div>
+
+                          <div className="col-md-4">
+                            <input {...per_budget_type} type="radio" name="action_type" id="cpt" value="cpt" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpt"} />
+                            按照完成任务奖励KOL
+                          </div>
+
                         </div>
                       } else {
                         <div></div>
@@ -306,8 +329,9 @@ export default class DetailPartial extends React.Component {
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                   </div>
                   <div className="price-tip">
-                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
-                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低2.5元</span><br></br>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低0.2元</span><br></br>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                    <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpt') ? {display: 'block', color: '#9B9A9A'} : {display: 'none'} }><span>单次预算最低3元</span></p>
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                     <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                   </div>

@@ -508,6 +508,12 @@
   .per-budget-group {
     .price-tip {
       width: 816px;
+      position: relative;
+      line-height: 2em;
+      span {
+        position: absolute;
+        left: 12em;
+      }
     }
   }
 }
@@ -706,7 +712,7 @@ div.sources-check.cpa-cpi-select{
 
 
 .cpi-tip-label {
-  line-height: 100px;
+  // line-height: 100px;
   margin-bottom: -28px;
   label{
     margin-left: 137px;
