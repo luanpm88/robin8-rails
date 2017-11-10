@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Robin8 Marketing Dashbard</title>
+    <title>Robin8 Marketing Dashboard</title>
     <meta charset='utf-8' />
     <%= stylesheet_link_tag 'admin' %>
     <% if params[:controller].include? 'sessions' %>
     <% else %>
       <%= javascript_include_tag 'admin' %>
-      <%= javascript_include_tag 'http://cdn.staticfile.org/Plupload/2.1.1/plupload.full.min.js' %>
-      <%= javascript_include_tag 'http://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.min.js' %>
+      <%= javascript_include_tag '//cdn.staticfile.org/Plupload/2.1.1/plupload.full.min.js' %>
+      <%= javascript_include_tag '//cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.min.js' %>
     <% end %>
     <%= csrf_meta_tag %>
     <%= favicon_link_tag 'favicon.ico' %>

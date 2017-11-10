@@ -133,73 +133,66 @@ module API
       present_cache(key: key, expires_in: expires_in, &block)
     end
 
-    # def phone_filter(current_kol,campaigns)
-    #   filters = true
-    #   campaigns_filter_td = Array.new
-    #   campaigns_filter = Array.new
-    #   campaigns.each do |t|
-    #     target = CampaignTarget.find_by("campaign_id" => t[:id] , "target_type" =>  "cell_phones")
-    #     if target
-    #       filter = target[:target_content].split(",").index(current_kol[:mobile_number])
-    #       if filter
-    #         campaigns_filter.push(t)
-    #       end
-    #     else
-    #       campaigns_filter.push(t)
-    #     end
-    #   end
-    #   campaigns_filter.each do |i|
-    #     targets = CampaignTarget.where("campaign_id" => i[:id] , "target_type" => ["td_promo" , "admintags"])
-    #      if targets.present?
-    #       targets.each do |target|
-    #         if target[:target_type] == "td_promo"
-    #           filters = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
-    #         elsif target[:target_type] == "admintags"
-    #           admintag = Admintag.where("tag" => target[:target_content].split(","))
-    #           admintag.each do |tag|
-    #             tag.kols.each do |t|
-    #               ids.push(t[:id])
-    #             end
-    #           end
-    #           filters = false unless ids.index(current_kol[:id])
-    #         end
-    #       end
-    #       campaigns_filter_td.push(i) if filters
-    #     else
-    #       campaigns_filter_td.push(i)
-    #     end
-    #   end
-    #   campaigns_filter_td
-    # end
-
-    def phone_filter(kol,campaigns)
-      filter = true
-      ids = Array.new
+    def phone_filter(campaigns)
       campaigns_filter = Array.new
       campaigns.each do |campaign|
-        targets = CampaignTarget.where("campaign_id" => campaign[:id] , "target_type" => ["cell_phones" , "td_promo" , "admintags"])
+        filter  = true
+        targets = CampaignTarget.where(campaign_id: campaign[:id],
+                                       target_type: %w(cell_phones td_promo admintags))
         if targets.present?
           targets.each do |target|
-            if target[:target_type] == "cell_phones"
-              filter = false unless target[:target_content].split(",").index(kol[:mobile_number])
-            elsif target[:target_type] == "td_promo"
-              filter = false unless target[:target_content].split(",").index(kol[:talkingdata_promotion_name])
-            # elsif target[:target_type] == "admintags"
-            #   admintag = Admintag.where("tag" => target[:target_content].split(","))
-            #   admintag.each do |tag|
-            #     tag.kols.each do |t|
-            #       ids.push(t[:id])
-            #     end
-            #   end
-            #   filter = false unless ids.index(kol[:id])
+            index = case target[:target_type]
+                    when "cell_phones"
+                      [:mobile_number]
+                    when "td_promo"
+                      [:talkingdata_promotion_name]
+                    when "admintags"
+                      [:admintags, :first, :tag]
+                    end
+            unless target[:target_content].split(",").include?(index.inject(current_kol, :try))
+              filter = false
+              break
             end
+=begin
+            if target[:target_type] == "cell_phones"
+              filter = false unless target[:target_content].split(",").index(current_kol[:mobile_number])
+            elsif target[:target_type] == "td_promo"
+              filter = false unless target[:target_content].split(",").index(current_kol[:talkingdata_promotion_name])
+            end
+=end
           end
-          campaigns_filter.push(campaign) if filter
-        else
-          campaigns_filter.push(campaign)
         end
+        campaigns_filter.push(campaign) if filter
       end
       campaigns_filter
+    end
+
+    def update_social(params)
+      # if params[:provider_name]
+      #   provider = SocialAccount::Providers.invert[params[:provider_name]]
+      # else
+      #   provider = params[:provider]
+      # end
+      # return error_403!({error: 1, detail: 'provider_name 无效' })  unless SocialAccount::Providers.keys.include? provider
+      # provider = SocialAccount::Providers.invert[provider]
+      # 第三方登录时判断
+      kol = Kol.find(params[:kol_id])
+      # kol_name = params[:name]
+      # 第三方登录时判断
+      social_account = SocialAccount.find_or_initialize_by(:kol_id => kol.id , :provider => params[:provider])
+      social_account.homepage = params[:homepage]  if params[:homepage].present?
+      if params[:provider] == 'weibo' && social_account.homepage.blank?
+        uid = kol.identities.where(:name => params[:name]).first.uid  rescue nil
+        social_account.homepage = "http://m.weibo.cn/u/#{uid}"    if uid.present?
+      end
+      social_account.price = params[:price]                       if params[:price].present?
+      social_account.username = params[:username]                 if params[:username].present?
+      social_account.uid = params[:uid]                           if params[:uid].present?
+      social_account.repost_price = params[:repost_price]         if params[:repost_price].present?
+      social_account.second_price = params[:second_price]         if params[:second_price].present?
+      social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
+      social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
+      social_account.save
     end
   end
 end

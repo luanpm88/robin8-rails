@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 describe Rack::Attack do
@@ -7,7 +8,7 @@ describe Rack::Attack do
     Rails.application
   end
 
-  describe 'throttle excessive requests by IP address' do 
+  describe 'throttle excessive requests by IP address' do
     let(:limit) { 1000 }
 
     before :each do
@@ -87,3 +88,4 @@ describe Rack::Attack do
     end
   end
 end
+=end

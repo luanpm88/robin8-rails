@@ -15,7 +15,7 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '101.132.222.75', user: 'deployer', roles: %w{web app db master}
+server '101.132.222.75', user: 'deployer', roles: %w{web app db master db_syncer}
 set :branch, 'staging'
 
 set :server_name, 'staging.robin8.net'
@@ -26,6 +26,8 @@ set :unicorn_rack_env, "staging"
 set :rails_env, "staging"
 set :rbenv_ruby, '2.2.0'
 set :environment, 'staging'
+
+set :deploy_to, '/home/deployer/apps/robin8_staging'
 
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
@@ -40,7 +42,7 @@ namespace :assets_chores do
   end
 end
 
-#after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
+after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================

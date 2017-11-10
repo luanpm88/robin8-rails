@@ -28,6 +28,16 @@ end
 #   rake "-s sitemap:refresh"
 # end
 
+# Syncs the database into QA and STAGING every night
+every 1.day, :at => '12:01 am', roles: [:db_syncer] do
+  rake "db:export_prod"
+end
+
+every 1.day, :at => '2:00 am', roles: [:db_syncer] do
+  rake "db:import_to_staging"
+  rake "db:import_to_qa"
+end
+
 every 1.day, :at => '12:00 am' do
   command "backup perform --trigger robin8_backup_local"
 end
@@ -48,11 +58,18 @@ end
 # every :tuesday, :at => '0:10 am' do
 #   runner "KolInfluenceValue.schedule_cal_influence"
 # end
-every 1.day, :at => '12:00 am' do
-  runner "CampaignInvite.posted_geometry_screenshot" , :environment => 'production'
-end
-# 定时处理geometry 截图审核 
 
+#cpc截图定时自动审核通过
+every 1.day, :at => '0:15 am' do
+  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+end
+
+#cpp截图定时自动审核通过
+every 1.day, :at => '0:45 am' do
+  runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
+end
+
+# 定时处理geometry 截图审核
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
 end
@@ -72,7 +89,6 @@ end
 every 1.day, :at => '17:01 pm' do
   runner "CampaignObserver.notify_operational_staff", :environment => 'production'
 end
-
 
 every 1.day, :at => '1:00 am' do
   rake "kol_amount_statistic:export"
@@ -149,4 +165,3 @@ end
 every '00 10 1 10 *' do
   rake "daily_report:pinyou_send", :environment => 'production'
 end
-

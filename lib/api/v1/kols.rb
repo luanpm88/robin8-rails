@@ -5,7 +5,7 @@ module API
       resources :kols do
         before do
           action_name =  @options[:path].join("")
-          authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
+          # authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
           params[:gender] = params[:gender].to_i    if params[:gender].present?
         end
 
@@ -20,7 +20,7 @@ module API
             return error_403!({error: 1, detail: errors_message(current_kol)})
           end
         end
-        
+
 
         get 'account' do
           present :error, 0
@@ -97,6 +97,8 @@ module API
             # 如果该手机号码在系统存在，此时需要把当前用户的identity 转移到mobil_kol身上，同时把当前用户删除
             if mobile_kol
               Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              SocialAccount.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              current_kol.destroy
               mobile_kol.reset_private_token
               present :error, 0
               present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary
@@ -160,7 +162,7 @@ module API
               present :detail, "本次解绑后,本月你将没有解绑机会"
             else
               if unbind_record.unbind_at.blank?
-                unbind_record.update(:unbind_count => true) 
+                unbind_record.update(:unbind_count => true)
                 present :error, 0
                 present :detail, "本次解绑后,本月你将没有解绑机会"
               else
@@ -174,12 +176,12 @@ module API
                   present :detail, "本次解绑后,本月你将没有解绑机会"
                 else
                   return error_403!({error: 1, detail: '本月无法再次解绑'})
-                end       
+                end
               end
             end
           end
         end
-        
+
         params do
           requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
@@ -195,7 +197,6 @@ module API
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :unionid, type: String
-
           optional :province, type: String
           optional :city, type: String
           optional :gender, type: String
@@ -207,6 +208,7 @@ module API
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
+          current_kol.update_attribute(:name , params[:name]) if params[:name].present? && current_kol.name.include?("****")
           if identity.blank?
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
@@ -220,6 +222,7 @@ module API
               Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id), identity)
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+
             # end
           end
         end
@@ -270,6 +273,7 @@ module API
               current_kol.update_attribute(:avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar_url.blank?
               bind_count = bind_count - 1
               bind_record.update(:bind_count => bind_count)
+
               present :error, 0
               present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
             elsif identity.kol_id == current_kol.id

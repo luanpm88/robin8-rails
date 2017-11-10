@@ -56,7 +56,7 @@ PATH
       rails (~> 4.2.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: http://gems.ruby-china.org/
   remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -184,6 +184,7 @@ GEM
       mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    charlock_holmes (0.7.3)
     china_sms (0.0.7)
     chronic (0.10.2)
     climate_control (0.0.3)
@@ -839,6 +840,7 @@ DEPENDENCIES
   caracal-rails
   carrierwave
   carrierwave-qiniu!
+  charlock_holmes
   china_sms
   coffee-rails (~> 4.1.0)
   countries

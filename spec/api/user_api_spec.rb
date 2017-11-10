@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe Brand::V1::UserAPI do
@@ -192,3 +193,4 @@ RSpec.describe Brand::V1::UserAPI do
     end
   end
 end
+=end

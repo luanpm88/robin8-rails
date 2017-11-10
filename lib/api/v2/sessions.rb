@@ -12,6 +12,7 @@ module API
           return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
           kol = Kol.reg_or_sign_in(params)
           kol.remove_same_device_token(params[:device_token])
+          return error!({error: 1, detail: '无效的邀请码'}, 403) if params[:invite_code].present? && kol.invite_code_dispose(params[:invite_code]) == false
           if params[:kol_uuid].present?
             retries = true
             begin
@@ -89,6 +90,7 @@ module API
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
+              social = update_social(params.merge(:from_type => 'app', :kol_id => kol.id))
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           else

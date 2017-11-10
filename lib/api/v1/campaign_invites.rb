@@ -19,10 +19,6 @@ module API
           present :announcements, Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary  if params[:with_announcements] == 'y'
 
           if  params[:status] == 'all'
-=begin
-            applied_recruit_campaign_ids = current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
-              where("campaign_invites.status = 'approved'  or campaign_invites.status = 'finished'").collect{|t| t.campaign_id}
-=end
             applied_recruit_campaign_ids =
               if Campaign.where("deadline > ?", 7.days.ago).where(per_budget_type: 'recruit').blank?
                 []
@@ -37,13 +33,13 @@ module API
             else
               @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
             end
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
@@ -53,7 +49,7 @@ module API
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'missed'
             @campaigns = current_kol.missed_campaigns.recent_7.order_by_start.page(params[:page]).per_page(10)
-            @campaigns_filter = phone_filter(current_kol , @campaigns)
+            @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
@@ -63,6 +59,22 @@ module API
             to_paginate(@campaign_invites)
             present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
           end
+        end
+
+        # 我的活动
+        params do
+          requires :status , type: String , values: ['pending','passed','rejected']
+          optional :page, type: Integer
+        end
+        get 'my_campaigns' do
+          if params[:state] == 'pending'
+            kol_campaigns = current_kol.campaign_invites.where(status: ['running','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
+          else
+            kol_campaigns = current_kol.campaign_invites.where(status: ['settled','rejected'] , img_status: params[:status]).order(updated_at: :desc).page(params[:page]).per_page(10)
+          end
+          present :error, 0
+          to_paginate( kol_campaigns )
+          present :my_campaigns, kol_campaigns , with: API::V1::Entities::CampaignInviteEntities::MyCampaigns
         end
 
         #活动邀请详情

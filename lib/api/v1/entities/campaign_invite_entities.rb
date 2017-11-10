@@ -37,6 +37,21 @@ module API
             API::V1::Entities::CampaignEntities::Summary.represent campaign_invite.campaign, options.merge({campaign_invite: campaign_invite})
           end
         end
+
+        class MyCampaigns < Grape::Entity
+          expose  :id , :campaign_id , :status , :img_status , :screenshot , :reject_reason , :earn_money 
+          expose  :campaign_name do |my_campaigns|
+            my_campaigns.campaign.name
+          end
+          expose :per_action_type do |my_campaign|
+            if my_campaign.campaign.is_cpi_type?
+              'cpi'
+            else
+              my_campaign.campaign.sub_type
+            end
+          end
+
+        end
       end
     end
   end

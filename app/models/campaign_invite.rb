@@ -113,6 +113,22 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+  #cpc截图自动审核
+  def self.auto_change_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
+    @campaign_invites.each do |c|
+      c.screenshot_pass if c.redis_avail_click < 50
+    end
+  end
+
+  #cpp截图自动审核
+  def self.auto_change_cpp_multi_img_status
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'post' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
+    @campaign_invites.each do |c|
+      c.screenshot_pass if c.redis_total_click >= 1
+    end
+  end
+
   #审核拒绝
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
@@ -296,20 +312,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def self.posted_geometry_screenshot
-    Rails.logger.settle.info "posted_geometry_screenshot"
-    ids = []
-    Admintag.find_by(tag: "geometry").kols.distinct.each do |t|
-      ids.push(t.id)
-    end
-    campaign_id = [4086,4091]
-    # ids = Admintag.joins(:kols).where(tag: "geometry").map{|t| t.kols[0]["id"]}
-    CampaignInvite.where(campaign_id: campaign_id , kol_id: ids).each do |t|
-      t.status = "passed"
-      t.save
-    end
-  end
-
   # CN: 目前只是CPC会自动审核,且会在活动结束后审核
   # EN: Currently, CPC will only be audited and will be reviewed after the event ends
   # CN: campaign_invite (status =='approved' || status == 'finished') && img_status == 'passed'   需要结算，但是status == 'finished' 结算后需要
@@ -340,7 +342,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def settle(auto = false, transaction_time = Time.now)
+  def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     return if self.status == 'rejected'
     self.settle_lock.lock  do
@@ -350,7 +352,7 @@ class CampaignInvite < ActiveRecord::Base
         self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         if campaign_shows.size > 0
-          credits =  campaign_shows.size * self.campaign.get_per_action_budget(false)
+          credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"

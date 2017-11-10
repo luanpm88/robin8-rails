@@ -268,9 +268,6 @@ class Kol < ActiveRecord::Base
     self.sync_campaigns
   end
 
-
-
-
   def self.fetch_kol_with_level(kol_id)
     Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
       Kol.find(kol_id)
@@ -763,4 +760,31 @@ class Kol < ActiveRecord::Base
     self.invited_users.members
   end
 
+  def invite_code_dispose(code)
+    invite_code = InviteCode.find_by(code: code)
+    return false  unless invite_code
+    if invite_code.invite_type == "admintag"
+      admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
+      unless self.admintags.include? admintag
+        self.admintags << admintag
+        CallbackGeometryWorker.perform_async(self.id) if code == "778888"
+      end
+    elsif invite_code.invite_type == "club_leader"
+      if invite_code.invite_value.present?
+        club_name = invite_code.invite_value
+      else
+        club_name = self.mobile_number
+      end
+      Club.create(kol_id: self.id , club_name: club_name)
+    elsif invite_code.invite_type == "club_number"
+      club = Club.find invite_code.invite_value
+      ClubMember.create(club_id: club.id , kol_id: self.id)
+    end
+    true
+  end
+
+  # def get_share_proportion(credits)
+  #   proportion = self.club_number.club.proportion
+  #   [proportion * credits , (1 - proportion) * credits]
+  # end
 end

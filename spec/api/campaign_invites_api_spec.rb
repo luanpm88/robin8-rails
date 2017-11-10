@@ -16,7 +16,7 @@ RSpec.describe "campaign_invite api" do
       expect(response.status).to eq 200
     end
 
-    it "return campaign_invites" do
+    xit "return campaign_invites" do
       get "/brand_api/v1/campaign_invites?campaign_id=#{@recruit_campaign.id}"
 
       pattern = {
