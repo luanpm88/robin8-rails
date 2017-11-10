@@ -10,29 +10,29 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   def pending
     authorize! :read, Withdraw
     @withdraws = Withdraw.of_kols.where(status: 'pending')
-    
-    formated_response "待处理的"
+
+    formated_response "待审核的"
   end
 
   def checked
     authorize! :read, Withdraw
     @withdraws = Withdraw.of_kols.checked
 
-    formated_response "已审核待付款的"
+    formated_response "已审核通过待付款的"
   end
 
   def agreed
     authorize! :read, Withdraw
     @withdraws = Withdraw.of_kols.where(status: 'paid')
 
-    formated_response "通过的"
+    formated_response "已付款的"
   end
 
   def rejected
     authorize! :read, Withdraw
     @withdraws = Withdraw.of_kols.where(status: 'rejected')
 
-    formated_response "拒绝的"
+    formated_response "已拒绝的"
   end
 
   def permanent_prohibited

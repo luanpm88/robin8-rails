@@ -179,7 +179,15 @@
           <% end %>
         </td>
         <td><%= w.kol.withdraws.count rescue "" %></td>
-        <td><%= w.kol.last_successful_withdraw.try(:created_at).try(:strftime, '%Y-%m-%d %H:%M') %></td>
+
+        <td>
+          <% if w.status == 'paid' %>
+            <%= w.kol.last_successful_withdraw_when_paid_this_time.try(:updated_at).try(:strftime, '%Y-%m-%d %H:%M') %>
+          <% else %>
+            <%= w.kol.last_successful_withdraw.try(:updated_at).try(:strftime, '%Y-%m-%d %H:%M') %>
+          <% end %>
+        </td>
+
         <td><%= w.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         <td><%= w.kol.kol_level rescue "" %></td>
         <td><%= color_time(w.kol.forbid_campaign_time) rescue "" %></td>
@@ -233,7 +241,7 @@
 </div>
 
 <script type="text/javascript">
-	
+
     $('.choose-all').click(function(){
       $(':checkbox').each(function(){
         this.checked = true;
@@ -249,7 +257,7 @@
         }
       });
     })
-	
+
   $(function(){
     $(".batch").click(function(e){
       e.preventDefault();
@@ -274,7 +282,7 @@
       }
     })
   })
-  
+
   $(".expandCheck").on('click', function (event) {
     event.stopPropagation();
     event.preventDefault();
@@ -282,7 +290,7 @@
 	if (cb.is(':checked') ){
 		cb.prop('checked', false);
 	} else{
-		cb.prop('checked', true);		
+		cb.prop('checked', true);
 	}
   });
 
@@ -298,8 +306,8 @@
      $('.admin-withdraw-modal').attr("data-url", $(this).attr("data-url"))
      event.stopPropagation()
    })
-   
-   // Same as reject button to make the confiscate button. 
+
+   // Same as reject button to make the confiscate button.
    $(".confiscate").click(function(event){
       $('.admin-confiscate-modal').modal("show")
       $('.admin-confiscate-modal').attr("data-url", $(this).attr("data-url"))
@@ -325,7 +333,7 @@
         location.reload();
       });
   });
-  
+
   // Same as reject. This button allows the admin to confiscate the money from a particular when they reuqest a withdrawal, possibly due to cheating of clicks or inivitation.
   $(".check_confiscate").click(function(e){
     e.preventDefault();
@@ -345,5 +353,5 @@
         location.reload();
       });
   });
-  
+
 </script>
