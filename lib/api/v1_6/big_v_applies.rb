@@ -25,8 +25,9 @@ module API
             gender = params[:gender].to_i
           end
           app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-          current_kol.update_columns(:name => params[:name], :app_city => app_city, :job_info => params[:job_info],
+          current_kol.update_columns(:app_city => app_city, :job_info => params[:job_info],
                                      :desc => params[:desc], :gender => gender, :age => params[:age])
+          current_kol.update_columns(name: params[:name]) unless params[:name].include?("****")
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
           return error_403!({error: 1, detail: '请先绑定手机号'}) unless current_kol.mobile_number
