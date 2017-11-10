@@ -26,7 +26,7 @@ const initCampaign = {
   message: '',
   budget: 100,
   per_budget_type: 'click',
-  per_action_budget: 0.2, // initial value 0.2
+  per_action_budget: 0.3, // initial value for per-budget-input
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm'),
   per_budget_collect_type: "",
@@ -136,7 +136,7 @@ class CreateCampaignPartial extends React.Component {
 CreateCampaignPartial = reduxForm(
   {
     form: 'activity_form',
-    fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
+    fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier', 'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
     returnRejectedSubmitPromise: true,
     validate
   },
