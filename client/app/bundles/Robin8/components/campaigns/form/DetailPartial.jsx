@@ -5,7 +5,8 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange', '_onBudgetChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin',
+    '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
 
@@ -57,21 +58,12 @@ export default class DetailPartial extends React.Component {
     });
   }
 
-  _onBudgetChange() {
-    const { per_action_budget, per_budget_type } = this.props;
-    $("input[name='action_type']").change(function(){
-      if(per_budget_type.value === 'click') {
-        console.log("click is activated")
-      }
-    })
-  }
-
   _listenPerBudgetTypeChange() {
     const { per_action_budget, per_budget_type, sub_type } = this.props;
 
     $("input[name='action_type']").change(function(){
       if(per_budget_type.value == 'post') {
-        per_action_budget.onChange("2.0")
+        per_action_budget.onChange("5.0")
       }
       if(per_budget_type.value == 'click') {
         per_action_budget.onChange("0.3") // initial min value is 0.2
@@ -88,7 +80,7 @@ export default class DetailPartial extends React.Component {
       }
       per_action_budget.onFocus();
       per_action_budget.onBlur();
-    }.bind(this))
+    })
 
     $(".commonPerBudgetType").click(function(){
       // 修改safari 下面的不兼容情况
@@ -102,7 +94,6 @@ export default class DetailPartial extends React.Component {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
-    this._onBudgetChange();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -113,14 +104,13 @@ export default class DetailPartial extends React.Component {
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
     let self = this; // store this object to a variable for the jquery function to use;
-    $("input[name='action_type']").change(function(){
-      if(newValue === 'click') {
-        self.props.per_action_budget.onChange('0.3')
-      } else {
-        self.props.per_action_budget.onChange('5.0')
-      }
-    })
-
+    // $("input[name='action_type']").change(function(){
+    //   if(newValue === 'click') {
+    //     self.props.per_action_budget.onChange('0.3')
+    //   } else {
+    //     self.props.per_action_budget.onChange('5.0')
+    //   }
+    // })
     // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
     // for three or more min values;
     let min = 5;
