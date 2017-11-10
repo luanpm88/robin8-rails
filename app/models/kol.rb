@@ -699,17 +699,6 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  #这次已付款体现的，应该取倒数第二次体现成功的时间。因为这次的也已经成功付款了。
-  def last_successful_withdraw_when_paid_this_time
-    withdraws.where(status: 'paid').order(:id).last(2)[0]
-  end
-
-  #其他页面，因为这次还未体现成功，所以取last即可。
-  def last_successful_withdraw
-    withdraws.where(status: 'paid').order(:id).last
-  end
-
-
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     return false
