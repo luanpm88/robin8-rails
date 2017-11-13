@@ -31,24 +31,26 @@ by artificial intelligence.
   Notes on the three main branches
 
   * `qa` branch will always have the latest features that is working
-    * qa 是有我们app最新的功能，但还没上线
+    * qa分支的代码将总是有我们app最新的功能，但还没上线
     * anything in `qa` will be deployed at the next deployment, only put code
       that is ready to be released
-    * 在 qa 的代码是准备要上线的
+    * 只要是合并到qa分支的代码，就是准备要上线的
   * `staging` branch is the pre-release branch for us to test on production data
     * staging's data from the database is 24 hours behind our production
     * once pushed to bitbucket staging, you must deploy to staging (will be
       automated)
-    * 一部署到staging 就得部署到staging 服务器里，（也将会自动化）
+    * 只要是合并到staging分支的代码，就要部署到staging 服务器里，（也将会自动化）
     * staging 是给Tina 或测试用的，there will be scripts to test on production
       data
   * `master_cn` branch is always the code for production
     * once pushed to bitbucket master_cn, you must deploy to production (will be
       automated)
-    * 一部署到master cn 就得部署到服务器里，（这以后会自动化）
+    * 只要是合并到master_cn的代码，就要部署到服务器里，（这以后会自动化）
   * You can still use qa to test your own branch with
     `BRANCH_NAME=new-feature-name cap qa deploy` but do not merge your feature
     into QA in bitbucket until it has been reviewed
+  * If you haven't modified anything on images、JS、stylesheets in app/assets, you can use `BRANCH_NAME=new-feature-name cap qa deploy noassets` to deploy your branch to QA, and this can save some time.
+    如果你的的分支没有对app/assets的images、JS、stylesheets等做任何修改，那就可以使用`BRANCH_NAME=new-feature-name cap qa deploy noassets`来部署到QA，这可以节省部署时间。
   * [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
   Style-Guide
@@ -91,9 +93,9 @@ by artificial intelligence.
 
   * run `rake db:test:prepare` to dump the schema into your test environment
     database, 这命令会把数据库的schema 导入本地测试环境里
-  * run `spring rspec` to run the tests, 这会开始本地测试
+  * run `spring rspec` to run the tests, 这会开启本地测试
   * for individual tests, eg. run `spring rspec
-    spec/api/prop_api/influence_metric_spec.rb`, 单独的自动测试
+    spec/api/prop_api/influence_metric_spec.rb`,执行特定部分的自动测试
 
 
 # QA, Staging, Production server
