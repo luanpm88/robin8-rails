@@ -83,7 +83,8 @@ by artificial intelligence.
       * ERROR in ./app/bundles/Robin8/components/shared/echart/ChinaMap.js
     * Ignore them, they are node/react errors mostly in /brand
   * run `rails s` to have your server up!
-  * or you can try `foreman start -f Procfile.hot`
+  * for the ability to develop React on `/brand/` you must use this command to
+    start your local development server `foreman start -f Procfile.hot`
 
 # Running tests 自动化测试
 
@@ -115,11 +116,13 @@ by artificial intelligence.
   Database dumps
 
   * production database dumps are available at staging.robin8.net server at
-    `/home/deployer/apps/robin8_staging/tmp/prod.tar.gz`
+    `/home/deployer/apps/robin8_staging/shared/tmp/prod.tar.gz`
     * this dump is refreshed every night at 12:01 am
     * to download and import to your local database
-      * `scp deployer@staging.robin8.net:/home/deployer/apps/robin8_staging/current/tmp/prod.tar.gz
-        ~/you-own-directory`
-      * `tar -cvzf ~/you-own-directory/prod.tar.gz`
+      * `scp deployer@staging.robin8.net:/home/deployer/apps/robin8_staging/shared/tmp/prod.tar.gz
+        ~/path/to/your/directory`
+      * `tar -cvzf ~/path/to/your/directory/prod.tar.gz`
       * `mysql -u username -ppassword database-name < prod.sql`, look for your
         username and password for development at `config/database.yml`
+  * to import the database to qa server, run `cap staging invoke['db:import_to_qa']`
+    on your local machine or run `RAILS_ENV=staging rake db:import_to_qa`

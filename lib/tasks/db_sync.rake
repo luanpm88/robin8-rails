@@ -1,6 +1,6 @@
 desc "Tasks for syncing staging, qa together with production database only on staging.robin8.net server"
 namespace :db do
-  sql = File.join(Dir.pwd, "tmp", "prod.sql")
+  sql = "/home/deployer/robin8_staging/shared/tmp/prod.sql"
 
   task export_prod: :environment do
     if Rails.env.staging?
