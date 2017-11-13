@@ -9,35 +9,35 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
 
   def pending
     authorize! :read, Withdraw
-    @withdraws = Withdraw.where(status: 'pending')
+    @withdraws = Withdraw.of_kols.where(status: 'pending')
 
-    formated_response "待处理的"
+    formated_response "待审核的"
   end
 
   def checked
     authorize! :read, Withdraw
-    @withdraws = Withdraw.checked
+    @withdraws = Withdraw.of_kols.checked
 
-    formated_response "已审核待付款的"
+    formated_response "已审核通过待付款的"
   end
 
   def agreed
     authorize! :read, Withdraw
-    @withdraws = Withdraw.where(status: 'paid')
+    @withdraws = Withdraw.of_kols.where(status: 'paid')
 
-    formated_response "通过的"
+    formated_response "已付款的"
   end
 
   def rejected
     authorize! :read, Withdraw
-    @withdraws = Withdraw.where(status: 'rejected')
+    @withdraws = Withdraw.of_kols.where(status: 'rejected')
 
-    formated_response "拒绝的"
+    formated_response "已拒绝的"
   end
 
   def permanent_prohibited
     authorize! :read, Withdraw
-    @withdraws = Withdraw.where(status: 'permanent_frozen')
+    @withdraws = Withdraw.of_kols.where(status: 'permanent_frozen')
 
     formated_response "永久冻结的"
   end
@@ -83,10 +83,10 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
       format.json { head :no_content }
     end
   end
-  
+
   # This button (rendered in views/marketing_dashboard/withdraws/index.html.erb)
   # allows the admin to confiscate the money from a particular when they reuqest a withdrawal, possibly due to cheating of clicks or inivitation.
-  
+
   def confiscate
     authorize! :update, Withdraw
     @withdraw.update_attributes(:status => 'confiscated', :reject_reason => params[:confiscate_reason])
