@@ -35,7 +35,6 @@ end
 
 every 1.day, :at => '2:00 am', roles: [:db_syncer] do
   rake "db:import_to_staging"
-  rake "db:import_to_qa"
 end
 
 every 1.day, :at => '12:00 am' do
