@@ -26,15 +26,11 @@ module API
         class My < Grape::Entity
           expose :id, :name, :kol_role, :role_apply_status, :role_check_remark,
                  :max_campaign_click, :max_campaign_earn_money, :campaign_total_income, :avg_campaign_credit
-
           expose :avatar_url do |big_v|
             big_v.get_avatar_url
           end
           expose :tags do |big_v|
             big_v.tags.collect{|t| {:name => t.name, :label => t.label} }
-          end
-          expose :admintag do |big_v|
-            big_v.admintags
           end
         end
       end
