@@ -32,6 +32,9 @@ module API
           expose :tags do |big_v|
             big_v.tags.collect{|t| {:name => t.name, :label => t.label} }
           end
+          expose :admintag do |big_v|
+            big_v.admintags.collect {|t| t.tag}
+          end
         end
       end
     end
