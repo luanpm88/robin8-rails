@@ -28,7 +28,8 @@ module API
           if params[:credits].to_i < MySettings.recharge_min_budget.to_i
             error_403!({error: 1, detail: "充值金额不能小于#{MySettings.recharge_min_budget}"})  and return
           end
-          alipay_url = brand_user.generate_alipay_recharge_order_for_app params[:credits]
+          alipay_url = brand_user.generate_alipay_recharge_order_for_app(params[:credits],
+            Rails.application.secrets[:alipay][:brand_recharge_notify_url])
           present :error, 0
           present :alipay_url, alipay_url
         end
