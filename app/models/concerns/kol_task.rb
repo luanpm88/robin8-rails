@@ -7,8 +7,8 @@ module Concerns
       # after_create :generate_invite_code
 
       # Kol's inviter is rewarded only after Kol gets approved
-      after_create :generate_invite_task_record
-      #after_update :generate_invite_task_record
+      #after_create :generate_invite_task_record
+      after_update :generate_invite_task_record
     end
 
     class_methods do
@@ -72,8 +72,7 @@ module Concerns
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
 
         task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-        task_record.sync_to_transaction
-        # if inviter.today_invite_count <= 5
+        task_record.sync_to_transaction if inviter.today_invite_count <= 10
       end
 
       # download_invitation = DownloadInvitation.find_invation(self)
