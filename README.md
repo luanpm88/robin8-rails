@@ -40,9 +40,9 @@ by artificial intelligence.
       that is ready to be released
     * 只要是合并到qa分支的代码，就是准备要上线的
   * `staging` branch is the pre-release branch for us to test on production data
-    * staging分支是预发布分支，staging分支的数据库和production是一致的
-    * staging's data from the database is 24 hours behind our production
-    * staging分支的数据比production落后24小时
+    * staging分支是预发布分支，staging服务器的数据库和production是一致的
+    * staging server's data from the database is 24 hours behind our production
+    * staging服务器的数据比production落后24小时
     * once pushed to bitbucket staging, you must deploy to staging (will be
       automated)
     * 只要是合并到staging分支的代码，就要部署到staging 服务器里，（也将会自动化）
