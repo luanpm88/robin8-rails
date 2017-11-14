@@ -3,8 +3,16 @@ Robin8
 Robin8 is next generation social and content marketing platform powered
 by artificial intelligence.
 
-# Development and Deployment Process
-# 开发和部署流程
+# Notes
+
+  Please refer to these documentation for some parts of the app
+
+  * [Influence score API](https://robin8.atlassian.net/wiki/spaces/APP/pages/74743823/Influence+score+API)
+  * [Invitation mechanics](https://robin8.atlassian.net/wiki/spaces/APP/pages/54853633/Invitation+mechanics)
+  * [Settling Process](https://robin8.atlassian.net/wiki/spaces/APP/pages/51347525/Technical+notes)
+
+# Development and Deployment Process 开发和部署流程
+
   When building a new feature
   开发新功能的流程：
 
@@ -119,7 +127,15 @@ by artificial intelligence.
 
 # QA, Staging, Production server
 
+  Important
+
+  * robin8.net root path is powered by an nginx proxy to another server
+    under the repository
+    [kol_search_engine_without_react](https://bitbucket.org/robin8/kol_search_engine_without_react_v1.2.1)
+  * you can look at the nginx sample configuration in `config` directory
+
   Logs
+
   * `/home/deployer/apps/robin8_qa/current/log`, `robin8_staging` or `robin8`
   * qa、staging和production的日志文件都在current/log中。
   * For each log file, eg `kol_pk.log`, search on the codebase for
