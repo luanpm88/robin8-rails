@@ -699,10 +699,6 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  def last_successful_withdraw
-    withdraws.where(status: ['paid', 'checked']).order(:id).last
-  end
-
   BindMaxCount = Rails.env.production? ? 3 : 300
   def self.device_bind_over_3(imei,idfa)
     return false

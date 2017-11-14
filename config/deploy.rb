@@ -113,24 +113,6 @@ namespace :deploy do
     end
   end
 
-  namespace :sidekiq do
-    [:start, :stop, :restart, :reload, :status].each do |command|
-      desc "Run upstart task: #{command} sidekiq"
-      task command do
-        on roles :app do
-          execute :sudo, "service", "sidekiq", "#{command}", "index=0"
-        end
-      end
-    end
-  end
-
-  # desc 'Restart application'
-  # task :restart do
-  #   on roles(:app), in: :sequence, wait: 5 do
-  #     execute :touch, release_path.join('tmp/restart.txt')
-  #   end
-  # end
-
   desc 'grant_permission check_unicorn.sh 文件为可执行'
   task :grant_permission do
     on roles(:app) do
@@ -140,15 +122,8 @@ namespace :deploy do
   after :publishing, :grant_permission
 
   # after :publishing, :upload_localization
-  if fetch(:rails_env) == "production"
-    after :publishing, 'sidekiq:reload'
-  end
-  after :publishing, :update_crontab
   after :publishing, :update_crontab
   after :publishing, :sync_assets
-  if fetch(:rails_env) == "production"
-    after :publishing, 'sidekiq:restart'
-  end
   after :publishing, 'unicorn:restart'
 
   after :restart, :clear_cache do
