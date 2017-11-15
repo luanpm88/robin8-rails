@@ -129,10 +129,12 @@ by artificial intelligence.
 
   Important
 
-  * robin8.net root path is powered by an nginx proxy to another server
+  * robin8.net root path is powered by an nginx reverse proxy to another server
     under the repository
     [kol_search_engine_without_react](https://bitbucket.org/robin8/kol_search_engine_without_react_v1.2.1)
   * you can look at the nginx sample configuration in `config` directory
+  * everytime you deploy be sure to check that the unicorn master process is
+    killed and renewed
 
   Logs
 
