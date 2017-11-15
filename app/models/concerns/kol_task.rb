@@ -51,7 +51,7 @@ module Concerns
       if self.IMEI.present?
         device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
       elsif self.IDFA.present?
-        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 20
+        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
       else
         device_exist = true
       end
