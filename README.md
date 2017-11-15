@@ -132,9 +132,14 @@ by artificial intelligence.
   * robin8.net root path is powered by an nginx reverse proxy to another server
     under the repository
     [kol_search_engine_without_react](https://bitbucket.org/robin8/kol_search_engine_without_react_v1.2.1)
-  * you can look at the nginx sample configuration in `config` directory
+  * robin8.net首页（搜索引擎）是用了nginx reverse proxy 去到了另一个项目
+  * you can look at the nginx sample configuration in
+    `config/nginx_production.conf`
+    speficially the `location = / {` which uses proxy_pass to another server
+  * 你在nginx 的设置文件可以看到 `location = / {` 首页是去了另一个服务器
   * everytime you deploy be sure to check that the unicorn master process is
-    killed and renewed
+    killed and renewed, you can run eg `cap production sidekiq:stop` then
+    `cap production sidekiq:start` then `ps aux | grep "unicorn master"`
 
   Logs
 
