@@ -17,8 +17,6 @@ module YunPian
       code = security_code
       write_cache_for @phone_number, code
 
-      return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?
-
       ChinaSMS.use :yunpian, password: @api_key
       tpl_params = {code: code, company: @company_sign}
 
@@ -28,6 +26,8 @@ module YunPian
         mode: "verified_code",
         status: "pending"
       )
+
+      return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?
 
       begin
         res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1

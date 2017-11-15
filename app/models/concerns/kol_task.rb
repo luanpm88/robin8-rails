@@ -45,8 +45,9 @@ module Concerns
     #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
       # Inviter isn't rewarded unless Kol got approved in admin panel
-      return unless self.role_apply_status == 'passed'
+      #return unless self.role_apply_status == 'passed'
 
+      #device_exist如果为真，说明此用户有重复
       if self.IMEI.present?
         device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
       elsif self.IDFA.present?
@@ -71,7 +72,7 @@ module Concerns
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
 
         task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-        task_record.sync_to_transaction  #  if inviter.today_invite_count <= 5
+        task_record.sync_to_transaction if inviter.today_invite_count <= 10
       end
 
       # download_invitation = DownloadInvitation.find_invation(self)
