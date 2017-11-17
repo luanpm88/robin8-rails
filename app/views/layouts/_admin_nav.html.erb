@@ -369,6 +369,18 @@
           <%= link_to t('menu.invite_code_management'), marketing_dashboard_invite_code_path %>
         </li>
 
+        <li>
+          <a href="#"><%= '数据统计' %> <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to 'Robin8 周数据统计', marketing_dashboard_campaign_data_path %>
+            </li>
+            <li>
+              <%= link_to 'Talking Data 数据统计', marketing_dashboard_talking_data_path %>
+            </li>
+          </ul>
+        </li>
+
 
         <% if can?(:read, Kol) %>
         <li>
