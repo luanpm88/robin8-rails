@@ -1,0 +1,68 @@
+<style type="text/css">
+  .table-responsive table {
+  	margin-bottom: 0;
+  }
+</style>
+
+<h3>
+  xxxx
+</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>请输入查询多少周的数据</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.number_field :id_present, class: "form-control", placeholder: "请使用数字" %>
+                </div>
+              </div>
+          </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+  <div class="container-fluid" style="padding: 20px 0;">
+    <div>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>周接单人数</th>
+            <th>平均每日接单次数</th>
+            <th>用户注册量</th>
+            <th>用户接单人数</th>
+            <th>获得收益用户数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @week_num.times do |t| %>
+          <tr>
+            <% campaign_invites = CampaignInvite.where('created_at > ? AND created_at < ?', (DateTime.now - t.weeks).at_beginning_of_week , (DateTime.now - (t - 1).weeks).at_beginning_of_week) %>
+            <% kols = Kol.where('created_at > ? AND created_at < ?', (DateTime.now - t.weeks).at_beginning_of_week , (DateTime.now - (t - 1).weeks).at_beginning_of_week) %>
+            <td><%= @week[t]  %></td>
+            <td><%= campaign_invites.pluck(:kol_id).uniq.count %></td>
+            <td><%= campaign_invites.size / 7 %></td>
+            <td><%= kols.size %></td>
+            <td><%= CampaignInvite.where(:kol_id => kols.pluck(:id)).pluck(:kol_id).uniq.size %></td>
+            <td><%= kols.where('historical_income > 1').size %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+

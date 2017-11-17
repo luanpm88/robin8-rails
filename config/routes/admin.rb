@@ -191,6 +191,9 @@ Rails.application.routes.draw do
     end
 
     resources :invite_code 
+    resources :talking_data
+    resources :kol_data
+    resources :campaign_data
 
     resources :alipay_orders do
       collection do

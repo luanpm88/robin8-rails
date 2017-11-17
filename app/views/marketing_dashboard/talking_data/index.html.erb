@@ -1,0 +1,41 @@
+<style type="text/css">
+  .table-responsive table {
+  	margin-bottom: 0;
+  }
+</style>
+
+<h3>
+  Talking_data
+</h3>
+
+
+
+<div class="container-fluid" style="padding: 20px 0;">
+  <div>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>渠道</th>
+          <th>注册人数</th>
+          <th>接单人数</th>
+          <th>收入>1人数</th>
+        </tr>
+      </thead>
+      <tbody>
+      	<% @talkingdata.each do |t| %>
+          <% channel_users = Kol.where(talkingdata_promotion_name: t) %>
+      	<tr>
+          <td><%= t %></td>
+      	  <td><%= channel_users.count %></td>
+      	  <td><%= CampaignInvite.where(:kol_id => channel_users.pluck(:id)).pluck(:kol_id).uniq.count %></td>
+      	  <td><%= channel_users.where('historical_income > 1').count %></td>
+      	</tr>
+      	<% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pull-right">
+  <%= will_paginate @talkingdata, renderer: BootstrapPagination::Rails  %>
+</div>
