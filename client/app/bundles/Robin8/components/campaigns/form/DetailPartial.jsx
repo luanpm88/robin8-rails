@@ -206,6 +206,7 @@ export default class DetailPartial extends React.Component {
                     }
                   }
                 }
+                <p style={{color: '#9B9A9A', fontSize: '12'}}><strong>hint:</strong> 切换平台后请重新选择奖励模式</p>
               </div>
             </div>
 
