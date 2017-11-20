@@ -4,9 +4,8 @@
 //= require bootstrap-sass
 //= require lib/sb-admin-2
 //= require lib/metisMenu
-//= require momentjs
-//= require momentjs/locale/zh-cn
-//= require eonasdan-bootstrap-datetimepicker
+//= require moment
+//= require bootstrap-datetimepicker
 //= require marketing_dashboard/jqzoom
 
 if (!jQuery.fn.size) {

@@ -71,8 +71,6 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'rails-assets-font-awsome', '4.3'
-  gem 'rails-assets-momentjs'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '>=4.17'
   gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
@@ -91,6 +89,9 @@ source 'http://rails-assets.org' do
   gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
 end
+
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 
 gem 'devise'
 gem 'devise_invitable'
