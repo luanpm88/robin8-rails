@@ -4,10 +4,11 @@
 *= require lib/metisMenu.min
 *= require sass-bootstrap-glyphicons
 *= require font-awsome
-*= require eonasdan-bootstrap-datetimepicker/bootstrap-datetimepicker.min.scss
 *= require marketing_dashboard/jqzoom.css
 */
+@import 'bootstrap-sprockets';
 @import 'bootstrap';
+@import 'bootstrap-datetimepicker';
 
 td {
   max-width: 200px !important;
