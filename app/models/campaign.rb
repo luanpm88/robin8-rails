@@ -454,4 +454,15 @@ class Campaign < ActiveRecord::Base
   def effect_score
     self.effect_evaluation.score rescue nil #'5'   #默认显示5分
   end
+
+  #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
+  def can_check?
+    authorize! :manage, Campaign
+    self.reload
+    if self.status == "unexecute"
+      return true
+    else
+      return false
+    end
+  end
 end
