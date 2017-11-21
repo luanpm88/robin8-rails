@@ -151,6 +151,18 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @campaign_materials = @campaign.campaign_materials
   end
 
+  #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
+  def can_check?
+    authorize! :manage, Campaign
+    @campaign = Campaign.find params[:id]
+    @campaign.reload
+    if @campaign.status == "unexecute"
+      return true
+    else
+      return false
+    end
+  end
+
   def agree
     authorize! :manage, Campaign
     @campaign = Campaign.find params[:campaign_id]
