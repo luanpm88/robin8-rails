@@ -155,9 +155,9 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def agree
     authorize! :manage, Campaign
     @campaign = Campaign.find_by :id => params[:campaign_id]
-    @campaign.reload
     if @campaign.status != 'unexecute'
-      render :json => {:status => "error", :message => "活动不是待审核状态， 不能审核通过"} and return
+      flash[:warning] = "该活动不是待审核状态，不能审核通过"
+      redirect_to  pending_marketing_dashboard_campaigns_path
     else
       @campaign.update(:status => :agreed)
       if @campaign.user.mobile_number.present?
