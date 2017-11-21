@@ -156,7 +156,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     authorize! :manage, Campaign
     @campaign = Campaign.find_by :id => params[:campaign_id]
     if @campaign.status != 'unexecute'
-      flash[:warning] = "该活动不是待审核状态，不能审核通过"
+      flash[:alert] = "该活动不是待审核状态，不能审核通过"
       redirect_to  pending_marketing_dashboard_campaigns_path
     else
       @campaign.update(:status => :agreed)
