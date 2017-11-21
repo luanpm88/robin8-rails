@@ -230,7 +230,7 @@ module Open
             error!({success: false, error: "活动撤销失败,发生异常!"}, 400) and return
           end
         end
-
+=begin  #去掉品友中止活动的权限
         desc "stop campaign"
         params do
           requires :id, type: Integer
@@ -249,6 +249,7 @@ module Open
             error!({success: false, error: "活动中止失败,发生异常!"}, 400) and return
           end
         end
+=end
 
         desc "get all campaign of current user"
         params do
