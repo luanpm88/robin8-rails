@@ -154,18 +154,19 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def agree
     authorize! :manage, Campaign
-    @campaign = Campaign.find params[:campaign_id]
+    @campaign = Campaign.find_by :id => params[:campaign_id]
+    @campaign.reload
     if @campaign.status != 'unexecute'
-      flash[:error] =  '请刷新后重试'
-      redirect_to :action => :index
-    end
-    @campaign.update(:status => :agreed)
-    if @campaign.user.mobile_number.present?
-      SmsMessage.send_by_resource_to(@campaign.user, "您在Robin8发布的活动 #{@campaign.name} 已审核通过", @campaign, {mode: "general", admin: current_admin_user})
-    end
-    respond_to do |format|
-      format.html { redirect_to :back, notice: 'Agreed successfully!'}
-      format.json { head :no_content }
+      render :json => {:status => "error", :message => "活动不是待审核状态， 不能审核通过"} and return
+    else
+      @campaign.update(:status => :agreed)
+      if @campaign.user.mobile_number.present?
+        SmsMessage.send_by_resource_to(@campaign.user, "您在Robin8发布的活动 #{@campaign.name} 已审核通过", @campaign, {mode: "general", admin: current_admin_user})
+      end
+      respond_to do |format|
+        format.html { redirect_to :back, notice: 'Agreed successfully!'}
+        format.json { head :no_content }
+      end
     end
   end
 
