@@ -157,19 +157,25 @@ module API
         put ':id/share' do
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
           campaign = campaign_invite.campaign  rescue nil
+          binding.pry
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
+          binding.pry
           elsif campaign_invite.status != 'running' && !campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该营销活动已转发成功' })
+          binding.pry
           elsif campaign.need_finish
             CampaignWorker.perform_async(campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
+          binding.pry
           else
             campaign_invite = current_kol.share_campaign_invite(params[:id] , params[:sub_type])
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
+          binding.pry
+          current_kol.generate_invite_task_record
         end
       end
     end
