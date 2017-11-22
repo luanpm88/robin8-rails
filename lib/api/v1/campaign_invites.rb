@@ -68,7 +68,8 @@ module API
         end
         get 'my_campaigns' do
           if params[:state] == 'pending'
-            kol_campaigns = current_kol.campaign_invites.where(status: ['running','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
+            # kol_campaigns = current_kol.campaign_invites.where(status: ['running','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
+            kol_campaigns = current_kol.campaign_invites.where.not(status: ['settled','rejected']).order(updated_at: :desc).page(params[:page]).per_page(10)
           else
             kol_campaigns = current_kol.campaign_invites.where(status: ['settled','rejected'] , img_status: params[:status]).order(updated_at: :desc).page(params[:page]).per_page(10)
           end

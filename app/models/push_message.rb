@@ -67,6 +67,16 @@ class PushMessage < ActiveRecord::Base
       push_message.receiver_type = 'List'
       push_message.receiver_ids = receivers.collect{|t| t.id }
       push_message.receiver_cids = receivers.collect{|t| t.device_token}
+
+    elsif message.message_type == 'notification'
+      push_message = self.new(:receiver_type => 'All', :template_type => 'notification', :title => message.title,
+                              :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
+      push_message.template_content = transmission_template_content(message)
+      # push_message = IGeTui::NotificationTemplate.new
+      # push_message.logo = 'logo.png'
+      # push_message.logo_url = 'http://7xuw3n.com1.z0.glb.clouddn.com/logo.png'
+      # push_message.title = 'Robin8 系统通知'
+      # push_message.text = '明天是Robin8提现日,今天别忘记提交申请哦!'
     end
 
     #统一保存

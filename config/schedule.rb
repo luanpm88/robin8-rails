@@ -164,3 +164,7 @@ end
 every '00 10 1 10 *' do
   rake "daily_report:pinyou_send", :environment => 'production'
 end
+
+every :thursday , :at => '12:05 am'
+  runner "Message.thursday_push" , :environment => 'production'
+end
