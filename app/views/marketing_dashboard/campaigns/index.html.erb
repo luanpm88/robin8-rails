@@ -162,6 +162,7 @@
           <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
           <th><%= sort_link(@q, :budget, "活动预算") %></th>
           <th>剩余预算</th>
+          <th>实际消耗预算</th>
           <th><%= sort_link(@q, :start_time, "活动开始时间") %></th>
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :valid_invite_count, "有效接单人数") %></th>
@@ -198,6 +199,7 @@
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
           <td><%= c.remain_budget %></td>
+          <td><%= c.take_budget %></td>
           <td><%= c.start_time.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.valid_invites.count %></td>
@@ -255,7 +257,7 @@
                   <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                 <% else %>
                   <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
-                    <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
+                        <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                   <% end %>
                 <% end %>
                 <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>

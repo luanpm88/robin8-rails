@@ -135,6 +135,8 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap3-datetimepicker-rails (4.17.47)
+      momentjs-rails (>= 2.8.1)
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
@@ -396,6 +398,8 @@ GEM
     mini_magick (4.3.6)
     mini_portile (0.6.2)
     minitest (5.7.0)
+    momentjs-rails (2.17.1)
+      railties (>= 3.1)
     mongo (2.1.2)
       bson (~> 3.0)
     mongoid (5.0.1)
@@ -571,13 +575,8 @@ GEM
       rails-assets-datatables (>= 1.9.0)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datejs (1.0.0.rc3)
-    rails-assets-eonasdan-bootstrap-datetimepicker (4.17.47)
-      rails-assets-jquery (>= 1.8.3)
-      rails-assets-moment (>= 2.10.5)
     rails-assets-font-awsome (4.3.0)
     rails-assets-jquery (3.2.1)
-    rails-assets-moment (2.18.1)
-    rails-assets-momentjs (2.18.1)
     rails-assets-please-wait (0.0.5)
     rails-assets-sass-bootstrap-glyphicons (1.0.0)
     rails-assets-select2 (3.5.2)
@@ -827,6 +826,7 @@ DEPENDENCIES
   alipay (~> 0.12.0)
   aylien_text_api
   bootstrap-sass (~> 3.3.6)
+  bootstrap3-datetimepicker-rails (~> 4.17.47)
   bundler (>= 1.7.0)
   cancancan (~> 1.10)
   capistrano-bundler (~> 1.1.4)
@@ -883,6 +883,7 @@ DEPENDENCIES
   legato
   mailgun-ruby
   mechanize
+  momentjs-rails (>= 2.9.0)
   mongoid (~> 5.0.0)
   multi_logger
   mysql2
@@ -925,9 +926,7 @@ DEPENDENCIES
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
   rails-assets-datejs!
-  rails-assets-eonasdan-bootstrap-datetimepicker (>= 4.17)!
   rails-assets-font-awsome (= 4.3)!
-  rails-assets-momentjs!
   rails-assets-please-wait!
   rails-assets-sass-bootstrap-glyphicons!
   rails-assets-select2 (= 3.5.2)!
