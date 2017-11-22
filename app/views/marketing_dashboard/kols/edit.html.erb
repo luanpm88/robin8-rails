@@ -32,7 +32,7 @@
 
             <div class="field form-group datetime" style="position: relative;">
               <%= f.label "拉黑截止日期" %><br />
-              <%= f.text_field :forbid_campaign_time, autofocus: true, class: "form-control datetimepicker",  id: "datetimepicker1" %>
+              <%= f.text_field :forbid_campaign_time, :as => :string, autofocus: true, class: "form-control datetimepicker",  id: "datetimepicker1" %>
             </div>
 
             <div class="field form-group datetime" style="position: relative;">
@@ -52,6 +52,8 @@
 </div>
   <script type="text/javascript">
   $(function () {
-    $('.datetimepicker').datetimepicker();
+    $('.datetimepicker').datetimepicker(
+      {format: 'YYYY-MM-DD HH:MM'}
+    );
   });
   </script>
