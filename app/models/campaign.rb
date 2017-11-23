@@ -292,11 +292,11 @@ class Campaign < ActiveRecord::Base
       SmsMessage.send_by_resource_to(AdminPhones, "有新的活动需要审核 (#{self.name})", self, {:mode => 'campaign_check' })
     elsif (self.status_changed? && status.to_s == 'agreed')
       self.update_column(:check_time, Time.now)
-      # if Rails.env.development? or Rails.env.test?
-      #   CampaignWorker.new.perform(self.id, 'send_invites')
-      # else
+      if Rails.env.development? or Rails.env.test?
+        CampaignWorker.new.perform(self.id, 'send_invites')
+      else
         CampaignWorker.perform_async(self.id, 'send_invites')
-      # end
+      end
     elsif (self.status_changed? && status.to_s == 'rejected')
       self.update_column(:check_time, Time.now)
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"

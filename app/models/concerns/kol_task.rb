@@ -50,9 +50,9 @@ module Concerns
       Rails.logger.transaction.info "--------generate_invite_task_record--------begin?-----"
       #device_exist如果为真，说明此用户有重复
       if self.IMEI.present?
-        device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+        device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 2
       elsif self.IDFA.present?
-        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 2
       else
         device_exist = true
       end
@@ -61,6 +61,7 @@ module Concerns
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 
+      Rails.logger.transaction.info "--------generate_invite_task_record--------second return-----"
       # does not allow to proceed if user already had completed invitation
       return if RegisteredInvitation.completed.where(mobile_number: self.mobile_number).size > 0
 
