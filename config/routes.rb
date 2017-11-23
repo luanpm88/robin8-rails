@@ -240,6 +240,13 @@ Rails.application.routes.draw do
   post 'leader_login/sms_request'
   get 'leader_login/download'
 
+  # wechat_campaign 新增了点击数
+  get 'wechat_kol_campaign/campaign_page'
+  get 'wechat_kol_campaign/kol_register'
+  post 'wechat_kol_campaign/kol_create'
+  post 'wechat_kol_campaign/sms_request'
+  get 'wechat_kol_campaign/campaign_details'
+
 
 
   get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
