@@ -1,0 +1,170 @@
+<%
+   title = @campaign.name
+   description = @campaign.description
+   poster_url = @campaign.img_url
+   url = request.url
+   sign_package = ($weixin_client.get_jssign_package(url) rescue {})
+   app_id = sign_package['appId']
+   nonce = sign_package['nonceStr']
+   ts = sign_package['timestamp']
+   signature = sign_package['signature']
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+      <title>Robin8邀请你成为<%= @campaign.user.name rescue '' %>品牌带盐人</title>
+      <meta name="description" content="<%= description %>">
+      <!-- Open Graph meta -->
+      <meta property="og:title" content="<%= title %>" />
+      <meta property="og:description" content="<%= description %>" />
+      <meta property="og:site_name" content="Robin8" />
+      <meta property="og:url" content="<%= url %>" />
+      <meta property="og:image" content="<%= poster_url %>" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="150" />
+      <meta property="og:image:height" content="150" />
+      <!-- Wechat meta -->
+      <meta property="weixin:timeline_title" content="<%= title %>" />
+      <meta property="weixin:chat_title" content="<%= title %>" />
+      <meta property="weixin:description" content="<%= description %>" />
+      <meta property="weixin:image" content="<%= poster_url %>" />
+      <%= favicon_link_tag 'favicon.ico' %>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <%= csrf_meta_tags %>
+      <%= stylesheet_link_tag 'wechat_campaign' %>
+
+      <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+      <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+          wx.config({
+              debug: false,
+              appId: '<%= app_id %>',
+              timestamp: '<%= ts %>',
+              nonceStr: '<%= nonce %>',
+              signature: '<%= signature %>',
+              jsApiList: [
+                  'onMenuShareTimeline',
+                  'onMenuShareAppMessage',
+                  'onMenuShareQQ',
+                  'onMenuShareWeibo'
+              ]
+          });
+
+          wx.ready(function () {
+              var shareData = {
+                  title: '<%= title %>',
+                  link: '<%= @share_url %>',
+                  imgUrl: '<%= poster_url %>',
+                  success: function (res) {
+                      black.style.display = "block";
+                      $("#dialog3").show()
+                      //window.location.href = '/wechat_campaign/app_download_page';
+                  }
+              };
+
+              wx.onMenuShareAppMessage(shareData);
+              wx.onMenuShareTimeline(shareData);
+              wx.onMenuShareQQ(shareData);
+              wx.onMenuShareWeibo(shareData);
+          });
+
+      </script>
+
+  </head>
+  <body>
+    <section class="head-ro">
+      <%= image_tag @campaign.img_url %>
+    </section>
+    <section class="content-ro">
+      <h2 class="title-ro"><%= @campaign.name %></h2>
+          <%= @campaign.description %>
+    </section>
+    <section class="content-ro">
+      <h2 class="title-ro" style="border: 1px solid #6a6a6a;
+      padding-top: 10px; padding-bottom: 10px; color: #6a6a6a; 
+      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      
+    </section>
+    <section class="bottom-ro">
+      <a class="link-ro" onclick="showDialog(1)" style="font-size: 0.5em; color: #909090">查看活动要求></a>
+      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">去带盐</a>
+    </section>
+    <!-- 遮罩层 -->
+    <div class="black" id="black">  </div>
+    <!-- 弹出层 -->
+    <div class="dialog" id="dialog">
+      <div class="dia-content">
+        <h2 class="title-ro">活动要求</h2>
+        <%= @campaign_info_box %>
+        <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
+      </div>
+    </div>
+    <div class="dialog top-18" id="dialog02">
+      <div class="dia-content">
+        <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+        <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
+      </div>
+    </div>
+
+
+        <div class="dialog top-18" id="dialog3">
+          <div class="dia-content ">
+            <h2 class="title-ro">分享成功</h2>
+            下载APP上传截图即可获得奖励
+            <button class=" btn-blue-ro" id="app-download">去下载</button>
+            <button class=" btn-blue-ro bg-gray" onclick="closeDialog3()">知道了</button>
+          </div>
+        </div>
+
+  </body>
+
+    <script type="text/javascript">
+        var dialog = document.getElementById('dialog');
+        var dialog02 = document.getElementById('dialog02');
+        var black = document.getElementById('black');
+        function closeDialog(){
+            black.style.display = "none";
+            dialog.style.display = "none";
+            dialog02.style.display = "none";
+        }
+        function showDialog(con){
+            if(con=='1'){
+                black.style.display = "block";
+                dialog.style.display = "block";
+            }else{
+                dialog02.style.display = "block";
+                black.style.display = "block";
+            }
+        }
+        window.onload = function () {
+            <% if @campaign_info_box %>
+                showDialog(1);
+            <% end %>
+            $("#dialog3").hide()
+        }
+
+
+        var dialog3 = document.getElementById('dialog3');
+
+        function closeDialog3(){
+            black.style.display = "none";
+            dialog3.style.display = "none";
+        }
+
+        function showDialog3(){
+            black.style.display = "block";
+            dialog3.style.display = "block";
+        }
+
+        $('#app-download').click(function() {
+            window.location.href = '<%= @app_download_url %>';
+        });
+    </script>
+
+</html>
