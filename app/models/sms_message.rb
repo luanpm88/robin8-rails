@@ -50,8 +50,10 @@ class SmsMessage < ActiveRecord::Base
     end
   end
 
+
+#Rails.env.development? or
   def send_now
-    if Rails.env.development? or Rails.env.test?
+    if  Rails.env.test?
       res = {success: true, code: 0}
     else
       res = Emay::SendSms::to(self.phone, self.content)

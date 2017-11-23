@@ -54,6 +54,7 @@ class CampaignInvite < ActiveRecord::Base
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
   after_save :update_invite
 
+
   delegate :name, to: :campaign
   def upload_start_at
     if  campaign.is_recruit_type? || campaign.is_post_type?
