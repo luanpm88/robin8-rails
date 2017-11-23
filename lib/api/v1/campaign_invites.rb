@@ -141,7 +141,10 @@ module API
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
             # end
+            Rails.logger.campaign.info "--------screenshot_will_upload:  ---#{self.id}-----"
             campaign_invite.save
+            Rails.logger.campaign.info "--------screenshot_uploded:  ---#{self.id}-----"
+
             current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary

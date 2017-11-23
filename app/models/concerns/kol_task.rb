@@ -47,6 +47,7 @@ module Concerns
       # Inviter isn't rewarded unless Kol got approved in admin panel
       #return unless self.role_apply_status == 'passed'
 
+      Rails.logger.transaction.info "--------generate_invite_task_record--------begin?-----"
       #device_exist如果为真，说明此用户有重复
       if self.IMEI.present?
         device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
@@ -56,6 +57,7 @@ module Concerns
         device_exist = true
       end
 
+      Rails.logger.transaction.info "--------generate_invite_task_record--------first return-----"
       # device_token_exist = Kol.where(:device_token => self.device_token).size > 1       #表示有重复
       return if self.app_platform.blank? || self.os_version.blank? || device_exist == true
 
