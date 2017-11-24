@@ -147,7 +147,7 @@ module API
             # end:
             campaign_invite.save
 
-            #current_kol.generate_invite_task_record
+            current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           else
