@@ -8,7 +8,7 @@ module Concerns
 
       # Kol's inviter is rewarded only after Kol gets approved
       #after_create :generate_invite_task_record
-      after_update :generate_invite_task_record
+      #after_update :generate_invite_task_record
     end
 
     class_methods do
