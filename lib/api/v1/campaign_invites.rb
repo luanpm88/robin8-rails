@@ -1,6 +1,8 @@
 module API
   module V1
     class CampaignInvites < Grape::API
+      include Concerns::InviteReward
+
       resources :campaign_invites do
         before do
           authenticate!
@@ -135,16 +137,17 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
+            Rails.logger.transaction.info "--------screenshot_will_upload:  ---#{self.id}-----"
             uploader.store!(params[:screenshot])
+            Rails.logger.transaction.info "--------screenshot_uploded:  ---#{self.id}-----"
             campaign_invite.reupload_screenshot(uploader.url)
+            Rails.logger.transaction.info "--------screenshot_reuploded:  ---#{self.id}-----"
             #是否进入自动审核
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
-            # end
-            Rails.logger.campaign.info "--------screenshot_will_upload:  ---#{self.id}-----"
+            # end:
             campaign_invite.save
-            Rails.logger.campaign.info "--------screenshot_uploded:  ---#{self.id}-----"
-
+            Rails.logger.transaction.info "--------save  ---#{self.id}-----"
             current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
@@ -178,4 +181,13 @@ module API
       end
     end
   end
+
+
+
+
+
+
+
+
+
 end
