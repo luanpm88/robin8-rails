@@ -67,7 +67,7 @@ module API
           optional :page, type: Integer
         end
         get 'my_campaigns' do
-          if params[:states] == 'pending'
+          if params[:status] == 'pending'
             # kol_campaigns = current_kol.campaign_invites.joins(:campaign).where("campaign_invites.status = 'running' OR campaign_invites.status = 'finished' AND campaigns.status !=  'finished' ") 
             kol_campaigns = current_kol.campaign_invites.where(status: 'approved').order(updated_at: :desc).page(params[:page]).per_page(10)
           else
