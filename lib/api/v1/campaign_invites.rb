@@ -1,7 +1,7 @@
 module API
   module V1
     class CampaignInvites < Grape::API
-      include Concerns::InviteReward
+      include API::V1::Concerns::InviteReward
 
       resources :campaign_invites do
         before do
