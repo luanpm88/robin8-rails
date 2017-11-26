@@ -146,7 +146,9 @@ module API
             # end:
             campaign_invite.save
             Rails.logger.transaction.info "--------screenshot--------have_saved-----"
-            current_kol.generate_invite_task_record
+            if current_kol.campaign_invites.size == 1
+              current_kol.generate_invite_task_record
+            end 
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           else
