@@ -50,7 +50,6 @@ class SmsMessage < ActiveRecord::Base
     end
   end
 
-
   def send_now
     if Rails.env.development? or Rails.env.test?
       res = {success: true, code: 0}

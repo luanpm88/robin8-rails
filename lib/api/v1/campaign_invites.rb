@@ -1,7 +1,6 @@
 module API
   module V1
     class CampaignInvites < Grape::API
-
       resources :campaign_invites do
         before do
           authenticate!
@@ -141,7 +140,7 @@ module API
             #是否进入自动审核
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
-            # end:
+            # end
             campaign_invite.save
             current_kol.generate_invite_task_record
             present :error, 0
@@ -174,7 +173,6 @@ module API
           end
         end
       end
-
     end
   end
 end

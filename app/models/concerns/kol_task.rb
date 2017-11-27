@@ -73,7 +73,6 @@ module Concerns
       end
     end
 
-
     # def generate_invite_code
     #   return if invite_code.present?
     #   while true
