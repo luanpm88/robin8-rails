@@ -137,15 +137,12 @@ module API
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
-            Rails.logger.transaction.info "--------screenshot--------have_store-----"
             campaign_invite.reupload_screenshot(uploader.url)
-            Rails.logger.transaction.info "--------screenshot--------have_reupload-----"
             #是否进入自动审核
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
             # end:
             campaign_invite.save
-            Rails.logger.transaction.info "--------screenshot--------have_saved-----"
             current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
