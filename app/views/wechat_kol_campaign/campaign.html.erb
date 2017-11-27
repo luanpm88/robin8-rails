@@ -85,12 +85,14 @@
       <h2 class="title-ro"><%= @campaign.name %></h2>
           <%= @campaign.description %>
     </section>
+    <% if @campaign_invites.present? %>
     <section class="content-ro">
       <h2 class="title-ro" style="border: 1px solid #6a6a6a;
       padding-top: 10px; padding-bottom: 10px; color: #6a6a6a; 
-      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invites.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invites.earn_money %></span> 元</h2>
       
     </section>
+    <% end %>
     <section class="bottom-ro">
       <a class="link-ro" onclick="showDialog(1)" style="font-size: 0.5em; color: #909090">查看活动要求></a>
       <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">去带盐</a>
