@@ -7,6 +7,12 @@ class WechatKolCampaignController < ApplicationController
     kol.add_campaign_id params[:campaign_id]
     kol.approve_campaign params[:campaign_id]
     @campaign_invite = @campaign.get_campaign_invite(kol.id) rescue nil
+    if campaign_invite
+      campaign_invite_uuid = @campaign_invite.uuid
+      Rails.logger.wechat_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
+      @share_url = @campaign_invite.visit_url if campaign_invite_uuid
+      Rails.logger.wechat_campaign.info "--campaign_details: @share_url #{@share_url}"
+    end
     @share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{campaign.id}" rescue ''
     Rails.logger.wechat_kol_campaign.info "--campaign_details: @share_url #{@share_url}"
     @app_download_url = Rails.application.secrets[:download_url]
