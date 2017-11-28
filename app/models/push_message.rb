@@ -67,6 +67,11 @@ class PushMessage < ActiveRecord::Base
       push_message.receiver_type = 'List'
       push_message.receiver_ids = receivers.collect{|t| t.id }
       push_message.receiver_cids = receivers.collect{|t| t.device_token}
+
+    elsif message.message_type == 'notification'
+      push_message = self.new(:receiver_type => 'All', :template_type => 'notification', :title => message.title,
+                              :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
+      push_message.template_content = transmission_template_content(message)
     end
 
     #统一保存

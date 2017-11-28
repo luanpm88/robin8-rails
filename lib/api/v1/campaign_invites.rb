@@ -67,8 +67,8 @@ module API
           optional :page, type: Integer
         end
         get 'my_campaigns' do
-          if params[:state] == 'pending'
-            kol_campaigns = current_kol.campaign_invites.where(status: ['running','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
+          if params[:status] == 'pending'
+            kol_campaigns = current_kol.campaign_invites.where(status: ['approved','finished']).order(updated_at: :desc).page(params[:page]).per_page(10)
           else
             kol_campaigns = current_kol.campaign_invites.where(status: ['settled','rejected'] , img_status: params[:status]).order(updated_at: :desc).page(params[:page]).per_page(10)
           end
@@ -142,6 +142,7 @@ module API
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
             # end
             campaign_invite.save
+            current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           else
