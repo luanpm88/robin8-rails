@@ -1,13 +1,13 @@
 <%
-   title = @campaign.name
-   description = @campaign.description
-   poster_url = @campaign.img_url
-   url = request.url
+   title        = @campaign.name
+   description  = @campaign.description
+   poster_url   = @campaign.img_url
+   url          = request.url
    sign_package = ($weixin_client.get_jssign_package(url) rescue {})
-   app_id = sign_package['appId']
-   nonce = sign_package['nonceStr']
-   ts = sign_package['timestamp']
-   signature = sign_package['signature']
+   app_id       = sign_package['appId']
+   nonce        = sign_package['nonceStr']
+   ts           = sign_package['timestamp']
+   signature    = sign_package['signature']
 %>
 
 <!DOCTYPE html>
@@ -64,7 +64,6 @@
                   success: function (res) {
                       black.style.display = "block";
                       $("#dialog3").show()
-                      //window.location.href = '/wechat_campaign/app_download_page';
                   }
               };
 
@@ -75,7 +74,6 @@
           });
 
       </script>
-
   </head>
   <body>
     <section class="head-ro">
@@ -85,17 +83,16 @@
       <h2 class="title-ro"><%= @campaign.name %></h2>
           <%= @campaign.description %>
     </section>
-    <% if @campaign_invites.present? %>
+    <% if @campaign_invite.present? %>
     <section class="content-ro">
       <h2 class="title-ro" style="border: 1px solid #6a6a6a;
-      padding-top: 10px; padding-bottom: 10px; color: #6a6a6a; 
-      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invites.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invites.earn_money %></span> 元</h2>
-      
+      padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
+      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
     </section>
     <% end %>
     <section class="bottom-ro">
       <a class="link-ro" onclick="showDialog(1)" style="font-size: 0.5em; color: #909090">查看活动要求></a>
-      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">去带盐</a>
+      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">完成任务</a>
     </section>
     <!-- 遮罩层 -->
     <div class="black" id="black">  </div>
@@ -115,14 +112,13 @@
     </div>
 
 
-        <div class="dialog top-18" id="dialog3">
-          <div class="dia-content ">
-            <h2 class="title-ro">分享成功</h2>
-            下载APP上传截图即可获得奖励
-            <button class=" btn-blue-ro" id="app-download">去下载</button>
-            <button class=" btn-blue-ro bg-gray" onclick="closeDialog3()">知道了</button>
-          </div>
-        </div>
+    <div class="dialog top-18" id="dialog3">
+      <div class="dia-content ">
+        <h2 class="title-ro">分享成功</h2>
+        任务完成
+        <button class=" btn-blue-ro bg-gray" onclick="closeDialog3()">知道了</button>
+      </div>
+    </div>
 
   </body>
 
@@ -163,10 +159,5 @@
             black.style.display = "block";
             dialog3.style.display = "block";
         }
-
-        $('#app-download').click(function() {
-            window.location.href = '<%= @app_download_url %>';
-        });
     </script>
-
 </html>
