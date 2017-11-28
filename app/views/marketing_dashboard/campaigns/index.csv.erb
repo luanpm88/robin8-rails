@@ -1,21 +1,23 @@
 <%
   # 文档标题
   cols = [
-    'ID',
-    'Actual Deadline Time',
-    'Name',
-    'Budget',
-    'Remaining Budget',
-    'User ID',
-    'Per action budget',
-    'Avail click',
+    '活动ID',
+    '活动名称',
+    '创建人ID',
+    '活动状态',
+    '活动类型',
+    '活动单价',
+    '活动预算',
+    '剩余预算',
+    '实际消耗预算',
+    '活动开始时间',
+    '活动结束时间',
+    '有效接单人数',
+    '总接单人数',
+    '有效点击',
     '结算点击',
-    'Start Time',
-    'End Time',
-    'Status',
-    'Per Budget Type',
-    'Brand User Name',
-    'Seller'
+    '销售人员',
+    '实际结束时间'
   ]
 %>
 <%=
@@ -24,20 +26,22 @@
     @campaigns.each do |campaign|
       csv << [
         campaign.id,
-        (campaign.actual_deadline_time.strftime("%Y-%m-%d %H:%M") rescue nil),
         campaign.name,
-        campaign.budget,
-        campaign.remain_budget,
         campaign.user_id,
-        campaign.per_action_budget,
-        campaign.avail_click,
-        campaign.settled_invites.sum(:avail_click) > 0 ? campaign.settled_invites.sum(:avail_click) : '-',
-        (campaign.start_time.strftime("%Y-%m-%d %H:%M") rescue nil),
-        (campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue nil),
         campaign.status,
         campaign.per_budget_type,
-        campaign.try(:user).try(:smart_name),
-        campaign.try(:user).try(:seller).try(:name)
+        campaign.per_action_budget,
+        campaign.budget,
+        campaign.remain_budget,
+        campaign.take_budget,
+        (campaign.start_time.strftime("%Y-%m-%d %H:%M") rescue nil),
+        (campaign.deadline.strftime("%Y-%m-%d %H:%M") rescue nil),
+        campaign.valid_invites.count,
+        campaign.campaign_invites.count,
+        campaign.avail_click,
+        campaign.settled_invites.sum(:avail_click) > 0 ? campaign.settled_invites.sum(:avail_click) : '-',
+        campaign.try(:user).try(:seller).try(:name),
+        (campaign.actual_deadline_time.strftime("%Y-%m-%d %H:%M") rescue nil)
       ]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")

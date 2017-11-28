@@ -8,7 +8,7 @@ module Concerns
 
       # Kol's inviter is rewarded only after Kol gets approved
       #after_create :generate_invite_task_record
-      after_update :generate_invite_task_record
+      #after_update :generate_invite_task_record
     end
 
     class_methods do
@@ -41,17 +41,15 @@ module Concerns
       task_records.invite_friend.count
     end
 
-
-    #兼容cpi  如果不是邀请好友注册，此时还好判断该用户是否通过cpi活动注册
     def generate_invite_task_record
       # Inviter isn't rewarded unless Kol got approved in admin panel
       #return unless self.role_apply_status == 'passed'
 
       #device_exist如果为真，说明此用户有重复
       if self.IMEI.present?
-        device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+        device_exist = Kol.where(:IMEI => self.IMEI).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 2
       elsif self.IDFA.present?
-        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 1
+        device_exist = Kol.where(:IDFA => self.IDFA).where("mobile_number != '#{Kol::TouristMobileNumber}'").size > 2
       else
         device_exist = true
       end
@@ -70,25 +68,9 @@ module Concerns
       ActiveRecord::Base.transaction do
         inviter = invitation.inviter
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
-
         task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
         task_record.sync_to_transaction if inviter.today_invite_count <= 10
       end
-
-      # download_invitation = DownloadInvitation.find_invation(self)
-      # if download_invitation
-      #   ActiveRecord::Base.transaction do
-      #     inviter = download_invitation.inviter
-      #     download_invitation.active_invitation
-      #     task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-      #     task_record.sync_to_transaction    if inviter.today_invite_count <= 5
-      #   end
-      # else   #创建cpi_reg
-      #   params = {app_platform: self.app_platform, app_version: self.app_version, os_version: self.os_version,
-      #             device_model:self.device_model, reg_ip: self.current_sign_in_ip}
-      #   data = {appid: Kol.get_official_appid, device_uuid: (self.IMEI || self.IDFA)}
-      #   CpiReg.create_reg(params, data)
-      # end
     end
 
     # def generate_invite_code
