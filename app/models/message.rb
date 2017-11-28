@@ -29,8 +29,9 @@ class Message < ActiveRecord::Base
   end
 
   # new campaign  to all  or list
-  def self.new_campaign(campaign, kol_ids = [], unmatch_kol_id = [])
+  def self.new_campaign(campaign_id, kol_ids = [], unmatch_kol_id = [])
     return if kol_ids.size == 0 && unmatch_kol_id.size == 0
+    campaign = Campaign.find campaign_id
     if campaign.is_recruit_type?
       title = '你有一个新的招募活动'
     else
