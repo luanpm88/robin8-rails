@@ -2,6 +2,15 @@ module GeTui
   module Temp
     def self.notification_template(push_message,options = {})
       template = IGeTui::NotificationTemplate.new
+      if push_message.template_content[:action] == 'notification'
+        template.logo = 'logo.png'
+        template.logo_url = 'http://7xuw3n.com1.z0.glb.clouddn.com/logo.png'
+        template.title = push_message.title
+        template.text = push_message.template_content[:name]
+        template.text.set_push_info("open", 1, push_message.text, "")
+      end
+
+
       # push_message.template_content.stringify_keys.each{|key,value| template.instance_variable_set("@#{key}",value)}
       #apns 通知
       # setPushInfo(actionLocKey, badge, message, sound, payload, locKey, locArgs, launchImage)
