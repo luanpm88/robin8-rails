@@ -166,5 +166,5 @@ every '00 10 1 10 *' do
 end
 
 every :thursday , :at => '12:05 am' do
-  runner "Message.thursday_push" , :environment => 'qa'
+  runner "Message.thursday_push" , :environment => 'production'
 end
