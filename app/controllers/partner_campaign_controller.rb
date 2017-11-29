@@ -6,6 +6,10 @@ class PartnerCampaignController < ApplicationController
     Rails.logger.partner_campaign.info "--checked: #{params}"
     kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                 cid:     params.require(:cid))
+
+    kol.update_attributes!(avatar_url: params[:images],
+                           name:       params[:nickname])
+
     kol.add_campaign_id  params[:id]
     kol.approve_campaign params[:id]
     @campaign_invite = @campaign.get_campaign_invite(kol.id) rescue nil
