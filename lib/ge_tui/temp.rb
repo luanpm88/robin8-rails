@@ -24,7 +24,8 @@ module GeTui
       puts content
       template = IGeTui::TransmissionTemplate.new
       template.transmission_content = content
-      template.set_push_info("open", 1, push_message.title, "")     if (push_message.template_content[:action] == 'common' || push_message.template_content[:action] == 'campaign' rescue false)
+      template.set_push_info("open", 1, push_message.title, "")  unless ['common','income'].include?(push_message.template_content[:action])  
+      end
       puts template.transmission_content
       template
     end
