@@ -13,7 +13,8 @@ class PushMessage < ActiveRecord::Base
 
 
   def self.transmission_template_content(message)
-    content = {:action => message.message_type, :title => message.title, :sender => message.sender, :name => message.name}
+    # content = {:action => message.message_type, :title => message.title, :sender => message.sender, :name => message.name}
+    content = {:action => message.message_type,  :sender => message.sender, :name => message.name}
     if message.message_type == 'income'
       receiver = message.receiver
       new_income =  receiver.new_income
