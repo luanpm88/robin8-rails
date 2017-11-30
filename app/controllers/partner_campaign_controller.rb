@@ -9,7 +9,7 @@ class PartnerCampaignController < ApplicationController
                                 cid:     params.require(:cid))
 
     kol.update_attributes!(avatar_url: params[:images],
-                           name:       params[:nickname] )
+                           name:       params[:nickname])
 
     kol.add_campaign_id  params[:id]
     kol.approve_campaign params[:id]
