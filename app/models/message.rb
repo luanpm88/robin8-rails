@@ -37,7 +37,7 @@ class Message < ActiveRecord::Base
     else
       content =  "#{campaign.name} 还有十分钟就开始了!快来抢活动吧!"
     end
-    message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => campsign.name, :logo_url => (campaign.img_url rescue nil), :name => content,
+    message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => campaign.name, :logo_url => (campaign.img_url rescue nil), :name => content,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
     if kol_ids.present? && kol_ids.size > 0
       message.receiver_type = "List"
