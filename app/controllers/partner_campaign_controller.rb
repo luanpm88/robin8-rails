@@ -1,8 +1,10 @@
 class PartnerCampaignController < ApplicationController
   before_action :valid_signature?
+  layout :false
 
   def campaign
     @campaign = Campaign.find(params[:id]) rescue nil
+    render text: "error", status: "422" and return   unless @campaign.channel_can?(params[:channel_id])
     Rails.logger.partner_campaign.info "--checked: #{params}"
     kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                 cid:     params.require(:cid))
@@ -21,7 +23,13 @@ class PartnerCampaignController < ApplicationController
     end
     @share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{@campaign.id}" rescue ''
     Rails.logger.partner_campaign.info "--campaign_details: @share_url #{@share_url}"
-    render :layout => false
+    respond_to do |format|
+      format.html
+
+      format.json do
+        render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
+      end
+    end
   end
 
   private

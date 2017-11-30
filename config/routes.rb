@@ -249,6 +249,9 @@ Rails.application.routes.draw do
   get 'kol_pk/:challenger_id/vs/:challengee_id/check',    to: 'kol_pk#check'
   get 'kol_pk/timeout',                                   to: 'kol_pk#timeout'
   get 'kol_pk/:pk_id',                                    to: 'kol_pk#show'
+  
+  #channle_api
+  mount Channel::ChannelApi => '/'
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
