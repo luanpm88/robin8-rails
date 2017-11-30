@@ -455,11 +455,6 @@ class Campaign < ActiveRecord::Base
     self.effect_evaluation.score rescue nil #'5'   #默认显示5分
   end
 
-  def self.channel_can?(channel)
-    result = ['all' , channel ].include?(self.channel)
-    return false unless result
-  end
-
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

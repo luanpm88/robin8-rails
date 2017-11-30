@@ -1,16 +1,15 @@
 class PartnerCampaignController < ApplicationController
   before_action :valid_signature?
   layout :false
-
+  
   def campaign
     @campaign = Campaign.find(params[:id]) rescue nil
-    render text: "error", status: "422" and return   unless @campaign.channel_can?(params[:channel_id])
     Rails.logger.partner_campaign.info "--checked: #{params}"
     kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                 cid:     params.require(:cid))
 
     kol.update_attributes!(avatar_url: params[:images],
-                           name:       params[:nickname])
+                           name:       params[:nickname_by] )
 
     kol.add_campaign_id  params[:id]
     kol.approve_campaign params[:id]
@@ -32,13 +31,23 @@ class PartnerCampaignController < ApplicationController
     end
   end
 
+  def index
+      campaign = Campaign.where(channel: ['all' , params[:channel_id]]).select(:id , :name , :per_action_budget ,:description , :remark ,:img_url).map {|t|  t }
+      render json: {status: '200' , campaign: campaign}.to_json
+  end
+
+  def show
+    campaign = Campaign.find_by(params[:campaign_id]) rescue nil
+    render json: {status: '200' , campaign: {id: campaign.id , name: campaign.name , per_action_budget: campaign.per_action_budget , description: campaign.description ,remark: campaign.remark ,img_url: campaign.img_url ,  balance: campaign.remain_budget }}.to_json
+  end
+
   private
 
   def valid_signature?
     return true unless params[:channel_id] == "wcs" # WCS 微差事加密而已
 
     key       = "k4B9Uif81T3Y"
-    data      = "id=#{params[:id]}&channel_id=#{params[:channel_id]}&cid=#{params[:cid]}&nonce=#{params[:nonce]}&timestamp=#{params[:timestamp]}"
+    data      = "id=#{params[:id] || params[:campaign_id]}&channel_id=#{params[:channel_id]}&cid=#{params[:cid]}&nonce=#{params[:nonce]}&timestamp=#{params[:timestamp]}"
     digest    = OpenSSL::Digest.new('sha1')
     hmac      = OpenSSL::HMAC.hexdigest(digest, key, data)
     unless hmac == params[:signature]

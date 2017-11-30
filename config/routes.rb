@@ -242,6 +242,7 @@ Rails.application.routes.draw do
 
   # wechat_campaign 新增了点击数
   get 'partner_campaign/campaign',                        to: 'partner_campaign#campaign'
+  resources :partner_campaign
 
   get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
   get 'kol_pk/new/vs/:challengee_id',                     to: 'kol_pk#new'
@@ -251,7 +252,6 @@ Rails.application.routes.draw do
   get 'kol_pk/:pk_id',                                    to: 'kol_pk#show'
   
   #channle_api
-  mount Channel::ChannelApi => '/'
 
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'

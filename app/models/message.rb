@@ -109,7 +109,7 @@ class Message < ActiveRecord::Base
   end
 
   def self.thursday_push
-    message = Message.new(:message_type => 'notice', :title => '明天是Robin8提现日,今天别忘记提交申请哦!' , :name => 'Robin8 系统通知',:sender => 'Robin8'  )
+    message = Message.new(:message_type => 'notice', :title => '明天是Robin8提现日,今天别忘记提交申请哦!' , :name => 'Robin8 系统通知',:sender => 'Robin8')
     message.receiver_type = "All"
     message.save
     generate_push_message(message)
