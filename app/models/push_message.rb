@@ -14,7 +14,7 @@ class PushMessage < ActiveRecord::Base
 
   def self.transmission_template_content(message)
     # content = {:action => message.message_type, :title => message.title, :sender => message.sender, :name => message.name}
-    content = {:action => message.message_type,  :sender => message.sender, :name => message.name}
+    content = {:action => message.message_type,  :sender => message.sender, :name => message.title}
     if message.message_type == 'income'
       receiver = message.receiver
       new_income =  receiver.new_income
@@ -36,6 +36,18 @@ class PushMessage < ActiveRecord::Base
       push_message = self.new(:receiver_type => 'All', :template_type => 'transmission', :title => message.title,
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
+    elsif message.message_type == 'notice'
+      if message.receiver_type == "All" 
+        device_tokens =  Kol.all.collect{|t| t.device_token}.uniq
+        device_tokens.in_groups_of(1000,false){|group_device_tokens|
+          push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
+                                  :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
+          push_message.message_id = message.id
+          push_message.save
+          sleep 0.5
+        }
+        return #only save
+      end
     elsif message.message_type == 'campaign'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
                               :title => message.title)
@@ -50,8 +62,7 @@ class PushMessage < ActiveRecord::Base
       elsif message.receiver_type == 'List'
         device_tokens =  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
         device_tokens.in_groups_of(1000,false){|group_device_tokens|
-          push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                                  :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
+          push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),:title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
           push_message.message_id = message.id
           push_message.item_id = message.item_id
           push_message.item_type = message.item_type
