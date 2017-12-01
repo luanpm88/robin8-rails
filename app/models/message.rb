@@ -19,7 +19,7 @@ class Message < ActiveRecord::Base
   def self.new_remind_upload(campaign, kol_ids = [])
     wait_upload_invites = CampaignInvite.waiting_upload.where(:campaign_id => campaign.id)
     kol_ids = wait_upload_invites.collect{|t| t.kol_id}
-    message = Message.new(:message_type => 'remind_upload', :sub_message_type => campaign.per_budget_type, :title => '#{campaign.name} 还有一天就结束了!快来上传截图吧!', :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
+    message = Message.new(:message_type => 'remind_upload', :sub_message_type => campaign.per_budget_type, :title => '活动: #{campaign.name} 还有一天就结束了!快来上传截图吧!', :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign, :receiver_type => "List"  )
     message.receiver_ids = kol_ids
     if message.save
@@ -35,9 +35,9 @@ class Message < ActiveRecord::Base
     if campaign.is_recruit_type?
       content = '你有一个新的招募活动'
     else
-      content =  "#{campaign.name} 还有十分钟就开始了!快来抢活动吧!"
+      content =  "活动: #{campaign.name} 还有十分钟就开始了!快来抢活动吧!"
     end
-    message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => campaign.name, :logo_url => (campaign.img_url rescue nil), :name => content,
+    message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => content, :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
     if kol_ids.present? && kol_ids.size > 0
       message.receiver_type = "List"
@@ -68,12 +68,12 @@ class Message < ActiveRecord::Base
   def self.new_check_message(message_type,invite, campaign)
     message = Message.new(:message_type => message_type, :sub_message_type => campaign.per_budget_type, :receiver => invite.kol, :item => campaign)
     if  message_type == 'screenshot_passed'
-      message.name = "#{campaign.name} 截图已经通过审核，快来查查你的收益"
+      message.title = "活动: #{campaign.name} 截图已经通过审核，快来查查你的收益"
     elsif message_type == 'screenshot_rejected'
-      message.name = "#{campaign.name} 截图未通过审核，请尽快重新上传"
+      message.title = "活动: #{campaign.name} 截图未通过审核，请尽快重新上传"
     end
     message.sender = campaign.user.company || campaign.user.name  rescue nil
-    message.title = campaign.name
+    message.name = campaign.name
     message.logo_url = campaign.img_url rescue nil
     message.is_read = false
     message.save
@@ -109,7 +109,7 @@ class Message < ActiveRecord::Base
   end
 
   def self.thursday_push
-    message = Message.new(:message_type => 'announcement', :title => 'Robin8 系统通知' , :name => '明天是Robin8提现日,今天别忘记提交申请哦!',:sender => 'Robin8'  )
+    message = Message.new(:message_type => 'notice', :title => '明天是Robin8提现日,今天别忘记提交申请哦!' , :name => 'Robin8 系统通知',:sender => 'Robin8')
     message.receiver_type = "All"
     message.save
     generate_push_message(message)
