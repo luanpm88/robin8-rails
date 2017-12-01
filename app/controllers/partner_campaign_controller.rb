@@ -1,7 +1,8 @@
 class PartnerCampaignController < ApplicationController
   before_action :valid_signature?
+  before_action :set_campaign, only: [:campaign, :show]
   layout :false
-  
+
   def campaign
     Rails.logger.partner_campaign.info "--checked: #{params}"
     kol = Kol.find_or_create_by(channel: params.require(:channel_id),
@@ -23,7 +24,6 @@ class PartnerCampaignController < ApplicationController
     Rails.logger.partner_campaign.info "--campaign_details: @share_url #{@share_url}"
     respond_to do |format|
       format.html
-
       format.json do
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
@@ -31,8 +31,8 @@ class PartnerCampaignController < ApplicationController
   end
 
   def index
-      campaign = Campaign.where(channel: ['all' , params[:channel_id]]).order(updated_at: :desc).select(:id , :name , :per_action_budget ,:description , :remark ,:img_url).map {|t|  t }
-      render json: {status: '200' , campaign: campaign}.to_json
+      campaigns = Campaign.where(channel: ['all' , params.require(:channel_id)]).order(updated_at: :desc).select(:id , :name , :per_action_budget ,:description , :remark ,:img_url).map {|t|  t }
+      render json: {status: '200' , campaigns: campaigns}.to_json
   end
 
   def show
@@ -42,23 +42,23 @@ class PartnerCampaignController < ApplicationController
   private
 
   def valid_signature?
-    # return true unless params[:channel_id] == "wcs" # WCS 微差事加密而已
     if params[:channel_id] == "wcs"
       key       = "k4B9Uif81T3Y"
-      data      = "id=#{params[:campaign_id] || params[:id]}&channel_id=#{params[:channel_id]}&cid=#{params[:cid]}&nonce=#{params[:nonce]}&timestamp=#{params[:timestamp]}"
+      data      = "id=#{params[:id]||'0'}&channel_id=#{params[:channel_id]}&cid=#{params[:cid]}&nonce=#{params[:nonce]}&timestamp=#{params[:timestamp]}"
       digest    = OpenSSL::Digest.new('sha1')
-      hmac      = OpenSSL::HMAC.hexdigest(digest, key, data)  
+      hmac      = OpenSSL::HMAC.hexdigest(digest, key, data)
       unless hmac == params[:signature]
         Rails.logger.partner_campaign.info "--check-error: #{params}"
-        render text: "error", status: "422" and return
+        render text: "Params error", status: "422" and return
       end
     end
-    @campaign = Campaign.find_by(id: (params[:campaign_id] || params[:id]) , channel: ['all' , params[:channel_id]]) rescue nil
+  end
+
+  def set_campaign
+    @campaign = Campaign.find_by(id: params[:id], channel: ['all' , params[:channel_id]]) rescue nil
     if @campaign.nil?
       Rails.logger.partner_campaign.info "--can't find campaign: #{params}"
-      render text: "error", status: "422" and return
-    else
-      @campaign
+      render text: "Params error", status: "422" and return
     end
   end
 end
