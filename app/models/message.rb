@@ -19,7 +19,7 @@ class Message < ActiveRecord::Base
   def self.new_remind_upload(campaign, kol_ids = [])
     wait_upload_invites = CampaignInvite.waiting_upload.where(:campaign_id => campaign.id)
     kol_ids = wait_upload_invites.collect{|t| t.kol_id}
-    message = Message.new(:message_type => 'remind_upload', :sub_message_type => campaign.per_budget_type, :title => '活动: #{campaign.name} 还有一天就结束了!快来上传截图吧!', :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
+    message = Message.new(:message_type => 'remind_upload', :sub_message_type => campaign.per_budget_type, :title => "活动: #{campaign.name} 还有一天就结束了!快来上传截图吧!", :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign, :receiver_type => "List"  )
     message.receiver_ids = kol_ids
     if message.save
