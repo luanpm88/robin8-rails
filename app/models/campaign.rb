@@ -455,6 +455,22 @@ class Campaign < ActiveRecord::Base
     self.effect_evaluation.score rescue nil #'5'   #默认显示5分
   end
 
+  def create_share_url(kol)
+    kol.add_campaign_id(self.id)
+    kol.approve_campaign(self.id)
+    campaign_invite = self.get_campaign_invite(kol.id) rescue nil
+    if campaign_invite
+      campaign_invite_uuid = campaign_invite.uuid
+      Rails.logger.partner_campaign.info "--campaign_details: campaign_invite_uuid #{campaign_invite_uuid}"
+      share_url = campaign_invite.visit_url if campaign_invite_uuid
+      Rails.logger.partner_campaign.info "--campaign_details: share_url #{share_url}"
+    end
+    Rails.logger.partner_campaign.info "--campaign_details: share_url #{share_url}"
+    share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{self.id}" rescue ''
+    return [campaign_invite , share_url]
+  end
+
+
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign
