@@ -20,7 +20,22 @@ class TaskRecord < ActiveRecord::Base
     reward_task = RewardTask.find_by :task_type => self.task_type
     return if reward_task.blank?
     Rails.logger.transaction.info self.inspect
-    self.kol.income(reward_task.reward_amount, self.task_type, self )
-  end
 
+    case self.kol.update_check_in
+    when 1
+      self.kol.income(0.1, self.task_type, self )
+    when 2
+      self.kol.income(0.2, self.task_type, self )
+    when 3
+      self.kol.income(0.25, self.task_type, self )
+    when 4
+      self.kol.income(0.3, self.task_type, self )
+    when 5
+      self.kol.income(0.35, self.task_type, self )
+    when 6
+      self.kol.income(0.4, self.task_type, self )
+    else
+      self.kol.income(0.5, self.task_type, self )
+    end
+  end
 end
