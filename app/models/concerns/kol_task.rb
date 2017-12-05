@@ -109,7 +109,7 @@ module Concerns
     end
 
     def checkin_history
-      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.beginning_of_month}'").collect{|t| t.created_at.to_date }
+      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.prev_month.beginning_of_month-7.days}'").collect{|t| t.created_at.to_date }
     end
 
     # def update_check_in
