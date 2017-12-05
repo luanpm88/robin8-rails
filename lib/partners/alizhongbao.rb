@@ -10,7 +10,7 @@ module Partners
       url = Rails.env.production? ? URL : "http://140.205.76.29/gateway.do"
 
       # body 就参考那个阿里众包api 文档 .docx
-      params = {
+      must_params = {
         # API的固定参数，不同API的method参数会有区别
         method:       "alizhongbao.api.work.create",
         version:      "1.0",
@@ -23,7 +23,9 @@ module Partners
         format:       "json",
         auth_token:   "",
         alizb_sdk:    "sdk-java-20161213",
+      }
 
+      app_params = {
         # 具体API的业务参数，如下是创建工作的参数
         userId:       USERID,
         name:         campaign.name,
