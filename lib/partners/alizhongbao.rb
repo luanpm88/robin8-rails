@@ -29,15 +29,80 @@ module Partners
         name:         campaign.name,
         brief:        campaign.description,
         maxNum:       "1000",
-        pay:          "0.6",
+        pay:          "600",
         catId:        "55",
         applyTaskUrl: "#{Rails.application.secrets[:domain]}/partner_campaign/campaign?id=#{campaign.id}&channel=azb",
-        outId:        campaign.id.to_s,
+        outerId:        campaign.id.to_s,
         offlineTime:  campaign.deadline.strftime("%Y-%m-%d %H:%M:%S")
       }
       signature = sign(params)
 
       resp = HTTParty.post(url + params.to_query).parsed_response
+    end
+
+    #完成并验收任务
+    def self.finish_and_inspect_task
+      campaign = Campaign.find(campaign_id)
+
+      url = Rails.env.production? ?     "http://h5.m.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId=" : "http://wapp.wapa.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId="
+
+      # body 就参考那个阿里众包api 文档 .docx
+      params = {
+        # API的固定参数，不同API的method参数会有区别
+        method:       "alizhongbao.api.task.finishAndInspect",
+        version:      "1.0",
+        appId:        APPID,
+        sign_type:    "RSA",
+        notify_url:   "",
+        charset:      "UTF-8",
+        requestChannel: "1",
+        timestamp:    Time.now.strftime("%Y-%m-%d %H:%M:%S"),
+        format:       "json",
+        auth_token:   "",
+        alizb_sdk:    "sdk-java-20161213",
+
+        # 具体API的业务参数，如下是完成并验收任务的参数
+        userId:       USERID,
+        taskId:
+        resultCode:
+        inspectResult:
+        inspectMemo:
+        finalPay:
+      }
+      signature = sign(params)
+
+      resp = HTTParty.post(url + params.to_query).parsed_response
+    end
+
+    def self.operation_campaign
+      campaign = Campaign.find(campaign_id)
+
+      url = Rails.env.production? ?     "http://h5.m.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId=" : "http://wapp.wapa.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId="
+
+      # body 就参考那个阿里众包api 文档 .docx
+      params = {
+        # API的固定参数，不同API的method参数会有区别
+        method:       "alizhongbao.api.work.operation",
+        version:      "1.0",
+        appId:        APPID,
+        sign_type:    "RSA",
+        notify_url:   "",
+        charset:      "UTF-8",
+        requestChannel: "1",
+        timestamp:    Time.now.strftime("%Y-%m-%d %H:%M:%S"),
+        format:       "json",
+        auth_token:   "",
+        alizb_sdk:    "sdk-java-20161213",
+
+        # 具体API的业务参数，如下是完成并验收任务的参数
+        taskTypeId:
+        operation:
+        reason:
+      }
+      signature = sign(params)
+
+      resp = HTTParty.post(url + params.to_query).parsed_response
+
     end
 
     def self.sign(params)
