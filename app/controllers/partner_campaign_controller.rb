@@ -34,7 +34,7 @@ class PartnerCampaignController < ApplicationController
   private
 
   def valid_signature?
-    if params[:channel_id] == "wcs"
+    if params.require(:channel_id) == "wcs"
       key       = "k4B9Uif81T3Y"
       data      = "id=#{params[:id]||'0'}&channel_id=#{params[:channel_id]}&cid=#{params[:cid]}&nonce=#{params[:nonce]}&timestamp=#{params[:timestamp]}"
       digest    = OpenSSL::Digest.new('sha1')
@@ -55,10 +55,17 @@ class PartnerCampaignController < ApplicationController
   end
 
   def set_kol
+    cid = case params[:channel_id]
+          when "wcs"
+            params.require(:cid)
+          when "azb"
+            params.require(:userId)
+          end
+
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
-                                cid:     params.require(:cid))
+                                 cid:     cid)
 
     @kol.update_attributes!(avatar_url: params[:images],
-                           name:       params[:nickname])
+                            name:       params[:nickname])
   end
 end
