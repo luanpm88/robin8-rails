@@ -7,7 +7,7 @@ module Partners
     def self.push_campaign(campaign_id)      # 把活动发布到 阿里众包
       campaign = Campaign.find(campaign_id)
 
-      must_params          = self.must_params("alizhongbao.api.work.create")
+      must_params = self.must_params("alizhongbao.api.work.create")
 
       # 测试签名用的
       # app_params = {}
@@ -21,29 +21,32 @@ module Partners
       # app_params[:outerId]= "123456"
       # app_params[:offlineTime]= "2017-11-11 23:59:59"
 
+      brief = "具体上任务是去微信朋友圈转发链接，依照点击量发薪（每个点击#{campaign.actual_per_action_budget}元），越多越好，无限制的。三个点击后有多0.6元的奖励。<br>" +
+        "一，点击申领任务后，在有二维码的页面截图。<br>" +
+        "二，用你的微信扫一扫刚保存的截图。<br>" +
+        "三，在页面里点击完成任务，并点击右上角转发到朋友圈。<br>" +
+        "四，自己在朋友圈点进去。<br>" +
+        "五，招越多人点击越多奖励。"
+
       app_params = {
         # 具体API的业务参数，如下是创建工作的参数
         "userId":       USERID,
-        "name":         campaign.name,
-        "brief":        campaign.description,
-        "maxNum":       "1000",
-        "pay":          (campaign.actual_per_action_budget*1000).to_i.to_s,
+        "name":         "微信转发，每个有效点击#{campaign.actual_per_action_budget}元",
+        "brief":        brief,
+        "maxNum":       "1000000",
+        "pay":          "600",
         "catId":        "76",
         "applyTaskUrl": "#{Rails.application.secrets[:domain]}/partner_campaign/campaign?id=#{campaign.id}&channel_id=azb",
         "outerId":      campaign.id.to_s,
         "offlineTime":  campaign.deadline.strftime("%Y-%m-%d %H:%M:%S")
       }
 
-      options = {
-        body:    app_params.delete_if{|k,v|v.blank?},
-        headers: {'Content-Type' => 'application/x-www-form-urlencoded'}
-      }
+      options = self.http_options(app_params)
 
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      # binding.pry
       resp = JSON.parse(resp)
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                   ali_task_type_id: resp["result"]["taskTypeId"])
@@ -51,7 +54,7 @@ module Partners
     end
 
     #完成任务
-    def self.settle_campaign_invite(campaign_invite_id)
+    def self.completed_share(campaign_invite_id)
       camp_inv = CampaignInvite.find(campaign_invite_id)
 
       must_params = self.must_params("alizhongbao.api.task.finish")
@@ -60,21 +63,38 @@ module Partners
         # 具体API的业务参数，如下是完成并验收任务的参数
         "userId":        camp_inv.kol.cid,
         "taskId":        camp_inv.campaign.ali_task_id,
-        "inspectResult": "2",
-        "inspectMemo":   "finishAndInspect",
-        "finalPay":      (self.calculate_pay(camp_inv)*1000).to_i.to_s
+        "resultCode":    "shared",
       }
 
-      options = {
-        body:    app_params.delete_if{|k,v|v.blank?},
-        headers: {'Content-Type' => 'application/x-www-form-urlencoded'}
-      }
+      options = self.http_options(app_params)
 
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      binding.pry
+      resp = JSON.parse(resp)
+    end
+
+    def self.settle_campaign_invite(campaign_invite_id)
+      camp_inv = CampaignInvite.find(campaign_invite_id)
+
+      must_params = self.must_params("alizhongbao.api.task.inspect")
+
+      app_params = {
+        # 具体API的业务参数，如下是完成并验收任务的参数
+        "userId":        camp_inv.kol.cid,
+        "taskId":        camp_inv.campaign.ali_task_id,
+        "inspectResult": "2",
+        "inspectMemo":   "finish",
+        "finalPay":      (self.calculate_pay(camp_inv)*1000).to_i.to_s
+      }
+
+      options = self.http_options(app_params)
+
+      signature           = sign(must_params.merge(app_params))
+      must_params["sign"] = signature
+
+      resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
     end
 
@@ -89,11 +109,23 @@ module Partners
         operation:  "offline",
         reason:     "活动结束"
       }
+
+      options = self.http_options(app_params)
+
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
+    end
+
+    private
+
+    def self.http_options(app_params)
+      {
+        body:    app_params.delete_if{|k,v|v.blank?},
+        headers: {'Content-Type' => 'application/x-www-form-urlencoded'}
+      }
     end
 
     def self.must_params(method = nil)

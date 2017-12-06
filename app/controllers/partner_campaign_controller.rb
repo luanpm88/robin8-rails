@@ -1,6 +1,6 @@
 class PartnerCampaignController < ApplicationController
   before_action :valid_signature? , :set_kol
-  before_action :set_campaign, only: [:campaign, :show]
+  before_action :set_campaign, only: [:campaign, :show, :complete_share]
   layout :false
 
   def campaign
@@ -31,6 +31,10 @@ class PartnerCampaignController < ApplicationController
     render json: {status: '200' , campaign: {id: @campaign.id , name: @campaign.name , per_action_budget: @campaign.per_action_budget , balance: @campaign.remain_budget ,description: @campaign.description ,remark: @campaign.remark ,img_url: @campaign.img_url ,click: campaign_invite.get_avail_click(true) , earn_money: campaign_invite.earn_money , share_url: share_url }}.to_json
   end
 
+  def complete_share
+    render json: {status: '200' }.to_json
+  end
+
   private
 
   def valid_signature?
@@ -41,7 +45,8 @@ class PartnerCampaignController < ApplicationController
       hmac      = OpenSSL::HMAC.hexdigest(digest, key, data)
       unless hmac == params[:signature]
         Rails.logger.partner_campaign.info "--check-error: #{params}"
-        render text: "Params error", status: "422" and return
+        # render text: "Params error", status: "422" and return
+        binding.pry
       end
     end
   end
@@ -50,7 +55,8 @@ class PartnerCampaignController < ApplicationController
     @campaign = Campaign.find_by(id: params[:id], channel: ['all' , params[:channel_id]]) rescue nil
     if @campaign.nil?
       Rails.logger.partner_campaign.info "--can't find campaign: #{params}"
-      render text: "Params error", status: "422" and return
+      # render text: "Params error", status: "422" and return
+      binding.pry
     end
   end
 
