@@ -107,14 +107,18 @@ module Partners
 
     end
 
-    def self.sign(params)
+    def self.get_sign_content(params)
       # 把hash 变成类似url 参数
-      string      = params.sort.reduce("") {|url, a| url+"#{a[0]}=#{a[1]}&" }[0..-2]
+      params.sort.delete_if{|k,v|v.blank?}.reduce("") {|url, a| url+"#{a[0]}=#{a[1]}&" }[0..-2]
+    end
+
+    def self.sign(params)
+      string      = get_sign_content(params)
 
       # 获取secrets.yml 的 私钥private key
       private_key = OpenSSL::PKey::RSA.new(Rails.application.secrets[:partners][:alizhongbao][:private_key])
       signature   = private_key.sign(OpenSSL::Digest::SHA1.new, string)
-      Base64.encode64(signature)
+      Base64.encode64(signature).gsub("\n","")
     end
   end
 end
