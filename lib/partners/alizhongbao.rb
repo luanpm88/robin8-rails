@@ -7,21 +7,19 @@ module Partners
     def self.push_campaign(campaign_id)      # 把活动发布到 阿里众包
       campaign = Campaign.find(campaign_id)
 
-      # body 就参考那个阿里众包api 文档 .docx
-      must_params = {
-        # API的固定参数，不同API的method参数会有区别
-        "method":         "alizhongbao.api.work.create",
-        "version":        "1.0",
-        "appId":          APPID,
-        "sign_type":      "RSA",
-        "notify_url":     "",
-        "charset":        "UTF-8",
-        "requestChannel": "1",
-        "timestamp":      Time.now.strftime("%Y-%m-%d %H:%M:%S"),
-        "format":         "json",
-        "auth_token":     "",
-        "alizb_sdk":      "sdk-java-20161213"
-      }
+      must_params          = self.must_params("alizhongbao.api.work.create")
+
+      # 测试签名用的
+      # app_params = {}
+      # app_params[:userId]= "28BF5CA24C219B59"
+      # app_params[:name]= "API测试工作"
+      # app_params[:brief]= "API测试工作"
+      # app_params[:maxNum]= "10"
+      # app_params[:pay]= "1000"
+      # app_params[:catId]= "76"
+      # app_params[:applyTaskUrl]= "https://www.baidu.com/"
+      # app_params[:outerId]= "123456"
+      # app_params[:offlineTime]= "2017-11-11 23:59:59"
 
       app_params = {
         # 具体API的业务参数，如下是创建工作的参数
@@ -29,7 +27,7 @@ module Partners
         "name":         campaign.name,
         "brief":        campaign.description,
         "maxNum":       "1000",
-        "pay":          "600",
+        "pay":          (campaign.actual_per_action_budget*1000).to_i.to_s,
         "catId":        "76",
         "applyTaskUrl": "#{Rails.application.secrets[:domain]}/partner_campaign/campaign?id=#{campaign.id}&channel_id=azb",
         "outerId":      campaign.id.to_s,
@@ -45,59 +43,63 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      # binding.pry
       resp = JSON.parse(resp)
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                   ali_task_type_id: resp["result"]["taskTypeId"])
       resp
     end
 
-=begin
-    #完成并验收任务
-    def self.finish_and_inspect_task
-      campaign = Campaign.find(campaign_id)
+    #完成任务
+    def self.settle_campaign_invite(campaign_invite_id)
+      camp_inv = CampaignInvite.find(campaign_invite_id)
 
-      url = Rails.env.production? ?     "http://h5.m.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId=" : "http://wapp.wapa.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId="
-
-      must_params           = self.must_params
-      must_params[:method] = "alizhongbao.api.work.operation"
+      must_params = self.must_params("alizhongbao.api.task.finish")
 
       app_params = {
         # 具体API的业务参数，如下是完成并验收任务的参数
-        userId:       USERID,
-        taskId:
-        resultCode:
-        inspectResult:
-        inspectMemo:
-        finalPay:
+        "userId":        camp_inv.kol.cid,
+        "taskId":        camp_inv.campaign.ali_task_id,
+        "inspectResult": "2",
+        "inspectMemo":   "finishAndInspect",
+        "finalPay":      (self.calculate_pay(camp_inv)*1000).to_i.to_s
       }
-      signature = sign(params)
 
-      resp = HTTParty.post(url + params.to_query).parsed_response
+      options = {
+        body:    app_params.delete_if{|k,v|v.blank?},
+        headers: {'Content-Type' => 'application/x-www-form-urlencoded'}
+      }
+
+      signature           = sign(must_params.merge(app_params))
+      must_params["sign"] = signature
+
+      resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      binding.pry
+      resp = JSON.parse(resp)
     end
 
     def self.finish_campaign(campaign_id)
       campaign = Campaign.find(campaign_id)
 
-      url = Rails.env.production? ?     "http://h5.m.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId=" : "http://wapp.wapa.taobao.com/job/cloud-work/progress.html?status=&appId=&taskId="
-
-      must_params = self.must_params
-      must_params[:method] = "alizhongbao.api.work.operation"
+      must_params = self.must_params("alizhongbao.api.work.operation")
 
       app_params = {
         # 具体API的业务参数，如下是完成并验收任务的参数
-        taskTypeId:
-        operation: "offline"
-        reason: "活动结束"
+        taskTypeId: campaign.ali_task_type_id,
+        operation:  "offline",
+        reason:     "活动结束"
       }
-      signature = sign(params)
+      signature           = sign(must_params.merge(app_params))
+      must_params["sign"] = signature
 
-      resp = HTTParty.post(url + params.to_query).parsed_response
+      resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      resp = JSON.parse(resp)
     end
-=end
 
-    def self.must_params
+    def self.must_params(method = nil)
       # Ali 每个接口调用必要的参数
       {
+        "method":         method,
         "version":        "1.0",
         "appId":          APPID,
         "sign_type":      "RSA",
@@ -126,6 +128,11 @@ module Partners
       private_key = OpenSSL::PKey::RSA.new(Rails.application.secrets[:partners][:alizhongbao][:private_key])
       signature   = private_key.sign(OpenSSL::Digest::SHA1.new, string)
       Base64.encode64(signature).gsub("\n","")
+    end
+
+    def self.calculate_pay(camp_inv)
+      # 多过三个的点击会多给0.6
+      camp_inv.earn_money.to_d + (camp_inv.get_avail_click(true)>=3 ? 0.6 : 0)
     end
   end
 end
