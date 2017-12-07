@@ -242,7 +242,9 @@ Rails.application.routes.draw do
 
   # wechat_campaign 新增了点击数
   get 'partner_campaign/campaign',                        to: 'partner_campaign#campaign'
-  resources :partner_campaign
+  resources :partner_campaign do
+    put "complete_share"
+  end
 
   get 'kol/:id/kol_pk',                                   to: 'kol_pk#index'
   get 'kol_pk/new/vs/:challengee_id',                     to: 'kol_pk#new'
