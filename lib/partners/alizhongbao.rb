@@ -75,6 +75,7 @@ module Partners
       resp = JSON.parse(resp)
     end
 
+    #结算campaign invite
     def self.settle_campaign_invite(campaign_invite_id)
       camp_inv = CampaignInvite.find(campaign_invite_id)
 
@@ -98,6 +99,7 @@ module Partners
       resp = JSON.parse(resp)
     end
 
+    #把活动结束掉
     def self.finish_campaign(campaign_id)
       campaign = Campaign.find(campaign_id)
 
