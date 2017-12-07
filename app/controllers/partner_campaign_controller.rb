@@ -10,7 +10,7 @@ class PartnerCampaignController < ApplicationController
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
       format.html do
-        @qr = Rails.cache.fetch("campaign_invites/#{@campaign_invite.id}/request_url") do
+        @qr = Rails.cache.fetch("campaign_invites/#{@campaign_invite.campaign_id}/#{@campaign_invite.kol_id}/request_url") do
           resp = HTTParty.get("http://suo.im/api.php?format=json&url=#{CGI.escape(request.url)}").parsed_response
           RQRCode::QRCode.new(JSON.parse(resp)["url"], size: 3, level: :h).as_svg
         end
