@@ -39,19 +39,6 @@
       <%= csrf_meta_tags %>
       <%= stylesheet_link_tag 'wechat_campaign' %>
 
-      <% unless (@campaign_invite.get_avail_click(true) > 0 or request.user_agent =~ /MicroMessenger/) %>
-      </head>
-      <body style="text-align: center;">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <%= raw @qr %>
-        <br/>
-        <br/>
-        <br/>
-        <h3>截图后去微信扫一扫！</h3>
-    <% else %>
       <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
       <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
       <script type="text/javascript">
@@ -75,6 +62,8 @@
                   imgUrl: '<%= poster_url %>',
                   success: function (res) {
                       black.style.display = "block";
+                      $("#dialog3").show()
+                      /**
                       $.ajax({
                         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                         type:    'put',
@@ -83,6 +72,7 @@
                           $("#dialog3").show()
                         }
                       });
+                      **/
                   }
               };
 
@@ -114,20 +104,17 @@
     <!-- 遮罩层 -->
     <div class="black" id="black">  </div>
     <!-- 弹出层 -->
-    <div class="dialog" id="dialog">
-      <div class="dia-content">
-        <h2 class="title-ro">活动要求</h2>
-        <%= @campaign_info_box %>
-        <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
-      </div>
-    </div>
     <div class="dialog top-18" id="dialog02">
-      <div class="dia-content">
-        <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+      <div class="dia-content" style="text-align: center;">
+        <% unless request.user_agent =~ /MicroMessenger/ %>
+          <h2 class="title-ro">截图后去微信扫一扫！</h2>
+          <%= raw @qr %>
+        <% else %>
+          <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+        <% end %>
         <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
       </div>
     </div>
-
 
     <div class="dialog top-18" id="dialog3">
       <div class="dia-content ">
@@ -145,7 +132,6 @@
         var black = document.getElementById('black');
         function closeDialog(){
             black.style.display = "none";
-            dialog.style.display = "none";
             dialog02.style.display = "none";
         }
         function showDialog(con){
@@ -177,5 +163,4 @@
             dialog3.style.display = "block";
         }
     </script>
-    <% end %>
 </html>

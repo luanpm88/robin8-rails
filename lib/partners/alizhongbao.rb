@@ -49,7 +49,8 @@ module Partners
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
-                                  ali_task_type_id: resp["result"]["taskTypeId"])
+                                  ali_task_type_id: resp["result"]["taskTypeId"],
+                                  channel:          "azb")
       resp
     end
 
