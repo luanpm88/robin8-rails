@@ -51,8 +51,7 @@
               jsApiList: [
                   'onMenuShareTimeline',
                   'onMenuShareAppMessage',
-                  'onMenuShareQQ',
-                  'onMenuShareWeibo'
+                  'onMenuShareQQ'
               ]
           });
 
@@ -64,13 +63,22 @@
                   success: function (res) {
                       black.style.display = "block";
                       $("#dialog3").show()
+                      /**
+                      $.ajax({
+                        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                        type:    'put',
+                        url:     '/partner_campaign/<%= @campaign_invite.id %>/complete_share',
+                        success: function(result){
+                          $("#dialog3").show()
+                        }
+                      });
+                      **/
                   }
               };
 
               wx.onMenuShareAppMessage(shareData);
               wx.onMenuShareTimeline(shareData);
               wx.onMenuShareQQ(shareData);
-              wx.onMenuShareWeibo(shareData);
           });
 
       </script>
@@ -87,30 +95,26 @@
     <section class="content-ro">
       <h2 class="title-ro" style="border: 1px solid #6a6a6a;
       padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
-      font-weight: 350">已获得 <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 次点击 , 即将赚 <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click(true) %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
     </section>
     <% end %>
     <section class="bottom-ro">
-      <a class="link-ro" onclick="showDialog(1)" style="font-size: 0.5em; color: #909090">查看活动要求></a>
       <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">完成任务</a>
     </section>
     <!-- 遮罩层 -->
     <div class="black" id="black">  </div>
     <!-- 弹出层 -->
-    <div class="dialog" id="dialog">
-      <div class="dia-content">
-        <h2 class="title-ro">活动要求</h2>
-        <%= @campaign_info_box %>
-        <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
-      </div>
-    </div>
     <div class="dialog top-18" id="dialog02">
-      <div class="dia-content">
-        <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+      <div class="dia-content" style="text-align: center;">
+        <% unless request.user_agent =~ /MicroMessenger/ %>
+          <h2 class="title-ro">截图后去微信扫一扫！</h2>
+          <%= raw @qr %>
+        <% else %>
+          <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+        <% end %>
         <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
       </div>
     </div>
-
 
     <div class="dialog top-18" id="dialog3">
       <div class="dia-content ">
@@ -128,7 +132,6 @@
         var black = document.getElementById('black');
         function closeDialog(){
             black.style.display = "none";
-            dialog.style.display = "none";
             dialog02.style.display = "none";
         }
         function showDialog(con){
