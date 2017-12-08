@@ -61,18 +61,15 @@
                   link: '<%= @share_url %>',
                   imgUrl: '<%= poster_url %>',
                   success: function (res) {
-                      black.style.display = "block";
-                      $("#dialog3").show()
-                      /**
                       $.ajax({
                         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                         type:    'put',
-                        url:     '/partner_campaign/<%= @campaign_invite.id %>/complete_share',
+                        url:     '/partner_campaign/<%=@campaign.id%>/<%=@kol.id%>/complete',
                         success: function(result){
-                          $("#dialog3").show()
+                            black.style.display = "block";
+                            $("#dialog3").show()
                         }
                       });
-                      **/
                   }
               };
 
@@ -95,7 +92,7 @@
     <section class="content-ro">
       <h2 class="title-ro" style="border: 1px solid #6a6a6a;
       padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
-      font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click(true) %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
     </section>
     <% end %>
     <section class="bottom-ro">
