@@ -32,9 +32,16 @@ module Concerns
       self.task_records.invite_friend.today.count
     end
 
+    #旧的签到方法
     def check_in
       task_record = self.task_records.create(:task_type => RewardTask::CheckIn, :status => 'active')
       task_record.sync_to_transaction
+    end
+
+    #新的签到方法
+    def new_check_in
+      task_record = self.task_records.create(:task_type => RewardTask::CheckIn, :status => 'active')
+      task_record.new_sync_to_transaction
     end
 
     def invite_count
@@ -108,8 +115,30 @@ module Concerns
       task_record.sync_to_transaction
     end
 
+    #旧的签到历史
     def checkin_history
-      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.prev_month.beginning_of_month-7.days}'").collect{|t| t.created_at.to_date }
+      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.beginning_of_month}'").collect{|t| t.created_at.to_date }
+    end
+
+    #新的签到历史
+    def new_checkin_history
+      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.prev_month.beginning_of_month-7.days}'").select([:created_at, :is_continuous]).collect{|t| {created_at: t.created_at.to_date, is_continuous: t.is_continuous} }
+    end
+
+    #旧的连续签到天数
+    def continuous_checkin_count
+      _count = 0
+      _start = Date.yesterday
+      last_30_check_in_date = task_records.check_in.active.created_desc.where("created_at < '#{Date.today}'").limit(30).collect{|t| t.created_at.to_date }
+      (0..30).to_a.each do |i|
+        if last_30_check_in_date[i] == (_start - i.days)
+          _count += 1
+        else
+          break
+        end
+      end
+      _count += 1 if today_had_check_in?
+      _count
     end
 
     # def update_check_in
