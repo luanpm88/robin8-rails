@@ -3,7 +3,7 @@ module API
     class CheckTasks < Grape::API
        resources :check_tasks do
         before do
-          #authenticate!
+          authenticate!
         end
 
         #新签到接口
@@ -18,7 +18,6 @@ module API
 
         #新签到历史接口
         get 'check_in_history' do
-          current_kol = Kol.find(1)
           present :error, 0
           present :continuous_checkin_count, current_kol.continuous_attendance_days
           present :today_had_check_in, current_kol.today_had_check_in?
