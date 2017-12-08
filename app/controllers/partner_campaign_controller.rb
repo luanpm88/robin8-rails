@@ -1,7 +1,7 @@
 require 'rqrcode'
 
 class PartnerCampaignController < ApplicationController
-  before_action :valid_signature? , :set_kol, except: [:complete_share]
+  before_action :valid_signature? , :set_kol, except: [:complete]
   before_action :set_campaign, only: [:campaign, :show]
   layout :false
 
@@ -38,10 +38,9 @@ class PartnerCampaignController < ApplicationController
     render json: {status: '200' , campaign: {id: @campaign.id , name: @campaign.name , status: @campaign.status ,per_action_budget: @campaign.actual_per_action_budget , balance: @campaign.remain_budget ,description: @campaign.description ,remark: @campaign.remark ,img_url: @campaign.img_url ,click: campaign_invite.get_avail_click(true) , earn_money: campaign_invite.earn_money , share_url: share_url }}.to_json
   end
 
-  def complete_share
-    campaign_invite = CampaignInvite.find(params[:partner_campaign_id])
-    if campaign_invite
-      AlizhongbaoCompleteShareWorker.perform_async(campaign_invite.id)
+  def complete
+    if Kol.find_by(id: params[:kol_id], channel: "azb") && Campaign.find_by(id: params[:campaign_id])
+      AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
     end
     render json: {status: '200' }.to_json
   end
