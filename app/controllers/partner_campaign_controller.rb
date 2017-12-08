@@ -27,7 +27,7 @@ class PartnerCampaignController < ApplicationController
     if campaigns.present?
       campaigns.each do |campaign|
         campaign_invite , share_url = campaign.create_share_url(@kol)
-        json.push({id: campaign.id , name: campaign.name ,status: campaign.status ,  per_action_budget: campaign.actual_per_action_budget ,   balance: campaign.remain_budget , description: campaign.description ,remark: campaign.remark ,img_url: campaign.img_url ,  balance: campaign.remain_budget ,click: campaign_invite.get_avail_click(true) , earn_money: campaign_invite.earn_money , share_url: share_url})
+        json.push({id: campaign.id , name: campaign.name ,status: campaign.status , per_action_budget: campaign.actual_per_action_budget ,   balance: campaign.remain_budget , description: campaign.description ,remark: campaign.remark ,img_url: campaign.img_url , click: campaign_invite.get_avail_click(true) , earn_money: campaign_invite.earn_money , share_url: share_url})
       end
     end
     render json: {status: '200' , campaigns: json}.to_json
