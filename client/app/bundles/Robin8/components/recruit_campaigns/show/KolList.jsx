@@ -207,9 +207,6 @@ export default class KolList extends React.Component {
               </li>
             </ul>
           </div>
-          <div className="kol-form">
--           <button className="btn btn-primary kol-submit" onClick={this.updateKols.bind(this)}>提交名单</button>
--         </div>
         </div>
       </div>
     );

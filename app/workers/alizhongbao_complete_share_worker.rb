@@ -1,7 +1,7 @@
 class AlizhongbaoCompleteShareWorker
   include Sidekiq::Worker
 
-  def perform(campaign_invite_id)
-    Partners::Alizhongbao.completed_share(campaign_invite_id)
+  def perform(kol_id, campaign_id)
+    Partners::Alizhongbao.completed_share(kol_id, campaign_id)
   end
 end

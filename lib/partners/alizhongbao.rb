@@ -55,15 +55,15 @@ module Partners
     end
 
     #完成任务
-    def self.completed_share(campaign_invite_id)
-      camp_inv = CampaignInvite.find(campaign_invite_id)
-
+    def self.completed_share(kol_id, campaign_id)
+      kol         = Kol.find(kol_id)
+      campaign    = Campaign.find(campaign_id)
       must_params = self.must_params("alizhongbao.api.task.finish")
 
       app_params = {
         # 具体API的业务参数，如下是完成并验收任务的参数
-        "userId":        camp_inv.kol.cid,
-        "taskId":        camp_inv.campaign.ali_task_id,
+        "userId":        kol.cid,
+        "taskId":        campaign.ali_task_id,
         "resultCode":    "shared",
       }
 
