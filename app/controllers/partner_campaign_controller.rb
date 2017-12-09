@@ -10,18 +10,15 @@ class PartnerCampaignController < ApplicationController
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
       format.html do
-        @qr = Rails.cache.fetch("campaign_invites/#{@campaign_invite.campaign_id}/#{@campaign_invite.kol_id}/request_url") do
-          resp = HTTParty.get("http://suo.im/api.php?format=json&url=#{CGI.escape(request.url)}").parsed_response
-          RQRCode::QRCode.new(JSON.parse(resp)["url"], size: 3, level: :h).as_svg(module_size: 5)
-        end
+        @qr = RQRCode::QRCode.new(request.url, size: 11, level: :h).as_svg(module_size: 3)
       end
-      format.json do
+      format.json do # For WCS 微差事
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
     end
   end
 
-  def index
+  def index # For WCS 微差事
     json = Array.new
     campaigns = Campaign.where(channel: ['all' , params.require(:channel_id)]).order(updated_at: :desc)
     if campaigns.present?
@@ -33,16 +30,20 @@ class PartnerCampaignController < ApplicationController
     render json: {status: '200' , campaigns: json}.to_json
   end
 
-  def show
+  def show # For WCS 微差事
     campaign_invite , share_url = @campaign.create_share_url(@kol)
     render json: {status: '200' , campaign: {id: @campaign.id , name: @campaign.name , status: @campaign.status ,per_action_budget: @campaign.actual_per_action_budget , balance: @campaign.remain_budget ,description: @campaign.description ,remark: @campaign.remark ,img_url: @campaign.img_url ,click: campaign_invite.get_avail_click(true) , earn_money: campaign_invite.earn_money , share_url: share_url }}.to_json
   end
 
-  def complete
-    if Kol.find_by(id: params[:kol_id], channel: "azb") && Campaign.find_by(id: params[:campaign_id])
+  def complete # For AZB 阿里众包
+    if Kol.find_by(id: params.require(:kol_id), channel: "azb") && Campaign.find_by(id: params.require(:campaign_id))
+      if CampaignInvite.find_by(kol_id: params[:kol_id], campaign_id: params[:campaign_id]).
+        update_attributes!(azb_shared: true)
+        render json: {status: '200'}.to_json and return
+      end
       AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
     end
-    render json: {status: '200' }.to_json
+    render json: {status: '422'}
   end
 
   private
