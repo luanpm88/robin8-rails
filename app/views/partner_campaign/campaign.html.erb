@@ -84,30 +84,44 @@
     <section class="head-ro">
       <%= image_tag @campaign.img_url %>
     </section>
-    <section class="content-ro">
+    <section class="content-ro" style="height: 30%">
       <h2 class="title-ro"><%= @campaign.name %></h2>
           <%= @campaign.description %>
     </section>
-    <% if @campaign_invite.present? %>
-    <section class="content-ro">
-      <h2 class="title-ro" style="border: 1px solid #6a6a6a;
-      padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
-      font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+    <% if @campaign_invite.try(:azb_shared) %>
+    <section class="content-ro" style="overflow: auto; position: fixed; bottom: 0">
+      <section class="content-ro" style="height: 6rem; margin-bottom: 0;">
+        <h2 class="title-ro" style="border: 1px solid #6a6a6a;
+        padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
+        font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      </section>
+      1. 有效点击为朋友圈中的好友点击的数量，每人只计算1次。 如20个好友点击，则获得20个有效点击的薪酬。
+      2. 任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
     </section>
     <% end %>
     <section class="bottom-ro">
-      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">完成任务</a>
+      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">
+      <% if @campaign_invite.try(:azb_shared) %>
+        活动已分享成功
+      <% else %>
+        完成任务
+      <% end %>
+      </a>
     </section>
     <!-- 遮罩层 -->
-    <div class="black" id="black">  </div>
+    <div class="black" id="black" style="<%=@campaign_invite.try(:azb_shared) ? '':'display: block;'%>"></div>
     <!-- 弹出层 -->
-    <div class="dialog top-18" id="dialog02">
+    <div class="dialog top-18" id="dialog02" style="<%=@campaign_invite.try(:azb_shared) ? '':'display: block;'%>">
       <div class="dia-content" style="text-align: center;">
         <% unless request.user_agent =~ /MicroMessenger/ %>
           <h2 class="title-ro">截图后去微信扫一扫！</h2>
           <%= raw @qr %>
         <% else %>
-          <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+          <% if @campaign_invite.try(:azb_shared) %>
+            <h2 class="title-ro">再次分享可以获得更多点击</h2>
+          <% else %>
+            <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+          <% end %>
         <% end %>
         <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
       </div>
@@ -116,7 +130,7 @@
     <div class="dialog top-18" id="dialog3">
       <div class="dia-content ">
         <h2 class="title-ro">分享成功</h2>
-        再次打开连接查看点击次数
+        再次扫描二维码打开链接查看点击次数
         <button class=" btn-blue-ro width100" onclick="closeDialog3()">知道了</button>
       </div>
     </div>
@@ -153,6 +167,7 @@
         function closeDialog3(){
             black.style.display = "none";
             dialog3.style.display = "none";
+            window.location.href = "<%= request.url %>";
         }
 
         function showDialog3(){

@@ -3,26 +3,17 @@ module Partners
     GATEWAY_URL = Rails.env.production? ? "https://zbapi.taobao.com/gateway.do" : "http://140.205.76.29/gateway.do"
     APPID       = "10009"
     USERID      = "28BF5CA24C219B59"
+    BONUS       = 0.6
 
     def self.push_campaign(campaign_id)      # 把活动发布到 阿里众包
       campaign = Campaign.find(campaign_id)
 
       must_params = self.must_params("alizhongbao.api.work.create")
 
-      # 测试签名用的
-      # app_params = {}
-      # app_params[:userId]= "28BF5CA24C219B59"
-      # app_params[:name]= "API测试工作"
-      # app_params[:brief]= "API测试工作"
-      # app_params[:maxNum]= "10"
-      # app_params[:pay]= "1000"
-      # app_params[:catId]= "76"
-      # app_params[:applyTaskUrl]= "https://www.baidu.com/"
-      # app_params[:outerId]= "123456"
-      # app_params[:offlineTime]= "2017-11-11 23:59:59"
-
-      brief = "薪酬计算规则：根据点击量发放佣金（点击单价*点击数量），" +
-        "有效点击数达到三个，会有底薪#{campaign.actual_per_action_budget}元奖励。<br/><br/>" +
+      brief = "薪酬计算规则：<br/>" +
+        "根据分享到微信朋友圈获得好友的点击数量发放佣金 （点击单价*点击数量），每人只计算一次。<br/>" +
+        "如：20个好友点击，获得20个有效点击的薪酬。任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
+        有效点击数达到3个，获得底薪。<br/>" +
         "一 . 点击申领任务后，保存如图的二维码<br/>" +
         "二 . 打开微信扫一扫，选择相册中的截图<br/>" +
         "三 . 在页面点击完成任务，点击右上角分享到朋友圈<br/>" +
@@ -47,11 +38,10 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      resp = JSON.parse(resp)
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                   ali_task_type_id: resp["result"]["taskTypeId"],
                                   channel:          "azb")
-      resp
+      resp = JSON.parse(resp)
     end
 
     #完成任务
@@ -82,13 +72,25 @@ module Partners
 
       must_params = self.must_params("alizhongbao.api.task.inspect")
 
+      final_pay   = self.calculate_pay(camp_inv)
+
+      inspect_result = if final_pay <= 0
+                         "2"
+                       elsif final_pay < BONUS
+                         "3"
+                       elsif final_pay > BONUS
+                         "4"
+                       elsif final_pay == BONUS
+                         "1"
+                       end
+
       app_params = {
         # 具体API的业务参数，如下是完成并验收任务的参数
         "userId":        camp_inv.kol.cid,
         "taskId":        camp_inv.campaign.ali_task_id,
-        "inspectResult": "2",
+        "inspectResult": inspect_result,
         "inspectMemo":   "finish",
-        "finalPay":      (self.calculate_pay(camp_inv)*1000).to_i.to_s
+        "finalPay":      (final_pay*1000).to_i.to_s
       }
 
       options = self.http_options(app_params)
@@ -142,7 +144,6 @@ module Partners
         "charset":        "UTF-8",
         "requestChannel": "1",
         "timestamp":      Time.now.strftime("%Y-%m-%d %H:%M:%S"),
-        # "timestamp":      "2017-11-03 14:22:11",
         "format":         "json",
         "auth_token":     "",
         "alizb_sdk":      "sdk-java-20161213"
@@ -167,7 +168,7 @@ module Partners
 
     def self.calculate_pay(camp_inv)
       # 多过三个的点击会多给0.6
-      camp_inv.earn_money.to_d + (camp_inv.get_avail_click(true)>=3 ? 0.6 : 0)
+      camp_inv.earn_money.to_d + (camp_inv.get_avail_click(true)>=3 ? BONUS : 0)
     end
   end
 end
