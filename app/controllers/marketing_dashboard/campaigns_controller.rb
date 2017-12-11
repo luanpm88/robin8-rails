@@ -263,4 +263,28 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       redirect_to :action => :index
     end
   end
+
+  def push_to_alizhongbao
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    @campaign.update_attributes!(channel:"azb")
+    Partners::Alizhongbao.push_campaign(params[:id])
+    redirect_to :action => :index
+  end
+
+  def push_to_wcs
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    @campaign.update_attributes!(channel:"wcs")
+    redirect_to :action => :index
+  end
+
+  def push_to_all_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    @campaign.update_attributes!(channel:"all")
+    Partners::Alizhongbao.push_campaign(params[:id])
+    redirect_to :action => :index
+  end
+
 end
