@@ -9,9 +9,7 @@ class PartnerCampaignController < ApplicationController
     Rails.logger.partner_campaign.info "--checked: #{params}"
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
-      format.html do
-        @qr = RQRCode::QRCode.new(request.url, size: 11, level: :h).as_svg(module_size: 3)
-      end
+      format.html
       format.json do # For WCS 微差事
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
@@ -39,9 +37,9 @@ class PartnerCampaignController < ApplicationController
     if Kol.find_by(id: params.require(:kol_id), channel: "azb") && Campaign.find_by(id: params.require(:campaign_id))
       if CampaignInvite.find_by(kol_id: params[:kol_id], campaign_id: params[:campaign_id]).
         update_attributes!(azb_shared: true)
+        AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
         render json: {status: '200'}.to_json and return
       end
-      AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
     end
     render json: {status: '422'}
   end
