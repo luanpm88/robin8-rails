@@ -57,6 +57,14 @@
             <%= f.select :admintags_tag_eq, Admintag.pluck(:tag).uniq, { include_blank: true }, class: 'form-control' %>
           </div>
         </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>合作伙伴</label>
+            <%= f.select :channel_eq, Kol.pluck(:channel).uniq, { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+
         <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
