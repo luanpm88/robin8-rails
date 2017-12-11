@@ -80,7 +80,23 @@ class PartnerCampaignController < ApplicationController
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                  cid:     cid)
 
-    @kol.update_attributes!(avatar_url: params[:images],
-                            name:       params[:nickname])
+    avatar_url = if params[:images].present?
+                   params[:images]
+                 elsif @kol.avatar_url.blank?
+                   $redis.lpop("dope_sample_avatars") # 造个头像
+                 else
+                   nil
+                 end
+
+    nickname   = if params[:nickname].present?
+                   params[:nickname]
+                 elsif @kol.name.blank?
+                   $redis.lpop("dope_sample_names") # 造个昵称
+                 else
+                   nil
+                 end
+
+    @kol.update_attributes!(avatar_url: avatar_url,
+                            name:       nickname)
   end
 end

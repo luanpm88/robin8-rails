@@ -41,6 +41,7 @@ module Partners
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                   ali_task_type_id: resp["result"]["taskTypeId"],
                                   channel:          "azb")
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
       resp = JSON.parse(resp)
     end
 
@@ -63,6 +64,7 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
       resp = JSON.parse(resp)
     end
 
@@ -99,6 +101,7 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
       resp = JSON.parse(resp)
     end
 
@@ -121,6 +124,7 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
       resp = JSON.parse(resp)
     end
 
@@ -169,6 +173,14 @@ module Partners
     def self.calculate_pay(camp_inv)
       # 多过三个的点击会多给0.6
       camp_inv.earn_money.to_d + (camp_inv.get_avail_click(true)>=3 ? BONUS : 0)
+    end
+
+    def self.import_dope_avatars(file_path)
+      $redis.rpush("dope_sample_avatars", CSV.read(file_path).map(&:first))
+    end
+
+    def self.import_dope_names(file_path)
+      $redis.rpush("dope_sample_names", CSV.read(file_path).map(&:first))
     end
   end
 end
