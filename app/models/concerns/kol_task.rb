@@ -187,7 +187,7 @@ module Concerns
     def today_already_amount
         already_amount = 0
       if today_had_check_in?
-        self.transactions.where(subject:"check_in").where(:created_at => Date.today.beginning_of_day..Date.today.end_of_day).first.credits.to_f
+        already_amount = self.transactions.where(subject:"check_in").where(:created_at => Date.today.beginning_of_day..Date.today.end_of_day).first.credits.to_f
       else
         already_amount = 0
       end
