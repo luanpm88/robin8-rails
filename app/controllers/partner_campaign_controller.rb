@@ -89,7 +89,7 @@ class PartnerCampaignController < ApplicationController
                    sample_data ||= eval($redis.lpop("dope_sample_data"))
                    sample_data[0]
                  else
-                   nil
+                   @kol.avatar_url
                  end
 
     nickname   = if params[:nickname].present?
@@ -98,7 +98,7 @@ class PartnerCampaignController < ApplicationController
                    sample_data ||= eval($redis.lpop("dope_sample_data"))
                    sample_data[1].gsub("'","")
                  else
-                   nil
+                   @kol.name
                  end
 
     @kol.update_attributes!(avatar_url: avatar_url,
