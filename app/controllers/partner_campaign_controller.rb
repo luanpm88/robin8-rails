@@ -9,7 +9,11 @@ class PartnerCampaignController < ApplicationController
     Rails.logger.partner_campaign.info "--checked: #{params}"
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
-      format.html
+      format.html do
+        p = request.params.except("action","controller")
+        p["t"] = Time.now.to_i.to_s
+        @refresh_url = "http://"+request.host+request.path+"?"+p.to_query
+      end
       format.json do # For WCS 微差事
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
@@ -78,10 +82,12 @@ class PartnerCampaignController < ApplicationController
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                  cid:     cid)
 
+
     avatar_url = if params[:images].present?
                    params[:images]
                  elsif @kol.avatar_url.blank?
-                   $redis.lpop("dope_sample_avatars") # 造个头像
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[0]
                  else
                    nil
                  end
@@ -89,7 +95,8 @@ class PartnerCampaignController < ApplicationController
     nickname   = if params[:nickname].present?
                    params[:nickname]
                  elsif @kol.name.blank?
-                   $redis.lpop("dope_sample_names") # 造个昵称
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[1].gsub("'","")
                  else
                    nil
                  end
