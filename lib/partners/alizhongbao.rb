@@ -56,7 +56,7 @@ module Partners
         # 具体API的业务参数，如下是完成并验收任务的参数
         "userId":        kol.cid,
         "taskId":        campaign.ali_task_id,
-        "resultCode":    "shared",
+        "resultCode":    "1",
       }
 
       options = self.http_options(app_params)
