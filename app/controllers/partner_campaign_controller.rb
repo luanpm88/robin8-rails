@@ -78,10 +78,12 @@ class PartnerCampaignController < ApplicationController
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                  cid:     cid)
 
+
     avatar_url = if params[:images].present?
                    params[:images]
                  elsif @kol.avatar_url.blank?
-                   $redis.lpop("dope_sample_avatars") # 造个头像
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[0]
                  else
                    nil
                  end
@@ -89,7 +91,8 @@ class PartnerCampaignController < ApplicationController
     nickname   = if params[:nickname].present?
                    params[:nickname]
                  elsif @kol.name.blank?
-                   $redis.lpop("dope_sample_names") # 造个昵称
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[1].gsub("'","")
                  else
                    nil
                  end

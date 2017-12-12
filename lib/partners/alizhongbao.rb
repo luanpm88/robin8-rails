@@ -177,12 +177,8 @@ module Partners
       camp_inv.earn_money.to_d
     end
 
-    def self.import_dope_avatars(file_path)
-      $redis.rpush("dope_sample_avatars", CSV.read(file_path).map(&:first))
-    end
-
-    def self.import_dope_names(file_path)
-      $redis.rpush("dope_sample_names", CSV.read(file_path).map(&:first))
+    def self.import_dope_data(file_path)
+      $redis.rpush("dope_sample_data", CSV.read(file_path))
     end
   end
 end
