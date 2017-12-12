@@ -9,7 +9,11 @@ class PartnerCampaignController < ApplicationController
     Rails.logger.partner_campaign.info "--checked: #{params}"
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
-      format.html
+      format.html do
+        p = request.params.except("action","controller")
+        p["t"] = Time.now.to_i.to_s
+        @refresh_url = "http://"+request.host+request.path+"?"+p.to_query
+      end
       format.json do # For WCS 微差事
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
