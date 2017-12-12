@@ -3,6 +3,7 @@ module Partners
     GATEWAY_URL = Rails.env.production? ? "https://zbapi.taobao.com/gateway.do" : "http://140.205.76.29/gateway.do"
     APPID       = "10009"
     USERID      = "28BF5CA24C219B59"
+    BONUS       = 0.6
 
     def self.push_campaign(campaign_id)      # 把活动发布到 阿里众包
       campaign = Campaign.find(campaign_id)
@@ -174,7 +175,7 @@ module Partners
 
     def self.calculate_pay(camp_inv)
       # 多过三个的点击会多给0.6
-      camp_inv.earn_money.to_d
+      camp_inv.earn_money.to_d + (camp_inv.get_avail_click > 3 ? BONUS : 0)
     end
 
     def self.import_dope_data(file_path)
