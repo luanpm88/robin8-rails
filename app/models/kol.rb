@@ -485,6 +485,14 @@ class Kol < ActiveRecord::Base
     (read_messages + kol_read_messages).uniq.sort_by {|i| i.created_at }.reverse
   end
 
+  def has_any_unread_message?
+    if self.unread_messages.any?
+      return true
+    else
+      return false
+    end
+  end
+
   #当前用户新收入总计
   def new_income
     income_campaign_invite_ids = unread_income_messages.collect{|message| message.item_id}
