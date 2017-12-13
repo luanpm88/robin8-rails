@@ -105,6 +105,7 @@ module Partners
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
       Rails.logger.partner_campaign.info "--azb_settle_camp_inv: #{resp}"
+      sjjjp  
       resp
     end
 
