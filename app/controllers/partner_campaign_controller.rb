@@ -10,7 +10,9 @@ class PartnerCampaignController < ApplicationController
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
     respond_to do |format|
       format.html do
-        @qr = RQRCode::QRCode.new(request.url, size: 11, level: :h).as_svg(module_size: 3)
+        p = request.params.except("action","controller")
+        p["t"] = Time.now.to_i.to_s
+        @refresh_url = "http://"+request.host+request.path+"?"+p.to_query
       end
       format.json do # For WCS 微差事
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
@@ -39,9 +41,9 @@ class PartnerCampaignController < ApplicationController
     if Kol.find_by(id: params.require(:kol_id), channel: "azb") && Campaign.find_by(id: params.require(:campaign_id))
       if CampaignInvite.find_by(kol_id: params[:kol_id], campaign_id: params[:campaign_id]).
         update_attributes!(azb_shared: true)
+        AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
         render json: {status: '200'}.to_json and return
       end
-      AlizhongbaoCompleteShareWorker.perform_async(params[:kol_id], params[:campaign_id])
     end
     render json: {status: '422'}
   end
@@ -80,7 +82,26 @@ class PartnerCampaignController < ApplicationController
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                  cid:     cid)
 
-    @kol.update_attributes!(avatar_url: params[:images],
-                            name:       params[:nickname])
+
+    avatar_url = if params[:images].present?
+                   params[:images]
+                 elsif @kol.avatar_url.blank?
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[0]
+                 else
+                   @kol.avatar_url
+                 end
+
+    nickname   = if params[:nickname].present?
+                   params[:nickname]
+                 elsif @kol.name.blank?
+                   sample_data ||= eval($redis.lpop("dope_sample_data"))
+                   sample_data[1].gsub("'","")
+                 else
+                   @kol.name
+                 end
+
+    @kol.update_attributes!(avatar_url: avatar_url,
+                            name:       nickname)
   end
 end

@@ -66,8 +66,7 @@
                         type:    'put',
                         url:     '/partner_campaign/<%=@campaign.id%>/<%=@kol.id%>/complete',
                         success: function(result){
-                            black.style.display = "block";
-                            $("#dialog3").show()
+                          showDialog("dialog_success");
                         }
                       });
                   }
@@ -86,9 +85,89 @@
     </section>
     <section class="content-ro" style="height: 30%">
       <h2 class="title-ro"><%= @campaign.name %></h2>
-          <%= @campaign.description %>
+      <%= @campaign.description %>
     </section>
-    <% if @campaign_invite.try(:azb_shared) %>
+    <% step_1 = true if (not request.user_agent =~ /MicroMessenger/ and not @campaign_invite.try(:azb_shared)) %>
+    <% step_2 = true if (request.user_agent =~ /MicroMessenger/ and not @campaign_invite.try(:azb_shared)) %>
+    <% step_3 = true if (request.user_agent =~ /MicroMessenger/ and @campaign_invite.try(:azb_shared)) %>
+    <% step_4 = true if (not request.user_agent =~ /MicroMessenger/ and @campaign_invite.try(:azb_shared)) %>
+
+    <% if step_1 %>
+    <!-- 遮罩层 -->
+    <div class="black" id="black" style="display: block;"></div>
+    <!-- 弹出层 -->
+    <div class="dialog top-18" id="dialog02" style="display: block;">
+      <div class="dia-content" style="text-align: center;">
+        <h2 class="title-ro">操作步骤</h2>
+        <p>第一步：查看转发内容简介</p>
+        <p>第二步：点击完成任务截图保存二维码</p>
+        <p>第三步：用微信扫描二维码</p>
+        <p>第四步：将文章分享到朋友圈</p>
+        <p>第五步：任务完成！等待发薪</p>
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog02')">查看转发内容简介</button>
+      </div>
+    </div>
+
+    <div class="dialog top-18" id="dialog03">
+      <div class="dia-content" style="text-align: center;">
+        <% unless request.user_agent =~ /MicroMessenger/ %>
+          <h2 class="title-ro">截图后去微信扫一扫！</h2>
+          <%= raw Rails.cache.fetch("partner_campaign/alizhongbao/#{params[:userId]}/#{params[:id]}/qr_svg", expires_in: 3.hours){RQRCode::QRCode.new(request.url, size: 12, level: :h).as_svg(module_size: 3)} %>
+        <% else %>
+          <% if @campaign_invite.try(:azb_shared) %>
+            <h2 class="title-ro">再次分享可以获得更多点击</h2>
+          <% else %>
+            <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+          <% end %>
+        <% end %>
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog03','refresh')">知道了</button>
+      </div>
+    </div>
+    <section class="bottom-ro">
+      <a class="btn-blue-ro width100" onclick="showDialog('dialog03')" style="font-size: 1.8em; font-weight: 350;">
+        完成任务
+      </a>
+    </section>
+    <% elsif step_2 %>
+    <!-- 遮罩层 -->
+    <div class="black" id="black" style="display: block;"></div>
+    <!-- 弹出层 -->
+    <div class="dialog top-18" id="dialog02" style="display: block;">
+      <div class="dia-content" style="text-align: center;">
+        <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog02')">知道了</button>
+      </div>
+    </div>
+    <div class="dialog top-18" id="dialog_success">
+      <div class="dia-content" style="text-align: center;">
+        <h2 class="title-ro">分享成功</h2>
+        再次扫描二维码打开链接查看点击次数
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog_success','refresh')">知道了</button>
+      </div>
+    </div>
+    <section class="bottom-ro">
+      <a class="btn-blue-ro width100" onclick="showDialog('dialog02')" style="font-size: 1.8em; font-weight: 350;">
+        完成任务
+      </a>
+    </section>
+    <% elsif step_3 %>
+    <!-- 遮罩层 -->
+    <div class="black" id="black"></div>
+    <!-- 弹出层 -->
+    <div class="dialog top-18" id="dialog02">
+      <div class="dia-content ">
+        <h2 class="title-ro">分享成功</h2>
+        再次扫描二维码即可查看点击次数
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog02')">知道了</button>
+      </div>
+    </div>
+    <div class="dialog top-18" id="dialog_success">
+      <div class="dia-content" style="text-align: center;">
+        <h2 class="title-ro">分享成功</h2>
+        再次扫描二维码打开链接查看点击次数
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog_success','refresh')">知道了</button>
+      </div>
+    </div>
     <section class="content-ro" style="overflow: auto; position: fixed; bottom: 0">
       <section class="content-ro" style="height: 6rem; margin-bottom: 0;">
         <h2 class="title-ro" style="border: 1px solid #6a6a6a;
@@ -98,81 +177,53 @@
       1. 有效点击为朋友圈中的好友点击的数量，每人只计算1次。 如20个好友点击，则获得20个有效点击的薪酬。
       2. 任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
     </section>
-    <% end %>
     <section class="bottom-ro">
-      <a class="btn-blue-ro width100" onclick="showDialog(2)" style="font-size: 1.8em; font-weight: 350;">
-      <% if @campaign_invite.try(:azb_shared) %>
-        活动已分享成功
-      <% else %>
-        完成任务
-      <% end %>
+      <a class="btn-blue-ro width100" onclick="showDialog('dialog02')" style="font-size: 1.8em; font-weight: 350;">
+        任务已完成
       </a>
     </section>
+    <% elsif step_4 %>
     <!-- 遮罩层 -->
-    <div class="black" id="black" style="<%=@campaign_invite.try(:azb_shared) ? '':'display: block;'%>"></div>
+    <div class="black" id="black" style="display: block;"></div>
     <!-- 弹出层 -->
-    <div class="dialog top-18" id="dialog02" style="<%=@campaign_invite.try(:azb_shared) ? '':'display: block;'%>">
+    <div class="dialog top-18" id="dialog02" style="display: block;">
       <div class="dia-content" style="text-align: center;">
-        <% unless request.user_agent =~ /MicroMessenger/ %>
-          <h2 class="title-ro">截图后去微信扫一扫！</h2>
-          <%= raw @qr %>
-        <% else %>
-          <% if @campaign_invite.try(:azb_shared) %>
-            <h2 class="title-ro">再次分享可以获得更多点击</h2>
-          <% else %>
-            <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
-          <% end %>
-        <% end %>
-        <button class=" btn-blue-ro width100" onclick="closeDialog()">知道了</button>
-      </div>
-    </div>
-
-    <div class="dialog top-18" id="dialog3">
-      <div class="dia-content ">
         <h2 class="title-ro">分享成功</h2>
-        再次扫描二维码即可查看点击次数
-        <button class=" btn-blue-ro width100" onclick="closeDialog3()">知道了</button>
+        感谢您的参与，后续会为您记录点击情况，可重新扫描二维码查看点击记录
+        <button class=" btn-blue-ro width100" onclick="closeDialog('dialog02')">知道了</button>
       </div>
     </div>
+    <section class="content-ro" style="overflow: auto; position: fixed; bottom: 0">
+      <section class="content-ro" style="height: 6rem; margin-bottom: 0;">
+        <h2 class="title-ro" style="border: 1px solid #6a6a6a;
+        padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
+        font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
+      </section>
+      1. 有效点击为朋友圈中的好友点击的数量，每人只计算1次。 如20个好友点击，则获得20个有效点击的薪酬。
+      2. 任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
+    </section>
+    <section class="bottom-ro">
+      <a class="btn-blue-ro width100" onclick="showDialog('dialog02')" style="font-size: 1.8em; font-weight: 350;">
+        任务已完成
+      </a>
+    </section>
+    <% end %>
 
   </body>
 
     <script type="text/javascript">
-        var dialog = document.getElementById('dialog');
-        var dialog02 = document.getElementById('dialog02');
         var black = document.getElementById('black');
-        function closeDialog(){
+        function closeDialog(dialog_id,refresh){
+          if (refresh == undefined) {
             black.style.display = "none";
-            dialog02.style.display = "none";
+            document.getElementById(dialog_id).style.display = "none";
+          } else {
+            window.location.href = '<%= raw (@refresh_url) %>';
+          }
         }
-        function showDialog(con){
-            if(con=='1'){
-                black.style.display = "block";
-                dialog.style.display = "block";
-            }else{
-                dialog02.style.display = "block";
-                black.style.display = "block";
-            }
-        }
-        window.onload = function () {
-            <% if @campaign_info_box %>
-                showDialog(1);
-            <% end %>
-            $("#dialog3").hide()
-        }
-
-
-        var dialog3 = document.getElementById('dialog3');
-
-        function closeDialog3(){
-            black.style.display = "none";
-            dialog3.style.display = "none";
-            window.location.href = "<%= request.url %>";
-        }
-
-        function showDialog3(){
+        function showDialog(dialog_id){
             black.style.display = "block";
-            dialog3.style.display = "block";
+            document.getElementById(dialog_id).style.display = "block";
         }
     </script>
 </html>

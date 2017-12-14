@@ -22,10 +22,10 @@ module Partners
       app_params = {
         # 具体API的业务参数，如下是创建工作的参数
         "userId":       USERID,
-        "name":         "微信转发，每个有效点击#{campaign.actual_per_action_budget}元",
+        "name":         campaign.name,
         "brief":        brief,
         "maxNum":       "1000000",
-        "pay":          "600",
+        "pay":          (campaign.actual_per_action_budget*1000).to_i.to_s,
         "catId":        "76",
         "applyTaskUrl": "#{Rails.application.secrets[:domain]}/partner_campaign/campaign?id=#{campaign.id}&channel_id=azb",
         "outerId":      campaign.id.to_s,
@@ -38,10 +38,12 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      resp = JSON.parse(resp)
       campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                   ali_task_type_id: resp["result"]["taskTypeId"],
                                   channel:          "azb")
-      resp = JSON.parse(resp)
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
+      resp
     end
 
     #完成任务
@@ -54,7 +56,7 @@ module Partners
         # 具体API的业务参数，如下是完成并验收任务的参数
         "userId":        kol.cid,
         "taskId":        campaign.ali_task_id,
-        "resultCode":    "shared",
+        "resultCode":    "1",
       }
 
       options = self.http_options(app_params)
@@ -64,6 +66,8 @@ module Partners
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
+      Rails.logger.partner_campaign.info "--azb_completed_share: #{resp}"
+      resp
     end
 
     #结算campaign invite
@@ -76,11 +80,11 @@ module Partners
 
       inspect_result = if final_pay <= 0
                          "2"
-                       elsif final_pay < BONUS
+                       elsif final_pay < camp_inv.actual_per_action_budget
                          "3"
-                       elsif final_pay > BONUS
+                       elsif final_pay > camp_inv.actual_per_action_budget
                          "4"
-                       elsif final_pay == BONUS
+                       elsif final_pay == camp_inv.actual_per_action_budget
                          "1"
                        end
 
@@ -100,6 +104,9 @@ module Partners
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
+      Rails.logger.partner_campaign.info "--azb_settle_camp_inv: #{resp}"
+      camp_inv.update_attributes!(partners_settle: final_pay)  if resp["result"]["msg"] = "质检成功" 
+      resp
     end
 
     #把活动结束掉
@@ -121,6 +128,7 @@ module Partners
       must_params["sign"] = signature
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
       resp = JSON.parse(resp)
     end
 
@@ -168,7 +176,11 @@ module Partners
 
     def self.calculate_pay(camp_inv)
       # 多过三个的点击会多给0.6
-      camp_inv.earn_money.to_d + (camp_inv.get_avail_click(true)>=3 ? BONUS : 0)
+      camp_inv.earn_money.to_d + (camp_inv.get_avail_click > 3 ? BONUS : 0)
+    end
+
+    def self.import_dope_data(file_path)
+      $redis.rpush("dope_sample_data", CSV.read(file_path))
     end
   end
 end
