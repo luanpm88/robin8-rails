@@ -141,30 +141,12 @@ module Concerns
       _count
     end
 
-    # def update_check_in
-    #   _continuous = continuous_attendance_days
-    #   _or = Date.today - 10.days
-    #   _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
-    #   case _last
-    #   when Date.yesterday
-    #     _continuous = (_continuous + 1) % 8
-    #     if _continuous == 0
-    #       _continuous = 1
-    #     end
-    #   else
-    #     _continuous = 1
-    #   end
-    #   update_columns(:continuous_attendance_days => _continuous)
-    #   return _continuous
-    # end
-
-    #测试连续签到专用代码，每分钟签到一次
     def update_check_in
       _continuous = continuous_attendance_days
-      _or = (DateTime.current - 30.minutes).strftime("%Y/%m/%d %I:%M")
-      _last = self.task_records.check_in.active.where("created_at < '#{DateTime.current.beginning_of_minute}'").last.try(:created_at).try(:strftime, "%Y/%m/%d %I:%M") || _or
+      _or = Date.today - 10.days
+      _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
       case _last
-      when (DateTime.current - 1.minutes).strftime("%Y/%m/%d %I:%M")
+      when Date.yesterday
         _continuous = (_continuous + 1) % 8
         if _continuous == 0
           _continuous = 1
@@ -175,6 +157,27 @@ module Concerns
       update_columns(:continuous_attendance_days => _continuous)
       return _continuous
     end
+
+    #测试连续签到专用代码，每分钟签到一次
+    # def update_check_in
+    #   Timecop.scale(1440) do
+    #     _continuous = self.continuous_attendance_days
+    #     _or = (DateTime.current - 30.minutes).strftime("%Y/%m/%d %I:%M")
+    #     _last = self.task_records.check_in.active.where("created_at < '#{DateTime.current.beginning_of_minute}'").last.try(:created_at).try(:strftime, "%Y/%m/%d %I:%M") || _or
+    #
+    #     case _last
+    #     when (DateTime.current - 1.minutes).strftime("%Y/%m/%d %I:%M")
+    #       _continuous = (_continuous + 1) % 8
+    #       if _continuous == 0
+    #         _continuous = 1
+    #       end
+    #     else
+    #       _continuous = 1
+    #     end
+    #     update_columns(:continuous_attendance_days => _continuous)
+    #     return _continuous
+    #   end
+    # end
 
     def total_check_in_amount
       total_amount = 0

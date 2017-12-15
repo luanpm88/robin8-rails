@@ -34,7 +34,7 @@ class TaskRecord < ActiveRecord::Base
         self.kol.income(0.1, self.task_type, self )
       when 2
         self.update(:is_continuous => 1)
-        self.kol.task_records.where(:created_at => Date.yesterday.beginning_of_day..Date.yesterday.end_of_day).update(:is_continuous => 1)
+        self.kol.task_records.where(:created_at => Date.yesterday.beginning_of_day..Date.yesterday.end_of_day).update_all(:is_continuous => 1)
         self.kol.income(0.2, self.task_type, self )
       when 3
         self.update(:is_continuous => 1)
@@ -56,4 +56,5 @@ class TaskRecord < ActiveRecord::Base
       self.kol.income(reward_task.reward_amount, self.task_type, self )
     end
   end
+
 end
