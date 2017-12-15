@@ -105,7 +105,7 @@ module Partners
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
       Rails.logger.partner_campaign.info "--azb_settle_camp_inv: #{resp}"
-      camp_inv.update_attributes!(partners_settle: final_pay)  if resp["result"]["msg"] = "质检成功" 
+      camp_inv.update_attributes!(partners_settle: final_pay)  if resp["result"]["msg"] = "质检成功"
       resp
     end
 
@@ -176,7 +176,7 @@ module Partners
 
     def self.calculate_pay(camp_inv)
       # 多过三个的点击会多给0.6
-      camp_inv.earn_money.to_d + (camp_inv.get_avail_click > 3 ? BONUS : 0)
+      camp_inv.earn_money.to_d + (camp_inv.get_avail_click >= 3 ? BONUS : 0)
     end
 
     def self.import_dope_data(file_path)
