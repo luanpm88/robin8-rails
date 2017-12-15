@@ -158,27 +158,6 @@ module Concerns
       return _continuous
     end
 
-    #测试连续签到专用代码，每分钟签到一次
-    # def update_check_in
-    #   Timecop.scale(1440) do
-    #     _continuous = self.continuous_attendance_days
-    #     _or = (DateTime.current - 30.minutes).strftime("%Y/%m/%d %I:%M")
-    #     _last = self.task_records.check_in.active.where("created_at < '#{DateTime.current.beginning_of_minute}'").last.try(:created_at).try(:strftime, "%Y/%m/%d %I:%M") || _or
-    #
-    #     case _last
-    #     when (DateTime.current - 1.minutes).strftime("%Y/%m/%d %I:%M")
-    #       _continuous = (_continuous + 1) % 8
-    #       if _continuous == 0
-    #         _continuous = 1
-    #       end
-    #     else
-    #       _continuous = 1
-    #     end
-    #     update_columns(:continuous_attendance_days => _continuous)
-    #     return _continuous
-    #   end
-    # end
-
     def total_check_in_amount
       total_amount = 0
       self.transactions.where(subject:"check_in").map do |t|
@@ -231,38 +210,6 @@ module Concerns
       can_amount
     end
 
-    # #测试签到专用代码，每分钟签到一次
-    # def today_can_amount
-    #   _continuous = continuous_attendance_days
-    #   case task_records.check_in.active.last.created_at.to_datetime
-    #   when DateTime.current - 1.minutes
-    #     _continuous = (_continuous + 1) % 8
-    #     if _continuous == 0
-    #       _continuous = 1
-    #     end
-    #   else
-    #     _continuous = 1
-    #   end
-    #
-    #   case _continuous
-    #   when 1
-    #     can_amount = 0.1
-    #   when 2
-    #     can_amount = 0.2
-    #   when 3
-    #     can_amount = 0.25
-    #   when 4
-    #     can_amount = 0.3
-    #   when 5
-    #     can_amount = 0.35
-    #   when 6
-    #     can_amount = 0.4
-    #   when 7
-    #     can_amount = 0.5
-    #   end
-    #   can_amount
-    # end
-
     def tomorrow_can_amount
       tomorrow_amount = 0
       case self.today_already_amount
@@ -283,27 +230,6 @@ module Concerns
       end
       tomorrow_amount
     end
-
-    # def tomorrow_can_amount
-    #   tomorrow_amount = 0
-    #   case self.today_can_amount
-    #   when 0.1
-    #     tomorrow_amount = 0.2
-    #   when 0.2
-    #     tomorrow_amount = 0.25
-    #   when 0.25
-    #     tomorrow_amount = 0.3
-    #   when 0.3
-    #     tomorrow_amount = 0.35
-    #   when 0.35
-    #     tomorrow_amount = 0.4
-    #   when 0.4
-    #     tomorrow_amount = 0.5
-    #   when 0.5
-    #     tomorrow_amount = 0.1
-    #   end
-    #   tomorrow_amount
-    # end
 
     def profile_complete?
       avatar_url.present? && name.present? && gender.present? && gender != 0 && age.present? && app_city.present? && tags.size > 0 &&
