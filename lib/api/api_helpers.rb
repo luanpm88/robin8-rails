@@ -6,9 +6,9 @@ module API
 
     def current_kol
       result , private_token = AuthToken.valid?(headers["Authorization"])
-
       if result
         @current_kol ||= Kol.app_auth(private_token)
+        @current_kol
       end
     end
 

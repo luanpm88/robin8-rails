@@ -6,15 +6,12 @@ module API
           authenticate!
         end
 
-
         get 'show' do
-          cache(key: "#{@current_kol.id}/myshow" , expires_in: 10.minutes) do
-            present :error, 0
-            present :hide, 1
-            present :detail, 15
-            present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
-            present :is_open_indiana, true
-          end
+          present :error, 0
+          present :hide, 1
+          present :detail, 15
+          present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
+          present :is_open_indiana, true
         end
 
 

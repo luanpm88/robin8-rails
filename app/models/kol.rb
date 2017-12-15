@@ -298,9 +298,7 @@ class Kol < ActiveRecord::Base
   end
 
   def self.app_auth(private_token)
-    Rails.cache.fetch("#{private_token}/current_kol", expires_in: 10.minutes) do
-      Kol.find_by(private_token:  private_token)    rescue nil
-    end
+    Kol.find_by :private_token => private_token    rescue nil
   end
 
   def verifying_income
