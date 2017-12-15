@@ -200,6 +200,10 @@ group :development, :test do
   gem 'puma'
 end
 
+group :development, :qa do
+  gem 'timecop'
+end
+
 group :test do
   gem 'rspec-sidekiq'
   gem 'capybara'
