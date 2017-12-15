@@ -265,7 +265,7 @@ module Concerns
 
     def tomorrow_can_amount
       tomorrow_amount = 0
-      case self.today_can_amount
+      case self.today_already_amount
       when 0.1
         tomorrow_amount = 0.2
       when 0.2
@@ -283,6 +283,27 @@ module Concerns
       end
       tomorrow_amount
     end
+
+    # def tomorrow_can_amount
+    #   tomorrow_amount = 0
+    #   case self.today_can_amount
+    #   when 0.1
+    #     tomorrow_amount = 0.2
+    #   when 0.2
+    #     tomorrow_amount = 0.25
+    #   when 0.25
+    #     tomorrow_amount = 0.3
+    #   when 0.3
+    #     tomorrow_amount = 0.35
+    #   when 0.35
+    #     tomorrow_amount = 0.4
+    #   when 0.4
+    #     tomorrow_amount = 0.5
+    #   when 0.5
+    #     tomorrow_amount = 0.1
+    #   end
+    #   tomorrow_amount
+    # end
 
     def profile_complete?
       avatar_url.present? && name.present? && gender.present? && gender != 0 && age.present? && app_city.present? && tags.size > 0 &&
