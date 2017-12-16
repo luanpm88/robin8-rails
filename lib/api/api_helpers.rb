@@ -149,7 +149,14 @@ module API
                     when "admintags"
                       [:admintags, :first, :tag]
                     end
-            unless target[:target_content].split(",") & current_kol.admintags.map(&:tag)
+                    
+            filter_result = if target[:target_type] == "admintags"
+                              target[:target_content].split(",") & current_kol.admintags.map(&:tag)
+                            else
+                              target[:target_content].split(",").include?(index.inject(current_kol, :try))
+                            end
+
+            unless filter_result
             # unless target[:target_content].split(",").include?(index.inject(current_kol, :try))
               filter = false
               break
