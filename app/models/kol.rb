@@ -6,8 +6,8 @@ class Kol < ActiveRecord::Base
   # counter :redis_new_income      #unit is cent
 
   counter :registered_invitation_count
-  list :read_message_ids, :maxlength => 40             # 所有阅读过的
-  list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
+  list :read_message_ids, :maxlength => 200            # 所有阅读过的
+  list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
   include Concerns::PayTransaction
@@ -483,6 +483,14 @@ class Kol < ActiveRecord::Base
                           .where("created_at > '#{message_limit_at}'")
 
     (read_messages + kol_read_messages).uniq.sort_by {|i| i.created_at }.reverse
+  end
+
+  def has_any_unread_message?
+    if self.unread_messages.any?
+      return true
+    else
+      return false
+    end
   end
 
   #当前用户新收入总计
