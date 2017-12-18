@@ -12,6 +12,7 @@ module API
           present :detail, 15
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
+          present :has_any_unread_message, current_kol.has_any_unread_message?
         end
 
 
