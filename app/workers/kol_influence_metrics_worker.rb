@@ -1,6 +1,6 @@
 class KolInfluenceMetricsWorker
   include Sidekiq::Worker
-
+  sidekiq_options  :queue => :kol_influence_metrics_worker
   # first array is list of weibo user IDs, second array is list of wechat user IDs
   def perform weibo_user_ids, wechat_user_ids=[]
 
