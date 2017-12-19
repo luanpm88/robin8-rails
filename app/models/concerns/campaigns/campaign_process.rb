@@ -90,12 +90,12 @@ module Campaigns
         _push_message_time = _start_time - 10.minutes
         CampaignWorker.perform_at(_start_time, self.id, 'start')
         CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
-        MessageWorker.perform_at(_push_message_time , self.id , self.get_kol_ids(true))
+        MessageWorker.perform_at(_push_message_time , self.id , self.get_push_record_id)
       else
         _start_time = self.start_time < Time.now ? (Time.now + 15.minutes) : self.start_time
         _push_message_time = _start_time - 10.minutes
         CampaignWorker.perform_at(_start_time, self.id, 'start')
-        MessageWorker.perform_at(_push_message_time , self.id , self.get_kol_ids(true) )
+        MessageWorker.perform_at(_push_message_time , self.id , self.get_push_record_id )
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
 
@@ -135,7 +135,7 @@ module Campaigns
 
       if kol_ids.present?
         Kol.where(id: kol_ids).each { |k| k.add_campaign_id(self.id, true) }
-        Message.new_campaign(self.id, kol_ids)
+        # Message.new_campaign(self.id, kol_ids)
       end
 
       CampaignPushRecord.create(
