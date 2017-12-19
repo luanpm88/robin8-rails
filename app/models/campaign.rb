@@ -470,6 +470,10 @@ class Campaign < ActiveRecord::Base
     return [campaign_invite , share_url]
   end
 
+  def get_push_record_id
+    self.campaign_push_records.where(filter_reason: 'match').last.kol_ids.split(",")
+  end
+
 
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?

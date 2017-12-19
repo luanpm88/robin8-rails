@@ -43,7 +43,8 @@ class Message < ActiveRecord::Base
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save
-        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+        kols = Kol.where(id: kol_ids)
+        kols.each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     elsif unmatch_kol_id.size > 0
       kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
@@ -53,7 +54,7 @@ class Message < ActiveRecord::Base
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     end
-    generate_push_message(message) if Campaign.can_push_message(campaign)
+    generate_push_message(message , kols) if Campaign.can_push_message(campaign)
   end
 
   def self.new_announcement(announcement)
@@ -116,12 +117,12 @@ class Message < ActiveRecord::Base
   end
 
 
-  def self.generate_push_message(message)
+  def self.generate_push_message(message , kols = nil )
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"
       return
     end
-    PushMessage.create_message_push(message)
+    PushMessage.create_message_push(message , kols)
   end
 
   class << self
