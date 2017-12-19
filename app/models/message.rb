@@ -33,7 +33,7 @@ class Message < ActiveRecord::Base
     return if kol_ids.size == 0 && unmatch_kol_id.size == 0
     campaign = Campaign.find campaign_id
     if campaign.is_recruit_type?
-      content = '你有一个新的招募活动'
+      content = '你有一个新的招募活动还有十分钟就开始了!快来抢活动吧!'
     else
       content =  "活动: #{campaign.name} 还有十分钟就开始了!快来抢活动吧!"
     end
@@ -42,10 +42,12 @@ class Message < ActiveRecord::Base
     if kol_ids.present? && kol_ids.size > 0
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
-      if message.save
-        kols = Kol.where(id: kol_ids)
-        kols.each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
-      end
+      message.save
+      # if message.save
+      #   kols = Kol.where(id: kol_ids)
+      #   kols.each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+      # end
+      # 推送到每个人的消息列表,太慢,被某程序员取消了
     elsif unmatch_kol_id.size > 0
       kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
       message.receiver_type = "List"
@@ -54,7 +56,8 @@ class Message < ActiveRecord::Base
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     end
-    generate_push_message(message , kols) if Campaign.can_push_message(campaign)
+    device_tokens = campaign.get_push_record_device_token  rescue nil
+    generate_push_message(message , device_tokens) if Campaign.can_push_message(campaign)
   end
 
   def self.new_announcement(announcement)
@@ -117,12 +120,12 @@ class Message < ActiveRecord::Base
   end
 
 
-  def self.generate_push_message(message , kols = nil )
+  def self.generate_push_message(message , device_tokens = nil )
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"
       return
     end
-    PushMessage.create_message_push(message , kols)
+    PushMessage.create_message_push(message , device_tokens)
   end
 
   class << self

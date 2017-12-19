@@ -158,9 +158,10 @@ module Campaigns
         kols = get_platform_kols
         kols = get_matching_kols(kols)
         kols = get_unmatched_kols(kols)
-        kol_ids = kols.select("id").map(&:id) rescue []
+        kol_ids = kols.map(&:id) rescue []
+        kol_device_token = kols.map(&:device_token) rescue []
 
-        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match' ,device_tokens: kol_device_token.join(","))          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
       kol_ids

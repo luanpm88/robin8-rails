@@ -135,7 +135,7 @@ module Campaigns
 
       if kol_ids.present?
         Kol.where(id: kol_ids).each { |k| k.add_campaign_id(self.id, true) }
-        Message.new_campaign(self.id, kol_ids)
+        # Message.new_campaign(self.id, kol_ids)
       end
 
       CampaignPushRecord.create(

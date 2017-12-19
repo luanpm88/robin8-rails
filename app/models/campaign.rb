@@ -470,6 +470,10 @@ class Campaign < ActiveRecord::Base
     return [campaign_invite , share_url]
   end
 
+  def get_push_record_device_token
+    self.campaign_push_records.where(filter_reason: 'match').last.device_tokens.split(",")
+  end
+
   def get_push_record_id
     self.campaign_push_records.where(filter_reason: 'match').last.kol_ids.split(",")
   end
