@@ -24,7 +24,7 @@ class PushMessage < ActiveRecord::Base
     content
   end
 
-  def self.create_message_push(message)
+  def self.create_message_push(message , device_tokens = nil)
     #to one
     push_message = nil
     if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected' || message.message_type == 'common'
@@ -38,7 +38,7 @@ class PushMessage < ActiveRecord::Base
       push_message.template_content = transmission_template_content(message)
     elsif message.message_type == 'notice'
       if message.receiver_type == "All" 
-        device_tokens =  Kol.all.collect{|t| t.device_token}.uniq
+        device_tokens =  Kol.where("amount >= 50").collect{|t| t.device_token}.uniq
         device_tokens.in_groups_of(1000,false){|group_device_tokens|
           push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
                                   :title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
@@ -60,7 +60,7 @@ class PushMessage < ActiveRecord::Base
         push_message.receiver_ids = [receiver.id]
         push_message.receiver_cids = [receiver.device_token]
       elsif message.receiver_type == 'List'
-        device_tokens =  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
+        device_tokens ||=  Kol.where(:id => message.receiver_ids ).collect{|t| t.device_token}.uniq
         device_tokens.in_groups_of(1000,false){|group_device_tokens|
           push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),:title => message.title, :receiver_type => 'List', :receiver_cids => group_device_tokens )
           push_message.message_id = message.id
@@ -75,10 +75,11 @@ class PushMessage < ActiveRecord::Base
     elsif message.message_type == 'remind_upload'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
                               :title => message.title)
-      receivers = Kol.where(:id => message.receiver_ids)
+      kols = Kol.where(:id => message.receiver_ids )
+      # receivers = Kol.where(:id => message.receiver_ids)
       push_message.receiver_type = 'List'
-      push_message.receiver_ids = receivers.collect{|t| t.id }
-      push_message.receiver_cids = receivers.collect{|t| t.device_token}
+      push_message.receiver_ids = kols.collect{|t| t.id }
+      push_message.receiver_cids = kols.collect{|t| t.device_token}
 
     elsif message.message_type == 'notification'
       push_message = self.new(:receiver_type => 'All', :template_type => 'notification', :title => message.title,
