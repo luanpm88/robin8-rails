@@ -16,11 +16,11 @@ class Rack::Attack
     req.ip unless Rack::Attack.throttle_whitelisted_path?(req)
   end
 
+=begin
   Rack::Attack.throttle('my_campaigns_attack', limit: 30, period: 1.minutes) do |req|
-    # remote_ip = req.env['HTTP_X_FORWARDED_FOR'].split(', ')[0] rescue nil
-    # remote_ip if remote_ip and req.path == "/api/v1/campaign_invites"
     req.env['HTTP_AUTHORIZATION']
   end
+=end
 
   self.blacklisted_response = lambda do |env|
     [ 503, {}, 'The server is currently unavailable (because it is overloaded or down for maintenance).' ]
