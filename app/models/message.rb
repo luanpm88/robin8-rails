@@ -52,9 +52,10 @@ class Message < ActiveRecord::Base
       kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
-      if message.save
-        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
-      end
+      message.save
+      # if message.save
+      #   Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+      # end
     end
     device_tokens = campaign.get_push_record_device_token  rescue nil
     generate_push_message(message , device_tokens) if Campaign.can_push_message(campaign)
