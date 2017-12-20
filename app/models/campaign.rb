@@ -471,11 +471,21 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_push_record_device_token
-    self.campaign_push_records.where(filter_reason: 'match').last.device_tokens.split(",")
+    record = self.campaign_push_records.where(filter_reason: 'match').last
+    if record && record.device_tokens.present?
+      record.device_tokens.split(",")
+    else
+      nil
+    end
   end
 
   def get_push_record_id
-    self.campaign_push_records.where(filter_reason: 'match').last.kol_ids.split(",")
+    record = self.campaign_push_records.where(filter_reason: 'match').last
+    if record && record.kol_ids.present?
+      record.kol_ids.split(",")
+    else
+      nil
+    end
   end
 
 
