@@ -10,7 +10,9 @@ qa:
 :queues:
   - [default, 10]
   - [campaign, 40]
+  - [message , 20]
   - [campaign_show, 20]
   - [campaign_observer_worker, 10]
+  - [kol_influence_metrics_worker, 10]
 :limits:
   campaign_show: 1
