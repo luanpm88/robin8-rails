@@ -139,7 +139,7 @@ module Campaigns
     end
 
     #TODO imporve this
-    def get_kol_ids(record = false, kol_ids = nil)
+    def get_kol_ids(record = false, kol_ids = nil , push = false)
       #如果指定了kol_is 记录后直接返回
       if kol_ids.present?
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'manual_special', filter_reason: 'manual_special')  if record
@@ -159,9 +159,10 @@ module Campaigns
         kols = get_matching_kols(kols)
         kols = get_unmatched_kols(kols)
         kol_ids = kols.map(&:id) rescue []
-        kol_device_token = kols.map(&:device_token) rescue []
-
-        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match' ,device_tokens: kol_device_token.join(","))          if record
+        kol_device_token = kols.map(&:device_token).uniq rescue []
+        kol_device_token.each {|t| self.push_device_tokens << t}    if push
+        # 保存推送用户的 device_token 
+        CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
       kol_ids

@@ -57,7 +57,8 @@ class Message < ActiveRecord::Base
       #   Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       # end
     end
-    device_tokens = campaign.get_push_record_device_token  rescue nil
+    device_tokens = campaign.push_device_tokens  rescue nil
+    campaign.push_device_tokens.del
     generate_push_message(message , device_tokens) if Campaign.can_push_message(campaign)
   end
 
