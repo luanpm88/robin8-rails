@@ -16,3 +16,4 @@ qa:
   - [kol_influence_metrics_worker, 10]
 :limits:
   campaign_show: 1
+  kol_influence_metrics_worker: 2
