@@ -75,7 +75,7 @@ class PushMessage < ActiveRecord::Base
     elsif message.message_type == 'remind_upload'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
                               :title => message.title)
-      kols = Kol.where(:id => message.receiver_ids )
+      kols ||= Kol.where(:id => message.receiver_ids )
       # receivers = Kol.where(:id => message.receiver_ids)
       push_message.receiver_type = 'List'
       push_message.receiver_ids = kols.collect{|t| t.id }
