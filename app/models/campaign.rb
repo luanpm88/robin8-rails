@@ -470,24 +470,6 @@ class Campaign < ActiveRecord::Base
     return [campaign_invite , share_url]
   end
 
-  def get_push_record_device_token
-    record = self.campaign_push_records.where(filter_reason: 'match').last
-    if record && record.device_tokens.present?
-      record.device_tokens.split(",")
-    else
-      nil
-    end
-  end
-
-  def get_push_record_id
-    record = self.campaign_push_records.where(filter_reason: 'match').last
-    if record && record.kol_ids.present?
-      record.kol_ids.split(",")
-    else
-      nil
-    end
-  end
-
 
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
