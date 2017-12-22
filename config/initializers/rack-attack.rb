@@ -8,6 +8,7 @@ class Rack::Attack
     Rails.cache.fetch("block #{req.ip}").present?
   end
 
+=begin
   Rack::Attack.throttle('req/cookies', limit: 1000, period: 2.minutes) do |req|
     req.cookies['_robin8_visitor']
   end
@@ -16,7 +17,6 @@ class Rack::Attack
     req.ip unless Rack::Attack.throttle_whitelisted_path?(req)
   end
 
-=begin
   Rack::Attack.throttle('my_campaigns_attack', limit: 30, period: 1.minutes) do |req|
     req.env['HTTP_AUTHORIZATION']
   end
