@@ -20,6 +20,9 @@ class PartnerCampaignController < ApplicationController
     end
   end
 
+  def qrcode
+  end
+
   def index # For WCS 微差事
     json = Array.new
     campaigns = Campaign.where(channel: ['all' , params.require(:channel_id)]).order(updated_at: :desc)
