@@ -59,8 +59,7 @@ class Message < ActiveRecord::Base
     end
     device_tokens = campaign.push_device_tokens.values  rescue nil
     campaign.push_device_tokens.del
-    # generate_push_message(message , device_tokens) #if Campaign.can_push_message(campaign)
-    PushMessage.create_message_push(message , device_tokens)
+    PushMessage.create_message_push(message , device_tokens)  if Campaign.can_push_message(campaign)
   end
 
   def self.new_announcement(announcement)
@@ -124,11 +123,10 @@ class Message < ActiveRecord::Base
 
 
   def self.generate_push_message(message , device_tokens = nil )
-    # puts "----generate_push_message"
-    # puts "device_tokens"
-    # if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"
-    #   return
-    # end
+    puts "----generate_push_message"
+    if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"
+      return
+    end
     PushMessage.create_message_push(message , device_tokens)
   end
 

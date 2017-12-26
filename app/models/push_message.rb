@@ -138,8 +138,7 @@ class PushMessage < ActiveRecord::Base
   def async_send_to_client
     puts "====async_send_to_client"
     if Rails.env.development?
-      true
-      # PusherWorker.new.perform(self.id)
+      PusherWorker.new.perform(self.id)
     else
       PusherWorker.perform_async(self.id)
     end
