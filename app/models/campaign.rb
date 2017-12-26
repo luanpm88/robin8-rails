@@ -14,6 +14,9 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignAnalysis
   include Campaigns::CampaignInviteAnalysis
 
+  list :push_device_tokens
+  
+
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
                        'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
@@ -468,6 +471,15 @@ class Campaign < ActiveRecord::Base
     Rails.logger.partner_campaign.info "--campaign_details: share_url #{share_url}"
     share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{self.id}" rescue ''
     return [campaign_invite , share_url]
+  end
+
+  def get_push_record_id
+    record = self.campaign_push_records.where(filter_reason: 'match').last
+    if record && record.kol_ids.present?
+      record.kol_ids.split(",")
+    else
+      nil
+    end
   end
 
 
