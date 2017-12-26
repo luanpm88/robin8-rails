@@ -29,7 +29,7 @@ class Message < ActiveRecord::Base
   end
 
   # new campaign  to all  or list
-  def self.new_campaign(campaign_id, kol_ids = [], unmatch_kol_id = [])
+  def self.new_campaign(campaign_id, kol_ids = [], unmatch_kol_id = [] )
     return if kol_ids.size == 0 && unmatch_kol_id.size == 0
     campaign = Campaign.find campaign_id
     if campaign.is_recruit_type?
@@ -53,7 +53,13 @@ class Message < ActiveRecord::Base
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     end
+<<<<<<< HEAD
     generate_push_message(message) if Campaign.can_push_message(campaign)
+=======
+    device_tokens = campaign.push_device_tokens.values  rescue nil
+    campaign.push_device_tokens.del
+    PushMessage.create_message_push(message , device_tokens)  if Campaign.can_push_message(campaign)
+>>>>>>> remotes/origin/update_push_message
   end
 
   def self.new_announcement(announcement)
