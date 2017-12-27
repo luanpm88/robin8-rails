@@ -42,16 +42,18 @@ class Message < ActiveRecord::Base
     if kol_ids.present? && kol_ids.size > 0
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
-      if message.save
-        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
-      end
+      message.save
+      # if message.save
+      #   Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+      # end
     elsif unmatch_kol_id.size > 0
       kol_ids = Kol.active.where.not(:id => unmatch_kol_id).collect{|t| t.id }
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
-      if message.save
-        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
-      end
+      message.save
+      # if message.save
+      #   Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+      # end
     end
     device_tokens = campaign.push_device_tokens.values  rescue nil
     campaign.push_device_tokens.del  if device_tokens.present?
