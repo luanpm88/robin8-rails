@@ -120,7 +120,7 @@ class Message < ActiveRecord::Base
   end
 
 
-  def self.generate_push_message(message , device_tokens)
+  def self.generate_push_message(message , device_tokens = nil)
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"
       return
