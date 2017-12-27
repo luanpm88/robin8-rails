@@ -50,7 +50,13 @@ module API
               my_campaign.campaign.sub_type
             end
           end
-
+          expose :per_budget_type do |my_campaign|
+            if my_campaign.campaign.is_cpi_type?
+              'cpa'
+            else
+               my_campaign.campaign.per_budget_type
+            end
+          end
         end
       end
     end
