@@ -64,11 +64,19 @@ class WechatCampaignController < ApplicationController
 
       Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
       if campaign and campaign.status == 'executing'
-        kol_exists.add_campaign_id campaign_id
-        kol_exists.approve_campaign(campaign_id)
+        if campaign.per_budget_type == 'recruit'
+          kol_exists.apply_campaign(campaign_id)
+        else
+          kol_exists.add_campaign_id campaign_id
+          kol_exists.approve_campaign(campaign_id)
+        end
       end
       kol_exists.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
-      return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+      if campaign.per_budget_type == 'recruit'
+        render json: {url: Rails.application.secrets[:download_url] || root_url }
+      else
+        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+      end
     else
       ip = (request.remote_ip rescue nil) || request.ip
       kol = Kol.new(mobile_number: params[:mobile_number],
@@ -90,11 +98,19 @@ class WechatCampaignController < ApplicationController
 
         Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
         if campaign and campaign.status == 'executing'
-          kol.add_campaign_id campaign_id
-          kol.approve_campaign(campaign_id)
+          if campaign.per_budget_type == 'recruit'
+            kol.apply_campaign(campaign_id)
+          else
+            kol.add_campaign_id campaign_id
+            kol.approve_campaign(campaign_id)
+          end
         end
         kol.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
-        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }     
+        if campaign.per_budget_type == 'recruit'
+          render json: {url: Rails.application.secrets[:download_url] || root_url }
+        else
+          return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+        end 
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
         return render json: {error: 'Campaign not found'}
