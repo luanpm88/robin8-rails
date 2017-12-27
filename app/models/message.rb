@@ -33,7 +33,7 @@ class Message < ActiveRecord::Base
     return if kol_ids.size == 0 && unmatch_kol_id.size == 0
     campaign = Campaign.find campaign_id
     if campaign.is_recruit_type?
-      content = '你有一个新的招募活动'
+      content = '你有一个新的招募活动还有十分钟就开始了!快来抢活动吧!'
     else
       content =  "活动: #{campaign.name} 还有十分钟就开始了!快来抢活动吧!"
     end
