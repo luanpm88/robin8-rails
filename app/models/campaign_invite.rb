@@ -115,7 +115,6 @@ class CampaignInvite < ActiveRecord::Base
 
   #cpc截图自动审核
   def self.auto_change_multi_img_status
-    CampaignInvite.joins(:kol).where("kols.channel is not NULL AND campaign_invites.screenshot is NULL").each {|t| t.reupload_screenshot("http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg")}
     @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
     @campaign_invites.each do |c|
       c.screenshot_pass if c.redis_avail_click < 50
