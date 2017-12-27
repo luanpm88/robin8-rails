@@ -110,6 +110,8 @@
 
     <div class="dialog top-18" id="dialog03">
       <div class="dia-content" id="qr_code" style="text-align: center; padding: 0 0 5rem 0;">
+        <iframe src="/partner_campaign/qrcode?url=<%=CGI.escape(request.url)%>" height="265px" width="100%" frameBorder="0" scrolling="no">
+        </iframe>
         <button class=" btn-blue-ro width100" onclick="closeDialog('dialog03','refresh')">知道了</button>
       </div>
     </div>
@@ -198,10 +200,9 @@
       </a>
     </section>
     <% end %>
-
   </body>
 
-    <script  type="text/javascript">
+    <script type="text/javascript">
         var black = document.getElementById('black');
         function closeDialog(dialog_id,refresh){
           if (refresh == undefined) {
@@ -216,22 +217,5 @@
             black.style.display = "block";
             document.getElementById(dialog_id).style.display = "block";
         }
-
-        function createIframe() {
-            var i = document.createElement("iframe");
-            i.src = "/partner_campaign/qrcode";
-            i.frameBorder = "0";
-            i.scrolling = "no";
-            i.height = "265px";
-            i.width ="100%";
-            document.getElementById("qr_code").appendChild(i);
-        };
-
-        // Check for browser support of event handling capability
-        if (window.addEventListener)
-          window.addEventListener("load", createIframe, false);
-        else if (window.attachEvent)
-          window.attachEvent("onload", createIframe);
-        else window.onload = createIframe;
     </script>
 </html>

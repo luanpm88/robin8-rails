@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
       <%= csrf_meta_tags %>
       <%= stylesheet_link_tag 'wechat_campaign' %>
-      <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
   </head>
   <body>
     <div class="dia-content" style="text-align: center">
       <% unless request.user_agent =~ /MicroMessenger/ %>
         <h2 class="title-ro">截图后去微信扫一扫！</h2>
-        <%= raw Rails.cache.fetch("partner_campaign/alizhongbao/#{params[:userId]}/#{params[:id]}/qr_svg", expires_in: 3.hours){RQRCode::QRCode.new(request.url, size: 12, level: :h).as_svg(module_size: 3)} %>
+        <%= raw RQRCode::QRCode.new(params[:url], size: 12, level: :h).as_svg(module_size: 3) %>
       <% else %>
         <% if @campaign_invite.try(:azb_shared) %>
           <h2 class="title-ro">再次分享可以获得更多点击</h2>

@@ -1,7 +1,7 @@
 require 'rqrcode'
 
 class PartnerCampaignController < ApplicationController
-  before_action :valid_signature? , :set_kol, except: [:complete]
+  before_action :valid_signature? , :set_kol, except: [:complete, :qrcode]
   before_action :set_campaign, only: [:campaign, :show]
   layout :false
 
