@@ -9,6 +9,7 @@ qa:
   :concurrency: 2
 :queues:
   - [default, 10]
+  - [message, 20] 
   - [campaign, 40]
   - [campaign_show, 20]
   - [campaign_observer_worker, 10]
