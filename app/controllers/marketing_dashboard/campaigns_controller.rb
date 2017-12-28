@@ -288,7 +288,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @campaign = Campaign.find(params[:id])
     if @campaign.channel = nil
       @campaign.update_attributes!(channel:"wcs")
-      flash[:notice] = "已经推送到微差事"
+      flash[:notice] = "成功推送到微差事"
     elsif @campaign.channel = 'wcs'
       flash[:notice] = "该活动早已推送过微差事了，长点心！"
     elsif @campaign.channel = 'azb'
@@ -316,7 +316,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       @campaign.update_attributes!(channel:"all")
       Partners::Alizhongbao.push_campaign(params[:id])
       flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    end 
+    end
     redirect_to :action => :index
   end
 
