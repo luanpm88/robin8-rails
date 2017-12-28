@@ -263,4 +263,5 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       redirect_to :action => :index
     end
   end
+
 end
