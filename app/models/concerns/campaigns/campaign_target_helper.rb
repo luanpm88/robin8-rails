@@ -166,7 +166,12 @@ module Campaigns
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
       end
-      kol_ids
+      if record
+        Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
+        kols
+      else
+        kol_ids
+      end
     end
 
     class_methods do
