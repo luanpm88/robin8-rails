@@ -109,17 +109,9 @@
     </div>
 
     <div class="dialog top-18" id="dialog03">
-      <div class="dia-content" style="text-align: center;">
-        <% unless request.user_agent =~ /MicroMessenger/ %>
-          <h2 class="title-ro">截图后去微信扫一扫！</h2>
-          <%= raw Rails.cache.fetch("partner_campaign/alizhongbao/#{params[:userId]}/#{params[:id]}/qr_svg", expires_in: 3.hours){RQRCode::QRCode.new(request.url, size: 12, level: :h).as_svg(module_size: 3)} %>
-        <% else %>
-          <% if @campaign_invite.try(:azb_shared) %>
-            <h2 class="title-ro">再次分享可以获得更多点击</h2>
-          <% else %>
-            <h2 class="title-ro">点击右上角即可分享到朋友圈</h2>
-          <% end %>
-        <% end %>
+      <div class="dia-content" id="qr_code" style="text-align: center; padding: 0 0 5rem 0;">
+        <iframe src="/partner_campaign/qrcode?url=<%=CGI.escape(request.url)%>" height="265px" width="100%" frameBorder="0" scrolling="no">
+        </iframe>
         <button class=" btn-blue-ro width100" onclick="closeDialog('dialog03','refresh')">知道了</button>
       </div>
     </div>
@@ -208,7 +200,6 @@
       </a>
     </section>
     <% end %>
-
   </body>
 
     <script type="text/javascript">
@@ -221,6 +212,7 @@
             window.location.href = '<%= raw (@refresh_url) %>';
           }
         }
+
         function showDialog(dialog_id){
             black.style.display = "block";
             document.getElementById(dialog_id).style.display = "block";
