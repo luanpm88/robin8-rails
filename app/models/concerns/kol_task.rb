@@ -122,7 +122,7 @@ module Concerns
 
     #新的签到历史
     def new_checkin_history
-      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.prev_month.beginning_of_month-7.days}'").select([:created_at, :is_continuous]).collect{|t| {created_at: t.created_at.to_date, is_continuous: t.is_continuous} }
+      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.prev_month.beginning_of_month-7.days}'").select([:created_at, :is_continuous]).collect{|t| {created_at: t.created_at.strftime("%Y-%-m-%d"), is_continuous: t.is_continuous} }
     end
 
     #旧的连续签到天数
