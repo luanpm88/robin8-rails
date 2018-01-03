@@ -113,6 +113,11 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+
+  def self.auto_channel_kol_multi_img_status
+    CampaignInvite.joins(:kol).where("kols.channel is not NULL").each {|t| t.screenshot_pass }
+  end
+
   #cpc截图自动审核
   def self.auto_change_multi_img_status
     @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
