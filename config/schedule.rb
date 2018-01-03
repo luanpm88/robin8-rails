@@ -68,6 +68,11 @@ every 1.day, :at => '0:45 am' do
   runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
 end
 
+#合作平台截图自动通过
+every 1.day, :at => '1:15 am' do
+  runner "CampaignInvite.auto_channel_kol_multi_img_status" , :environment => 'production'
+end
+
 # 定时处理geometry 截图审核
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", :environment => 'production'
