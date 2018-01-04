@@ -235,14 +235,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def push_record
-    @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
-
+    @push_records = CampaignPushRecord.where(campaign_id: params[:id])
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.paginate(paginate_params)
 
     respond_to do |format|
       format.html do
-        @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+        @push_records = @q.result.paginate(paginate_params)
         render 'push_record'
       end
 

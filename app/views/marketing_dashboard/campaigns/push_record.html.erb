@@ -1,0 +1,82 @@
+<style type="text/css">
+  .table-responsive table {
+    margin-bottom: 0;
+  }
+</style>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= f.label :kol_ids %>
+            <%= f.search_field :kol_ids_cont, class: "form-control", placeholder: "Kol ID's" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= f.label :push_type %>
+            <%= f.select :push_type_eq, [['normal', 'normal'], ['append', 'append'], ['newbie_kol', 'newbie_kol']], { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= f.label :filter_type %>
+            <%= f.select :filter_type_eq, [['match', 'match'], ['unmatch', 'unmatch']], { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= f.label :filter_reason %>
+            <%= f.select :filter_reason_eq, [['match', 'match'], ['unmatch', 'unmatch'], ['specified_kol', 'specified_kol'], ['tags_target_removed', 'tags_target_removed'], ['region_target_removed', 'region_target_removed'], ['age_target_removed', 'age_target_removed'], ['gender_target_removed', 'gender_target_removed'], ['invite', 'invite'], ['newbie_kol', 'newbie_kol']], { include_blank: true }, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <div>
+              <%= f.submit "搜索", class: "btn btn-primary" %>
+              <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Push Record ID</th>
+        <th>Campaign ID</th>
+        <th>Kol IDs</th>
+        <th>Push Type</th>
+        <th>Filter Type</th>
+        <th>Filter Reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @push_records.each do |pr| %>
+      <tr>
+        <td><%= pr.id %></td>
+        <td><%= pr.campaign_id %></td>
+        <td><%= pr.kol_ids %></td>
+        <td><%= pr.push_type %></td>
+        <td><%= pr.filter_type %></td>
+        <td><%= pr.filter_reason %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to '导出活动CSV', request.path + ".csv", :class => 'btn btn-default' %>
+
+<%= will_paginate @push_records, renderer: BootstrapPagination::Rails  %>
