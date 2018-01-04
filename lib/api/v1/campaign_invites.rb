@@ -131,12 +131,21 @@ module API
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
           campaign = campaign_invite.campaign  rescue nil
+          url = ""
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
-            uploader.store!(params[:screenshot])
-            campaign_invite.reupload_screenshot(uploader.url)
+            if params[:screenshot] == Array
+              params[:screenshot].each do |t| 
+                uploader.store!(t)
+                url += "#{uploader.url},"
+              end
+            else
+              uploader.store!(params[:screenshot])
+              url = "#{uploader.url},"
+            end
+            campaign_invite.reupload_screenshot(url[0..-1])
             #是否进入自动审核
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
