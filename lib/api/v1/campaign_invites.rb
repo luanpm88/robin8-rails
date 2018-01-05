@@ -136,13 +136,13 @@ module API
           elsif campaign_invite.can_upload_screenshot
 
 
-            
+
             if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
             else
               url = ""
               params.each do |image|
-                url += "#{(avatar_uploader image).url},"    if image[0].include? "screenshot"
+                url += "#{(avatar_uploader image[1]).url},"    if image[0].include? "screenshot"
               end
             end
 
