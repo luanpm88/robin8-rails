@@ -202,5 +202,13 @@ module API
       social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
       social_account.save
     end
+
+
+    def avatar_uploader(image = nil)
+      return  unless image
+      uploader = AvatarUploader.new
+      uploader.store!(image)
+      uploader.url
+    end
   end
 end
