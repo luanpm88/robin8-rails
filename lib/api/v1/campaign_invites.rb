@@ -135,14 +135,25 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.can_upload_screenshot
 
-            if params[:screenshot].class == Array
-              url = ""
-              params[:screenshot].each do |image|
-                url += "#{(avatar_uploader image).url},"
-              end
-            else
+
+            
+            if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
+            else
+              url = ""
+              params.each do |image|
+                url += "#{(avatar_uploader image).url},"    if image[0].include? "screenshot"
+              end
             end
+
+            # if params[:screenshot].class == Array
+            #   url = ""
+            #   params[:screenshot].each do |image|
+            #     url += "#{(avatar_uploader image).url},"
+            #   end
+            # else
+            #   url = "#{avatar_uploader params[:screenshot]},"
+            # end
 
             # if params[:screenshot].size > 1
             #   url = ""
