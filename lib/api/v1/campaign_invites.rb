@@ -134,14 +134,25 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
           elsif campaign_invite.can_upload_screenshot
-            if params[:screenshot].size > 1
+
+            if params[:screenshot].class == Array
               url = ""
               params[:screenshot].each do |image|
-                url += "#{(avatar_uploader image[1]).url},"
+                url += "#{(avatar_uploader image).url},"
               end
             else
               url = "#{avatar_uploader params[:screenshot]},"
             end
+
+            # if params[:screenshot].size > 1
+            #   url = ""
+            #   params[:screenshot].each do |image|
+            #     url += "#{(avatar_uploader image[1]).url},"
+            #   end
+            # else
+            #   url = "#{avatar_uploader params[:screenshot]},"
+            # end
+
             # uploader = AvatarUploader.new
             # if params[:screenshot] == Array
             #   params[:screenshot].each do |t| 
