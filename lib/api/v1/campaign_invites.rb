@@ -137,7 +137,7 @@ module API
             if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
             else
-              params.delete_if{|key , value| !(key.include? "screenshot") }.reduce(""){|url , image| url + "#{avatar_uploader image[1]},"}
+              params.delete_if{|key , value| !(key.include? "screenshot") }.reduce(""){|url , image| url + avatar_uploader(params[image[0]]) + ","}
             end
             campaign_invite.reupload_screenshot(url[0..-2])
             #是否进入自动审核
