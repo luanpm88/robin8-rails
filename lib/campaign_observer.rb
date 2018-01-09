@@ -178,7 +178,7 @@ module CampaignObserver
             overlap = (CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_ids[index]).map(&:visitor_cookie) & now_cookies).count*1.0/now_cookies.count
             if overlap > 0.3
               invalid_reasons << "存在固定的人(#{(now_cookies.count*overlap).to_i} 人)帮该用户点击(猜测可能是有一个群, 相互点击), 和campaign_id: #{campaign_ids[index]} 的重合度是: #{(overlap*100).to_i}%, 大于我们设置的 30% 重合阈值"
-              campaign_invite.permanent_reject(invalid_reasons.first)
+              campaign_invite.permanent_reject("系统检测到有作弊嫌疑")
             end
           end
         end
