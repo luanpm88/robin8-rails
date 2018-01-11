@@ -35,11 +35,16 @@ module API
        end
 
         get 'invite_info' do
+          invite_code = current_kol.kol_invite_code
+          unless invite_code.present?
+            invite_code = KolInviteCode.create(code: create_random_code , kol_id: current_kol.id)   rescue nil
+          end
           present :error, 0
           invite_count = current_kol.task_records.invite_friend.count
           invite_amount = current_kol.invite_transactions.sum(:credits)
           present :invite_count, invite_count
           present :invite_amount, invite_amount
+          present :invite_code , invite_code.code
         end
       end
     end

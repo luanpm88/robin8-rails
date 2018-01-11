@@ -175,6 +175,16 @@ module API
       campaigns_filter
     end
 
+    def create_random_code
+      begin
+        code = [*(0..9)].sample(8).join.to_i
+        raise if KolInviteCode.find_by(code: code)
+        return code
+      rescue
+        retry
+      end
+    end
+
     def update_social(params)
       # if params[:provider_name]
       #   provider = SocialAccount::Providers.invert[params[:provider_name]]
