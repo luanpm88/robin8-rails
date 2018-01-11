@@ -760,11 +760,12 @@ class Kol < ActiveRecord::Base
   end
 
   def invite_code_dispose(code , first_login = false)
+    code = code.to_i
     if code.size == 8
       return "邀请码仅限新用户使用"  unless first_login
       invite_code = KolInviteCode.find_by(code: code)
       return "无效的邀请码"  unless invite_code
-      RegisteredInvitation.where(mobile_number: self.mobile_number).first_or_create(inviter_id: invite_code.kol_id , status: "pending")
+      RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
