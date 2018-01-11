@@ -525,7 +525,7 @@ class Kol < ActiveRecord::Base
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
-      first_login ? [kol , false] : kol
+      first_login ? [kol , true] : kol
     end
   end
 
