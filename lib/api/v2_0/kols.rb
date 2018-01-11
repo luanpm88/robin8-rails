@@ -118,10 +118,11 @@ module API
           requires :invite_code , type: Integer
         end
         post "invite_code" do
-          if current_kol.invite_code_dispose(params[:invite_code])
+          invite = current_kol.invite_code_dispose(params[:invite_code])
+          if invite == true
             present :error, 0
           else
-            return error_403!({error: 1, detail: '无效的邀请码'})
+            return error_403!({error: 1, detail: invite})
           end
         end
 

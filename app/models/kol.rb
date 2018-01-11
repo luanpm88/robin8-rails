@@ -760,13 +760,14 @@ class Kol < ActiveRecord::Base
 
   def invite_code_dispose(code , first_login = false)
     if code.size == 8
+      return "邀请码仅限新用户使用"  unless first_login
       invite_code = KolInviteCode.find_by(code: code)
-      return false  unless invite_code || TaskRecord.find_by(invitees_id: self.id) || first_login
+      return "无效的邀请码"  unless invite_code
       RegisteredInvitation.where(mobile_number: self.mobile_number).first_or_create(inviter_id: invite_code.kol_id , status: "pending")
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
-      return false  unless invite_code
+      return "无效的邀请码"  unless invite_code
       if invite_code.invite_type == "admintag"
         admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
         unless self.admintags.include? admintag
@@ -786,7 +787,7 @@ class Kol < ActiveRecord::Base
       end
       true
     else
-      false
+      return "无效的邀请码"
     end
   end
 

@@ -8,7 +8,8 @@ module API
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.find_by(mobile_number: params[:mobile_number])
-          return error!({error: 1, detail: '无效的邀请码'}, 403) if params[:invite_code] && kol.invite_code_dispose(params[:invite_code] , !kol.present?) == false
+          invite = kol.invite_code_dispose(params[:invite_code] , !kol.present?) if params[:invite_code] 
+          return error!({error: 2, detail: invite }, 403)   unless  invite == true
           kol.remove_same_device_token(params[:device_token])
           if kol.present?
             retries = true
