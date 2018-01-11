@@ -760,7 +760,7 @@ class Kol < ActiveRecord::Base
   end
 
   def invite_code_dispose(code , first_login = false)
-    code = code.to_i
+    code = code.to_s
     if code.size == 8
       return "邀请码仅限新用户使用"  unless first_login
       invite_code = KolInviteCode.find_by(code: code)
