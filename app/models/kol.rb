@@ -495,7 +495,7 @@ class Kol < ActiveRecord::Base
   end
 
 
-  def self.reg_or_sign_in(params, kol = nil)
+  def self.reg_or_sign_in(params, kol = nil , first_login = false)
     Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
@@ -515,7 +515,7 @@ class Kol < ActiveRecord::Base
           ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
         end
       end
-      [kol , false]
+      first_login ? [kol , false] : kol
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
@@ -525,7 +525,7 @@ class Kol < ActiveRecord::Base
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
-      [kol , true]
+      first_login ? [kol , false] : kol
     end
   end
 

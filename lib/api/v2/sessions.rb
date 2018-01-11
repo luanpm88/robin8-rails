@@ -10,10 +10,8 @@ module API
           params[:current_sign_in_ip] = request.ip
           kol_exist = Kol.find_by(mobile_number: params[:mobile_number]).present?
           return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
-          invite = kol.invite_code_dispose(params[:invite_code] , !kol_exist) if params[:invite_code].present?
-          return error!({error: 2, detail: invite }, 403)   if  invite == true
-          kol = Kol.reg_or_sign_in(params)
-          return error!({error: 2, detail: kol }, 403)   if kol.class
+          kol  , first_login = Kol.reg_or_sign_in(params , nil , true)
+          kol.invite_code_dispose(params[:invite_code] , first_login)
           kol.remove_same_device_token(params[:device_token])
 
           if params[:kol_uuid].present?
