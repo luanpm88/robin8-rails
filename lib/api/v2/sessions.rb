@@ -11,7 +11,7 @@ module API
           kol_exist = Kol.find_by(mobile_number: params[:mobile_number]).present?
           return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if !kol_exist && Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
           kol , first_login = Kol.reg_or_sign_in(params , nil , true)
-          if params[:invite_code]
+          if params[:invite_code].present?
             invite = kol.invite_code_dispose(params[:invite_code] , first_login)  
             return error!({error: 2, detail: invite}, 403)   unless invite == true
           end
