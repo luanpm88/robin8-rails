@@ -758,10 +758,10 @@ class Kol < ActiveRecord::Base
     self.invited_users.members
   end
 
-  def invite_code_dispose(code)
+  def invite_code_dispose(code , first_login = false)
     if code.size == 8
       invite_code = KolInviteCode.find_by(code: code)
-      return false  unless invite_code || TaskRecord.find_by(invitees_id: self.id)
+      return false  unless invite_code || TaskRecord.find_by(invitees_id: self.id) || first_login
       RegisteredInvitation.where(mobile_number: self.mobile_number).first_or_create(inviter_id: invite_code.kol_id , status: "pending")
       true
     elsif code.size == 6
