@@ -515,6 +515,7 @@ class Kol < ActiveRecord::Base
           ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
         end
       end
+      [kol , false]
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
@@ -524,8 +525,8 @@ class Kol < ActiveRecord::Base
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
+      [kol , true]
     end
-    return kol
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
