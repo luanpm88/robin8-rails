@@ -14,7 +14,7 @@ module API
             result = check_invite_code(params[:invite_code] , kol_exist) 
             return error!({error: 2, detail: result}, 403)  unless result == true
           end
-          kol = Kol.reg_or_sign_in(params , nil , true)
+          kol = Kol.reg_or_sign_in(params)
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
           if params[:kol_uuid].present?
