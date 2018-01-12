@@ -119,7 +119,7 @@ module API
         end
         post "invite_code" do
           result = check_invite_code(params[:invite_code] , true)
-          return error_403!({error: 1, detail: invite})   unless result == true
+          return error_403!({error: 1, detail: result})   unless result == true
           current_kol.invite_code_dispose(params[:invite_code])
           present :error, 0
         end
