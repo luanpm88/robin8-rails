@@ -14,7 +14,7 @@ module API
             kol , first_login = Kol.reg_or_sign_in(params , nil , true)
             if params[:invite_code].present?
               invite = kol.invite_code_dispose(params[:invite_code] , first_login)  
-              return error!({error: 2, detail: invite}, 403) and raise  unless invite == true
+              raise ActiveRecord::Rollback  and  return error!({error: 2, detail: invite}, 403)     unless invite == true
             end
           end
             kol.remove_same_device_token(params[:device_token])
