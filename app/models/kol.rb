@@ -495,7 +495,7 @@ class Kol < ActiveRecord::Base
   end
 
 
-  def self.reg_or_sign_in(params, kol = nil , first_login = false)
+  def self.reg_or_sign_in(params, kol = nil)
     Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
@@ -515,7 +515,6 @@ class Kol < ActiveRecord::Base
           ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
         end
       end
-      first_login ? [kol , false] : kol
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
@@ -525,8 +524,8 @@ class Kol < ActiveRecord::Base
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
-      first_login ? [kol , true] : kol
     end
+    kol
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
@@ -759,17 +758,14 @@ class Kol < ActiveRecord::Base
     self.invited_users.members
   end
 
-  def invite_code_dispose(code , first_login = false)
+  def invite_code_dispose(code)
     code = code.to_s
     if code.size == 8
-      return "邀请码仅限新用户使用"  unless first_login
       invite_code = KolInviteCode.find_by(code: code)
-      return "无效的邀请码"  unless invite_code
       RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
-      return "无效的邀请码"  unless invite_code
       if invite_code.invite_type == "admintag"
         admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
         unless self.admintags.include? admintag
@@ -787,10 +783,8 @@ class Kol < ActiveRecord::Base
         club = Club.find invite_code.invite_value
         ClubMember.create(club_id: club.id , kol_id: self.id)
       end
-      true
-    else
-      return "无效的邀请码"
     end
+    true
   end
 
   # def get_share_proportion(credits)
