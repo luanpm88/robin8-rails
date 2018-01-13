@@ -242,8 +242,6 @@ Rails.application.routes.draw do
 
   # wechat_campaign 新增了点击数
   get 'partner_campaign/campaign',                        to: 'partner_campaign#campaign'
-  get 'partner_campaign/qrcode',                          to:
-    'partner_campaign#qrcode'
   put 'partner_campaign/:campaign_id/:kol_id/complete',   to: 'partner_campaign#complete'
   resources :partner_campaign
 
