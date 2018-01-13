@@ -182,5 +182,9 @@ module Partners
     def self.import_dope_data(file_path)
       $redis.rpush("dope_sample_data", CSV.read(file_path))
     end
+
+    def self.sample_data_left
+      $redis.llen("dope_sample_data")
+    end
   end
 end
