@@ -66,7 +66,7 @@ gem 'twilio-ruby', '~> 4.2.1'
 gem 'newrelic_rpm'
 
 # 微信相关
-gem 'weixin_authorize'
+gem 'weixin_authorize', '~> 1.6.4'
 gem "typhoeus"
 
 source 'http://rails-assets.org' do

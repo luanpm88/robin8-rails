@@ -15,7 +15,7 @@ stdout_path "log/unicorn.stdout.log"
 
 # workers
 # ENV['UNICORN_PROCESSES'] ||= '8'
-worker_processes 8
+worker_processes 10
 
 # To save some memory and improve performance
 GC.respond_to?(:copy_on_write_friendly=) and
