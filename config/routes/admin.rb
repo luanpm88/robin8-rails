@@ -73,6 +73,7 @@ Rails.application.routes.draw do
         put :push_to_alizhongbao
         put :push_to_wcs
         put :push_to_all_partners
+        put :lift_kol_level_count
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
@@ -193,7 +194,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :invite_code 
+    resources :invite_code
     resources :talking_data
     resources :kol_data
     resources :campaign_data
@@ -252,7 +253,7 @@ Rails.application.routes.draw do
       end
     end
 
-    
+
 
     namespace :utilities do
       resource  "verify_code"

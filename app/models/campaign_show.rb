@@ -91,7 +91,9 @@ class CampaignShow < ActiveRecord::Base
     if kol
       store_key =  "five_click_threshold_#{campaign_invite.id}_#{visit_time.min / 5}"
       current_five_click = Rails.cache.read(store_key)  || 0
-      if current_five_click >= (kol.five_click_threshold || 20)
+      # if current_five_click >= (kol.five_click_threshold || 20)
+      # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
+      if campaign.is_limit_click_count && current_five_click >= (kol.five_click_threshold || 20)
         return [false, "exceed_five_click_threshold"]
       else
         Rails.cache.write(store_key, current_five_click + 1, :expires_in => 5.minutes)
@@ -105,7 +107,9 @@ class CampaignShow < ActiveRecord::Base
       else
         level_threshold = 120
       end
-      if current_total_click >= level_threshold
+      # if current_total_click >= level_threshold
+      # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
+      if campaign.is_limit_click_count && current_total_click >= level_threshold
         return [false, "exceed_kol_level_threshold"]
       else
         expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
