@@ -5,13 +5,13 @@ class CampaignShow < ActiveRecord::Base
   IpTimeout = Rails.env.production? ? 30.seconds : 5.seconds
   IpMaxCount = Rails.env.production? ? 20 : 40
   CampaignExecuted = 'campaign_had_executed'
-=beging
-  if Rails.env.production?
-    KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
-  else
-    KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
-  end
-=end
+#= beging
+#   if Rails.env.production?
+#     KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
+#   else
+#     KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
+#   end
+#= end
 
   belongs_to :campaign
   scope :valid, ->{ where(:status => 1) }
@@ -103,13 +103,13 @@ class CampaignShow < ActiveRecord::Base
       # check kol's max_click depend on kol credits level
       store_key =  "kol_level_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-=begin
-      if kol.kol_level.present?
-        level_threshold  = KolCreditLevels["#{kol.kol_level}"]
-      else
-        level_threshold = 120
-      end
-=end
+#= begin
+#       if kol.kol_level.present?
+#         level_threshold  = KolCreditLevels["#{kol.kol_level}"]
+#       else
+#         level_threshold = 120
+#       end
+#= end
       level_threshold = kol.kol_level.present? ? Rails.application.secrets[:kol_levels][kol.kol_level.to_sym] : 120
       # if current_total_click >= level_threshold
       # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
