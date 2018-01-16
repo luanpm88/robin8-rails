@@ -1,4 +1,3 @@
-require 'timeout'
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   def index
     authorize! :read, Campaign
