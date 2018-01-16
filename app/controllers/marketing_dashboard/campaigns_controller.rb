@@ -1,3 +1,4 @@
+require 'timeout'
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   def index
     authorize! :read, Campaign
@@ -335,9 +336,13 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
               when "all"
                 "所有合作伙伴"
               end
-    Partners::Alizhongbao.push_campaign(params[:id])   if !(@campaign.channel.in? ["azb" , "all"]) && params[:channel].in? ["azb" , "all"] 
+    notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    if !(@campaign.channel.in? ["azb" , "all"]) && params[:channel].in? ["azb" , "all"]   
+      resp = Partners::Alizhongbao.push_campaign(params[:id]) 
+      notice = "该活动推送给阿里众包失败,请检查"  unless resp
+    end
     @campaign.update_attributes!(channel: params[:channel])
-    flash[:notice] = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    flash[:notice] = notice 
     redirect_to :action => :index
   end
 
