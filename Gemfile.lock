@@ -982,7 +982,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
-  yajl-ruby
 
 BUNDLED WITH
-   1.16.1
+   1.14.6
