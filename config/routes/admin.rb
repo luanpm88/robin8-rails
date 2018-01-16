@@ -73,6 +73,8 @@ Rails.application.routes.draw do
         put :push_to_alizhongbao
         put :push_to_wcs
         put :push_to_all_partners
+        put :push_to_partners
+        put :settle_for_partners
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]

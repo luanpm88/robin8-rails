@@ -80,11 +80,11 @@ module Partners
 
       inspect_result = if final_pay <= 0
                          "2"
-                       elsif final_pay < camp_inv.actual_per_action_budget
+                       elsif final_pay < camp_inv.campaign.actual_per_action_budget
                          "3"
-                       elsif final_pay > camp_inv.actual_per_action_budget
+                       elsif final_pay > camp_inv.campaign.actual_per_action_budget
                          "4"
-                       elsif final_pay == camp_inv.actual_per_action_budget
+                       elsif final_pay == camp_inv.campaign.actual_per_action_budget
                          "1"
                        end
 

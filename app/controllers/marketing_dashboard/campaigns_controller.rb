@@ -264,6 +264,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
+=begin
   def push_to_alizhongbao
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
@@ -319,5 +320,28 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
     redirect_to :action => :index
   end
+=end
 
+  def push_to_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    partner = case params[:channel]
+              when "wcs"
+                "微差事"
+              when "azb"
+                "阿里众包"
+              when "all"
+                "所有合作伙伴"
+              end
+    @campaign.update_attributes!(channel: params[:channel])
+    Partners::Alizhongbao.push_campaign(params[:id])   if params[:channel].in? ["azb" , "all"] 
+    flash[:notice] = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    redirect_to :action => :index
+  end
+
+  def settle_for_partners
+    SettlePartnerWorker.perform(params[:id] , params[:channel])
+    flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
+    redirect_to :action => :index
+  end
 end

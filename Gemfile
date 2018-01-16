@@ -48,6 +48,7 @@ gem 'redis-objects'
 gem 'redis-rails'
 gem 'redis-namespace'
 gem 'rest-client'
+gem 'yajl-ruby', require: 'yajl'
 
 gem 'mongoid', '~> 5.0.0'
 
