@@ -43,7 +43,6 @@ module Concerns
 
     # 成功接收接收活动for pc
     def approve_campaign(campaign_id)
-      puts "-----------------------------------------------------------"
       campaign = Campaign.find campaign_id  rescue nil
       return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
       campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)

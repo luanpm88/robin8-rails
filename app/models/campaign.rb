@@ -432,7 +432,7 @@ class Campaign < ActiveRecord::Base
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")
       example_screenshot = self.example_screenshot if example_screenshot.size = 1
-      return self.example_screenshot
+      return example_screenshot
     end
     if self.sub_type == 'weibo'
       ExampleScreenshots['weibo']
