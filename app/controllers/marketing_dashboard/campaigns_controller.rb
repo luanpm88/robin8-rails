@@ -1,4 +1,5 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
+  protect_from_forgery :except => :save_example_screenshot_and_remark
   def index
     authorize! :read, Campaign
 
@@ -126,8 +127,9 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def save_example_screenshot_and_remark
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
-      remark: params[:campaign][:remark])
+    example_screenshot = ""
+    params.delete_if{|key , value| !(key.include? "image") }.each {|image|  example_screenshot += "#{Uploader::FileUploader.image_uploader(image[1])},"}
+    @campaign.update_attributes(example_screenshot: example_screenshot[0..-2] ,remark: params[:comment])
     flash[:notice] = "保存成功"
     render :add_example_screenshot
   end

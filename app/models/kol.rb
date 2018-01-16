@@ -779,6 +779,15 @@ class Kol < ActiveRecord::Base
     true
   end
 
+  def create_invite_code
+    begin
+      code = [*(0..9)].sample(8).join
+      raise "repetitive_invite_code"   unless  InviteCode.create(code: code.to_i , invite_type: 'invite_friend' , invite_value: self.id).valid?
+    rescue
+      retry
+    end
+  end
+
   # def get_share_proportion(credits)
   #   proportion = self.club_number.club.proportion
   #   [proportion * credits , (1 - proportion) * credits]

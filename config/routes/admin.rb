@@ -65,7 +65,7 @@ Rails.application.routes.draw do
         get :stop
         get :push_all
         post :refresh_budget
-        patch :save_example_screenshot_and_remark
+        post :save_example_screenshot_and_remark
         patch :save_applying_description
         match 'add_seller', via: [:post, :get]
         get :push_record
