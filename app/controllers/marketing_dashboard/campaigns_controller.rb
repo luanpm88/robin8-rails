@@ -325,6 +325,8 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def push_to_partners
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
+    channel = params[:channel]
+    channel = "all"  unless @campaign.channel.blank?
     partner = case params[:channel]
               when "wcs"
                 "微差事"
@@ -333,8 +335,8 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
               when "all"
                 "所有合作伙伴"
               end
+    Partners::Alizhongbao.push_campaign(params[:id])   if !(@campaign.channel.in? ["azb" , "all"]) && params[:channel].in? ["azb" , "all"] 
     @campaign.update_attributes!(channel: params[:channel])
-    Partners::Alizhongbao.push_campaign(params[:id])   if params[:channel].in? ["azb" , "all"] 
     flash[:notice] = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
     redirect_to :action => :index
   end
