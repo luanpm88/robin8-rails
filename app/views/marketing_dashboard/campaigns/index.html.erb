@@ -171,6 +171,7 @@
           <th>结算点击</th>
           <th>补推</th>
           <th>销售人员</th>
+          <th>是否限制点击数</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -212,6 +213,7 @@
               <%= seller.name %>
             <% end %>
           </td>
+          <td><%= c.is_limit_click_count ? '是' : '否' %> </td>
           <td>
             <%= link_to '详情', marketing_dashboard_campaign_path(c), target: "_blank" %> /
             <% if ["executing", "executed", "settled"].include?(c.status) %>
@@ -262,6 +264,9 @@
                   <li><%= link_to '同步到所有合作伙伴', push_to_all_partners_marketing_dashboard_campaign_path(c), method: :put %></li>
                 <% elsif ch == 'all' %>
                   <li><%= link_to '该活动早已推送过所有合作伙伴了，长点心', '#' %></li>
+                <% end %>
+                <% if c.is_limit_click_count %>
+                  <li><%= link_to '解除kol点击限制', lift_kol_level_count_marketing_dashboard_campaign_path(c), method: :put %></li>
                 <% end %>
               </ul>
             </div>
