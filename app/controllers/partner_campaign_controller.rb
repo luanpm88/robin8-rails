@@ -1,7 +1,7 @@
 require 'rqrcode'
 
 class PartnerCampaignController < ApplicationController
-  before_action :valid_signature? , :set_kol, except: [:complete, :qrcode]
+  before_action :valid_signature? , :set_kol, except: [:complete]
   before_action :set_campaign, only: [:campaign, :show]
   layout :false
 
@@ -18,9 +18,6 @@ class PartnerCampaignController < ApplicationController
         render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
     end
-  end
-
-  def qrcode
   end
 
   def index # For WCS 微差事

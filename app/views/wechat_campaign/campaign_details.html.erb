@@ -1,13 +1,13 @@
 <%
-   title = @campaign.name
-   description = @campaign.description
-   poster_url = @campaign.img_url
-   url = request.url
+   title        = @campaign.name
+   description  = @campaign.description
+   poster_url   = @campaign.img_url
+   url          = Rails.application.secrets[:domain] + request.fullpath
    sign_package = ($weixin_client.get_jssign_package(url) rescue {})
-   app_id = sign_package['appId']
-   nonce = sign_package['nonceStr']
-   ts = sign_package['timestamp']
-   signature = sign_package['signature']
+   app_id       = sign_package['appId']
+   nonce        = sign_package['nonceStr']
+   ts           = sign_package['timestamp']
+   signature    = sign_package['signature']
 %>
 
 <!DOCTYPE html>
