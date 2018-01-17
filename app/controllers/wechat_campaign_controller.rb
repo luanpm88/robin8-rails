@@ -66,15 +66,10 @@ class WechatCampaignController < ApplicationController
       if campaign and campaign.status == 'executing'
         if campaign.per_budget_type == 'recruit'
           campaign_invite = kol_exists.campaign_invites.where(:campaign_id => params[:campaign_id]).first rescue nil
-          if campaign.blank? || !campaign.is_recruit_type? || !kol_exists.receive_campaign_ids.include?("#{params[:campaign_id]}")
-            return render json: {error: '该活动不存在'}
-          elsif !campaign.can_apply || campaign.status != 'executing' || campaign_invite.present?
-            return render json: {error: '该活动已过报名时间或者您已经接收本次活动'}
-          elsif campaign.influence_score_target && kol_exists.influence_score.to_i < campaign.influence_score_target.get_score_value
-            return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'}
-          else
-            campaign_invite = kol_exists.apply_campaign(params)
-          end
+          return render json: {error: '该活动不存在'} if campaign.blank? || !campaign.is_recruit_type? || !kol_exists.receive_campaign_ids.include?("#{params[:campaign_id]}")
+          return render json: {error: '该活动已过报名时间或者您已经接收本次活动'} if !campaign.can_apply || campaign.status != 'executing' || campaign_invite.present?
+          return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'} if campaign.influence_score_target && kol_exists.influence_score.to_i < campaign.influence_score_target.get_score_value
+          campaign_invite = kol_exists.apply_campaign(params)
         else
           kol_exists.add_campaign_id campaign_id
           kol_exists.approve_campaign(campaign_id)
@@ -109,16 +104,12 @@ class WechatCampaignController < ApplicationController
         if campaign and campaign.status == 'executing'
           if campaign.per_budget_type == 'recruit'
             campaign_invite = kol.campaign_invites.where(:campaign_id => params[:campaign_id]).first rescue nil
-            if campaign.blank? || !campaign.is_recruit_type?
-              return render json: {error: '该活动不存在'}
-            elsif !campaign.can_apply || campaign.status != 'executing' || campaign_invite.present?
-              return render json: {error: '该活动已过报名时间或者您已经接收本次活动！'}
-            elsif  campaign.influence_score_target && kol.influence_score.to_i < campaign.influence_score_target.get_score_value
-              return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'}
-            else
-              kol.add_campaign_id(campaign_id)
-              campaign_invite = kol.apply_campaign(params)
-            end
+            return render json: {error: '该活动不存在'} if campaign.blank? || !campaign.is_recruit_type?
+            return render json: {error: '该活动已过报名时间或者您已经接收本次活动！'} if !campaign.can_apply || campaign.status != 'executing' || campaign_invite.present?
+            return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'} if  campaign.influence_score_target && kol.influence_score.to_i < campaign.influence_score_target.get_score_value
+
+            kol.add_campaign_id(campaign_id)
+            campaign_invite = kol.apply_campaign(params)
           else
             kol.add_campaign_id campaign_id
             kol.approve_campaign(campaign_id)
