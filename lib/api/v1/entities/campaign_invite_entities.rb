@@ -6,8 +6,10 @@ module API
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :status, :img_status, :is_invited, :reject_reason , :uuid, :price, :sale_price , :sub_type
           expose :screenshot do |campaign_invite|
-            screenshot = campaign_invite.screenshot.split(",") rescue []
-            screenshot = campaign_invite.screenshot   if screenshot.size == 1
+            screenshot = campaign_invite.screenshot
+          end
+          expose :screenshot do |campaign_invite|
+            campaign_invite.get_multi_screenshots
           end
           expose :share_url do |campaign_invite|
             campaign_invite.visit_url

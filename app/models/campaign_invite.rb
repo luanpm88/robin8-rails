@@ -420,4 +420,8 @@ class CampaignInvite < ActiveRecord::Base
       ExampleScreenshots['wechat']
     end
   end
+
+  def get_multi_screenshots
+    screenshot = campaign_invite.screenshot.split(",") rescue []
+  end
 end

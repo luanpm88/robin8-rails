@@ -140,7 +140,7 @@ module API
               url = "#{avatar_uploader params[:screenshot]},"
             else
               url = ""
-              params.delete_if{|key , value| !(key.include? "screenshot") }.each {|image|  url += "#{avatar_uploader(image[1])},"}
+              params.delete_if{|key , value| !(key.include? "screenshot") }.each {|image|  url += "#{Uploader::FileUploader.image_uploader(image[1])},"}
             end
             campaign_invite.reupload_screenshot(url[0..-2])
             #是否进入自动审核
