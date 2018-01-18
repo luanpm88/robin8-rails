@@ -410,8 +410,8 @@ class CampaignInvite < ActiveRecord::Base
     RemoveOldInvitationsWorker.perform_async()
   end
 
-  def get_example_screenshot
-    return self.campaign.example_screenshot if self.campaign.example_screenshot.present?
+  def get_example_screenshot(multi = false)
+    return self.campaign.example_screenshot(multi) if self.campaign.example_screenshot.present?
     if self.sub_type == 'weibo'
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
