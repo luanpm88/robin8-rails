@@ -8,7 +8,7 @@ module API
           expose :screenshot do |campaign_invite|
             screenshot = campaign_invite.screenshot
           end
-          expose :screenshot do |campaign_invite|
+          expose :screenshots do |campaign_invite|
             campaign_invite.get_multi_screenshots
           end
           expose :share_url do |campaign_invite|
