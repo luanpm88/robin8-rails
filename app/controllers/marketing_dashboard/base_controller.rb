@@ -35,6 +35,11 @@ class MarketingDashboard::BaseController < ApplicationController
       :per_page => params[:per_page] || 20
     }
   end
+
+  # {"(1i)"=>"2018", "(2i)"=>"1", "(3i)"=>"18"}
+  def format_date(args)
+    Time.parse args.values.join('-')
+  end
 end
 
 class SearchHelper
