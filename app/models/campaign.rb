@@ -432,8 +432,7 @@ class Campaign < ActiveRecord::Base
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")
-      example_screenshot = self.example_screenshot if example_screenshot.size == 1
-      return example_screenshot[0]   unless multi
+      return example_screenshot[0]   unless multi 
       return example_screenshot
     end
     if self.sub_type == 'weibo'
