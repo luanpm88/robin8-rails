@@ -422,6 +422,6 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def get_multi_screenshots
-    screenshot = campaign_invite.screenshot.split(",") rescue []
+    screenshot = self.screenshot.split(",") rescue []
   end
 end
