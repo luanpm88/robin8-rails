@@ -265,6 +265,11 @@ Rails.application.routes.draw do
           post "update_value"
         end
       end
+      resources :promotions do
+        member do
+          put :invalid
+        end
+      end
     end
   end
 end

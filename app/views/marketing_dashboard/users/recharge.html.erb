@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
           <label>积分有效期至</label></br>
-          <%= date_select :expired_at, nil, class: "form-control"%>
+          <%= date_select :expired_at, "written_on", selected: 1.month.since, class: "form-control"%>
         </div>
         <div class="form-group">
           <label>品牌主公司全名</label>

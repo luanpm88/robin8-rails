@@ -1,0 +1,53 @@
+<%= form_for(@promotion, url: marketing_dashboard_utilities_promotions_path, html: { class: "form-horizontal"}) do |f| %>
+
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-3 control-label">标题</label>
+    <div class="col-sm-8">
+      <%= f.text_field :title, :placeholder => '', :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">最低起送</label>
+    <div class="col-sm-8">
+      <%= f.number_field :min_credit, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">赠送比例(%)</label>
+    <div class="col-sm-8">
+      <%= f.number_field :rate, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">说明</label>
+    <div class="col-sm-8">
+      <%= f.text_area :description, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">开始</label>
+    <div class="col-sm-8">
+      <%= f.date_select :start_at, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">结束</label>
+    <div class="col-sm-8">
+      <%= f.date_select :end_at, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit '提交', :class => 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>
