@@ -123,7 +123,7 @@ class CampaignShow < ActiveRecord::Base
       #如果是点击类型活动且结束原因不是费用花完, 需要给访问时间小于结束时间的点击算为有效点击
       #return true  redis 会自动增加,但是数据库 已经同步过了 需要手动同步
       if campaign.is_click_type? && campaign.finish_remark.present? && campaign.finish_remark.start_with?('expired') &&
-        campaign_invite.status != 'settled' && visit_time <= campaign.actual_deadline_time
+        campaign_invite.status != 'settled' && visit_time <= campaign.actual_deadline_time && campaign.redis_avail_click.value.to_i >= campaign.max_action.to_i
         campaign_invite.increment!(:avail_click)
         campaign_invite.increment!(:total_click)
         return [true, nil]
