@@ -30,22 +30,3 @@
     <% end %>
   </tbody>
 </table>
-
-
-<script type="text/javascript">
-  $(function(){
-    $(".update-value").click(function(e){
-      e.preventDefault();
-      $.ajax({
-        method: 'POST',
-        url: '/marketing_dashboard/utilities/settings/update_value',
-        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
-//        success: function(){
-//          alert("修改成功");
-//          window.location.reload();
-//        }
-      })
-
-    })
-  })
-</script>
