@@ -43,7 +43,7 @@ module API
             campaign_invite.get_example_screenshot(true)
           end
           expose :screenshot_comment do |campaign_invite|
-            campaign_invite.comment.split("&")  rescue []
+            campaign_invite.campaign.comment.split("&")  rescue []
           end
           expose :campaign do |campaign_invite, options|
             API::V1::Entities::CampaignEntities::Summary.represent campaign_invite.campaign, options.merge({campaign_invite: campaign_invite})
