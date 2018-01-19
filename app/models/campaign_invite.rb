@@ -411,14 +411,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def get_example_screenshot(multi = false)
-    return self.campaign.get_example_screenshot(multi) if self.campaign.example_screenshot.present?
-    if self.sub_type == 'weibo'
-      ExampleScreenshots['weibo']
-    elsif self.sub_type == 'qq'
-      ExampleScreenshots['qq']
-    elsif self.sub_type == 'wechat'
-      ExampleScreenshots['wechat']
-    end
+    self.campaign.get_example_screenshot(multi) 
   end
 
   def get_multi_screenshots

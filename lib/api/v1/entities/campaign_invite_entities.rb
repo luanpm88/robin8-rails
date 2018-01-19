@@ -40,7 +40,7 @@ module API
             campaign_invite.get_example_screenshot
           end
           expose :cpi_example_screenshots do |campaign_invite|
-            [campaign_invite.get_example_screenshot(true)]
+            campaign_invite.get_example_screenshot(true)
           end
           expose :screenshot_comment do |campaign_invite|
             campaign_invite.campaign.comment.split("&")  rescue []

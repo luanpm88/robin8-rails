@@ -9,7 +9,7 @@ module API
             campaign.get_example_screenshot
           end
           expose :cpi_example_screenshots do |campaign|
-            [campaign.get_example_screenshot(true)]
+            campaign.get_example_screenshot(true)
           end
           expose :per_budget_type do |campaign|
             if campaign.is_cpi_type?
