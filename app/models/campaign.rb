@@ -431,7 +431,7 @@ class Campaign < ActiveRecord::Base
   def get_example_screenshot(multi = false)
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
-      example_screenshot = self.example_screenshot.split(",")
+      example_screenshot = self.example_screenshot.split(",")   rescue []
       return example_screenshot[0]   unless multi 
       return example_screenshot
     end
