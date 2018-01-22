@@ -202,5 +202,9 @@ module API
       social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
       social_account.save
     end
+
+    def format_email(email)
+      email.match(/^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/)
+    end
   end
 end
