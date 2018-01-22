@@ -42,7 +42,21 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+  # config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default :charset => 'utf-8'
+  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.office365.com',
+    port:                 "25",
+    domain:               'robin8.com',
+    user_name:           'system@robin8.com',
+    password:             'Joq59068',
+    authentication:       'login',
+    enable_starttls_auto: true  }
 
   # config.after_initialize do
   #   Timecop.scale(1440)
