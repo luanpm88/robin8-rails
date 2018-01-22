@@ -1,3 +1,5 @@
+require 'rqrcode'
+
 module Users
   class SessionsController < ApplicationController
     layout 'passport'
@@ -91,7 +93,7 @@ module Users
       uuid = Base64.encode64(SecureRandom.uuid).gsub("\n","")
       $redis.set "login_uuid_#{uuid}", true
       $redis.expire "login_uuid_#{uuid}", 1800
-      url = "http://qr.topscan.com/api.php?text=#{uuid}"
+      url = RQRCode::QRCode.new(uuid, size: 12, level: :h).as_svg( module_size: 3 )
       return uuid, url
     end
 
