@@ -436,16 +436,13 @@ class Campaign < ActiveRecord::Base
       return example_screenshot
     end
     if self.sub_type == 'weibo'
-      return [ExampleScreenshots['weibo']]   if multi
+      return ExampleScreenshots['weibo'].split   if multi
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
-      return [ExampleScreenshots['qq']]      if multi
+      return ExampleScreenshots['qq'].split      if multi
       ExampleScreenshots['qq']
-    elsif self.sub_type == 'wechat'
-      return [ExampleScreenshots['wechat']]  if multi
-      ExampleScreenshots['wechat']
     else
-      return [ExampleScreenshots['wechat']] if multi
+      return ExampleScreenshots['wechat'].split  if multi
       ExampleScreenshots['wechat']
     end
   end
