@@ -30,7 +30,7 @@ this.App = {};
 
 (function() {
   okUrl = $("#ok_url").val();
-  App.cable = Cable.createConsumer("<%= smart_root_url('passport/scan/cable', protocol: 'wss', subdomain: false) %>");
+  App.cable = Cable.createConsumer("<%= url_for('/passport/scan/cable') %>");
   return App.cable.subscriptions.create({
     channel: 'QrCodeLoginChannel',
     uuid: $("#scan_uuid").val()
