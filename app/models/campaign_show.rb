@@ -5,12 +5,13 @@ class CampaignShow < ActiveRecord::Base
   IpTimeout = Rails.env.production? ? 30.seconds : 5.seconds
   IpMaxCount = Rails.env.production? ? 20 : 40
   CampaignExecuted = 'campaign_had_executed'
-
-  if Rails.env.production?
-    KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
-  else
-    KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
-  end
+#= beging
+#   if Rails.env.production?
+#     KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
+#   else
+#     KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
+#   end
+#= end
 
   belongs_to :campaign
   scope :valid, ->{ where(:status => 1) }
@@ -91,7 +92,9 @@ class CampaignShow < ActiveRecord::Base
     if kol
       store_key =  "five_click_threshold_#{campaign_invite.id}_#{visit_time.min / 5}"
       current_five_click = Rails.cache.read(store_key)  || 0
-      if current_five_click >= (kol.five_click_threshold || 20)
+      # if current_five_click >= (kol.five_click_threshold || 20)
+      # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
+      if campaign.is_limit_click_count && current_five_click >= (kol.five_click_threshold || 20)
         return [false, "exceed_five_click_threshold"]
       else
         Rails.cache.write(store_key, current_five_click + 1, :expires_in => 5.minutes)
@@ -100,12 +103,17 @@ class CampaignShow < ActiveRecord::Base
       # check kol's max_click depend on kol credits level
       store_key =  "kol_level_#{campaign_invite.id}"
       current_total_click = Rails.cache.read(store_key)  || 0
-      if kol.kol_level.present?
-        level_threshold  = KolCreditLevels["#{kol.kol_level}"]
-      else
-        level_threshold = 120
-      end
-      if current_total_click >= level_threshold
+#= begin
+#       if kol.kol_level.present?
+#         level_threshold  = KolCreditLevels["#{kol.kol_level}"]
+#       else
+#         level_threshold = 120
+#       end
+#= end
+      level_threshold = kol.kol_level.present? ? Rails.application.secrets[:kol_levels][kol.kol_level.to_sym] : 120
+      # if current_total_click >= level_threshold
+      # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
+      if campaign.is_limit_click_count && current_total_click >= level_threshold
         return [false, "exceed_kol_level_threshold"]
       else
         expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
