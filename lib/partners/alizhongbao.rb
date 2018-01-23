@@ -1,6 +1,6 @@
 module Partners
   module Alizhongbao
-    GATEWAY_URL = Rails.env.production? ? "https://zbapi.taobao.com/gateway.do" : "http://140.205.76.29/gateway.do"
+    GATEWAY_URL = Rails.application.secrets[:partners][:alizhongbao][:gateway_url]
     APPID       = "10009"
     USERID      = "28BF5CA24C219B59"
     BONUS       = 0.6
