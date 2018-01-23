@@ -22,7 +22,7 @@ module API
           res = UserMailer.new_member(email, valid_code).deliver_now
 
           if res.errors.empty?
-            present error: 0, notice: '验证码已发送您的邮箱，请在5分钟内进行验证，过期请重新获取'
+            present error: 0, alert: '验证码已发送您的邮箱，请在5分钟内进行验证，过期请重新获取'
           else
             error_403!({detail: res.errors.join('.') })
           end

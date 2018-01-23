@@ -10,6 +10,8 @@ by artificial intelligence.
   * [Influence score API](https://robin8.atlassian.net/wiki/spaces/APP/pages/74743823/Influence+score+API)
   * [Invitation mechanics](https://robin8.atlassian.net/wiki/spaces/APP/pages/54853633/Invitation+mechanics)
   * [Settling Process](https://robin8.atlassian.net/wiki/spaces/APP/pages/51347525/Technical+notes)
+  * [ruby-style-guide](https://github.com/season/ruby-style-guide/blob/master/README-zhCN.md)
+  * [ruby-style-guide-extra](#ruby-style-guide-extra)
 
 # Development and Deployment Process 开发和部署流程
 
@@ -174,3 +176,7 @@ by artificial intelligence.
   * to import the database to qa server, run `cap staging invoke['db:import_to_qa']`
     on your local machine or run `RAILS_ENV=staging rake db:import_to_qa`
   * 做本地执行`cap staging invoke['db:import_to_qa']`或`RAILS_ENV=staging rake db:import_to_qa`命令，即可将staging的数据库导入qa
+
+  ##ruby-style-guide-extra
+
+  Here ....
