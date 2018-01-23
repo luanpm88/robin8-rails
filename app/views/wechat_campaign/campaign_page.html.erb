@@ -28,11 +28,7 @@
 					<div class="description-box">
 						如何成为品牌带盐人：<br/>
 						1.点击上方按钮<br/>
-						<% if @campaign.per_budget_type == "recruit" %>
-							2.快速注册并报名品牌活动<br/>
-						<% else %>
-							2.快速注册并分享品牌活动<br/>
-						<% end %>
+						<%= @campaign.per_budget_type == "recruit" ？ "2.快速注册并报名品牌活动": "2.快速注册并分享品牌活动" %>
 						3.下载Robin8的APP查看您的社交影响力，例如有多少人阅读了您分享的文章<br/>
 						4.在APP上还可以使您的影响力变现，不同活动形式可获得不同价位的品牌奖励并提现
 					</div>

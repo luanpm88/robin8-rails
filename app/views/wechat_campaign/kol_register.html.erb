@@ -25,11 +25,7 @@
     <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
     <%= hidden_field_tag 'tag', params[:tag] %>
     <button id="submit" class="red-bag-btn width100">
-      <% if @campaign.per_budget_type == "recruit" %>
-        立即报名
-      <% else %>
-        立即体验
-      <% end %>
+      <%= @campaign.per_budget_type == "recruit"? "立即报名": "立即体验"  %>
     </button>
   </form>
   <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
