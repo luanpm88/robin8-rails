@@ -320,4 +320,17 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     redirect_to :action => :index
   end
 
+  def lift_kol_level_count
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+
+    if @campaign.is_limit_click_count # default true
+      @campaign.update_attributes!(is_limit_click_count: false)
+      flash[:notice] = "已解除限制"
+    else
+      flash[:notice] = "无需重复操作"
+    end
+    redirect_to :action => :index
+  end
+
 end
