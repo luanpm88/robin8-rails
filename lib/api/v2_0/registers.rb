@@ -34,7 +34,7 @@ module API
           requires :password,   type: String
           requires :valid_code, type: String
         end
-        post 'sign_up' do
+        post '/' do
           error_403!({detail: '参数错误' }) unless [nil, 'mobile', 'email'].include?(params[:reg_type])
 
           if params[:reg_type] == 'email'

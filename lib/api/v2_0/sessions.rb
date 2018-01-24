@@ -8,7 +8,7 @@ module API
       		requires :login, type: String
       		requires :password, type: String
       	end
-      	get 'sign_in' do
+      	post '/' do
       		if kol = Kol.authenticate_password(params)
       			present :error, 0
           	present :kol, kol, with: API::V1::Entities::KolEntities::Summary
