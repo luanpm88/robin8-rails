@@ -260,3 +260,5 @@ gem 'crm', path: 'crm'
 gem 'airbrake', '~> 6.0'
 
 gem 'gibberish'
+
+gem 'grape_doc', group: :development

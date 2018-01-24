@@ -4,6 +4,7 @@ module API
     class Registers < Grape::API
       resources :registers do
 
+        desc 'get code valid your email.'
         params do
           requires :email, type: String
         end
@@ -14,10 +15,7 @@ module API
 
           valid_code = $redis.get("reg_#{email}")
 
-          unless valid_code
-            $redis.set("reg_#{email}", rand(8999)+1000)
-            $redis.expire("reg_#{email}", 300)
-          end
+          $redis.setex("reg_#{email}", rand(8999)+1000, 3000) unless valid_code
 
           res = UserMailer.new_member(email, valid_code).deliver_now
 
@@ -28,6 +26,7 @@ module API
           end
         end
 
+        desc 'create new kol'
         params do
           requires :reg_type,   type: String, desc: "mobile(default) | email"
           requires :login,      type: String

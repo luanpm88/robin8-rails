@@ -4,6 +4,7 @@ module API
     class Sessions < Grape::API
       resources :sessions do
 
+        desc 'v2_0 login'
       	params do
       		requires :login, type: String
       		requires :password, type: String
