@@ -12,9 +12,11 @@ by artificial intelligence.
   * [Settling Process](https://robin8.atlassian.net/wiki/spaces/APP/pages/51347525/Technical+notes)
   * [Ruby Style Guide](https://github.com/season/ruby-style-guide/blob/master/README-zhCN.md)
   * [Style Guide](#style-guide)
+    * [Git Commit](#git-commit)
     * [JSON Format](#json-format)
+    * [Error Codes List](#error-codes-list)
 
-# Development and Deployment Process
+# Development and Deployment Process 开发和部署流程
 
   When building a new feature
   开发新功能的流程：
@@ -71,7 +73,9 @@ by artificial intelligence.
     如果你的的分支没有对app/assets的images、JS、stylesheets等做任何修改，那就可以使用`BRANCH_NAME=new-feature-name cap qa deploy noassets`来部署到QA，这可以节省部署时间。
   * [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
-## Style Guide
+##  Style-Guide
+
+  ### Git Commit
 
   * Commit messages should explain both the "what", "why" of code changes
   * 你的commit中应该说明修改了什么，为什么要做修改。
@@ -85,8 +89,46 @@ by artificial intelligence.
 
   * [Why commit messages are important](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
-### JSON Format
-  here is introduce json format
+
+
+  ### JSON Format
+
+  * resource
+  ```ruby
+      {
+        error: 0,
+        alert: "something...",
+        resource: {id: 'id', name: 'name'.....},
+        extra_hash: {...}
+      }
+  ```
+  * list
+  ```ruby
+      {
+        error: 0,
+        alert: "something...."
+        list: [resource_hash_1, resource_hash_2],
+        extra_hash: {....}
+      }
+  ```
+  * error
+  ```ruby
+      {
+        error: 1|2|3|4,
+        detail: "some errors"
+      }
+  ```
+
+
+  ### Error Codes List
+
+  * 整理项目中所有的errors，欢迎补充
+
+  | Code | Description |
+  | :--: | :---------: |
+  |  1   |   待描述...    |
+  |  2   |   待描述...    |
+  |  3   |   待描述...    |
 
 # Development Environment
 
