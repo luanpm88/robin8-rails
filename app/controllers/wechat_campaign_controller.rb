@@ -64,11 +64,23 @@ class WechatCampaignController < ApplicationController
 
       Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
       if campaign and campaign.status == 'executing'
-        kol_exists.add_campaign_id campaign_id
-        kol_exists.approve_campaign(campaign_id)
+        if campaign.per_budget_type == 'recruit'
+          campaign_invite = kol_exists.campaign_invites.where(:campaign_id => params[:campaign_id]).first rescue nil
+          return render json: {error: '该活动不存在'} if campaign.blank? || !campaign.is_recruit_type? || !kol_exists.receive_campaign_ids.include?("#{params[:campaign_id]}")
+          return render json: {error: '该活动已过报名时间或者您已经接收本次活动'} if !campaign.can_apply || campaign_invite.present?
+          return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'} if campaign.influence_score_target && kol_exists.influence_score.to_i < campaign.influence_score_target.get_score_value
+          campaign_invite = kol_exists.apply_campaign(params)
+        else
+          kol_exists.add_campaign_id campaign_id
+          kol_exists.approve_campaign(campaign_id)
+        end
       end
       kol_exists.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
-      return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+      if campaign.per_budget_type == 'recruit'
+        render json: {url: Rails.application.secrets[:download_url] || root_url }
+      else
+        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+      end
     else
       ip = (request.remote_ip rescue nil) || request.ip
       kol = Kol.new(mobile_number: params[:mobile_number],
@@ -90,11 +102,25 @@ class WechatCampaignController < ApplicationController
 
         Rails.logger.wechat_campaign.info "--kol_create: campaign status: #{campaign.status}"
         if campaign and campaign.status == 'executing'
-          kol.add_campaign_id campaign_id
-          kol.approve_campaign(campaign_id)
+          if campaign.per_budget_type == 'recruit'
+            campaign_invite = kol.campaign_invites.where(:campaign_id => params[:campaign_id]).first rescue nil
+            return render json: {error: '该活动不存在'} if campaign.blank? || !campaign.is_recruit_type?
+            return render json: {error: '该活动已过报名时间或者您已经接收本次活动！'} if !campaign.can_apply || campaign_invite.present?
+            return render json: {error: '抱歉，本次活动不接受影响力分数低于#{campaign.influence_score_target.get_score_value}的KOL用户报名'} if  campaign.influence_score_target && kol.influence_score.to_i < campaign.influence_score_target.get_score_value
+
+            kol.add_campaign_id(campaign_id)
+            campaign_invite = kol.apply_campaign(params)
+          else
+            kol.add_campaign_id campaign_id
+            kol.approve_campaign(campaign_id)
+          end
         end
         kol.admintags << Admintag.find_or_create_by(tag: params[:tag]) if params[:tag].present?
-        return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }     
+        if campaign.per_budget_type == 'recruit'
+          render json: {url: Rails.application.secrets[:download_url] || root_url }
+        else
+          return render json: {url: wechat_campaign_campaign_details_path(campaign_id: campaign_id) }
+        end
       else
         Rails.logger.wechat_campaign.info "--kol_create: campaign not found"
         return render json: {error: 'Campaign not found'}
