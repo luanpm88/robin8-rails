@@ -5,6 +5,7 @@ module API
       mount API::V2_0::Kols
       mount API::V2_0::Contacts
       mount API::V2_0::Registers
+      mount API::V2_0::Sessions
     end
   end
 end
