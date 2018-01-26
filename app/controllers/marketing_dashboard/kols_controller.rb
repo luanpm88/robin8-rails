@@ -215,14 +215,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def update_tag_ids
-    old_tags = @kol.tags.map { |ti| ti['id'] }
-    now_tags =
-      params[:kol][:tag_ids].nil? ? [] : params[:kol][:tag_ids]
-    KolTag.where(:tag_id => (old_tags-now_tags), :kol_id => @kol.id).delete_all
-    if(now_tags-old_tags).present?
-      (now_tags-old_tags).each do |tag_id|
-        KolTag.find_or_create_by(:tag_id => tag_id, :kol_id => @kol.id)
-      end
+    old_tags = @kol.tags.map(&:id)
+    now_tags = Array params[:kol][:tag_ids]
+    KolTag.where(tag_id: old_tags-now_tags, kol_id: @kol.id).delete_all
+    now_tags.each do |tag_id|
+      KolTag.find_or_create_by(tag_id: tag_id, kol_id: @kol.id)
     end
   end
 
