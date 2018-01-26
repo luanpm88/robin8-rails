@@ -261,4 +261,4 @@ gem 'airbrake', '~> 6.0'
 
 gem 'gibberish'
 
-gem 'grape_doc', group: :development
+gem 'grape_doc', github: 'season/grape_doc.git', branch: 'master', group: :development

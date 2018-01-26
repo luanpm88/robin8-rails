@@ -34,6 +34,16 @@ GIT
       websocket-driver (~> 0.6.1)
 
 GIT
+  remote: git://github.com/season/grape_doc.git.git
+  revision: 84f87bc7fa706f3f89db9dd74e656df80434bde9
+  branch: master
+  specs:
+    grape_doc (0.2.0)
+      grape (~> 0.2, >= 0.2.1)
+      json (~> 1.7, >= 1.7.4)
+      trollop (~> 2.0)
+
+GIT
   remote: git://github.com/stefanpenner/country_select.git
   revision: 20f83bda911abd7c1d5cb96fd37f9ea22d892f0e
   specs:
@@ -304,10 +314,6 @@ GEM
       activesupport
       grape
       rake
-    grape_doc (0.2.1)
-      grape (~> 0.2, >= 0.2.1)
-      json (~> 1.7, >= 1.7.4)
-      trollop (~> 2.0)
     groupdate (3.0.2)
       activesupport (>= 3)
     guard (2.12.6)
@@ -875,7 +881,7 @@ DEPENDENCIES
   grape-kaminari
   grape-rails-cache
   grape-raketasks
-  grape_doc
+  grape_doc!
   groupdate (~> 3.0, >= 3.0.2)
   guard-rspec
   has_scope
