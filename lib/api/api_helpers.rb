@@ -3,6 +3,7 @@
 module API
   module ApiHelpers
     PRIVATE_TOKEN_PARAM = :private_token
+    EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 
     def current_kol
       result , private_token = AuthToken.valid?(headers["Authorization"])
@@ -201,10 +202,6 @@ module API
       social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
       social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
       social_account.save
-    end
-
-    def format_email(email)
-      email.match(/^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/)
     end
   end
 end

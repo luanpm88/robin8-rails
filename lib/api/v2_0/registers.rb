@@ -6,27 +6,23 @@ module API
 
         desc 'get valid code by your email.'
         params do
-          requires :email, type: String
+          requires :email, type: String, regexp: API::ApiHelpers::EMAIL_REGEXP
         end
         get 'valid_code' do
           email = params[:email]
-          error_403!(detail: '邮箱格式错误') unless format_email(email)
+
           error_403!(detail: '邮箱已被注册') if Kol.find_by(email: email)
 
           valid_code = $redis.get("reg_#{email}")
 
-          $redis.setex("reg_#{email}", rand(8999)+1000, 3000) unless valid_code
-          
+          $redis.setex("reg_#{email}", 3000, SecureRandom.random_number(1000000)) unless valid_code
+
           valid_code = $redis.get("reg_#{email}")
 
-          # res = UserMailer.new_member(email, valid_code).deliver_now
+          NewMemberWorker.perform_async(email, valid_code)
 
-          # if res.errors.empty?
-          if true
-            present error: 0, valid_code: valid_code, alert: '验证码已发送您的邮箱，请在5分钟内进行验证，过期请重新获取'
-          else
-            error_403!(detail: res.errors.join('.'))
-          end
+          present error: 0, alert: '验证码已发送您的邮箱，请在5分钟内进行验证，过期请重新获取'
+
         end
 
         desc 'email valid code'
@@ -36,24 +32,28 @@ module API
         end
         post 'valid_email' do
           if $redis.get("reg_#{params[:email]}") == params[:valid_code]
-            present error: 0, alert: '邮箱验证成功'
+            present error: 0
+            present alert: '邮箱验证成功'
+            present vtoken: $redis.setex("valid_#{email}", SecureRandom.base64, 3000)
           else
-            error_403!(detail: '邮箱验证错误')
+            error_403!(detail: '邮箱验证错误') 
           end
         end
 
         desc 'create new kol'
         params do
-          requires :name,       type: String
-          requires :email,      type: String
-          requires :password,   type: String
+          requires :name,           type: String
+          requires :email,          type: String
+          requires :password,       type: String
+          requires :vtoken,         type: String,   desc: '邮箱验证成功生成的token'
+          optional :mobile_number,  type: String
         end
         post '/' do
+          error_403!(detail: '参数错误') unless $redis.get("valid_#{params[:email]}") == params[:vtoken]
+
           _kol_hash = {}
 
-          %i(name email password mobile_number).each do |ele|
-            _kol_hash[ele] = params[ele]
-          end
+          %i(name email password mobile_number).collect{|ele| _kol_hash[ele] = params[ele]}
 
           kol = Kol.new(_kol_hash)
 
