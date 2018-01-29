@@ -23,6 +23,7 @@ module Brand
         params do
           requires :credits, type: String
           requires :type, type: String
+          requires :price_sheet, type: Boolean
         end
         post '/' do
           if !current_user.special_invoice
@@ -35,7 +36,7 @@ module Brand
 
           invoice_history_params = current_user.special_invoice.slice(:title, :taxpayer_id, :company_address, :company_mobile, :bank_name, :bank_account).merge(
                                    current_user.invoice_receiver.slice(:name, :phone_number, :address).merge(
-                                   {credits: params[:credits], invoice_type: params[:type]} ))
+                                   { credits: params[:credits], invoice_type: params[:type], price_sheet: params[:price_sheet] } ))
 
           @invoice_history = current_user.invoice_histories.build(invoice_history_params)
           if @invoice_history.save

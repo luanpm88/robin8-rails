@@ -14,11 +14,17 @@ export default class ChooseInvoiceTypeModal extends Component {
     const { creditsRef } = this.props;
     const credits = creditsRef.value;
 
-    if ($('.check-common').attr('value') === 'common' && $('.check-special').attr('value') === "") {
-      saveInvoiceHistory(credits, 'common');
+    if ($('.check-common').attr('value') === 'common' && $('.check-special').attr('value') === "" && $('.no-price-sheet').attr('value') === "true" && $('.need-price-sheet').attr('value') === "false") {
+      saveInvoiceHistory(credits, 'common', false);
     }
-    if ($('.check-common').attr('value') === '' && $('.check-special').attr('value') === "special") {
-      saveInvoiceHistory(credits, 'special');
+    if ($('.check-common').attr('value') === 'common' && $('.check-special').attr('value') === "" && $('.no-price-sheet').attr('value') === "false" && $('.need-price-sheet').attr('value') === "true") {
+      saveInvoiceHistory(credits, 'common', true);
+    }
+    if ($('.check-common').attr('value') === '' && $('.check-special').attr('value') === "special" && $('.no-price-sheet').attr('value') === "true" && $('.need-price-sheet').attr('value') === "false" ) {
+      saveInvoiceHistory(credits, 'special', false);
+    }
+    if ($('.check-common').attr('value') === '' && $('.check-special').attr('value') === "special" && $('.no-price-sheet').attr('value') === "false" && $('.need-price-sheet').attr('value') === "true" ) {
+      saveInvoiceHistory(credits, 'special', true);
     }
     creditsRef.value = "";
     setTimeout(fetchAppliableCredits, 1000);
@@ -27,19 +33,39 @@ export default class ChooseInvoiceTypeModal extends Component {
 
   chooseInvoiceType() {
     $('.check-common .ok-sign').addClass("checked-img");
-    $('.check-common').attr("value", "common")
-    $('.check-special').attr("value", "")
+    $('.check-common').attr("value", "common");
+    $('.check-special').attr("value", "");
+
+    $('.no-price-sheet .ok-sign').addClass("checked-img");
+    $('.no-price-sheet').attr("value", "true");
+    $('.need-price-sheet').attr("value", "false");
+
     $('.check-common').on('click', function(){
-      $('.check-common').attr("value", "balance")
+      $('.check-common').attr("value", "balance");
       $('.check-common .ok-sign').addClass("checked-img");
-      $('.check-special .ok-sign').removeClass("checked-img")
-      $('.check-special').attr("value", "")
+      $('.check-special .ok-sign').removeClass("checked-img");
+      $('.check-special').attr("value", "");
     })
+
     $('.check-special').on('click', function(){
-      $('.check-special').attr("value", "special")
+      $('.check-special').attr("value", "special");
       $('.check-special .ok-sign').addClass("checked-img");
       $('.check-common .ok-sign').removeClass("checked-img");
       $('.check-common').attr("value", "");
+    })
+
+    $('.no-price-sheet').on('click', function(){
+      $('.no-price-sheet').attr("value", "true");
+      $('.no-price-sheet .ok-sign').addClass("checked-img");
+      $('.need-price-sheet .ok-sign').removeClass("checked-img");
+      $('.need-price-sheet').attr("value", "false");
+    })
+
+    $('.need-price-sheet').on('click', function(){
+      $('.need-price-sheet').attr("value", "true");
+      $('.need-price-sheet .ok-sign').addClass("checked-img");
+      $('.no-price-sheet .ok-sign').removeClass("checked-img");
+      $('.no-price-sheet').attr("value", "false");
     })
   }
 
@@ -72,20 +98,19 @@ export default class ChooseInvoiceTypeModal extends Component {
           </div>
         </Modal.Body>
 
-
         <Modal.Header>
           <Modal.Title>是否开报价单</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className='row-1'>
-            <span>是</span>
-            <div ref='#' className="need-price-sheet">
+            <span>否</span>
+            <div ref='no-price-sheet' className="no-price-sheet">
               <span className="ok-sign"></span>
             </div>
           </div>
           <div className='row-2'>
-            <span>否</span>
-            <div ref='#' className="no-price-sheet">
+            <span>是</span>
+            <div ref='need-price-sheet' className="need-price-sheet">
               <span className="ok-sign"></span>
             </div>
           </div>
