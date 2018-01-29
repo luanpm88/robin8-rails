@@ -72,19 +72,20 @@ export default class ChooseInvoiceTypeModal extends Component {
           </div>
         </Modal.Body>
 
-        <Modal.Header closeButton>
+
+        <Modal.Header>
           <Modal.Title>是否开报价单</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className='row-1'>
             <span>是</span>
-            <div ref='#' className="check-common">
+            <div ref='#' className="need-price-sheet">
               <span className="ok-sign"></span>
             </div>
           </div>
           <div className='row-2'>
             <span>否</span>
-            <div ref='#' className="check-special">
+            <div ref='#' className="no-price-sheet">
               <span className="ok-sign"></span>
             </div>
           </div>
