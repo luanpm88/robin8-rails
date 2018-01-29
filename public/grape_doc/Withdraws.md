@@ -2,20 +2,7 @@
 
 
 
-#### GET /v1/withdraws
-
- 
-
-**Parameters:** 
-
-
- - status (String)
-
- - page (Integer)
-
-
-
-#### POST /v1/withdraws/apply
+#### POST /v1\_3/withdraws/apply
 
  
 
@@ -23,12 +10,6 @@
 
 
  - credits (Float) (*required*)
-
- - real\_name (String) (*required*)
-
- - alipay\_no (String) (*required*)
-
- - remark (String)
 
 
 

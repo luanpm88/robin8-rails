@@ -1,4 +1,4 @@
-# coding: utf-8
+# encoding: utf-8
 module API
   module V2_0
     class Sessions < Grape::API

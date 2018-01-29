@@ -2,7 +2,7 @@
 
 
 
-#### GET /v1\_3/system/config
+#### GET /v2/system/account\_notice
 
  
 
