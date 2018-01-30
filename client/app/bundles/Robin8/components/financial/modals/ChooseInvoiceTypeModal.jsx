@@ -14,18 +14,19 @@ export default class ChooseInvoiceTypeModal extends Component {
     const { creditsRef } = this.props;
     const credits = creditsRef.value;
 
-    if ($('.check-common').attr('value') === 'common' && $('.check-special').attr('value') === "" && $('.no-price-sheet').attr('value') === "true" && $('.need-price-sheet').attr('value') === "false") {
-      saveInvoiceHistory(credits, 'common', false);
-    }
-    if ($('.check-common').attr('value') === 'common' && $('.check-special').attr('value') === "" && $('.no-price-sheet').attr('value') === "false" && $('.need-price-sheet').attr('value') === "true") {
-      saveInvoiceHistory(credits, 'common', true);
-    }
-    if ($('.check-common').attr('value') === '' && $('.check-special').attr('value') === "special" && $('.no-price-sheet').attr('value') === "true" && $('.need-price-sheet').attr('value') === "false" ) {
-      saveInvoiceHistory(credits, 'special', false);
-    }
-    if ($('.check-common').attr('value') === '' && $('.check-special').attr('value') === "special" && $('.no-price-sheet').attr('value') === "false" && $('.need-price-sheet').attr('value') === "true" ) {
-      saveInvoiceHistory(credits, 'special', true);
-    }
+    if ($('.check-common').attr('value') === 'common')
+      if ($('.need-price-sheet').attr('value') === "false") {
+        saveInvoiceHistory(credits, 'common', false);
+      } else {
+        saveInvoiceHistory(credits, 'common', true);
+      }
+    else
+      if ($('.need-price-sheet').attr('value') === "false" ) {
+        saveInvoiceHistory(credits, 'special', false);
+      } else {
+        saveInvoiceHistory(credits, 'special', true);
+      }
+
     creditsRef.value = "";
     setTimeout(fetchAppliableCredits, 1000);
     this.close();
@@ -41,7 +42,7 @@ export default class ChooseInvoiceTypeModal extends Component {
     $('.need-price-sheet').attr("value", "false");
 
     $('.check-common').on('click', function(){
-      $('.check-common').attr("value", "balance");
+      $('.check-common').attr("value", "common");
       $('.check-common .ok-sign').addClass("checked-img");
       $('.check-special .ok-sign').removeClass("checked-img");
       $('.check-special').attr("value", "");
@@ -74,7 +75,6 @@ export default class ChooseInvoiceTypeModal extends Component {
       this.chooseInvoiceType();
     }
   }
-
 
   render() {
 
