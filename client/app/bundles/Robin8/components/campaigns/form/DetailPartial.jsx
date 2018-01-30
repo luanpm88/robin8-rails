@@ -169,7 +169,7 @@ export default class DetailPartial extends React.Component {
   }
 
   render() {
-    const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type } = this.props
+    const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type, example_screenshot_count } = this.props
     return (
 
       <div className="react-toolbox creat-content-sources">
@@ -278,44 +278,65 @@ export default class DetailPartial extends React.Component {
                 }
             </div>
           </div>
+          {
+            do {
+              if (per_budget_type.value === "cpt") {
+                <div className="row forward-platform-select">
+                  <p className="action-mode">示例图片数量</p>
+                  <div className="sources-check">
+                    <div className="row">
+                      <div className="col-md-4">
+                        我要上传
+                        <input {...example_screenshot_count}
+                          type="number" name="example_screenshot_count"
+                          min="1" max="3" autoComplete="off"
+                          onChange={example_screenshot_count.onChange}/>
+                        张示例图片
+                      </div>
 
-            <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
-              {
-                do {
-                  if(per_budget_type.value == "cpa"){
-                    <div>
-                      <div className="action-url-area clearfix">
-                        <p className="action-url-text">确认链接</p>
-                        <div className="action-url-section">
-                          <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
-                          <ShowError field={action_url} />
-                        </div>
-                      </div>
-                      <div className="clearfix">
-                        <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
-                      </div>
-                      <div className="clearfix">
-                        <p className="generate-short-url-text">生成链接</p>
-                        <div className="action-short-url_section">
-                          <input {...short_url} type="text" className="action-short-url" readOnly></input>
-                          <ShowError field={short_url} />
-                          <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
-                        </div>
-                        <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          }
+          <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
+            {
+              do {
+                if(per_budget_type.value == "cpa"){
+                  <div>
+                    <div className="action-url-area clearfix">
+                      <p className="action-url-text">确认链接</p>
+                      <div className="action-url-section">
+                        <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                        <ShowError field={action_url} />
                       </div>
                     </div>
-                  }else if(per_budget_type.value == 'cpt'){
-                    <div className="cpi-tip-label">
-                      <label>请把参加的任务链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                    <div className="clearfix">
+                      <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
                     </div>
-                  }else{
-                    <div className="cpi-tip-label">
-                    <label>请把下载链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                    <div className="clearfix">
+                      <p className="generate-short-url-text">生成链接</p>
+                      <div className="action-short-url_section">
+                        <input {...short_url} type="text" className="action-short-url" readOnly></input>
+                        <ShowError field={short_url} />
+                        <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                      </div>
+                      <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
                     </div>
-                  }
+                  </div>
+                }else if(per_budget_type.value == 'cpt'){
+                  <div className="cpi-tip-label">
+                    <label>请把参加的任务链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                  </div>
+                }else{
+                  <div className="cpi-tip-label">
+                  <label>请把下载链接填入上方<a href="#campaign-link">活动链接</a>处</label>
+                  </div>
                 }
               }
-            </div>
+            }
+          </div>
 
             <div className="per-budget-group">
               <p className="per-budget-text">单次预算</p>
