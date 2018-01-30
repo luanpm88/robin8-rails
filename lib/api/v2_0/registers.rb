@@ -6,17 +6,23 @@ module API
         desc 'get valid code by your email.'
         params do
           requires :email, type: String, regexp: API::ApiHelpers::EMAIL_REGEXP
+          optional :type,  type: String, desc: 'forget_password, default: nil'
         end
         get 'valid_code' do
           email = params[:email]
+          kol   = Kol.find_by(email: email)
 
-          error_403!(detail: '邮箱已被注册') if Kol.find_by(email: email)
+          if params[:type] == 'forget_password'
+            error_403!(detail: '该用户不存在') unless kol
+          else
+            error_403!(detail: '邮箱已被注册') if kol
+          end
 
-          valid_code = $redis.get("reg_#{email}")
+          valid_code = $redis.get("valid_#{email}")
 
           unless valid_code
             valid_code = SecureRandom.random_number(1000000)
-            $redis.setex("reg_#{email}", 3000, valid_code)
+            $redis.setex("valid_#{email}", 3000, valid_code)
           end
 
           NewMemberWorker.perform_async(email, valid_code)
@@ -30,9 +36,11 @@ module API
           requires :valid_code, type: String
         end
         post 'valid_email' do
-          if $redis.get("reg_#{params[:email]}") == params[:valid_code]
-            vtoken = $redis.setex("valid_#{email}", SecureRandom.base64, 3000)
+          if $redis.get("valid_#{params[:email]}") == params[:valid_code]
+            vtoken = SecureRandom.base64
             
+            $redis.setex("vtoken_#{params[:email]}", 3000, vtoken)
+
             present error: 0, alert: '邮箱验证成功',vtoken: vtoken
           else
             error_403!(detail: '邮箱验证错误') 
@@ -48,7 +56,7 @@ module API
           optional :mobile_number,  type: String
         end
         post '/' do
-          error_403!(detail: '参数错误') unless $redis.get("valid_#{params[:email]}") == params[:vtoken]
+          error_403!(detail: '参数验证错误') unless $redis.get("vtoken_#{params[:email]}") == params[:vtoken]
 
           _kol_hash = {}
 
