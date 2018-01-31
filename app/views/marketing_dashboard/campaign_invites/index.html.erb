@@ -176,7 +176,9 @@
           <% example_screenshot = c.get_example_screenshot(true) %>
           <% count = c.campaign.example_screenshot_count || 1 %>
           <% count.times do |t| %>
-            <%= link_to image_tag(screenshot[t] , :width => "100px", class: 'screenshot-img'), screenshot , :target => "_blank", class: 'screenshot-td', data: {example: example_screenshot[t] } %>
+            <% if screenshot[t].present? %>
+              <%= link_to image_tag(screenshot[t] , :width => "100px", class: 'screenshot-img'), screenshot[t] , :target => "_blank", class: 'screenshot-td', data: {example: example_screenshot[t] } %>
+            <% end %>
           <% end %>
         </td>
         <td><%= c.img_status %></td>
