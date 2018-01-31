@@ -15,55 +15,19 @@
       <form action="save_example_screenshot_and_remark" method="post" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-group video_container">
           <label for="file-upload" class="col-sm-2 control-label">上传图片标签</label>
+          <% count = @campaign.example_screenshot_count || 1 %>
+          <% count.times do |t| %> 
           <div class="col-sm-8">
-            <input type="file" name="image[]">
-            <input type="text" name="comment[]">
+            <input type="file" name="image[]"  >
+            <input type="text" name="comment[]" >
           </div>
-          <div class="col-sm-2">
-            <button class="btn btn-success video-add">
-              <span class="fa fa-plus"></span>
-            </button>
-          </div>
+          <% end %>
         </div>
          <legend>介绍</legend>
-          <textarea placeholder="This is an awesome comment box" rows="20" name="remark" id="remark_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+          <textarea placeholder="添加活动介绍" rows="20" name="remark" id="remark_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
           <button>提交</button>
         </fieldset>
       </form>
     </div>
   </div>
 </div>
-
-<script>
-$(document)
-  .on("click", ".video_container .video-add", function(e) {
-    e.preventDefault();
-    var current_obj = $(this).closest(".video_container");
-    var cloned_obj = $(current_obj.clone())
-      .insertAfter(current_obj)
-      .find('input[type="file"]')
-      .val("");
-
-    current_obj
-      .find(".fa-plus")
-      .removeClass("fa-plus")
-      .addClass("fa-minus");
-
-    current_obj
-      .find(".btn-success")
-      .removeClass("btn-success")
-      .addClass("btn-danger");
-
-    current_obj
-      .find(".video-add")
-      .removeClass("video-add")
-      .addClass("video-del");
-  })
-  .on("click", ".video-del", function(e) {
-    e.preventDefault();
-    $(this)
-      .closest(".video_container")
-      .remove();
-    return false;
-  });
-</script>

@@ -126,22 +126,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def save_example_screenshot_and_remark
-    puts params
     @campaign = Campaign.find(params[:id])
     example_screenshot = ""
     comment = ""
-    params[:image].each {|t| example_screenshot += "#{Uploader::FileUploader.image_uploader(t)}," }
-    params[:comment].each {|t| comment += "#{t}&"}
-    # example_screenshot = ""
-    # comment = ""
-    # # params.delete_if{|key , value| !(key.include? "image") || !(key.include? "comment") }.each do |t|
-    # params.sort.each do |t|
-    #   if t[0].include? "image"
-    #     example_screenshot += "#{Uploader::FileUploader.image_uploader(t[1])},"
-    #   elsif t[0].include? "comment"
-    #     comment += "#{t[1]}$"
-    #   end
-    # end
+    params[:image].each {|t| example_screenshot += "#{Uploader::FileUploader.image_uploader(t)},"  if t.present? }
+    params[:comment].each {|t| comment += "#{t}&" if t.present? }
     @campaign.update_attributes(example_screenshot: example_screenshot[0..-2] , remark: params[:remark] , comment: comment[0..-2])
     flash[:notice] = "保存成功"
     render :add_example_screenshot

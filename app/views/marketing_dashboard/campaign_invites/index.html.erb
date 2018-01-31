@@ -172,8 +172,11 @@
         <% end %>
         <td><%= c.id %></td>
         <td>
-          <% c.screenshot.split(",").each do |screenshot| %>
-            <%= link_to image_tag(screenshot , :width => "100px", class: 'screenshot-img'), screenshot , :target => "_blank", class: 'screenshot-td', data: {example: c.campaign.example_screenshot.to_s } %>
+          <% screenshot = c.screenshot.split(",") %>
+          <% example_screenshot = c.campaign.example_screenshot.split(",") %>
+          <% count = c.campaign.example_screenshot_count || 1 %>
+          <% count.times do |t| %>
+            <%= link_to image_tag(screenshot[t] , :width => "100px", class: 'screenshot-img'), screenshot , :target => "_blank", class: 'screenshot-td', data: {example: example_screenshot[t] } %>
           <% end %>
         </td>
         <td><%= c.img_status %></td>
