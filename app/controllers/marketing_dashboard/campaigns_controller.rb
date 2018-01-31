@@ -1,4 +1,5 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
+  protect_from_forgery :except => :save_example_screenshot_and_remark
   def index
     authorize! :read, Campaign
 
@@ -125,9 +126,23 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def save_example_screenshot_and_remark
+    puts params
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
-      remark: params[:campaign][:remark])
+    example_screenshot = ""
+    comment = ""
+    params[:image].each {|t| example_screenshot += "#{Uploader::FileUploader.image_uploader(t)}," }
+    params[:comment].each {|t| comment += "#{t}&"}
+    # example_screenshot = ""
+    # comment = ""
+    # # params.delete_if{|key , value| !(key.include? "image") || !(key.include? "comment") }.each do |t|
+    # params.sort.each do |t|
+    #   if t[0].include? "image"
+    #     example_screenshot += "#{Uploader::FileUploader.image_uploader(t[1])},"
+    #   elsif t[0].include? "comment"
+    #     comment += "#{t[1]}$"
+    #   end
+    # end
+    @campaign.update_attributes(example_screenshot: example_screenshot[0..-2] , remark: params[:remark] , comment: comment[0..-2])
     flash[:notice] = "保存成功"
     render :add_example_screenshot
   end
@@ -235,14 +250,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def push_record
-    @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
-
+    @push_records = CampaignPushRecord.where(campaign_id: params[:id])
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.paginate(paginate_params)
 
     respond_to do |format|
       format.html do
-        @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+        @push_records = @q.result.paginate(paginate_params)
         render 'push_record'
       end
 

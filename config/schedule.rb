@@ -29,6 +29,7 @@ end
 # end
 
 # Syncs the database into QA and STAGING every night
+=begin
 every 1.day, :at => '12:01 am', roles: [:db_syncer] do
   rake "db:export_prod"
 end
@@ -36,6 +37,7 @@ end
 every 1.day, :at => '2:00 am', roles: [:db_syncer] do
   rake "db:import_to_staging"
 end
+=end
 
 every 1.day, :at => '12:00 am' do
   command "backup perform --trigger robin8_backup_local"

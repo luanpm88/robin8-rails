@@ -186,7 +186,6 @@ GEM
       mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
-    charlock_holmes (0.7.3)
     china_sms (0.0.7)
     chronic (0.10.2)
     chunky_png (1.3.8)
@@ -844,7 +843,6 @@ DEPENDENCIES
   caracal-rails
   carrierwave
   carrierwave-qiniu!
-  charlock_holmes
   china_sms
   coffee-rails (~> 4.1.0)
   countries

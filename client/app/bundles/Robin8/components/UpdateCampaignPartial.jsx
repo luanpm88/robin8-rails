@@ -28,7 +28,8 @@ const validate = new CampaignFormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: false }},
   short_url: {url: { require_protocol: true }},
-  sub_type: { require: true }
+  sub_type: { require: true },
+  example_screenshot_count: { require: true },
 })
 
 const validateFailed = (errors) => {
@@ -106,7 +107,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type } = this.props.fields;
+    const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type, example_screenshot_count } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
     const min_budget = brand.get("campaign_min_budget");
@@ -122,7 +123,7 @@ class UpdateCampaignPartial extends React.Component {
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
               <BudgetPartial {...{ budget, min_budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
-              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type }} />
+              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type, example_screenshot_count }} />
               <DatePartial {...{ start_time, deadline }} />
               <TargetPartial {...{region, tags, age, gender}} />
               <div className="creat-form-footer">
@@ -141,7 +142,7 @@ class UpdateCampaignPartial extends React.Component {
 
 UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type', 'example_screenshot_count'],
   returnRejectedSubmitPromise: true,
   validate
 },

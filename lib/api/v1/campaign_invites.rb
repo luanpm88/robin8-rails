@@ -133,10 +133,16 @@ module API
           campaign = campaign_invite.campaign  rescue nil
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
-          elsif campaign_invite.can_upload_screenshot
-            uploader = AvatarUploader.new
-            uploader.store!(params[:screenshot])
-            campaign_invite.reupload_screenshot(uploader.url)
+          # elsif campaign_invite.can_upload_screenshot
+          elsif true
+
+            if params[:screenshot].present?
+              url = "#{avatar_uploader params[:screenshot]},"
+            else
+              url = ""
+              params.delete_if{|key , value| !(key.include? "screenshot") }.each {|image|  url += "#{Uploader::FileUploader.image_uploader(image[1])},"}
+            end
+            campaign_invite.reupload_screenshot(url[0..-2])
             #是否进入自动审核
             # if params[:campaign_logo].present?
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)

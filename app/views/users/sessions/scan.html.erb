@@ -11,7 +11,7 @@
         </ul>
       </div>
       <div class="scanner-cont">
-        <%= image_tag @url %>
+        <%= raw @url %>
         <input type="hidden" name="ok_url" id="ok_url" value="<%= params[:ok_url] %>" />
         <input type="hidden" id="scan_uuid" value="<%= @uuid %>" />
       </div>
@@ -30,7 +30,7 @@ this.App = {};
 
 (function() {
   okUrl = $("#ok_url").val();
-  App.cable = Cable.createConsumer("<%= smart_root_url("passport/scan/cable", protocol: "ws", subdomain: false) %>");
+  App.cable = Cable.createConsumer("<%= url_for('/passport/scan/cable') %>");
   return App.cable.subscriptions.create({
     channel: 'QrCodeLoginChannel',
     uuid: $("#scan_uuid").val()
