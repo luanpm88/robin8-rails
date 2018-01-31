@@ -251,7 +251,7 @@
             </div>
             <div class="option-group" role="group">
               <% if c.status == 'unexecute' %>
-                <% if c.example_screenshot_required? && c.example_screenshot.blank? %>
+                <% if c.example_screenshot.nil? %>
                   <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                 <% elsif c.per_budget_type == 'cpa' && c.remark.blank? %>
                   <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
