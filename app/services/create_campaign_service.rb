@@ -1,6 +1,6 @@
 class CreateCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target, :sub_type]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target, :sub_type, :example_screenshot_count]
 
   attr_reader :errors, :campaign
 
@@ -25,7 +25,7 @@ class CreateCampaignService
     # end
 
     if is_cpa_campaign? and not any_action_url_present?
-      @errors << 'No availiable action urls!'
+      @errors << 'No available action urls!'
       return false
     end
 

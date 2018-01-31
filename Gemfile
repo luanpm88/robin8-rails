@@ -58,7 +58,7 @@ gem 'mongoid', '~> 5.0.0'
 gem 'rqrcode'
 
 # Character encoding detecting library
-gem 'charlock_holmes'
+# gem 'charlock_holmes'
 
 gem 'twilio-ruby', '~> 4.2.1'
 

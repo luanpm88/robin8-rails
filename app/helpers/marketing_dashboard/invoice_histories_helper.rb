@@ -1,2 +1,3 @@
 module MarketingDashboard::InvoiceHistoriesHelper
+
 end
