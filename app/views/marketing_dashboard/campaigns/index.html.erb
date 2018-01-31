@@ -268,6 +268,9 @@
                 <% if c.is_limit_click_count %>
                   <li><%= link_to '解除kol点击限制', lift_kol_level_count_marketing_dashboard_campaign_path(c), method: :put %></li>
                 <% end %>
+                <% if c.example_screenshot_required? && c.example_screenshot.blank? %>
+                  <%= link_to '添加自定义截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
+                <% end %>
               </ul>
             </div>
             <div class="option-group" role="group">
@@ -277,14 +280,10 @@
             </div>
             <div class="option-group" role="group">
               <% if c.status == 'unexecute' %>
-                <% if c.example_screenshot.nil? %>
-                  <%= link_to '添加截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
-                <% elsif c.per_budget_type == 'cpa' && c.remark.blank? %>
+                <% if c.per_budget_type == 'cpa' && c.remark.blank? %>
                   <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
-                <% else %>
-                  <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
+                <% elsif (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
                         <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
-                  <% end %>
                 <% end %>
                 <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
                   <a href="" onclick="return false;" class="btn btn-warning reject-campaign btn-sm" data-campaign-id=<%= c.id %> >不通过</a>
