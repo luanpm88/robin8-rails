@@ -268,8 +268,8 @@
                 <% if c.is_limit_click_count %>
                   <li><%= link_to '解除kol点击限制', lift_kol_level_count_marketing_dashboard_campaign_path(c), method: :put %></li>
                 <% end %>
-                <% if c.example_screenshot_required? && c.example_screenshot.blank? %>
-                  <%= link_to '添加自定义截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
+                <% if c.example_screenshot.blank? %>
+                 <li><%= link_to '添加自定义截图示例', add_example_screenshot_marketing_dashboard_campaign_path(c), target: "_blank" %></li>
                 <% end %>
               </ul>
             </div>
