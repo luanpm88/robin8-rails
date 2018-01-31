@@ -98,21 +98,21 @@ export default class DetailPartial extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log('v0003');
-    //console.log("prevProps are : ", prevProps);
+    // //console.log("prevProps are : ", prevProps);
     let oldValue = prevProps.per_budget_type.value;
     console.log("oldValue", oldValue);
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
-    let self = this; // store this object to a variable for the jquery function to use;
-    // $("input[name='action_type']").change(function(){
-    //   if(newValue === 'click') {
-    //     self.props.per_action_budget.onChange('0.3')
-    //   } else {
-    //     self.props.per_action_budget.onChange('5.0')
-    //   }
-    // })
-    // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
-    // for three or more min values;
+    // let self = this; // store this object to a variable for the jquery function to use;
+    // // $("input[name='action_type']").change(function(){
+    // //   if(newValue === 'click') {
+    // //     self.props.per_action_budget.onChange('0.3')
+    // //   } else {
+    // //     self.props.per_action_budget.onChange('5.0')
+    // //   }
+    // // })
+    // // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
+    // // for three or more min values;
     let min = 5;
     if (this.props.per_budget_type.value === 'post') {
       min = 2.5;
@@ -122,19 +122,18 @@ export default class DetailPartial extends React.Component {
       min = 3;
     }
 
-
     if(oldValue==newValue) return console.log('escape');
-    // unable to change min value with this method
-    // $('.per-budget-input').TouchSpin({
-    //   min: min,
-    //   max: 10000000,
-    //   step: 0.1,
-    //   decimals: 1,
-    // })
-    // trigger method will cause infinite loop
-    // because per_budget_type.value is not fully loaded in the initial rendering
-    // its value become valid after the birth phase of the component
-    // which then exit the loop
+    // // unable to change min value with this method
+    // // $('.per-budget-input').TouchSpin({
+    // //   min: min,
+    // //   max: 10000000,
+    // //   step: 0.1,
+    // //   decimals: 1,
+    // // })
+    // // trigger method will cause infinite loop
+    // // because per_budget_type.value is not fully loaded in the initial rendering
+    // // its value become valid after the birth phase of the component
+    // // which then exit the loop
     if(true){
       console.log('calling .trigger');
       $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
@@ -167,6 +166,7 @@ export default class DetailPartial extends React.Component {
                  "
     return tip
   }
+
 
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type, example_screenshot_count } = this.props
@@ -300,6 +300,22 @@ export default class DetailPartial extends React.Component {
               }
             }
           }
+          {/* <div className="row forward-platform-select">
+            <p className="action-mode">budget</p>
+            <div className="sources-check">
+              <div className="row">
+                <div className="col-md-4">
+                  我要上传
+                  <input {...per_action_budget}
+                    type="number" name="budget"
+                    min={example_screenshot_count.value === '3' ? '8.0' : '3.0'}
+                    step="0.1" autoComplete="off"/>
+                  张示例图片
+                </div>
+
+              </div>
+            </div>
+          </div> */}
           <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
             {
               do {
