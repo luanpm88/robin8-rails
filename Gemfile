@@ -198,6 +198,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
+  gem 'grape_doc', github: 'season/grape_doc.git', branch: 'master'
 end
 
 group :development, :qa do
@@ -260,5 +261,3 @@ gem 'crm', path: 'crm'
 gem 'airbrake', '~> 6.0'
 
 gem 'gibberish'
-
-gem 'grape_doc', github: 'season/grape_doc.git', branch: 'master', group: :development
