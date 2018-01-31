@@ -3,6 +3,7 @@
 module API
   module ApiHelpers
     PRIVATE_TOKEN_PARAM = :private_token
+    EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 
     def current_kol
       result , private_token = AuthToken.valid?(headers["Authorization"])
