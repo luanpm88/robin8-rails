@@ -5,10 +5,12 @@ module API
 
         desc 'get valid code by your email.'
         params do
-          requires :email, type: String, regexp: API::ApiHelpers::EMAIL_REGEXP
+          requires :email, type: String #, regexp: API::ApiHelpers::EMAIL_REGEXP
           optional :type,  type: String, desc: 'forget_password, default: nil'
         end
         get 'valid_code' do
+          error_403!(detail: '邮箱格式错误') unless params[:email].match(API::ApiHelpers::EMAIL_REGEXP)
+          
           email = params[:email]
           kol   = Kol.find_by(email: email)
 
