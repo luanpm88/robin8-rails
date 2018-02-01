@@ -74,9 +74,8 @@ Rails.application.routes.draw do
         put :push_to_alizhongbao
         put :push_to_wcs
         put :push_to_all_partners
-
-        put :lift_kol_level_count
-=end        
+=end      
+        put :lift_kol_level_count  
         put :push_to_partners
         put :settle_for_partners
       end

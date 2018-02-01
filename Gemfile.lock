@@ -34,7 +34,7 @@ GIT
       websocket-driver (~> 0.6.1)
 
 GIT
-  remote: git://github.com/season/grape_doc.git.git
+  remote: git://github.com/season/grape_doc.git
   revision: 84f87bc7fa706f3f89db9dd74e656df80434bde9
   branch: master
   specs:
