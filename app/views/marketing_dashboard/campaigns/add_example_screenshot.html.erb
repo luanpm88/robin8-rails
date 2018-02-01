@@ -1,56 +1,33 @@
+<head>
+<style type="text/css">　　
+.row {
+  margin-top:15px;
+}</style>　　
+</head>
 <div class="container-fluid" style="padding: 100px 50px;">
   <% if @campaign.example_screenshot_required? %>
     <h1>请上传截图示例，并且添加备注</h1>
   <% else %>
     <h1>请添加具体要求</h1>
   <% end %>
-  <%= form_for @campaign, url: save_example_screenshot_and_remark_marketing_dashboard_campaign_path(@campaign), html: { class: "form-horizontal", id: "form-horizontal", multiple: true } do |f| %>
-    <% if @campaign.example_screenshot_required? %>
-      <div>
-        <img src="<%= @campaign.example_screenshot %>"></img>
-      </div>
-      <span class="btn btn-primary" id="upload-img" style='margin-top:20px'>上传图片</span>
-      <%= f.hidden_field :example_screenshot, class: "form-control screenshot-input", required: true %>
-    <% end %>
-    <%= f.text_area :remark, class: "form-control", placeholder: '请填写具体说明', required: true, rows: "5", style: 'width:400px; margin-top:20px' %>
-    <% if @campaign.example_screenshot_required? %>
-      <div>
-        <h3>截图说明示例</h3>
-        <p>此活动需要，下载“XXAPP”，上传APP截图，才能获得奖励</p>
-      </div>
-    <% end %>
-    <%= f.submit '提交', :class => 'btn btn-primary submit-admin', style: 'margin-top:20px' %>
-  <% end %>
+  <div class="container">
+    <div class="row">
+      <form action="save_example_screenshot_and_remark" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group video_container">
+          <label for="file-upload" class="col-sm-2 control-label">上传图片标签</label>
+          <% count = @campaign.example_screenshot_count || 1 %>
+          <% count.times do |t| %> 
+          <div class="col-sm-8">
+            <input type="file" name="image[]"  >
+            <input type="text" name="comment[]" >
+          </div>
+          <% end %>
+        </div>
+         <legend>介绍</legend>
+          <textarea placeholder="添加活动介绍" rows="20" name="remark" id="remark_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+          <button>提交</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
 </div>
-
-<script>
-  var uploader = Qiniu.uploader({
-      runtimes: 'html5,flash,html4',      // 上传模式,依次退化
-      browse_button: 'upload-img',      // 上传选择的点选按钮，**必需**
-      uptoken_url: '/brand_api/v1/util/qiniu_token', // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
-      get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
-      unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
-      domain: '7xozqe.com1.z0.glb.clouddn.com',                   // bucket 域名，下载资源时用到，**必需**
-      container: 'form-horizontal',             // 上传区域DOM ID，默认是browser_button的父元素
-      max_file_size: '20mb',             // 最大文件体积限制
-      flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
-      max_retries: 3,                     // 上传失败最大重试次数
-      chunk_size: '4mb',                  // 分块上传时，每块的体积
-      multi_selection: false,
-      auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
-      filters : {
-        prevent_duplicates: true,
-        //Specify what files to browse for
-        mime_types: [
-          {title : "Image files", extensions : "jpg,gif,png,jpeg"}, //限定jpg,gif,png,jpeg后缀上传
-        ]
-      },
-      init: {
-        'FileUploaded': function(up, file, info) {
-          const url = "http://" + up.getOption('domain') + '/' + file.target_name;
-          $("img").prop('src', url)
-          $(".screenshot-input").val(url)
-        }.bind(this)
-      }
-  });
-</script>

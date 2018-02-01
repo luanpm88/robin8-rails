@@ -171,6 +171,7 @@
           <th>结算点击</th>
           <th>补推</th>
           <th>销售人员</th>
+          <th>是否限制点击数</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -212,6 +213,7 @@
               <%= seller.name %>
             <% end %>
           </td>
+          <td><%= c.is_limit_click_count ? '是' : '否' %> </td>
           <td>
             <%= link_to '详情', marketing_dashboard_campaign_path(c), target: "_blank" %> /
             <% if ["executing", "executed", "settled"].include?(c.status) %>
@@ -242,6 +244,26 @@
                   <li><%= link_to '补推给所有人',push_all_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %></li>
                 <% end %>
                 <% end %>
+
+                <% ch = c.channel %>
+                <% if ch == nil || ch == 'wcs' %>
+                  <li><%= link_to '同步到阿里众包', push_to_partners_marketing_dashboard_campaign_path(c , channel: "azb"), method: :put %></li>
+                <% elsif ch == 'azb' ||  ch == 'all'%>
+                  <li><%= link_to '点一下就可以给阿里众包结算哦(๑•ᴗ•๑)', settle_for_partners_marketing_dashboard_campaign_path(c, channel: "azb") , method: :put %></li>
+                <% end %>
+                <% if ch == nil || ch == 'azb' %>
+                  <li><%= link_to '同步到微差事', push_to_partners_marketing_dashboard_campaign_path(c, channel: "wcs"), method: :put %></li>
+                <% elsif ch == 'wcs' || ch == "all"%>
+                  <li><%= link_to '该活动早已推送过微差事了，长点心', '#' %></li>
+                <% end %>
+                <% if ch == nil || ch == 'azb' || ch == 'wcs' %>
+                  <li><%= link_to '同步到所有合作伙伴', push_to_partners_marketing_dashboard_campaign_path(c , channel: "all"), method: :put %></li>
+                <% elsif ch == 'all' %>
+                  <li><%= link_to '该活动早已推送过所有合作伙伴了，长点心', '#' %></li>
+                <% end %>
+                <% if c.is_limit_click_count %>
+                  <li><%= link_to '解除kol点击限制', lift_kol_level_count_marketing_dashboard_campaign_path(c), method: :put %></li>
+                <% end %>
               </ul>
             </div>
             <div class="option-group" role="group">
@@ -257,7 +279,7 @@
                   <%= link_to '添加说明', add_example_screenshot_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                 <% else %>
                   <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>
-                        <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
+                    <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), class: "btn btn-primary btn-sm", target: "_blank" %>
                   <% end %>
                 <% end %>
                 <% if (current_admin_user.has_role? :super_admin) || (current_admin_user.has_role? :manage_campaign) %>

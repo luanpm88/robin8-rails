@@ -29,6 +29,7 @@ end
 # end
 
 # Syncs the database into QA and STAGING every night
+=begin
 every 1.day, :at => '12:01 am', roles: [:db_syncer] do
   rake "db:export_prod"
 end
@@ -36,6 +37,7 @@ end
 every 1.day, :at => '2:00 am', roles: [:db_syncer] do
   rake "db:import_to_staging"
 end
+=end
 
 every 1.day, :at => '12:00 am' do
   command "backup perform --trigger robin8_backup_local"
@@ -43,10 +45,6 @@ end
 
 every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
-end
-
-every 110.minutes do
-  rake "unicorn:restart"
 end
 
 every 1.day, :at => '2:30 am' do
@@ -66,6 +64,11 @@ end
 #cpp截图定时自动审核通过
 every 1.day, :at => '0:45 am' do
   runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
+end
+
+#合作平台截图自动通过
+every 1.day, :at => '1:15 am' do
+  runner "CampaignInvite.auto_channel_kol_multi_img_status" , :environment => 'production'
 end
 
 # 定时处理geometry 截图审核

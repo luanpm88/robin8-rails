@@ -6,8 +6,8 @@ class Kol < ActiveRecord::Base
   # counter :redis_new_income      #unit is cent
 
   counter :registered_invitation_count
-  list :read_message_ids, :maxlength => 40             # 所有阅读过的
-  list :list_message_ids, :maxlength => 40             # 所有发送给部分人消息ids
+  list :read_message_ids, :maxlength => 200            # 所有阅读过的
+  list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
   include Concerns::PayTransaction
@@ -777,6 +777,15 @@ class Kol < ActiveRecord::Base
       ClubMember.create(club_id: club.id , kol_id: self.id)
     end
     true
+  end
+
+  def create_invite_code
+    begin
+      code = [*(0..9)].sample(8).join
+      raise "repetitive_invite_code"   unless  InviteCode.create(code: code.to_i , invite_type: 'invite_friend' , invite_value: self.id).valid?
+    rescue
+      retry
+    end
   end
 
   # def get_share_proportion(credits)

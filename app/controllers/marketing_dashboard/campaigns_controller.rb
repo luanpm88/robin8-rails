@@ -1,4 +1,5 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
+  protect_from_forgery :except => :save_example_screenshot_and_remark
   def index
     authorize! :read, Campaign
 
@@ -126,8 +127,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def save_example_screenshot_and_remark
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
-      remark: params[:campaign][:remark])
+    example_screenshot = ""
+    comment = ""
+    params[:image].each {|t| example_screenshot += "#{Uploader::FileUploader.image_uploader(t)},"  if t.present? }
+    params[:comment].each {|t| comment += "#{t}&" if t.present? }
+    @campaign.update_attributes(example_screenshot: example_screenshot[0..-2] , remark: params[:remark] , comment: comment[0..-2])
     flash[:notice] = "保存成功"
     render :add_example_screenshot
   end
@@ -235,14 +239,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def push_record
-    @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
-
+    @push_records = CampaignPushRecord.where(campaign_id: params[:id])
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.paginate(paginate_params)
 
     respond_to do |format|
       format.html do
-        @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+        @push_records = @q.result.paginate(paginate_params)
         render 'push_record'
       end
 
@@ -262,5 +264,105 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       @campaign.update_column(:wechat_auth_type, params[:campaign][:wechat_auth_type])
       redirect_to :action => :index
     end
+  end
+
+=begin
+  def push_to_alizhongbao
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    if @campaign.channel = nil
+      @campaign.update_attributes!(channel:"azb")
+      Partners::Alizhongbao.push_campaign(params[:id])
+      flash[:notice] = "成功推送到阿里众包"
+    elsif @campaign.channel = 'azb'
+      flash[:notice] = "该活动早已推送过阿里众包了，长点心！"
+    elsif @campaign.channel = 'wcs'
+      @campaign.update_attributes!(channel:"all")
+      Partners::Alizhongbao.push_campaign(params[:id])
+      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
+    elsif @campaign.channel = 'all'
+      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心！"
+    end
+    redirect_to :action => :index
+  end
+
+  def push_to_wcs
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    if @campaign.channel = nil
+      @campaign.update_attributes!(channel:"wcs")
+      flash[:notice] = "成功推送到微差事"
+    elsif @campaign.channel = 'wcs'
+      flash[:notice] = "该活动早已推送过微差事了，长点心！"
+    elsif @campaign.channel = 'azb'
+      @campaign.update_attributes!(channel:"all")
+      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
+    elsif @campaign.channel = 'all'
+      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心！"
+    end
+    redirect_to :action => :index
+  end
+
+  def push_to_all_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    if @campaign.channel = 'all'
+      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心"
+    elsif @campaign.channel = 'wcs'
+      @campaign.update_attributes!(channel:"all")
+      Partners::Alizhongbao.push_campaign(params[:id])
+      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
+    elsif @campaign.channel = 'azb'
+      @campaign.update_attributes!(channel:"all")
+      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
+    elsif @campaign.channel = nil
+      @campaign.update_attributes!(channel:"all")
+      Partners::Alizhongbao.push_campaign(params[:id])
+      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
+    end
+    redirect_to :action => :index
+  end
+=end
+
+  def lift_kol_level_count
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+
+    if @campaign.is_limit_click_count # default true
+      @campaign.update_attributes!(is_limit_click_count: false)
+      flash[:notice] = "已解除限制"
+    else
+      flash[:notice] = "无需重复操作"
+    end
+    redirect_to :action => :index
+  end
+
+  def push_to_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    channel = params[:channel]
+    channel = "all"  unless @campaign.channel.blank?
+    partner = case channel
+              when "wcs"
+                "微差事"
+              when "azb"
+                "阿里众包"
+              when "all"
+                "所有合作伙伴"
+              end
+    notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    if !["azb" , "all"].include?(@campaign.channel) && ["azb" , "all"].include?(channel)
+      resp = Partners::Alizhongbao.push_campaign(params[:id]) 
+      notice = "该活动推送给阿里众包失败,请检查"  unless resp
+    end
+    @campaign.update_attributes!(channel: channel)
+    flash[:notice] = notice 
+    redirect_to :action => :index
+  end
+
+  def settle_for_partners
+    SettlePartnerWorker.perform(params[:id] , params[:channel])
+    flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
+    redirect_to :action => :index
   end
 end

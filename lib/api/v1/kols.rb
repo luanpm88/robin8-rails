@@ -332,7 +332,7 @@ module API
           requires :city_name, type: String
         end
         put 'set_city' do
-          city = City.where("name like '#{params[:city_name]}%'").first   rescue nil
+          city = City.where("name like ?", "#{params[:city_name]}%").first   rescue nil
           current_kol.update_column(:app_city, city.name_en)
           present :error, 0
         end

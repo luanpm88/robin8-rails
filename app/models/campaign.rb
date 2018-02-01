@@ -14,6 +14,9 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignAnalysis
   include Campaigns::CampaignInviteAnalysis
 
+  list :push_device_tokens
+  
+
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
                        'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
@@ -425,16 +428,22 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_example_screenshot
-    return self.example_screenshot if self.example_screenshot.present?
+  def get_example_screenshot(multi = false)
+    #multi 区别是否返回多图,适配老版本
+    if self.example_screenshot.present?
+      example_screenshot = self.example_screenshot.split(",")   rescue []
+      return example_screenshot[0]   unless multi 
+      return example_screenshot
+    end
     if self.sub_type == 'weibo'
+      return ExampleScreenshots['weibo'].split   if multi
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
+      return ExampleScreenshots['qq'].split      if multi
       ExampleScreenshots['qq']
-    elsif self.sub_type == 'wechat'
-      ExampleScreenshots['wechat']
     else
-      ExampleScreenshots['wechat,weibo']
+      return ExampleScreenshots['wechat'].split  if multi
+      ExampleScreenshots['wechat']
     end
   end
 
@@ -468,6 +477,15 @@ class Campaign < ActiveRecord::Base
     Rails.logger.partner_campaign.info "--campaign_details: share_url #{share_url}"
     share_url ||= "#{Rails.application.secrets.domain}/campaign_visit?campaign_id=#{self.id}" rescue ''
     return [campaign_invite , share_url]
+  end
+
+  def get_push_record_id
+    record = self.campaign_push_records.where(filter_reason: 'match').last
+    if record && record.kol_ids.present?
+      record.kol_ids.split(",")
+    else
+      nil
+    end
   end
 
 

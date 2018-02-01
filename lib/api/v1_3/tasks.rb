@@ -6,7 +6,7 @@ module API
           authenticate!
         end
 
-        #签到
+        #旧签到接口
         put 'check_in' do
           if current_kol.today_had_check_in?
             return error_403!({error: 1, detail: '您今日已经签到！' })
@@ -26,12 +26,13 @@ module API
           end
         end
 
+        #旧签到历史接口
         get 'check_in_history' do
-          present :error, 0
-          present :continuous_checkin_count, current_kol.continuous_checkin_count
-          present :today_had_check_in, current_kol.today_had_check_in?
-          present :checkin_history, current_kol.checkin_history
-        end
+         present :error, 0
+         present :continuous_checkin_count, current_kol.continuous_checkin_count
+         present :today_had_check_in, current_kol.today_had_check_in?
+         present :checkin_history, current_kol.checkin_history
+       end
 
         get 'invite_info' do
           present :error, 0

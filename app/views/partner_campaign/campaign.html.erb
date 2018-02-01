@@ -2,7 +2,7 @@
    title        = @campaign.name
    description  = @campaign.description
    poster_url   = @campaign.img_url
-   url          = request.url
+   url          = Rails.application.secrets[:domain] + request.fullpath
    sign_package = ($weixin_client.get_jssign_package(url) rescue {})
    app_id       = sign_package['appId']
    nonce        = sign_package['nonceStr']
@@ -174,8 +174,8 @@
         padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
         font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
       </section>
-      1. 有效点击为朋友圈中的好友点击的数量，每人只计算1次。 如20个好友点击，则获得20个有效点击的薪酬。
-      2. 任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
+      1. 单个活动每个微信用户点击只能算一次,即使是不同的人分享的同一个活动；例如：A为B点击了活动1，之后A又为C点击了活动1，那么只有B的活动1计费。
+      2. 相同 wifi 对相同的活动的每个点击需要间隔 30 秒。
     </section>
     <section class="bottom-ro">
       <a class="btn-blue-ro width100" onclick="showDialog('dialog02')" style="font-size: 1.8em; font-weight: 350;">
@@ -199,8 +199,8 @@
         padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;
         font-weight: 350">总点击: <span style="color: orange"><%= @campaign_invite.get_total_click %></span> 有效点击: <span style="color: orange"><%= @campaign_invite.get_avail_click %></span> 即将赚: <span style="color: orange"><%= @campaign_invite.earn_money %></span> 元</h2>
       </section>
-      1. 有效点击为朋友圈中的好友点击的数量，每人只计算1次。 如20个好友点击，则获得20个有效点击的薪酬。
-      2. 任务薪酬为底薪+有效点击薪酬，点击薪酬将于验收后由阿里众包发放。
+      1. 单个活动每个微信用户点击只能算一次,即使是不同的人分享的同一个活动；例如：A为B点击了活动1，之后A又为C点击了活动1，那么只有B的活动1计费。
+      2. 相同 wifi 对相同的活动的每个点击需要间隔 30 秒。
     </section>
     <section class="bottom-ro">
       <a class="btn-blue-ro width100" onclick="showDialog('dialog02')" style="font-size: 1.8em; font-weight: 350;">

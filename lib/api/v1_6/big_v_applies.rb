@@ -24,7 +24,7 @@ module API
           else
             gender = params[:gender].to_i
           end
-          app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+          app_city = City.where("name like ?", "#{params[:city_name]}%").first.name_en   rescue nil
           current_kol.update_columns(:app_city => app_city, :job_info => params[:job_info],
                                      :desc => params[:desc], :gender => gender, :age => params[:age])
           current_kol.update_columns(name: params[:name]) unless params[:name].include?("****")
@@ -66,7 +66,7 @@ module API
           social_account.save
           current_kol.update_attribute(:name , params[:username]) if current_kol.name.include?("****")
           current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
-          present :error, 0 
+          present :error, 0
         end
 
         desc '提交社交账号资料'

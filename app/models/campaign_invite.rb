@@ -113,6 +113,11 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
+
+  def self.auto_channel_kol_multi_img_status
+    CampaignInvite.joins(:kol).where("kols.channel is not NULL").each {|t| t.screenshot_pass }
+  end
+
   #cpc截图自动审核
   def self.auto_change_multi_img_status
     @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
@@ -405,14 +410,11 @@ class CampaignInvite < ActiveRecord::Base
     RemoveOldInvitationsWorker.perform_async()
   end
 
-  def get_example_screenshot
-    return self.campaign.example_screenshot if self.campaign.example_screenshot.present?
-    if self.sub_type == 'weibo'
-      ExampleScreenshots['weibo']
-    elsif self.sub_type == 'qq'
-      ExampleScreenshots['qq']
-    elsif self.sub_type == 'wechat'
-      ExampleScreenshots['wechat']
-    end
+  def get_example_screenshot(multi = false)
+    self.campaign.get_example_screenshot(multi) 
+  end
+
+  def get_multi_screenshots
+    screenshot = self.screenshot.split(",") rescue []
   end
 end

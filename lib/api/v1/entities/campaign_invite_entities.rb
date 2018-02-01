@@ -4,7 +4,13 @@ module API
       module CampaignInviteEntities
         class Summary < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :status, :img_status, :is_invited, :screenshot, :reject_reason , :uuid, :price, :sale_price , :sub_type
+          expose :id, :status, :img_status, :is_invited, :reject_reason , :uuid, :price, :sale_price , :sub_type
+          expose :screenshot do |campaign_invite|
+            screenshot = campaign_invite.screenshot
+          end
+          expose :screenshots do |campaign_invite|
+            campaign_invite.get_multi_screenshots
+          end
           expose :share_url do |campaign_invite|
             campaign_invite.visit_url
             # campaign_invite.origin_share_url
@@ -33,6 +39,12 @@ module API
           expose :cpi_example_screenshot do |campaign_invite|
             campaign_invite.get_example_screenshot
           end
+          expose :cpi_example_screenshots do |campaign_invite|
+            campaign_invite.get_example_screenshot(true)
+          end
+          expose :screenshot_comment do |campaign_invite|
+            campaign_invite.campaign.comment.split("&")  rescue ["示例截图"]
+          end
           expose :campaign do |campaign_invite, options|
             API::V1::Entities::CampaignEntities::Summary.represent campaign_invite.campaign, options.merge({campaign_invite: campaign_invite})
           end
@@ -50,7 +62,13 @@ module API
               my_campaign.campaign.sub_type
             end
           end
-
+          expose :per_budget_type do |my_campaign|
+            if my_campaign.campaign.is_cpi_type?
+              'cpa'
+            else
+               my_campaign.campaign.per_budget_type
+            end
+          end
         end
       end
     end

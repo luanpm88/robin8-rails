@@ -43,7 +43,6 @@ module Concerns
 
     # 成功接收接收活动for pc
     def approve_campaign(campaign_id)
-      puts "-----------------------------------------------------------"
       campaign = Campaign.find campaign_id  rescue nil
       return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
       campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
@@ -121,7 +120,7 @@ module Concerns
     def apply_campaign(params)
       campaign_invite = nil
       ActiveRecord::Base.transaction  do
-        campaign_id = params[:id]
+        campaign_id = params[:id] || params[:campaign_id]
         campaign = Campaign.find campaign_id  rescue nil
         return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
         campaign_apply = self.campaign_applies.create(campaign_id: campaign_id, name: params[:name], phone: params[:phone],  weixin_no: params[:weixin_no],
@@ -176,6 +175,5 @@ module Concerns
     def avg_campaign_credit
       campaign_total_income / self.campaign_invites.settled.count
     end
-
   end
 end

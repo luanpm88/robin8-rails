@@ -5,5 +5,5 @@ class InviteCode < ActiveRecord::Base
   validates :invite_type ,  inclusion: {in: ["admintag" ,"club_leader","club_member"]}
   validates :invite_value , presence: {message: "标签名/社团名不能为空"} ,uniqueness: {message: "标签名/社团名已存在"} 
 
-  InviteType = {'admintag' =>  'Admintag' , 'club_leader' => '社团Leader' , 'club_member' => '社团成员'}
+  InviteType = {'admintag' =>  'Admintag' , 'club_leader' => '社团Leader' , 'club_member' => '社团成员' , 'invite_friend' => '邀请好友'}
 end

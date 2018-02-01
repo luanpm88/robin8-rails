@@ -26,7 +26,7 @@ module API
             end
           else
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
-            app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+            app_city = City.where("name like ?", "#{params[:city_name]}%").first.name_en   rescue nil
             Rails.logger.info "-------#{app_city}"
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token],
@@ -64,7 +64,7 @@ module API
           if !kol
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
             ActiveRecord::Base.transaction do
-              app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+              app_city = City.where("name like ?", "#{params[:city_name]}%").first.name_en   rescue nil
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],

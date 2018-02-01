@@ -3,6 +3,7 @@
 module API
   module ApiHelpers
     PRIVATE_TOKEN_PARAM = :private_token
+    EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 
     def current_kol
       result , private_token = AuthToken.valid?(headers["Authorization"])
@@ -149,7 +150,15 @@ module API
                     when "admintags"
                       [:admintags, :first, :tag]
                     end
-            unless target[:target_content].split(",").include?(index.inject(current_kol, :try))
+                    
+            filter_result = if target[:target_type] == "admintags"
+                              target[:target_content].split(",") & current_kol.admintags.map(&:tag)
+                            else
+                              target[:target_content].split(",").include?(index.inject(current_kol, :try))
+                            end
+
+            unless filter_result
+            # unless target[:target_content].split(",").include?(index.inject(current_kol, :try))
               filter = false
               break
             end
@@ -193,6 +202,14 @@ module API
       social_account.followers_count = params[:followers_count]   if params[:followers_count].present?
       social_account.screenshot = params[:screenshot]             if params[:screenshot].present?
       social_account.save
+    end
+
+
+    def avatar_uploader(image = nil)
+      return  unless image
+      uploader = AvatarUploader.new
+      uploader.store!(image)
+      uploader.url
     end
   end
 end
