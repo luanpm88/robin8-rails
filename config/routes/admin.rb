@@ -70,10 +70,15 @@ Rails.application.routes.draw do
         match 'add_seller', via: [:post, :get]
         get :push_record
         match :set_auth_type, via: [:put, :get]
+=begin
         put :push_to_alizhongbao
         put :push_to_wcs
         put :push_to_all_partners
+
         put :lift_kol_level_count
+=end        
+        put :push_to_partners
+        put :settle_for_partners
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]

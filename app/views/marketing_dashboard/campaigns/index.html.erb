@@ -247,21 +247,17 @@
 
                 <% ch = c.channel %>
                 <% if ch == nil || ch == 'wcs' %>
-                  <li><%= link_to '同步到阿里众包', push_to_alizhongbao_marketing_dashboard_campaign_path(c), method: :put %></li>
-                <% elsif ch == 'azb' %>
-                  <li><%= link_to '该活动早已推送过阿里众包了，长点心', '#' %></li>
-                <% elsif ch == 'all' %>
-                  <li><%= link_to '该活动早已推送过所有合作伙伴了，长点心', '#' %></li>
+                  <li><%= link_to '同步到阿里众包', push_to_partners_marketing_dashboard_campaign_path(c , channel: "azb"), method: :put %></li>
+                <% elsif ch == 'azb' ||  ch == 'all'%>
+                  <li><%= link_to '点一下就可以给阿里众包结算哦(๑•ᴗ•๑)', settle_for_partners_marketing_dashboard_campaign_path(c, channel: "azb") , method: :put %></li>
                 <% end %>
                 <% if ch == nil || ch == 'azb' %>
-                  <li><%= link_to '同步到微差事', push_to_wcs_marketing_dashboard_campaign_path(c), method: :put %></li>
-                <% elsif ch == 'wcs' %>
+                  <li><%= link_to '同步到微差事', push_to_partners_marketing_dashboard_campaign_path(c, channel: "wcs"), method: :put %></li>
+                <% elsif ch == 'wcs' || ch == "all"%>
                   <li><%= link_to '该活动早已推送过微差事了，长点心', '#' %></li>
-                <% elsif ch == 'all' %>
-                  <li><%= link_to '该活动早已推送过所有合作伙伴了，长点心', '#' %></li>
                 <% end %>
                 <% if ch == nil || ch == 'azb' || ch == 'wcs' %>
-                  <li><%= link_to '同步到所有合作伙伴', push_to_all_partners_marketing_dashboard_campaign_path(c), method: :put %></li>
+                  <li><%= link_to '同步到所有合作伙伴', push_to_partners_marketing_dashboard_campaign_path(c , channel: "all"), method: :put %></li>
                 <% elsif ch == 'all' %>
                   <li><%= link_to '该活动早已推送过所有合作伙伴了，长点心', '#' %></li>
                 <% end %>

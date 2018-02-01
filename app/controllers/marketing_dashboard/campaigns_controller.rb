@@ -266,6 +266,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
+=begin
   def push_to_alizhongbao
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
@@ -321,6 +322,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
     redirect_to :action => :index
   end
+=end
 
   def lift_kol_level_count
     authorize! :update, Campaign
@@ -335,4 +337,32 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     redirect_to :action => :index
   end
 
+  def push_to_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    channel = params[:channel]
+    channel = "all"  unless @campaign.channel.blank?
+    partner = case channel
+              when "wcs"
+                "微差事"
+              when "azb"
+                "阿里众包"
+              when "all"
+                "所有合作伙伴"
+              end
+    notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    if !(@campaign.channel.in? ["azb" , "all"]) && channel.in? ["azb" , "all"]   
+      resp = Partners::Alizhongbao.push_campaign(params[:id]) 
+      notice = "该活动推送给阿里众包失败,请检查"  unless resp
+    end
+    @campaign.update_attributes!(channel: channel)
+    flash[:notice] = notice 
+    redirect_to :action => :index
+  end
+
+  def settle_for_partners
+    SettlePartnerWorker.perform(params[:id] , params[:channel])
+    flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
+    redirect_to :action => :index
+  end
 end
