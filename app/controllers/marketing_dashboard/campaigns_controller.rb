@@ -351,7 +351,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
                 "所有合作伙伴"
               end
     notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
-    if !["azb" , "all"].includes?(@campaign.channel) && ["azb" , "all"].includes?(channel)
+    if !["azb" , "all"].include?(@campaign.channel) && ["azb" , "all"].include?(channel)
       resp = Partners::Alizhongbao.push_campaign(params[:id]) 
       notice = "该活动推送给阿里众包失败,请检查"  unless resp
     end
