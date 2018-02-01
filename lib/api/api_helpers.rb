@@ -176,13 +176,7 @@ module API
     end
 
     def create_random_code
-      begin
-        code = [*(0..9)].sample(8).join.to_i
-        raise if KolInviteCode.find_by(code: code)
-        return code
-      rescue
-        retry
-      end
+      SecureRandom.random_number(89999999)+10000000
     end
 
     def check_invite_code(code , kol_exist)
