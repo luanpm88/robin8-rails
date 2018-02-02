@@ -10,7 +10,7 @@ module API
         end
         get 'valid_code' do
           error_403!(detail: '邮箱格式错误') unless params[:email].match(API::ApiHelpers::EMAIL_REGEXP)
-          
+
           email = params[:email]
           kol   = Kol.find_by(email: email)
 
@@ -24,12 +24,12 @@ module API
 
           unless valid_code
             valid_code = SecureRandom.random_number(1000000)
-            $redis.setex("valid_#{email}", 3000, valid_code)
+            $redis.setex("valid_#{email}", 6000, valid_code)
           end
 
           NewMemberWorker.perform_async(email, valid_code)
 
-          present error: 0, alert: '验证码已发送您的邮箱，请在5分钟内进行验证，过期请重新获取'
+          present error: 0, alert: '验证码已发送您的邮箱，请在10分钟内进行验证，过期请重新获取'
         end
 
         desc 'email valid code'
@@ -41,7 +41,7 @@ module API
           if $redis.get("valid_#{params[:email]}") == params[:valid_code]
             vtoken = SecureRandom.base64
             
-            $redis.setex("vtoken_#{params[:email]}", 3000, vtoken)
+            $redis.setex("vtoken_#{params[:email]}", 6000, vtoken)
 
             present error: 0, alert: '邮箱验证成功',vtoken: vtoken
           else
