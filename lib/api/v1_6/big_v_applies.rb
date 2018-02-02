@@ -30,7 +30,7 @@ module API
           current_kol.update_columns(name: params[:name]) unless params[:name].include?("****")
           current_kol.tags  = Tag.where(:name => params[:tag_names].split(",")) rescue nil
           current_kol.avatar = params[:avatar]  if params[:avatar].present?
-          return error_403!({error: 1, detail: '请先绑定手机号'}) unless current_kol.mobile_number
+          # return error_403!({error: 1, detail: '请先绑定手机号'}) unless current_kol.mobile_number
           # current_kol.cover_images = [Image.create!(:referable => current_kol, :avatar => params[:avatar], :sub_type => 'cover')]
           #current_kol.update_columns(:role_apply_status => 'applying', :role_apply_time => Time.now)   if current_kol.is_big_v?
           current_kol.save
