@@ -141,7 +141,7 @@ module API
             else
               url = ""
               params.delete_if{|key , value| !(key.include? "screenshot") }.each do|image|
-                url += "#{iamge[1].class == String ? image[1] : Uploader::FileUploader.image_uploader(image[1])},"
+                url += "#{image[1].class == String ? image[1] : Uploader::FileUploader.image_uploader(image[1])},"
               end
             end
             campaign_invite.reupload_screenshot(url[0..-2])
