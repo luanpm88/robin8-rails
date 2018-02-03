@@ -10,6 +10,8 @@ module API
       		requires :password, type: String
       	end
       	post '/' do
+          error_403!(detail: '该邮箱未注册') unless Kol.find_by_email(params[:login])
+          
       		if kol = Kol.authenticate_password(params)
       			present :error, 0
           	present :kol, kol, with: API::V1::Entities::KolEntities::Summary
