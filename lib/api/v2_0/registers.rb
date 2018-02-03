@@ -39,6 +39,8 @@ module API
         end
         post 'valid_email' do
           if $redis.get("valid_#{params[:email]}") == params[:valid_code]
+
+            $redis.del("valid_#{params[:email]}")
             vtoken = SecureRandom.base64
             
             $redis.setex("vtoken_#{params[:email]}", 6000, vtoken)
@@ -58,7 +60,7 @@ module API
           optional :mobile_number,  type: String
         end
         post '/' do
-          error_403!(detail: '参数验证错误') unless $redis.get("vtoken_#{params[:email]}") == params[:vtoken]
+          error_403!(detail: '出错啦，请联系小萝缤') unless $redis.get("vtoken_#{params[:email]}") == params[:vtoken]
 
           _kol_hash = {}
 
