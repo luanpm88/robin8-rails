@@ -44,7 +44,8 @@ module API
           current_kol.invited_users << params[:mobile_number]
           invite_content = Emay::TemplateContent.get_invite_sms(current_kol.try(:name))
           status = SmsMessage.send_to(params[:mobile_number], invite_content)
-
+          RegisteredInvitation.where(mobile_number: params[:mobile_number]).first_or_create(
+            inviter_id: current_kol.id, status: "pending" )
           if status
             present :error, 0
           else

@@ -190,7 +190,7 @@
         <td><%= link_to c.kol_id, marketing_dashboard_kol_path(:id => c.kol_id), :target => "_blank" %></td>
         <td><%= c.kol.name rescue "" %></td>
         <td><%= c.kol.kol_level rescue "" %></td>
-        <td><%= render partial: "admintag", collection: c.kol.admintags.distinct , locals: {kol_id: c.kol.id} %></td>
+        <td><%= render partial: "admintag", collection: c.kol.admintags.distinct, locals: {kol_id: c.kol.id}  rescue nil %></td>
         <td><%= c.kol.channel rescue "" %></td>
         <td><%= c.sub_type == "weibo" ? "微博" : "微信" %></td>
         <td><%= c.get_avail_click(true) > 0 ? c.get_avail_click(true) : c.avail_click %></td>
