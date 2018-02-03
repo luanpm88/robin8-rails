@@ -158,6 +158,7 @@
           <th>创建人ID</th>
           <th>创建人名称</th>
           <th>活动状态</th>
+          <th>活动平台</th>
           <th>活动类型</th>
           <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
           <th><%= sort_link(@q, :budget, "活动预算") %></th>
@@ -196,6 +197,7 @@
           <td><%= link_to c.user_id, marketing_dashboard_user_path(c.user_id), target: "_blank" rescue "未知" %></td>
           <td><%= c.user.smart_name rescue "未知" %></td>
           <td><%= c.status %></td>
+          <td><%= c.sub_type %></td>
           <td><%= c.per_budget_type %></td>
           <td><%= c.per_action_budget %></td>
           <td><%= c.budget %></td>
