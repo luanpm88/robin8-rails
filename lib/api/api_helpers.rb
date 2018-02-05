@@ -3,6 +3,7 @@
 module API
   module ApiHelpers
     PRIVATE_TOKEN_PARAM = :private_token
+    EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 
     def current_kol
       result , private_token = AuthToken.valid?(headers["Authorization"])
@@ -173,6 +174,23 @@ module API
         campaigns_filter.push(campaign) if filter
       end
       campaigns_filter
+    end
+
+    def create_random_code
+      SecureRandom.random_number(89999999)+10000000
+    end
+
+    def check_invite_code(code , kol_exist)
+      code = code.to_s
+      if code.size == 8
+        return "邀请码仅限新用户使用"  if kol_exist
+        return "无效的邀请码"  unless invite = KolInviteCode.find_by(code: code)
+      elsif code.size == 6
+        return "无效的邀请码"  unless invite = InviteCode.find_by(code: code)
+      else
+        return "无效的邀请码"
+      end
+      true
     end
 
     def update_social(params)

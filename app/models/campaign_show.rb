@@ -103,14 +103,8 @@ class CampaignShow < ActiveRecord::Base
 
       # check kol's max_click depend on kol credits level
       store_key =  "kol_level_#{campaign_invite.id}"
-      current_total_click = Rails.cache.read(store_key)  || 0
-#= begin
-#       if kol.kol_level.present?
-#         level_threshold  = KolCreditLevels["#{kol.kol_level}"]
-#       else
-#         level_threshold = 120
-#       end
-#= end
+      current_total_click = Rails.cache.read(store_key) || 0
+
       level_threshold = kol.kol_level.present? ? Rails.application.secrets[:kol_levels][kol.kol_level.to_sym] : 120
       # if current_total_click >= level_threshold
       # campaign.is_limit_click_count 是否放开朋友圈的点击数，只放开kol的等级限制
