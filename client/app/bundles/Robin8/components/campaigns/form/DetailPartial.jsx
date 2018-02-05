@@ -393,7 +393,7 @@ handleClickPerBudgetType() {
                       } else if(sub_type.value === "weibo") {
                         <div className="row">
 
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
+                          {/* <div className="col-md-4" style={{marginBottom: '1em'}}>
                             <input {...per_budget_type}
                               type="radio"
                               name="action_type"
@@ -402,7 +402,7 @@ handleClickPerBudgetType() {
                               className="commonPerBudgetType"
                               disabled="true" />
                             按照点击奖励KOL
-                          </div>
+                          </div> */}
 
                           <div className="col-md-4">
                             <input {...per_budget_type} type="radio"
@@ -454,7 +454,7 @@ handleClickPerBudgetType() {
                   <p className="action-mode">示例图片数量</p>
                   <div className="sources-check">
                     <div className="row">
-                      <div className="col-md-4" style={{marginBottom: '1em'}}>
+                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
@@ -466,7 +466,7 @@ handleClickPerBudgetType() {
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低3元</div>
                       </div>
 
-                      <div className="col-md-4" style={{marginBottom: '1em'}}>
+                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
@@ -477,7 +477,7 @@ handleClickPerBudgetType() {
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低5元</div>
                       </div>
 
-                      <div className="col-md-4" style={{marginBottom: '1em'}}>
+                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
@@ -510,15 +510,15 @@ handleClickPerBudgetType() {
 
               </div>
               <div className="price-tip" style={{fontSize: '14px'}}>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低2.5元</span><br></br>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低0.2元</span><br></br>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>2.5</span>元, 请设置您想要获得单次转发的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>0.2</span>元, 请设置您想要获得单次点击的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
               </div>
             </div>
 
           </div>
-          <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
+          {/* <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
             {
               do {
                 if(per_budget_type.value == "cpa"){
@@ -554,7 +554,7 @@ handleClickPerBudgetType() {
                 }
               }
             }
-          </div>
+          </div> */}
 
             {/* <div className="per-budget-group">
               <p className="per-budget-text">单次预算</p>
