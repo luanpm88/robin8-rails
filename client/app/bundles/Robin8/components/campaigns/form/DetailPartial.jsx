@@ -110,22 +110,31 @@ handleMin() {
     min = 8
   }
 
-  if ($('input[name="example_screenshot_count"]').val() === '3'){
-    console.log('number change to 1')
-    // this.props.per_action_budget.value = 3
-    min = 8;
+  // if ($('input[name="example_screenshot_count"]').val() === '3'){
+  //   console.log('number change to 1')
+  //   // this.props.per_action_budget.value = 3
+  //   min = 8;
+  //
+  // } else if ($('input[name="example_screenshot_count"]').val() === '2'){
+  //   console.log('number change to 2')
+  //   // this.props.per_action_budget.value = 5
+  //   min = 5;
+  //
+  // } else if ($('input[name="example_screenshot_count"]').val() === '1'){
+  //   console.log('number change to 3')
+  //   // this.props.per_action_budget.value = 8
+  //   min = 3;
+  //
+  // }
 
-  } else if ($('input[name="example_screenshot_count"]').val() === '2'){
-    console.log('number change to 2')
-    // this.props.per_action_budget.value = 5
-    min = 5;
-
-  } else if ($('input[name="example_screenshot_count"]').val() === '1'){
-    console.log('number change to 3')
-    // this.props.per_action_budget.value = 8
-    min = 3;
-
+  if (this.props.example_screenshot_count.value === '3') {
+    min = 8
+  } else if (this.props.example_screenshot_count.value === '2') {
+    min = 5
+  } else if (this.props.example_screenshot_count.value === '1') {
+    min = 3
   }
+
   return min
 }
 
@@ -133,6 +142,23 @@ handleMin() {
 // handleClickSubTypeWeibo() {
 //   console.log('sub_type weibo now activated')
 //   this.props.per_action_budget.value = 2.5
+// }
+
+// handleClickScreenshot() {
+//   let min = 0.2;
+//   if (this.props.example_screenshot_count.value === '1') {
+//     min = 3
+//     console.log("example_screenshot_count value set to:", this.props.example_screenshot_count.value)
+//     $(".perBudget").val('3')
+//   } else if (this.props.example_screenshot_count.value === '2') {
+//     min = 5
+//     $(".perBudget").val('5')
+//     console.log("min value set to 5")
+//   } else if (this.props.example_screenshot_count.value === '3') {
+//     min = 8
+//     console.log("min value set to 8")
+//     $(".perBudget").val('8')
+//   }
 // }
 
 handleClickPerBudgetType() {
@@ -407,22 +433,64 @@ handleClickPerBudgetType() {
           {
             do {
               if (per_budget_type.value === "cpt") {
+                // <div className="row forward-platform-select">
+                //   <p className="action-mode">示例图片数量</p>
+                //   <div className="sources-check">
+                //     <div className="row">
+                //       <div className="col-md-4">
+                //         需要用户上传
+                //         <input {...example_screenshot_count}
+                //           type="number" name="example_screenshot_count"
+                //           min="1" max="3" autoComplete="off"
+                //           id='screenshotValue' className="example-screenshot-input"
+                //           onChange={example_screenshot_count.onChange}/>
+                //         张图片
+                //       </div>
+                //
+                //     </div>
+                //   </div>
+                // </div>
                 <div className="row forward-platform-select">
                   <p className="action-mode">示例图片数量</p>
                   <div className="sources-check">
                     <div className="row">
-                      <div className="col-md-4">
-                        我要上传
+                      <div className="col-md-4" style={{marginBottom: '1em'}}>
                         <input {...example_screenshot_count}
-                          type="number" name="example_screenshot_count"
-                          min="1" max="3" autoComplete="off"
-                          id='screenshotValue' className="example-screenshot-input"
-                          onChange={example_screenshot_count.onChange}/>
-                        张示例图片
+                          type="radio"
+                          name="example_screenshot_count"
+                          id="oneScreenshot"
+                          value="1"
+                          className=""
+                          checked={example_screenshot_count.value === '1'}/>
+                        需要用户上传1张图片
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低3元</div>
                       </div>
 
+                      <div className="col-md-4" style={{marginBottom: '1em'}}>
+                        <input {...example_screenshot_count}
+                          type="radio"
+                          name="example_screenshot_count"
+                          value="2"
+                          className=""
+                          checked={example_screenshot_count.value === '2'}/>
+                        需要用户上传2张图片
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低5元</div>
+                      </div>
+
+                      <div className="col-md-4" style={{marginBottom: '1em'}}>
+                        <input {...example_screenshot_count}
+                          type="radio"
+                          name="example_screenshot_count"
+                          value="3"
+                          className=""
+                          checked={example_screenshot_count.value === '3'}/>
+                        需要用户上传3张图片
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低8元</div>
+                      </div>
                     </div>
                   </div>
+
+
                 </div>
               }
             }
@@ -432,16 +500,23 @@ handleClickPerBudgetType() {
             <div className="sources-check">
               <div className="row">
                 <div className="col-md-4">
-                  $
+                  ¥
                   <input {...per_action_budget}
                     type="number" name="budget"
-                    id="perBudget" className="perBudget"
+                    className="perBudget"
                     min={this.handleMin()}
                     step="0.1" autoComplete="off"/>
                 </div>
 
               </div>
+              <div className="price-tip" style={{fontSize: '14px'}}>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低2.5元</span><br></br>请设置您想要获得单次转发的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A'}}>单次预算最低0.2元</span><br></br>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
+              </div>
             </div>
+
           </div>
           <div className="action-url-group" style={(per_budget_type && (per_budget_type.value == 'simple_cpi' || per_budget_type.value == 'cpt' || per_budget_type.value == 'cpa')) ? {display: 'block'} : {display: 'none'} }>
             {
