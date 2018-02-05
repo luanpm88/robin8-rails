@@ -36,4 +36,11 @@ class UserMailer < ActionMailer::Base
     mail(:to => Rails.application.secrets.support_emails, :subject => "Robin8 Newswire Notification",:from => "Robin8 <no-reply@robin8.com>")
   end
 
+  def new_member(email, valid_code)
+    @email      = email
+    @valid_code = valid_code
+
+    mail(to: @email, subject: "Welcome to Robin8", from: "Robin8 <system@robin8.com>")
+  end
+
 end

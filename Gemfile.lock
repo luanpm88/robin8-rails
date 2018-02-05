@@ -34,6 +34,16 @@ GIT
       websocket-driver (~> 0.6.1)
 
 GIT
+  remote: git://github.com/season/grape_doc.git
+  revision: 84f87bc7fa706f3f89db9dd74e656df80434bde9
+  branch: master
+  specs:
+    grape_doc (0.2.0)
+      grape (~> 0.2, >= 0.2.1)
+      json (~> 1.7, >= 1.7.4)
+      trollop (~> 2.0)
+
+GIT
   remote: git://github.com/stefanpenner/country_select.git
   revision: 20f83bda911abd7c1d5cb96fd37f9ea22d892f0e
   specs:
@@ -752,6 +762,7 @@ GEM
     timecop (0.9.1)
     timers (4.0.4)
       hitimes
+    trollop (2.1.2)
     truncate_html (0.9.3)
     ttfunk (1.4.0)
     turbolinks (2.5.3)
@@ -868,6 +879,7 @@ DEPENDENCIES
   grape-kaminari
   grape-rails-cache
   grape-raketasks
+  grape_doc!
   groupdate (~> 3.0, >= 3.0.2)
   guard-rspec
   has_scope
@@ -982,4 +994,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.14.6
+   1.16.1

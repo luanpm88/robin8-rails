@@ -27,6 +27,7 @@ module API
           optional :tags, type: String, default: '全部'
         end
         post "/" do
+          error_403!(detail: "请联系客服绑定手机号。") if current_kol.mobile_number.blank?
           brand_user = current_kol.find_or_create_brand_user
           img_url = params[:img_url]
           if img_url.blank? && params[:img].present?
