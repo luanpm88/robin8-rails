@@ -222,3 +222,25 @@ by artificial intelligence.
   * to import the database to qa server, run `cap staging invoke['db:import_to_qa']`
     on your local machine or run `RAILS_ENV=staging rake db:import_to_qa`
   * 做本地执行`cap staging invoke['db:import_to_qa']`或`RAILS_ENV=staging rake db:import_to_qa`命令，即可将staging的数据库导入qa
+
+# CDN
+
+  * provided by qiniu.com, using mirror storage
+  * 七牛，利用镜像存储
+  * For HTTPS on our cdn providers, we uses the same mechanism on our servers
+    to generate the SSL keys and certificates below
+  * the certificates for cdn.robin8.net, cdn-qa.robin8.net,
+    cdn-staging.robin8.net are on qa.robin8.net
+  * We have to manually upload every 3 months the certificates, Qiniu will send
+    a reminder every 3 months
+
+# SSL
+
+  * keys and certificates are generated automatically for free on the servers by
+    [acme.sh](https://github.com/Neilpang/acme.sh)
+    * login as root, then go to `/.acme.sh`
+    * you can see the SSL related keys, certs on folders such as
+      `cdn.robin8.net`, or `qa.robin8.net`
+    * the staging and production certificates and keys are in the same
+      directory in their respective servers
+    * the certificates for CDN are on the qa server
