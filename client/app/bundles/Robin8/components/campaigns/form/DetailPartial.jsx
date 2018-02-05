@@ -46,7 +46,7 @@ export default class DetailPartial extends React.Component {
       max: 10000000,
       step: 0.1,
       decimals: 1,
-    })
+    });
   }
 
   _handlePerBudgetInputChange() {
@@ -90,6 +90,75 @@ export default class DetailPartial extends React.Component {
   }
 
 
+handleMin() {
+  let min = 0.2;
+  if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
+    console.log('weibo click event deactivate and change value to 2.5')
+    // this.props.per_action_budget.value = 8
+    min = 8
+  } else if (this.props.per_budget_type.value === 'click') {
+    console.log('click event clicked')
+    // this.props.per_action_budget.value = 0.2
+    min = 0.2
+  } else if (this.props.per_budget_type.value === 'post') {
+    console.log('post event clicked')
+    // this.props.per_action_budget.value = 2.5
+    min = 2.5
+  } else if (this.props.per_budget_type.value === 'cpt') {
+    console.log('cpt event clicked')
+    // this.props.per_action_budget.value = 8
+    min = 8
+  }
+
+  if ($('input[name="example_screenshot_count"]').val() === '3'){
+    console.log('number change to 1')
+    // this.props.per_action_budget.value = 3
+    min = 8;
+
+  } else if ($('input[name="example_screenshot_count"]').val() === '2'){
+    console.log('number change to 2')
+    // this.props.per_action_budget.value = 5
+    min = 5;
+
+  } else if ($('input[name="example_screenshot_count"]').val() === '1'){
+    console.log('number change to 3')
+    // this.props.per_action_budget.value = 8
+    min = 3;
+
+  }
+  return min
+}
+
+// this function will be overwritten by per_budget_type action because click action took priority
+// handleClickSubTypeWeibo() {
+//   console.log('sub_type weibo now activated')
+//   this.props.per_action_budget.value = 2.5
+// }
+
+handleClickPerBudgetType() {
+  let min = 0.2
+  // switch maybe better suited for this situation
+  if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
+    console.log('weibo click event deactivate and change value to 2.5')
+    // this.props.per_action_budget.value = 8
+    min = 8
+  } else if (this.props.per_budget_type.value === 'click') {
+    console.log('click event clicked')
+    // this.props.per_action_budget.value = 0.2
+    min = 0.2
+  } else if (this.props.per_budget_type.value === 'post') {
+    console.log('post event clicked')
+    // this.props.per_action_budget.value = 2.5
+    min = 2.5
+  } else if (this.props.per_budget_type.value === 'cpt') {
+    console.log('cpt event clicked')
+    // this.props.per_action_budget.value = 8
+    min = 8
+  }
+
+}
+
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
@@ -115,14 +184,18 @@ export default class DetailPartial extends React.Component {
     // // })
     // // let min = this.props.per_budget_type.value === 'post' ? 2.5 : 0.2; // for two min values only
     // // for three or more min values;
-    let min = 5;
-    if (this.props.per_budget_type.value === 'post') {
-      min = 2.5;
-    } else if (this.props.per_budget_type.value === 'click') {
-      min = 0.2;
-    } else {
-      min = 3;
-    }
+    // let min = 5;
+    // if (this.props.per_budget_type.value === 'post') {
+    //   min = 2.5;
+    // } else if (this.props.per_budget_type.value === 'click') {
+    //   min = 0.2;
+    // } else {
+    //   min = 3;
+    // }
+
+
+
+
 
     if(oldValue==newValue) return console.log('escape');
     // // unable to change min value with this method
@@ -136,19 +209,20 @@ export default class DetailPartial extends React.Component {
     // // because per_budget_type.value is not fully loaded in the initial rendering
     // // its value become valid after the birth phase of the component
     // // which then exit the loop
-    if(true){
-      console.log('calling .trigger');
-      $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
-    }
-    $('.commonPerBudgetType').change(function() {
-      console.log('input change')
-      $(':input[type="number"]').val('')
-    })
+    // if(true){
+    //   console.log('calling .trigger');
+    //   $('.per-budget-input').trigger("touchspin.updatesettings", {min: min});
+    // }
+    // $('.commonPerBudgetType').change(function() {
+    //   console.log('input change')
+    //   $(':input[type="number"]').val('')
+    // })
 
   }
 
   componentWillUnmount() {
     $('.spinner-input').off('change');
+
   }
 
   // componentWillUpdate() {
@@ -173,26 +247,27 @@ export default class DetailPartial extends React.Component {
     return tip
   }
 
-  minValue() {
-    const { per_action_budget, per_budget_type, sub_type } = this.props;
-    if (per_budget_type.value === 'click') {
-      $('#perBudget').attr('min', '0.2')
-    } else if (per_budget_type.value === 'post') {
-      $('#perBudget').attr('min', '2.5')
-    } else if ($('#screenshotValue').val() === '3') {
-      $('#perBudget').val('')
-      $('#perBudget').attr('min', '8.0')
-    } else if ($('#screenshotValue').val() === '2') {
-      $('#perBudget').val('')
-      $('#perBudget').attr('min', '5.0')
-    } else {
-      $('#perBudget').attr('min', '3.0')
-    }
-  }
+  // minValue() {
+  //   const { per_action_budget, per_budget_type, sub_type } = this.props;
+  //   if (per_budget_type.value === 'click') {
+  //     $('#perBudget').attr('min', '0.2')
+  //   } else if (per_budget_type.value === 'post') {
+  //     $('#perBudget').attr('min', '2.5')
+  //   } else if ($('#screenshotValue').val() === '3') {
+  //     $('#perBudget').val('')
+  //     $('#perBudget').attr('min', '8.0')
+  //   } else if ($('#screenshotValue').val() === '2') {
+  //     $('#perBudget').val('')
+  //     $('#perBudget').attr('min', '5.0')
+  //   } else {
+  //     $('#perBudget').attr('min', '3.0')
+  //   }
+  // }
 
 
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type, example_screenshot_count } = this.props
+
     return (
 
       <div className="react-toolbox creat-content-sources">
@@ -210,12 +285,18 @@ export default class DetailPartial extends React.Component {
                     if (enableSharingAll) {
                       <div className="row">
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                          <input {...sub_type} type="radio" name="sub_type"
+                            value="wechat" className="formardPlatformType"
+                            onChange={sub_type.onChange}
+                            checked={sub_type.value === "wechat"} />
                           分享到朋友圈
                         </div>
 
                         <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="weibo" className="formardPlatformType" onChange={sub_type.onChange} checked={sub_type.value === "weibo"} />
+                          <input {...sub_type} type="radio" name="sub_type"
+                            value="weibo" className="formardPlatformType"
+                            onChange={sub_type.onChange}
+                            checked={sub_type.value === "weibo"}/>
                           分享到微博
                         </div>
                       </div>
@@ -247,7 +328,8 @@ export default class DetailPartial extends React.Component {
                               name="action_type"
                               value="click" className="commonPerBudgetType"
                               onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "click" } />
+                              checked={per_budget_type.value === 'click' }
+                              onClick={this.handleClickPerBudgetType()}/>
                             按照点击奖励KOL
                           </div>
 
@@ -256,7 +338,8 @@ export default class DetailPartial extends React.Component {
                               name="action_type"
                               value="post" className="commonPerBudgetType"
                               onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "post" } />
+                              checked={per_budget_type.value === "post" }
+                              onClick={this.handleClickPerBudgetType()} />
                             按照转发奖励KOL
                           </div>
 
@@ -275,7 +358,8 @@ export default class DetailPartial extends React.Component {
                               name="action_type"
                               value="cpt"
                               onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "cpt" } />
+                              checked={per_budget_type.value === "cpt" }
+                              onClick={this.handleClickPerBudgetType()} />
                             按照完成任务奖励KOL
                           </div>
 
@@ -299,7 +383,8 @@ export default class DetailPartial extends React.Component {
                               name="action_type" className="commonPerBudgetType"
                               id="forwarding" value="post"
 
-                              checked={per_budget_type.value === "post"} />
+                              checked={per_budget_type.value === "post"}
+                              onClick={this.handleClickPerBudgetType()}/>
                             按照转发奖励KOL
                           </div>
 
@@ -308,7 +393,8 @@ export default class DetailPartial extends React.Component {
                               name="action_type" className="commonPerBudgetType"
                               id="cpt" value="cpt"
 
-                              checked={per_budget_type.value === "cpt"} />
+                              checked={per_budget_type.value === "cpt"}
+                              onClick={this.handleClickPerBudgetType()} />
                             按照完成任务奖励KOL
                           </div>
 
@@ -330,7 +416,7 @@ export default class DetailPartial extends React.Component {
                         <input {...example_screenshot_count}
                           type="number" name="example_screenshot_count"
                           min="1" max="3" autoComplete="off"
-                          id='screenshotValue'
+                          id='screenshotValue' className="example-screenshot-input"
                           onChange={example_screenshot_count.onChange}/>
                         张示例图片
                       </div>
@@ -346,10 +432,11 @@ export default class DetailPartial extends React.Component {
             <div className="sources-check">
               <div className="row">
                 <div className="col-md-4">
+                  $
                   <input {...per_action_budget}
                     type="number" name="budget"
-                    id="perBudget"
-                    min={this.minValue()}
+                    id="perBudget" className="perBudget"
+                    min={this.handleMin()}
                     step="0.1" autoComplete="off"/>
                 </div>
 
