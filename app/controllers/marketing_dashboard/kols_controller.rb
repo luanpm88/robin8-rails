@@ -123,10 +123,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   def update_profile
     authorize! :update, Kol
     @kol = Kol.find params[:id]
-    if params[:kol][:mobile_number].blank?
-      params[:kol][:mobile_number] = nil
-    end
-    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count))
+
+    params[:kol][:mobile_number] = nil  if params[:kol][:mobile_number].blank?
+    params[:kol][:email] = nil          if params[:kol][:email].blank?
+
+    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
     update_tag_ids
     update_keywords
     @kol.reload

@@ -24,6 +24,7 @@ module API
 
         desc '充值'
         post '/recharge' do
+          error_403!(detail: "请联系客服绑定手机号。") if current_kol.mobile_number.blank?
           brand_user = current_kol.find_or_create_brand_user
           if params[:credits].to_i < MySettings.recharge_min_budget.to_i
             error_403!({error: 1, detail: "充值金额不能小于#{MySettings.recharge_min_budget}"})  and return
