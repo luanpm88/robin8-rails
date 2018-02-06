@@ -88,6 +88,7 @@ module Brand
             requires :start_time, type: DateTime
             requires :deadline, type: DateTime
             requires :sub_type, type: String
+            requires :example_screenshot_count, type: Integer
             requires :target, type: Hash do
               requires :age    , type:String
               requires :region , type:String
@@ -201,6 +202,7 @@ module Brand
             requires :start_time, type: DateTime
             requires :deadline, type: DateTime
             requires :sub_type, type: String
+            requires :example_screenshot_count, type: Integer
             requires :target, type: Hash do
               requires :age    , type:String
               requires :region , type:String
@@ -267,6 +269,7 @@ module Brand
           requires :deadline, type: DateTime
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
+          requires :example_screenshot_count, type: Integer
           optional :budget,   type: Float
           optional :age, type:String
           optional :gender, type:String
@@ -302,6 +305,7 @@ module Brand
           requires :deadline, type: DateTime
           requires :per_action_budget, type: Float
           requires :recruit_person_count, type: Float
+          requires :example_screenshot_count, type: Integer
           optional :budget,   type: Float
           optional :age, type:String
           optional :gender, type:String

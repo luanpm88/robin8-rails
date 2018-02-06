@@ -47,7 +47,7 @@ export default class SubTypePartial extends React.Component {
                   &nbsp;转发到QQ空间
                 </div>
                 <div className="col-md-4">
-                  <input {...sub_type} type="radio" name="sub_type" value="" onChange={sub_type.onChange} checked={!sub_type.value} />
+                  <input {...sub_type} type="radio" name="sub_type" value="custom" onChange={sub_type.onChange} checked={!sub_type.value} />
                   &nbsp;品牌主自定义
                 </div>
               </div>

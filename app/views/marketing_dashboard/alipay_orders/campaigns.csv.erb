@@ -19,7 +19,7 @@
   CSV.generate do |csv|
       csv << cols
       @campaigns.each do |c|
-        csv << [c.id, c.name, c.user.id, c.user.name, c.trade_number, c.alipay_trade_no, c.alipay_amount, c.alipay_status.zero?, c.created_at.strftime("%Y-%m-%d %H:%M") ]
+        csv << [c.id, c.name.gsub(/,/, '，'), c.user.id, c.user.name, c.trade_number, c.alipay_trade_no, c.alipay_amount, c.alipay_status.zero?, c.created_at.strftime("%Y-%m-%d %H:%M") ]
       end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
 -%>

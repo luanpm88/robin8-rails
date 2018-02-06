@@ -123,10 +123,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   def update_profile
     authorize! :update, Kol
     @kol = Kol.find params[:id]
-    if params[:kol][:mobile_number].blank?
-      params[:kol][:mobile_number] = nil
-    end
-    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count))
+
+    params[:kol][:mobile_number] = nil  if params[:kol][:mobile_number].blank?
+    params[:kol][:email] = nil          if params[:kol][:email].blank?
+
+    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
     update_tag_ids
     update_keywords
     @kol.reload
@@ -215,13 +216,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   end
 
   def update_tag_ids
-    old_tags = @kol.tags
-    now_tags = params[:kol][:tag_ids].map(&:to_i)
-    KolTag.where(:tag_id => (old_tags-now_tags), :kol_id => @kol.id).delete_all
-    if(now_tags-old_tags).present?
-      (now_tags-old_tags).each do |tag_id|
-        KolTag.find_or_create_by(:tag_id => tag_id, :kol_id => @kol.id)
-      end
+    old_tags = @kol.tags.map(&:id)
+    now_tags = Array params[:kol][:tag_ids]
+    KolTag.where(tag_id: old_tags-now_tags, kol_id: @kol.id).delete_all
+    now_tags.each do |tag_id|
+      KolTag.find_or_create_by(tag_id: tag_id, kol_id: @kol.id)
     end
   end
 

@@ -67,7 +67,7 @@
     <% @invitations.each do |invitation| %>
       <tr>
         <td> <%= link_to invitation.inviter_id, marketing_dashboard_kol_path(:id => invitation.inviter_id), :target => "_blank" %> </td>
-        <td> <%= invitation.inviter.name %> </td>
+        <td> <%= invitation.inviter.name rescue nil %> </td>
         <td> <%= link_to invitation.invitee_id, marketing_dashboard_kol_path(:id => invitation.invitee_id), :target => "_blank" rescue nil %> </td>
         <td> <%= invitation.invitee.name rescue nil %> </td>
         <td> <%= invitation.mobile_number %> </td>

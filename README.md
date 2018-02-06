@@ -10,19 +10,24 @@ by artificial intelligence.
   * [Influence score API](https://robin8.atlassian.net/wiki/spaces/APP/pages/74743823/Influence+score+API)
   * [Invitation mechanics](https://robin8.atlassian.net/wiki/spaces/APP/pages/54853633/Invitation+mechanics)
   * [Settling Process](https://robin8.atlassian.net/wiki/spaces/APP/pages/51347525/Technical+notes)
+  * [Ruby Style Guide](https://github.com/season/ruby-style-guide/blob/master/README-zhCN.md)
+  * [Style Guide](#style-guide)
+    * [Git Commit](#git-commit)
+    * [JSON Format](#json-format)
+    * [Error Codes List](#error-codes-list)
 
 # Development and Deployment Process 开发和部署流程
 
   When building a new feature
   开发新功能的流程：
 
-  1. `git checkout qa` branch and pull the latest from bitbucket by
+    1. `git checkout qa` branch and pull the latest from bitbucket by
      `git pull --rebase origin qa:qa`
-  2. `git checkout -b new-feature-name`
-  3. When you have completed your feature, create a pull-request from your
+    2. `git checkout -b new-feature-name`
+    3. When you have completed your feature, create a pull-request from your
      new-feature-name branch to qa.
     完成你这个分支的开发后，请创建一个你的分支到qa的pull-request
-  4. You must find someone else to review your code, assign it to them on bitbucket.Someone else from the team must review your code and merge the
+    4. You must find someone else to review your code, assign it to them on bitbucket.Someone else from the team must review your code and merge the
      new-feature-name branch into qa.
     创建pull-request时，你必须指定其他人来检查你的代码。其他人检查你的代码，认为没有问题之后，就可以把你的分支合并到qa。
 
@@ -68,7 +73,9 @@ by artificial intelligence.
     如果你的的分支没有对app/assets的images、JS、stylesheets等做任何修改，那就可以使用`BRANCH_NAME=new-feature-name cap qa deploy noassets`来部署到QA，这可以节省部署时间。
   * [Read this on development and deployment process](http://dltj.org/article/software-development-practice/)
 
-  Style-Guide
+##  Style-Guide
+
+  ### Git Commit
 
   * Commit messages should explain both the "what", "why" of code changes
   * 你的commit中应该说明修改了什么，为什么要做修改。
@@ -82,6 +89,47 @@ by artificial intelligence.
 
   * [Why commit messages are important](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
+
+
+  ### JSON Format
+
+  * resource
+  ```ruby
+      {
+        error: 0,
+        alert: "something...",
+        resource: {id: 'id', name: 'name'.....},
+        extra_hash: {...}
+      }
+  ```
+  * list
+  ```ruby
+      {
+        error: 0,
+        alert: "something...."
+        list: [resource_hash_1, resource_hash_2],
+        extra_hash: {....}
+      }
+  ```
+  * error
+  ```ruby
+      {
+        error: 1|2|3|4,
+        detail: "some errors"
+      }
+  ```
+
+
+  ### Error Codes List
+
+  * 整理项目中所有的errors，欢迎补充
+
+  | Code | Description |
+  | :--: | :---------: |
+  |  1   |   待描述...    |
+  |  2   |   待描述...    |
+  |  3   |   待描述...    |
+
 # Development Environment
 
   Steps to get development up and running
@@ -92,17 +140,17 @@ by artificial intelligence.
     * Ruby 2.2.0p0, (use a ruby version manager, like rbenv)
     * nodejs 6.11.2
 
-  *  Clone the repository with git
-  *  Run `bundle install`
+  * Clone the repository with git
+  * Run `bundle install`
     * if mysql gem install error then do `sudo apt-get install libmysqlclient-dev`
     * 如果mysql的gem安装出错，执行 `sudo apt-get install libmysqlclient-dev`命令
-  *  Create a database inside mysql according to config/database.yml
-  *  根据config/database.yml文件来创建一个mysql的数据库
-  *  Get a `.sql` dump from one of the existing team member, and import that by
+  * Create a database inside mysql according to config/database.yml
+  * 根据config/database.yml文件来创建一个mysql的数据库
+  * Get a `.sql` dump from one of the existing team member, and import that by
      `mysql -u root -p < dump.sql`
      从team member那里拿`.sql` 文件，用`mysql -u root -p < dump.sql`命令导入到你刚刚新建的数据库中
-  *  `cd client` and then run `npm install`
-  *  Go back to the app root directory and run `rake assets:webpack`
+  * `cd client` and then run `npm install`
+  * Go back to the app root directory and run `rake assets:webpack`
   * 回到robin8的根目录，执行`rake assets:webpack`
     * You should see errors such as:
       * ERROR in ./app/bundles/Robin8/components/shared/ReactEcharts.jsx
@@ -174,3 +222,25 @@ by artificial intelligence.
   * to import the database to qa server, run `cap staging invoke['db:import_to_qa']`
     on your local machine or run `RAILS_ENV=staging rake db:import_to_qa`
   * 做本地执行`cap staging invoke['db:import_to_qa']`或`RAILS_ENV=staging rake db:import_to_qa`命令，即可将staging的数据库导入qa
+
+# CDN
+
+  * provided by qiniu.com, using mirror storage
+  * 七牛，利用镜像存储
+  * For HTTPS on our cdn providers, we uses the same mechanism on our servers
+    to generate the SSL keys and certificates below
+  * the certificates for cdn.robin8.net, cdn-qa.robin8.net,
+    cdn-staging.robin8.net are on qa.robin8.net
+  * We have to manually upload every 3 months the certificates, Qiniu will send
+    a reminder every 3 months
+
+# SSL
+
+  * keys and certificates are generated automatically for free on the servers by
+    [acme.sh](https://github.com/Neilpang/acme.sh)
+    * login as root, then go to `/.acme.sh`
+    * you can see the SSL related keys, certs on folders such as
+      `cdn.robin8.net`, or `qa.robin8.net`
+    * the staging and production certificates and keys are in the same
+      directory in their respective servers
+    * the certificates for CDN are on the qa server

@@ -65,15 +65,19 @@ Rails.application.routes.draw do
         get :stop
         get :push_all
         post :refresh_budget
-        patch :save_example_screenshot_and_remark
+        post :save_example_screenshot_and_remark
         patch :save_applying_description
         match 'add_seller', via: [:post, :get]
         get :push_record
         match :set_auth_type, via: [:put, :get]
+=begin
         put :push_to_alizhongbao
         put :push_to_wcs
         put :push_to_all_partners
-        put :lift_kol_level_count
+=end      
+        put :lift_kol_level_count  
+        put :push_to_partners
+        put :settle_for_partners
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]

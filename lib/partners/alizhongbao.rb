@@ -1,6 +1,6 @@
 module Partners
   module Alizhongbao
-    GATEWAY_URL = Rails.env.production? ? "https://zbapi.taobao.com/gateway.do" : "http://140.205.76.29/gateway.do"
+    GATEWAY_URL = Rails.application.secrets[:partners][:alizhongbao][:gateway_url]
     APPID       = "10009"
     USERID      = "28BF5CA24C219B59"
     BONUS       = 0.6
@@ -36,14 +36,18 @@ module Partners
 
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
-
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      resp = JSON.parse(resp)
-      campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
-                                  ali_task_type_id: resp["result"]["taskTypeId"],
-                                  channel:          "azb")
-      Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
-      resp
+      if (resp["success"] == true  rescue false)
+        resp = JSON.parse(resp)
+        campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
+                                    ali_task_type_id: resp["result"]["taskTypeId"],
+                                    channel:          "azb")
+        Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
+        true
+      else
+        Rails.logger.partner_campaign.info "#{campaign.id} 分享给阿里众包失败"
+        false
+      end
     end
 
     #完成任务
@@ -80,11 +84,11 @@ module Partners
 
       inspect_result = if final_pay <= 0
                          "2"
-                       elsif final_pay < camp_inv.actual_per_action_budget
+                       elsif final_pay < camp_inv.campaign.actual_per_action_budget
                          "3"
-                       elsif final_pay > camp_inv.actual_per_action_budget
+                       elsif final_pay > camp_inv.campaign.actual_per_action_budget
                          "4"
-                       elsif final_pay == camp_inv.actual_per_action_budget
+                       elsif final_pay == camp_inv.campaign.actual_per_action_budget
                          "1"
                        end
 

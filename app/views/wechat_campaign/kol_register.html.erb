@@ -24,7 +24,9 @@
 
     <%= hidden_field_tag 'campaign_id', params[:campaign_id] %>
     <%= hidden_field_tag 'tag', params[:tag] %>
-    <button id="submit" class="red-bag-btn width100">立即体验</button>
+    <button id="submit" class="red-bag-btn width100">
+      <%= @campaign.per_budget_type == "recruit"? "立即报名": "立即体验"  %>
+    </button>
   </form>
   <div class="red-bag-ifo f-error" style="font-size: 2rem; color: black;"></div>
   <div class="red-bag-ifo f-info"  style="font-size: 2rem; color: blue;"></div>

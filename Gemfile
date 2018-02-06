@@ -58,7 +58,7 @@ gem 'mongoid', '~> 5.0.0'
 gem 'rqrcode'
 
 # Character encoding detecting library
-gem 'charlock_holmes'
+# gem 'charlock_holmes'
 
 gem 'twilio-ruby', '~> 4.2.1'
 
@@ -198,6 +198,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
+  gem 'grape_doc', github: 'season/grape_doc', branch: 'master'
 end
 
 group :development, :qa do
@@ -242,12 +243,9 @@ gem 'csv_shaper'
 gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
 gem "non-stupid-digest-assets"
-# gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
-# https://github.com/CanCanCommunity/cancancan
 gem 'cancancan', '~> 1.10'
 gem 'alipay', '~> 0.12.0'
 gem 'doorkeeper'
-# https://github.com/rails/actioncable/tree/archive
 gem 'actioncable', github: 'rails/actioncable', branch: "archive"
 gem 'mechanize'
 gem 'spreadsheet'
