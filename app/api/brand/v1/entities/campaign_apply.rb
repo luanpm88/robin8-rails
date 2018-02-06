@@ -9,7 +9,7 @@ module Brand
           object.campaign_invite.img_status
         end
         expose :screenshot do |object, opts|
-          object.campaign_invite.screenshot
+          object.campaign_invite.screenshot.split(",") rescue []
         end
         expose :name do |object, opts|
           object.kol.name

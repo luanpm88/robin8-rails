@@ -56,6 +56,12 @@ export default class InviteKol extends React.Component {
   render_screenshot() {
     const { campaign, campaign_id, campaign_invite, actions } = this.props;
     const status = campaign.get("recruit_status");
+    const screenshots = campaign_invite.get("screenshot")
+    const renderScreenshots = screenshots.map(function(screenshot) {
+      <a href={screenshot} target="_blank">
+        <img src={screenshot} className="kolCampaignScreenshot"/>
+      </a>
+    })
 
     if (status === "choosing") {
       const check_status = campaign_invite.get("status");
@@ -77,11 +83,17 @@ export default class InviteKol extends React.Component {
       if(campaign_invite.get("img_status") == "passed"){
         return (
           <td>
-            <a href={campaign_invite.get("screenshot")} target="_blank">
-              <img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"/>
-            </a>
+            {renderScreenshots}
           </td>
         )
+
+        // return (
+        //   <td>
+        //     <a href={campaign_invite.get("screenshot")} target="_blank">
+        //       <img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"/>
+        //     </a>
+        //   </td>
+        // )
       }
       return (
         <td className="grey">未上传</td>
