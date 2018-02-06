@@ -1,4 +1,5 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
+  protect_from_forgery :except => :save_example_screenshot_and_remark
   def index
     authorize! :read, Campaign
 
@@ -126,8 +127,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def save_example_screenshot_and_remark
     @campaign = Campaign.find(params[:id])
-    @campaign.update_attributes(example_screenshot: params[:campaign][:example_screenshot],
-      remark: params[:campaign][:remark])
+    example_screenshot = ""
+    comment = ""
+    params[:image].each {|t| example_screenshot += "#{Uploader::FileUploader.image_uploader(t)},"  if t.present? }
+    params[:comment].each {|t| comment += "#{t}&" if t.present? }
+    @campaign.update_attributes(example_screenshot: example_screenshot[0..-2] , remark: params[:remark] , comment: comment[0..-2])
     flash[:notice] = "保存成功"
     render :add_example_screenshot
   end
@@ -235,14 +239,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def push_record
-    @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
-
+    @push_records = CampaignPushRecord.where(campaign_id: params[:id])
     @q = @push_records.ransack(params[:q])
-    @push_records = @q.result.paginate(paginate_params)
 
     respond_to do |format|
       format.html do
-        @push_records = CampaignPushRecord.where(campaign_id: params[:id]).paginate(paginate_params)
+        @push_records = @q.result.paginate(paginate_params)
         render 'push_record'
       end
 
@@ -264,6 +266,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
+=begin
   def push_to_alizhongbao
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
@@ -319,6 +322,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
     redirect_to :action => :index
   end
+=end
 
   def lift_kol_level_count
     authorize! :update, Campaign
@@ -333,4 +337,32 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     redirect_to :action => :index
   end
 
+  def push_to_partners
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    channel = params[:channel]
+    channel = "all"  unless @campaign.channel.blank?
+    partner = case channel
+              when "wcs"
+                "微差事"
+              when "azb"
+                "阿里众包"
+              when "all"
+                "所有合作伙伴"
+              end
+    notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
+    if !["azb" , "all"].include?(@campaign.channel) && ["azb" , "all"].include?(channel)
+      resp = Partners::Alizhongbao.push_campaign(params[:id]) 
+      notice = "该活动推送给阿里众包失败,请检查"  unless resp
+    end
+    @campaign.update_attributes!(channel: channel)
+    flash[:notice] = notice 
+    redirect_to :action => :index
+  end
+
+  def settle_for_partners
+    SettlePartnerWorker.perform(params[:id] , params[:channel])
+    flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
+    redirect_to :action => :index
+  end
 end

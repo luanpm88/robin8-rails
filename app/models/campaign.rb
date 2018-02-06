@@ -430,16 +430,22 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_example_screenshot
-    return self.example_screenshot if self.example_screenshot.present?
+  def get_example_screenshot(multi = false)
+    #multi 区别是否返回多图,适配老版本
+    if self.example_screenshot.present?
+      example_screenshot = self.example_screenshot.split(",")   rescue []
+      return example_screenshot[0]   unless multi 
+      return example_screenshot
+    end
     if self.sub_type == 'weibo'
+      return ExampleScreenshots['weibo'].split   if multi
       ExampleScreenshots['weibo']
     elsif self.sub_type == 'qq'
+      return ExampleScreenshots['qq'].split      if multi
       ExampleScreenshots['qq']
-    elsif self.sub_type == 'wechat'
-      ExampleScreenshots['wechat']
     else
-      ExampleScreenshots['wechat,weibo']
+      return ExampleScreenshots['wechat'].split  if multi
+      ExampleScreenshots['wechat']
     end
   end
 

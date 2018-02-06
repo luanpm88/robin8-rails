@@ -22,7 +22,7 @@
       csv << [
         i.img_status,
         i.campaign_id,
-        i.campaign.name,
+        i.campaign.name.gsub(/,/, '，'),
         i.campaign.per_budget_type,
         i.campaign.status,
         i.campaign.deadline.strftime("%Y-%m-%d %H:%M"),

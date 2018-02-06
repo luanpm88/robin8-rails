@@ -3,7 +3,7 @@ import React from 'react';
 export default class Transaction extends React.Component {
   render() {
     const transaction = this.props.transaction
-    const creditsStyle = (transaction.get("direct") == "充值" || transaction.get("direct") == "退还佣金") ? {color: '#489A12'} : {color: '#d33636'}
+    const creditsStyle = (transaction.get("direct") == "充值" || transaction.get("direct") == "退还佣金") ? {color: 'black'} : {color: 'yellow'}
     return (
       <tr className={this.props.tagColor}>
         <td>{transaction.get("trade_no")}</td>

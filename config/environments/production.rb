@@ -45,9 +45,9 @@ Rails.application.configure do
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Action Cable endpoint configuration
-  # config.action_cable.url = 'wss://example.com/cable'
+  #config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
-  config.action_cable.allowed_request_origins = [/http:\/\/passport.robin8.net/, 'http://robin8.net']
+  config.action_cable.allowed_request_origins = [/https:\/\/passport.robin8.net/, 'https://robin8.net']
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -82,18 +82,20 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   # Do not dump schema after migrations.
-  config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
-  ActionMailer::Base.smtp_settings = {
-    :user_name => Rails.application.secrets[:smtp][:user_name],
-    :password => Rails.application.secrets[:smtp][:password],
-    :domain => Rails.application.secrets[:smtp][:domain],
-    :address => Rails.application.secrets[:smtp][:address],
-    :port => Rails.application.secrets[:smtp][:port],
-    :authentication => :plain,
-    :enable_starttls_auto => true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default :charset => 'utf-8'
+  config.action_mailer.default_url_options = {host: Rails.application.secrets[:host]}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              Rails.application.secrets[:smtp][:address],
+    port:                 Rails.application.secrets[:smtp][:port],
+    domain:               Rails.application.secrets[:smtp][:domain],
+    user_name:            Rails.application.secrets[:smtp][:user_name],
+    password:             Rails.application.secrets[:smtp][:password],
+    authentication:       'login',
+    enable_starttls_auto: true
   }
-  ActionMailer::Base.delivery_method = :smtp
 
   # S3 config for paperclip files
   config.paperclip_defaults = {

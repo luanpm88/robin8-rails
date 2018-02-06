@@ -126,6 +126,8 @@ class Kol < ActiveRecord::Base
 
   has_many :influence_metrics
 
+  has_one :kol_invite_code
+
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :android, ->{ where("app_platform = 'Android'") }
@@ -523,7 +525,7 @@ class Kol < ActiveRecord::Base
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
     end
-    return kol
+    kol
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
@@ -757,26 +759,41 @@ class Kol < ActiveRecord::Base
   end
 
   def invite_code_dispose(code)
-    invite_code = InviteCode.find_by(code: code)
-    return false  unless invite_code
-    if invite_code.invite_type == "admintag"
-      admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
-      unless self.admintags.include? admintag
-        self.admintags << admintag
-        CallbackGeometryWorker.perform_async(self.id) if code == "778888"
+    code = code.to_s
+    if code.size == 8
+      invite_code = KolInviteCode.find_by(code: code)
+      RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
+      true
+    elsif code.size == 6
+      invite_code = InviteCode.find_by(code: code)
+      if invite_code.invite_type == "admintag"
+        admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
+        unless self.admintags.include? admintag
+          self.admintags << admintag
+          CallbackGeometryWorker.perform_async(self.id) if code == "778888"
+        end
+      elsif invite_code.invite_type == "club_leader"
+        if invite_code.invite_value.present?
+          club_name = invite_code.invite_value
+        else
+          club_name = self.mobile_number
+        end
+        Club.create(kol_id: self.id , club_name: club_name)
+      elsif invite_code.invite_type == "club_number"
+        club = Club.find invite_code.invite_value
+        ClubMember.create(club_id: club.id , kol_id: self.id)
       end
-    elsif invite_code.invite_type == "club_leader"
-      if invite_code.invite_value.present?
-        club_name = invite_code.invite_value
-      else
-        club_name = self.mobile_number
-      end
-      Club.create(kol_id: self.id , club_name: club_name)
-    elsif invite_code.invite_type == "club_number"
-      club = Club.find invite_code.invite_value
-      ClubMember.create(club_id: club.id , kol_id: self.id)
     end
     true
+  end
+
+  def create_invite_code
+    begin
+      code = [*(0..9)].sample(8).join
+      raise "repetitive_invite_code"   unless  InviteCode.create(code: code.to_i , invite_type: 'invite_friend' , invite_value: self.id).valid?
+    rescue
+      retry
+    end
   end
 
   # def get_share_proportion(credits)
