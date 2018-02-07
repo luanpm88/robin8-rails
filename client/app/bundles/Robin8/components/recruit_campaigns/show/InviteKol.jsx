@@ -58,9 +58,11 @@ export default class InviteKol extends React.Component {
     const status = campaign.get("recruit_status");
     const screenshots = campaign_invite.get("screenshot").split(",")
     const renderScreenshots = screenshots.map(function(screenshot) {
-      <a href={screenshot} target="_blank">
-        <img src={screenshot} className="kolCampaignScreenshot"/>
-      </a>
+      return (
+        <a href={screenshot} target="_blank">
+          <img src={screenshot} className="kolCampaignScreenshot"/>
+        </a>
+      )
     })
 
     if (status === "choosing") {
