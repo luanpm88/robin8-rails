@@ -60,7 +60,6 @@ export default class InviteKol extends React.Component {
     if(campaign_invite.get("img_status") == "passed"){
       return(
         <td style={{width: '300px'}}>
-          test
           {renderScreenshots}
           {/* <a href={campaign_invite.get("screenshot")} target="_blank">
           <img src={campaign_invite.get("screenshot")}
