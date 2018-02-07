@@ -56,7 +56,7 @@ export default class InviteKol extends React.Component {
   render_screenshot() {
     const { campaign, campaign_id, campaign_invite, actions } = this.props;
     const status = campaign.get("recruit_status");
-    const screenshots = campaign_invite.get("screenshot")
+    const screenshots = campaign_invite.get("screenshot").split(",")
     const renderScreenshots = screenshots.map(function(screenshot) {
       <a href={screenshot} target="_blank">
         <img src={screenshot} className="kolCampaignScreenshot"/>
@@ -82,7 +82,7 @@ export default class InviteKol extends React.Component {
     } else if (status === "settling" || status === "settled") {
       if(campaign_invite.get("img_status") == "passed"){
         return (
-          <td>
+          <td style={{width: '300px'}}>
             {renderScreenshots}
           </td>
         )
@@ -164,7 +164,7 @@ export default class InviteKol extends React.Component {
     const { campaign_invite } = this.props;
 
     return(
-      <tr>
+      <tr className="bs">
         {this.render_kol_id()}
         {this.render_profile(campaign_invite)}
         {/* <td>campaign_invite.get("weixin_friend_count") || "-"</td> */}
