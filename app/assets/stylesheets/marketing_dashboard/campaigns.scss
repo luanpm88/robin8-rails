@@ -1,0 +1,44 @@
+.file-uploader {
+  margin-top:1em;
+  margin-bottom: 1.5em
+}
+
+.file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.file-upload__label {
+  display: block;
+  padding: 0.5em 2em;
+  color: #fff;
+  background: #2B618E;
+  border-radius: .4em;
+  transition: background .3s;
+  text-align: center;
+}
+
+.file-upload__label:hover {
+   cursor: pointer;
+   background: #234E72;
+}
+
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+    height: 100%;
+    opacity: 0;
+}
+
+.header {
+  margin-bottom: 1em;
+}
+
+.form-control {
+  width: 100%;
+}
