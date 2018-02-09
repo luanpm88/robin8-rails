@@ -25,7 +25,7 @@ const initCampaign = {
   gender: '全部',
   message: '',
   budget: 100,
-  per_budget_type: 'click',
+  per_budget_type: 'post',
   per_action_budget: 0.3, // initial value for per-budget-input
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm'),

@@ -56,6 +56,7 @@ const initBootstrapMaxLength = function() {
   });
 }
 
+
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
