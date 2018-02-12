@@ -15,7 +15,6 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignInviteAnalysis
 
   list :push_device_tokens
-  
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
@@ -432,7 +431,7 @@ class Campaign < ActiveRecord::Base
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")   rescue []
-      return example_screenshot[0]   unless multi 
+      return example_screenshot[0]   unless multi
       return example_screenshot
     end
     if self.sub_type == 'weibo'
