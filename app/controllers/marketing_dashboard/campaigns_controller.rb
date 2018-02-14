@@ -352,11 +352,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
               end
     notice = "该活动已经成功推送给#{partner}了(ﾉ*･ω･)ﾉ"
     if !["azb" , "all"].include?(@campaign.channel) && ["azb" , "all"].include?(channel)
-      resp = Partners::Alizhongbao.push_campaign(params[:id]) 
+      resp = Partners::Alizhongbao.push_campaign(params[:id])
       notice = "该活动推送给阿里众包失败,请检查"  unless resp
     end
     @campaign.update_attributes!(channel: channel)
-    flash[:notice] = notice 
+    flash[:notice] = notice
     redirect_to :action => :index
   end
 
