@@ -36,8 +36,9 @@ module Partners
 
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
-      resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      if (resp["success"] == true  rescue false)
+      resp                = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+
+      if (JSON.parse(resp)["result"]["success"] == true  rescue false)
         resp = JSON.parse(resp)
         campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                     ali_task_type_id: resp["result"]["taskTypeId"],
@@ -46,6 +47,7 @@ module Partners
         true
       else
         Rails.logger.partner_campaign.info "#{campaign.id} 分享给阿里众包失败"
+        Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
         false
       end
     end
