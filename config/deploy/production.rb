@@ -15,15 +15,23 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '139.196.14.144', user: 'deployer', roles: %w{web app db master prod_server}
-# server '139.196.169.53', user: 'deployer', roles: %w{app slave}
-set :branch, 'master_cn'
+server '47.100.60.3',
+  user:  'sk',
+  port:  40111,
+  roles: %w{web app db master prod_server}
 
-set :unicorn_env, "production"
+set :branch,           'new-serv-deploy'
+
+set :server_name,      'robin8.net'
+set :stage,            "produciton"
+
+set :unicorn_env,      "production"
 set :unicorn_rack_env, "production"
-set :rails_env, "production"
-set :rbenv_ruby, '2.2.0'
-set :environment, 'production'
+set :rails_env,        "production"
+set :rbenv_ruby,       '2.2.0'
+set :environment,      'production'
+
+set :deploy_to,        '/home/deployer/apps/robin8'
 
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
