@@ -47,7 +47,7 @@ namespace :daily_report  do
     ReportMailer.daily_smallV_report(campaign_count, total_budget, kol_count, club_count, cm_count, dau, wau,
         day_leader.count, week_leader.count, all_leader.count,
         day_active_leader.count, week_active_leader.count, all_active_leader.count,
-        day_student_invite.count, week_student_invite.count, all_student_invite.count).deliver
+        day_student_invite.count, week_student_invite.count, all_student_invite.count).deliver_now
     
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
     notifier.ping "Hey guys! 
@@ -88,7 +88,7 @@ namespace :daily_report  do
     real_kol = k.where("historical_income > ?", 1)
     real_kol_count = real_kol.count
     
-    ReportMailer.weekly_smallV_report(campaign_count, total_budget, total_consumed, kol_count, real_kol_count).deliver
+    ReportMailer.weekly_smallV_report(campaign_count, total_budget, total_consumed, kol_count, real_kol_count).deliver_now
     
     # Send to slack useracquistion channel. 
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
@@ -137,7 +137,7 @@ namespace :daily_report  do
     real_kol_count = real_kol.count
     real_kol_increase = (real_kol_count - last_real_kol.count)/ last_real_kol.count.to_f * 100
     
-    ReportMailer.monthly_smallV_report(campaign_count, total_budget, budget_increase, total_consumed, kol_count, kol_increase, real_kol_count, real_kol_increase).deliver
+    ReportMailer.monthly_smallV_report(campaign_count, total_budget, budget_increase, total_consumed, kol_count, kol_increase, real_kol_count, real_kol_increase).deliver_now
     
     # Send to slack useracquistion channel.
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
@@ -162,7 +162,7 @@ namespace :daily_report  do
         end
     end
     
-    ReportMailer.pinyou_report().deliver
+    ReportMailer.pinyou_report().deliver_now
     puts "Completed"
   end
 end

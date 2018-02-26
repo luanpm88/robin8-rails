@@ -20,6 +20,16 @@
       <% end %>
     </tr>
   <% end %>
+  <% if %w(all azb).include?(@campaign.channel) %>
+    <tr>
+      <td> Ali Task Id </td>
+      <td><%= @campaign.ali_task_id %></td>
+    </tr>
+    <tr>
+      <td> Ali Task Type Id </td>
+      <td><%= @campaign.ali_task_type_id %></td>
+    </tr>
+  <% end %>
   <tr>
     <td> Effect Score </td>
     <td> <%= @campaign.effect_evaluation.score rescue nil %> </td>
