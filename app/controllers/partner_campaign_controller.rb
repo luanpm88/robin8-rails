@@ -86,8 +86,8 @@ class PartnerCampaignController < ApplicationController
     avatar_url = if params[:images].present?
                    params[:images]
                  elsif @kol.avatar_url.blank?
-                  # sample_data ||= eval($redis.lpop("dope_sample_data"))
-                  # sample_data[0]
+                  sample_data ||= eval($redis.lpop("dope_sample_data"))
+                  sample_data[0]
                  else
                    @kol.avatar_url
                  end
@@ -95,8 +95,8 @@ class PartnerCampaignController < ApplicationController
     nickname   = if params[:nickname].present?
                    params[:nickname]
                  elsif @kol.name.blank?
-                   #sample_data ||= eval($redis.lpop("dope_sample_data"))
-                  # sample_data[1].gsub("'","")
+                  sample_data ||= eval($redis.lpop("dope_sample_data"))
+                  sample_data[1].gsub("'","")
                  else
                    @kol.name
                  end
