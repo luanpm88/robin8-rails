@@ -410,7 +410,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def get_example_screenshot(multi = false)
-    self.campaign.get_example_screenshot(multi)
+    self.campaign.get_example_screenshot(multi) 
   end
 
   def get_multi_screenshots
