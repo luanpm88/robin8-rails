@@ -184,6 +184,7 @@ module Campaigns
             CampaignWorker.new.perform(self.id, 'remind_upload')
             CampaignObserverWorker.new.perform(self.id)
           end
+          Partners::Alizhongbao.finish_campaign(self.id)  if self.channel == 'azb'
         end
       elsif self.status == 'agreed'
         ActiveRecord::Base.transaction do
