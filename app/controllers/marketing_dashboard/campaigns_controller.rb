@@ -361,7 +361,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def settle_for_partners
-    SettlePartnerWorker.perform(params[:id] , params[:channel])
+    SettlePartnerWorker.perform_async(params[:id] , params[:channel])
     flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
     redirect_to :action => :index
   end
