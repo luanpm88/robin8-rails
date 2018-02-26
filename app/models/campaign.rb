@@ -16,6 +16,7 @@ class Campaign < ActiveRecord::Base
 
   list :push_device_tokens
 
+
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
                        'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
