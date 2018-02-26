@@ -165,7 +165,7 @@ class CampaignInvite < ActiveRecord::Base
     end
     self.with_lock do
       kol_avail_click = self.get_avail_click
-      self.update_columns(:status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+      self.update_columns(status: 'rejected', img_status: 'rejected', reject_reason: rejected_reason, check_time: Time.now)
       CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => self.kol_id, :status => 1).update_all(:status => 0, :remark => 'permanent_reject')
       self.campaign.redis_avail_click.decrement(kol_avail_click.to_i)
       if self.campaign.status == 'executed' && self.campaign.finish_remark == 'fee_end' && ['cpi', 'cpa', 'click'].include?(self.campaign.per_budget_type)
