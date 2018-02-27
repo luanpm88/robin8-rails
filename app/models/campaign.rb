@@ -491,14 +491,6 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_countdown(start_time)
-    if self.countdown.present? || self.countdown < Time.now
-      self.countdown
-    else
-      start_time - 10.minutes
-    end
-  end
-
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

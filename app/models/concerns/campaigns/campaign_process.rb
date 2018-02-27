@@ -92,14 +92,14 @@ module Campaigns
       if  is_recruit_type?
         _start_time = self.recruit_start_time < Time.now ? (Time.now + 15.minutes) : self.recruit_start_time
         _push_message_time = _start_time - 10.minutes
-        CampaignWorker.perform_at(self.get_countdown(start_time) , self.id , 'countdown')
+        CampaignWorker.perform_at(_push_message_time , self.id , 'countdown')
         CampaignWorker.perform_at(_start_time, self.id, 'start')
         CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
         MessageWorker.perform_at(_push_message_time , self.id , kol_ids)
       else
         _start_time = self.start_time < Time.now ? (Time.now + 15.minutes) : self.start_time
         _push_message_time = _start_time - 10.minutes
-        CampaignWorker.perform_at(self.get_countdown(start_time) , self.id , 'countdown')
+        CampaignWorker.perform_at(_push_message_time , self.id , 'countdown')
         CampaignWorker.perform_at(_start_time, self.id, 'start')
         MessageWorker.perform_at(_push_message_time , self.id , kols_ids )
       end
