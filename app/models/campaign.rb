@@ -75,6 +75,7 @@ class Campaign < ActiveRecord::Base
 
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
   scope :order_by_status, ->(ids = '""') { order(" case
+                                         when campaigns.status = 'countdown' then 6
                                          when campaigns.per_budget_type = 'invite' and campaigns.status = 'executing'  then 5
                                          when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check != '1' then 5
                                          when campaigns.per_budget_type = 'recruit' and (campaigns.status = 'executed' or (campaigns.status = 'executing' and campaigns.end_apply_check = '1') ) and campaigns.id in (#{ids}) then 4
