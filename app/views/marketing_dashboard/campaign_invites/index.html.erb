@@ -172,7 +172,7 @@
         <% end %>
         <td><%= c.id %></td>
         <td>
-          <% screenshot = c.screenshot.split(",") %>
+          <% screenshot = c.screenshot.try(:split, ",") || [] %>
           <% example_screenshot = c.get_example_screenshot(true) %>
           <% count = c.campaign.example_screenshot_count || 1 %>
           <% count.times do |t| %>

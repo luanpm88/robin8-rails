@@ -108,6 +108,7 @@ module Brand
             end
 
             service = CreateCampaignService.new current_user, declared(params)
+            Rails.logger.campaign_create.info "------user: #{current_user.id}------request_information: #{request.headers}"
 
             if service.perform
               present service.campaign
