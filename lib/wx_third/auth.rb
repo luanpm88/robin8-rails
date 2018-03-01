@@ -14,6 +14,8 @@ module WxThird
         url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=#{appid}&code=#{code}&grant_type=authorization_code&component_appid=#{AppId}&component_access_token=#{component_access_token}"
         res = RestClient::get(url)
         JSON.parse(res.body)
+
+        Rails.logger.wechat.info "===wxthird===appid===#{appid}===code===#{code}===body===#{JSON.parse(res.body)}"
       end
 
 
@@ -24,6 +26,8 @@ module WxThird
         res = RestClient::get(url)
         ret = JSON.parse(res.body)
         p "refresh_app_auth_access_token = #{ret.to_s}"
+
+        Rails.logger.wechat.info "===wxthird===appid===#{appid}===refresh_token===#{refresh_token}===body===#{ret}"
 
         if ret
           access_token = ret["access_token"]

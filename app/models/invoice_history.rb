@@ -6,4 +6,12 @@ class InvoiceHistory < ActiveRecord::Base
   validates :tracking_number, allow_nil: true, uniqueness: true
 
   belongs_to :user
+
+  def company_info
+    [company_address, company_mobile].join(' ')
+  end
+
+  def bank_info
+    [bank_name, bank_account].join(' ')
+  end
 end
