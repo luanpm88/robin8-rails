@@ -263,6 +263,8 @@ module Campaigns
     # 结算 for brand
     def settle_accounts_for_brand
        Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+       # 一个user针对一个campaign只能产生一条campaign_refund # evan 2018.2.28 11:00am
+       return unless Transaction.where(account: self.user, direct: 'income', item: self, subject: "campaign_refund").empty?
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
        self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})      unless self.is_invite_type?
