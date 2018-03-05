@@ -41,9 +41,10 @@ module API
           end
           present :error, 0
           invite_count = current_kol.task_records.invite_friend.count
-          invite_amount = current_kol.invite_transactions.sum(:credits)
+          # invite_amount = current_kol.invite_transactions.sum(:credits)
+          friend_amount = current_kol.friend_transactions.sum(:credits)
           present :invite_count, invite_count
-          present :invite_amount, invite_amount
+          present :invite_amount, friend_amount
           present :invite_code , invite_code.code
         end
       end
