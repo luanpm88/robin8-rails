@@ -110,6 +110,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     @transactions = @q.result.order('id DESC').paginate(paginate_params)
   end
 
+  def invites
+    @kol = Kol.find(params[:id])
+    @ris = @kol.registered_invitations.includes(:invitee).completed.paginate(paginate_params)
+  end
+
   def edit
     authorize! :read, Kol
     @kol = Kol.find params[:id]

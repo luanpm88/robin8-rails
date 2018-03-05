@@ -106,6 +106,7 @@ Rails.application.routes.draw do
         get :transaction
         get :edit_profile
         put :update_profile
+        get :invites
       end
       resources :feedbacks
       resources :campaign_shows, only: [:index]
