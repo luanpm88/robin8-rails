@@ -146,7 +146,7 @@ module API
           select_ids = k_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
           _hash = {}
           current_kol.registered_invitations.includes(:invitee).where(invitee_id: select_ids).each do |ri|
-            _hash[ri.invitee_id] = {kol_id: ri.invitee_id, kol_name: ri.invitee.name, campaign_invites_count: ri.invitee.campaign_invites.count, amount: current_kol.friend_amount(ri.invitee)}
+            _hash[ri.invitee_id] = {kol_id: ri.invitee_id, kol_name: ri.invitee.name, avatar_url: ri.invitee.avatar_url, campaign_invites_count: ri.invitee.campaign_invites.count, amount: current_kol.friend_amount(ri.invitee)}
           end
           list = []
           select_ids.each do |ele|
@@ -154,7 +154,7 @@ module API
           end
           present :error, 0
           present :total_count, k_ids.count
-          present :total_pages, page_count(k_ids.count)
+          present :total_pages, page_count(k_ids.count).to_i
           present :current_page, params[:page]
           present :list, list
         end

@@ -56,6 +56,9 @@ module API
           expose :kol_name do |ri|
             ri.invitee.name
           end
+          expose :avatar_url do |ri|
+            ri.invitee.avatar_url
+          end
           expose :campaign_invites_count do |ri|
             ri.invitee.campaign_invites.count
           end
