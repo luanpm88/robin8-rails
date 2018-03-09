@@ -365,4 +365,41 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     flash[:notice] = "后台已经开始偷偷结算给阿里众包了哦(。・・)ノ"
     redirect_to :action => :index
   end
+
+  def azb_csv
+    campaign_invites = CampaignInvite.joins(:kol).includes(:campaign , :kol)
+                       .where("campaign_invites.campaign_id = ? and kols.channel = ?", params[:id] , 'azb')
+
+    if campaign_invites.blank?
+      flash[:notice] = "阿里一个分享都还没有哦"
+      redirect_to :action => :index
+
+    else
+      cols = [
+          '活动ID',
+          '活动 Task_id',
+          '用户 ID',
+          '用户渠道 ID',
+          '有效点击',
+          '结算金额'
+        ]
+        
+      azb_csv = CSV.generate do |csv|
+        csv << cols
+        campaign_invites.each do |invite|
+          csv << [
+            invite.campaign_id,
+            invite.campaign.ali_task_id,
+            invite.kol_id,
+            invite.kol.cid,
+            invite.avail_click,
+            invite.partners_settle
+          ]
+        end
+        csv << ["", "", "", "", "=sum(E2:E#{campaign_invites.size + 1})" , "=sum(F2:F#{campaign_invites.size + 1})"] #求和
+      end
+
+      send_data azb_csv , filename: "ID: #{params[:id]}活动阿里众包结算记录#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
+    end
+  end
 end
