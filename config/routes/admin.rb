@@ -78,6 +78,7 @@ Rails.application.routes.draw do
         put :lift_kol_level_count  
         put :push_to_partners
         put :settle_for_partners
+        get :azb_csv
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
