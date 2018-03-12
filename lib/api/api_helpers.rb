@@ -6,12 +6,11 @@ module API
     EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
 
     def current_kol
-      @current_kol = Kol.find 65962
-      # result , private_token = AuthToken.valid?(headers["Authorization"])
-      # if result
-      #   @current_kol ||= Kol.app_auth(private_token)
-      #   @current_kol
-      # end
+      result , private_token = AuthToken.valid?(headers["Authorization"])
+      if result
+        @current_kol ||= Kol.app_auth(private_token)
+        @current_kol
+      end
     end
 
     #是否可以获取验证码
