@@ -48,6 +48,25 @@ module API
             kol.invite_transactions.sum(:credits).round(2)
           end
         end
+
+        class FriendsPercentage < Grape::Entity
+          expose :kol_id do |ri|
+            ri.invitee_id
+          end
+          expose :kol_name do |ri|
+            ri.invitee.name
+          end
+          expose :avatar_url do |ri|
+            ri.invitee.avatar_url
+          end
+          expose :campaign_invites_count do |ri|
+            ri.invitee.campaign_invites.count
+          end
+          expose :amount do |ri, options|
+             options[:current_kol].friend_amount(ri.invitee)
+          end
+        end
+        
       end
     end
   end

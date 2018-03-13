@@ -40,10 +40,10 @@ module API
             invite_code = KolInviteCode.create(code: create_random_code , kol_id: current_kol.id)   rescue nil
           end
           present :error, 0
-          invite_count = current_kol.task_records.invite_friend.count
-          invite_amount = current_kol.invite_transactions.sum(:credits)
-          present :invite_count, invite_count
-          present :invite_amount, invite_amount
+          # invite_count = current_kol.task_records.invite_friend.count
+          # invite_amount = current_kol.invite_transactions.sum(:credits)
+          present :invite_count, current_kol.registered_invitations.completed.count
+          present :invite_amount, current_kol.friend_transactions.sum(:credits)
           present :invite_code , invite_code.code
         end
       end

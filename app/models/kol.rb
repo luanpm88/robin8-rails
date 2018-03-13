@@ -787,6 +787,11 @@ class Kol < ActiveRecord::Base
     true
   end
 
+  def desc_percentage_on_friend
+    (friend_transactions.where(opposite_type: 'Kol').group(:opposite_id).sum(:credits).
+      sort_by{|_key, value| value}.collect{|ele| ele[0]}.reverse + registered_invitations.completed.map(&:invitee_id)).uniq     
+  end
+
   def create_invite_code
     begin
       code = [*(0..9)].sample(8).join
