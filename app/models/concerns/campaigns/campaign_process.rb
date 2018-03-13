@@ -119,7 +119,7 @@ module Campaigns
 
     def go_start(kol_ids = nil)
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-      return if self.status != 'agreed' || self.status != 'countdown'
+      return  unless ['agreed', 'countdown'].include? self.status
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
