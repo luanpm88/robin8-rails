@@ -145,7 +145,7 @@ module API
           k_ids = current_kol.desc_percentage_on_friend
           select_ids = k_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
           _hash = {}
-          current_kol.registered_invitations.includes(:invitee).where(invitee_id: select_ids).each do |ri|
+          current_kol.registered_invitations.includes(:invitee).completed.where(invitee_id: select_ids).each do |ri|
             _hash[ri.invitee_id] = {kol_id: ri.invitee_id, kol_name: ri.invitee.name, avatar_url: ri.invitee.avatar_url, campaign_invites_count: ri.invitee.campaign_invites.count, amount: current_kol.friend_amount(ri.invitee)}
           end
           list = []
