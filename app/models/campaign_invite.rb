@@ -382,9 +382,10 @@ class CampaignInvite < ActiveRecord::Base
         Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
-      # 师傅提成self.kol.registered_invitation, transaction percentage_on_friend on: 2018-3-5 15:32
-      if self.kol.registered_invitation && percentage_on_friend > 0
-        self.kol.income(percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05, 'percentage_on_friend', self.campaign, self.kol, transaction_time)
+      # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
+      if self.kol.parent && percentage_on_friend > 0
+        amount = percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05
+        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign)
       end
       # end: 2018-3-5 15:32
     end

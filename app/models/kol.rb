@@ -176,6 +176,10 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def parent
+    registered_invitation.try(:inviter)
+  end
+
 
   def email_required?
     false if self.provider != "signup"
