@@ -253,6 +253,7 @@
                 <% elsif ch == 'azb' ||  ch == 'all'%>
                   <li><%= link_to '点一下就可以给阿里众包结算哦(๑•ᴗ•๑)', settle_for_partners_marketing_dashboard_campaign_path(c, channel: "azb") , method: :put %></li>
                   <li><%= link_to '导出阿里众包参与详情', azb_csv_marketing_dashboard_campaign_path(c) %></li>
+                  <li><%= link_to '将此活动从阿里下线', terminate_ali_campaign_marketing_dashboard_campaign_path(c), method: :put %></li>
                 <% end %>
                 <% if ch == nil || ch == 'azb' %>
                   <li><%= link_to '同步到微差事', push_to_partners_marketing_dashboard_campaign_path(c, channel: "wcs"), method: :put %></li>

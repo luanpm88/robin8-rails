@@ -266,64 +266,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
   end
 
-=begin
-  def push_to_alizhongbao
-    authorize! :update, Campaign
-    @campaign = Campaign.find(params[:id])
-    if @campaign.channel = nil
-      @campaign.update_attributes!(channel:"azb")
-      Partners::Alizhongbao.push_campaign(params[:id])
-      flash[:notice] = "成功推送到阿里众包"
-    elsif @campaign.channel = 'azb'
-      flash[:notice] = "该活动早已推送过阿里众包了，长点心！"
-    elsif @campaign.channel = 'wcs'
-      @campaign.update_attributes!(channel:"all")
-      Partners::Alizhongbao.push_campaign(params[:id])
-      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    elsif @campaign.channel = 'all'
-      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心！"
-    end
-    redirect_to :action => :index
-  end
-
-  def push_to_wcs
-    authorize! :update, Campaign
-    @campaign = Campaign.find(params[:id])
-    if @campaign.channel = nil
-      @campaign.update_attributes!(channel:"wcs")
-      flash[:notice] = "成功推送到微差事"
-    elsif @campaign.channel = 'wcs'
-      flash[:notice] = "该活动早已推送过微差事了，长点心！"
-    elsif @campaign.channel = 'azb'
-      @campaign.update_attributes!(channel:"all")
-      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    elsif @campaign.channel = 'all'
-      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心！"
-    end
-    redirect_to :action => :index
-  end
-
-  def push_to_all_partners
-    authorize! :update, Campaign
-    @campaign = Campaign.find(params[:id])
-    if @campaign.channel = 'all'
-      flash[:notice] = "该活动早已推送给所有合作伙伴了，长点心"
-    elsif @campaign.channel = 'wcs'
-      @campaign.update_attributes!(channel:"all")
-      Partners::Alizhongbao.push_campaign(params[:id])
-      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    elsif @campaign.channel = 'azb'
-      @campaign.update_attributes!(channel:"all")
-      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    elsif @campaign.channel = nil
-      @campaign.update_attributes!(channel:"all")
-      Partners::Alizhongbao.push_campaign(params[:id])
-      flash[:notice] = "该活动已经成功推送给所有合作伙伴了"
-    end
-    redirect_to :action => :index
-  end
-=end
-
   def lift_kol_level_count
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
@@ -366,6 +308,14 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     redirect_to :action => :index
   end
 
+  def terminate_ali_campaign
+    authorize! :update, Campaign
+    @campaign = Campaign.find(params[:id])
+    resp = Partners::Alizhongbao.finish_campaign(params[:id])
+    flash[:notice] = resp ?  "阿里下线成功" : "阿里下线失败"
+    redirect_to :action => :index
+  end
+
   def azb_csv
     campaign_invites = CampaignInvite.joins(:kol).includes(:campaign , :kol)
                        .where("campaign_invites.campaign_id = ? and kols.channel = ?", params[:id] , 'azb')
@@ -383,7 +333,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
           '有效点击',
           '结算金额'
         ]
-        
+
       azb_csv = CSV.generate do |csv|
         csv << cols
         campaign_invites.each do |invite|
