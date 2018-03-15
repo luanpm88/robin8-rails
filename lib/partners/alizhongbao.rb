@@ -186,6 +186,9 @@ module Partners
     end
 
     def self.import_dope_data(file_path)
+      # 我们的一些“真”用户的数据，Martin 提供的名单
+      # The format for each line of the CSV should be like this
+      # "[\"http://p3.pstatp.com/thumb/3643000210012cf13395\", \"'呆萌小雨\"]"
       $redis.rpush("dope_sample_data", CSV.read(file_path))
     end
 
