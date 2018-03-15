@@ -336,7 +336,7 @@ class Campaign < ActiveRecord::Base
       invite.status = 'pending'
     elsif invite.new_record? && (self.status == 'executed' ||  self.status == 'settled')
       invite.status = 'missed'
-    elsif invite.new_record? && self.status == 'countdown'
+    elsif self.status == 'countdown'
       invite.status = 'countdown'
     end
     invite
