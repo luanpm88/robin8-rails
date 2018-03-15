@@ -461,7 +461,7 @@ handleClickPerBudgetType() {
                           id="oneScreenshot"
                           value="1"
                           className=""
-                          checked={example_screenshot_count.value === '1'}/>
+                          checked={example_screenshot_count.value == "1"}/>
                         需要用户上传1张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低3元</div>
                       </div>
@@ -472,7 +472,7 @@ handleClickPerBudgetType() {
                           name="example_screenshot_count"
                           value="2"
                           className=""
-                          checked={example_screenshot_count.value === '2'}/>
+                          checked={example_screenshot_count.value == "2"}/>
                         需要用户上传2张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低5元</div>
                       </div>
@@ -483,7 +483,7 @@ handleClickPerBudgetType() {
                           name="example_screenshot_count"
                           value="3"
                           className=""
-                          checked={example_screenshot_count.value === '3'}/>
+                          checked={example_screenshot_count.value == "3"}/>
                         需要用户上传3张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低8元</div>
                       </div>
