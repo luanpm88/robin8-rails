@@ -312,7 +312,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     authorize! :update, Campaign
     @campaign = Campaign.find(params[:id])
     resp = Partners::Alizhongbao.finish_campaign(params[:id])
-    flash[:notice] = resp ?  "阿里下线成功" : "阿里下线失败"
+    if resp["result"].try(:[], "success") == 'true'
+      flash[:notice] = "阿里下线成功"
+    else
+      flash[:notice] = "阿里下线失败"
+    end
     redirect_to :action => :index
   end
 
