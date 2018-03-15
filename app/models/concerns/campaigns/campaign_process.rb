@@ -112,14 +112,14 @@ module Campaigns
         _push_message_time = _start_time - 10.minutes
         CampaignWorker.perform_at(_push_message_time , self.id , 'countdown')
         CampaignWorker.perform_at(_start_time, self.id, 'start')
-        MessageWorker.perform_at(_push_message_time , self.id , kols_ids )
+        MessageWorker.perform_at(_push_message_time , self.id , kol_ids )
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     end
 
     def go_start(kol_ids = nil)
       Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-      return if self.status != 'agreed' || self.status != 'countdown'
+      return  unless ['agreed', 'countdown'].include? self.status
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
