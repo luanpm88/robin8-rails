@@ -53,16 +53,16 @@ module API
           expose :kol_id do |kol|
             kol.id
           end
-          expose :kol_name do |ri|
+          expose :kol_name do |kol|
             kol.name
           end
-          expose :avatar_url do |ri|
+          expose :avatar_url do |kol|
             kol.avatar_url
           end
-          expose :campaign_invites_count do |ri|
+          expose :campaign_invites_count do |kol|
             kol.campaign_invites.count
           end
-          expose :amount do |ri, options|
+          expose :amount do |kol, options|
              options[:current_kol].friend_amount(kol)
           end
         end
