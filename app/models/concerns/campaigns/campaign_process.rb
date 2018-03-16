@@ -112,7 +112,7 @@ module Campaigns
         _push_message_time = _start_time - 10.minutes
         CampaignWorker.perform_at(_push_message_time , self.id , 'countdown')
         CampaignWorker.perform_at(_start_time, self.id, 'start')
-        MessageWorker.perform_at(_push_message_time , self.id , kols_ids )
+        MessageWorker.perform_at(_push_message_time , self.id , kol_ids )
       end
       CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     end
@@ -329,7 +329,7 @@ module Campaigns
 
     # 活动倒计时
     def campaign_countdown
-      self.update_columns(:status => 'countdown')   if self.status = 'agreed' 
+      self.update_columns(:status => 'countdown')   if self.status = 'agreed'
     end
 
     class_methods do
