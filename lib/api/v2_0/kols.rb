@@ -145,8 +145,14 @@ module API
           k_ids = current_kol.desc_percentage_on_friend
           select_ids = k_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
           _hash = {}
-          current_kol.registered_invitations.includes(:invitee).completed.where(invitee_id: select_ids).each do |ri|
-            _hash[ri.invitee_id] = {kol_id: ri.invitee_id, kol_name: ri.invitee.name, avatar_url: ri.invitee.avatar_url, campaign_invites_count: ri.invitee.campaign_invites.count, amount: current_kol.friend_amount(ri.invitee)}
+          current_kol.children.where(id: select_ids).each do |kol|
+            _hash[kol.id] = {
+              kol_id:                 kol.id, 
+              kol_name:               kol.name, 
+              avatar_url:             kol.avatar_url, 
+              campaign_invites_count: kol.campaign_invites.count, 
+              amount:                 current_kol.friend_amount(kol)
+            }
           end
           list = []
           select_ids.each do |ele|
@@ -164,11 +170,11 @@ module API
           requires :page, type: Integer
         end
         get 'today_friends' do
-          @ris = current_kol.registered_invitations.includes(:invitee).completed.recent(Time.now, Time.now).page(params[:page]).per_page(10)
+          @kols = current_kol.children.recent(Time.now, Time.now).page(params[:page]).per_page(10)
           present :error, 0
-          to_paginate(@ris)
-          present :total_count, @ris.count
-          present :list, @ris , with: API::V2_0::Entities::KolOverviewEntities::FriendsPercentage, current_kol: current_kol
+          to_paginate(@kols)
+          present :total_count, @kols.count
+          present :list, @kols , with: API::V2_0::Entities::KolOverviewEntities::FriendsPercentage, current_kol: current_kol
         end
       end
     end

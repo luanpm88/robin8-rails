@@ -5,7 +5,7 @@ class RewardTask < ActiveRecord::Base
   CompleteInfo = 'complete_info'
   InviteFriend = 'invite_friend'
   FavorableComment = 'favorable_comment'
-  Friends = %w(invite_friend percentage_on_friend)
+  FriendGains = 'percentage_on_friend'
 
   scope :invite_friend, -> {where(:task_type => InviteFriend).first}
 

@@ -10,18 +10,18 @@
   </thead>
 
   <tbody>
-    <% @ris.each do |ri| %>
+    <% @kols.each do |kol| %>
       <tr>
         <td>
-          <%= link_to ri.invitee_id, marketing_dashboard_kol_path(ri.invitee_id), :target => "_blank"  %>
+          <%= link_to kol.id, marketing_dashboard_kol_path(kol.id), :target => "_blank"  %>
         </td>
         <% %i(name mobile_number).each do |ele| %>
-          <td><%= ri.invitee.send(ele) %></td>
+          <td><%= kol.send(ele) %></td>
         <% end %>
-        <td><%= @kol.friend_amount(ri.invitee) %></td>
+        <td><%= @kol.friend_amount(kol) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= will_paginate @ris, renderer: BootstrapPagination::Rails  %>
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

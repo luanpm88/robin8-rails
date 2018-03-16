@@ -139,8 +139,8 @@
           <!-- Display each Admintag -->
           <%= render partial: "admintag", collection: k.admintags, locals: {kol_id: k.id} %>
         </td>
-        <td><%= link_to k.registered_invitations.completed.count, invites_marketing_dashboard_kol_path(k), target: '_blank' %></td>
-        <td><%= k.friend_transactions.sum(:credits).to_f %></td>
+        <td><%= link_to k.children.count, invites_marketing_dashboard_kol_path(k), target: '_blank' %></td>
+        <td><%= k.children.count * 2.0 + k.friend_gains.sum(:credits).to_f %></td>
         <td>
           <%= link_to '资料编辑', edit_profile_marketing_dashboard_kol_path(k.id), :target => "_blank"  %> /
           <%= link_to '社交帐号', marketing_dashboard_social_accounts_path(:kol_id => k.id), :target => "_blank"  %> /

@@ -50,20 +50,20 @@ module API
         end
 
         class FriendsPercentage < Grape::Entity
-          expose :kol_id do |ri|
-            ri.invitee_id
+          expose :kol_id do |kol|
+            kol.id
           end
           expose :kol_name do |ri|
-            ri.invitee.name
+            kol.name
           end
           expose :avatar_url do |ri|
-            ri.invitee.avatar_url
+            kol.avatar_url
           end
           expose :campaign_invites_count do |ri|
-            ri.invitee.campaign_invites.count
+            kol.campaign_invites.count
           end
           expose :amount do |ri, options|
-             options[:current_kol].friend_amount(ri.invitee)
+             options[:current_kol].friend_amount(kol)
           end
         end
         

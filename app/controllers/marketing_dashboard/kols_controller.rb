@@ -112,7 +112,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
   def invites
     @kol = Kol.find(params[:id])
-    @ris = @kol.registered_invitations.includes(:invitee).completed.paginate(paginate_params)
+    @kols = @kol.children.paginate(paginate_params)
   end
 
   def edit
