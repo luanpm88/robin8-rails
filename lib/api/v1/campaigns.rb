@@ -77,7 +77,7 @@ module API
           today_approved_invite_count = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at > '#{Date.today}'").count
           if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
-          elsif ['executing', 'countdown'].include?(self.status) ||  (campaign_invite && campaign_invite.status != 'running')
+          elsif ['executing', 'countdown'].include?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
           # elsif campaign.status != 'executing' ||  (campaign_invite && campaign_invite.status != 'running')
             return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
           elsif campaign.need_finish
