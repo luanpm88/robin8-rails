@@ -89,7 +89,7 @@ module Campaigns
       kols.each {|kol|  kol.add_campaign_id campaign_id }  if kols.present?
       kol_ids = kols.select(:id).map(&:id) rescue []
 
-      _start_time = self.is_recruit_type? self.recruit_start_time : self.start_time
+      _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
       if _start_time < Time.now
         _start_time = Time.now + 15.minutes
       else
