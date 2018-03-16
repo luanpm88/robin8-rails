@@ -385,7 +385,7 @@ class CampaignInvite < ActiveRecord::Base
       # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
       if self.kol.parent && percentage_on_friend > 0
         amount = percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05
-        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign)
+        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol)
       end
       # end: 2018-3-5 15:32
     end
