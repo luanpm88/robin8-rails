@@ -23,7 +23,7 @@ module API
                 []
               else
                 current_kol.campaign_invites.joins(:campaign).where("campaigns.deadline > '#{7.days.ago}' and campaigns.per_budget_type = 'recruit'").
-                  where("campaign_invites.status in ('approved', 'finished')" , campaign_status ).collect{|t| t.campaign_id}
+                  where("campaign_invites.status in ('approved', 'finished')").collect{|t| t.campaign_id}
               end
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             ids = current_kol.receive_campaign_ids.values
