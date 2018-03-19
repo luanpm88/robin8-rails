@@ -27,7 +27,11 @@ module API
               end
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             ids = current_kol.receive_campaign_ids.values
-            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
+            search_criteria = ['unexecuted', 'agreed']
+            search_criteria.push "countdown" if current_kol.app_version >= "2.3.2"
+            # search_criteria = current_kol.app_version >= "2.3.2" ? "status != 'unexecuted' and status != 'agreed' and status != 'countdown'" : "status != 'unexecuted' and status != 'agreed'"
+            # @campaigns = Campaign.where(search_criteria).where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
+            @campaigns = Campaign.where.not(status: search_criteria).where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
             @campaigns_filter = phone_filter(@campaigns)
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
