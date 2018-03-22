@@ -16,7 +16,7 @@
 # used to set extended properties on the server.
 
 server '47.100.60.3',
-  user:  'sk',
+  user:  'deployer',
   port:  40111,
   roles: %w{web app db master prod_server}
 
