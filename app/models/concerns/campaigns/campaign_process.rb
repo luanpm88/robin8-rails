@@ -313,6 +313,7 @@ module Campaigns
 
     # 活动倒计时
     def campaign_countdown
+      Rails.logger.campaign_sidekiq.info "----countdown: #{self.id}-----------"
       return if self.status != 'agreed'
       ActiveRecord::Base.transaction do
         self.update_columns(:status => 'countdown')
