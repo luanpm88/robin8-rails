@@ -147,13 +147,16 @@ module Campaigns
       end
       if self.is_invite_type?                        #特邀活动
         kol_ids  = get_social_account_related_kol_ids
+        kols = Kol.where(id: kol_ids)
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record
       elsif self.specified_kol_targets.present?       #指定任务
         kol_ids = get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
+        kols = Kol.where(id: kol_ids)
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
       elsif self.newbie_kol_target.present?          #新手活动
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: "", push_type: "newbie_kol", filter_type: 'match', filter_reason: 'newbie_kol')                    if record
         kol_ids = []
+        kols = nil
       else
         kols = get_platform_kols
         kols = get_matching_kols(kols)
