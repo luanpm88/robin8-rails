@@ -352,6 +352,7 @@ class CampaignInvite < ActiveRecord::Base
     return unless Transaction.where(account: kol, direct: 'income', item: campaign).empty?
     return if self.status == 'rejected'
     self.settle_lock.lock  do
+      percentage_on_friend = 0
       if ['click'].include? self.campaign.per_budget_type
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
@@ -360,11 +361,13 @@ class CampaignInvite < ActiveRecord::Base
         if campaign_shows.size > 0
           credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
+          percentage_on_friend = credits
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
       elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi', 'cpt'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
+        percentage_on_friend = self.campaign.get_per_action_budget(false)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
         if self.kol.kol_role == "mcn_big_v"
@@ -375,9 +378,16 @@ class CampaignInvite < ActiveRecord::Base
         end
         next if  settle_kol.blank?
         settle_kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
+        percentage_on_friend = self.price
         Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
+      # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
+      if self.kol.parent && percentage_on_friend > 0
+        amount = percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05
+        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol)
+      end
+      # end: 2018-3-5 15:32
     end
   end
 

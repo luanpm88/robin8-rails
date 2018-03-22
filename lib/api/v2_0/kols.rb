@@ -136,6 +136,46 @@ module API
             present :error, 1
           end
         end
+
+        desc '徒弟列表'
+        params do
+          requires :page, type: Integer
+        end
+        get 'percentage_on_friend' do
+          k_ids = current_kol.desc_percentage_on_friend
+          select_ids = k_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
+          _hash = {}
+          current_kol.children.where(id: select_ids).each do |kol|
+            _hash[kol.id] = {
+              kol_id:                 kol.id, 
+              kol_name:               kol.name, 
+              avatar_url:             kol.avatar_url, 
+              campaign_invites_count: kol.campaign_invites.count, 
+              amount:                 current_kol.friend_amount(kol)
+            }
+          end
+          list = []
+          select_ids.each do |ele|
+            list << _hash[ele]
+          end
+          present :error, 0
+          present :total_count, k_ids.count
+          present :total_pages, page_count(k_ids.count).to_i
+          present :current_page, params[:page]
+          present :list, list
+        end
+
+        desc '今日徒弟数'
+        params do
+          requires :page, type: Integer
+        end
+        get 'today_friends' do
+          @kols = current_kol.children.recent(Time.now, Time.now).page(params[:page]).per_page(10)
+          present :error, 0
+          to_paginate(@kols)
+          present :total_count, @kols.count
+          present :list, @kols , with: API::V2_0::Entities::KolOverviewEntities::FriendsPercentage, current_kol: current_kol
+        end
       end
     end
   end

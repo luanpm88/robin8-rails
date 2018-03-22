@@ -38,6 +38,8 @@ class CampaignWorker
       campaign.timed_append_kols
     elsif job_type == "push_all_kols"
       campaign.push_all_kols
+    elsif job_type == "countdown"
+      campaign.campaign_countdown
     end
   end
 
