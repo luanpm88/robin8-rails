@@ -6,7 +6,7 @@ working_directory app_root
 pid "#{app_root}/tmp/pids/unicorn.pid"
 
 # listen
-listen 8181, reuseport: true
+# listen 8181
 listen "/tmp/unicorn-express.socket", backlog: 64
 
 # logging
