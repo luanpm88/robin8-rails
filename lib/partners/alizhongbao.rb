@@ -72,7 +72,7 @@ module Partners
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
-      Rails.logger.partner_campaign.info "--azb_completed_share: #{resp}"
+      Rails.logger.partner_campaign.info "--azb_completed_share: #{resp}-----#{kol_id}-----#{campaign_id}"
       resp
     end
 
