@@ -313,7 +313,7 @@ module Campaigns
 
     # 活动倒计时
     def campaign_countdown
-      self.update_columns(:status => 'countdown')   if self.status = 'agreed' 
+      self.update_columns(:status => 'countdown')   if self.status == 'agreed' 
     end
 
     class_methods do
