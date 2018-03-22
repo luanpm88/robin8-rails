@@ -102,8 +102,6 @@ module Campaigns
     end
 
     def go_start(kol_ids = nil)
-      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-      return  unless ['agreed', 'countdown'].include? self.status
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
@@ -111,6 +109,7 @@ module Campaigns
       if (self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?)  && self.enable_append_push
         CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
+      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     end
 
     def timed_append_kols
