@@ -21,8 +21,8 @@ module Concerns
     end
 
     def invite_friend_reward(k)
-      task_record = self.task_records.invite_friend.where(invitees_id: k.id, status: 'active')
-      self.invite_transactions.where(item_id: task_record.id ) ? 2.0 : 0
+      task_record = self.task_records.invite_friend.where(invitees_id: k.id, status: 'active').first
+      self.invite_transactions.where(item_id: task_record.id).first ? 2.0 : 0
     end
 
     def had_complete_reward?
