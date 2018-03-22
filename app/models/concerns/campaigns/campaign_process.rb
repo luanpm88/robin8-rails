@@ -93,7 +93,7 @@ module Campaigns
       if _start_time < Time.now
         _start_time = Time.now + 15.minutes
       else
-        CampaignWorker.perform_at((_start_time - 10.minutes), self.id, 'countdown')
+        CampaignWorker.perform_at((_start_time - 11.minutes), self.id, 'countdown')
       end
       CampaignWorker.perform_at(_start_time, self.id, 'start')
       MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
