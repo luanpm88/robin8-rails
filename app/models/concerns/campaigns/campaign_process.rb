@@ -93,7 +93,7 @@ module Campaigns
       if _start_time < Time.now
         _start_time = Time.now + 15.minutes
       else
-        CampaignWorker.perform_at((_start_time - 11.minutes), self.id, 'countdown')
+        CampaignWorker.perform_at((_start_time - 10.minutes), self.id, 'countdown')
       end
       CampaignWorker.perform_at(_start_time, self.id, 'start')
       MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
@@ -313,7 +313,10 @@ module Campaigns
 
     # 活动倒计时
     def campaign_countdown
-      self.update_columns(:status => 'countdown')   if self.status == 'agreed' 
+      return if self.status != 'agreed'
+      ActiveRecord::Base.transaction do
+        self.update_columns(:status => 'countdown')
+      end
     end
 
     class_methods do
