@@ -127,11 +127,11 @@ handleMin() {
   //
   // }
 
-  if (this.props.example_screenshot_count.value === '3') {
+  if (this.props.example_screenshot_count.value == '3') {
     min = 8
-  } else if (this.props.example_screenshot_count.value === '2') {
+  } else if (this.props.example_screenshot_count.value == '2') {
     min = 5
-  } else if (this.props.example_screenshot_count.value === '1') {
+  } else if (this.props.example_screenshot_count.value == '1') {
     min = 3
   }
 
