@@ -90,13 +90,12 @@ module Campaigns
       kol_ids = kols.select(:id).map(&:id) rescue []
 
       _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
-      if _start_time < Time.now
-        _start_time = Time.now + 15.minutes
-      else
-        CampaignWorker.perform_at((_start_time - 11.minutes), self.id, 'countdown')
+      if _start_time > (Time.now + 20.minutes)
+        CampaignWorker.perform_at((_start_time - 10.minutes), self.id, 'countdown')
+        MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
       end
+      _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
-      MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
       CampaignWorker.perform_at(self.deadline, self.id, 'end')
       CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check') if self.is_recruit_type?
     end
