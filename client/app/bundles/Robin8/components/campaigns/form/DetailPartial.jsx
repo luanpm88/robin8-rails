@@ -42,7 +42,7 @@ export default class DetailPartial extends React.Component {
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
       initval: 0.3,
-      min: 0.2,
+      min: 0.3,
       max: 10000000,
       step: 0.1,
       decimals: 1,
@@ -63,7 +63,7 @@ export default class DetailPartial extends React.Component {
 
     $("input[name='action_type']").change(function(){
       if(per_budget_type.value == 'post') {
-        per_action_budget.onChange("5.0")
+        per_action_budget.onChange("3.0")
       }
       if(per_budget_type.value == 'click') {
         per_action_budget.onChange("0.3") // initial min value is 0.2
@@ -91,50 +91,30 @@ export default class DetailPartial extends React.Component {
 
 
 handleMin() {
-  let min = 0.2;
+  let min = 0.3;
   if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
-    console.log('weibo click event deactivate and change value to 2.5')
+    console.log('weibo click event deactivate and change value to 3')
     // this.props.per_action_budget.value = 8
     min = 8
   } else if (this.props.per_budget_type.value === 'click') {
     console.log('click event clicked')
     // this.props.per_action_budget.value = 0.2
-    min = 0.2
+    min = 0.3
   } else if (this.props.per_budget_type.value === 'post') {
     console.log('post event clicked')
     // this.props.per_action_budget.value = 2.5
-    min = 2.5
+    min = 3
   } else if (this.props.per_budget_type.value === 'cpt') {
     console.log('cpt event clicked')
     // this.props.per_action_budget.value = 8
-    min = 8
+    if (this.props.example_screenshot_count.value == '3') {
+      min = 8
+    } else if (this.props.example_screenshot_count.value == '2') {
+      min = 5
+    } else if (this.props.example_screenshot_count.value == '1') {
+      min = 3
+    }
   }
-
-  // if ($('input[name="example_screenshot_count"]').val() === '3'){
-  //   console.log('number change to 1')
-  //   // this.props.per_action_budget.value = 3
-  //   min = 8;
-  //
-  // } else if ($('input[name="example_screenshot_count"]').val() === '2'){
-  //   console.log('number change to 2')
-  //   // this.props.per_action_budget.value = 5
-  //   min = 5;
-  //
-  // } else if ($('input[name="example_screenshot_count"]').val() === '1'){
-  //   console.log('number change to 3')
-  //   // this.props.per_action_budget.value = 8
-  //   min = 3;
-  //
-  // }
-
-  if (this.props.example_screenshot_count.value == '3') {
-    min = 8
-  } else if (this.props.example_screenshot_count.value == '2') {
-    min = 5
-  } else if (this.props.example_screenshot_count.value == '1') {
-    min = 3
-  }
-
   return min
 }
 
@@ -162,20 +142,20 @@ handleMin() {
 // }
 
 handleClickPerBudgetType() {
-  let min = 0.2
+  let min = 0.3
   // switch maybe better suited for this situation
   if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
-    console.log('weibo click event deactivate and change value to 2.5')
+    console.log('weibo click event deactivate and change value to 3')
     // this.props.per_action_budget.value = 8
     min = 8
   } else if (this.props.per_budget_type.value === 'click') {
     console.log('click event clicked')
     // this.props.per_action_budget.value = 0.2
-    min = 0.2
+    min = 0.3
   } else if (this.props.per_budget_type.value === 'post') {
     console.log('post event clicked')
     // this.props.per_action_budget.value = 2.5
-    min = 2.5
+    min = 3
   } else if (this.props.per_budget_type.value === 'cpt') {
     console.log('cpt event clicked')
     // this.props.per_action_budget.value = 8
@@ -354,7 +334,7 @@ handleClickPerBudgetType() {
                               name="action_type"
                               value="click" className="commonPerBudgetType"
                               onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === 'click' }
+                              checked={per_budget_type.value === "click" }
                               onClick={this.handleClickPerBudgetType()}/>
                             按照点击奖励KOL
                           </div>
@@ -510,8 +490,8 @@ handleClickPerBudgetType() {
 
               </div>
               <div className="price-tip" style={{fontSize: '14px'}}>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>2.5</span>元, 请设置您想要获得单次转发的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>0.2</span>元, 请设置您想要获得单次点击的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>3</span>元, 请设置您想要获得单次转发的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>0.3</span>元, 请设置您想要获得单次点击的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
               </div>
