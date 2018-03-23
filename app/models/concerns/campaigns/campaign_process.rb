@@ -90,10 +90,13 @@ module Campaigns
       kol_ids = kols.select(:id).map(&:id) rescue []
 
       _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
+
       if _start_time > (Time.now + 20.minutes)
-        CampaignWorker.perform_at((_start_time - 10.minutes), self.id, 'countdown')
-        MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
+        push_time = _start_time - 10.minutes
+        CampaignWorker.perform_at(push_time, self.id, 'countdown')
+        MessageWorker.perform_at(push_time, self.id, kol_ids )
       end
+
       _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
       CampaignWorker.perform_at(self.deadline, self.id, 'end')
@@ -101,7 +104,6 @@ module Campaigns
     end
 
     def go_start(kol_ids = nil)
-      return  unless ['agreed', 'countdown'].include? self.status
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
