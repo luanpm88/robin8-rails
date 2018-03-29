@@ -23,7 +23,12 @@ class Campaign < ActiveRecord::Base
                        'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
 
   }
+  
+  BayerExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+                       'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+                       'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png',
 
+  }
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
@@ -440,15 +445,29 @@ class Campaign < ActiveRecord::Base
       return example_screenshot[0]   unless multi 
       return example_screenshot
     end
-    if self.sub_type == 'weibo'
-      return ExampleScreenshots['weibo'].split   if multi
-      ExampleScreenshots['weibo']
-    elsif self.sub_type == 'qq'
-      return ExampleScreenshots['qq'].split      if multi
-      ExampleScreenshots['qq']
-    else
-      return ExampleScreenshots['wechat'].split  if multi
-      ExampleScreenshots['wechat']
+    
+    if self.user_id == 16344
+      if self.sub_type == 'weibo'
+        return BayerExampleScreenshots['weibo'].split   if multi
+        BayerExampleScreenshots['weibo']
+      elsif self.sub_type == 'qq'
+        return BayerExampleScreenshots['qq'].split      if multi
+        BayerExampleScreenshots['qq']
+      else
+        return BayerExampleScreenshots['wechat'].split  if multi
+        BayerExampleScreenshots['wechat']
+      end  
+    else 
+      if self.sub_type == 'weibo'
+        return ExampleScreenshots['weibo'].split   if multi
+        ExampleScreenshots['weibo']
+      elsif self.sub_type == 'qq'
+        return ExampleScreenshots['qq'].split      if multi
+        ExampleScreenshots['qq']
+      else
+        return ExampleScreenshots['wechat'].split  if multi
+        ExampleScreenshots['wechat']
+      end  
     end
   end
 
