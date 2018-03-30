@@ -113,7 +113,7 @@ class UpdateInviteCampaignService
   end
 
   def can_edit?
-    ['unpay', 'unexecute', 'rejected'].include?(@campaign.status) ? true : false
+    ['unpay', 'unexecute', 'rejected', 'agreed'].include?(@campaign.status) ? true : false
   end
 
 end
