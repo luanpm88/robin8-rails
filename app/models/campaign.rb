@@ -446,7 +446,7 @@ class Campaign < ActiveRecord::Base
       return example_screenshot
     end
     
-    if self.user_id == 962
+    if self.user_id == 16344
       if self.sub_type == 'weibo'
         return BayerExampleScreenshots['weibo'].split   if multi
         BayerExampleScreenshots['weibo']
