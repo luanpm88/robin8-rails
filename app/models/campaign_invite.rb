@@ -120,7 +120,7 @@ class CampaignInvite < ActiveRecord::Base
 
   #cpc截图自动审核
   def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.user_id != 16344 AND campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending'")
     @campaign_invites.each do |c|
       c.screenshot_pass if c.redis_avail_click < 50
     end

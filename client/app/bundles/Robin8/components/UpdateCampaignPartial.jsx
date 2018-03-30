@@ -18,7 +18,7 @@ import initToolTip             from './shared/InitToolTip';
 import CampaignFormValidate    from './shared/validate/CampaignFormValidate'
 import CampaignRejectReasons   from './shared/CampaignRejectReasons'
 
-import { canEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
+import { adminCanEditCampaign, canPayCampaign } from '../helpers/CampaignHelper'
 
 const validate = new CampaignFormValidate({
   name: { require: true },
@@ -96,7 +96,7 @@ class UpdateCampaignPartial extends React.Component {
   renderSubmitOrRevokeBtn() {
     const campaign = this.props.campaign;
     const { handleSubmit, submitting, invalid } = this.props;
-    if (canEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {
+    if (adminCanEditCampaign(campaign.get("status")) || canPayCampaign(campaign.get("status"))) {
       return (
         <div className="submit-or-revoke">
           <button type="submit" className="btn btn-blue submit-campaign" disabled={ submitting }>重新提交</button>
