@@ -18,12 +18,6 @@ class CampaignInvite < ActiveRecord::Base
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
-  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
-                     'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
-                     'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
-
-  }
-
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
