@@ -107,7 +107,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-
+  #自动审核通过来自阿里众包的截图
   def self.auto_channel_kol_multi_img_status
     CampaignInvite.joins(:kol).where("kols.channel is not NULL").each {|t| t.screenshot_pass }
   end
