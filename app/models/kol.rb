@@ -94,6 +94,9 @@ class Kol < ActiveRecord::Base
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
   has_many :sent_challenges,     class_name: "KolPk", foreign_key: "challenger_id", inverse_of: :challengee
 
+  # ElasticArticle
+  has_many :elastic_article_actions
+
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
   end

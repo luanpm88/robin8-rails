@@ -47,4 +47,17 @@ class ElasticArticleExtend
     res['hits']['hits'].collect{|t| t["_source"]}
 	end
 
+	def self.get_by_post_ids(ids=[])
+		_query = 	{
+                terms: {post_id: ids},
+							}
+								
+		res = client.search index: 'weibo_post_v4',
+												body: {
+													query: _query
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}
+	end
+
 end
