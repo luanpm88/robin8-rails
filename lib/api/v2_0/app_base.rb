@@ -6,6 +6,7 @@ module API
       mount API::V2_0::Contacts
       mount API::V2_0::Registers
       mount API::V2_0::Sessions
+      mount API::V2_0::Articles
     end
   end
 end
