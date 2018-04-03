@@ -82,7 +82,9 @@ class PartnerCampaignController < ApplicationController
     @kol = Kol.find_or_create_by(channel: params.require(:channel_id),
                                  cid:     cid)
 
-
+    if $redis.lpop("dope_sample_data").nil?
+      Partners::Alizhongbao.import_dope_data("#{Rails.root}/doc/ali_kol_nickname_and_avatar.csv")
+    end
     avatar_url = if params[:images].present?
                    params[:images]
                  elsif @kol.avatar_url.blank?
