@@ -46,7 +46,8 @@ module API
             ele['content_id']
           end
           expose :pics do |ele|
-            ele['pic_content'].split(',').inject({}){|h, pic| h[pic] = ElasticArticle.weibo_pics(pic); h}
+            # ele['pic_content'].split(',').inject({}){|h, pic| h[pic] = ElasticArticle.weibo_pics(pic); h}
+            ElasticArticle.weibo_pic_ary(ele['pic_content'])
           end
           expose :tag do |ele|
             ele['top_industry']

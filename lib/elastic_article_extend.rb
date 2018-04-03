@@ -41,6 +41,31 @@ class ElasticArticleExtend
 								
 		res = client.search index: 'weibo_post_v4',
 												body: {
+													query: _query,
+													sort: [{post_date: {order: 'desc'}}]
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}
+	end
+
+	def self.get_by_hots(post_id)
+		_query = 	{
+								bool: {
+									must: [
+										{
+											range: {post_id: {lt: post_id}}
+										}
+									]
+								}
+							}
+		_sort = [
+							{post_date: {order: 'desc'}},
+							{shares: {order: 'desc'}}
+						]
+
+		res = client.search index: 'weibo_post_v4',
+												body: {
+													sort:  _sort,
 													query: _query
 												}
 

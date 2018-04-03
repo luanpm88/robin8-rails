@@ -7,10 +7,20 @@ module API
           authenticate!
         end
 
+        params do
+          optional :_type, type: String
+        end
         get '/' do
-        	res = ElasticArticleExtend.get_by_tags(current_kol, $redis.get("kol_elastic_articles_#{current_kol.id}"))
+          if params[:_type] == 'hot'
+            res = ElasticArticleExtend.get_by_hots($redis.get("kol_elastic_articles_hot_#{current_kol.id}"))
 
-        	$redis.set("kol_elastic_articles_#{current_kol.id}", res.last['post_date'])
+            $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[-1]['post_id'])
+          else
+        	  res = ElasticArticleExtend.get_by_tags(current_kol, $redis.get("kol_elastic_articles_#{current_kol.id}") || Time.now.to_i)
+            
+            $redis.setex("kol_elastic_articles_#{current_kol.id}", 43200, res[-1]['post_date'])
+            $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[0]['post_id']) unless $redis.get("kol_elastic_articles_hot_#{current_kol.id}")
+          end
 
         	present :error, 0
         	present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles
