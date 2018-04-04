@@ -24,7 +24,7 @@ module API
 
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
-        	present :list,   res, with: API::V2_0::Entities::InfluenceEntities::Articles
+        	present :list,   res, with: API::V2_0::Entities::InfluenceEntities::Articles, current_kol: current_kol
         end
 
         params do

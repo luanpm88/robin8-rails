@@ -64,6 +64,12 @@ module API
           expose :forwards_count do |ele|
             ele['forwards'].to_i
           end
+          expose :is_liked do |ele, options|
+            options[:current_kol].elastic_article_actions.likes.find_by(post_id: ele['post_id']).nil?
+          end
+          expose :is_collected do |ele, options|
+            options[:current_kol].elastic_article_actions.collects.find_by(post_id: ele['post_id']).nil?
+          end
         end
       end
     end
