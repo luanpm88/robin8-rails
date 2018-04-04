@@ -23,12 +23,14 @@ module API
             $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[0]['post_id']) unless $redis.get("kol_elastic_articles_hot_#{current_kol.id}")
           end
 
+          my_elastic_articles = current_kol.elastic_article_actions
+
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
           present :total_count, 999
           present :total_pages, 999
           present :current_page, params[:page]
-        	present :list,   res, with: API::V2_0::Entities::InfluenceEntities::Articles, current_kol: current_kol
+        	present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles, my_elastic_articles: my_elastic_articles
         end
 
         params do

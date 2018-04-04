@@ -21,7 +21,7 @@ class ElasticArticleExtend
 
 	def self.get_by_tags(kol, post_date)
 		tags = kol.tags.map(&:name).join(' OR ')
-		tags = Tag.all.map(&:name).join(' OR ') unless tags
+		tags = Tag.all.map(&:name).join(' OR ') if tags == ""
 
 		_query = 	{
 								bool: {
