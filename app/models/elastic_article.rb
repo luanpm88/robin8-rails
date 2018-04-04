@@ -9,13 +9,13 @@ class ElasticArticle < ActiveRecord::Base
 	end
 
 	def self.weibo_pic_ary(pic_str)
-		thumbnail_ary, large_ary = [], []
+		bmiddle_ary, large_ary = [], []
 		pic_str.split(',').each do |str|
-			thumbnail_ary << "http://ww3.sinaimg.cn/thumbnail/#{str}.jpg"
+			bmiddle_ary << "http://ww3.sinaimg.cn/bmiddle_pic/#{str}.jpg"
 			large_ary 		<< "http://ww3.sinaimg.cn/large/#{str}.jpg" 
 		end
 
-		[thumbnail_ary, large_ary]
+		[bmiddle_ary, large_ary]
 	end
 
 end

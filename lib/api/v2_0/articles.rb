@@ -8,6 +8,7 @@ module API
         end
 
         params do
+          requires :page, type: Integer
           optional :_type, type: String
         end
         get '/' do
@@ -24,33 +25,28 @@ module API
 
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
+          present :total_count, 999
+          present :total_pages, 999
+          present :current_page, params[:page]
         	present :list,   res, with: API::V2_0::Entities::InfluenceEntities::Articles, current_kol: current_kol
         end
 
         params do
-          requires :_action, type: String, values: ElasticArticleAction::ACTIONS
+          requires :_type, type: String, values: ElasticArticleAction::ACTIONS
           requires :post_id, type: String
+          requires :'_action', type: String, values: ['add', 'cancel']
         end
-        post 'add' do
+        post 'set' do
           eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_action], post_id: params[:post_id])
 
-          eaa.save if eaa.new_record?
+          if params[:_action] == 'add'
+            eaa.save if eaa.new_record?
+          else
+            eaa.destory if eaa
+          end
 
           present :error, 0, alert: '操作成功'
         end
-
-        params do
-          requires :_action, type: String, values: ElasticArticleAction::ACTIONS
-          requires :post_id, type: String
-        end
-        post 'cancel' do
-          eaa = current_kol.elastic_article_actions.find_by(_action: params[:_action], post_id: params[:post_id])
-
-          eaa.destory if eaa
-
-          present :error, 0, alert: '操作成功'
-        end
-
 
       end
     end
