@@ -17,7 +17,6 @@ config/database.yml
 /.capistrano
 public/system
 .DS_Store
-/doc
 *.swp
 .rvmrc
 app/assets/javascripts/generated/
