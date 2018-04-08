@@ -34,17 +34,23 @@ module API
         end
 
         params do
-          requires :_type, type: String, values: ElasticArticleAction::ACTIONS
+          requires :_type, type: String, values: ['like', 'collect', 'forward']
           requires :post_id, type: String
-          requires :'_action', type: String, values: ['add', 'cancel']
+          requires :_action, type: String, values: ['add', 'cancel']
         end
         post 'set' do
-          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_action], post_id: params[:post_id])
+          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_type], post_id: params[:post_id])
 
           if params[:_action] == 'add'
-            eaa.save if eaa.new_record?
+            if eaa.new_record?
+              eaa.save 
+              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=1)
+            end
           else
-            eaa.destory if eaa
+            if eaa
+              eaa.destroy
+              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=-1)
+            end
           end
 
           present :error, 0, alert: '操作成功'

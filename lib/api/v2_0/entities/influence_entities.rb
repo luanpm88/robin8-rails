@@ -56,13 +56,13 @@ module API
             ele['reads'].to_i
           end
           expose :likes_count do |ele|
-            ele['likes'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'like')
           end
           expose :collects_count do |ele|
-            ele['collects'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'collect')
           end
           expose :forwards_count do |ele|
-            ele['forwards'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'forward')
           end
           expose :is_liked do |ele, options|
             options[:my_elastic_articles].likes.find_by(post_id: ele['post_id']).nil?
