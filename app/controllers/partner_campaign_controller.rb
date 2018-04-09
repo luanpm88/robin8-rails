@@ -83,7 +83,7 @@ class PartnerCampaignController < ApplicationController
                                  cid:     cid)
 
     if $redis.lpop("dope_sample_data").nil?
-      Partners::Alizhongbao.import_dope_data("#{Rails.root}/doc/ali_kol_nickname_and_avatar.csv")
+      Partners::Alizhongbao.import_dope_data("/home/deployer/ali_kol_nickname_and_avatar.csv")
     end
     avatar_url = if params[:images].present?
                    params[:images]

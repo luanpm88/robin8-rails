@@ -5,7 +5,7 @@ namespace :screenshot do
     success = 0
     failed_records = []
     screenshots = []
-    CSV.foreach("#{Rails.root}/doc/bayer_screenshot.csv") do |row|
+    CSV.foreach("/home/deployer/bayer_screenshot.csv") do |row|
       screenshots << row[5][2..-3]
     end
     campaign_invites = CampaignInvite.joins(:kol, :campaign).where("campaigns.user_id = ? AND kols.channle = ?", 16344, 'azb').first(9344)
