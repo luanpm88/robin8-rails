@@ -53,7 +53,7 @@ module API
             ele['top_industry']
           end
           expose :reads_count do |ele|
-            ele['reads'].to_i
+            ele['reads'].to_i + rand(99999)
           end
           expose :likes_count do |ele|
             $redis.hget("elastic_article_#{ele['post_id']}", 'like')
@@ -65,10 +65,10 @@ module API
             $redis.hget("elastic_article_#{ele['post_id']}", 'forward')
           end
           expose :is_liked do |ele, options|
-            options[:my_elastic_articles].likes.find_by(post_id: ele['post_id']).nil?
+            options[:my_elastic_articles].likes.find_by(post_id: ele['post_id']) ? true : false
           end
           expose :is_collected do |ele, options|
-            options[:my_elastic_articles].collects.find_by(post_id: ele['post_id']).nil?
+            options[:my_elastic_articles].collects.find_by(post_id: ele['post_id']) ? true : false
           end
         end
       end

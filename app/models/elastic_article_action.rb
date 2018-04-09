@@ -8,5 +8,5 @@ class ElasticArticleAction < ActiveRecord::Base
 
 	scope :likes, 		->{ where(_action: 'like') }
 	scope :collects, 	->{ where(_action: 'collect') }
-	scope :forwards,	->{ where(_action: 'forwards') }
+	scope :forwards,	->{ where(_action: 'forward') }
 end
