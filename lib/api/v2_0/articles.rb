@@ -22,9 +22,10 @@ module API
             $redis.setex("kol_elastic_articles_#{current_kol.id}", 43200, res[-1]['post_date'])
             $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[0]['post_id']) unless $redis.get("kol_elastic_articles_hot_#{current_kol.id}")
           end
-
-          my_elastic_articles = current_kol.elastic_article_actions
-
+          my_elastic_articles = {}
+          current_list = current_kol.elastic_article_actions.where(post_id: res.collect{|ele| ele['post_id']})
+          my_elastic_articles[:likes] = current_list.likes.map(&:post_id)
+          my_elastic_articles[:collects] = current_list.collects.map(&:post_id)
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
           present :total_count, 999

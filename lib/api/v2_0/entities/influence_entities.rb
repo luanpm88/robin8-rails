@@ -65,10 +65,10 @@ module API
             $redis.hget("elastic_article_#{ele['post_id']}", 'forward')
           end
           expose :is_liked do |ele, options|
-            options[:my_elastic_articles].likes.find_by(post_id: ele['post_id']) ? true : false
+            options[:my_elastic_articles][:likes].include? ele['post_id']
           end
           expose :is_collected do |ele, options|
-            options[:my_elastic_articles].collects.find_by(post_id: ele['post_id']) ? true : false
+            options[:my_elastic_articles][:collects].include? ele['post_id']
           end
         end
       end

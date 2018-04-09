@@ -12,12 +12,15 @@ module API
           requires :page, type: Integer
         end
         get 'article_lists' do
-          my_elastic_articles = current_kol.elastic_article_actions.send(params[:_action])
-          post_ids    = my_elastic_articles.map(&:post_id)
-          select_ids  = post_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
+          post_ids   = current_kol.elastic_article_actions.send(params[:_action]).map(&:post_id)
+          select_ids = post_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
 
           res = ElasticArticleExtend.get_by_post_ids(select_ids)
 
+          my_elastic_articles = {
+            likes:    [],
+            collects: select_ids
+          }
  
           present :error, 0
           present :total_count, post_ids.count
