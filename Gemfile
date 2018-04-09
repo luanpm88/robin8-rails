@@ -148,7 +148,7 @@ gem 'mailgun-ruby'
 gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
 gem 'hpricot'
-gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4.2"
+gem "ransack", '1.8.4'
 gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
