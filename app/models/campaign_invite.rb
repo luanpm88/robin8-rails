@@ -165,8 +165,7 @@ class CampaignInvite < ActiveRecord::Base
     end
     self.with_lock do
       kol_avail_click = self.get_avail_click
-      self.update_columns(:avail_click => 0, :status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
-      self.redis_avail_click.reset
+      self.update_columns(status: 'rejected', img_status: 'rejected', reject_reason: rejected_reason, check_time: Time.now)
       CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => self.kol_id, :status => 1).update_all(:status => 0, :remark => 'permanent_reject')
       self.campaign.redis_avail_click.decrement(kol_avail_click.to_i)
       if self.campaign.status == 'executed' && self.campaign.finish_remark == 'fee_end' && ['cpi', 'cpa', 'click'].include?(self.campaign.per_budget_type)
@@ -349,6 +348,8 @@ class CampaignInvite < ActiveRecord::Base
 
   def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
+    # 一个kol针对一个campaign只能产生一条income # evan 2018.2.26 3:47pm
+    return unless Transaction.where(account: kol, direct: 'income', item: campaign).empty?
     return if self.status == 'rejected'
     self.settle_lock.lock  do
       if ['click'].include? self.campaign.per_budget_type

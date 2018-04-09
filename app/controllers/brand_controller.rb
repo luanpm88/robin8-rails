@@ -31,7 +31,7 @@ class BrandController < ApplicationController
   end
 
   def is_super_vistor?
-    params[:super_visitor_token] == Rails.cache.fetch("super_visitor_token") && params[:user_id] ? true : false
+    params[:super_visitor_token] == $redis.get("super_visitor_token") && params[:user_id] ? true : false
   end
 
   def sign_in_as_super_visitor(user_id)
