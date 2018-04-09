@@ -1,4 +1,4 @@
-# 此扩展应用是抓我们elasticsearch上的微博数据，以及微信文章
+# 此扩展应用是抓我们elasticsearch上的微博的原创(is_retweet: 0)数据
 require 'typhoeus/adapters/faraday'
 
 class ElasticArticleExtend
@@ -34,6 +34,9 @@ class ElasticArticleExtend
 												default_field: 'top_industry',
 												query: tags
 											}
+										},
+										{
+											match: {is_retweet: 0}
 										}
 									]
 								}
@@ -54,6 +57,9 @@ class ElasticArticleExtend
 									must: [
 										{
 											range: {post_id: {lt: post_id}}
+										},
+										{
+											match: {is_retweet: 0}
 										}
 									]
 								}

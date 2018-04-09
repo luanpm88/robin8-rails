@@ -31,4 +31,27 @@ namespace :campaign  do
   	end
   	p sum.to_f
   end
+
+  desc '补上kol遗失收益'
+  task :campaign_invite_settle_again do
+    amount = 0.0
+    Campaign.where("id>? and per_budget_type=? and status=?", 5202, 'click', 'settled').each do |c|
+      c.campaign_invites.each do |ci|
+        next if ci.status == 'settled'
+        campaign_shows = CampaignShow.where(campaign_id: c.id, kol_id: ci.kol_id).valid
+        if campaign_shows.count > 0
+          if campaign_shows.map(&:transaction_id).uniq == [nil]
+            credits = campaign_shows.size * c.get_per_action_budget(false)
+            transaction = ci.kol.income(credits, 'campaign', c, c.user)
+            campaign_shows.update_all(transaction_id: transaction.id)
+            amount += credits
+            ci.update_column(:status, 'settled')
+            Rails.logger.info "*" * 10
+            Rails.logger.info credits
+          end
+        end
+      end
+    end
+  end
+  
 end

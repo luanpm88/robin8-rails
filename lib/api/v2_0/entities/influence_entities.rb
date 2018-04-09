@@ -53,7 +53,7 @@ module API
             ele['top_industry']
           end
           expose :reads_count do |ele|
-            ele['reads'].to_i + rand(99999)
+            ele['reads_count'].to_i + rand(9999)
           end
           expose :likes_count do |ele|
             $redis.hget("elastic_article_#{ele['post_id']}", 'like')
