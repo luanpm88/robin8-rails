@@ -20,7 +20,7 @@ server '47.100.60.3',
   port:  40111,
   roles: %w{web app db master prod_server}
 
-set :branch,           'new-serv-deploy'
+set :branch,           'master_cn'
 
 set :server_name,      'robin8.net'
 set :stage,            "produciton"
