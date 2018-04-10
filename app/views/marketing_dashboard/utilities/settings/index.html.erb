@@ -21,6 +21,34 @@
         <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'campaign_min_budget', confirm: "确定更改吗？" %>
       </td>
     </tr>
+    <tr>
+      <td>CPC活动最低单价</td>
+      <td><%= text_field_tag :cpc_min_budget, MySettings.cpc_min_budget, :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'cpc_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+    <tr>
+      <td>CPP活动最低单价</td>
+      <td><%= text_field_tag :cpp_min_budget, MySettings.cpp_min_budget, :class => "data-value" %>
+        <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'cpp_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="3">CPT活动最低单价</td>
+      <td><%= text_field_tag :cpt_one_min_budget, MySettings.cpt_one_min_budget, :class => "data-value" %>
+        <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'cpt_one_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= text_field_tag :cpt_two_min_budget, MySettings.cpt_two_min_budget, :class => "data-value" %>
+        <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'cpt_two_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= text_field_tag :cpt_three_min_budget, MySettings.cpt_three_min_budget, :class => "data-value" %>
+        <%= link_to "提交修改",  "#" , class: 'btn btn-xs  btn-primary update-value', 'data-key': 'cpt_three_min_budget', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
   </tbody>
 </table>
 

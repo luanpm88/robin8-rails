@@ -23,7 +23,12 @@ class Campaign < ActiveRecord::Base
                        'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
 
   }
+  
+  BayerExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+                       'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+                       'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png',
 
+  }
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
   validates_presence_of :per_action_budget, :budget, :if => Proc.new{ |campaign| campaign.per_budget_type != 'invite' }
@@ -67,18 +72,21 @@ class Campaign < ActiveRecord::Base
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :recent_7, ->{ where("deadline > '#{7.days.ago}'")}
   scope :order_by_start, -> { order('start_time desc')}
+  scope :countdown, -> { where(status: "countdown")}
   has_one :effect_evaluation, -> {where(item: 'effect')}, class: CampaignEvaluation
   has_one :experience_evaluation, -> {where(item: 'experience')}, class: CampaignEvaluation
   has_one :review_evaluation, -> {where(item: 'review')}, class: CampaignEvaluation
 
+
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
   scope :order_by_status, ->(ids = '""') { order(" case
-                                         when campaigns.per_budget_type = 'invite' and campaigns.status = 'executing'  then 5
-                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check != '1' then 5
-                                         when campaigns.per_budget_type = 'recruit' and (campaigns.status = 'executed' or (campaigns.status = 'executing' and campaigns.end_apply_check = '1') ) and campaigns.id in (#{ids}) then 4
-                                         when campaigns.per_budget_type != 'recruit' and campaigns.status = 'executing'  then 3
-                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check = '1' then 2
-                                         when campaigns.status ='executed' then 1
+                                         when campaigns.per_budget_type = 'invite' and campaigns.status = 'executing'  then 6
+                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check != '1' then 6
+                                         when campaigns.per_budget_type = 'recruit' and (campaigns.status = 'executed' or (campaigns.status = 'executing' and campaigns.end_apply_check = '1') ) and campaigns.id in (#{ids}) then 5
+                                         when campaigns.per_budget_type != 'recruit' and campaigns.status = 'executing'  then 4
+                                         when campaigns.per_budget_type = 'recruit' and campaigns.status = 'executing' and campaigns.end_apply_check = '1' then 3
+                                         when campaigns.status = 'countdown' then 2
+                                         when campaigns.status = 'executed' then 1
                                          else 0 end desc,
                                         start_time desc") }
 
@@ -333,6 +341,8 @@ class Campaign < ActiveRecord::Base
       invite.status = 'pending'
     elsif invite.new_record? && (self.status == 'executed' ||  self.status == 'settled')
       invite.status = 'missed'
+    elsif self.status == 'countdown'
+      invite.status = 'countdown'
     end
     invite
   end
@@ -435,15 +445,29 @@ class Campaign < ActiveRecord::Base
       return example_screenshot[0]   unless multi 
       return example_screenshot
     end
-    if self.sub_type == 'weibo'
-      return ExampleScreenshots['weibo'].split   if multi
-      ExampleScreenshots['weibo']
-    elsif self.sub_type == 'qq'
-      return ExampleScreenshots['qq'].split      if multi
-      ExampleScreenshots['qq']
-    else
-      return ExampleScreenshots['wechat'].split  if multi
-      ExampleScreenshots['wechat']
+    
+    if self.user_id == 16344
+      if self.sub_type == 'weibo'
+        return BayerExampleScreenshots['weibo'].split   if multi
+        BayerExampleScreenshots['weibo']
+      elsif self.sub_type == 'qq'
+        return BayerExampleScreenshots['qq'].split      if multi
+        BayerExampleScreenshots['qq']
+      else
+        return BayerExampleScreenshots['wechat'].split  if multi
+        BayerExampleScreenshots['wechat']
+      end  
+    else 
+      if self.sub_type == 'weibo'
+        return ExampleScreenshots['weibo'].split   if multi
+        ExampleScreenshots['weibo']
+      elsif self.sub_type == 'qq'
+        return ExampleScreenshots['qq'].split      if multi
+        ExampleScreenshots['qq']
+      else
+        return ExampleScreenshots['wechat'].split  if multi
+        ExampleScreenshots['wechat']
+      end  
     end
   end
 
@@ -487,7 +511,6 @@ class Campaign < ActiveRecord::Base
       nil
     end
   end
-
 
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?

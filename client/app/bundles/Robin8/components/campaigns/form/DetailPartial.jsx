@@ -40,9 +40,10 @@ export default class DetailPartial extends React.Component {
   }
 
   _initTouchSpin() {
+    const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
     $('.per-budget-input').TouchSpin({
       initval: 0.3,
-      min: 0.2,
+      min: cpc_min_budget,
       max: 10000000,
       step: 0.1,
       decimals: 1,
@@ -63,7 +64,7 @@ export default class DetailPartial extends React.Component {
 
     $("input[name='action_type']").change(function(){
       if(per_budget_type.value == 'post') {
-        per_action_budget.onChange("5.0")
+        per_action_budget.onChange("3.0")
       }
       if(per_budget_type.value == 'click') {
         per_action_budget.onChange("0.3") // initial min value is 0.2
@@ -91,50 +92,32 @@ export default class DetailPartial extends React.Component {
 
 
 handleMin() {
-  let min = 0.2;
-  if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
-    console.log('weibo click event deactivate and change value to 2.5')
-    // this.props.per_action_budget.value = 8
-    min = 8
-  } else if (this.props.per_budget_type.value === 'click') {
+  let min = 0.3;
+  const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
+  const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
+  const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
+  const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
+  const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
+
+  if (this.props.per_budget_type.value === 'click') {
     console.log('click event clicked')
     // this.props.per_action_budget.value = 0.2
-    min = 0.2
+    min = cpc_min_budget
   } else if (this.props.per_budget_type.value === 'post') {
     console.log('post event clicked')
     // this.props.per_action_budget.value = 2.5
-    min = 2.5
+    min = cpp_min_budget
   } else if (this.props.per_budget_type.value === 'cpt') {
     console.log('cpt event clicked')
     // this.props.per_action_budget.value = 8
-    min = 8
+    if (this.props.example_screenshot_count.value == '3') {
+      min = cpt_three_min_budget
+    } else if (this.props.example_screenshot_count.value == '2') {
+      min = cpt_two_min_budget
+    } else if (this.props.example_screenshot_count.value == '1') {
+      min = cpt_one_min_budget
+    }
   }
-
-  // if ($('input[name="example_screenshot_count"]').val() === '3'){
-  //   console.log('number change to 1')
-  //   // this.props.per_action_budget.value = 3
-  //   min = 8;
-  //
-  // } else if ($('input[name="example_screenshot_count"]').val() === '2'){
-  //   console.log('number change to 2')
-  //   // this.props.per_action_budget.value = 5
-  //   min = 5;
-  //
-  // } else if ($('input[name="example_screenshot_count"]').val() === '1'){
-  //   console.log('number change to 3')
-  //   // this.props.per_action_budget.value = 8
-  //   min = 3;
-  //
-  // }
-
-  if (this.props.example_screenshot_count.value === '3') {
-    min = 8
-  } else if (this.props.example_screenshot_count.value === '2') {
-    min = 5
-  } else if (this.props.example_screenshot_count.value === '1') {
-    min = 3
-  }
-
   return min
 }
 
@@ -162,26 +145,33 @@ handleMin() {
 // }
 
 handleClickPerBudgetType() {
-  let min = 0.2
+  let min = 0.3
+  const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
+  const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
+  const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
+  const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
+  const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
+
   // switch maybe better suited for this situation
-  if (this.props.per_budget_type.value === 'click' && this.props.sub_type.value === 'weibo') {
-    console.log('weibo click event deactivate and change value to 2.5')
-    // this.props.per_action_budget.value = 8
-    min = 8
-  } else if (this.props.per_budget_type.value === 'click') {
+  if (this.props.per_budget_type.value === 'click') {
     console.log('click event clicked')
     // this.props.per_action_budget.value = 0.2
-    min = 0.2
+    min = cpc_min_budget
   } else if (this.props.per_budget_type.value === 'post') {
     console.log('post event clicked')
     // this.props.per_action_budget.value = 2.5
-    min = 2.5
+    min = cpp_min_budget
   } else if (this.props.per_budget_type.value === 'cpt') {
     console.log('cpt event clicked')
     // this.props.per_action_budget.value = 8
-    min = 8
+    if (this.props.example_screenshot_count.value == '3') {
+      min = cpt_three_min_budget
+    } else if (this.props.example_screenshot_count.value == '2') {
+      min = cpt_two_min_budget
+    } else if (this.props.example_screenshot_count.value == '1') {
+      min = cpt_one_min_budget
+    }
   }
-
 }
 
 
@@ -293,6 +283,11 @@ handleClickPerBudgetType() {
 
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type, example_screenshot_count } = this.props
+    const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
+    const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
+    const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
+    const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
+    const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
 
     return (
 
@@ -354,7 +349,7 @@ handleClickPerBudgetType() {
                               name="action_type"
                               value="click" className="commonPerBudgetType"
                               onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === 'click' }
+                              checked={per_budget_type.value === "click" }
                               onClick={this.handleClickPerBudgetType()}/>
                             按照点击奖励KOL
                           </div>
@@ -461,9 +456,9 @@ handleClickPerBudgetType() {
                           id="oneScreenshot"
                           value="1"
                           className=""
-                          checked={example_screenshot_count.value === '1'}/>
+                          checked={example_screenshot_count.value == "1"}/>
                         需要用户上传1张图片
-                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低3元</div>
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低{cpt_one_min_budget}元</div>
                       </div>
 
                       <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
@@ -472,9 +467,9 @@ handleClickPerBudgetType() {
                           name="example_screenshot_count"
                           value="2"
                           className=""
-                          checked={example_screenshot_count.value === '2'}/>
+                          checked={example_screenshot_count.value == "2"}/>
                         需要用户上传2张图片
-                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低5元</div>
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低{cpt_two_min_budget}元</div>
                       </div>
 
                       <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
@@ -483,9 +478,9 @@ handleClickPerBudgetType() {
                           name="example_screenshot_count"
                           value="3"
                           className=""
-                          checked={example_screenshot_count.value === '3'}/>
+                          checked={example_screenshot_count.value == "3"}/>
                         需要用户上传3张图片
-                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低8元</div>
+                        <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低{cpt_three_min_budget}元</div>
                       </div>
                     </div>
                   </div>
@@ -510,8 +505,8 @@ handleClickPerBudgetType() {
 
               </div>
               <div className="price-tip" style={{fontSize: '14px'}}>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>2.5</span>元, 请设置您想要获得单次转发的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
-                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>0.2</span>元, 请设置您想要获得单次点击的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'post') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>{cpp_min_budget}</span>元, 请设置您想要获得单次转发的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
+                <p className="stat" style={ (per_budget_type && per_budget_type.value == 'click') ? {display: 'block'} : {display: 'none'} }><span style={{color: '#9B9A9A', fontSize: '12'}}>单次预算最低<span style={{color: '#33B6BA'}}>{cpc_min_budget}</span>元, 请设置您想要获得单次点击的成本预算, Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</span></p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次点击的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
                 <p className="stat" style={ (per_budget_type && per_budget_type.value == 'simple_cpi') ? {display: 'block'} : {display: 'none'} }>请设置您想要获得单次下载的成本预算，Robin8将根据大数据分析结果为不同的KOL呈现不同的价格</p>
               </div>

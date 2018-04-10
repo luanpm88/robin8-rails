@@ -4,7 +4,7 @@
 unless Rails.env.test?
   namespace = 'redis_wechat_authorize'
   wechat_authorize = Redis.new(host: Rails.application.secrets[:redis][:host],
-                               db: 10,
+                               db: 1, # access_token多次获取，看是否是db冲突
                                password: Rails.application.secrets[:redis][:password])
   $redis_wechat_authorize = Redis::Namespace.new(namespace, redis: wechat_authorize)
 

@@ -4,6 +4,7 @@ module Concerns
     included do
       has_many :task_records
       has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account, :class_name => 'Transaction'
+      has_many :friend_gains, ->{where(subject: RewardTask::FriendGains).order('created_at desc')}, as: :account, class_name: 'Transaction'
       # after_create :generate_invite_code
 
       # Kol's inviter is rewarded only after Kol gets approved
@@ -15,6 +16,14 @@ module Concerns
 
     end
 
+    def friend_amount(k)
+      friend_gains.where(opposite: k).sum(:credits) + invite_friend_reward(k)
+    end
+
+    def invite_friend_reward(k)
+      task_record = self.task_records.invite_friend.where(invitees_id: k.id, status: 'active').first
+      task_record && self.invite_transactions.where(item_id: task_record.id).first ? 2.0 : 0
+    end
 
     def had_complete_reward?
       self.task_records.active.complete_info.size > 0
@@ -75,8 +84,8 @@ module Concerns
       ActiveRecord::Base.transaction do
         inviter = invitation.inviter
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
-        task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id)
-        task_record.sync_to_transaction if inviter.today_invite_count <= 10
+        task_record = inviter.task_records.create(task_type: RewardTask::InviteFriend, status: 'active', invitees_id: self.id)
+        task_record.sync_to_transaction if inviter.today_invite_count <= Rails.application.secrets[:invite_limit]
       end
     end
 

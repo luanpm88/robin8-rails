@@ -10,4 +10,5 @@ class RegisteredInvitation < ActiveRecord::Base
 
   scope :pending,   -> { where(status: 'pending') }
   scope :completed, -> { where(status: 'completed') }
+  scope :recent, ->(_start,_end){ where(updated_at: _start.beginning_of_day.._end.end_of_day) }
 end

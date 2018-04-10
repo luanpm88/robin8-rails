@@ -147,24 +147,31 @@ module Campaigns
       end
       if self.is_invite_type?                        #特邀活动
         kol_ids  = get_social_account_related_kol_ids
+        kols = Kol.where(id: kol_ids)
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'invite')  if record
       elsif self.specified_kol_targets.present?       #指定任务
         kol_ids = get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
+        kols = Kol.where(id: kol_ids)
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'specified_kol')  if record
       elsif self.newbie_kol_target.present?          #新手活动
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: "", push_type: "newbie_kol", filter_type: 'match', filter_reason: 'newbie_kol')                    if record
         kol_ids = []
+        kols = nil
       else
         kols = get_platform_kols
         kols = get_matching_kols(kols)
         kols = get_unmatched_kols(kols)
         kol_ids = kols.select(:id).map(&:id) rescue []
-        if push
-          kol_device_token = kols.select(:device_token).map(&:device_token).uniq rescue []
-          kol_device_token.each {|t| self.push_device_tokens << t} 
-        end
+        # if push
+        #   kol_device_token = kols.select(:device_token).map(&:device_token).uniq rescue []
+        #   kol_device_token.each {|t| self.push_device_tokens << t} 
+        # end
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: kol_ids.join(","), push_type: 'normal', filter_type: 'match', filter_reason: 'match')          if record
         CampaignPushRecord.create(campaign_id: self.id, kol_ids: get_unmatched_kol_ids.join(","), push_type: 'normal', filter_type: 'unmatch', filter_reason: 'unmatch')   if record
+      end
+      if push
+        kol_device_token = kols.select(:device_token).map(&:device_token).uniq rescue []
+        kol_device_token.each {|t| self.push_device_tokens << t}  if kol_device_token.present?
       end
       if record
         Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"

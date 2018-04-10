@@ -198,7 +198,6 @@ end
 
 group :test do
   gem 'rspec-sidekiq'
-  gem 'capybara'
 end
 
 group :production do
