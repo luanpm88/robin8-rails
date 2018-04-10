@@ -2,8 +2,8 @@
 # config valid only for Capistrano 3.1
 lock '3.4.0'
 set :application, 'robin8'
-
 set :repo_url, "git@bitbucket.org:robin8/robin8.git"
+# set :repo_url, "https://abel.guzman:123456qwerty@gitlab.service.chinanetcloud.com/backup/robin.git"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
