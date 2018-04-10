@@ -1,5 +1,6 @@
 module Users
   class RegistrationsController < ApplicationController
+    skip_before_filter :verify_authenticity_token
     layout 'passport'
     respond_to :html, :json
 
