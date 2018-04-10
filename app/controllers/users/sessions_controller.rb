@@ -2,6 +2,7 @@ require 'rqrcode'
 
 module Users
   class SessionsController < ApplicationController
+    skip_before_filter :verify_authenticity_token
     layout 'passport'
     respond_to :html, :json
 
