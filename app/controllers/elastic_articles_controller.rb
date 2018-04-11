@@ -15,6 +15,8 @@ class ElasticArticlesController < ApplicationController
     		$redis.hset("elastic_#{params[:post_id]}", 'likes',        res['likes'])
     		$redis.hset("elastic_#{params[:post_id]}", 'shares',       res['shares'])
 
+    		$redis.expire("elastic_#{params[:post_id]}", 36000)
+
     		@res = $redis.hgetall("elastic_#{params[:post_id]}")
     	else
     		render text: 'not_found'
