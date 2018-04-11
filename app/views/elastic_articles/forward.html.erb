@@ -2,13 +2,12 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />     
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />         
-    <meta name="apple-mobile-web-app-capable" content="yes" />     
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />     
-    <meta name="format-detection" content="telephone=no" />     
-    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="flexible" content="initial-dpr=2,maximum-dpr=3" />
     <title><%= @res['title'] %></title>
-    <%= stylesheet_link_tag 'elastic_articles' %>  
+    <%= stylesheet_link_tag 'elastic_articles' %> 
+    <%= csrf_meta_tag %> 
   </head>
   <body>
     <div class="content">
@@ -47,56 +46,4 @@
         <a class="down" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
     </div>
 </body>
-<script>
-(function (doc, win) {
-    // 分辨率Resolution适配
-    var docEl = doc.documentElement,
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-        recalc = function () {
-            var clientWidth = docEl.clientWidth;
-            if (!clientWidth) return;
-            docEl.style.fontSize = 100 * (clientWidth / 320) + 'px';
-        };
-
-    // Abort if browser does not support addEventListener
-    if (!doc.addEventListener) return;
-    win.addEventListener(resizeEvt, recalc, false);
-    doc.addEventListener('DOMContentLoaded', recalc, false);
-
-    (function(){
-        return;
-        var dpr = scale =1;
-         var isIPhone = win.navigator.appVersion.match(/iphone/gi);
-        var devicePixelRatio = win.devicePixelRatio;
-        if (isIPhone) {
-            // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
-            if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {                
-                dpr = 3;
-            } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
-                dpr = 2;
-            } else {
-                dpr = 1;
-            }
-        } else {
-            // 其他设备下，仍旧使用1倍的方案
-            dpr = 1;
-        }
-           scale = 1 / dpr;
-           
-           // 
-           var metaEl = "";
-           metaEl = doc.createElement('meta');
-        metaEl.setAttribute('name', 'viewport');
-        metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
-        if (docEl.firstElementChild) {
-            docEl.firstElementChild.appendChild(metaEl);
-        } else {
-            var wrap = doc.createElement('div');
-            wrap.appendChild(metaEl);
-            doc.write(wrap.innerHTML);
-        }
-    })();
-        
-})(document, window);    
-</script>
 </html>
