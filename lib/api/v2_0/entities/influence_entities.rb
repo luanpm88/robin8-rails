@@ -70,6 +70,10 @@ module API
           expose :is_collected do |ele, options|
             options[:my_elastic_articles][:collects].include? ele['post_id']
           end
+
+          expose :forward_url do |ele|
+            "elastic_articles/#{ele['post_id']}/forward"
+          end
         end
       end
     end

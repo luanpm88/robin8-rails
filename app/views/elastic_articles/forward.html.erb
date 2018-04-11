@@ -1,21 +1,102 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>psdtoweb1.psd</title>
-        <%= stylesheet_link_tag 'elastic_articles.css' %>
-    </head>
-    <body>
-        <div id="background">
-            <div id="layer_1"><img src="images/layer_1.png"></div>
-            <div id="layer_1_0"><img src="images/layer_1_0.png"></div>
-            <div id="layer_1_1"><img src="images/layer_1_1.png"></div>
-            <div id="layer_1_2"><img src="images/layer_1_2.png"></div>
-            <div id="layer_5"><img src="images/layer_5.png"></div>
-            <div id="layer_408167443952167863"><img src="images/layer_408167443952167863.png"></div>
-            <div id="h5"><img src="images/h5.png"></div>
-            <div id="layer_8"><img src="images/layer_8.png"></div>
-            <div id="layer_9"><img src="images/layer_9.png"></div>
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />     
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />         
+    <meta name="apple-mobile-web-app-capable" content="yes" />     
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />     
+    <meta name="format-detection" content="telephone=no" />     
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;"> 
+    <title>spec</title>
+    <%= stylesheet_link_tag 'elastic_articles' %>  
+  </head>
+  <body>
+    <div class="content">
+      <div style="width:100%;overflow:hidden">
+          <span class="profile_photo">
+            <%= image_tag @res['avatar_url'], width: "41" %>
+          </span>
+          <div class="robin8" style="margin-top:15px">
+                <div style="font-size:0.14rem"><%= @res['profile_name'] %></div>
+                <div class="robin_font" style="font-size:0.12rem;color:#bbbbbb"><%= Time.at(@res['post_date'].to_i).to_s %></div>
+            </div>
         </div>
- </body>
- </html>
+        <div class="wording"><%= @res['title'] %></div>
+        <div class="moment_img">
+          <% ElasticArticle.weibo_pic_ary(@res['pic_content'])[0].each do |pic_url| %>
+            <span><%= image_tag pic_url %></span>
+          <% end %>
+        </div>
+        <div class="great">
+            <span class="p_num"><%= @res['reads_count'].to_i + rand(9999) %>次观看</span>
+            <span class="zan" style="margin-left:35px">
+              <%= image_tag "elastic_articles/zhuan@2x.png", width: "17" %>
+              <%= @res['likes'].to_i + $redis.hget("elastic_article_#{@res['post_id']}", 'like').to_i %>
+            </span>
+            <span class="zan"><%= image_tag "elastic_articles/zan@2x.png", width: "17" %>
+              <%= @res['shares'].to_i + $redis.hget("elastic_article_#{@res['post_id']}", 'forward').to_i %>
+            </span>
+        </div>
+    </div>
+    <div class="download">
+        <div class="logo"><%= image_tag "elastic_articles/applogo@2x.png", width: "38" %></div>
+        <div class="robin8">
+            <div><%= image_tag "elastic_articles/robin@2x.png", width: "61" %></div>
+            <div class="robin_font">您的个人数据管理家</div>
+        </div>
+        <a class="down" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>
+    </div>
+</body>
+<script>
+(function (doc, win) {
+    // 分辨率Resolution适配
+    var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            docEl.style.fontSize = 100 * (clientWidth / 320) + 'px';
+        };
+
+    // Abort if browser does not support addEventListener
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+
+    (function(){
+        return;
+        var dpr = scale =1;
+         var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+        var devicePixelRatio = win.devicePixelRatio;
+        if (isIPhone) {
+            // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+            if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {                
+                dpr = 3;
+            } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
+                dpr = 2;
+            } else {
+                dpr = 1;
+            }
+        } else {
+            // 其他设备下，仍旧使用1倍的方案
+            dpr = 1;
+        }
+           scale = 1 / dpr;
+           
+           // 
+           var metaEl = "";
+           metaEl = doc.createElement('meta');
+        metaEl.setAttribute('name', 'viewport');
+        metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+        if (docEl.firstElementChild) {
+            docEl.firstElementChild.appendChild(metaEl);
+        } else {
+            var wrap = doc.createElement('div');
+            wrap.appendChild(metaEl);
+            doc.write(wrap.innerHTML);
+        }
+    })();
+        
+})(document, window);    
+</script>
+</html>

@@ -18,7 +18,7 @@ module API
           res = ElasticArticleExtend.get_by_post_ids(select_ids)
 
           my_elastic_articles = {
-            likes:    [],
+            likes:    current_kol.elastic_article_actions.likes.map(&:post_id),
             collects: select_ids
           }
  
