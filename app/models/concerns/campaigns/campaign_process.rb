@@ -90,10 +90,13 @@ module Campaigns
       kol_ids = kols.select(:id).map(&:id) rescue []
 
       _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
+
       if _start_time > (Time.now + 20.minutes)
-        CampaignWorker.perform_at((_start_time - 10.minutes), self.id, 'countdown')
-        MessageWorker.perform_at((_start_time - 10.minutes), self.id, kol_ids )
+        push_time = _start_time - 10.minutes
+        CampaignWorker.perform_at(push_time, self.id, 'countdown')
+        MessageWorker.perform_at(push_time, self.id, kol_ids )
       end
+
       _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
       CampaignWorker.perform_at(self.deadline, self.id, 'end')
@@ -101,8 +104,6 @@ module Campaigns
     end
 
     def go_start(kol_ids = nil)
-      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-      return  unless ['agreed', 'countdown'].include? self.status
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
@@ -110,6 +111,7 @@ module Campaigns
       if (self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?)  && self.enable_append_push
         CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
+      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     end
 
     def timed_append_kols
@@ -312,7 +314,11 @@ module Campaigns
 
     # 活动倒计时
     def campaign_countdown
-      self.update_columns(:status => 'countdown')   if self.status == 'agreed' 
+      Rails.logger.campaign_sidekiq.info "----countdown: #{self.id}-----------"
+      return if self.status != 'agreed'
+      ActiveRecord::Base.transaction do
+        self.update_columns(:status => 'countdown')
+      end
     end
 
     class_methods do
