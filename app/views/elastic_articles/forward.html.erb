@@ -16,14 +16,14 @@
             <%= image_tag @res['avatar_url'], width: "41" %>
           </span>
           <div class="robin8" style="margin-top:15px">
-                <div style="font-size:0.14rem"><%= @res['profile_name'] %></div>
-                <div class="robin_font" style="font-size:0.12rem;color:#bbbbbb"><%= Time.at(@res['post_date'].to_i).to_s %></div>
+                <div style="font-size:1.75rem"><%= @res['profile_name'] %></div>
+                <div class="robin_font" style="font-size:1.5rem;color:#bbbbbb"><%= @res['time'] %></div>
             </div>
         </div>
         <div class="wording"><%= @res['title'] %></div>
         <div class="moment_img">
           <% ElasticArticle.weibo_pic_ary(@res['pic_content'])[0].each do |pic_url| %>
-            <span><%= image_tag pic_url %></span>
+            <span class="img1"><%= image_tag pic_url %></span>
           <% end %>
         </div>
         <div class="great">
@@ -40,7 +40,7 @@
     <div class="download">
         <div class="logo"><%= image_tag "elastic_articles/applogo@2x.png", width: "38" %></div>
         <div class="robin8">
-            <div><%= image_tag "elastic_articles/robin@2x.png", width: "61" %></div>
+            <div><%= image_tag "elastic_articles/robin@2x.png", width: "65" %></div>
             <div class="robin_font">您的个人数据管理家</div>
         </div>
         <a class="down" href="<%=Rails.application.secrets[:download_url]%>">下载Robin8</a>

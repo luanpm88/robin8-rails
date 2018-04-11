@@ -9,11 +9,12 @@ class ElasticArticlesController < ApplicationController
     	if res
     		$redis.hset("elastic_#{params[:id]}", 'avatar_url',   res['avatar_url'])
     		$redis.hset("elastic_#{params[:id]}", 'profile_name', res['profile_name'])
-    		$redis.hset("elastic_#{params[:id]}", 'title', 			 res['title'])
+    		$redis.hset("elastic_#{params[:id]}", 'title', 			  res['title'])
     		$redis.hset("elastic_#{params[:id]}", 'pic_content',  res['pic_content'])
     		$redis.hset("elastic_#{params[:id]}", 'reads_count',  res['reads_count'])
     		$redis.hset("elastic_#{params[:id]}", 'likes',        res['likes'])
     		$redis.hset("elastic_#{params[:id]}", 'shares',       res['shares'])
+    		$redis.hset("elastic_#{params[:id]}", 'time',         res['time'])
 
     		$redis.expire("elastic_#{params[:id]}", 36000)
 
