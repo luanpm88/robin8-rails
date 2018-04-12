@@ -37,7 +37,7 @@ module API
             ele['profile_name']
           end
           expose :post_date do |ele|
-            Time.at(ele['post_date'].to_i).to_s
+            ele['time']
           end
           expose :title do |ele|
             ele['title']
