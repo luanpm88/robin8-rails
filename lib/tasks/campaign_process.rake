@@ -17,7 +17,7 @@ namespace :campaign  do
   	time, sum = Time.parse(args[:time]).beginning_of_day, 0
   	p time
   	Campaign.where("created_at > ?", time).each do |item|
-  		Transaction.where(direct: 'income', account_type: 'Kol', item: item).group_by{|ele| ele.account_id}.each do |k, v|
+  		Transaction.where(direct: 'income', account_type: 'Kol', item: item, opposite: item.user).group_by{|ele| ele.account_id}.each do |k, v|
   			if v.count > 1
   				sum += v.first.credits
   				if args[:is_confiscate] == 'confiscate'
