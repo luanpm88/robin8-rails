@@ -445,6 +445,7 @@ class Campaign < ActiveRecord::Base
       return example_screenshot[0]   unless multi 
       return example_screenshot
     else
+      return ExampleScreenshots[user_id][sub_type.to_sym] if multi
       return ExampleScreenshots[user_id][sub_type.to_sym].split
     end
   end
