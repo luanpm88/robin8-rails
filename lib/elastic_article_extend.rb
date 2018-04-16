@@ -27,7 +27,8 @@ class ElasticArticleExtend
 								bool: {
 									must: [
 										{
-											range: {post_date: {lt: post_date}}
+											range: {post_date: {lt: post_date}},
+											range: {likes: {gt: 50}}
 										},
 										{
 											query_string: {
