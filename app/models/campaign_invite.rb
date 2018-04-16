@@ -343,7 +343,7 @@ class CampaignInvite < ActiveRecord::Base
   def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     # 一个kol针对一个campaign只能产生一条income # evan 2018.2.26 3:47pm
-    return unless Transaction.where(account: kol, direct: 'income', item: campaign).empty?
+    return unless Transaction.where(account: kol, direct: 'income', item: campaign, opposite: nil).empty?
     return if self.status == 'rejected'
     self.settle_lock.lock  do
       percentage_on_friend = 0
