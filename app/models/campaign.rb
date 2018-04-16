@@ -18,16 +18,16 @@ class Campaign < ActiveRecord::Base
   
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
-  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
-                       'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
-                       'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
-
+  ExampleScreenshots = Hash.new
+  ExampleScreenshots.default={
+    weibo:  "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
+    qq:     "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
+    wechat: 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
   }
-  
-  BayerExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
-                       'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
-                       'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png',
-
+  ExampleScreenshots[16344] = {
+    weibo:  "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+    qq:     "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
+    wechat: 'http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png',
   }
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
@@ -438,36 +438,15 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_example_screenshot(multi = false)
+  def get_example_screenshot(multi = false)  
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")   rescue []
       return example_screenshot[0]   unless multi 
       return example_screenshot
-    end
-    
-    if self.user_id == 16344
-      if self.sub_type == 'weibo'
-        return BayerExampleScreenshots['weibo'].split   if multi
-        BayerExampleScreenshots['weibo']
-      elsif self.sub_type == 'qq'
-        return BayerExampleScreenshots['qq'].split      if multi
-        BayerExampleScreenshots['qq']
-      else
-        return BayerExampleScreenshots['wechat'].split  if multi
-        BayerExampleScreenshots['wechat']
-      end  
-    else 
-      if self.sub_type == 'weibo'
-        return ExampleScreenshots['weibo'].split   if multi
-        ExampleScreenshots['weibo']
-      elsif self.sub_type == 'qq'
-        return ExampleScreenshots['qq'].split      if multi
-        ExampleScreenshots['qq']
-      else
-        return ExampleScreenshots['wechat'].split  if multi
-        ExampleScreenshots['wechat']
-      end  
+    else
+      return ExampleScreenshots[user_id][sub_type.to_sym] unless multi
+      return ExampleScreenshots[user_id][sub_type.to_sym].split
     end
   end
 

@@ -18,12 +18,6 @@ class CampaignInvite < ActiveRecord::Base
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
-  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
-                     'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
-                     'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
-
-  }
-
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -113,7 +107,7 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-
+  #自动审核通过来自阿里众包的截图
   def self.auto_channel_kol_multi_img_status
     CampaignInvite.joins(:kol).where("kols.channel is not NULL").each {|t| t.screenshot_pass }
   end
@@ -349,7 +343,8 @@ class CampaignInvite < ActiveRecord::Base
   def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
     # 一个kol针对一个campaign只能产生一条income # evan 2018.2.26 3:47pm
-    return unless Transaction.where(account: kol, direct: 'income', item: campaign).empty?
+    # 徒弟带来的收益,opposite 为徒弟
+    return unless Transaction.where(account: kol, direct: 'income', item: campaign, opposite: campaign.user).empty?
     return if self.status == 'rejected'
     self.settle_lock.lock  do
       percentage_on_friend = 0
