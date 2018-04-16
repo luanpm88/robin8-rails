@@ -18,12 +18,6 @@ class CampaignInvite < ActiveRecord::Base
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
-  ExampleScreenshots = {'weibo' => "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
-                     'qq' => "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
-                     'wechat' => 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
-
-  }
-
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -113,14 +107,14 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-
+  #自动审核通过来自阿里众包的截图
   def self.auto_channel_kol_multi_img_status
     CampaignInvite.joins(:kol).where("kols.channel is not NULL").each {|t| t.screenshot_pass }
   end
 
   #cpc截图自动审核
   def self.auto_change_multi_img_status
-    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending' ")
+    @campaign_invites = CampaignInvite.joins(:campaign).where("campaigns.user_id != 16344 AND campaigns.per_budget_type = 'click' AND campaigns.status = 'executed' AND screenshot is not NULL AND img_status = 'pending'")
     @campaign_invites.each do |c|
       c.screenshot_pass if c.redis_avail_click < 50
     end
@@ -165,8 +159,7 @@ class CampaignInvite < ActiveRecord::Base
     end
     self.with_lock do
       kol_avail_click = self.get_avail_click
-      self.update_columns(:avail_click => 0, :status => 'rejected', :img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
-      self.redis_avail_click.reset
+      self.update_columns(status: 'rejected', img_status: 'rejected', reject_reason: rejected_reason, check_time: Time.now)
       CampaignShow.where(:campaign_id => self.campaign_id, :kol_id => self.kol_id, :status => 1).update_all(:status => 0, :remark => 'permanent_reject')
       self.campaign.redis_avail_click.decrement(kol_avail_click.to_i)
       if self.campaign.status == 'executed' && self.campaign.finish_remark == 'fee_end' && ['cpi', 'cpa', 'click'].include?(self.campaign.per_budget_type)
@@ -349,8 +342,15 @@ class CampaignInvite < ActiveRecord::Base
 
   def settle(auto = false, transaction_time = Time.now.strftime("%Y-%m-%d %H:%M:%S"))
     Rails.logger.transaction.info "----settle---campaign_invite_id:#{self.id}---auto:#{auto}"
+    # 一个kol针对一个campaign只能产生一条income # evan 2018.2.26 3:47pm
+<<<<<<< HEAD
+=======
+    # 徒弟带来的收益,opposite 为徒弟
+>>>>>>> qa
+    return unless Transaction.where(account: kol, direct: 'income', item: campaign, opposite: nil).empty?
     return if self.status == 'rejected'
     self.settle_lock.lock  do
+      percentage_on_friend = 0
       if ['click'].include? self.campaign.per_budget_type
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
@@ -359,11 +359,13 @@ class CampaignInvite < ActiveRecord::Base
         if campaign_shows.size > 0
           credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
+          percentage_on_friend = credits
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
       elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi', 'cpt'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
         self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
+        percentage_on_friend = self.campaign.get_per_action_budget(false)
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
         if self.kol.kol_role == "mcn_big_v"
@@ -374,9 +376,16 @@ class CampaignInvite < ActiveRecord::Base
         end
         next if  settle_kol.blank?
         settle_kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
+        percentage_on_friend = self.price
         Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
+      # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
+      if self.kol.parent && percentage_on_friend > 0
+        amount = percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05
+        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol)
+      end
+      # end: 2018-3-5 15:32
     end
   end
 

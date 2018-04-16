@@ -84,43 +84,34 @@ module Campaigns
       end
       # make sure those execute late (after invite create)
       #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
+      campaign_id = self.id
+      kols = get_kol_ids(true, kol_ids, true)
+      kols.each {|kol|  kol.add_campaign_id campaign_id }  if kols.present?
+      kol_ids = kols.select(:id).map(&:id) rescue []
 
-      if  is_recruit_type?
-        _start_time = self.recruit_start_time < Time.now ? (Time.now + 15.minutes) : self.recruit_start_time
-        _push_message_time = _start_time - 10.minutes
-        CampaignWorker.perform_at(_start_time, self.id, 'start')
-        CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
-        MessageWorker.perform_at(_push_message_time , self.id , self.get_kol_ids(false, [] , true) ) 
-      else
-        _start_time = self.start_time < Time.now ? (Time.now + 15.minutes) : self.start_time
-        _push_message_time = _start_time - 10.minutes
-        CampaignWorker.perform_at(_start_time, self.id, 'start')
-        MessageWorker.perform_at(_push_message_time , self.id , self.get_kol_ids(false, [] , true) )
+      _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
+
+      if _start_time > (Time.now + 20.minutes)
+        push_time = _start_time - 10.minutes
+        CampaignWorker.perform_at(push_time, self.id, 'countdown')
+        MessageWorker.perform_at(push_time, self.id, kol_ids )
       end
-      CampaignWorker.perform_at(self.deadline ,self.id, 'end')
 
+      _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+      CampaignWorker.perform_at(self.deadline, self.id, 'end')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check') if self.is_recruit_type?
     end
 
     def go_start(kol_ids = nil)
-      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-      return if self.status != 'agreed'
       ActiveRecord::Base.transaction do
         #raise 'kol not set price' if  self.is_invite_type? && self.campaign_invites.any?{|t| t.price.blank?}
         self.update_columns(:status => 'executing')
-        campaign_id = self.id
-        kols = get_kol_ids(true, kol_ids)
-        # Rails.logger.campaign_sidekiq.info "----cid:#{self.id}----kol_ids:#{kol_ids.inspect}"
-        # send_invite
-        kols.each {|kol|  kol.add_campaign_id campaign_id }  if kols.present?
-        # Kol.where(:id => kol_ids).each do |kol|
-        #   kol.add_campaign_id campaign_id
-        # end
-        # 发送通知
-        # Message.new_campaign(self, kol_ids)
       end
       if (self.is_post_type? || self.is_simple_cpi_type? || self.is_click_type?)  && self.enable_append_push
         CampaignWorker.perform_at(Time.now + AppendWaitTime, self.id, 'timed_append_kols')
       end
+      Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     end
 
     def timed_append_kols
@@ -184,6 +175,7 @@ module Campaigns
             CampaignWorker.new.perform(self.id, 'remind_upload')
             CampaignObserverWorker.new.perform(self.id)
           end
+          Partners::Alizhongbao.finish_campaign(self.id)  if self.channel == 'azb'
         end
       elsif self.status == 'agreed'
         ActiveRecord::Base.transaction do
@@ -262,6 +254,8 @@ module Campaigns
     # 结算 for brand
     def settle_accounts_for_brand
        Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+       # 一个user针对一个campaign只能产生一条campaign_refund # evan 2018.2.28 11:00am
+       return unless Transaction.where(account: self.user, direct: 'income', item: self, subject: "campaign_refund").empty?
        return if self.status != 'executed'
        #首先先付款给期间审核的kol
        self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})      unless self.is_invite_type?
@@ -316,6 +310,15 @@ module Campaigns
     def remind_upload
       Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
       Message.new_remind_upload(self)
+    end
+
+    # 活动倒计时
+    def campaign_countdown
+      Rails.logger.campaign_sidekiq.info "----countdown: #{self.id}-----------"
+      return if self.status != 'agreed'
+      ActiveRecord::Base.transaction do
+        self.update_columns(:status => 'countdown')
+      end
     end
 
     class_methods do

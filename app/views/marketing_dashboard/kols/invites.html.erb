@@ -1,0 +1,27 @@
+<h1>师徒详情</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <%- %w(ID Name Mobile 带来收益).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |kol| %>
+      <tr>
+        <td>
+          <%= link_to kol.id, marketing_dashboard_kol_path(kol.id), :target => "_blank"  %>
+        </td>
+        <% %i(name mobile_number).each do |ele| %>
+          <td><%= kol.send(ele) %></td>
+        <% end %>
+        <td><%= @kol.friend_amount(kol) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

@@ -94,6 +94,9 @@ class Kol < ActiveRecord::Base
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
   has_many :sent_challenges,     class_name: "KolPk", foreign_key: "challenger_id", inverse_of: :challengee
 
+  # ElasticArticle
+  has_many :elastic_article_actions
+
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
   end
@@ -148,6 +151,8 @@ class Kol < ActiveRecord::Base
   # Push message will send it only to users with 'device_token' (who are also fulfilling other params set in campaign: age, etc.)
   scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
 
+  scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
+
   AdminKolIds = [79,48587]
   TouristMobileNumber = "13000000000"
 
@@ -175,6 +180,16 @@ class Kol < ActiveRecord::Base
       end
     end
   end
+
+  # 师徒弟关系 evan 2018.3.16
+  def parent
+    registered_invitation.try(:inviter)
+  end
+
+  def children
+    Kol.where(id: registered_invitations.completed.collect{|ri| ri.invitee_id})
+  end
+  # end evan 2018.3.16
 
 
   def email_required?
@@ -785,6 +800,14 @@ class Kol < ActiveRecord::Base
       end
     end
     true
+  end
+
+  def desc_friend_gains
+    friend_gains.group(:opposite_id).sum(:credits).sort_by{|_key, value| value}.collect{|ele| ele[0]}.reverse
+  end
+
+  def desc_percentage_on_friend
+    (desc_friend_gains + children.map(&:id)).uniq   
   end
 
   def create_invite_code

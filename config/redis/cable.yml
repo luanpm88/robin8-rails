@@ -1,6 +1,6 @@
 production: &defaults
   adapter: redis
-  url: redis://redis:Robin888@r-uf625a1a215146c4.redis.rds.aliyuncs.com:6379
+  url: redis://redis:Mast3r123@r-uf6da8a94cdada94.redis.rds.aliyuncs.com:6379
   timeout: 5
 
 staging:

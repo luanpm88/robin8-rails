@@ -19,53 +19,49 @@ namespace :daily_report  do
     kol_count = k.count
     
     # Get number of new clubs
-    new_clubs = Club.where("created_at>?", ending-1.day)
-    club_count = new_clubs.count
-    
+    #new_clubs = Club.where("created_at>?", ending-1.day)
+    #club_count = new_clubs.count
+
     # Get number of new club members (Used to verify how many people the student leader can bring)
-    new_club_members = ClubMember.where('created_at>?', ending-1.day)
-    cm_count = new_club_members.count
-    
-    day_leader = (Club.where("created_at>?", ending-1.day).pluck(:kol_id) - staff_ids).uniq
-    week_leader = (Club.where("created_at>?", ending-7.day).pluck(:kol_id) - staff_ids).uniq
-    all_leader = (Club.pluck(:kol_id) - staff_ids).uniq
-    
-    day_active_leader = CampaignInvite.where(:kol_id => day_leader).pluck(:kol_id).uniq
-    week_active_leader = CampaignInvite.where(:kol_id => week_leader).pluck(:kol_id).uniq
-    all_active_leader = CampaignInvite.where(:kol_id => all_leader).pluck(:kol_id).uniq
-    
+    #new_club_members = ClubMember.where('created_at>?', ending-1.day)
+    #cm_count = new_club_members.count
+
+    #day_leader = (Club.where("created_at>?", ending-1.day).pluck(:kol_id) - staff_ids).uniq
+    #week_leader = (Club.where("created_at>?", ending-7.day).pluck(:kol_id) - staff_ids).uniq
+    #all_leader = (Club.pluck(:kol_id) - staff_ids).uniq
+
+    #day_active_leader = CampaignInvite.where(:kol_id => day_leader).pluck(:kol_id).uniq
+    #week_active_leader = CampaignInvite.where(:kol_id => week_leader).pluck(:kol_id).uniq
+    #all_active_leader = CampaignInvite.where(:kol_id => all_leader).pluck(:kol_id).uniq
+
     # Get all member throughs the sponsorship layer
-    leaders_and_members = (Club.pluck(:kol_id) + ClubMember.pluck(:kol_id) - staff_ids).uniq
-    day_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-1.day).uniq
-    week_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-7.day).uniq
-    all_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).uniq
+    #leaders_and_members = (Club.pluck(:kol_id) + ClubMember.pluck(:kol_id) - staff_ids).uniq
+    #day_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-1.day).uniq
+    #week_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).where('created_at>?', ending-7.day).uniq
+    #all_student_invite = CampaignInvite.where(:kol_id => leaders_and_members).uniq
 
     # Get WAU & DAU
     dau = CampaignInvite.where('created_at>?', ending-1.day).pluck(:kol_id).uniq.count
     wau = CampaignInvite.where('created_at>?', ending-7.day).pluck(:kol_id).uniq.count
-    
-    ReportMailer.daily_smallV_report(campaign_count, total_budget, kol_count, club_count, cm_count, dau, wau,
-        day_leader.count, week_leader.count, all_leader.count,
-        day_active_leader.count, week_active_leader.count, all_active_leader.count,
-        day_student_invite.count, week_student_invite.count, all_student_invite.count).deliver
-    
+
+    ReportMailer.daily_smallV_report(campaign_count, total_budget, dau, wau, kol_count).deliver_now
+
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
     notifier.ping "Hey guys! 
-    We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB. 
+    We have #{campaign_count} campaigns started in the last 24 hours. The total budget is #{total_budget} RMB.
     #{kol_count} joined the platform.
-    DAU is #{dau}, WAU is #{wau}.
-    For sponsorship layer, #{club_count} new leaders joined, while #{cm_count} new members joined.
-    "
+    DAU is #{dau}, WAU is #{wau}."
+    #For sponsorship layer, #{club_count} new leaders joined, while #{cm_count} new members joined.
     # render json: {:status => :ok}
   # rescue
   #   render json: {:status => 'Cant send daily reporting email!'}
-    
+
 
     puts "\nDaily report is now generated."
   end
-  
-  task :weekly_send => :environment do
     
+  task :weekly_send => :environment do
+
     # Set the time to from now to 1 week ago.
     ending = DateTime.now.change({ hour: 19 })
     cs = Campaign.where("start_time > ? and start_time < ?", ending - 1.week, ending).where(:status => ['settled', 'executing', 'executed'])
@@ -87,9 +83,9 @@ namespace :daily_report  do
     # If the historical_income is more than 1, it is likely that the user did something other that just check in.
     real_kol = k.where("historical_income > ?", 1)
     real_kol_count = real_kol.count
-    
-    ReportMailer.weekly_smallV_report(campaign_count, total_budget, total_consumed, kol_count, real_kol_count).deliver
-    
+
+    ReportMailer.weekly_smallV_report(campaign_count, total_budget, total_consumed, kol_count, real_kol_count).deliver_now
+
     # Send to slack useracquistion channel. 
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
     notifier.ping "Happy Friday! We have #{campaign_count} campaigns started in the last 7 days. The total budget is #{total_budget.round(1)} RMB. #{total_consumed.round(1)}RMB is consumed."
@@ -122,7 +118,7 @@ namespace :daily_report  do
     last_cs.each do |c|
       last_total_consumed = last_total_consumed + (c.budget - c.remain_budget)
     end
-    
+
     consumed_increase = (total_consumed - last_total_consumed) / last_total_consumed.to_f * 100
     
     # Calculate the number of new KOLs, and how many of those took a campaign.
@@ -137,7 +133,7 @@ namespace :daily_report  do
     real_kol_count = real_kol.count
     real_kol_increase = (real_kol_count - last_real_kol.count)/ last_real_kol.count.to_f * 100
     
-    ReportMailer.monthly_smallV_report(campaign_count, total_budget, budget_increase, total_consumed, kol_count, kol_increase, real_kol_count, real_kol_increase).deliver
+    ReportMailer.monthly_smallV_report(campaign_count, total_budget, budget_increase, total_consumed, kol_count, kol_increase, real_kol_count, real_kol_increase).deliver_now
     
     # Send to slack useracquistion channel.
     notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
@@ -162,7 +158,7 @@ namespace :daily_report  do
         end
     end
     
-    ReportMailer.pinyou_report().deliver
+    ReportMailer.pinyou_report().deliver_now
     puts "Completed"
   end
 end

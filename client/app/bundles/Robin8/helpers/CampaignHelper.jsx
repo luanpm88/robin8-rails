@@ -118,6 +118,17 @@ export function campaignStatusHelper(status){
   }
 }
 
+export function adminCanEditCampaign(status){
+  switch(status){
+    case "unexecute":
+    case "rejected":
+    case "agreed":
+      return true
+    default:
+      return false
+  }
+}
+
 export function canEditCampaign(status){
   switch(status){
     case "unexecute":

@@ -15,8 +15,12 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '101.132.222.75', user: 'deployer', roles: %w{web app db master db_syncer}
-set :branch, 'staging'
+server '47.100.60.3',
+  user:  'sk',
+  port:  40111,
+  roles: %w{web app db master}
+
+set :branch, 'qa'
 
 set :server_name, 'staging.robin8.net'
 set :stage, "staging"

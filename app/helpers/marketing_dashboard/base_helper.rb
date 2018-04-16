@@ -11,10 +11,10 @@ module MarketingDashboard::BaseHelper
   end
 
   def get_super_visitor_token
-    unless Rails.cache.fetch("super_visitor_token")
-      Rails.cache.write("super_visitor_token", SecureRandom.hex, :expire_in => 1.days)
+    unless $redis.get("super_visitor_token")
+      $redis.setex("super_visitor_token", 1.days.to_i, SecureRandom.hex)
     end
-    Rails.cache.fetch("super_visitor_token")
+    $redis.get("super_visitor_token")
   end
 
   def link_to_switch_user_active(user, opts={})

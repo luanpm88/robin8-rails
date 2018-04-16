@@ -23,6 +23,11 @@ module API
       object.page(params[:page]).per(params[:per_page].to_i)
     end
 
+    def page_count(object)
+      count = object/10
+      count +=1 unless count * 10 == object
+    end
+
     def authenticate!
       unauthorized! unless current_kol
     end

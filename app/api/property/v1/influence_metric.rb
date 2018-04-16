@@ -20,7 +20,7 @@ module Property
             present :error_message, 'Incorrect api_token'
             return
           end
-
+          Rails.logger.influence_score.info "-----#{params}-----"
           # begin
           # identity = ::Identity.where(provider: params[:provider], uid: params[:provider_uid]).first
           # kol = identity.kol

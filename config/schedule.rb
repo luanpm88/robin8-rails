@@ -48,7 +48,7 @@ every 1.day, :at => '12:00 pm' do
 end
 
 every 1.day, :at => '2:30 am' do
-  rake 'influence_score:refresh'
+  rake 'influence_score:refresh', environment: 'production'
 end
 
 #keep with secret
@@ -58,38 +58,38 @@ end
 
 #cpc截图定时自动审核通过
 every 1.day, :at => '0:15 am' do
-  runner "CampaignInvite.auto_change_multi_img_status" , :environment => 'production'
+  runner "CampaignInvite.auto_change_multi_img_status", environment: 'production'
 end
 
 #cpp截图定时自动审核通过
 every 1.day, :at => '0:45 am' do
-  runner "CampaignInvite.auto_change_cpp_multi_img_status" , :environment => 'production'
+  runner "CampaignInvite.auto_change_cpp_multi_img_status", environment: 'production'
 end
 
 #合作平台截图自动通过
 every 1.day, :at => '1:15 am' do
-  runner "CampaignInvite.auto_channel_kol_multi_img_status" , :environment => 'production'
+  runner "CampaignInvite.auto_channel_kol_multi_img_status", environment: 'production'
 end
 
 # 定时处理geometry 截图审核
 every 1.day, :at => '0:05 am' do
-  runner "CampaignInvite.schedule_day_settle", :environment => 'production'
+  runner "CampaignInvite.schedule_day_settle", environment: 'production'
 end
 
 every 1.day, :at => '0:30 am' do
-  runner "CampaignInvite.remove_old_invitations", :environment => 'production'
+  runner "CampaignInvite.remove_old_invitations", environment: 'production'
 end
 
 every 5.minutes do
-  runner "CampaignInvite.schedule_day_settle", :environment => 'staging'
+  runner "CampaignInvite.schedule_day_settle", environment: 'staging'
 end
 
 every 1.day, :at => '0:05 am' do
-  runner "CampaignInvite.schedule_day_settle", :environment => 'qa'
+  runner "CampaignInvite.schedule_day_settle", environment: 'qa'
 end
 
 every 1.day, :at => '17:01 pm' do
-  runner "CampaignObserver.notify_operational_staff", :environment => 'production'
+  runner "CampaignObserver.notify_operational_staff", environment: 'production'
 end
 
 every 1.day, :at => '1:00 am' do
@@ -141,33 +141,33 @@ end
 # This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours
 
 every 1.day, :at => '7:00 pm' do
-  rake "daily_report:daily_send", :environment => 'production'
+  rake "daily_report:daily_send", environment: 'production'
 end
 
 every :friday, :at => '7:05pm' do
-  rake "daily_report:weekly_send", :environment => 'production'
+  rake "daily_report:weekly_send", environment: 'production'
 end
 
 every '10 19 1 * *' do
-  rake "daily_report:monthly_send", :environment => 'production'
+  rake "daily_report:monthly_send", environment: 'production'
 end
 
 every '00 10 1 1 *' do
-  rake "daily_report:pinyou_send", :environment => 'production'
+  rake "daily_report:pinyou_send", environment: 'production'
 end
 
 every '00 10 1 4 *' do
-  rake "daily_report:pinyou_send", :environment => 'production'
+  rake "daily_report:pinyou_send", environment: 'production'
 end
 
 every '00 10 1 7 *' do
-  rake "daily_report:pinyou_send", :environment => 'production'
+  rake "daily_report:pinyou_send", environment: 'production'
 end
 
 every '00 10 1 10 *' do
-  rake "daily_report:pinyou_send", :environment => 'production'
+  rake "daily_report:pinyou_send", environment: 'production'
 end
 
 every :thursday , :at => '12:05 pm' do
-  runner "Message.thursday_push" , :environment => 'production'
+  runner "Message.thursday_push", environment: 'production'
 end

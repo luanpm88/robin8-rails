@@ -20,6 +20,21 @@ module Brand
         expose :campaign_min_budget do |user|
           MySettings.campaign_min_budget
         end
+        expose :cpc_min_budget do |user|
+          MySettings.cpc_min_budget
+        end
+        expose :cpp_min_budget do |user|
+          MySettings.cpp_min_budget
+        end
+        expose :cpt_one_min_budget do |user|
+          MySettings.cpt_one_min_budget
+        end
+        expose :cpt_two_min_budget do |user|
+          MySettings.cpt_two_min_budget
+        end
+        expose :cpt_three_min_budget do |user|
+          MySettings.cpt_three_min_budget
+        end
       end
     end
   end

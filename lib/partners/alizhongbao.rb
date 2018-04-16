@@ -36,8 +36,9 @@ module Partners
 
       signature           = sign(must_params.merge(app_params))
       must_params["sign"] = signature
-      resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
-      if (resp["success"] == true  rescue false)
+      resp                = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
+
+      if (JSON.parse(resp)["result"]["success"] == true  rescue false)
         resp = JSON.parse(resp)
         campaign.update_attributes!(ali_task_id:      resp["result"]["taskId"],
                                     ali_task_type_id: resp["result"]["taskTypeId"],
@@ -46,6 +47,7 @@ module Partners
         true
       else
         Rails.logger.partner_campaign.info "#{campaign.id} 分享给阿里众包失败"
+        Rails.logger.partner_campaign.info "--alizhongbao: #{resp}"
         false
       end
     end
@@ -70,7 +72,7 @@ module Partners
 
       resp = HTTParty.post(GATEWAY_URL + "?" + must_params.to_query, options).parsed_response
       resp = JSON.parse(resp)
-      Rails.logger.partner_campaign.info "--azb_completed_share: #{resp}"
+      Rails.logger.partner_campaign.info "--azb_completed_share: #{resp}-----#{kol_id}-----#{campaign_id}"
       resp
     end
 
@@ -184,6 +186,9 @@ module Partners
     end
 
     def self.import_dope_data(file_path)
+      # 我们的一些“真”用户的数据，Martin 提供的名单
+      # The format for each line of the CSV should be like this
+      # "[\"http://p3.pstatp.com/thumb/3643000210012cf13395\", \"'呆萌小雨\"]"
       $redis.rpush("dope_sample_data", CSV.read(file_path))
     end
 
