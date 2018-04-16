@@ -53,16 +53,16 @@ module API
             ele['top_industry']
           end
           expose :reads_count do |ele|
-            ele['reads_count'].to_i + rand(9999)
+            ele['reads_count'].to_i + rand(999)
           end
           expose :likes_count do |ele|
-            $redis.hget("elastic_article_#{ele['post_id']}", 'like')
+            $redis.hget("elastic_article_#{ele['post_id']}", 'like').to_i + ele['likes'].to_i
           end
           expose :collects_count do |ele|
-            $redis.hget("elastic_article_#{ele['post_id']}", 'collect')
+            $redis.hget("elastic_article_#{ele['post_id']}", 'collect').to_i
           end
           expose :forwards_count do |ele|
-            $redis.hget("elastic_article_#{ele['post_id']}", 'forward')
+            $redis.hget("elastic_article_#{ele['post_id']}", 'forward').to_i + ele['shares'].to_i
           end
           expose :is_liked do |ele, options|
             options[:my_elastic_articles][:likes].include? ele['post_id']
