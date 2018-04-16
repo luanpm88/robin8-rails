@@ -37,7 +37,7 @@ module API
             ele['profile_name']
           end
           expose :post_date do |ele|
-            Time.at(ele['post_date'].to_i).to_s
+            ele['time']
           end
           expose :title do |ele|
             ele['title']
@@ -53,16 +53,26 @@ module API
             ele['top_industry']
           end
           expose :reads_count do |ele|
-            ele['reads'].to_i
+            ele['reads_count'].to_i + rand(9999)
           end
           expose :likes_count do |ele|
-            ele['likes'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'like')
           end
           expose :collects_count do |ele|
-            ele['collects'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'collect')
           end
           expose :forwards_count do |ele|
-            ele['forwards'].to_i
+            $redis.hget("elastic_article_#{ele['post_id']}", 'forward')
+          end
+          expose :is_liked do |ele, options|
+            options[:my_elastic_articles][:likes].include? ele['post_id']
+          end
+          expose :is_collected do |ele, options|
+            options[:my_elastic_articles][:collects].include? ele['post_id']
+          end
+
+          expose :forward_url do |ele|
+            "elastic_articles/#{ele['post_id']}/forward"
           end
         end
       end

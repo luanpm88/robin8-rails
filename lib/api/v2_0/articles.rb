@@ -8,6 +8,7 @@ module API
         end
 
         params do
+          requires :page, type: Integer
           optional :_type, type: String
         end
         get '/' do
@@ -21,35 +22,40 @@ module API
             $redis.setex("kol_elastic_articles_#{current_kol.id}", 43200, res[-1]['post_date'])
             $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[0]['post_id']) unless $redis.get("kol_elastic_articles_hot_#{current_kol.id}")
           end
-
-        	present :error, 0
-        	present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles
+          my_elastic_articles = {}
+          current_list = current_kol.elastic_article_actions.where(post_id: res.collect{|ele| ele['post_id']})
+          my_elastic_articles[:likes] = current_list.likes.map(&:post_id)
+          my_elastic_articles[:collects] = current_list.collects.map(&:post_id)
+        	present :error,  0
+          present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
+          present :total_count, 999
+          present :total_pages, 999
+          present :current_page, params[:page]
+        	present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles, my_elastic_articles: my_elastic_articles
         end
 
         params do
-          requires :_action, type: String, values: ElasticArticleAction::ACTIONS
+          requires :_type, type: String, values: ['like', 'collect', 'forward']
           requires :post_id, type: String
+          requires :_action, type: String, values: ['add', 'cancel']
         end
-        post 'add' do
-          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_action], post_id: params[:post_id])
+        post 'set' do
+          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_type], post_id: params[:post_id])
 
-          eaa.save if eaa.new_record?
+          if params[:_action] == 'add'
+            if eaa.new_record?
+              eaa.save 
+              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=1)
+            end
+          else
+            if eaa
+              eaa.destroy
+              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=-1)
+            end
+          end
 
           present :error, 0, alert: '操作成功'
         end
-
-        params do
-          requires :_action, type: String, values: ElasticArticleAction::ACTIONS
-          requires :post_id, type: String
-        end
-        post 'cancel' do
-          eaa = current_kol.elastic_article_actions.find_by(_action: params[:_action], post_id: params[:post_id])
-
-          eaa.destory if eaa
-
-          present :error, 0, alert: '操作成功'
-        end
-
 
       end
     end
