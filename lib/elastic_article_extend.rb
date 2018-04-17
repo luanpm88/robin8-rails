@@ -19,7 +19,16 @@ class ElasticArticleExtend
     client.transport.reload_connections!
   end
 
-	def self.get_by_tags(kol, post_date)
+  def self.get_new
+  	res = client.search index: 'weibo_post_v4',
+												body: {
+													sort: [{post_date: {order: 'desc'}}]
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}[0]['post_id']
+  end
+
+	def self.get_by_tags(kol, post_id)
 		tags = kol.tags.map(&:name).join(' OR ')
 		tags = Tag.all.map(&:name).join(' OR ') if tags == ""
 
@@ -27,8 +36,7 @@ class ElasticArticleExtend
 								bool: {
 									must: [
 										{
-											range: {post_date: {lt: post_date}},
-											range: {likes: {gt: 50}}
+											range: {post_id: {lt: post_id}}
 										},
 										{
 											query_string: {
@@ -42,11 +50,16 @@ class ElasticArticleExtend
 									]
 								}
 							}
+
+		_sort = [
+							{post_date: {order: 'desc'}},
+							{shares: {order: 'desc'}}
+						]
 								
 		res = client.search index: 'weibo_post_v4',
 												body: {
 													query: _query,
-													sort: [{post_date: {order: 'desc'}}]
+													sort: _sort
 												}
 
     res['hits']['hits'].collect{|t| t["_source"]}
