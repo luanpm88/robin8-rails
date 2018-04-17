@@ -12,16 +12,16 @@ module API
           optional :_type, type: String
         end
         get '/' do
-          if params[:_type] == 'hot'
-            res = ElasticArticleExtend.get_by_hots($redis.get("kol_elastic_articles_hot_#{current_kol.id}"))
-
-            $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[-1]['post_id'])
-          else
-        	  res = ElasticArticleExtend.get_by_tags(current_kol, $redis.get("kol_elastic_articles_#{current_kol.id}") || Time.now.to_i)
-            
-            $redis.setex("kol_elastic_articles_#{current_kol.id}", 43200, res[-1]['post_date'])
-            $redis.setex("kol_elastic_articles_hot_#{current_kol.id}", 43200, res[0]['post_id']) unless $redis.get("kol_elastic_articles_hot_#{current_kol.id}")
+          if params[:page] == '1'
+            $redis.setex("elastic_articles_#{current_kol.id}", 43200, ElasticArticleExtend.get_new_post_id)
           end
+          if params[:_type] == 'hot' || params[:type] == 'hot'
+            res = ElasticArticleExtend.get_by_hots($redis.get("elastic_articles_#{current_kol.id}"))
+          else
+        	  res = ElasticArticleExtend.get_by_tags(current_kol, $redis.get("elastic_articles_#{current_kol.id}"))
+          end
+          $redis.setex("elastic_articles_#{current_kol.id}", 43200, res[-1]['post_id'])
+
           my_elastic_articles = {}
           current_list = current_kol.elastic_article_actions.where(post_id: res.collect{|ele| ele['post_id']})
           my_elastic_articles[:likes] = current_list.likes.map(&:post_id)
