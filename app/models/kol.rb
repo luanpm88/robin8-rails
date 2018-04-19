@@ -515,6 +515,7 @@ class Kol < ActiveRecord::Base
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
+      Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
       retries = true
       begin
         kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
@@ -531,14 +532,18 @@ class Kol < ActiveRecord::Base
         end
       end
     else
-      kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+      _hash = {mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA],
                         name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
-                        longitude: params[:longitude], latitude: params[:latitude])
-      kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
+                        longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
+      if params[:invite_code] == "778888"      
+        _hash.merge!({kol_level: 'S', channel: 'geometry'})
+        Rails.logger.geometry.info "---params:#{params}---" if params[:invite_code] == "778888"
+      end
+      kol = Kol.create!(_hash)
     end
     kol
   end
