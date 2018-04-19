@@ -539,11 +539,9 @@ class Kol < ActiveRecord::Base
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
-      if params[:invite_code] == "778888"
-        _hash.merge!({kol_level: 'S', channel: 'geometry'})
-        Rails.logger.geometry.info "---params:#{params}---" 
-      end
+      _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
       kol = Kol.create!(_hash)
+      Rails.logger.geometry.info "---params:#{params}---" if params[:invite_code] == "778888"
     end
     kol
   end
