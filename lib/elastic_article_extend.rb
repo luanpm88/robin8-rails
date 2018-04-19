@@ -22,6 +22,7 @@ class ElasticArticleExtend
   def self.get_new
   	res = client.search index: 'weibo_post_v4',
 												body: {
+													size: 1,
 													sort: [{post_date: {order: 'desc'}}]
 												}
 
@@ -100,6 +101,41 @@ class ElasticArticleExtend
 		res = client.search index: 'weibo_post_v4',
 												body: {
 													query: _query
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}
+	end
+
+	def self.recommend_by_tag(tag, post_id)
+		_query = 	{
+								bool: {
+									must: [
+										{
+											range: {post_id: {lt: post_id}}
+										},
+										{
+											query_string: {
+												default_field: 'top_industry',
+												query: tag
+											}
+										},
+										{
+											match: {is_retweet: 0}
+										}
+									]
+								}
+							}
+
+		_sort = [
+							{comments: {order: 'desc'}},
+							{post_date: {order: 'desc'}}
+						]
+								
+		res = client.search index: 'weibo_post_v4',
+												body: {
+													query: _query,
+													size: 3,
+													sort: _sort
 												}
 
     res['hits']['hits'].collect{|t| t["_source"]}

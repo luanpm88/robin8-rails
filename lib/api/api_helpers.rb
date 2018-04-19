@@ -226,6 +226,16 @@ module API
       social_account.save
     end
 
+    def my_elastic_articles(post_ids=[])
+      _hash = {}
+
+      current_list      = current_kol.elastic_article_actions.where(post_id: post_ids)
+      _hash[:likes]     = current_list.likes.map(&:post_id)
+      _hash[:collects]  = current_list.collects.map(&:post_id)
+
+      _hash
+    end
+
 
     def avatar_uploader(image = nil)
       return  unless image
