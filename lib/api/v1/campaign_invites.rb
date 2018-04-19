@@ -132,6 +132,8 @@ module API
           # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
+          Rails.logger.geometry.info "---params:#{params}---kol:#{current_kol}---" if current_kol.admintags.include? Admintag.find(429)
+
           return error_403!({error: 1, detail: '该账户存在异常,请联系客服!' }) if current_kol.is_forbid?
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
@@ -140,7 +142,6 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           # elsif campaign_invite.can_upload_screenshot
           elsif true
-
             if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
             else
@@ -155,9 +156,6 @@ module API
             #   campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
             # end
             campaign_invite.save
-            if current_kol.admintags.include? Admintag.find(429)
-              Rails.logger.geometry.info "---params:#{params}---kol:#{current_kol}---"
-            end 
             current_kol.generate_invite_task_record
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary

@@ -4,6 +4,9 @@ module API
       resources :kols do
         # 用户登录
         post 'sign_in' do
+          # remark geometry
+          Rails.logger.geometry.info "---params:#{params}---" if params[:invite_code] == "778888"
+
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
