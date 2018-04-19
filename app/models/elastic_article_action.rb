@@ -1,6 +1,6 @@
 class ElasticArticleAction < ActiveRecord::Base
 
-	ACTIONS = %w(like collect forward)
+	ACTIONS = %w(like collect forward read)
 
 	validates_inclusion_of :_action, in: ACTIONS
 
@@ -9,4 +9,5 @@ class ElasticArticleAction < ActiveRecord::Base
 	scope :likes, 		->{ where(_action: 'like') }
 	scope :collects, 	->{ where(_action: 'collect') }
 	scope :forwards,	->{ where(_action: 'forward') }
+	scope :reads, 		->{ where(_action: 'read') }
 end

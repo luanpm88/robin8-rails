@@ -64,6 +64,21 @@ module API
           present :error, 0, alert: '操作成功'
         end
 
+        params do
+          requires :post_id, type: String
+          requires :stay_time, type: Integer
+        end
+        post 'read' do
+          return error_403!({error: 1, detail: '停留时长太短，不予保留'}) if params[:stay_time].to_i <= 1
+
+          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: 'read', post_id: params[:post_id])
+          eaa.stay_time = params[:stay_time]
+
+          eaa.save
+
+          present :error, 0, alert: '操作成功'
+        end
+
       end
     end
   end
