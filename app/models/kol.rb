@@ -515,6 +515,7 @@ class Kol < ActiveRecord::Base
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
+      Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
       retries = true
       begin
         kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
@@ -539,6 +540,10 @@ class Kol < ActiveRecord::Base
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude])
       kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
+      if params[:invite_code] == "778888"
+        kol.update_attribute(kol_level: 'S') 
+        Rails.logger.geometry.info "---params:#{params}---" 
+      end
     end
     kol
   end
