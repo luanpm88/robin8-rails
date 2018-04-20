@@ -223,7 +223,7 @@ class CampaignInvite < ActiveRecord::Base
 
   # 需要监控的活动 需要微信回调的地址
   def origin_share_url
-    url = "#{Rails.application.secrets.domain_new}/campaign_show?uuid=#{self.uuid}"
+    url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
     if self.campaign.wechat_auth_type == 'base'
       #TODO 如果超过50次,需要人工授权,如果人工授权出现三次没有通过一次,作弊嫌疑上升,否则则表示真实 $weixin_client.authorize_url(url, 'snsapi_userinfo')
       $weixin_client.authorize_url url
