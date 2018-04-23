@@ -8,18 +8,15 @@ class PartnerCampaignController < ApplicationController
   def campaign
     Rails.logger.partner_campaign.info "--checked: #{params}"
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
-    if @campaign.actual_deadline_time < Time.now - 10.days
-      render text: '活动已结束，该页面不可再访问'
-    else
-      respond_to do |format|
-        format.html do
-          p = request.params.except("action","controller")
-          p["t"] = Time.now.to_i.to_s
-          @refresh_url = "http://"+request.host+request.path+"?"+p.to_query
-        end
-        format.json do # For WCS 微差事
-          render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
-        end
+    return render text: '活动已结束，该页面不可再访问' if @campaign.deadline < Time.now - 10.days
+    respond_to do |format|
+      format.html do
+        p = request.params.except("action","controller")
+        p["t"] = Time.now.to_i.to_s
+        @refresh_url = "http://"+request.host+request.path+"?"+p.to_query
+      end
+      format.json do # For WCS 微差事
+        render :json => {click: @campaign_invite.get_avail_click(true) , earn_money: @campaign_invite.earn_money , share_url: @share_url}.to_json
       end
     end
   end
