@@ -8,7 +8,7 @@ class PartnerCampaignController < ApplicationController
   def campaign
     Rails.logger.partner_campaign.info "--checked: #{params}"
     @campaign_invite , @share_url = @campaign.create_share_url(@kol)
-    return render text: '活动已结束，该页面不可再访问' if @campaign.deadline < Time.now - 10.days
+    return render text: '活动已结束，该页面不可再访问' if @campaign.deadline < Time.now.ago(10.days)
     respond_to do |format|
       format.html do
         p = request.params.except("action","controller")
