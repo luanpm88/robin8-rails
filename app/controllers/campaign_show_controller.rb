@@ -16,7 +16,11 @@ class CampaignShowController < ApplicationController
       Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
       # Includes invitation which were soft-deleted after campaign has ended
       campaign_invite = CampaignInvite.unscoped.find params[:id]
-      redirect_to campaign_invite.origin_share_url
+      if campaign_invite.campaign.actual_deadline_time < Time.now - 10.days
+        render text: '活动已结束，该页面不可再访问'
+      else
+        redirect_to campaign_invite.origin_share_url
+      end
     end
   end
 
