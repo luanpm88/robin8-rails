@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Robin8</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-  <% if   Rails.env.development? &&  Rails.application.config.china_instance %>
-    <%= stylesheet_link_tag    '/assets/kol/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag '/assets/kol/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
-  <% else %>
-    <%= stylesheet_link_tag    'kol/application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'kol/application', 'data-turbolinks-track' => true %>
-  <% end %>
-  <%= csrf_meta_tags %>
-  <%= favicon_link_tag 'favicon.ico' %>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7/echarts-all.js"></script>
-</head>
-<body>
-  <% if flash[:confirmation_alert] %>
-    <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %> 没有收到邮件？ <a id='resend-confirmation-mail' href='#'>点击重发验证邮件</a></p></div>
-  <% end %>
-  <!--<div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 60%; min-width:320px;margin: 0 auto;">-->
-    <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
-      <!--<span aria-hidden="true">&times;</span>-->
-    <!--</button>-->
-    <!--<div style="text-align: center"><%#= @l.t("common.new_feature_coming") %></div>-->
-  <!--</div>-->
+  <head>
+    <title>Robin8</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <% if   Rails.env.development? &&  Rails.application.config.china_instance %>
+      <%= stylesheet_link_tag    '/assets/kol/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag '/assets/kol/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
+    <% else %>
+      <%= stylesheet_link_tag    'kol/application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'kol/application', 'data-turbolinks-track' => true %>
+    <% end %>
+    <%= csrf_meta_tags %>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7/echarts-all.js"></script>
+  </head>
+  <body>
+    <% if flash[:confirmation_alert] %>
+      <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %> 没有收到邮件？ <a id='resend-confirmation-mail' href='#'>点击重发验证邮件</a></p></div>
+    <% end %>
+    <!--<div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 60%; min-width:320px;margin: 0 auto;">-->
+      <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+        <!--<span aria-hidden="true">&times;</span>-->
+      <!--</button>-->
+      <!--<div style="text-align: center"><%#= @l.t("common.new_feature_coming") %></div>-->
+    <!--</div>-->
 
-  <% if flash[:verify_count] %>
-    <div class='alert alert-info alert-dismissible fade in' role='alert' style='width: 60%; min-width: 320px;margin: 0 auto;'>
-      <button class="close" type="button" data-dismiss='alert' aria-label='Close'>
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div style='text-align: center'>您还有 <%= flash[:verify_count][:to_verify_count]  %> 个活动需要上传截图审核， <%= flash[:verify_count][:verify_failed_count] %> 个活动上传截图审核未通过。</div>
+    <% if flash[:verify_count] %>
+      <div class='alert alert-info alert-dismissible fade in' role='alert' style='width: 60%; min-width: 320px;margin: 0 auto;'>
+        <button class="close" type="button" data-dismiss='alert' aria-label='Close'>
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div style='text-align: center'>您还有 <%= flash[:verify_count][:to_verify_count]  %> 个活动需要上传截图审核， <%= flash[:verify_count][:verify_failed_count] %> 个活动上传截图审核未通过。</div>
+      </div>
+    <% end %>
+
+    <div id="main">
+      <%= yield %>
     </div>
-  <% end %>
 
-  <div id="main">
-    <%= yield %>
-  </div>
+    <div class="modal fade" id="modal" tabindex="-1"
+      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    </div>
 
-  <div class="modal fade" id="modal" tabindex="-1"
-    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  </div>
+  <script type="text/javascript">
+      $(document).ready(function() {
+        Robin.chinaInstance = <%= china_instance?  %>;
+        Robin.chinaLocale = <%= china_locale? %>;
+        Robin.chinaRequest = <%= china_request? %>;
+        Robin.mobileRequest = <%= mobile_request? %>;
+        Robin.domain = '<%= Rails.application.secrets.domain %>';
+        Robin.start();
+      });
+    polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
+    <% if flash[:success_confirmation] -%>
+      Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>';
+    <% end -%>
+    <% if kol_signed_in? -%>
+      Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:category_size, :screens, :identities, :stats, :has_pending_withdraw]).html_safe %>);
+    <% else -%>
+      if (Robin) {
+        Robin.currentKOL = null;
+      }
+    <% end -%>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-      Robin.chinaInstance = <%= china_instance?  %>;
-      Robin.chinaLocale = <%= china_locale? %>;
-      Robin.chinaRequest = <%= china_request? %>;
-      Robin.mobileRequest = <%= mobile_request? %>;
-      Robin.domain = '<%= Rails.application.secrets.domain %>';
-      Robin.start();
-    });
-  polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
-  <% if flash[:success_confirmation] -%>
-    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>';
-  <% end -%>
-  <% if kol_signed_in? -%>
-    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:category_size, :screens, :identities, :stats, :has_pending_withdraw]).html_safe %>);
-  <% else -%>
-    if (Robin) {
-      Robin.currentKOL = null;
-    }
-  <% end -%>
-
-  <% if Rails.env == 'development' -%>
-    Robin.showLoading = false;
-  <% else -%>
-    Robin.showLoading = true;
-  <% end -%>
-</script>
+    <% if Rails.env == 'development' -%>
+      Robin.showLoading = false;
+    <% else -%>
+      Robin.showLoading = true;
+    <% end -%>
+  </script>
 
 
-</body>
-<%=render :partial => "shared/tongji"%>
-<!--Start of Zopim Live Chat Script-->
-<script type="text/javascript">
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="//v2.zopim.com/?3cFoTvqoZnEj8nMIvHQaHyvwBh5A6TkK";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
-<!--End of Zopim Live Chat Script-->
+  </body>
+  <%=render :partial => "shared/tongji"%>
+  <!--Start of Zopim Live Chat Script-->
+  <script type="text/javascript">
+  window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+  d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+  _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+  $.src="//v2.zopim.com/?3cFoTvqoZnEj8nMIvHQaHyvwBh5A6TkK";z.t=+new Date;$.
+  type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+  </script>
+  <!--End of Zopim Live Chat Script-->
 </html>

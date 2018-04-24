@@ -1,4 +1,7 @@
 class Partners::BaseController < ApplicationController
+
+  layout 'partners'
+
 	before_action :admintag
 
 
