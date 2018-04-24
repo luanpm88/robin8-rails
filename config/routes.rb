@@ -277,4 +277,8 @@ Rails.application.routes.draw do
       get :forward
     end
   end
+
+  namespace :partners do
+    resources :kols, only: ['index']
+  end
 end
