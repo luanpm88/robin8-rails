@@ -18,6 +18,7 @@
       <th>非朋友圈点击</th>
       <th>是否作弊</th>
       <th>拒绝理由</th>
+      <th>查看</th>
     </tr>
   </thead>
 
@@ -47,6 +48,9 @@
         <td><%= ci.from_meesage_click_count %></td>
         <td><%= ci.campaign_observer_status %><%= ci.observer_text %></td>
         <td><%= ci.reject_reason %></td>
+        <td>
+          <li><%= link_to '点击数据', partners_campaign_invite_shows_path(ci.id), target: "_blank" %></li>
+        </td>
       </tr>
     <% end %>
   </tbody>

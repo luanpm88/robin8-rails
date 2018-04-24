@@ -21,9 +21,9 @@ class Campaign < ActiveRecord::Base
     pending:    '已支付，待审核',
     agreed:     '审核通过',
     executing:  '执行中',
-    executed:   '已执行',
+    executed:   '已完成，未结算',
     settled:    '已结算',
-    finished:   '已完成',
+    finished:   '已结束',
     unexecute:  '未执行',
     rejected:   '已拒绝'
   }
@@ -452,8 +452,6 @@ class Campaign < ActiveRecord::Base
 
   def get_example_screenshot(multi = false)  
     #multi 区别是否返回多图,适配老版本
-    Rails.logger.info "*" * 100
-    Rails.logger.info id
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")   rescue []
       return example_screenshot[0]   unless multi 

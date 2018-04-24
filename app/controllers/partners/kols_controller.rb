@@ -2,7 +2,9 @@ class Partners::KolsController < Partners::BaseController
 	before_filter :get_kol, except: [:index]
 
 	def index
-		@kols = admintag.kols.order('created_at DESC').paginate(paginate_params)
+		@kols = admintag.kols
+		@q    = @kols.includes(:admintags).ransack(params[:q])
+    @kols = @q.result.order('id DESC').paginate(paginate_params)
 	end
 
 	def activities
