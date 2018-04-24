@@ -1,0 +1,26 @@
+<h4><%= "#{@kol.name} 点击数据" %></h4>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <%- %w(活动名称 open_id IP 时间 是否有效 注备).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaign_shows.each do |cs| %>
+      <tr>
+        <td><%= cs.campaign.name %></td>
+        <td><%= cs.openid %></td>
+        <td><%= cs.visitor_ip %></td>
+        <td><%= cs.visit_time %></td>
+        <td><%= cs.status_CN %></td>
+        <td><%= cs.remark_CH %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaign_shows, renderer: BootstrapPagination::Rails %>

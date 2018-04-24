@@ -1,23 +1,34 @@
-<h3>用户</h3>
+<h3>Kols</h3>
 
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Email</th>
-      <th>拥有权限</th>
-      <th>上次登录时间</th>
-      <th>操作</th>
+      <%- %w(昵称 手机号 创建时间 角色 已接活动数 有效点击数 总点击数 可提现金额 历史净收益 查看).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
     </tr>
   </thead>
 
   <tbody>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
+    <% @kols.each do |kol| %>
+      <tr>
+        <td><%= kol.name %></td>
+        <td><%= kol.mobile_number %></td>
+        <td><%= kol.created_at.to_s(:db) %></td>
+        <td><%= kol.kol_role %></td>
+        <td><%= kol.campaign_invites.count %></td>
+        <td><%= kol.campaign_shows.valid.count %></td>
+        <td><%= kol.campaign_shows.count %></td>
+        <td><%= kol.avail_amount %></td>
+        <td><%= kol.historical_income %></td>
+        <td>
+          <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
+          <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
+          <li><%= link_to "收益流水", capital_flow_sheet_partners_kol_path(kol.id), target: "_blank" %></li>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

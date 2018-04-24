@@ -1,0 +1,24 @@
+<h4><%= "#{@kol.name} 收益流水" %></h4>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <%- %w(日期 流动方向 项目 金额 可用余额 可用余额 冻结余额).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transactions.each do |tr| %>
+      <tr>
+        <td><%= tr.created_at.to_s(:date_time) %></td>
+        <% %w(direct get_subject credits avail_amount amount frozen_amount).each do |ele| %>
+        <td> <%= tr.send ele %> </td>
+      <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @transactions, renderer: BootstrapPagination::Rails %>
