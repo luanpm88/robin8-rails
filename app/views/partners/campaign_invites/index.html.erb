@@ -1,0 +1,60 @@
+<h3>截图</h3>
+
+<table class='table table-bordered table-striped'>
+  <thead>
+    <tr>
+      <th>截图</th>
+      <!-- <th>正确截图示例</th> -->
+      <th>截图状态</th>
+      <th>活动名称</th>
+      <th>活动类型</th>
+      <th>活动状态</th>
+      <th>活动结束时间</th>
+      <th>KOL名称</th>
+      <th>转发平台</th>
+      <th>有效点击</th>
+      <th>总点击</th>
+      <th>接单时间</th>
+      <th>非朋友圈点击</th>
+      <th>是否作弊</th>
+      <th>拒绝理由</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaign_invites.each do |ci| %>
+      <tr>
+        <td>
+          <% screenshot = ci.screenshot.try(:split, ",") || [] %>
+          <% example_screenshot = ci.get_example_screenshot(true) %>
+          <% count = ci.campaign.example_screenshot_count || 1 %>
+          <% count.times do |t| %>
+            <% if screenshot[t].present? %>
+              <%= link_to image_tag(screenshot[t] , :width => "100px", class: 'screenshot-img'), screenshot[t] , :target => "_blank", class: 'screenshot-td', data: {example: example_screenshot[t] } %>
+            <% end %>
+          <% end %>
+        </td>
+        <td><%= CampaignInvite::ImgStatusZH[ci.img_status.to_sym] %></td>
+        <td><%= ci.campaign.name %></td>
+        <td><%= ci.campaign.per_budget_type %></td>
+        <th><%= Campaign::STATUS[ci.campaign.status.to_sym] %></th>
+        <td><%= ci.campaign.deadline.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= ci.kol.name %></td>
+        <td><%= ci.sub_type == "weibo" ? "微博" : "微信" %></td>
+        <td><%= ci.get_avail_click(true) > 0 ? ci.get_avail_click(true) : ci.avail_click %></td>
+        <td><%= ci.get_total_click > 0 ? ci.get_total_click : ci.total_click %></td>
+        <td><%= ci.approved_at.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= ci.from_meesage_click_count %></td>
+        <td><%= ci.campaign_observer_status %><%= ci.observer_text %></td>
+        <td><%= ci.reject_reason %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @campaign_invites, renderer: BootstrapPagination::Rails %>
+
+<script>
+  $("img.screenshot-img").jqueryzoom();
+</script>

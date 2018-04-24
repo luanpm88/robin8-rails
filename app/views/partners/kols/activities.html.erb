@@ -13,7 +13,7 @@
     <% @campaigns.each do |c| %>
       <tr>
         <td><%= c.name %></td>
-        <td><%= c.status %></td>
+        <td><%= Campaign::STATUS[c.status.to_sym] %></td>
         <td><%= c.start_time %></td>
         <td><%= c.deadline %></td>
       </tr>

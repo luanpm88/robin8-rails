@@ -3,7 +3,7 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <%- %w(昵称 手机号 创建时间 角色 已接活动数 有效点击数 总点击数 可提现金额 历史净收益 查看).each do |ele| %>
+      <%- %w(昵称 手机号 创建时间 已接活动数 有效点击数 总点击数 可提现金额 历史净收益 查看).each do |ele| %>
         <th><%= ele %></th>
       <% end %>
     </tr>
@@ -15,7 +15,6 @@
         <td><%= kol.name %></td>
         <td><%= kol.mobile_number %></td>
         <td><%= kol.created_at.to_s(:db) %></td>
-        <td><%= kol.kol_role %></td>
         <td><%= kol.campaign_invites.count %></td>
         <td><%= kol.campaign_shows.valid.count %></td>
         <td><%= kol.campaign_shows.count %></td>

@@ -19,6 +19,12 @@ class CampaignInvite < ActiveRecord::Base
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
 
+  ImgStatusZH = {
+    pending:  '等待审核',
+    passed:   '审核通过',
+    rejected: '已拒绝'
+  }
+
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
@@ -190,6 +196,10 @@ class CampaignInvite < ActiveRecord::Base
 
   def get_total_click
     self.redis_total_click.value   rescue self.total_click
+  end
+
+  def status_zh
+    STATUS_ZH[status.to_sym]
   end
 
   #是否直接显示总点击给用户看

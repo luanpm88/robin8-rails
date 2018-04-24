@@ -279,7 +279,8 @@ Rails.application.routes.draw do
   end
 
   namespace :partners do
-    resources :kols, only: ['index'] do
+    resources :campaign_invites, only: [:index]
+    resources :kols, only: [:index] do
       member do
         get :activities
         get :shows
