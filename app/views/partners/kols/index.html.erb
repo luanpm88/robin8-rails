@@ -48,9 +48,15 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <%- %w(昵称 手机号 创建时间 已接活动数 有效点击数 总点击数 可提现金额 历史净收益 查看).each do |ele| %>
-        <th><%= ele %></th>
-      <% end %>
+      <th>昵称</th>
+      <th>手机号</th>
+      <th>创建时间</th>
+      <th class="text-center">已接活动数</th>
+      <th class="text-center">有效点击数</th>
+      <th class="text-center">总点击数</th>
+      <th class="text-center">可提现金额</th>
+      <th class="text-center">历史净收益</th>
+      <th class="text-center">查看</th>
     </tr>
   </thead>
 
@@ -60,12 +66,12 @@
         <td><%= kol.name %></td>
         <td><%= kol.mobile_number %></td>
         <td><%= kol.created_at.to_s(:db) %></td>
-        <td><%= kol.campaign_invites.count %></td>
-        <td><%= kol.campaign_shows.valid.count %></td>
-        <td><%= kol.campaign_shows.count %></td>
-        <td><%= kol.avail_amount %></td>
-        <td><%= kol.historical_income %></td>
-        <td>
+        <td align="center"><%= kol.campaign_invites.count %></td>
+        <td align="center"><%= kol.campaign_shows.valid.count %></td>
+        <td align="center"><%= kol.campaign_shows.count %></td>
+        <td align="center"><%= kol.avail_amount %></td>
+        <td align="center"><%= kol.historical_income %></td>
+        <td align="center">
           <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
           <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
           <li><%= link_to "收益流水", capital_flow_sheet_partners_kol_path(kol.id), target: "_blank" %></li>
