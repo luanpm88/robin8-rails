@@ -2,8 +2,7 @@ class Partners::KolsController < Partners::BaseController
 	before_filter :get_kol, except: [:index]
 
 	def index
-		@kols = admintag.kols
-		@q    = @kols.includes(:admintags).ransack(params[:q])
+		@q    = Kol.joins(:admintags).where("admintags.tag=?", admintag.tag).ransack(params[:q])
     @kols = @q.result.order('id DESC').paginate(paginate_params)
 	end
 

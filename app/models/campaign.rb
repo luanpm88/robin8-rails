@@ -503,6 +503,14 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def campaign_invites_by_tag(tag)
+    campaign_invites.joins(kol: :admintags).where("admintags.tag =?", tag.tag)
+  end
+
+  def campaign_shows_by_tag(tag)
+    campaign_shows.joins(kol: :admintags).where("admintags.tag =?", tag.tag)
+  end
+
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign
