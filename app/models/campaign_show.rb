@@ -24,6 +24,7 @@ class CampaignShow < ActiveRecord::Base
   }
 
   belongs_to :campaign
+  belongs_to :kol
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
