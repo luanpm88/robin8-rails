@@ -3,7 +3,20 @@ class Partners::KolsController < Partners::BaseController
 
 	def index
 		@q    = Kol.joins(:admintags).where("admintags.tag=?", admintag.tag).ransack(params[:q])
-    @kols = @q.result.order('id DESC').paginate(paginate_params)
+    @kols = @q.result.order('id DESC')
+
+    respond_to do |format|
+      format.html do
+        @kols = @kols.paginate(paginate_params)
+        render 'index'
+      end
+
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"KOL记录#{Time.now.strftime("%Y%m%d%H%M%S")}.csv\""
+        headers['Content-Type'] ||= 'text/csv; charset=utf-8'
+        render 'index'
+      end
+    end
 	end
 
 	def activities
