@@ -1,5 +1,7 @@
 class ElasticArticle < ActiveRecord::Base
 
+	belongs_to :tag
+
 	def self.weibo_pics(pic_str)
 		{
 			thumbnail: 		"http://ww3.sinaimg.cn/thumbnail/#{pic_str}.jpg",

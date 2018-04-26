@@ -10,4 +10,8 @@ class ElasticArticleAction < ActiveRecord::Base
 	scope :collects, 	->{ where(_action: 'collect') }
 	scope :forwards,	->{ where(_action: 'forward') }
 	scope :reads, 		->{ where(_action: 'read') }
+
+	def elastic_article
+		ElasticArticle.find_by_post_id(post_id)
+	end
 end
