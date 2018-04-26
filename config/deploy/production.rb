@@ -14,10 +14,15 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
-
+# prod_1
 server '47.100.60.3',
   user:  'deployer',
   port:  40111,
+  roles: %w{web app db master prod_server}
+# prod_2
+server '47.100.60.3',
+  user:  'deployer',
+  port:  40211,
   roles: %w{web app db master prod_server}
 
 set :branch,           'master_cn'
