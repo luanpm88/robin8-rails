@@ -30,6 +30,8 @@ export default class TargetPartial extends React.Component {
 
   handleConditionChange(e){
 
+    console.log(this.props);
+
     let condition = {};
 
     const regionText = $('.target-city-label').text().trim();
@@ -53,18 +55,30 @@ export default class TargetPartial extends React.Component {
 
     _.assignIn(condition, { age: this.props.age.value });
     _.assignIn(condition, { gender: this.props.gender.value });
+    _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
 
     if (e && e.target.name === 'age'){
       this.props.age.onChange(e.target.value);
       _.assignIn(condition, { age: e.target.value });
       _.assignIn(condition, { gender: this.props.gender.value });
+      _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
     }
 
     if (e && e.target.name === 'gender' ) {
       this.props.gender.onChange(e.target.value);
       _.assignIn(condition, { gender: e.target.value });
       _.assignIn(condition, { age: this.props.age.value });
+      _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
     }
+
+    if (e && e.target.name === 'enable_append_push' ) {
+      this.props.enable_append_push.onChange(e.target.value);
+      _.assignIn(condition, { gender: e.target.value });
+      _.assignIn(condition, { age: this.props.age.value });
+      _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
+    }
+
+    console.log(condition);
     this.fetchKolCountWithConditions(condition);
   }
 
@@ -86,7 +100,7 @@ export default class TargetPartial extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { region, tags, age, gender } = nextProps;
+    const { region, tags, age, gender, enable_append_push } = nextProps;
 
     if (this.tagSelector) {
       let tagsValue = tags.value;
@@ -111,7 +125,8 @@ export default class TargetPartial extends React.Component {
         region: region.value.split('/').join(','),
         tag: _.isArray(tags.value) ? tags.value.join(",") : '全部',
         age: age.value,
-        gender: gender.value
+        gender: gender.value,
+        enable_append_push: enable_append_push.value
       });
     }
   }
@@ -130,7 +145,7 @@ export default class TargetPartial extends React.Component {
   }
 
   render() {
-    const { age, gender } = this.props;
+    const { age, gender, enable_append_push } = this.props;
     return (
       <div className="creat-activity-form">
         <div className="header">
@@ -164,7 +179,7 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
 
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <div className="campaign-target target-age form-group">
                   <label>年龄</label>
                   <select className="form-control select-age" {...age} value={age.value || ''} onChange={this.handleConditionChange}>
@@ -179,13 +194,24 @@ export default class TargetPartial extends React.Component {
                 </div>
               </div>
 
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <div className="campaign-target target-gender form-group">
                   <label>性别</label>
                   <select className="form-control select-gender" {...gender} value={gender.value || ''} onChange={this.handleConditionChange}>
                     <option value="全部">全部</option>
                     <option value="1">男</option>
                     <option value="2">女</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-md-2">
+                <div className="campaign-target target-enable-append-push form-group">
+                  <label>补推</label>
+                  <select className="form-control select-enable-append-push" {...enable_append_push} value={enable_append_push.value || ''} onChange={this.handleConditionChange}>
+                    <option value="请选择">请选择</option>
+                    <option value="true">允许补推</option>
+                    <option value="false">禁止补推</option>
                   </select>
                 </div>
               </div>
