@@ -23,7 +23,7 @@ const initCampaign = {
   region: '全部',
   tags: "全部",
   gender: '全部',
-  enable_append_push: '请选择',
+  enable_append_push: 'true',
   message: '',
   budget: 100,
   per_budget_type: 'post',

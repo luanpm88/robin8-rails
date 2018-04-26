@@ -107,7 +107,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, img_url, url, age, region, tags, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type, example_screenshot_count } = this.props.fields;
+    const { name, description, img_url, url, age, region, tags, gender, enable_append_push, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline, per_budget_collect_type, sub_type, example_screenshot_count } = this.props.fields;
     const brand = this.props.brand;
     const campaign = this.props.campaign;
     const min_budget = brand.get("campaign_min_budget");
@@ -125,7 +125,7 @@ class UpdateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget, min_budget }} isEdit={true} budgetEditable={campaign.get("budget_editable")} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand, per_budget_collect_type, sub_type, example_screenshot_count }} />
               <DatePartial {...{ start_time, deadline }} />
-              <TargetPartial {...{region, tags, age, gender}} />
+              <TargetPartial {...{region, tags, age, gender, enable_append_push}} />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
                 {this.renderSubmitOrRevokeBtn()}
@@ -142,7 +142,7 @@ class UpdateCampaignPartial extends React.Component {
 
 UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type', 'example_screenshot_count'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'region', 'tags', 'gender', 'enable_append_push', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline', 'per_budget_collect_type', 'sub_type', 'example_screenshot_count'],
   returnRejectedSubmitPromise: true,
   validate
 },
