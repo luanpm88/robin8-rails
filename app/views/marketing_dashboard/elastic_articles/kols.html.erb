@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">KOL“发现”数据</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-success">
+      <div class="panel-heading text-right">
+        <div>
+          <span class="huge">212312.5</span>小时
+        </div>
+        <div>发现Tab停留时长</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-info">
+      <div class="panel-heading text-right">
+        <div>
+          <span class="huge">1993829</span>次
+        </div>
+        <div>发现Tab打开次数</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <form class="form">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= search_field_tag "id", nil, class: "form-control", placeholder: "请输入内容" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL 手机号码</label>
+            <%= search_field_tag "phone", nil, class: "form-control", placeholder: "请输入内容" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL 昵称</label>
+            <%= search_field_tag "name", nil, class: "form-control", placeholder: "请输入内容" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= submit_tag "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div>
+  <table class='table table-bordered'>
+    <thead>
+      <tr>
+        <th class="text-center">序号</th>
+        <th>KOL ID</th>
+        <th>昵称</th>
+        <th>手机</th>
+        <th>邮箱</th>
+        <th>使用发现Tab的时间（mins）</th>
+        <th class="text-center">点赞次数</th>
+        <th class="text-center">分享次数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- /.row -->
