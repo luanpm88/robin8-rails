@@ -29,9 +29,6 @@ export default class TargetPartial extends React.Component {
   }
 
   handleConditionChange(e){
-
-    console.log(this.props);
-
     let condition = {};
 
     const regionText = $('.target-city-label').text().trim();
@@ -126,7 +123,7 @@ export default class TargetPartial extends React.Component {
         tag: _.isArray(tags.value) ? tags.value.join(",") : '全部',
         age: age.value,
         gender: gender.value,
-        enable_append_push: enable_append_push.value
+        enable_append_push: enable_append_push.value ? 'true' : 'false'
       });
     }
   }
@@ -182,7 +179,7 @@ export default class TargetPartial extends React.Component {
               <div className="col-md-2">
                 <div className="campaign-target target-age form-group">
                   <label>年龄</label>
-                  <select className="form-control select-age" {...age} value={age.value || ''} onChange={this.handleConditionChange}>
+                  <select className="form-control select-age" {...age} value={age.value || ''} data-val={age.value} onChange={this.handleConditionChange}>
                     <option value="全部">全部</option>
                     <option value="0,12">12岁以下</option>
                     <option value="12,18">12-18 岁</option>
@@ -197,7 +194,7 @@ export default class TargetPartial extends React.Component {
               <div className="col-md-2">
                 <div className="campaign-target target-gender form-group">
                   <label>性别</label>
-                  <select className="form-control select-gender" {...gender} value={gender.value || ''} onChange={this.handleConditionChange}>
+                  <select className="form-control select-gender" {...gender} value={gender.value || ''} data-val={gender.value} onChange={this.handleConditionChange}>
                     <option value="全部">全部</option>
                     <option value="1">男</option>
                     <option value="2">女</option>
@@ -208,7 +205,7 @@ export default class TargetPartial extends React.Component {
               <div className="col-md-2">
                 <div className="campaign-target target-enable-append-push form-group">
                   <label>补推</label>
-                  <select className="form-control select-enable-append-push" {...enable_append_push} value={enable_append_push.value || ''} onChange={this.handleConditionChange}>
+                  <select className="form-control select-enable-append-push" {...enable_append_push} value={(enable_append_push.value ? 'true' : 'false') || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
                     <option value="true">允许补推</option>
                     <option value="false">禁止补推</option>
                   </select>
