@@ -7,7 +7,15 @@ module API
           authenticate!
         end
 
-        
+        get '/' do
+        	present :error, 0
+        	present :total_check_in_amount, 	current_kol.total_check_in_amount
+          present :today_can_amount, 				current_kol.today_can_amount
+        	present :check_in_7, 							current_kol.check_in_7
+        	present :campaign_invites_count, 	current_kol.campaign_invites.today.count
+        	present :invite_friends, 					current_kol.today_invite_count
+      	end
+
       end
     end
   end
