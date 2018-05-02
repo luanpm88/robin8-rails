@@ -279,6 +279,10 @@ Rails.application.routes.draw do
   end
 
   namespace :partners do
+    get 'sign_in',    to: 'sessions#new'
+    post 'login',     to: 'sessions#create'
+    get 'sign_out',   to: 'sessions#destroy'
+
     resources :campaigns, only: [:index]
     resources :campaign_invites, only: [:index] do
       get :shows
