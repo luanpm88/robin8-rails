@@ -42,6 +42,7 @@ module API
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
           present :kol_identities, kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :is_new_member, !kol_exist
         end
 
 
