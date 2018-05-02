@@ -1,0 +1,92 @@
+<h3>Kols</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>手机号</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>创建时间</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.search_field :created_at_gt, class: "form-control datetime", placeholder: "最小时间" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.search_field :created_at_lt, class: "form-control datetime", placeholder: "最大时间" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+<%= link_to '导出列表CSV', csv_url, :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
+<br/>
+<br/>
+
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>昵称</th>
+      <th>手机号</th>
+      <th>创建时间</th>
+      <th class="text-center">已接活动数</th>
+      <th class="text-center">有效点击数</th>
+      <th class="text-center">总点击数</th>
+      <th class="text-center">可提现金额</th>
+      <th class="text-center">历史净收益</th>
+      <th class="text-center">查看</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |kol| %>
+      <tr>
+        <td><%= kol.name %></td>
+        <td><%= kol.mobile_number %></td>
+        <td><%= kol.created_at.to_s(:db) %></td>
+        <td align="center"><%= kol.campaign_invites.count %></td>
+        <td align="center"><%= kol.campaign_shows.valid.count %></td>
+        <td align="center"><%= kol.campaign_shows.count %></td>
+        <td align="center"><%= kol.avail_amount %></td>
+        <td align="center"><%= kol.historical_income %></td>
+        <td align="center">
+          <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
+          <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
+          <li><%= link_to "收益流水", capital_flow_sheet_partners_kol_path(kol.id), target: "_blank" %></li>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

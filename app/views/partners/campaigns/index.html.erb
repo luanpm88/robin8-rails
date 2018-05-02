@@ -1,0 +1,27 @@
+<h4><%= "#{@admintag.tag} 参与的活动" %></h4>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <%- %w(活动名称 活动状态 活动开始时间 活动结束时间 参与人数 总点击数 有效点击数).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaigns.each do |c| %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= Campaign::STATUS[c.status.to_sym] %></td>
+        <td><%= c.start_time %></td>
+        <td><%= c.deadline %></td>
+        <td><%= c.campaign_invites_by_tag(@admintag).count %></td>
+        <td><%= c.campaign_shows_by_tag(@admintag).count %></td>
+        <td><%= c.campaign_shows_by_tag(@admintag).valid.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails %>

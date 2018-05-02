@@ -5,6 +5,7 @@
 //= require lib/sb-admin-2
 //= require lib/metisMenu
 //= require moment
+//= require moment/zh-cn.js
 //= require bootstrap-datetimepicker
 //= require marketing_dashboard/jqzoom
 

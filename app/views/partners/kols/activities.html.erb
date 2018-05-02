@@ -1,0 +1,24 @@
+<h4><%= "#{@kol.name} 参与活动" %></h4>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <%- %w(活动名称 活动状态 活动开始时间 活动结束时间).each do |ele| %>
+        <th><%= ele %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaigns.each do |c| %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= Campaign::STATUS[c.status.to_sym] %></td>
+        <td><%= c.start_time %></td>
+        <td><%= c.deadline %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaigns, renderer: BootstrapPagination::Rails %>

@@ -41,7 +41,7 @@ module Open
 
         class CampaignDetail < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :status, :url, :per_action_budget, :budget#, :activity_id
+          expose :id, :status, :url, :per_action_budget, :budget, :activity_id
           expose :name, :description
           expose :take_budget, :share_times
 

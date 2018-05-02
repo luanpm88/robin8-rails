@@ -226,6 +226,24 @@ module API
       social_account.save
     end
 
+    def my_elastic_articles(post_ids=[])
+      _hash = {}
+
+      current_list      = current_kol.elastic_article_actions.where(post_id: post_ids)
+      _hash[:likes]     = current_list.likes.map(&:post_id)
+      _hash[:collects]  = current_list.collects.map(&:post_id)
+
+      _hash
+    end
+
+    def elastic_article_newest_post_id
+      unless $redis.get("elastic_articles_newest_post_id")
+        $redis.setex("elastic_articles_newest_post_id", 43200, ElasticArticleExtend.get_new_post_id)
+      end
+      
+      $redis.get("elastic_articles_newest_post_id")
+    end
+
 
     def avatar_uploader(image = nil)
       return  unless image

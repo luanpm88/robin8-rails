@@ -249,5 +249,9 @@ module Concerns
       !had_complete_reward?  && profile_complete?
     end
 
+    def check_in_7
+      Array.new(continuous_attendance_days, true) + Array.new(7 - continuous_attendance_days, false)
+    end
+
   end
 end

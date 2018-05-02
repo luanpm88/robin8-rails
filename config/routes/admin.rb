@@ -256,6 +256,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :elastic_articles, only: [:index] do
+      collection do
+        get :kols
+      end
+    end
+
 
 
     namespace :utilities do

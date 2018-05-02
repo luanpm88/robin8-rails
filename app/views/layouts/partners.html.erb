@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robin8 Marketing Dashboard</title>
+    <meta charset='utf-8' />
+    <%= stylesheet_link_tag 'admin' %>
+    <%= javascript_include_tag 'admin' %>
+    <%= csrf_meta_tag %>
+    <%= favicon_link_tag 'favicon.ico' %>
+  </head>
+  <body>
+      <div id="wrapper">
+        <% if @admintag %>
+          <%= render :partial => "layouts/partners_nav" %>
+          <div id="page-wrapper">
+            <%= yield %>
+          </div>
+        <% else %>
+          <%= yield %>
+        <% end %>
+      </div>
+  </body>
+</html>

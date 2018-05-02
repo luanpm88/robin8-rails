@@ -16,17 +16,12 @@ module API
           select_ids = post_ids[(params[:page].to_i-1)*10..params[:page].to_i*10-1]
 
           res = ElasticArticleExtend.get_by_post_ids(select_ids)
-
-          my_elastic_articles = {
-            likes:    current_kol.elastic_article_actions.likes.map(&:post_id),
-            collects: select_ids
-          }
  
           present :error, 0
           present :total_count, post_ids.count
           present :total_pages, page_count(post_ids.count).to_i
           present :current_page, params[:page]
-          present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles, my_elastic_articles: my_elastic_articles
+          present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles, my_elastic_articles: my_elastic_articles(res.collect{|ele| ele['post_id']})
         end
 
       end

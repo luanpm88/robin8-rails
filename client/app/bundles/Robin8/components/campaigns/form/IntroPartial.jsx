@@ -6,38 +6,52 @@ import { ShowError } from '../../shared/ShowError';
 
 const getUploader = function() {
   return Qiniu.uploader({
-      runtimes: 'html5,flash,html4',      // 上传模式,依次退化
-      browse_button: 'foo',      // 上传选择的点选按钮，**必需**
-      uptoken_url: '/brand_api/v1/util/qiniu_token', // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
-      get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
-      unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
-      domain: '7xozqe.com1.z0.glb.clouddn.com',                   // bucket 域名，下载资源时用到，**必需**
-      max_file_size: '4mb',             // 最大文件体积限制
-      flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
-      max_retries: 3,                     // 上传失败最大重试次数
-      chunk_size: '4mb',                  // 分块上传时，每块的体积
-      multi_selection: false,
-      init: {
-        'Error': function(up, err, errTip) {
-            const err_message = null
-            if(err["code"] == -601){
-                $(".brand-error-notice-modal .modal-body p").html("只支持jpg、gif、png、jpeg格式");
-                $(".brand-error-notice-modal .modal-title").html("上传失败");
-                $(".brand-error-notice-modal").modal("show");
-            }else if(err["code"] == -200){
-              $(".brand-error-notice-modal .modal-body p").html("图片最大不能超过4M");
-              $(".brand-error-notice-modal .modal-title").html("上传失败");
-              $(".brand-error-notice-modal").modal("show");
-            }
-        }
-      },
-      filters : {
-        max_file_size : '4mb',
-        prevent_duplicates: true,
-        // Specify what files to browse for
-        mime_types: [
-            {title : "Image files", extensions : "jpg,gif,png,jpeg"}, // 限定jpg,gif,png后缀上传
-        ]
+    runtimes: 'html5,flash,html4',    //上传模式,依次退化
+    browse_button: 'foo',       //上传选择的点选按钮，**必需**
+    uptoken_url: '/brand_api/v1/util/qiniu_token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+    unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
+    domain: '7xozqe.com1.z0.glb.clouddn.com',   //bucket 域名，下载资源时用到，**必需**
+    get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token
+    container: 'form_control_file',           //上传区域DOM ID，默认是browser_button的父元素，
+    max_file_size: '4mb',           //最大文件体积限制
+    flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash,相对路径
+    max_retries: 3,                   //上传失败最大重试次数
+    dragdrop: true,                   //开启可拖曳上传
+    drop_element: 'form_control_file',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+    chunk_size: '4mb',                //分块上传时，每片的体积
+    auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+    multi_selection: false,
+    init: {
+      'Error': function(up, err, errTip) {
+        alert(errTip);
+
+        // $(".brand-error-notice-modal .modal-body").html(errTip);
+        // $(".brand-error-notice-modal .modal-title").html("上传失败");
+        // $(".brand-error-notice-modal").modal("show");
+
+        // const err_message = null
+        // if(err["code"] == -601){
+        //     $(".brand-error-notice-modal .modal-body p").html("只支持jpg、gif、png、jpeg格式");
+        //     $(".brand-error-notice-modal .modal-title").html("上传失败");
+        //     $(".brand-error-notice-modal").modal("show");
+        // }else if(err["code"] == -200){
+        //   $(".brand-error-notice-modal .modal-body p").html("图片最大不能超过2M");
+        //   $(".brand-error-notice-modal .modal-title").html("上传失败");
+        //   $(".brand-error-notice-modal").modal("show");
+        // }else if(err["code"] == -600){
+        //   $(".brand-error-notice-modal .modal-body p").html("图片最大不能超过2M");
+        //   $(".brand-error-notice-modal .modal-title").html("上传失败");
+        //   $(".brand-error-notice-modal").modal("show");
+        // }
+      }
+    },
+    filters : {
+      max_file_size : '4mb',
+      prevent_duplicates: true,
+      // Specify what files to browse for
+      mime_types: [
+        {title : "Image files", extensions : "jpg,gif,png,jpeg"}, // 限定jpg,gif,png后缀上传
+      ]
     },
   });
 }
@@ -119,7 +133,7 @@ export default class IntroPartial extends React.Component {
                   }
                 }
                 <ShowError field={img_url} />
-                <div className="form-control-file">
+                <div className="form-control-file" id="form_control_file">
 
                   {/* 这个input为了配合Crop，不要使用这个做上传（不要设置name） */}
                   <input ref="fileInput" id="fileInput" type="file" style={{display: 'none'}}/>

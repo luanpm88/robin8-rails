@@ -15,6 +15,18 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignInviteAnalysis
 
   list :push_device_tokens
+
+  STATUS = {
+    unpay:      '未支付',
+    pending:    '已支付，待审核',
+    agreed:     '审核通过',
+    executing:  '执行中',
+    executed:   '已完成，未结算',
+    settled:    '已结算',
+    finished:   '已结束',
+    unexecute:  '未执行',
+    rejected:   '已拒绝'
+  }
   
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
@@ -160,11 +172,13 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_avail_click
-    self.redis_avail_click.value      rescue self.avail_click
+    # self.redis_avail_click.value rescue self.avail_click
+    avail_click.zero? ? self.redis_avail_click.value : avail_click
   end
 
   def get_total_click
-    self.redis_total_click.value   rescue self.total_click
+    # self.redis_total_click.value rescue self.total_click
+    total_click.zero? ? self.redis_total_click.value : total_click
   end
 
   def actual_budget(from_brand = true)
@@ -489,6 +503,14 @@ class Campaign < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def campaign_invites_by_tag(tag)
+    campaign_invites.joins(kol: :admintags).where("admintags.tag =?", tag.tag)
+  end
+
+  def campaign_shows_by_tag(tag)
+    campaign_shows.joins(kol: :admintags).where("admintags.tag =?", tag.tag)
   end
 
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。

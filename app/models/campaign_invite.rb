@@ -19,6 +19,12 @@ class CampaignInvite < ActiveRecord::Base
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
   CanAutoCheckInterval = Rails.env.production? ? 7.hours : 2.minutes
 
+  ImgStatusZH = {
+    pending:  '等待审核',
+    passed:   '审核通过',
+    rejected: '已拒绝'
+  }
+
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
@@ -46,6 +52,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
   scope :can_day_settle, -> {where("(status='finished' or status='approved') and (img_status='passed' or (screenshot is not null and upload_time < '#{CanAutoCheckInterval.ago}'))")}
   # scope :can_auto_passed, -> {where(:status => ['approved', 'finished']).where("screenshot is not null and upload_time > '#{1.days.ago}'")}
+  scope :today, -> {where("created_at >= ? ", Time.now.beginning_of_day)}
   after_save :update_invite
 
   delegate :name, to: :campaign
@@ -190,6 +197,10 @@ class CampaignInvite < ActiveRecord::Base
 
   def get_total_click
     self.redis_total_click.value   rescue self.total_click
+  end
+
+  def status_zh
+    STATUS_ZH[status.to_sym]
   end
 
   #是否直接显示总点击给用户看

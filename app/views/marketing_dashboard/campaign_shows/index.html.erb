@@ -9,7 +9,7 @@
       <th>Cookies</th>
       <th>IP</th>
       <th>Time</th>
-      <th>Status</th>
+      <th>是否有效</th>
       <th>Agent</th>
       <th>remark</th>
       <th>Referer</th>
@@ -19,11 +19,10 @@
   <tbody>
     <% @campaign_shows.each do |c| %>
       <tr>
-        <% %w(id campaign_id kol_id openid  proxy_ips visitor_cookie visitor_ip visit_time status visitor_agent remark visitor_referer other_options).each do |v| %>
+        <% %w(id campaign_id kol_id openid  proxy_ips visitor_cookie visitor_ip visit_time status_CN visitor_agent remark_CH visitor_referer other_options).each do |v| %>
           <td><%= c.send v %></td>
         <% end %>
       </tr>
-
     <% end %>
   </tbody>
 </table>

@@ -5,19 +5,38 @@ class CampaignShow < ActiveRecord::Base
   IpTimeout = Rails.env.production? ? 30.seconds : 5.seconds
   IpMaxCount = Rails.env.production? ? 20 : 40
   CampaignExecuted = 'campaign_had_executed'
-#= beging
-#   if Rails.env.production?
-#     KolCreditLevels = {'A' => 100, 'B' => 50, 'C' => 10, 'S' => 5000}
-#   else
-#     KolCreditLevels = {'A' => 4, 'B' => 1, 'C' => 10, 'S' => 5000}
-#   end
-#= end
+
+  REMARKS = {
+    over_max_click: '超过最大点击限制',
+    wechat_crawler: 'ip重叠度高，视为作弊',
+    had_no_openid: '不是有效的微信账号',
+    visitor_agent_is_invalid: '无效的浏览器点击',
+    visitor_referer_exist: '引用页已存在',
+    is_first_step_of_cpa_campaign: '第一步cpa活动',
+    the_first_step_not_exist_of_cpa_campaign: 'cpa活动第一步不存在',
+    the_two_step_has_not_openid_of_cpa_campaign: 'cpa活动第二步无openid',
+    openid_reach_max_count: '同一用户的重复点击',
+    ip_visit_fre: '同一ip的重复点击',
+    ip_reach_max_count: '24小时内，同ip用户点击超过20个',
+    exceed_five_click_threshold: '超过该用户可获得的最大点击',
+    exceed_kol_level_threshold: '超过kol等级点击限制',
+    campaign_had_executed: '活动结束后获得的点击'
+  }
 
   belongs_to :campaign
+  belongs_to :kol
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
   scope :invite_need_settle, ->(campaign_id,kol_id,settle_deadline) {where("created_at <= '#{settle_deadline}'").where("transaction_id is null").where(:status => 1, :campaign_id => campaign_id, :kol_id => kol_id)}
+
+  def remark_CH
+    REMARKS[remark.try(:to_sym)]
+  end
+
+  def status_CN
+    {'1' => '有效', '0' => '无效'}[status]
+  end
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, visit_time, options={})

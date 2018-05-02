@@ -277,4 +277,22 @@ Rails.application.routes.draw do
       get :forward
     end
   end
+
+  namespace :partners do
+    get 'sign_in',    to: 'sessions#new'
+    post 'login',     to: 'sessions#create'
+    get 'sign_out',   to: 'sessions#destroy'
+
+    resources :campaigns, only: [:index]
+    resources :campaign_invites, only: [:index] do
+      get :shows
+    end
+    resources :kols, only: [:index] do
+      member do
+        get :activities
+        get :shows
+        get :capital_flow_sheet
+      end
+    end
+  end
 end
