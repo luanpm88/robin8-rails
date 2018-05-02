@@ -10,13 +10,14 @@
   </head>
   <body>
       <div id="wrapper">
-        <!-- Navigation -->
-        <%= render :partial => "layouts/partners_nav" %>
-        <div id="page-wrapper">
+        <% if @admintag %>
+          <%= render :partial => "layouts/partners_nav" %>
+          <div id="page-wrapper">
+            <%= yield %>
+          </div>
+        <% else %>
           <%= yield %>
-        </div>
-        <!-- /#page-wrapper -->
+        <% end %>
       </div>
-      <!-- /#wrapper -->
   </body>
 </html>

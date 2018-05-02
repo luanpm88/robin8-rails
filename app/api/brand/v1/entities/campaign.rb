@@ -55,7 +55,7 @@ module Brand
         expose :share_time do |object, opts|
           object.get_share_time
         end
-        expose :take_budget
+
         expose :remain_budget
 
         expose :materials do |object, opts|

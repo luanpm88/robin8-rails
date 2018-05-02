@@ -15,7 +15,8 @@ class Partners::BaseController < ApplicationController
   end
 
 	def admintag
-		@admintag = Admintag.find_by_tag 'Geometry'
+    # $redis.set 'geometry', 'geometry2018'
+		@admintag = Admintag.find_by_tag session[:admin_tag]
 	end
 
 end

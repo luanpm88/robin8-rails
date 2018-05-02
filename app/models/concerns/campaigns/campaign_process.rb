@@ -71,33 +71,64 @@ module Campaigns
 
     # 开始时候就发送邀请 但是状态为pending
     # 由于活动审核时候获得kol_id可能和活动开始获得的推送kol_id 可能不一致,所以干脆都在go_start 进行发送+ 推送
-    def send_invites(kol_ids = nil)
-      _start = Time.now
+    # def send_invites(kol_ids = nil)
+    #   _start = Time.now
+    #   Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
+    #   return if self.status != 'agreed'
+    #   self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
+    #   if self.is_invite_type?
+    #     self.update_columns(:max_action => 1)
+    #   else
+    #     self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
+    #     self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
+    #   end
+    #   # make sure those execute late (after invite create)
+    #   #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
+    #   campaign_id = self.id
+    #   kols = get_kol_ids(true, kol_ids, true)
+    #   kols.each {|kol|  kol.add_campaign_id campaign_id }  if kols.present?
+    #   kol_ids = kols.select(:id).map(&:id) rescue []
+
+    #   _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
+
+    #   if _start_time > (Time.now + 20.minutes)
+    #     push_time = _start_time - 10.minutes
+    #     CampaignWorker.perform_at(push_time, self.id, 'countdown')
+    #     MessageWorker.perform_at(push_time, self.id, kol_ids )
+    #   end
+
+    #   _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
+    #   CampaignWorker.perform_at(_start_time, self.id, 'start')
+    #   CampaignWorker.perform_at(self.deadline, self.id, 'end')
+    #   CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check') if self.is_recruit_type?
+    # end
+    def send_invites(kol_ids=nil)
       Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
-      return if self.status != 'agreed'
-      self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
+      return if status != 'agreed'
+      self.update_attributes(status: 'rejected') && return if deadline < Time.now
+
+      _update_hash = {}
       if self.is_invite_type?
-        self.update_columns(:max_action => 1)
+        _update_hash[:max_action] = 1
       else
-        self.update_columns(:max_action => (budget.to_f / per_action_budget.to_f).to_i)
-        self.update_column(:actual_per_action_budget, self.cal_actual_per_action_budget)  if  self.actual_per_action_budget.blank?
+        _update_hash[:max_action] = (budget.to_f / per_action_budget.to_f).to_i
+        _update_hash[:actual_per_action_budget] = cal_actual_per_action_budget  if  self.actual_per_action_budget.blank?
       end
+      self.update_columns(_update_hash)
+
       # make sure those execute late (after invite create)
       #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
-      campaign_id = self.id
       kols = get_kol_ids(true, kol_ids, true)
-      kols.each {|kol|  kol.add_campaign_id campaign_id }  if kols.present?
-      kol_ids = kols.select(:id).map(&:id) rescue []
+      kols.each {|kol| kol.add_campaign_id(self.id)}  if kols.present?
+      kol_ids = kols.select(:id).map(&:id)
 
-      _start_time = self.is_recruit_type?? self.recruit_start_time : self.start_time
+      _start_time = is_recruit_type? ? recruit_start_time : start_time
 
-      if _start_time > (Time.now + 20.minutes)
-        push_time = _start_time - 10.minutes
-        CampaignWorker.perform_at(push_time, self.id, 'countdown')
-        MessageWorker.perform_at(push_time, self.id, kol_ids )
+      if _start_time > 20.minutes.since
+        CampaignWorker.perform_at(_start_time.ago(10.minutes), self.id, 'countdown')
+        MessageWorker.perform_at(_start_time.ago(10.minutes), self.id, kol_ids )
       end
 
-      _start_time = start_time < Time.now ? (Time.now + 5.seconds) : _start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
       CampaignWorker.perform_at(self.deadline, self.id, 'end')
       CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check') if self.is_recruit_type?
@@ -212,8 +243,13 @@ module Campaigns
 
 
     def update_info(finish_remark)
-      self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
-                             :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
+      self.update_attributes(
+        avail_click:          self.redis_avail_click.value,
+        total_click:          self.redis_total_click.value,
+        status:               'executed',
+        finish_remark:        finish_remark,
+        actual_deadline_time: Time.now
+      )
     end
 
     # 更新invite 状态和点击数 (Update the invite state and the number of hits)
@@ -316,9 +352,7 @@ module Campaigns
     def campaign_countdown
       Rails.logger.campaign_sidekiq.info "----countdown: #{self.id}-----------"
       return if self.status != 'agreed'
-      ActiveRecord::Base.transaction do
-        self.update_columns(:status => 'countdown')
-      end
+      self.update_columns(status: 'countdown')
     end
 
     class_methods do

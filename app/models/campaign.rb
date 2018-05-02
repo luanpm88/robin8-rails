@@ -172,11 +172,13 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_avail_click
-    self.redis_avail_click.value      rescue self.avail_click
+    self.redis_avail_click.value rescue self.avail_click
+    # avail_click.zero? ? self.redis_avail_click.value : avail_click
   end
 
   def get_total_click
-    self.redis_total_click.value   rescue self.total_click
+    self.redis_total_click.value rescue self.total_click
+    # total_click.zero? ? self.redis_total_click.value : total_click
   end
 
   def actual_budget(from_brand = true)
