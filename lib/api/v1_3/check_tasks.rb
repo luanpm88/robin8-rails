@@ -19,14 +19,15 @@ module API
         #新签到历史接口
         get 'check_in_history' do
           present :error, 0
-          present :continuous_checkin_count, current_kol.continuous_attendance_days
-          present :today_had_check_in, current_kol.today_had_check_in?
-          present :checkin_history, current_kol.new_checkin_history
-          present :total_check_in_days, current_kol.task_records.check_in.active.size
-          present :total_check_in_amount, current_kol.total_check_in_amount
-          present :today_already_amount, current_kol.today_already_amount
-          present :today_can_amount, current_kol.today_can_amount
-          present :tomorrow_can_amount, current_kol.tomorrow_can_amount
+          present :continuous_checkin_count,current_kol.continuous_attendance_days
+          present :today_had_check_in,      current_kol.today_had_check_in?
+          present :checkin_history,         current_kol.new_checkin_history
+          present :total_check_in_days,     current_kol.task_records.check_in.active.size
+          present :total_check_in_amount,   current_kol.total_check_in_amount
+          present :today_already_amount,    current_kol.today_already_amount
+          present :today_can_amount,        current_kol.today_can_amount
+          present :tomorrow_can_amount,     current_kol.tomorrow_can_amount
+          present :check_in_7,              current_kol.check_in_7
         end
 
       end
