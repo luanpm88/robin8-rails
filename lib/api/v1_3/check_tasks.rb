@@ -28,6 +28,8 @@ module API
           present :today_can_amount,        current_kol.today_can_amount
           present :tomorrow_can_amount,     current_kol.tomorrow_can_amount
           present :check_in_7,              current_kol.check_in_7
+          present :campaign_invites_count,  current_kol.campaign_invites.today.count
+          present :invite_friends,          current_kol.today_invite_count
         end
 
       end
