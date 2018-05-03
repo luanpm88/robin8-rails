@@ -11,6 +11,10 @@ module Brand
 
         expose :user, using: Entities::User
 
+        expose :enable_append_push do |object|
+          object.enable_append_push.to_s
+        end
+
         expose :per_budget_collect_type do |object|
           if %w(cpa cpi).include? object.per_budget_type
             "cpa_cpi"

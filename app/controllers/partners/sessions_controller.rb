@@ -21,7 +21,7 @@ class Partners::SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    session[:admin_tag] = nil
 
     redirect_to partners_sign_in_path
   end
