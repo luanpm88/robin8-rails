@@ -63,16 +63,16 @@ export default class TargetPartial extends React.Component {
 
     if (e && e.target.name === 'gender' ) {
       this.props.gender.onChange(e.target.value);
-      _.assignIn(condition, { gender: e.target.value });
       _.assignIn(condition, { age: this.props.age.value });
+      _.assignIn(condition, { gender: e.target.value });
       _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
     }
 
     if (e && e.target.name === 'enable_append_push' ) {
       this.props.enable_append_push.onChange(e.target.value);
-      _.assignIn(condition, { gender: e.target.value });
       _.assignIn(condition, { age: this.props.age.value });
-      _.assignIn(condition, { enable_append_push: this.props.enable_append_push.value });
+      _.assignIn(condition, { gender: this.props.gender.value });
+      _.assignIn(condition, { enable_append_push: e.target.value });
     }
 
     console.log(condition);
@@ -123,7 +123,7 @@ export default class TargetPartial extends React.Component {
         tag: _.isArray(tags.value) ? tags.value.join(",") : '全部',
         age: age.value,
         gender: gender.value,
-        enable_append_push: enable_append_push.value ? 'true' : 'false'
+        enable_append_push: enable_append_push.value
       });
     }
   }
@@ -138,7 +138,7 @@ export default class TargetPartial extends React.Component {
   }
 
   renderKolAppendTips() {
-    return <div className="notice center">Robin8会优先推送最精准的匹配KOL，6个小时后活动未消耗完会进行补推，推送给第二梯队的匹配KOL，以此类推。</div>
+    return <div className="notice center">Robin8会优先推送最精准的匹配KOL，6个小时后活动未消耗完会进行补推，推送给第二梯队的匹配KOL，依次类推。</div>
   }
 
   render() {
@@ -205,7 +205,11 @@ export default class TargetPartial extends React.Component {
               <div className="col-md-2">
                 <div className="campaign-target target-enable-append-push form-group">
                   <label>补推</label>
-                  <select className="form-control select-enable-append-push" {...enable_append_push} value={(enable_append_push.value ? 'true' : 'false') || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
+                  {/*<select className="form-control select-enable-append-push" {...enable_append_push} value={(enable_append_push.value ? 'true' : 'false') || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
+                    <option value="true">允许补推</option>
+                    <option value="false">禁止补推</option>
+                  </select>*/}
+                  <select className="form-control select-enable-append-push" {...enable_append_push} value={enable_append_push.value || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
                     <option value="true">允许补推</option>
                     <option value="false">禁止补推</option>
                   </select>
