@@ -34,52 +34,24 @@
     搜索过滤
   </div>
   <div id="searchPanel" class="panel-body">
-    <form class="form">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
             <label>Content ID</label>
-            <%= search_field_tag "id", nil, class: "form-control", placeholder: "请输入内容" %>
+            <%= f.search_field :post_id_cont, class: "form-control", placeholder: "请输入内容" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label>Title</label>
-            <%= search_field_tag "title", nil, class: "form-control", placeholder: "请输入内容" %>
+            <%= f.search_field :title_cont, class: "form-control", placeholder: "请输入内容" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label>标签</label>
-            <select class="form-control">
-              <option value="">请选择标签</option>
-              <option value="美食">美食</option>
-              <option value="母婴">母婴</option>
-              <option value="旅游">旅游</option>
-              <option value="酒店">酒店</option>
-              <option value="教育">教育</option>
-              <option value="健身">健身</option>
-              <option value="财经">财经</option>
-              <option value="美妆">美妆</option>
-              <option value="汽车">汽车</option>
-              <option value="航空">航空</option>
-              <option value="消费电子">消费电子</option>
-              <option value="摄影">摄影</option>
-              <option value="手机">手机</option>
-              <option value="互联网">互联网</option>
-              <option value="游戏">游戏</option>
-              <option value="时尚">时尚</option>
-              <option value="健康">健康</option>
-              <option value="房地产">房地产</option>
-              <option value="数码">数码</option>
-              <option value="家电">家电</option>
-              <option value="图书">图书</option>
-              <option value="体育">体育</option>
-              <option value="娱乐">娱乐</option>
-              <option value="家居">家居</option>
-              <option value="音乐">音乐</option>
-              <option value="综合">综合</option>
-            </select>
+            <%= f.select :tag_label_cont, Tag.pluck(:label).uniq, {include_blank: true}, class: 'form-control' %>
           </div>
         </div>
         <div class="col-md-3">
@@ -90,7 +62,7 @@
           </div>
         </div>
       </div>
-    </form>
+    <% end %>
   </div>
 </div>
 
@@ -107,15 +79,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="text-center"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="text-center"></td>
-        <td class="text-center"></td>
-      </tr>
+      <% @elastic_articles.each_with_index do |ea, index| %>
+        <tr>
+          <td class="text-center"><%= index.succ %></td>
+          <td><%= ea.post_id %></td>
+          <td><%= ea.title %></td>
+          <td><%= ea.tag.try(:label) %></td>
+          <td class="text-center"><%= ea.likes_count %></td>
+          <td class="text-center"><%= ea.forwards_count %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
+  <div class="pull-right">
+    <%= will_paginate @elastic_articles, renderer: BootstrapPagination::Rails  %>
+  </div>
 </div>
 <!-- /.row -->
