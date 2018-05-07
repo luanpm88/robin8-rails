@@ -4,11 +4,8 @@ import {ShowError} from '../../shared/ShowError';
 export default class DetailPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-
-    console.log(this.props);
-    console.log(this.props.per_action_budget.initialValue);
-
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
+    console.log('constructor', this.props);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange', 'handleInputChange']);
   }
 
   _fetchShortUrl(e) {
@@ -39,21 +36,32 @@ export default class DetailPartial extends React.Component {
       })
   }
 
-  _initTouchSpin() {
+  _initTouchSpin(min) {
+    console.log(min);
     const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
-    $('.per-budget-input').TouchSpin({
+    let min_val = 0.3;
+    if (!!min && min !== '') {
+      min_val = min;
+    }
+    console.log(min_val);
+    console.log($('.perBudget').data('min'));
+    $('.perBudget').TouchSpin({
       initval: 0.3,
-      min: cpc_min_budget,
+      min: min_val,
       max: 10000000,
       step: 0.1,
       decimals: 1,
+    });
+
+    $('.perBudget').trigger('touchspin.updatesettings', {
+      min: min_val
     });
   }
 
   _handlePerBudgetInputChange() {
     const { per_action_budget, per_budget_type, sub_type } = this.props;
     const { onChange } = this.props.per_action_budget;
-    $('.per-budget-input').change(function() {
+    $('.perBudget').change(function() {
       onChange($(this).val());
       console.log("per-budget-input changing", onChange($(this).val()))
     });
@@ -143,37 +151,78 @@ export default class DetailPartial extends React.Component {
   //   }
   // }
 
-  handleClickPerBudgetType() {
+  handleInputChange(e) {
+    const target = e.target;
+    console.log('input', target.value);
+    console.log('this.props.per_action_budget', this.props.per_action_budget);
+    // this.props.per_action_budget = target.value;
+    this.props.per_action_budget.onChange(target.value);
+    // this.setState({
+    //   per_action_budget: target.value
+    // });
+  }
+
+  handleClickPerBudgetType(e) {
     let min = 0.3
+
+    const target = e.target;
+    const click_val = e.target.value;
     const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
     const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
     const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
     const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
     const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
 
+    console.log(this.props);
+
     // switch maybe better suited for this situation
-    if (this.props.per_budget_type.value === 'click') {
-      console.log('click event clicked')
-      // this.props.per_action_budget.value = 0.2
-      min = cpc_min_budget
-    } else if (this.props.per_budget_type.value === 'post') {
-      console.log('post event clicked')
-      // this.props.per_action_budget.value = 2.5
-      min = cpp_min_budget
-    } else if (this.props.per_budget_type.value === 'cpt') {
-      console.log('cpt event clicked')
-      // this.props.per_action_budget.value = 8
-      if (this.props.example_screenshot_count.value == '3') {
-        min = cpt_three_min_budget
-      } else if (this.props.example_screenshot_count.value == '2') {
-        min = cpt_two_min_budget
-      } else if (this.props.example_screenshot_count.value == '1') {
-        min = cpt_one_min_budget
-      }
+    // if (this.props.per_budget_type.value === 'click') {
+    //   console.log('click event clicked')
+    //   // this.props.per_action_budget.value = 0.2
+    //   min = cpc_min_budget
+    // } else if (this.props.per_budget_type.value === 'post') {
+    //   console.log('post event clicked')
+    //   // this.props.per_action_budget.value = 2.5
+    //   min = cpp_min_budget
+    // } else if (this.props.per_budget_type.value === 'cpt') {
+    //   console.log('cpt event clicked')
+    //   // this.props.per_action_budget.value = 8
+    //   if (this.props.example_screenshot_count.value == '3') {
+    //     min = cpt_three_min_budget
+    //   } else if (this.props.example_screenshot_count.value == '2') {
+    //     min = cpt_two_min_budget
+    //   } else if (this.props.example_screenshot_count.value == '1') {
+    //     min = cpt_one_min_budget
+    //   }
+    // }
+
+    if (click_val === 'wechat') {
+      min = cpc_min_budget;
+      this.props.per_budget_type.onChange('click');
+    } else if (click_val === 'weibo') {
+      min = cpp_min_budget;
+      this.props.per_budget_type.onChange('post');
+    } else if (click_val === 'click') {
+      min = cpc_min_budget;
+    } else if (click_val === 'post') {
+      min = cpp_min_budget;
+    } else if (click_val === 'cpt') {
+      min = cpt_one_min_budget;
+      this.props.example_screenshot_count.onChange('1');
+    } else if (click_val == '3') {
+      min = cpt_three_min_budget;
+    } else if (click_val == '2') {
+      min = cpt_two_min_budget;
+    } else if (click_val == '1') {
+      min = cpt_one_min_budget;
     }
+
+    this._initTouchSpin(min);
+    this.props.per_action_budget.onChange(min);
   }
 
   componentDidMount() {
+    console.log('this.props.per_budget_type.value', this.props);
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
     this._listenPerBudgetTypeChange();
@@ -187,7 +236,20 @@ export default class DetailPartial extends React.Component {
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
 
-    console.log('asdf123123', this.props);
+    // var aa = 0.3;
+
+    // switch(this.props.per_budget_type.value) {
+    //   case 'post':
+    //     aa = 3;
+    //     break;
+    //   case 'cpt':
+    //     aa = 3;
+    //     break;
+    //   default:
+    //     aa = 0.3;
+    // }
+
+    // this._initTouchSpin(aa);
 
     // let self = this; // store this object to a variable for the jquery function to use;
     // // $("input[name='action_type']").change(function(){
@@ -282,7 +344,7 @@ export default class DetailPartial extends React.Component {
     const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
     const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
 
-    console.log(this.props);
+    console.log('render', this.props);
 
     return (
       <div className="react-toolbox creat-content-sources">
@@ -307,6 +369,7 @@ export default class DetailPartial extends React.Component {
                             className="formardPlatformType"
                             onChange={sub_type.onChange}
                             checked={sub_type.value === "wechat"}
+                            onClick={(e) => this.handleClickPerBudgetType(e)}
                           />
                           分享到朋友圈
                         </label>
@@ -319,6 +382,7 @@ export default class DetailPartial extends React.Component {
                             className="formardPlatformType"
                             onChange={sub_type.onChange}
                             checked={sub_type.value === "weibo"}
+                            onClick={(e) => this.handleClickPerBudgetType(e)}
                           />
                           分享到微博
                         </label>
@@ -333,6 +397,7 @@ export default class DetailPartial extends React.Component {
                             className="formardPlatformType"
                             onChange={sub_type.onChange}
                             checked={sub_type.value === "wechat"}
+                            onClick={(e) => this.handleClickPerBudgetType(e)}
                           />
                           分享到朋友圈
                         </label>
@@ -360,7 +425,8 @@ export default class DetailPartial extends React.Component {
                               className="commonPerBudgetType"
                               onChange={per_budget_type.onChange}
                               checked={per_budget_type.value === "click" }
-                              onClick={this.handleClickPerBudgetType()}
+                              // onClick={this.handleClickPerBudgetType()}
+                              onClick={(e) => this.handleClickPerBudgetType(e)}
                             />
                             按照点击奖励KOL
                           </label>
@@ -374,7 +440,8 @@ export default class DetailPartial extends React.Component {
                           id="forwarding"
                           value="post"
                           checked={per_budget_type.value === "post"}
-                          onClick={this.handleClickPerBudgetType()}
+                          // onClick={this.handleClickPerBudgetType()}
+                          onClick={(e) => this.handleClickPerBudgetType(e)}
                           />
                         按照转发奖励KOL
                       </label>
@@ -386,7 +453,8 @@ export default class DetailPartial extends React.Component {
                           id="cpt"
                           value="cpt"
                           checked={per_budget_type.value === "cpt"}
-                          onClick={this.handleClickPerBudgetType()}
+                          // onClick={this.handleClickPerBudgetType()}
+                          onClick={(e) => this.handleClickPerBudgetType(e)}
                         />
                         按照完成任务奖励KOL
                       </label>
@@ -427,6 +495,7 @@ export default class DetailPartial extends React.Component {
                           value="1"
                           className=""
                           checked={example_screenshot_count.value == "1"}
+                          onClick={(e) => this.handleClickPerBudgetType(e)}
                         />
                         需要用户上传1张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低{cpt_one_min_budget}元</div>
@@ -439,6 +508,7 @@ export default class DetailPartial extends React.Component {
                           value="2"
                           className=""
                           checked={example_screenshot_count.value == "2"}
+                          onClick={(e) => this.handleClickPerBudgetType(e)}
                         />
                         需要用户上传2张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低{cpt_two_min_budget}元</div>
@@ -451,6 +521,7 @@ export default class DetailPartial extends React.Component {
                           value="3"
                           className=""
                           checked={example_screenshot_count.value == "3"}
+                          onClick={(e) => this.handleClickPerBudgetType(e)}
                         />
                         需要用户上传3张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低{cpt_three_min_budget}元</div>
@@ -466,17 +537,31 @@ export default class DetailPartial extends React.Component {
           <div className="row forward-platform-select">
             <p className="action-mode">单次预算</p>
             <div className="sources-check">
-              <div className="row">
-                <div className="col-md-4">
+              <div className="row" style={{marginBottom: '20px'}}>
+                <div className="col-md-12">
                   ¥
-                  <input {...per_action_budget}
+                  {/*<input {...per_action_budget}
                     type="number"
                     name="budget"
                     className="perBudget"
                     min={this.handleMin()}
+                    value={per_action_budget.value}
                     step="0.1"
                     autoComplete="off"
-                  />
+                    onChange={this.handleInputChange}
+                  />*/}
+
+                  <div className="spinner-form-area perBudget-area">
+                    <div className="spinner-box">
+                      <input {...per_action_budget}
+                        type="text"
+                        value={per_action_budget.value}
+                        className="spinner-input perBudget"
+                        autoComplete="off"
+                        onChange={this.handleInputChange}
+                      />
+                    </div>
+                  </div>
                 </div>
 
               </div>
