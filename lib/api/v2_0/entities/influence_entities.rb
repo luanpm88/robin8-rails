@@ -40,7 +40,7 @@ module API
             ele['time']
           end
           expose :title do |ele|
-            ele['title']
+            ele['title'].gsub(%r{</?[^>]+?>}, '').strip
           end
           expose :content do |ele|
             ele['content_id']

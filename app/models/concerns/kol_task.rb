@@ -253,5 +253,17 @@ module Concerns
       Array.new(continuous_attendance_days, true) + Array.new(7 - continuous_attendance_days, false)
     end
 
+    def finish_newbie
+      RewardTask::NewbieTasks.each do |k, v|
+        task_record = self.task_records.find_or_initialize_by(task_type: k.to_s, status: 'active')
+        if task_record.new_record?
+          task_record.save
+          self.income(v, k.to_s, self)
+        else
+          return false
+        end
+      end
+    end
+
   end
 end
