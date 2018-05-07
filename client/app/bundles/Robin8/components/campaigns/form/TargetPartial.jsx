@@ -205,10 +205,6 @@ export default class TargetPartial extends React.Component {
               <div className="col-md-2">
                 <div className="campaign-target target-enable-append-push form-group">
                   <label>补推</label>
-                  {/*<select className="form-control select-enable-append-push" {...enable_append_push} value={(enable_append_push.value ? 'true' : 'false') || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
-                    <option value="true">允许补推</option>
-                    <option value="false">禁止补推</option>
-                  </select>*/}
                   <select className="form-control select-enable-append-push" {...enable_append_push} value={enable_append_push.value || ''} data-val={enable_append_push.value} onChange={this.handleConditionChange}>
                     <option value="true">允许补推</option>
                     <option value="false">禁止补推</option>
