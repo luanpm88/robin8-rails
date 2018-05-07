@@ -2,17 +2,17 @@ import React from 'react';
 import {ShowError} from '../../shared/ShowError';
 
 export default class DetailPartial extends React.Component {
-
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin',
-    '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
-  }
 
+    console.log(this.props);
+    console.log(this.props.per_action_budget.initialValue);
+
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
+  }
 
   _fetchShortUrl(e) {
     e.preventDefault();
-
     const { action_url, short_url, action_url_identifier } = this.props;
 
     if(action_url.error) {
@@ -90,90 +90,88 @@ export default class DetailPartial extends React.Component {
     // }.bind(this))
   }
 
+  handleMin() {
+    let min = 0.3;
+    const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
+    const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
+    const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
+    const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
+    const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
 
-handleMin() {
-  let min = 0.3;
-  const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
-  const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
-  const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
-  const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
-  const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
+    if (this.props.per_budget_type.value === 'click') {
+      console.log('click event clicked')
+      // this.props.per_action_budget.value = 0.2
+      min = cpc_min_budget
+    } else if (this.props.per_budget_type.value === 'post') {
+      console.log('post event clicked')
+      // this.props.per_action_budget.value = 2.5
+      min = cpp_min_budget
+    } else if (this.props.per_budget_type.value === 'cpt') {
+      console.log('cpt event clicked')
+      // this.props.per_action_budget.value = 8
+      if (this.props.example_screenshot_count.value == '3') {
+        min = cpt_three_min_budget
+      } else if (this.props.example_screenshot_count.value == '2') {
+        min = cpt_two_min_budget
+      } else if (this.props.example_screenshot_count.value == '1') {
+        min = cpt_one_min_budget
+      }
+    }
+    return min
+  }
 
-  if (this.props.per_budget_type.value === 'click') {
-    console.log('click event clicked')
-    // this.props.per_action_budget.value = 0.2
-    min = cpc_min_budget
-  } else if (this.props.per_budget_type.value === 'post') {
-    console.log('post event clicked')
-    // this.props.per_action_budget.value = 2.5
-    min = cpp_min_budget
-  } else if (this.props.per_budget_type.value === 'cpt') {
-    console.log('cpt event clicked')
-    // this.props.per_action_budget.value = 8
-    if (this.props.example_screenshot_count.value == '3') {
-      min = cpt_three_min_budget
-    } else if (this.props.example_screenshot_count.value == '2') {
-      min = cpt_two_min_budget
-    } else if (this.props.example_screenshot_count.value == '1') {
-      min = cpt_one_min_budget
+  // this function will be overwritten by per_budget_type action because click action took priority
+  // handleClickSubTypeWeibo() {
+  //   console.log('sub_type weibo now activated')
+  //   this.props.per_action_budget.value = 2.5
+  // }
+
+  // handleClickScreenshot() {
+  //   let min = 0.2;
+  //   if (this.props.example_screenshot_count.value === '1') {
+  //     min = 3
+  //     console.log("example_screenshot_count value set to:", this.props.example_screenshot_count.value)
+  //     $(".perBudget").val('3')
+  //   } else if (this.props.example_screenshot_count.value === '2') {
+  //     min = 5
+  //     $(".perBudget").val('5')
+  //     console.log("min value set to 5")
+  //   } else if (this.props.example_screenshot_count.value === '3') {
+  //     min = 8
+  //     console.log("min value set to 8")
+  //     $(".perBudget").val('8')
+  //   }
+  // }
+
+  handleClickPerBudgetType() {
+    let min = 0.3
+    const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
+    const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
+    const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
+    const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
+    const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
+
+    // switch maybe better suited for this situation
+    if (this.props.per_budget_type.value === 'click') {
+      console.log('click event clicked')
+      // this.props.per_action_budget.value = 0.2
+      min = cpc_min_budget
+    } else if (this.props.per_budget_type.value === 'post') {
+      console.log('post event clicked')
+      // this.props.per_action_budget.value = 2.5
+      min = cpp_min_budget
+    } else if (this.props.per_budget_type.value === 'cpt') {
+      console.log('cpt event clicked')
+      // this.props.per_action_budget.value = 8
+      if (this.props.example_screenshot_count.value == '3') {
+        min = cpt_three_min_budget
+      } else if (this.props.example_screenshot_count.value == '2') {
+        min = cpt_two_min_budget
+      } else if (this.props.example_screenshot_count.value == '1') {
+        min = cpt_one_min_budget
+      }
     }
   }
-  return min
-}
-
-// this function will be overwritten by per_budget_type action because click action took priority
-// handleClickSubTypeWeibo() {
-//   console.log('sub_type weibo now activated')
-//   this.props.per_action_budget.value = 2.5
-// }
-
-// handleClickScreenshot() {
-//   let min = 0.2;
-//   if (this.props.example_screenshot_count.value === '1') {
-//     min = 3
-//     console.log("example_screenshot_count value set to:", this.props.example_screenshot_count.value)
-//     $(".perBudget").val('3')
-//   } else if (this.props.example_screenshot_count.value === '2') {
-//     min = 5
-//     $(".perBudget").val('5')
-//     console.log("min value set to 5")
-//   } else if (this.props.example_screenshot_count.value === '3') {
-//     min = 8
-//     console.log("min value set to 8")
-//     $(".perBudget").val('8')
-//   }
-// }
-
-handleClickPerBudgetType() {
-  let min = 0.3
-  const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
-  const cpp_min_budget = parseFloat(this.props.brand.get("cpp_min_budget"));
-  const cpt_one_min_budget = parseFloat(this.props.brand.get("cpt_one_min_budget"));
-  const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
-  const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
-
-  // switch maybe better suited for this situation
-  if (this.props.per_budget_type.value === 'click') {
-    console.log('click event clicked')
-    // this.props.per_action_budget.value = 0.2
-    min = cpc_min_budget
-  } else if (this.props.per_budget_type.value === 'post') {
-    console.log('post event clicked')
-    // this.props.per_action_budget.value = 2.5
-    min = cpp_min_budget
-  } else if (this.props.per_budget_type.value === 'cpt') {
-    console.log('cpt event clicked')
-    // this.props.per_action_budget.value = 8
-    if (this.props.example_screenshot_count.value == '3') {
-      min = cpt_three_min_budget
-    } else if (this.props.example_screenshot_count.value == '2') {
-      min = cpt_two_min_budget
-    } else if (this.props.example_screenshot_count.value == '1') {
-      min = cpt_one_min_budget
-    }
-  }
-}
-
 
   componentDidMount() {
     this._initTouchSpin();
@@ -182,13 +180,14 @@ handleClickPerBudgetType() {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     console.log('v0003');
     // //console.log("prevProps are : ", prevProps);
     let oldValue = prevProps.per_budget_type.value;
     console.log("oldValue", oldValue);
     let newValue = this.props.per_budget_type.value;
     console.log("newValue", newValue);
+
+    console.log('asdf123123', this.props);
 
     // let self = this; // store this object to a variable for the jquery function to use;
     // // $("input[name='action_type']").change(function(){
@@ -208,10 +207,6 @@ handleClickPerBudgetType() {
     // } else {
     //   min = 3;
     // }
-
-
-
-
 
     if(oldValue==newValue) return console.log('escape');
     // // unable to change min value with this method
@@ -238,7 +233,6 @@ handleClickPerBudgetType() {
 
   componentWillUnmount() {
     $('.spinner-input').off('change');
-
   }
 
   // componentWillUpdate() {
@@ -280,7 +274,6 @@ handleClickPerBudgetType() {
   //   }
   // }
 
-
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget, sub_type, example_screenshot_count } = this.props
     const cpc_min_budget = parseFloat(this.props.brand.get("cpc_min_budget"));
@@ -289,8 +282,9 @@ handleClickPerBudgetType() {
     const cpt_two_min_budget = parseFloat(this.props.brand.get("cpt_two_min_budget"));
     const cpt_three_min_budget = parseFloat(this.props.brand.get("cpt_three_min_budget"));
 
-    return (
+    console.log(this.props);
 
+    return (
       <div className="react-toolbox creat-content-sources">
         <div className="header">
           <h3 className="tit" style={{textAlign: "center"}}>推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}><span className="question-sign">?</span></span></h3>
@@ -305,28 +299,43 @@ handleClickPerBudgetType() {
                     let enableSharingAll = true;
                     if (enableSharingAll) {
                       <div className="row">
-                        <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type"
-                            value="wechat" className="formardPlatformType"
+                        <label className="col-md-4" style={{fontWeight: 'normal'}}>
+                          <input {...sub_type}
+                            type="radio"
+                            name="sub_type"
+                            value="wechat"
+                            className="formardPlatformType"
                             onChange={sub_type.onChange}
-                            checked={sub_type.value === "wechat"} />
+                            checked={sub_type.value === "wechat"}
+                          />
                           分享到朋友圈
-                        </div>
+                        </label>
 
-                        <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type"
-                            value="weibo" className="formardPlatformType"
+                        <label className="col-md-4" style={{fontWeight: 'normal'}}>
+                          <input {...sub_type}
+                            type="radio"
+                            name="sub_type"
+                            value="weibo"
+                            className="formardPlatformType"
                             onChange={sub_type.onChange}
-                            checked={sub_type.value === "weibo"}/>
+                            checked={sub_type.value === "weibo"}
+                          />
                           分享到微博
-                        </div>
+                        </label>
                       </div>
                     } else {
                       <div className="row">
-                        <div className="col-md-4">
-                          <input {...sub_type} type="radio" name="sub_type" value="wechat" className="formardPlatformType"  onChange={sub_type.onChange} checked={sub_type.value === "wechat"} />
+                        <label className="col-md-4" style={{fontWeight: 'normal'}}>
+                          <input {...sub_type}
+                            type="radio"
+                            name="sub_type"
+                            value="wechat"
+                            className="formardPlatformType"
+                            onChange={sub_type.onChange}
+                            checked={sub_type.value === "wechat"}
+                          />
                           分享到朋友圈
-                        </div>
+                        </label>
                       </div>
                     }
                   }
@@ -340,87 +349,48 @@ handleClickPerBudgetType() {
               <div className="sources-check">
                 {
                   do {
-
-                      if(sub_type.value === "wechat") {
-                        <div className="row">
-
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio"
-                              name="action_type"
-                              value="click" className="commonPerBudgetType"
-                              onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "click" }
-                              onClick={this.handleClickPerBudgetType()}/>
-                            按照点击奖励KOL
-                          </div>
-
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio"
-                              name="action_type"
-                              value="post" className="commonPerBudgetType"
-                              onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "post" }
-                              onClick={this.handleClickPerBudgetType()} />
-                            按照转发奖励KOL
-                          </div>
-
-                          {/* <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio" name="action_type" value="simple_cpi" onChange={per_budget_type.onChange} checked={per_budget_type.value === "simple_cpi"} />
-                            按照下载APP奖励KOL
-                          </div>
-
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
-                            按照点击指定链接奖励KOL
-                          </div> */}
-
-                          <div className="col-md-4" style={{marginBottom: '1em'}}>
-                            <input {...per_budget_type} type="radio"
-                              name="action_type"
-                              value="cpt"
-                              onChange={per_budget_type.onChange}
-                              checked={per_budget_type.value === "cpt" }
-                              onClick={this.handleClickPerBudgetType()} />
-                            按照完成任务奖励KOL
-                          </div>
-
-                        </div>
-                      } else if(sub_type.value === "weibo") {
-                        <div className="row">
-
-                          {/* <div className="col-md-4" style={{marginBottom: '1em'}}>
+                    <div className="row" style={{marginBottom: '1em'}}>
+                      {
+                        sub_type.value === 'wechat' ? (
+                          <label className="col-md-4" style={{fontWeight: 'normal'}}>
                             <input {...per_budget_type}
                               type="radio"
                               name="action_type"
                               value="click"
-                              id="radioC"
                               className="commonPerBudgetType"
-                              disabled="true" />
+                              onChange={per_budget_type.onChange}
+                              checked={per_budget_type.value === "click" }
+                              onClick={this.handleClickPerBudgetType()}
+                            />
                             按照点击奖励KOL
-                          </div> */}
-
-                          <div className="col-md-4">
-                            <input {...per_budget_type} type="radio"
-                              name="action_type" className="commonPerBudgetType"
-                              id="forwarding" value="post"
-
-                              checked={per_budget_type.value === "post"}
-                              onClick={this.handleClickPerBudgetType()}/>
-                            按照转发奖励KOL
-                          </div>
-
-                          <div className="col-md-4">
-                            <input {...per_budget_type} type="radio"
-                              name="action_type" className="commonPerBudgetType"
-                              id="cpt" value="cpt"
-
-                              checked={per_budget_type.value === "cpt"}
-                              onClick={this.handleClickPerBudgetType()} />
-                            按照完成任务奖励KOL
-                          </div>
-
-                        </div>
+                          </label>
+                        ) : ''
                       }
+                      <label className="col-md-4" style={{fontWeight: 'normal'}}>
+                        <input {...per_budget_type}
+                          type="radio"
+                          name="action_type"
+                          className="commonPerBudgetType"
+                          id="forwarding"
+                          value="post"
+                          checked={per_budget_type.value === "post"}
+                          onClick={this.handleClickPerBudgetType()}
+                          />
+                        按照转发奖励KOL
+                      </label>
+                      <label className="col-md-4" style={{fontWeight: 'normal'}}>
+                        <input {...per_budget_type}
+                          type="radio"
+                          name="action_type"
+                          className="commonPerBudgetType"
+                          id="cpt"
+                          value="cpt"
+                          checked={per_budget_type.value === "cpt"}
+                          onClick={this.handleClickPerBudgetType()}
+                        />
+                        按照完成任务奖励KOL
+                      </label>
+                    </div>
                   }
                 }
             </div>
@@ -448,40 +418,43 @@ handleClickPerBudgetType() {
                 <div className="row forward-platform-select">
                   <p className="action-mode">示例图片数量</p>
                   <div className="sources-check">
-                    <div className="row">
-                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
+                    <div className="row" style={{marginBottom: '1em'}}>
+                      <label className="col-md-4" style={{fontSize: '14', fontWeight: 'normal'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
                           id="oneScreenshot"
                           value="1"
                           className=""
-                          checked={example_screenshot_count.value == "1"}/>
+                          checked={example_screenshot_count.value == "1"}
+                        />
                         需要用户上传1张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>单图单次预算最低{cpt_one_min_budget}元</div>
-                      </div>
+                      </label>
 
-                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
+                      <label className="col-md-4" style={{fontSize: '14', fontWeight: 'normal'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
                           value="2"
                           className=""
-                          checked={example_screenshot_count.value == "2"}/>
+                          checked={example_screenshot_count.value == "2"}
+                        />
                         需要用户上传2张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>两张图片单次预算最低{cpt_two_min_budget}元</div>
-                      </div>
+                      </label>
 
-                      <div className="col-md-4" style={{marginBottom: '1em', fontSize: '14'}}>
+                      <label className="col-md-4" style={{fontSize: '14', fontWeight: 'normal'}}>
                         <input {...example_screenshot_count}
                           type="radio"
                           name="example_screenshot_count"
                           value="3"
                           className=""
-                          checked={example_screenshot_count.value == "3"}/>
+                          checked={example_screenshot_count.value == "3"}
+                        />
                         需要用户上传3张图片
                         <div style={{color: '#9B9A9A', fontSize: '12', marginTop: '5px'}}>三张图片单次预算最低{cpt_three_min_budget}元</div>
-                      </div>
+                      </label>
                     </div>
                   </div>
 
@@ -497,10 +470,13 @@ handleClickPerBudgetType() {
                 <div className="col-md-4">
                   ¥
                   <input {...per_action_budget}
-                    type="number" name="budget"
+                    type="number"
+                    name="budget"
                     className="perBudget"
                     min={this.handleMin()}
-                    step="0.1" autoComplete="off"/>
+                    step="0.1"
+                    autoComplete="off"
+                  />
                 </div>
 
               </div>
