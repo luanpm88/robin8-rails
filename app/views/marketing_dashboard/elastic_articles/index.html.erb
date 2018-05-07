@@ -11,7 +11,7 @@
     <div class="panel panel-success">
       <div class="panel-heading text-right">
         <div>
-          <span class="huge">212312.5</span>小时
+          <span class="huge"><%= $redis.get('elastic_article_show_time').to_f/3600 %></span>小时
         </div>
         <div>发现Tab停留时长</div>
       </div>
@@ -21,7 +21,7 @@
     <div class="panel panel-info">
       <div class="panel-heading text-right">
         <div>
-          <span class="huge">1993829</span>次
+          <span class="huge"><%= $redis.get('elastic_article_show_count') %></span>次
         </div>
         <div>发现Tab打开次数</div>
       </div>

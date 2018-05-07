@@ -83,6 +83,9 @@ module API
 
           eaa.save
 
+          $redis.incr 'elastic_article_show_count'
+          $redis.incrby 'elastic_article_show_time', params[:stay_time]
+
           present :error, 0, alert: '操作成功'
         end
 

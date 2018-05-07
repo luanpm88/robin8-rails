@@ -12,11 +12,9 @@ module API
 	        # 首次查看campaign截图
 	        # 首次上传campaign截图
 	        if current_kol.finish_newbie
-	        	present :error, 0
-	        	present :alert, 'successfully'
+	        	present error: 0, alert: 'successfully'
 	        else
-	        	present :error, 1
-	        	present :detail, 'error'
+	        	present error: 1, detail: 'error'
 	        end
         end
 
