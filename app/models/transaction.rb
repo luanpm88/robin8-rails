@@ -93,7 +93,7 @@ class Transaction < ActiveRecord::Base
       when 'cps_writing_commission'
         "CPS写作佣金(#{self.item.cps_article.title})"
       when 'percentage_on_friend'
-        '徒弟带来的收益'
+        "徒弟(ID: #{opposite_id} #{opposite.try(:name)})通过活动(ID: #{item_id} #{item.try(:name)})带来的收益"
     end
   end
 
