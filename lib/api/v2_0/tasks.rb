@@ -1,0 +1,26 @@
+# coding: utf-8
+module API
+  module V2_0
+    class Tasks < Grape::API
+      resources :tasks do
+        before do
+          authenticate!
+        end
+
+        post 'finish_newbie' do
+	        # 首次分享campaign
+	        # 首次查看campaign截图
+	        # 首次上传campaign截图
+	        if current_kol.finish_newbie
+	        	present :error, 0
+	        	present :alert, 'successfully'
+	        else
+	        	present :error, 1
+	        	present :detail, 'error'
+	        end
+        end
+
+      end
+    end
+  end
+end
