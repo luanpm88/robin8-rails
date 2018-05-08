@@ -4,7 +4,7 @@ import {ShowError} from '../../shared/ShowError';
 export default class DetailPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    console.log('constructor', this.props);
+    console.log('constructor', props);
     _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange', 'handleInputChange']);
   }
 
@@ -59,11 +59,18 @@ export default class DetailPartial extends React.Component {
   }
 
   _handlePerBudgetInputChange() {
-    const { per_action_budget, per_budget_type, sub_type } = this.props;
-    const { onChange } = this.props.per_action_budget;
+    let that = this;
+    const { per_action_budget, per_budget_type, sub_type } = that.props;
+    const { onChange } = that.props.per_action_budget;
     $('.perBudget').change(function() {
+      let min_val = that.handleMin();
+      if ($(this).val() < that.handleMin()) {
+        $(this).trigger('touchspin.updatesettings', {
+          min: min_val
+        });
+      }
       onChange($(this).val());
-      console.log("per-budget-input changing", onChange($(this).val()))
+      console.log("per-budget-input changing", onChange($(this).val()));
     });
   }
 
