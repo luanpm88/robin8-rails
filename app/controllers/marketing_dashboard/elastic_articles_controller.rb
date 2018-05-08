@@ -6,6 +6,8 @@ class MarketingDashboard::ElasticArticlesController < MarketingDashboard::BaseCo
   end
 
   def kols
+  	@q    = Kol.ransack(params[:q])
+    @kols = @q.result.order('id DESC').paginate(paginate_params)
   end
   
 end

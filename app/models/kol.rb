@@ -10,6 +10,14 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
+  
+  # elastic_article_kol_detail
+  counter :redis_elastic_reads_count
+  counter :redis_elastic_collects_count
+  counter :redis_elastic_forwards_count
+  counter :redis_elastic_likes_count
+  counter :redis_elastic_stay_time
+
   include Concerns::PayTransaction
   include Concerns::Unionability
   include Concerns::KolCampaign
