@@ -150,21 +150,41 @@ module Concerns
       _count
     end
 
+    # def update_check_in
+    #   _continuous = continuous_attendance_days
+    #   _or = Date.today - 10.days
+    #   _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
+    #   case _last
+    #   when Date.yesterday
+    #     _continuous = (_continuous + 1) % 8
+    #     if _continuous == 0
+    #       _continuous = 1
+    #     end
+    #   else
+    #     _continuous = 1
+    #   end
+    #   update_columns(:continuous_attendance_days => _continuous)
+    #   return _continuous
+    # end
+
     def update_check_in
-      _continuous = continuous_attendance_days
-      _or = Date.today - 10.days
-      _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
-      case _last
-      when Date.yesterday
-        _continuous = (_continuous + 1) % 8
-        if _continuous == 0
+      Timecop.scale(1440) do
+        _continuous = self.continuous_attendance_days
+        _or = (DateTime.current - 30.minutes).strftime("%Y/%m/%d %I:%M")
+        _last = self.task_records.check_in.active.where("created_at < '#{DateTime.current.beginning_of_minute}'").last.try(:created_at).try(:strftime, "%Y/%m/%d %I:%M") || _or
+    
+        case _last
+        when (DateTime.current - 1.minutes).strftime("%Y/%m/%d %I:%M")
+          _continuous = (_continuous + 1) % 8
+          if _continuous == 0
+            _continuous = 1
+          end
+        else
           _continuous = 1
         end
-      else
-        _continuous = 1
+        update_columns(:continuous_attendance_days => _continuous)
+        return _continuous
       end
-      update_columns(:continuous_attendance_days => _continuous)
-      return _continuous
     end
 
     def total_check_in_amount
@@ -185,12 +205,44 @@ module Concerns
       already_amount
     end
 
+    # def today_can_amount
+    #   _continuous = continuous_attendance_days
+    #   _or = Date.today - 10.days
+    #   _last = self.task_records.check_in.active.last.try(:created_at).try(:to_date) || _or
+    #   case _last
+    #   when Date.yesterday
+    #     _continuous = (_continuous + 1) % 8
+    #     if _continuous == 0
+    #       _continuous = 1
+    #     end
+    #   else
+    #     _continuous = 1
+    #   end
+    #   _continuous
+
+    #   case _continuous
+    #   when 1
+    #     can_amount = 0.1
+    #   when 2
+    #     can_amount = 0.2
+    #   when 3
+    #     can_amount = 0.25
+    #   when 4
+    #     can_amount = 0.3
+    #   when 5
+    #     can_amount = 0.35
+    #   when 6
+    #     can_amount = 0.4
+    #   when 7
+    #     can_amount = 0.5
+    #   end
+    #   can_amount
+    # end
+
     def today_can_amount
       _continuous = continuous_attendance_days
-      _or = Date.today - 10.days
-      _last = self.task_records.check_in.active.last.try(:created_at).try(:to_date) || _or
-      case _last
-      when Date.yesterday
+      case task_records.check_in.active.last.created_at.to_datetime
+      when DateTime.current - 1.minutes
         _continuous = (_continuous + 1) % 8
         if _continuous == 0
           _continuous = 1
@@ -198,8 +250,7 @@ module Concerns
       else
         _continuous = 1
       end
-      _continuous
-
+    
       case _continuous
       when 1
         can_amount = 0.1
@@ -219,9 +270,30 @@ module Concerns
       can_amount
     end
 
+    # def tomorrow_can_amount
+    #   tomorrow_amount = 0
+    #   case self.today_already_amount
+    #   when 0.1
+    #     tomorrow_amount = 0.2
+    #   when 0.2
+    #     tomorrow_amount = 0.25
+    #   when 0.25
+    #     tomorrow_amount = 0.3
+    #   when 0.3
+    #     tomorrow_amount = 0.35
+    #   when 0.35
+    #     tomorrow_amount = 0.4
+    #   when 0.4
+    #     tomorrow_amount = 0.5
+    #   when 0.5
+    #     tomorrow_amount = 0.1
+    #   end
+    #   tomorrow_amount
+    # end
+
     def tomorrow_can_amount
       tomorrow_amount = 0
-      case self.today_already_amount
+      case self.today_can_amount
       when 0.1
         tomorrow_amount = 0.2
       when 0.2
