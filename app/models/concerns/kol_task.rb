@@ -34,13 +34,13 @@ module Concerns
     end
 
     def today_had_check_in?
-      self.task_records.check_in.order(created_at: :desc)[0].created_at > 2.minutes.ago
+      self.task_records.check_in.order(created_at: :desc)[0].created_at > 5.minutes.ago
       # self.task_records.active.check_in.today.size > 0
     end
 
     def yesterday_had_check_in?
-      if self.task_records.check_in.order(created_at: :desc)[0].created_at < 2.minutes.ago || continuous_attendance_days == 7
-      # if self.task_records.check_in.order(created_at: :desc)[0].created_at < 2.days.ago.beginning_of_day || continuous_attendance_days == 7
+      if self.task_records.check_in.order(created_at: :desc)[0].created_at < 5.minutes.ago || continuous_attendance_days == 7
+      # if self.task_records.check_in.order(created_at: :desc)[0].created_at < Time.now.yesterday.beginning_of_day || continuous_attendance_days == 7
         update_columns(continuous_attendance_days: 0)
         reload
       end
