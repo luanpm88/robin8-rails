@@ -11,7 +11,7 @@
     <div class="panel panel-success">
       <div class="panel-heading text-right">
         <div>
-          <span class="huge">212312.5</span>小时
+          <span class="huge"><%= format_hour($redis.get('elastic_article_show_time')) %></span>小时
         </div>
         <div>发现Tab停留时长</div>
       </div>
@@ -21,7 +21,7 @@
     <div class="panel panel-info">
       <div class="panel-heading text-right">
         <div>
-          <span class="huge">1993829</span>次
+          <span class="huge"><%= $redis.get('elastic_article_show_count') %></span>次
         </div>
         <div>发现Tab打开次数</div>
       </div>
@@ -34,35 +34,38 @@
     搜索过滤
   </div>
   <div id="searchPanel" class="panel-body">
-    <form class="form">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
             <label>KOL ID</label>
-            <%= search_field_tag "id", nil, class: "form-control", placeholder: "请输入内容" %>
+            <%= f.search_field :id_eq, class: "form-control", placeholder: "KOL ID" %>
           </div>
         </div>
+
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL 手机号码</label>
-            <%= search_field_tag "phone", nil, class: "form-control", placeholder: "请输入内容" %>
+            <label>KOL手机</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
           </div>
         </div>
+
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL 昵称</label>
-            <%= search_field_tag "name", nil, class: "form-control", placeholder: "请输入内容" %>
+            <label>KOL昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "KOL昵称" %>
           </div>
         </div>
+
         <div class="col-md-3">
           <label>&nbsp;</label>
           <div>
-            <%= submit_tag "搜索", class: "btn btn-primary" %>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
             <%= link_to "清除全部", request.path, class: "btn btn-default" %>
           </div>
         </div>
       </div>
-    </form>
+    <% end %>
   </div>
 </div>
 
@@ -75,23 +78,30 @@
         <th>昵称</th>
         <th>手机</th>
         <th>邮箱</th>
-        <th>使用发现Tab的时间（mins）</th>
+        <th class="text-center">阅读总时长(小时)</th>
+        <th class="text-center">阅读次数</th>
         <th class="text-center">点赞次数</th>
         <th class="text-center">分享次数</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="text-center"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="text-center"></td>
-        <td class="text-center"></td>
-      </tr>
+      <% @kols.each_with_index do |kol, index| %>
+        <tr>
+          <td class="text-center"><%= index %></td>
+          <td><%= kol.id %></td>
+          <td><%= kol.name %></td>
+          <td><%= kol.mobile_number %></td>
+          <td><%= kol.email %></td>
+          <td class="text-center"><%= format_hour(kol.redis_elastic_stay_time) %></td>
+          <td class="text-center"><%= kol.redis_elastic_reads_count %></td>
+          <td class="text-center"><%= kol.redis_elastic_likes_count %></td>
+          <td class="text-center"><%= kol.redis_elastic_forwards_count %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
+  <div class="pull-right">
+    <%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>
+  </div>
 </div>
 <!-- /.row -->
