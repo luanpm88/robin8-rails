@@ -1,4 +1,13 @@
 class ElasticArticle < ActiveRecord::Base
+	include Redis::Objects
+
+	counter :redis_reads_count
+	counter :redis_likes_count
+	counter :redis_collects_count
+	counter :redis_forwards_count
+
+	# self.redis_stay_time.incr(stay_time)
+	counter :redis_stay_time
 
 	belongs_to :tag
 
