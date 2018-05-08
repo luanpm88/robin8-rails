@@ -44,7 +44,7 @@ module Concerns
       end
     end
 
-    def reset_check_in_list
+    def check_in_7_had?
       if continuous_attendance_days == 7 && !today_had_check_in?
         update_columns(continuous_attendance_days: 0)
         reload
