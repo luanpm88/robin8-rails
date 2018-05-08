@@ -39,7 +39,7 @@ module Concerns
     end
 
     def yesterday_had_check_in?
-      if self.task_records.check_in.order(created_at: :desc)[0].created_at < 5.minutes.ago || continuous_attendance_days == 7
+      if self.task_records.check_in.order(created_at: :desc)[0].created_at < 7.minutes.ago || continuous_attendance_days == 7
       # if self.task_records.check_in.order(created_at: :desc)[0].created_at < Time.now.yesterday.beginning_of_day || continuous_attendance_days == 7
         update_columns(continuous_attendance_days: 0)
         reload
