@@ -62,29 +62,8 @@
       });
     }
 
-    $("#file0").change(function(){
-      var reader = new FileReader();
-      reader.onload = function(e){
-         image_base64 = e.target.result;
-         $('#preview0').attr("src", image_base64);
-      };
-      reader.readAsDataURL($(this)[0].files[0]);
-    });
-    $("#file1").change(function(){
-      var reader = new FileReader();
-      reader.onload = function(e){
-         image_base64 = e.target.result;
-         $('#preview1').attr("src", image_base64);
-      };
-      reader.readAsDataURL($(this)[0].files[0]);
-    });
-    $("#file2").change(function(){
-      var reader = new FileReader();
-      reader.onload = function(e){
-         image_base64 = e.target.result;
-         $('#preview2').attr("src", image_base64);
-      };
-      reader.readAsDataURL($(this)[0].files[0]);
-    });
+    previewUploadImg('#file0', '#preview0');
+    previewUploadImg('#file1', '#preview1');
+    previewUploadImg('#file2', '#preview2');
   });
 </script>
