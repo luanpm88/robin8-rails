@@ -34,11 +34,11 @@ module Concerns
     end
 
     def today_had_check_in?
-      task_records.check_in.where("created_at > ?", 5.minutes.ago).size > 0
+      task_records.check_in.where("created_at > ?", Time.now.beginning_of_day).size > 0
     end
 
     def yesterday_had_check_in?
-      if task_records.check_in.where("created_at > ?", 7.minutes.ago).size == 0
+      if task_records.check_in.where("created_at > ?", Time.now.yesterday.beginning_of_day).size == 0
         update_columns(continuous_attendance_days: 0)
         reload
       end
