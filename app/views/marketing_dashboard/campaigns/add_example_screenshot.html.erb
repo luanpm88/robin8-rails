@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-lg-12">
     <% if @campaign.example_screenshot_required? %>
-      <h1 class="page-header">请上传截图示例，并且添加备注</h1>
+      <h3 class="page-header">请上传截图示例，并且添加备注</h3>
     <% else %>
-      <h1 class="page-header">请添加具体要求</h1>
+      <h3 class="page-header">请添加具体要求</h3>
     <% end %>
 
     <form action="save_example_screenshot_and_remark" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -13,11 +13,11 @@
           <div class="col-sm-6 col-md-4">
             <div class="thumbnail file-upload">
               <div class="file-upload-preview">
-                <img id="preview<%= t %>" class="preview file-upload-preview" src="http://placehold.it/180" alt="your image"/>
+                <img id="preview<%= t %>" class="preview hide" src="" alt="your image"/>
               </div>
               <div class="caption">
                 <p>
-                  <input type="text" name="comment[]" placeholder="如需备注，请在此处加入" class="form-control" />
+                  <input type="text" name="comment[]" placeholder="请备注此截图（例如：上传朋友圈截图）" class="form-control" />
                 </p>
                 <div>
                   <label for="file<%= t %>" class="btn btn-primary btn-block">点击上传图片<%= t + 1%></label>
@@ -51,12 +51,16 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+    // var img_width = $('.file-upload-preview').outerWidth();
+    // console.log(img_width);
     function previewUploadImg(btn, preview) {
       $(btn).change(function(){
         var reader = new FileReader();
         reader.onload = function(e){
           image_base64 = e.target.result;
           $(preview).attr('src', image_base64);
+          $(preview).removeClass('hide');
+          // $(preview).outerHeight(img_width * 1.7786);
         };
         reader.readAsDataURL($(this)[0].files[0]);
       });
