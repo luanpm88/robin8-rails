@@ -38,7 +38,14 @@ module Concerns
     end
 
     def yesterday_had_check_in?
-      if task_records.check_in.where("created_at > ?", 7.minutes.ago).size == 0 || continuous_attendance_days == 7
+      if task_records.check_in.where("created_at > ?", 7.minutes.ago).size == 0
+        update_columns(continuous_attendance_days: 0)
+        reload
+      end
+    end
+
+    def check_in_7_had?
+      if continuous_attendance_days == 7 && !today_had_check_in?
         update_columns(continuous_attendance_days: 0)
         reload
       end
