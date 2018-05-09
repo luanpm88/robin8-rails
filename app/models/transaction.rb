@@ -16,7 +16,7 @@ class Transaction < ActiveRecord::Base
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
-  scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation')")}  #campaign_compensation
+  scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation', 'first_share_campaign', 'first_check_example', 'first_upload_invite')")}  #campaign_compensation
   scope :except_frozen, ->{where("direct != 'frozen' and direct != 'unfrozen'")}
   scope :income_transaction,   ->{where(direct: 'income')}
   scope :payout_transaction,   ->{where(direct: 'payout')}
