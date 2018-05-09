@@ -185,7 +185,7 @@ Rails.application.routes.draw do
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
       match '/permanent_frozen_alipay' => 'withdraws#permanent_frozen_alipay', via: [:post]
     end
-    resources :announcements, except: [:destroy]
+    resources :announcements
     resources :kol_announcements do
       member do
         get :switch
