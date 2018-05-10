@@ -238,7 +238,7 @@ module API
 
     def elastic_article_newest_post_id
       unless $redis.get("elastic_articles_newest_post_id")
-        $redis.setex("elastic_articles_newest_post_id", 43200, ElasticArticleExtend.get_new_post_id)
+        $redis.setex("elastic_articles_newest_post_id", 43200, ElasticArticleExtend.get_new)
       end
       
       $redis.get("elastic_articles_newest_post_id")
