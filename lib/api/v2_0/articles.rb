@@ -12,7 +12,7 @@ module API
           optional :_type, type: String
         end
         get '/' do
-          if params[:page] == '1'
+          if params[:page].to_i < 2
             $redis.set("elastic_articles_#{current_kol.id}", elastic_article_newest_post_id)
             $redis.set("elastic_articles_hot_#{current_kol.id}", elastic_article_newest_post_id)
           end
