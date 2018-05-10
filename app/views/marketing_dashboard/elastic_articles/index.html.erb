@@ -11,7 +11,7 @@
     <div class="panel panel-success">
       <div class="panel-heading text-right">
         <div>
-          <span class="huge"><%= format_hour($redis.get('elastic_article_show_time')) %></span>小时
+          <span class="huge"><%= $redis.get('elastic_article_show_time') %></span>
         </div>
         <div>发现Tab停留时长</div>
       </div>
@@ -74,7 +74,7 @@
         <th>Content ID</th>
         <th>Title</th>
         <th>标签</th>
-        <th class="text-center">阅读总时长(小时)</th>
+        <th class="text-center">阅读总时长(/时/分/秒)</th>
         <th class="text-center">阅读次数</th>
         <th class="text-center">点赞次数</th>
         <th class="text-center">分享次数</th>
@@ -87,7 +87,7 @@
           <td><%= ea.post_id %></td>
           <td><%= ea.title %></td>
           <td><%= ea.tag.try(:label) %></td>
-          <td class="text-center"><%= format_hour(ea.redis_stay_time) %></td>
+          <td class="text-center"><%= format_hms(ea.redis_stay_time.value) %></td>
           <td class="text-center"><%= ea.redis_reads_count %></td>
           <td class="text-center"><%= ea.redis_likes_count %></td>
           <td class="text-center"><%= ea.redis_forwards_count %></td>
