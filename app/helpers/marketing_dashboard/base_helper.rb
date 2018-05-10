@@ -45,6 +45,10 @@ module MarketingDashboard::BaseHelper
     content_tag(:span, time.strftime("%Y-%m-%d %H:%M"), class: cls)
   end
 
+  def format_hour(time)
+    format('%.2f', time.to_f/3600)
+  end
+
   private
   def parse_and_send r, x
     if x.include? '_id'

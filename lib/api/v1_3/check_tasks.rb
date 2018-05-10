@@ -18,6 +18,11 @@ module API
 
         #新签到历史接口
         get 'check_in_history' do
+          # 验证昨天是否签到，如果没有，重置为0
+          current_kol.yesterday_had_check_in?
+          # 满7天且今日未签到重置为0
+          current_kol.check_in_7_had?
+
           present :error, 0
           present :continuous_checkin_count,current_kol.continuous_attendance_days
           present :today_had_check_in,      current_kol.today_had_check_in?

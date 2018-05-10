@@ -173,7 +173,7 @@ module Concerns
     end
 
     def avg_campaign_credit
-      campaign_total_income / self.campaign_invites.settled.count
+      campaign_invites.settled.count == 0 ? 0.0 : (campaign_total_income/campaign_invites.settled.count)
     end
   end
 end

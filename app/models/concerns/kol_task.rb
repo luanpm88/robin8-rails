@@ -34,7 +34,21 @@ module Concerns
     end
 
     def today_had_check_in?
-      self.task_records.active.check_in.today.size > 0
+      task_records.check_in.where("created_at > ?", Time.now.beginning_of_day).size > 0
+    end
+
+    def yesterday_had_check_in?
+      if task_records.check_in.where("created_at > ?", Time.now.yesterday.beginning_of_day).size == 0
+        update_columns(continuous_attendance_days: 0)
+        reload
+      end
+    end
+
+    def check_in_7_had?
+      if continuous_attendance_days == 7 && !today_had_check_in?
+        update_columns(continuous_attendance_days: 0)
+        reload
+      end
     end
 
     def today_invite_count
@@ -49,8 +63,10 @@ module Concerns
 
     #新的签到方法
     def new_check_in
-      task_record = self.task_records.create(:task_type => RewardTask::CheckIn, :status => 'active')
-      task_record.new_sync_to_transaction
+      ActiveRecord::Base.transaction do
+        task_record = self.task_records.create(task_type: RewardTask::CheckIn, status: 'active')
+        task_record.new_sync_to_transaction
+      end
     end
 
     def invite_count
@@ -150,95 +166,123 @@ module Concerns
       _count
     end
 
+    # def update_check_in
+    #   _continuous = continuous_attendance_days
+    #   _or = Date.today - 10.days
+    #   _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
+    #   case _last
+    #   when Date.yesterday
+    #     _continuous = (_continuous + 1) % 8
+    #     if _continuous == 0
+    #       _continuous = 1
+    #     end
+    #   else
+    #     _continuous = 1
+    #   end
+    #   update_columns(:continuous_attendance_days => _continuous)
+    #   return _continuous
+    # end
+
+    # def total_check_in_amount
+    #   total_amount = 0
+    #   self.transactions.where(subject:"check_in").map do |t|
+    #     total_amount += t.credits.to_f.round(2)
+    #   end
+    #   total_amount.round(2)
+    # end
+
+    # def today_already_amount
+    #     already_amount = 0
+    #   if today_had_check_in?
+    #     already_amount = self.transactions.where(subject:"check_in").where(:created_at => Date.today.beginning_of_day..Date.today.end_of_day).first.credits.to_f
+    #   else
+    #     already_amount = 0
+    #   end
+    #   already_amount
+    # end
+
+    # def today_can_amount
+    #   _continuous = continuous_attendance_days
+    #   _or = Date.today - 10.days
+    #   _last = self.task_records.check_in.active.last.try(:created_at).try(:to_date) || _or
+    #   case _last
+    #   when Date.yesterday
+    #     _continuous = (_continuous + 1) % 8
+    #     if _continuous == 0
+    #       _continuous = 1
+    #     end
+    #   else
+    #     _continuous = 1
+    #   end
+    #   _continuous
+
+    #   case _continuous
+    #   when 1
+    #     can_amount = 0.1
+    #   when 2
+    #     can_amount = 0.2
+    #   when 3
+    #     can_amount = 0.25
+    #   when 4
+    #     can_amount = 0.3
+    #   when 5
+    #     can_amount = 0.35
+    #   when 6
+    #     can_amount = 0.4
+    #   when 7
+    #     can_amount = 0.5
+    #   end
+    #   can_amount
+    # end
+
+    # def tomorrow_can_amount
+    #   tomorrow_amount = 0
+    #   case self.today_already_amount
+    #   when 0.1
+    #     tomorrow_amount = 0.2
+    #   when 0.2
+    #     tomorrow_amount = 0.25
+    #   when 0.25
+    #     tomorrow_amount = 0.3
+    #   when 0.3
+    #     tomorrow_amount = 0.35
+    #   when 0.35
+    #     tomorrow_amount = 0.4
+    #   when 0.4
+    #     tomorrow_amount = 0.5
+    #   when 0.5
+    #     tomorrow_amount = 0.1
+    #   end
+    #   tomorrow_amount
+    # end
+
+    # new check in methods evan: 2018-5-8 start
     def update_check_in
-      _continuous = continuous_attendance_days
-      _or = Date.today - 10.days
-      _last = self.task_records.check_in.active.where("created_at < '#{Date.today}'").last.try(:created_at).try(:to_date) || _or
-      case _last
-      when Date.yesterday
-        _continuous = (_continuous + 1) % 8
-        if _continuous == 0
-          _continuous = 1
-        end
+      if continuous_attendance_days < 7
+        update_columns(continuous_attendance_days: continuous_attendance_days.succ)
       else
-        _continuous = 1
+        update_columns(continuous_attendance_days: 1)
       end
-      update_columns(:continuous_attendance_days => _continuous)
-      return _continuous
+
+      continuous_attendance_days
     end
 
     def total_check_in_amount
-      total_amount = 0
-      self.transactions.where(subject:"check_in").map do |t|
-        total_amount += t.credits.to_f.round(2)
-      end
-      total_amount.round(2)
+      transactions.where(subject: 'check_in').sum(:credits).round(2)
     end
 
     def today_already_amount
-        already_amount = 0
-      if today_had_check_in?
-        already_amount = self.transactions.where(subject:"check_in").where(:created_at => Date.today.beginning_of_day..Date.today.end_of_day).first.credits.to_f
-      else
-        already_amount = 0
-      end
-      already_amount
+      today_had_check_in? ? self.transactions.where(subject: 'check_in')[0].credits.to_f : 0
     end
 
     def today_can_amount
-      _continuous = continuous_attendance_days
-      _or = Date.today - 10.days
-      _last = self.task_records.check_in.active.last.try(:created_at).try(:to_date) || _or
-      case _last
-      when Date.yesterday
-        _continuous = (_continuous + 1) % 8
-        if _continuous == 0
-          _continuous = 1
-        end
-      else
-        _continuous = 1
-      end
-      _continuous
-
-      case _continuous
-      when 1
-        can_amount = 0.1
-      when 2
-        can_amount = 0.2
-      when 3
-        can_amount = 0.25
-      when 4
-        can_amount = 0.3
-      when 5
-        can_amount = 0.35
-      when 6
-        can_amount = 0.4
-      when 7
-        can_amount = 0.5
-      end
-      can_amount
+      today_had_check_in? ? 0 : [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5][continuous_attendance_days]
     end
 
     def tomorrow_can_amount
-      tomorrow_amount = 0
-      case self.today_already_amount
-      when 0.1
-        tomorrow_amount = 0.2
-      when 0.2
-        tomorrow_amount = 0.25
-      when 0.25
-        tomorrow_amount = 0.3
-      when 0.3
-        tomorrow_amount = 0.35
-      when 0.35
-        tomorrow_amount = 0.4
-      when 0.4
-        tomorrow_amount = 0.5
-      when 0.5
-        tomorrow_amount = 0.1
-      end
-      tomorrow_amount
+      [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.1][continuous_attendance_days]
     end
+    # new check in methods evan: 2018-5-8 end
 
     def profile_complete?
       avatar_url.present? && name.present? && gender.present? && gender != 0 && age.present? && app_city.present? && tags.size > 0 &&
@@ -251,6 +295,18 @@ module Concerns
 
     def check_in_7
       Array.new(continuous_attendance_days, true) + Array.new(7 - continuous_attendance_days, false)
+    end
+
+    def finish_newbie
+      RewardTask::NewbieTasks.each do |k, v|
+        task_record = self.task_records.find_or_initialize_by(task_type: k.to_s, status: 'active')
+        if task_record.new_record?
+          task_record.save
+          self.income(v, k.to_s, self)
+        else
+          return false
+        end
+      end
     end
 
   end

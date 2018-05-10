@@ -23,7 +23,8 @@
         <td><%= image_tag announcement.banner.url('200') %></td>
         <td><%= link_to announcement.url,announcement.url %></td>
         <td>
-            <%= link_to 'Destroy', marketing_dashboard_announcement_path(announcement), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <%= link_to 'Edit', edit_marketing_dashboard_announcement_path(announcement), method: :get %>
+          <%= link_to 'Destroy', marketing_dashboard_announcement_path(announcement), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

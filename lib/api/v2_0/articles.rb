@@ -12,7 +12,7 @@ module API
           optional :_type, type: String
         end
         get '/' do
-          if params[:page] == '1'
+          if params[:page].to_i < 2
             $redis.set("elastic_articles_#{current_kol.id}", elastic_article_newest_post_id)
             $redis.set("elastic_articles_hot_#{current_kol.id}", elastic_article_newest_post_id)
           end
@@ -58,13 +58,15 @@ module API
 
           if params[:_action] == 'add'
             if eaa.new_record?
-              eaa.save 
-              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=1)
+              eaa.save
+              eaa.elastic_article.send("redis_#{params[:_type]}s_count").increment if eaa.elastic_article
+              current_kol.send("redis_elastic_#{params[:_type]}s_count").increment
             end
           else
             if eaa
               eaa.destroy
-              $redis.hincrby("elastic_article_#{eaa.post_id}", params[:_type], amount=-1)
+              eaa.elastic_article.send("redis_#{params[:_type]}s_count").decrement if eaa.elastic_article
+              current_kol.send("redis_elastic_#{params[:_type]}s_count").decrement
             end
           end
 
@@ -82,6 +84,17 @@ module API
           eaa.stay_time = params[:stay_time]
 
           eaa.save
+
+          if eaa.elastic_article
+            eaa.elastic_article.redis_reads_count.increment
+            eaa.elastic_article.redis_stay_time.incr(eaa.stay_time)
+          end
+
+          $redis.incr 'elastic_article_show_count'
+          $redis.incrby 'elastic_article_show_time', params[:stay_time]
+
+          current_kol.redis_elastic_reads_count.increment
+          current_kol.redis_elastic_stay_time.incr(eaa.stay_time)
 
           present :error, 0, alert: '操作成功'
         end
