@@ -46,7 +46,8 @@
 
   .link-to-show-page {
     display: block;
-    width: 100px;
+    // width: 100px;
+    padding-right: 140px;
   }
 
   .brand-activity-content {
@@ -62,6 +63,7 @@
       margin-bottom: 10px;
       font-size: 22px;
       white-space: nowrap;
+      overflow: hidden;
     }
     .label {
       margin-left: 5px;

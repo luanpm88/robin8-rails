@@ -95,6 +95,12 @@ class Transaction < ActiveRecord::Base
         "CPS写作佣金(#{self.item.cps_article.title})"
       when 'percentage_on_friend'
         "徒弟(ID: #{opposite_id} #{opposite.try(:name)})通过活动(ID: #{item_id} #{item.try(:name)})带来的收益"
+      when 'first_share_campaign'
+        '首次分享内容奖励'
+      when 'first_check_example'
+        '首次查看截图奖励'
+      when 'first_upload_invite'
+        '首次上传截图奖励'
     end
   end
 

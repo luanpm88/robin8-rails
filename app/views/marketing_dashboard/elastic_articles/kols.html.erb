@@ -6,28 +6,7 @@
 </div>
 
 <!-- /.row -->
-<div class="row">
-  <div class="col-lg-3 col-md-6">
-    <div class="panel panel-success">
-      <div class="panel-heading text-right">
-        <div>
-          <span class="huge"><%= format_hour($redis.get('elastic_article_show_time')) %></span>小时
-        </div>
-        <div>发现Tab停留时长</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6">
-    <div class="panel panel-info">
-      <div class="panel-heading text-right">
-        <div>
-          <span class="huge"><%= $redis.get('elastic_article_show_count') %></span>次
-        </div>
-        <div>发现Tab打开次数</div>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render 'statistics' %>
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -78,7 +57,7 @@
         <th>昵称</th>
         <th>手机</th>
         <th>邮箱</th>
-        <th class="text-center">阅读总时长(小时)</th>
+        <th class="text-center">阅读总时长(/时/分/秒)</th>
         <th class="text-center">阅读次数</th>
         <th class="text-center">点赞次数</th>
         <th class="text-center">分享次数</th>
@@ -92,7 +71,7 @@
           <td><%= kol.name %></td>
           <td><%= kol.mobile_number %></td>
           <td><%= kol.email %></td>
-          <td class="text-center"><%= format_hour(kol.redis_elastic_stay_time) %></td>
+          <td class="text-center"><%= format_hms(kol.redis_elastic_stay_time.value) %></td>
           <td class="text-center"><%= kol.redis_elastic_reads_count %></td>
           <td class="text-center"><%= kol.redis_elastic_likes_count %></td>
           <td class="text-center"><%= kol.redis_elastic_forwards_count %></td>
@@ -105,3 +84,30 @@
   </div>
 </div>
 <!-- /.row -->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // 倒计时函数
+    function countDownTimer(countObj, intDiff) {
+      var day = 0,
+          hour = 0,
+          minute = 0,
+          second = 0;//时间默认值
+      if(intDiff > 0){
+        day = Math.floor(intDiff / (60 * 60 * 24));
+        hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+      }
+      if (minute <= 9) minute = '0' + minute;
+      if (second <= 9) second = '0' + second;
+      // countObj.find('.day-show').html(day);
+      countObj.find('.hour-show').html(hour);
+      countObj.find('.minute-show').html(minute);
+      countObj.find('.second-show').html(second);
+    }
+
+    var tab_stay_times = $('#tab_stay_times').data('time');
+    countDownTimer($('#tab_stay_times'), tab_stay_times);
+  });
+</script>
