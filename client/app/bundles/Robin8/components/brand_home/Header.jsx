@@ -19,15 +19,15 @@ export default class BrandHeader extends React.Component {
         <div className="container-fluid">
           <div className="brand-logo">
             <Link to={`/brand/${brand.get('id')}/edit`}>
-              {
+              <img src={ !!brand.get('avatar_url') ? brand.get('avatar_url') : require('brand-profile-pic.jpg') } ref="logo" />
+              {/*
                 do {
                   if(brand.get('avatar_url'))
                     <img src={ brand.get('avatar_url') } />
                   else
                     <img ref="logo" src={require('brand-profile-pic.jpg')} />
                 }
-              }
-
+              */}
             </Link>
           </div>
           <div className="brand-content">
