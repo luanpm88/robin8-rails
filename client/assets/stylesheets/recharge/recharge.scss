@@ -49,12 +49,12 @@
 
     .account-info,.recharge-online,.recharge-offline {
       .detail {
+        padding-bottom: 30px;
         margin-top: 30px;
         margin-left: 121px;
       }
     }
     .account-info .detail{
-      height: 103px;
       img {
         width: 70px;
         height: 70px;
@@ -63,11 +63,11 @@
         box-shadow: 3.5px 6.062px 13px 1px rgba(0, 0, 0, 0.15)
       }
       div {
-        height: 70px;
-        padding-top: 7px;
         margin-left: 100px;
 
         p {
+          line-height: 20px;
+          margin-bottom: 6px;
           font-size: 14px;
           color: #181616;
 
@@ -75,6 +75,10 @@
             margin-left: 15px;
             font-size: 18px;
           }
+        }
+
+        .brand-name {
+          margin-bottom: 20px;
         }
 
         .account-balance {
@@ -159,12 +163,13 @@
           font-size: 12px;
         }
         .error-tips {
-          margin-left: 96px;
-          height: 15px;
+          // margin-left: 96px;
+          // height: 15px;
+          margin: 0;
           p {
             display: none;
             color: rgb(206, 1, 1);
-            margin-top: 8px;
+            // margin-top: 8px;
             font-size: 13px;
           }
         }
@@ -191,6 +196,30 @@
             background-color: #2dcad0;
             color: #fff;
           }
+        }
+      }
+
+      .recharge-amount-item {
+        width: 100%;
+        .control-label {
+          line-height: 34px;
+          padding: 0;
+          text-align: left;
+          font-size: 14px;
+          font-weight: normal;
+        }
+        .control-box {
+          line-height: 34px;
+          padding: 0 5px;
+          font-size: 14px;
+        }
+        .form-control {
+          width: 100%;
+          margin: 0;
+        }
+        .recharge-type-img {
+          height: 34px;
+          margin: 0;
         }
       }
     }
