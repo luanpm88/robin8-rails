@@ -19,7 +19,7 @@ module Open
           requires :deadline,          type: DateTime
           requires :per_budget_type,   type: String, values: ['simple_cpi', 'post', 'click']
           optional :enable_append_push,type: Boolean, default: true
-          # requires :activity_id,       type: String
+          requires :activity_id,       type: String
 
           requires :poster_url,        type: String
           optional :screenshot_url,    type: String
@@ -54,9 +54,9 @@ module Open
             error!({ success: false, error: '账户余额不够，请联系客服充值' }, 400) and return
           end
 
-          # if current_user.campaigns.pluck(:activity_id).include?(params[:activity_id])
-          #   error!({ success: false, error: 'activity_id 相同的活动已存在' }, 400) and return
-          # end
+          if current_user.campaigns.pluck(:activity_id).include?(params[:activity_id])
+            error!({ success: false, error: 'activity_id 相同的活动已存在' }, 400) and return
+          end
 
           # if current_user.campaigns.where(status: %w(unpay unexecute), name: params[:name]).exists?
           #   error!({ success: false, error: '已经存在同名的未开始的活动' }, 400) and return

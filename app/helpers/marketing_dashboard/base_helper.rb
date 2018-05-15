@@ -45,6 +45,14 @@ module MarketingDashboard::BaseHelper
     content_tag(:span, time.strftime("%Y-%m-%d %H:%M"), class: cls)
   end
 
+  def format_hms(time)
+    h = time / 3600
+    m = (time - h * 3600) / 60
+    s = (time - h * 3600) % 60
+
+    "#{h}时#{m}分#{s}秒"
+  end
+
   private
   def parse_and_send r, x
     if x.include? '_id'

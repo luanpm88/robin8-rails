@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">内容数据</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<!-- /.row -->
+<%= render 'statistics' %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Content ID</label>
+            <%= f.search_field :post_id_cont, class: "form-control", placeholder: "请输入内容" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Title</label>
+            <%= f.search_field :title_cont, class: "form-control", placeholder: "请输入内容" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>标签</label>
+            <%= f.select :tag_label_cont, Tag.pluck(:label).uniq, {include_blank: true}, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= submit_tag "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div>
+  <table class='table table-bordered'>
+    <thead>
+      <tr>
+        <th class="text-center">序号</th>
+        <th>Content ID</th>
+        <th>Title</th>
+        <th>标签</th>
+        <th class="text-center">阅读总时长(/时/分/秒)</th>
+        <th class="text-center">阅读次数</th>
+        <th class="text-center">点赞次数</th>
+        <th class="text-center">分享次数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @elastic_articles.each_with_index do |ea, index| %>
+        <tr>
+          <td class="text-center"><%= index.succ %></td>
+          <td><%= ea.post_id %></td>
+          <td><%= ea.title %></td>
+          <td><%= ea.tag.try(:label) %></td>
+          <td class="text-center"><%= format_hms(ea.redis_stay_time.value) %></td>
+          <td class="text-center"><%= ea.redis_reads_count %></td>
+          <td class="text-center"><%= ea.redis_likes_count %></td>
+          <td class="text-center"><%= ea.redis_forwards_count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="pull-right">
+    <%= will_paginate @elastic_articles, renderer: BootstrapPagination::Rails  %>
+  </div>
+</div>
+<!-- /.row -->

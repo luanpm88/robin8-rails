@@ -112,22 +112,22 @@ every 1.day, :at => '20:30 pm' do
 end
 
 #================cps===================
-every 10.minutes do
-  runner "Jd::SyncOrder.schedule_sync"
-  runner "Jd::SyncCommission.schedule_sync"
-end
+# every 10.minutes do
+#   runner "Jd::SyncOrder.schedule_sync"
+#   runner "Jd::SyncCommission.schedule_sync"
+# end
 
-every 1.hours do
-  runner "Jd::SyncOrder.schedule_sync"
-  runner "Jd::SyncCommission.schedule_sync"
-end
+# every 1.hours do
+#   runner "Jd::SyncOrder.schedule_sync"
+#   runner "Jd::SyncCommission.schedule_sync"
+# end
 
-every 1.day, :at => '0:40 am' do
-  runner "Jd::SyncOrder.schedule_sync_history(10)"
-  runner "Jd::SyncCommission.schedule_sync_history(10)"
-  runner "Jd::Settle.schedule_settle"
-  runner "Jd::OffShelf.go"
-end
+# every 1.day, :at => '0:40 am' do
+#   runner "Jd::SyncOrder.schedule_sync_history(10)"
+#   runner "Jd::SyncCommission.schedule_sync_history(10)"
+#   runner "Jd::Settle.schedule_settle"
+#   runner "Jd::OffShelf.go"
+# end
 
 # auto check and  start unicorn when unicorn is down
 #Notice :slave server not exec crontab(no join whenever role),admin need manual exec(need delete others task)

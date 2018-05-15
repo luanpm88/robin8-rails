@@ -107,6 +107,7 @@ module API
               current_kol.update_column(:name, Kol.hide_real_mobile_number(params[:mobile_number]))    if current_kol.name.blank?
               current_kol.reset_private_token
               present :error, 0
+              present :is_new_member, true
               present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
             end
           end

@@ -19,7 +19,17 @@ class ElasticArticleExtend
     client.transport.reload_connections!
   end
 
-	def self.get_by_tags(kol, post_date)
+  def self.get_new
+  	res = client.search index: 'weibo_post_v4',
+												body: {
+													size: 1,
+													sort: [{post_date: {order: 'desc'}}]
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}[0]['post_id']
+  end
+
+	def self.get_by_tags(kol, post_id)
 		tags = kol.tags.map(&:name).join(' OR ')
 		tags = Tag.all.map(&:name).join(' OR ') if tags == ""
 
@@ -27,7 +37,7 @@ class ElasticArticleExtend
 								bool: {
 									must: [
 										{
-											range: {post_date: {lt: post_date}}
+											range: {post_id: {lt: post_id}}
 										},
 										{
 											query_string: {
@@ -41,11 +51,16 @@ class ElasticArticleExtend
 									]
 								}
 							}
+
+		_sort = [
+							{post_date: {order: 'desc'}},
+							{shares: {order: 'desc'}}
+						]
 								
 		res = client.search index: 'weibo_post_v4',
 												body: {
 													query: _query,
-													sort: [{post_date: {order: 'desc'}}]
+													sort: _sort
 												}
 
     res['hits']['hits'].collect{|t| t["_source"]}
@@ -86,6 +101,41 @@ class ElasticArticleExtend
 		res = client.search index: 'weibo_post_v4',
 												body: {
 													query: _query
+												}
+
+    res['hits']['hits'].collect{|t| t["_source"]}
+	end
+
+	def self.recommend_by_tag(tag, post_id)
+		_query = 	{
+								bool: {
+									must: [
+										{
+											range: {post_id: {lt: post_id}}
+										},
+										{
+											query_string: {
+												default_field: 'top_industry',
+												query: tag
+											}
+										},
+										{
+											match: {is_retweet: 0}
+										}
+									]
+								}
+							}
+
+		_sort = [
+							{comments: {order: 'desc'}},
+							{post_date: {order: 'desc'}}
+						]
+								
+		res = client.search index: 'weibo_post_v4',
+												body: {
+													query: _query,
+													size: 3,
+													sort: _sort
 												}
 
     res['hits']['hits'].collect{|t| t["_source"]}

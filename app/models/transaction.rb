@@ -11,11 +11,12 @@ class Transaction < ActiveRecord::Base
   USER_CAMPAIGN_PAYOUT_SUBJECTS = ['campaign', 'campaign_pay_by_alipay']
   USER_CAMPAIGN_INCOME_SUBJECTS = ['campaign_revoke', 'campaign_refund']
   KOL_INCOME_SUBJECTS = ['campaign', 'check_in', 'invite_friend', 'complete_info', 'favorable_comment',
-                         'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission', 'percentage_on_friend']
+                         'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission',
+                         'percentage_on_friend', 'first_share_campaign', 'first_check_example', 'first_upload_invite']
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
-  scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation')")}  #campaign_compensation
+  scope :realtime_transaction, ->{where("subject in ('check_in', 'invite_friend', 'complete_info', 'campaign_compensation', 'first_share_campaign', 'first_check_example', 'first_upload_invite')")}  #campaign_compensation
   scope :except_frozen, ->{where("direct != 'frozen' and direct != 'unfrozen'")}
   scope :income_transaction,   ->{where(direct: 'income')}
   scope :payout_transaction,   ->{where(direct: 'payout')}
@@ -37,7 +38,7 @@ class Transaction < ActiveRecord::Base
                         check_in invite_friend complete_info favorable_comment lettory_activity campaign_tax campaign_used_voucher
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
-                        cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate percentage_on_friend)
+                        cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate percentage_on_friend first_share_campaign first_check_example first_upload_invite)
 
   # subject
   # manual_recharge manual_withdraw
@@ -93,7 +94,13 @@ class Transaction < ActiveRecord::Base
       when 'cps_writing_commission'
         "CPS写作佣金(#{self.item.cps_article.title})"
       when 'percentage_on_friend'
-        '徒弟带来的收益'
+        "徒弟(ID: #{opposite_id} #{opposite.try(:name)})通过活动(ID: #{item_id} #{item.try(:name)})带来的收益"
+      when 'first_share_campaign'
+        '首次分享内容奖励'
+      when 'first_check_example'
+        '首次查看截图奖励'
+      when 'first_upload_invite'
+        '首次上传截图奖励'
     end
   end
 

@@ -112,7 +112,7 @@
       <div class="dia-content" style="text-align: center;">
         <% unless request.user_agent =~ /MicroMessenger/ %>
           <h2 class="title-ro">截图后去微信扫一扫！</h2>
-          <%= raw Rails.cache.fetch("partner_campaign/alizhongbao/#{params[:userId]}/#{params[:id]}/qr_svg", expires_in: 3.hours){RQRCode::QRCode.new(request.url, size: 12, level: :h).as_svg(module_size: 3)} %>
+          <%= raw Rails.cache.fetch("partner_campaign/alizhongbao/#{params[:userId]}/#{params[:id]}/qr_svg", expires_in: 3.hours){RQRCode::QRCode.new(request.url.gsub(/http/, 'https'), size: 12, level: :h).as_svg(module_size: 3)} %>
         <% else %>
           <% if @campaign_invite.try(:azb_shared) %>
             <h2 class="title-ro">再次分享可以获得更多点击</h2>
@@ -200,7 +200,7 @@
         <button class=" btn-blue-ro width100" onclick="closeDialog('dialog02')">知道了</button>
       </div>
     </div>
-    <section class="content-ro" style="overflow: auto; position: fixed; bottom: 0">
+    <section class="content-ro" style="overflow: auto; position: fixed; padding: 10px; bottom: 10%; background-color: rgba(255, 255, 255, .9); box-shadow: 0 0 10px rgba(0,0,0,.6); z-index: 10;">
       <section class="content-ro" style="height: 6rem; margin-bottom: 0;">
         <h2 class="title-ro" style="border: 1px solid #6a6a6a;
         padding-top: 10px; padding-bottom: 10px; color: #6a6a6a;

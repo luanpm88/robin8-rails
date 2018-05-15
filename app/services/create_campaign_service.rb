@@ -1,6 +1,6 @@
 class CreateCampaignService
   include CampaignHelper::RecruitCampaignServicePartial
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target, :sub_type, :example_screenshot_count]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target, :sub_type, :example_screenshot_count, :enable_append_push]
 
   attr_reader :errors, :campaign
 
@@ -32,6 +32,7 @@ class CreateCampaignService
     @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:enable_append_push] = @campaign_params[:enable_append_push] == 'false' ? false : true
 
     if @errors.size > 0
       return false

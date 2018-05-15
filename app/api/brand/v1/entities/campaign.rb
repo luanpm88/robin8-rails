@@ -7,9 +7,13 @@ module Brand
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
                :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,
-               :example_screenshot_count
+               :example_screenshot_count, :enable_append_push
 
         expose :user, using: Entities::User
+
+        expose :enable_append_push do |object|
+          object.enable_append_push.to_s
+        end
 
         expose :per_budget_collect_type do |object|
           if %w(cpa cpi).include? object.per_budget_type
@@ -55,7 +59,7 @@ module Brand
         expose :share_time do |object, opts|
           object.get_share_time
         end
-        expose :take_budget
+
         expose :remain_budget
 
         expose :materials do |object, opts|

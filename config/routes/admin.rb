@@ -185,7 +185,7 @@ Rails.application.routes.draw do
       match '/permanent_frozen' => 'withdraws#permanent_frozen', via: [:post]
       match '/permanent_frozen_alipay' => 'withdraws#permanent_frozen_alipay', via: [:post]
     end
-    resources :announcements, except: [:destroy]
+    resources :announcements
     resources :kol_announcements do
       member do
         get :switch
@@ -253,6 +253,12 @@ Rails.application.routes.draw do
     resources :alipay_account_blacklists do
       member do
         get :disban
+      end
+    end
+
+    resources :elastic_articles, only: [:index] do
+      collection do
+        get :kols
       end
     end
 

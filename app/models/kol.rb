@@ -10,6 +10,14 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
+  
+  # elastic_article_kol_detail
+  counter :redis_elastic_reads_count
+  counter :redis_elastic_collects_count
+  counter :redis_elastic_forwards_count
+  counter :redis_elastic_likes_count
+  counter :redis_elastic_stay_time
+
   include Concerns::PayTransaction
   include Concerns::Unionability
   include Concerns::KolCampaign
@@ -515,6 +523,7 @@ class Kol < ActiveRecord::Base
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
+      Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
       retries = true
       begin
         kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
@@ -531,14 +540,16 @@ class Kol < ActiveRecord::Base
         end
       end
     else
-      kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+      _hash = {mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA],
                         name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
-                        longitude: params[:longitude], latitude: params[:latitude])
-      kol.update_attribute(:avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
+                        longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
+           
+      _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
+      kol = Kol.create!(_hash)
     end
     kol
   end

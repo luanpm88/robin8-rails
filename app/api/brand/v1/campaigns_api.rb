@@ -100,6 +100,7 @@ module Brand
               optional :short_url             , type: String
               optional :action_url_identifier , type: String
             end
+            requires :enable_append_push, type: String
           end
           post do
             if params[:budget].to_i < MySettings.campaign_min_budget.to_i
@@ -215,6 +216,7 @@ module Brand
               optional :short_url             , type: String
               optional :action_url_identifier , type: String
             end
+            requires :enable_append_push, type: String
           end
           put ':id' do
             if params[:budget].to_i < MySettings.campaign_min_budget.to_i

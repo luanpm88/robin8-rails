@@ -28,7 +28,7 @@ module API
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
             ids = current_kol.receive_campaign_ids.values
             search_criteria = ['unexecuted', 'agreed']
-            search_criteria.push "countdown" if current_kol.app_version < "2.3.2"
+            search_criteria.push "countdown" if current_kol.app_version >= "2.3.2"
             # search_criteria = current_kol.app_version >= "2.3.2" ? "status != 'unexecuted' and status != 'agreed' and status != 'countdown'" : "status != 'unexecuted' and status != 'agreed'"
             # @campaigns = Campaign.where(search_criteria).where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
             @campaigns = Campaign.where.not(status: search_criteria).where(:id => ids).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
@@ -132,6 +132,8 @@ module API
           # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
+          Rails.logger.geometry.info "---params:#{params}---kol:#{current_kol}---" if current_kol.admintags.include? Admintag.find(429)
+
           return error_403!({error: 1, detail: '该账户存在异常,请联系客服!' }) if current_kol.is_forbid?
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
@@ -140,7 +142,6 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           # elsif campaign_invite.can_upload_screenshot
           elsif true
-
             if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
             else
