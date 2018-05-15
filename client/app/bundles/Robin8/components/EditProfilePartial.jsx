@@ -142,7 +142,7 @@ class EditProfilePartial extends Component {
 
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
-                  <div className="control-input" style={{textAlign: 'left', paddingTop: '10px'}}>
+                  <div className="control-input">
                     <Keyword field={keywords} />
                   </div>
                 </div>
