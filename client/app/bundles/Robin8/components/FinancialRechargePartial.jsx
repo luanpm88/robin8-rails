@@ -190,7 +190,7 @@ class FinancialRechargePartial extends React.Component {
                       <label className="col-sm-2 control-label label-small">此次促销活动赠送:</label>
                       <div className="col-sm-6 control-box">
                         <div className="input-group">
-                          <input type="text" className="form-control input-small" placeholder="请输入积分" />
+                          <input type="text" className="form-control input-small points-input" placeholder="请输入积分" />
                           <span className="input-group-addon">积分</span>
                         </div>
                       </div>
