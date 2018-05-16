@@ -158,48 +158,57 @@ class FinancialRechargePartial extends React.Component {
               <div className="account-info-panel">
                 <div className="line-title">线上支付</div>
 
-                <div className="form-horizontal recharge-form">
-                  <div className="form-group recharge-form-item">
-                    <label className="col-sm-2 control-label">支付方式:</label>
-                    <div className="col-sm-3 control-box">
-                      <img src={require("alipay.png")} className="recharge-type-img" />
-                    </div>
+                <div className="recharge-content">
+                  <div className="promotion-banner">
+                    <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
                   </div>
-                  <div className="form-group recharge-form-item">
-                    <label className="col-sm-2 control-label">支付金额:</label>
-                    <div className="col-sm-6 control-box">
-                      <div className="input-group">
-                        <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control input-small" placeholder="请输入金额" />
-                        <span className="input-group-addon">元</span>
-                      </div>
-                      <div className="help-block error-tips">
-                        <p className="must-input">请输入金额</p>
-                        <p className="must-input-or-check">请选择或输入金额</p>
-                        <p className="must-be-integer">金额必须为整数</p>
-                        <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
+
+                  <div className="form-horizontal recharge-form">
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">支付方式:</label>
+                      <div className="col-sm-3 control-box">
+                        <img src={require("alipay.png")} className="recharge-type-img" />
                       </div>
                     </div>
-                  </div>
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">支付金额:</label>
+                      <div className="col-sm-6 control-box">
+                        <div className="input-group">
+                          <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control input-small" placeholder="请输入金额" />
+                          <span className="input-group-addon">元</span>
+                        </div>
+                        <div className="help-block error-tips">
+                          <p className="must-input">请输入金额</p>
+                          <p className="must-input-or-check">请选择或输入金额</p>
+                          <p className="must-be-integer">金额必须为整数</p>
+                          <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="form-group recharge-form-item">
-                    <label className="col-sm-2 control-label">邀请码(选填):</label>
-                    <div className="col-sm-6 control-box">
-                      <input ref='marketingInviteCode' type="text" className="form-control input-small" placeholder="请输入邀请码(选填)" />
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label label-small">此次促销活动赠送:</label>
+                      <div className="col-sm-6 control-box">
+                        <div className="input-group">
+                          <input type="text" className="form-control input-small" placeholder="请输入积分" />
+                          <span className="input-group-addon">积分</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">邀请码(选填):</label>
+                      <div className="col-sm-6 control-box">
+                        <input ref='marketingInviteCode' type="text" className="form-control input-small" placeholder="请输入邀请码(选填)" />
+                      </div>
+                    </div>
+
+                    <div className="form-group recharge-form-item">
+                      <div className="col-sm-offset-2 col-sm-6 control-box">
+                        <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="form-group recharge-form-item">
-                    <div className="col-sm-offset-2 col-sm-6 control-box">
-                      <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="tips-panel">
-                  <h5 className="title">双蛋促销活动:</h5>
-                  <p className="black">单次充值超过 1000 元即可赠送 50% 金额的积分到您的账户!</p>
-                  <p>此次促销活动可赠送:<input type="text" className="points-input" />积分</p>
-                  <p className="sm">注意：此次赠送积分有效使用时间至2018年1月30号</p>
                 </div>
               </div>
 

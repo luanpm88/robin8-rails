@@ -421,9 +421,19 @@
   }
 }
 
+.recharge-content {
+  padding: 40px 24px;
+}
+
 .recharge-form {
-  margin-top: 20px;
-  padding-bottom: 40px;
+  margin-top: 40px;
+}
+
+.promotion-banner {
+  width: 100%;
+}
+.promotion-banner-img {
+  width: 100%;
 }
 
 .recharge-form-item {
@@ -431,8 +441,13 @@
   .control-label {
     line-height: 34px;
     padding-top: 0;
+    padding-right: 0;
+    text-align: left;
     font-size: 14px;
     font-weight: normal;
+    &.label-small {
+      font-size: 12px;
+    }
   }
   .control-box {
     line-height: 34px;
