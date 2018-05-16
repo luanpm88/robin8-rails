@@ -195,6 +195,9 @@ class FinancialRechargePartial extends React.Component {
                         </div>
                       </div>
                     </div>
+                    <div className="form-group">
+                      <div className="col-sm-12 form-tips">注意：此次赠送积分有效使用时间至2018年1月30号</div>
+                    </div>
 
                     <div className="form-group recharge-form-item">
                       <label className="col-sm-2 control-label">邀请码(选填):</label>
