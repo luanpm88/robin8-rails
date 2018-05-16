@@ -2,7 +2,6 @@
 namespace :evan do
 
 	task :gen_kols => :environment do
-	end
 		if $redis.lpop("dope_sample_data").nil?
       Partners::Alizhongbao.import_dope_data("/home/deployer/ali_kol_nickname_and_avatar.csv")
     end

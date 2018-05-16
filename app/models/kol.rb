@@ -417,6 +417,15 @@ class Kol < ActiveRecord::Base
     _recent_income
   end
 
+  def recent_7_income
+    _array = []
+    DateTimeExtend.sequence(6.days.ago.beginning_of_day, Date.today.end_of_day, 1.day).each do |time|
+      trs = transactions.income_transaction.recent(time, time)
+      _array << {date: time.strftime('%m/%d'), total_amount: trs.sum(:credits), count: trs.count}
+    end
+    _array
+  end
+
   def app_city_label
     return nil if self.app_city.blank?
     City.find_by(:name_en => app_city).name rescue nil
