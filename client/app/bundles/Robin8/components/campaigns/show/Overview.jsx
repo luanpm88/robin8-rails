@@ -15,7 +15,7 @@ export default class Overview extends React.Component{
   render_available_count(campaign){
     if (campaign.get("per_budget_type") == "cpa" || campaign.get("per_budget_type") == "click"){
       return(
-        <li><span className="txt">有效点击</span><small className="stat-num">{ campaign.get("avail_click") }</small></li>
+        <li><span className="txt">计费点击</span><small className="stat-num">{ campaign.get("avail_click") }</small></li>
       )
     }
     if (campaign.get("per_budget_type") == "post"){

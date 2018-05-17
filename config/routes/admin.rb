@@ -76,6 +76,8 @@ Rails.application.routes.draw do
         put :settle_for_partners
         get :azb_csv
         put :terminate_ali_campaign
+        get :bots
+        put :update_bots
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
