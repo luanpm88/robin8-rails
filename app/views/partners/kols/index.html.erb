@@ -1,3 +1,31 @@
+<!-- 顯示 navigation bar 及目前　kol 的 details -->
+<% if @parent.nil? %>
+  <h3><a href="/partners/kols">Go to Home</a></h3>
+<% else %>
+    <br/>
+  <% if @prior.nil? %>
+    <h3><a href="/partners/kols">< Go to Prior ( no prior)</a></h3>
+  <% else %>
+    <h3><a href="/partners/kols?kol_id=<%= parent.id %>">< Go to Prior <%=parent.id%></a></h3>
+  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      KOL Details
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        Id : <%= @parent.id %>
+      </div>
+      <div class="col-md-4">
+        Name : <%= @parent.name %>
+      </div>
+      <div class="col-md-4">
+        Mobile No. : <%= @parent.mobile_number %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<!-- 顯示 navigation bar 及目前　kol 的 details end -->
 <h3>Kols</h3>
 
 <div class="panel panel-default">
@@ -56,6 +84,7 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
+      <th>Id</th>
       <th>昵称</th>
       <th>手机号</th>
       <th>创建时间</th>
@@ -64,6 +93,9 @@
       <th class="text-center">总点击数</th>
       <th class="text-center">可提现金额</th>
       <th class="text-center">历史净收益</th>
+      <!-- 显示下层人数 -->
+      <th class="text-center">下层人数</th>
+      <!-- 显示下层人数 end -->
       <th class="text-center">查看</th>
     </tr>
   </thead>
@@ -71,6 +103,7 @@
   <tbody>
     <% @kols.each do |kol| %>
       <tr>
+        <td><%= kol.id %></td>
         <td><%= kol.name %></td>
         <td><%= kol.mobile_number %></td>
         <td><%= kol.created_at.to_s(:db) %></td>
@@ -79,6 +112,16 @@
         <td align="center"><%= kol.campaign_shows.count %></td>
         <td align="center"><%= kol.avail_amount %></td>
         <td align="center"><%= kol.historical_income %></td>
+        <!-- 显示下层人数 -->
+        <%
+          layer_link = request.path
+          layer_link += "?" + "kol_id=" + kol.id.to_s
+        %>
+
+        <td align="center"><a target="_blank" href="<%=layer_link %>">
+          <%= kol.children.count %> [[ <%= kol.children_id_by_tag(@admintag.tag).count %> ]]</a>
+        </td>
+        <!-- 显示下层人数 end -->
         <td align="center">
           <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
           <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
