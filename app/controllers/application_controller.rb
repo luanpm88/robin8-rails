@@ -22,6 +22,18 @@ class ApplicationController < ActionController::Base
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  before_action :set_locale
+
+  def set_locale
+    I18n.locale = params[:locale] || session[:locale] || I18n.default_locale
+    session[:locale] = I18n.locale
+  end
+
+  def default_url_options(options={})
+    { :locale => I18n.locale }
+    # { :locale => 'en' }
+  end
+
   def set_utm_source
     if utm_source = params[:utm_source]
       cookies['utm_source'] = { value: utm_source, expires: 1.day.from_now }
