@@ -10,7 +10,7 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
-  
+
   # elastic_article_kol_detail
   counter :redis_elastic_reads_count
   counter :redis_elastic_collects_count
@@ -192,6 +192,16 @@ class Kol < ActiveRecord::Base
   # 师徒弟关系 evan 2018.3.16
   def parent
     registered_invitation.try(:inviter)
+  end
+
+  ＃ 师徒弟及admin tag 同时存在的
+  def children_id_by_tag(tag)
+    Kol.joins(:admintags).where("admintags.tag=? ", tag).where(id: registered_invitations.completed.collect{|ri| ri.invitee_id})
+  end
+
+  ＃ 只返回徒弟的kol_id(s)
+  def children_id
+    Kol.where(id: registered_invitations.completed.collect{|ri| ri.invitee_id}).map(&:id)
   end
 
   def children
@@ -547,7 +557,7 @@ class Kol < ActiveRecord::Base
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
-           
+
       _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
       kol = Kol.create!(_hash)
     end
@@ -818,7 +828,7 @@ class Kol < ActiveRecord::Base
   end
 
   def desc_percentage_on_friend
-    (desc_friend_gains + children.map(&:id)).uniq   
+    (desc_friend_gains + children.map(&:id)).uniq
   end
 
   def create_invite_code
