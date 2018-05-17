@@ -168,6 +168,7 @@
           <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
           <th><%= sort_link(@q, :valid_invite_count, "有效接单人数") %></th>
           <th><%= sort_link(@q, :total_invite_count, "总接单人数") %></th>
+          <th><%= sort_link(@q, :total_click, "总点击数") %></th>
           <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
           <th>结算点击</th>
           <th>补推</th>
@@ -207,6 +208,7 @@
           <td><%= c.deadline.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
           <td><%= c.valid_invites.count %></td>
           <td><%= c.campaign_invites.count %></td>
+          <td><%= c.get_total_click > 0 ? c.get_total_click : c.total_click  %></td>
           <td><%= c.get_avail_click > 0 ? c.get_avail_click : c.avail_click  %></td>
           <td><%= c.settled_invites.sum(:avail_click) > 0 ? c.settled_invites.sum(:avail_click) : '-'  %></td>
           <td><%= c.enable_append_push ? '是' : '否' %> </td>
