@@ -1,9 +1,24 @@
+require 'logger'
+
 class Partners::KolsController < Partners::BaseController
 	before_filter :get_kol, except: [:index]
 
+
 	def index
-		@q    = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).ransack(params[:q])
-    @kols = @q.result.order('id DESC')
+    $log = Logger.new(STDOUT)
+    $log.level = Logger::DEBUG
+
+    if !params[:kol_id].nil?
+      @parent = Kol.find(params[:kol_id])
+      @prior = RegisteredInvitation.find_by "status = 'completed' and invitee_id = ?", @parent.id
+      $log.debug "prior " + @prior if @prior
+      $log.debug "child ids " + @parent.children_id.join(',')
+      @q    = Kol.joins(:admintags).where("kols.id in (?) and admintags.tag=? ", @parent.children_id, @admintag.tag).ransack(params[:q])
+      @kols = @q.result.order('id DESC')
+    else
+      @q    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).ransack(params[:q])
+      @kols = @q.result.order('id DESC')
+    end
 
     respond_to do |format|
       format.html do
