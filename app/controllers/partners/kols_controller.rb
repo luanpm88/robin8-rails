@@ -3,7 +3,6 @@ require 'logger'
 class Partners::KolsController < Partners::BaseController
 	before_filter :get_kol, except: [:index]
 
-
 	def index
     $log = Logger.new(STDOUT)
     $log.level = Logger::DEBUG
