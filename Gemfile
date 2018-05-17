@@ -248,3 +248,5 @@ gem 'crm', path: 'crm'
 gem 'airbrake', '~> 6.0'
 
 gem 'gibberish'
+
+gem 'i18n'
