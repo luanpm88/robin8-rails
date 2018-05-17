@@ -1,5 +1,15 @@
 ---
 zh:
+  campaign:			
+    name: "活动名称"
+    status: "活动状态"
+    startTime: "活动开始时间"
+    deadline: "活动结束时间"
+    budget: "预算"
+    inviteCount: "参与人数"
+    totalCount: "总点击数"
+    totalValidCount: "有效点击数"
+        
   about:
     text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm, ExcitePR,
       in 1999. She realized that businesses offering amazing products were constantly

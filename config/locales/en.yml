@@ -1,5 +1,16 @@
 ---
 en:
+  campaign: 
+  
+    name: "Campaign"
+    status: "Status"
+    startTime: "Start Time"
+    deadline: "Deadline"
+    budget: "Budget"
+    inviteCount: "Invite Count"
+    totalCount: "Total Count"
+    totalValidCount: "Total Valid Count"
+    
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.
