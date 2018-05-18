@@ -28,6 +28,18 @@ namespace :campaign  do
   				end
   			end
   		end
+      # 徒弟收益
+      Transaction.where(direct: 'income', item: item, subject: 'percentage_on_friend').group_by{|ele| ele.opposite_id}.each do |k, v|
+        if v.count > 1
+          sum += v.first.credits
+          if args[:is_confiscate] == 'confiscate'
+            tr = v.first
+            p "confiscate account_#{tr.account_id} item_#{tr.item_id} tr_#{tr.id}"
+            tr.account.confiscate(tr.credits, 'confiscate', nil, nil)
+            tr.destroy
+          end
+        end
+      end
   	end
   	p sum.to_f
   end
