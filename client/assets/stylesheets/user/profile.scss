@@ -83,7 +83,7 @@
       width: 440px;
 
       > .form-group {
-        overflow: hidden;
+        // overflow: hidden;
 
         .control-input {
           width: 345px;
@@ -95,11 +95,11 @@
         }
       }
 
-      .form-group:nth-child(3) {
+      .form-group:nth-child(4) {
         height: 115px;
       }
 
-      .form-group:nth-child(4) {
+      .form-group:nth-child(5) {
         height: 200px;
       }
 

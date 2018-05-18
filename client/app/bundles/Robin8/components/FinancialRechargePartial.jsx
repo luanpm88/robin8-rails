@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import validator from 'validator';
 
 import BreadCrumb from './shared/BreadCrumb';
@@ -102,9 +103,9 @@ class FinancialRechargePartial extends React.Component {
   render_avatar() {
     const brand = this.props.profileData.get('brand')
     if (brand.get("avatar_url")) {
-      return <img ref="avatar" src={brand.get("avatar_url")} />
+      return <img ref="avatar" src={brand.get("avatar_url")} className="avatar-img" />
     } else {
-      return <img ref='avatar' src={require('brand-profile-pic.jpg')} />
+      return <img ref='avatar' src={require('brand-profile-pic.jpg')} className="avatar-img" />
     }
   }
 
@@ -124,49 +125,133 @@ class FinancialRechargePartial extends React.Component {
           <div className="page-recharge">
             <FinancialMenu />
             <div className="main-content">
-              <div className="account-info">
-                <span>
-                  <span>账户信息</span>
-                </span>
+              <div className="account-info-panel">
+                <div className="line-title">账户信息</div>
 
-                <div className='detail'>
-                  { this.render_avatar() }
-                  <div>
-                    <p className="brand-name">{brand.get("name")}</p>
-                    <p className="account-balance">账户余额: <span>{brand.get("avail_amount")}</span> &nbsp;元</p>
+                <div className="media account-info-detail">
+                  <div className="media-body infos">
+                    <p>
+                      <strong>品牌名称：</strong>
+                      {brand.get("name")}
+                    </p>
+                    <p>
+                      <strong>公司名称（抬头）：</strong>
+                      {brand.get("title")}
+                      <Link to={`/brand/${brand.get('id')}/edit`}>修改</Link>
+                    </p>
+                    <p>
+                      <strong>账户余额：</strong>
+                      <span>{brand.get("avail_amount")}</span> &nbsp;元
+                    </p>
+                    <p>
+                      <strong>剩余积分：</strong>
+                      <span>{brand.get("avail_amount")}</span> &nbsp;积分
+                    </p>
+                    <p className="sm">使用有效期至18年1月28日23：59时</p>
+                  </div>
+                  <div className="media-right media-middle">
+                    { this.render_avatar() }
                   </div>
                 </div>
-
               </div>
 
-              <div className="recharge-online">
-                <span>
-                  <span>线上支付</span>
-                </span>
+              <div className="account-info-panel">
+                <div className="line-title">线上支付</div>
 
-                <div className="detail">
+                <div className="recharge-content">
+                  <div className="promotion-banner">
+                    <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
+                  </div>
+
+                  <div className="form-horizontal recharge-form">
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">支付方式:</label>
+                      <div className="col-sm-3 control-box">
+                        <img src={require("alipay.png")} className="recharge-type-img" />
+                      </div>
+                    </div>
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">支付金额:</label>
+                      <div className="col-sm-6 control-box">
+                        <div className="input-group">
+                          <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control input-small" placeholder="请输入金额" />
+                          <span className="input-group-addon">元</span>
+                        </div>
+                        <div className="help-block error-tips">
+                          <p className="must-input">请输入金额</p>
+                          <p className="must-input-or-check">请选择或输入金额</p>
+                          <p className="must-be-integer">金额必须为整数</p>
+                          <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label label-small">此次促销活动赠送:</label>
+                      <div className="col-sm-6 control-box">
+                        <div className="input-group">
+                          <input type="text" className="form-control input-small points-input" placeholder="请输入积分" />
+                          <span className="input-group-addon">积分</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <div className="col-sm-12 form-tips">注意：此次赠送积分有效使用时间至2018年1月30号</div>
+                    </div>
+
+                    <div className="form-group recharge-form-item">
+                      <label className="col-sm-2 control-label">邀请码(选填):</label>
+                      <div className="col-sm-6 control-box">
+                        <input ref='marketingInviteCode' type="text" className="form-control input-small" placeholder="请输入邀请码(选填)" />
+                      </div>
+                    </div>
+
+                    <div className="form-group recharge-form-item">
+                      <div className="col-sm-offset-2 col-sm-6 control-box">
+                        <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/*<div className="recharge-online">
+                <div className="detail form-horizontal">
                   <div className="recharge-type">
-                    <span>支付方式:</span>
-                    <img src={require("alipay.png")}/>
+                    <div className="form-group recharge-amount-item">
+                      <label className="col-sm-3 control-label">支付方式:</label>
+                      <div className="col-sm-3 control-box">
+                        <img src={require("alipay.png")} className="recharge-type-img" />
+                      </div>
+                    </div>
                   </div>
                   <div className="recharge-amount">
-                    <span>支付金额:</span>
-                    <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control price-input" placeholder="请输入金额" />
-                    <span className="yuan">元</span>
-                    <div className='error-tips'>
-                      <p className="must-input">请输入金额</p>
-                      <p className="must-input-or-check">请选择或输入金额</p>
-                      <p className="must-be-integer">金额必须为整数</p>
-                      <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
+                    <div className="form-group recharge-amount-item">
+                      <label className="col-sm-3 control-label">支付金额:</label>
+                      <div className="col-sm-3 control-box">
+                        <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control price-input" placeholder="请输入金额" />
+
+                        <div className="help-block error-tips">
+                          <p className="must-input">请输入金额</p>
+                          <p className="must-input-or-check">请选择或输入金额</p>
+                          <p className="must-be-integer">金额必须为整数</p>
+                          <p className="must-greater-than">最低充值金额为{brand.get("recharge_min_budget")}元</p>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 control-box">元</div>
                     </div>
-                    <div className="invite-code">
-                      <span>邀请码(选填):</span>
-                      <input ref='marketingInviteCode' type="text" className="form-control" placeholder="请输入邀请码(选填)" />
+
+                    <div className="form-group recharge-amount-item">
+                      <label className="col-sm-3 control-label">邀请码(选填):</label>
+                      <div className="col-sm-3 control-box">
+                        <input ref='marketingInviteCode' type="text" className="form-control" placeholder="请输入邀请码(选填)" />
+                      </div>
                     </div>
+
                     <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
                   </div>
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
   .menu {
     margin-top: 45px;
-    width: 1000px;
+    // width: 1000px;
     ul {
 
       height: 60px;
@@ -49,12 +49,12 @@
 
     .account-info,.recharge-online,.recharge-offline {
       .detail {
+        padding-bottom: 30px;
         margin-top: 30px;
         margin-left: 121px;
       }
     }
     .account-info .detail{
-      height: 103px;
       img {
         width: 70px;
         height: 70px;
@@ -63,11 +63,11 @@
         box-shadow: 3.5px 6.062px 13px 1px rgba(0, 0, 0, 0.15)
       }
       div {
-        height: 70px;
-        padding-top: 7px;
         margin-left: 100px;
 
         p {
+          line-height: 20px;
+          margin-bottom: 6px;
           font-size: 14px;
           color: #181616;
 
@@ -75,6 +75,10 @@
             margin-left: 15px;
             font-size: 18px;
           }
+        }
+
+        .brand-name {
+          margin-bottom: 20px;
         }
 
         .account-balance {
@@ -159,12 +163,13 @@
           font-size: 12px;
         }
         .error-tips {
-          margin-left: 96px;
-          height: 15px;
+          // margin-left: 96px;
+          // height: 15px;
+          margin: 0;
           p {
             display: none;
             color: rgb(206, 1, 1);
-            margin-top: 8px;
+            // margin-top: 8px;
             font-size: 13px;
           }
         }
@@ -191,6 +196,30 @@
             background-color: #2dcad0;
             color: #fff;
           }
+        }
+      }
+
+      .recharge-amount-item {
+        width: 100%;
+        .control-label {
+          line-height: 34px;
+          padding: 0;
+          text-align: left;
+          font-size: 14px;
+          font-weight: normal;
+        }
+        .control-box {
+          line-height: 34px;
+          padding: 0 5px;
+          font-size: 14px;
+        }
+        .form-control {
+          width: 100%;
+          margin: 0;
+        }
+        .recharge-type-img {
+          height: 34px;
+          margin: 0;
         }
       }
     }
@@ -310,4 +339,157 @@
     }
   }
 
+}
+
+.account-info-panel {
+  position: relative;
+  margin-top: 50px;
+  .line-title {
+    position: relative;
+    padding: 2px 24px;
+    font-size: 22px;
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 2px;
+      content: "";
+      background-color: #2dcad0;
+    }
+  }
+  .tips-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 370px;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #4b4b4b;
+    background-color: #fef0e3;
+    .title {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #f74b08;
+    }
+    p {
+      line-height: 34px;
+      margin: 0;
+    }
+    .points-input {
+      display: inline-block;
+      width: 100px;
+      height: 34px;
+      line-height: 24px;
+      padding: 4px;
+      margin: -2px 10px 0;
+      border: 1px solid #ffb89c;
+      vertical-align: middle;
+      color: #ff6745;
+      background-color: #fff;
+    }
+    .black {
+      color: #1c1c1c;
+    }
+    .sm {
+      font-size: 14px;
+    }
+  }
+}
+
+.account-info-detail {
+  margin-top: 20px;
+  .infos {
+    padding-left: 24px;
+    font-size: 18px;
+    font-weight: normal;
+    .sm {
+      font-size: 14px;
+      color: #4b4b4b;
+    }
+    a {
+      color: #0b8a8f;
+    }
+  }
+  .avatar-img {
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    border: 1px solid #2dcad0;
+  }
+}
+
+.recharge-content {
+  padding: 40px 24px;
+}
+
+.recharge-form {
+  margin-top: 40px;
+  .form-tips {
+    font-size: 12px;
+  }
+}
+
+.promotion-banner {
+  width: 100%;
+}
+.promotion-banner-img {
+  width: 100%;
+}
+
+.recharge-form-item {
+  width: 100%;
+  .control-label {
+    line-height: 34px;
+    padding-top: 0;
+    padding-right: 0;
+    text-align: left;
+    font-size: 14px;
+    font-weight: normal;
+    &.label-small {
+      font-size: 12px;
+    }
+  }
+  .control-box {
+    line-height: 34px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  .input-group {
+    width: 190px;
+  }
+  .input-group-addon {
+    width: 40px;
+    border: none;
+    background-color: transparent;
+  }
+  .form-control {
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    border-color: #a7a7a7;
+    &.input-small {
+      width: 150px;
+    }
+    &.points-input {
+      color: #ff6745;
+    }
+  }
+  .recharge-type-img {
+    height: 34px;
+    margin: 0;
+  }
+  .error-tips {
+    margin: 0;
+    p {
+      display: none;
+      line-height: 2;
+      margin-bottom: 0;
+      color: rgb(206, 1, 1);
+      font-size: 13px;
+    }
+  }
 }
