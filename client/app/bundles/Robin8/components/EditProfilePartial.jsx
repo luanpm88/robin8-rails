@@ -136,12 +136,13 @@ class EditProfilePartial extends Component {
 
               <div className="form-part">
                 <Input field={name} id="name" label="品牌名称" placeholder="必填" />
+                <Input field={url} id="url" label="公司名称" placeholder="选填" />
                 <Input field={url} id="url" label="官方网站" placeholder="选填" />
                 <Textarea field={description} id="desc" label="品牌介绍" placeholder="必填" />
 
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
-                  <div className="control-input" style={{textAlign: 'left', paddingTop: '10px'}}>
+                  <div className="control-input">
                     <Keyword field={keywords} />
                   </div>
                 </div>
