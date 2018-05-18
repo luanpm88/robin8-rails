@@ -59,6 +59,7 @@
       <th><%= sort_link(@q, :avail_amount, "可用余额") %></th>
       <th><%= sort_link(@q, :historical_payout, "历史花费") %></th>
       <th><%= sort_link(@q, :historical_recharge, "总充值金额") %></th>
+      <th><%= sort_link(@q, :historical_recharge, "可用积分") %></th>
       <th><%= sort_link(@q, :created_at, "创建时间") %></th>
       <th><%= sort_link(@q, :last_campaign_at, "最近发单时间") %></th>
       <th>最近活动ID</th>
@@ -77,6 +78,7 @@
         <td><%= u.avail_amount %></td>
         <td><%= u.historical_payout %></td>
         <td><%= u.historical_recharge %></td>
+        <td><%= u.credit_amount %></td>
         <td><%= u.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
         <td><%= campaign.created_at.strftime("%Y-%m-%d %H:%M") rescue nil %></td>
         <td><%= link_to campaign.id, marketing_dashboard_campaign_path(campaign), target: "_blank" rescue "" %></td>

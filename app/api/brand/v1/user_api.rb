@@ -16,7 +16,7 @@ module Brand
 
       desc 'Get current user profile'
       get '/' do
-        present current_user
+        present current_user: current_user, promotion: Promotion.valid
       end
 
       desc 'Update current user profile'
