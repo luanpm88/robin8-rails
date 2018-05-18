@@ -23,6 +23,38 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
   before_action :set_locale
+  before_action :set_link
+
+  def set_link
+    enLink = request.url
+    zhLink = request.url
+    enLink = enLink.sub("locale=zh", "locale=en")
+    zhLink = zhLink.gsub("locale=en", "locale=zh")
+    if !enLink.include? "locale="
+      if enLink.include? "?"
+        enLink = enLink + "&locale=en"
+      else
+        if request.query_parameters.length == 0
+          enLink = enLink + "?locale=en"
+        else
+          enLink = enLink + "&locale=en"
+        end
+      end
+    end
+    @enLink = enLink
+    if !zhLink.include? "locale="
+      if zhLink.include? "?"
+        zhLink = zhLink + "&locale=zh"
+      else
+        if request.query_parameters.length == 0
+          zhLink = zhLink + "?locale=zh"
+        else
+          zhLink = zhLink + "&locale=zh"
+        end
+      end
+    end
+    @zhLink = zhLink
+  end
 
   def set_locale
     I18n.locale = params[:locale] || session[:locale] || I18n.default_locale
