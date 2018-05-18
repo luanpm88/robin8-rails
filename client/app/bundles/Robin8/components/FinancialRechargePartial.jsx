@@ -161,17 +161,22 @@ class FinancialRechargePartial extends React.Component {
                 <div className="recharge-content">
                   <div className="promotion-banner">
                     <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
+
+                    <div className="banner-info">
+                      <h5 className="title">双蛋促销活动:</h5>
+                      <p>单次充值超过<span className="num">1000</span>元即可赠送<span className="num">50%</span>金额的积分到您的账户!</p>
+                    </div>
                   </div>
 
                   <div className="form-horizontal recharge-form">
                     <div className="form-group recharge-form-item">
-                      <label className="col-sm-2 control-label">支付方式:</label>
+                      <label className="control-label">支付方式:</label>
                       <div className="col-sm-3 control-box">
                         <img src={require("alipay.png")} className="recharge-type-img" />
                       </div>
                     </div>
                     <div className="form-group recharge-form-item">
-                      <label className="col-sm-2 control-label">支付金额:</label>
+                      <label className="control-label">支付金额:</label>
                       <div className="col-sm-6 control-box">
                         <div className="input-group">
                           <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control input-small" placeholder="请输入金额" />
@@ -187,11 +192,11 @@ class FinancialRechargePartial extends React.Component {
                     </div>
 
                     <div className="form-group recharge-form-item">
-                      <label className="col-sm-2 control-label label-small">此次促销活动赠送:</label>
+                      <label className="control-label label-small">此次促销活动赠送:</label>
                       <div className="col-sm-6 control-box">
                         <div className="input-group">
-                          <input type="text" className="form-control input-small points-input" placeholder="请输入积分" />
-                          <span className="input-group-addon">积分</span>
+                          <input type="text" className="form-control input-small points-input" readOnly />
+                          <span className="input-group-addon">积分（10积分=1元）</span>
                         </div>
                       </div>
                     </div>
@@ -200,14 +205,14 @@ class FinancialRechargePartial extends React.Component {
                     </div>
 
                     <div className="form-group recharge-form-item">
-                      <label className="col-sm-2 control-label">邀请码(选填):</label>
+                      <label className="control-label">邀请码(选填):</label>
                       <div className="col-sm-6 control-box">
                         <input ref='marketingInviteCode' type="text" className="form-control input-small" placeholder="请输入邀请码(选填)" />
                       </div>
                     </div>
 
-                    <div className="form-group recharge-form-item">
-                      <div className="col-sm-offset-2 col-sm-6 control-box">
+                    <div className="form-group recharge-form-item mt40">
+                      <div className="col-sm-12">
                         <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
                       </div>
                     </div>
