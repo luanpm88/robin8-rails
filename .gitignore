@@ -66,3 +66,5 @@ db/schema.rb
 config/secrets.yml_staging.yml
 nohup*
 public/grape_doc
+/nbproject
+/nbproject/private/

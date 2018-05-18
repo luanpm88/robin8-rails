@@ -14,10 +14,12 @@ end
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 
 Rails.application.config.assets.precompile += %w( landing.js landing.css
-  email.css mail-template.css export_stories.css kol/kol_value.css admin.css admin.js cps_articles.css)
+  email.css mail-template.css export_stories.css kol/kol_value.css 
+  admin.css admin.js cps_articles.css partners.css partners/partners.scss partners/partners.js)
 
 Rails.application.config.assets.precompile += %w(
-  website.css website.js  kol/*.js kol/*.css app/*.js app/*.css brand_v2.css brand_v2.js passport.*)
+  website.css website.js  kol/*.js kol/*.css app/*.js app/*.css brand_v2.css brand_v2.js passport.*
+  partners/*.js partners/*.css)
 
 Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
 
