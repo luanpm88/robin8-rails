@@ -287,6 +287,11 @@ Rails.application.routes.draw do
     resources :campaign_invites, only: [:index] do
       get :shows
     end
+    resources :kol_management, only: [:index] do
+      member do
+        get :kol
+      end
+    end
     resources :kols, only: [:index] do
       member do
         get :activities
