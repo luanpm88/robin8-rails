@@ -83,20 +83,33 @@
 
 <table class='table table-bordered'>
   <thead>
+
+<!--  id: Id-->
+<!--  name: Name-->
+<!--  mobile_number: Mobile Number-->
+<!--  created_at: Created At-->
+<!--  invites_count: Invites Count-->
+<!--  show_valid_count: Valid Show Count-->
+<!--  show_count: Show Count-->
+<!--  avail_amount: Available Amount-->
+<!--  historical_income: Historial Income-->
+<!--  child_count: Children Count-->
+<!--  view: View-->
     <tr>
       <th>Id</th>
-      <th>昵称</th>
-      <th>手机号</th>
-      <th>创建时间</th>
-      <th class="text-center">已接活动数</th>
-      <th class="text-center">有效点击数</th>
-      <th class="text-center">总点击数</th>
-      <th class="text-center">可提现金额</th>
-      <th class="text-center">历史净收益</th>
+      <th> <%= t('partner.kols.name') %> </th>
+      <th> <%= t('partner.kols.mobile_number') %></th>
+      <th class="text-center"><%= t('partner.kols.created_at') %></th>
+      <th class="text-center"><%= t('partner.kols.invites_count') %></th>
+      <th class="text-center"><%= t('partner.kols.show_valid_count') %></th>
+      <th class="text-center"><%= t('partner.kols.show_count') %></th>
+      <th class="text-center"><%= t('partner.kols.avail_amount') %></th>
+      <th class="text-center"><%= t('partner.kols.historical_income') %></th>
       <!-- 显示下层人数 -->
-      <th class="text-center">下层人数</th>
+      <!-- 显示下层人数 -->
+      <th class="text-center"><%= t('partner.kols.child_count') %></th>
       <!-- 显示下层人数 end -->
-      <th class="text-center">查看</th>
+      <th class="text-center"><%= t('partner.kols.view') %></th>
     </tr>
   </thead>
 
@@ -118,8 +131,21 @@
           layer_link += "?" + "kol_id=" + kol.id.to_s
         %>
 
-        <td align="center"><a target="_blank" href="<%=layer_link %>">
-          <%= kol.children.count %> [[ <%= kol.children_id_by_tag(@admintag.tag).count %> ]]</a>
+        <td align="center">
+          <%
+            children_count = kol.children_id_by_tag(@admintag.tag).count
+            %>
+          <% if children_count > 0 %>
+            <a target="_blank" href="<%=layer_link %>">
+              <%= kol.children_id_by_tag(@admintag.tag).count %>
+            </a>
+          <% else %>
+           <%= children_count %>
+          <% end %>
+
+<!--               "= kol.children.count %> [[ <%= kol.children_id_by_tag(@admintag.tag).count %> ]]</a> -->
+
+<!--          <%= kol.children.count %> [[ <%= kol.children_id_by_tag(@admintag.tag).count %> ]]</a> -->
         </td>
         <!-- 显示下层人数 end -->
         <td align="center">
