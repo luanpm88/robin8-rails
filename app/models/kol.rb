@@ -194,12 +194,12 @@ class Kol < ActiveRecord::Base
     registered_invitation.try(:inviter)
   end
 
-  ＃ 师徒弟及admin tag 同时存在的
+  # 师徒弟及admin tag 同时存在的
   def children_id_by_tag(tag)
     Kol.joins(:admintags).where("admintags.tag=? ", tag).where(id: registered_invitations.completed.collect{|ri| ri.invitee_id})
   end
 
-  ＃ 只返回徒弟的kol_id(s)
+  # 只返回徒弟的kol_id(s)
   def children_id
     Kol.where(id: registered_invitations.completed.collect{|ri| ri.invitee_id}).map(&:id)
   end
