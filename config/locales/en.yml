@@ -1,5 +1,19 @@
 ---
 en:
+  partner:
+    kols:
+      id: Id
+      name: Name
+      mobile_number: Mobile Number
+      created_at: Created At
+      invites_count: Invites Count
+      show_valid_count: Valid Show Count
+      show_count: Show Count
+      avail_amount: Available Amount
+      historical_income: Historical Income
+      child_count: Children Count
+      view:	View
+  
   campaign: 
   
     name: "Campaign"
