@@ -1,0 +1,32 @@
+<h1>
+  促销送积分设置
+  <%= link_to '新增促销策略', new_marketing_dashboard_utilities_promotion_path, :class => 'btn btn-primary pull-right' %>
+</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名称</th>
+      <th>最低额度</th>
+      <th>赠送比例</th>
+      <th>开始时间</th>
+      <th>结束时间</th>
+      <th>是否有效</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- @promotions.each do |promotion| %>
+      <tr>
+          <%- promotion.to_ary.each do |ele| %>
+            <td><%= ele %></td>
+          <% end %>
+        <td>
+          <%= link_to('失效', invalid_marketing_dashboard_utilities_promotion_path(promotion), method: :put) if promotion.state %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

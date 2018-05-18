@@ -172,7 +172,11 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_avail_click
-    self.redis_avail_click.value rescue self.avail_click
+    if status == 'settled'
+      settled_invites.sum(:avail_click)
+    else
+      self.redis_avail_click.value rescue self.avail_click
+    end
   end
 
   def get_total_click
@@ -511,6 +515,20 @@ class Campaign < ActiveRecord::Base
     campaign_shows.joins(kol: :admintags).where("admintags.tag =?", tag.tag)
   end
 
+  # 机器人刷点击 start
+  def avg_avail_click
+    redis_avail_click.value.to_i / valid_invites.count
+  end
+
+  def need_add_avail_click
+    (remain_budget / per_action_budget).to_i - redis_avail_click.value.to_i
+  end
+
+  def need_add_kols_count
+    need_add_avail_click / (avg_avail_click == 0 ?  (2...6).to_a.sample : avg_avail_click)
+  end
+  # 机器人刷点击 end
+  
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

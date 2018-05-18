@@ -66,13 +66,21 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
 
     render 'recharge' and return if request.method.eql? 'GET'
 
-    if params[:credits].to_f.zero?
+    credits, score, expired_at = params[:credits].to_f, params[:score].to_i, nil
+
+    if credits <= 0 || score < 0
       flash[:alert] = "金额不能为空"
       return render 'recharge'
     end
 
-    credits = params[:credits].to_f
-
+    if score > 0
+      expired_at = format_date(params[:expired_at]).end_of_day
+      if expired_at < Time.now
+        flash[:alert] = "积分有效时间不能小于当前时间"
+        return render 'recharge'
+      end
+    end
+    
     recharge_record = RechargeRecord.create(
       credits: credits,
       tax: 0,
@@ -88,10 +96,10 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     if @user.income(credits, 'manual_recharge', recharge_record)
       recharge_record.update(status: "success")
       @user.increment!(:appliable_credits, credits)
+      @user.update(seller_id: params[:seller_id]) if params[:seller_id]
+      # 送积分{_method, score, owner, resource, expired_at, remark}
+      Credit.gen_record('recharge', score, @user, recharge_record, expired_at) if score > 0
 
-      if params[:seller_id]
-        @user.update(seller_id: params[:seller_id])
-      end
       flash[:notice] = '为品牌主充值成功'
     else
       recharge_record.update(status: "failed")

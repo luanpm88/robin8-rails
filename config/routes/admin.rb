@@ -76,6 +76,8 @@ Rails.application.routes.draw do
         put :settle_for_partners
         get :azb_csv
         put :terminate_ali_campaign
+        get :bots
+        put :update_bots
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
@@ -272,6 +274,11 @@ Rails.application.routes.draw do
       resources "settings" do
         collection do
           post "update_value"
+        end
+      end
+      resources :promotions do
+        member do
+          put :invalid
         end
       end
     end

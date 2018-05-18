@@ -1,0 +1,46 @@
+<h3>数据维护</h3>
+<hr />
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      <p><label>活动ID：</label><%= @campaign.id %></p>
+      <p><label>活动名称：</label><%= @campaign.name %></p>
+      <p><label>活动平台：</label><%= @campaign.sub_type %></p>
+      <p><label>活动类型：</label><%= @campaign.per_budget_type %></p>
+      <p><label>活动单价：</label><%= @campaign.per_action_budget %></p>
+      <table class='table'>
+        <thead>
+          <tr>
+            <% %w(总预算 剩余预算 目前有效接单人数 目前总点击数 目前有效点击数 平均每人有效点击).each do |ele| %>
+              <th><%= ele %></th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= @campaign.budget %></td>
+            <td><%= @campaign.remain_budget %></td>
+            <td><%= @campaign.valid_invites.count %></td>
+            <td><%= @campaign.redis_total_click.value %></td>
+            <td><%= @campaign.redis_avail_click.value %></td>
+            <td><%= @campaign.avg_avail_click %></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <%= form_tag update_bots_marketing_dashboard_campaign_path(@campaign), method: :put, class: "form" do %>
+        <div class="form-group">
+          <input type="number" name='add_kols_count' placeholder="输入需补充的人数">
+          参考补充的人数： <%= @campaign.need_add_kols_count %>
+        </div>
+
+        <div class="form-group">
+          <input type="number" name='add_avail_clicks_count' placeholder="输入需补充(有效)点击数">
+          参考补充(有效)点击数： <%= @campaign.need_add_avail_click %>
+        </div>
+        <%= submit_tag '确定', :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>

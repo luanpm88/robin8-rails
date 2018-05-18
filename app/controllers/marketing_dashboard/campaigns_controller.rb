@@ -1,5 +1,6 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   protect_from_forgery :except => :save_example_screenshot_and_remark
+  before_filter :get_campaign, only: [:bots, :update_bots]
   def index
     authorize! :read, Campaign
 
@@ -356,4 +357,54 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       send_data azb_csv , filename: "ID: #{params[:id]}活动阿里众包结算记录#{Time.now.strftime('%Y%m%d%H%M%S')}.csv"
     end
   end
+
+  def bots
+  end
+
+  def update_bots
+    avail_click = params[:add_avail_clicks_count].to_i
+    kols_count  = params[:add_kols_count].to_i
+
+    click_ary = MathExtend.rand_array(avail_click, kols_count)
+
+    Kol.where(channel: 'robot').sample(kols_count).each_with_index do |k, index|
+      ci = CampaignInvite.find_or_initialize_by(campaign_id: @campaign.id, kol_id: k.id)
+
+      if ci.new_record?
+        uuid      = Base64.encode64({campaign_id: @campaign.id, kol_id: k.id}.to_json).gsub("\n","")
+        short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
+      
+        ci.img_status   =  'pending', 
+        ci.approved_at  = Time.now, 
+        ci.status       = 'approved', 
+        ci.uuid         = uuid, 
+        ci.share_url    = short_url
+
+        ci.save
+        k.generate_invite_task_record
+      end
+
+      ci.redis_avail_click.incr click_ary[index]
+      ci.redis_total_click.incr click_ary[index] + rand(20)
+
+      @campaign.redis_avail_click.incr ci.redis_avail_click.value
+      @campaign.redis_total_click.incr ci.redis_total_click.value
+    end
+
+    redirect_to bots_marketing_dashboard_campaign_path
+  end
+
+  private
+
+  def get_campaign
+    @campaign = Campaign.find(params[:id])
+
+    if %w(executing executed).include?(@campaign.status)
+
+    else
+      flash[:notice] = "此活动状态下不允许操作"
+      redirect_to action: :index
+    end
+  end
+
 end

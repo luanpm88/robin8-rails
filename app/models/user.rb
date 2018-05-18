@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   has_many :campaign_payout_transactions, -> {payout_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   has_many :campaign_income_transactions, -> {income_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   belongs_to :kol, inverse_of: :user
+  has_many :credits, :as => :owner
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
   after_create :init_appid
@@ -213,6 +214,10 @@ class User < ActiveRecord::Base
   def init_appid
     self.update_column(:appid, SecureRandom.hex) if self.appid.blank?
     self.appid
+  end
+
+  def credit_amount
+    credits.last.try(:amount).to_i
   end
 
   private
