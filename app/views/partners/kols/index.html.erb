@@ -6,7 +6,7 @@
   <% if @prior.nil? %>
     <h3><a href="/partners/kols">< Go to Prior ( no prior)</a></h3>
   <% else %>
-    <h3><a href="/partners/kols?kol_id=<%= parent.id %>">< Go to Prior <%=parent.id%></a></h3>
+    <h3><a href="/partners/kols?kol_id=<%= @prior.inviter_id %>">< Go to Prior <%= @prior.inviter_id %></a></h3>
   <% end %>
   <div class="panel panel-default">
     <div class="panel-heading">

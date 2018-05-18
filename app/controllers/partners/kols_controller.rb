@@ -8,9 +8,10 @@ class Partners::KolsController < Partners::BaseController
     $log.level = Logger::DEBUG
 
     if !params[:kol_id].nil?
+      $log.debug "what is .. " + params[:kol_id] + "]<<<< "
       @parent = Kol.find(params[:kol_id])
       @prior = RegisteredInvitation.find_by "status = 'completed' and invitee_id = ?", @parent.id
-      $log.debug "prior " + @prior if @prior
+      $log.debug "prior " + @prior.id.to_s if @prior
       $log.debug "child ids " + @parent.children_id.join(',')
       @q    = Kol.joins(:admintags).where("kols.id in (?) and admintags.tag=? ", @parent.children_id, @admintag.tag).ransack(params[:q])
       @kols = @q.result.order('id DESC')
