@@ -24,6 +24,17 @@ Rails.application.routes.draw do
   mount PropertyAPI => '/prop'
   use_doorkeeper
 
+  get 'partners/dashboard/index'
+  get 'partners/dashboard/chart1'
+  get 'partners/dashboard/chart2'
+  get 'partners/dashboard/chart3'
+  get 'partners/dashboard/chart4'
+  get 'partners/dashboard/chart5'
+  get 'partners/dashboard/chart6'
+  get 'partners/dashboard/chart7'
+  get 'partners/dashboard/chart8'
+
+
   get 'track_urls/:id', to: "pages#track_url"
 
   get 'qiniu_upload_token', to: 'brand#qiniu'
@@ -282,7 +293,7 @@ Rails.application.routes.draw do
     get 'sign_in',    to: 'sessions#new'
     post 'login',     to: 'sessions#create'
     get 'sign_out',   to: 'sessions#destroy'
-
+    resources :dashboard #, only: [:index]
     resources :campaigns, only: [:index]
     resources :campaign_invites, only: [:index] do
       get :shows
