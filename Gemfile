@@ -250,3 +250,5 @@ gem 'airbrake', '~> 6.0'
 gem 'gibberish'
 
 gem 'i18n'
+
+gem 'chart-js-rails'
