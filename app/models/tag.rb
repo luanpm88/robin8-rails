@@ -16,6 +16,7 @@ class Tag < ActiveRecord::Base
   #   end
   # end
 
+  has_many :kol_tags
   has_many :elastic_articles
 
   def self.get_lable_by_name(name)
@@ -28,4 +29,57 @@ class Tag < ActiveRecord::Base
     Tag.where(label: label).take.name rescue nil
   end
 
+  # statistics
+  def self.group_by_tag(limit)
+    # Tag.find_by_sql("select tags.name, count(kols.id) counter from kols, kol_tags, tags where kols.id = kol_tags.kol_id and tags.id = kol_tags.tag_id and tags.enabled = 1 GROUP BY tags.name order by count(kols.id) desc limit " + limit.to_s)
+    Tag.find_by_sql("select c.* from (
+
+select a.* , b.*, (a.tag_count / b.total_count ) * 100 as percentage from (
+
+select tags.name, count(kols.id) as tag_count
+from kols, kol_tags, tags, admintags_kols , admintags
+where kols.id = kol_tags.kol_id
+and tags.id = kol_tags.tag_id
+and tags.enabled = 1
+and admintags.tag = 'geometry'
+and admintags_kols.admintag_id = admintags.id
+and kols.id = admintags_kols.kol_id
+group by tags.name
+order by count(kols.id) desc
+ limit 5
+) a
+left join (
+
+select count(*) as total_count
+from kols, kol_tags, tags, admintags_kols , admintags
+where kols.id = kol_tags.kol_id
+and tags.id = kol_tags.tag_id
+and tags.enabled = 1
+and admintags.tag = 'geometry'
+and admintags_kols.admintag_id = admintags.id
+and kols.id = admintags_kols.kol_id
+) b on 1 = 1
+
+) c order by percentage desc limit " + limit.to_s
+    )
+  end
+
+  # statistics by app_city
+  def self.group_by_app_city(limit)
+    Tag.find_by_sql("select c.* from (
+select a.* , b.*, (a.city_count / b.total_count ) * 100 as percentage from (
+select kols.app_city, count(*) as city_count
+from kols, admintags_kols , admintags where admintags.tag = 'geometry'
+and admintags_kols.admintag_id = admintags.id and kols.id = admintags_kols.kol_id
+group by app_city
+having app_city is not null
+) a
+inner join (
+select count(*) as total_count
+from kols, admintags_kols , admintags where admintags.tag = 'geometry'
+and admintags_kols.admintag_id = admintags.id and kols.id = admintags_kols.kol_id
+) b
+) c order by percentage desc limit " + limit.to_s
+)
+  end
 end
