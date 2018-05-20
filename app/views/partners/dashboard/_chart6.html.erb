@@ -1,6 +1,6 @@
 <div class="card mb-12">
   <div class="card-header">
-    <i class="fa fa-bar-chart"></i> Bar Chart Example
+
   </div>
   <div class="card-body">
     <div class="row">
@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  <div class="card-footer small text-muted"><i class="fa fa-bar-chart"></i> 活跃用户地区</div>
 </div>
 
 <script type="text/javascript">
@@ -50,12 +50,13 @@
         scales: {
           xAxes: [{
             time: {
-              unit: 'month'
+              unit: 'percentage'
             },
             gridLines: {
               display: false
             },
             ticks: {
+              max: 100,
               maxTicksLimit: 6
             }
           }],
@@ -71,7 +72,7 @@
           }],
         },
         legend: {
-          display: true
+          display: false
         }
       }
     });
