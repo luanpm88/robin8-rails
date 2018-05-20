@@ -363,6 +363,11 @@ zh:
       beauty: 美妆
       fitness: 健身
       auto: 汽车
+      babies: 母婴
+      appliances: 家电
+      airline: 航空
+      music: 音乐
+      entertainment: 娱乐
   partner:
       kols:
         id: Id

@@ -364,6 +364,11 @@ en:
       beauty: Beauty
       fitness: Fitness
       auto: Auto
+      babies: Babies
+      appliances: Appliances
+      airline: Airline
+      music: Music
+      entertainment: Entertainment
   partner:
     kols:
       id: Id
