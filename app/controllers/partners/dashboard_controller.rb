@@ -16,7 +16,8 @@ class Partners::DashboardController < Partners::BaseController
       puts "tag.label.name"
       labelKey = "tags.label."+ c.name
       labels[counter] = t labelKey
-      data[counter] = c.counter
+    #  data[counter] = c.counter
+      data[counter] = c.percentage
       counter = counter + 1
     end
     chartJson = { "labels" => labels, "data" => data }
@@ -47,7 +48,7 @@ class Partners::DashboardController < Partners::BaseController
       total = total + c.percentage
       counter = counter + 1
     end
-    labels[counter] = "other.label.name"
+    labels[counter] = t "other.label.name"
     data[counter] = 100 - total
     chartJson = { "labels" => labels, "data" => data }
 
