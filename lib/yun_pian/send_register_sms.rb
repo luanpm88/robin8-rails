@@ -58,7 +58,7 @@ module YunPian
     end
 
     def self.write_cache_for(phone_number,code)
-      $redis.setx(phone_number, code.to_s, expires_in: 30.minutes)
+      $redis.setex(phone_number, code.to_s, expires_in: 30.minutes)
     end
 
     def security_code
