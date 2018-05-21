@@ -58,7 +58,7 @@ module YunPian
     end
 
     def self.write_cache_for(phone_number,code)
-      $redis.setex(phone_number, code.to_s, expires_in: 30.minutes)
+      $redis.setex(phone_number, 30.minutes, code.to_s)
     end
 
     def security_code
@@ -71,7 +71,7 @@ module YunPian
 
     def self.get_code(phone)
       return FakeCode if phone ==  FakeNumber
-      $redis.get(phone) rescue nil
+      $redis.get(phone)
     end
 
     SkipVerifyPhones = ['13000000000', '13262752287','13795431288', '13979115652', '13979115653',
