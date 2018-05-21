@@ -183,7 +183,7 @@ class FinancialRechargePartial extends React.Component {
                     </p>
                     <p>
                       <strong>公司名称（抬头）：</strong>
-                      {brand.get("title")}
+                      <span className="company-name">{brand.get("campany_name")}</span>
                       <Link to={`/brand/${brand.get('id')}/edit`}>修改信息</Link>
                     </p>
                     <p>

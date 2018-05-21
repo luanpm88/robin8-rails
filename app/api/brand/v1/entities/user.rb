@@ -5,6 +5,7 @@ module Brand
         expose :id
         expose :name
         expose :real_name
+        expose :campany_name
         expose :description
         expose :keywords
         expose :url

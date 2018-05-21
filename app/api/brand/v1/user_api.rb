@@ -31,6 +31,7 @@ module Brand
         requires :real_name   , type: String
         requires :description , type: String
         requires :keywords    , type: String
+        requires :campany_name, type: String
         optional :url         , type: String
       end
       put '/' do
