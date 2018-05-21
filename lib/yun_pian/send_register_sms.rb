@@ -58,11 +58,11 @@ module YunPian
     end
 
     def self.write_cache_for(phone_number,code)
-      Rails.cache.write(phone_number, code.to_s, expires_in: 30.minutes)
+      $redis.setx(phone_number, code.to_s, expires_in: 30.minutes)
     end
 
     def security_code
-      code = Rails.cache.fetch(@phone_number) || generate_security_code
+      code = $redis.get(@phone_number) || generate_security_code
     end
 
     def generate_security_code
@@ -71,7 +71,7 @@ module YunPian
 
     def self.get_code(phone)
       return FakeCode if phone ==  FakeNumber
-      Rails.cache.read(phone) rescue nil
+      $redis.get(phone) rescue nil
     end
 
     SkipVerifyPhones = ['13000000000', '13262752287','13795431288', '13979115652', '13979115653',
@@ -80,7 +80,7 @@ module YunPian
     def self.verify_code(phone, code)
       phone = phone.to_s        rescue ""
       code = code.to_s          rescue ""
-      return true if  Rails.cache.read(phone) == code
+      return true if  $redis.get(phone) == code
       return code == "123456"  if Rails.env.development?  || Rails.env.staging? || Rails.env.qa? || phone.start_with?("10000")
       SkipVerifyPhones.include?(phone) && code == '123456'
     end
