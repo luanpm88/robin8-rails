@@ -208,13 +208,17 @@ class FinancialRechargePartial extends React.Component {
                 <div className="line-title">线上支付</div>
 
                 <div className="recharge-content">
-                  <div className="promotion-banner">
-                    <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
-                    <div className="banner-info">
-                      <h5 className="title">{promotion.get('title')}</h5>
-                      <p>{promotion.get('description')}</p>
-                    </div>
-                  </div>
+                  {
+                    !!promotion && promotion.size !== 0 ? (
+                      <div className="promotion-banner">
+                        <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
+                        <div className="banner-info">
+                          <h5 className="title">{promotion.get('title')}</h5>
+                          <p>{promotion.get('description')}</p>
+                        </div>
+                      </div>
+                    ) : ''
+                  }
 
                   <div className="form-horizontal recharge-form">
                     <div className="form-group recharge-form-item">
