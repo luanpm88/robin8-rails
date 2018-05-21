@@ -11,7 +11,7 @@ export default class BrandHeader extends React.Component {
   }
 
   render() {
-
+    console.log(this.props);
     const { actions, profileData } = this.props;
     const brand = profileData.get('brand');
 

@@ -16,7 +16,13 @@ module Brand
 
       desc 'Get current user profile'
       get '/' do
-        present current_user: current_user, promotion: Promotion.valid
+        present current_user
+        # present current_user: current_user, promotion: Promotion.valid
+      end
+
+      desc '促销送积分'
+      get 'promotion' do
+        present error: 0, promotion: Promotion.valid.to_hash
       end
 
       desc 'Update current user profile'

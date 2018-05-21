@@ -11,7 +11,9 @@ import * as brandActionCreators from '../actions/brandActionCreators';
 
 
 function select(state) {
-  return { profileData: state.profileReducer };
+  return {
+    profileData: state.profileReducer
+  };
 }
 
 class BrandHomeContainer extends React.Component {

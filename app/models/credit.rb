@@ -1,7 +1,7 @@
 class Credit < ActiveRecord::Base
 
-	belongs_to :owner, :polymorphic => true 
-	belongs_to :resource, :polymorphic => true 
+	belongs_to :owner, :polymorphic => true
+	belongs_to :resource, :polymorphic => true
 								# 赠送     花费    过期
 	_METHODS = %w(recharge expend expire)
 
@@ -17,6 +17,10 @@ class Credit < ActiveRecord::Base
 			expired_at: expired_at,
 			remark: 		remark
 		)
+	end
+
+	def show_expired_at
+		expired_at.strftime("%F %T")
 	end
 
 end

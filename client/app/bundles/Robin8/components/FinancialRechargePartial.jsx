@@ -16,6 +16,7 @@ class FinancialRechargePartial extends React.Component {
       showRechargeModal: false,
       credits: "",
       inviteCode: "",
+      creditPoints: ""
     };
   }
 
@@ -51,17 +52,31 @@ class FinancialRechargePartial extends React.Component {
     const price = this.refs.priceInput.value;
     const brand = this.props.profileData.get('brand');
     const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
+    const promotion = this.props.profileData.get('promotion');
+    const promotion_rate = promotion.get('rate') / 100;
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
+      this.setState({
+        creditPoints: 0
+      });
     } else if(!validator.isInt(price)) {
       $(".error-tips p").hide();
       $(".must-be-integer").show();
+      this.setState({
+        creditPoints: 0
+      });
     }else if(!validator.isInt(price, {min: recharge_min_budget})) {
       $(".error-tips p").hide();
       $(".must-greater-than").show();
+      this.setState({
+        creditPoints: 0
+      });
     }else {
       $(".error-tips p").hide();
+      this.setState({
+        creditPoints: Math.round(price * promotion_rate)
+      });
     }
   }
 
@@ -116,8 +131,40 @@ class FinancialRechargePartial extends React.Component {
     }
   }
 
+  render_promotion() {
+    const promotion = this.props.profileData.get('promotion');
+    if (!!promotion && promotion.size !== 0) {
+      return (
+        <div>
+          <div className="form-group recharge-form-item">
+            <label className="control-label label-small">此次促销活动赠送:</label>
+            <div className="col-sm-6 control-box">
+              <div className="input-group">
+                <input type="text" ref="creditInput" className="form-control input-small points-input" value={this.state.creditPoints} readOnly />
+                <span className="input-group-addon">积分（10积分=1元）</span>
+              </div>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="col-sm-12 form-tips">注意：此次赠送积分有效使用时间至{promotion.get('expired_at')}</div>
+          </div>
+        </div>
+      )
+    } else {
+      return ''
+    }
+  }
+
+  componentDidMount() {
+    const { fetchBrandPromotion } = this.props.actions;
+    fetchBrandPromotion();
+  }
+
   render() {
-    const brand = this.props.profileData.get('brand')
+    const brand = this.props.profileData.get('brand');
+    const promotion = this.props.profileData.get('promotion');
+    console.log(this.props.profileData)
+    console.log('promotion', promotion.size)
     return (
       <div className="financial page">
         <div className="container">
@@ -137,7 +184,7 @@ class FinancialRechargePartial extends React.Component {
                     <p>
                       <strong>公司名称（抬头）：</strong>
                       {brand.get("title")}
-                      <Link to={`/brand/${brand.get('id')}/edit`}>修改</Link>
+                      <Link to={`/brand/${brand.get('id')}/edit`}>修改信息</Link>
                     </p>
                     <p>
                       <strong>账户余额：</strong>
@@ -145,9 +192,11 @@ class FinancialRechargePartial extends React.Component {
                     </p>
                     <p>
                       <strong>剩余积分：</strong>
-                      <span>{brand.get("avail_amount")}</span> &nbsp;积分
+                      <span>{brand.get('credit_amount')}</span> &nbsp;积分
                     </p>
-                    <p className="sm">使用有效期至18年1月28日23：59时</p>
+                    {
+                      brand.get('credit_amount') === 0 ? '' : (<p className="sm">使用有效期至{brand.get('credit_expired_at')}</p>)
+                    }
                   </div>
                   <div className="media-right media-middle">
                     { this.render_avatar() }
@@ -161,10 +210,9 @@ class FinancialRechargePartial extends React.Component {
                 <div className="recharge-content">
                   <div className="promotion-banner">
                     <img ref='' src={require('promotion_banner.jpg')} className="promotion-banner-img" />
-
                     <div className="banner-info">
-                      <h5 className="title">双蛋促销活动:</h5>
-                      <p>单次充值超过<span className="num">1000</span>元即可赠送<span className="num">50%</span>金额的积分到您的账户!</p>
+                      <h5 className="title">{promotion.get('title')}</h5>
+                      <p>{promotion.get('description')}</p>
                     </div>
                   </div>
 
@@ -191,18 +239,7 @@ class FinancialRechargePartial extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group recharge-form-item">
-                      <label className="control-label label-small">此次促销活动赠送:</label>
-                      <div className="col-sm-6 control-box">
-                        <div className="input-group">
-                          <input type="text" className="form-control input-small points-input" readOnly />
-                          <span className="input-group-addon">积分（10积分=1元）</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="col-sm-12 form-tips">注意：此次赠送积分有效使用时间至2018年1月30号</div>
-                    </div>
+                    { this.render_promotion() }
 
                     <div className="form-group recharge-form-item">
                       <label className="control-label">邀请码(选填):</label>
