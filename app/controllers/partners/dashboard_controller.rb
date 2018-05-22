@@ -142,6 +142,9 @@ class Partners::DashboardController < Partners::BaseController
       data[counter] = c.total_take_budget
       counter = counter + 1
     end
+    
+    chartJson = { "labels" => labels, "data" => data }
+    
     respond_to do |format|
       format.html
       format.json {
