@@ -163,8 +163,8 @@ class FinancialRechargePartial extends React.Component {
   render() {
     const brand = this.props.profileData.get('brand');
     const promotion = this.props.profileData.get('promotion');
-    console.log(this.props.profileData)
-    console.log('promotion', promotion.size)
+    console.log(this.props.profileData);
+    console.log('promotion', promotion.size);
     return (
       <div className="financial page">
         <div className="container">
