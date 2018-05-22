@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  before_action :set_locale
-  before_action :set_link
+  # before_action :set_locale
+  # before_action :set_link
 
   def set_link
     enLink = request.url

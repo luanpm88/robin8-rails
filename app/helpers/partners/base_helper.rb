@@ -15,27 +15,28 @@ module Partners::BaseHelper
       "NONE"
     end
   end
-  
+
   def get_all_parent(obj)
     @has_parent = []
     @has_next = true
     @cur_obj = obj.parent
-    
+
     while @has_next
       @has_parent.push(@cur_obj)
     end
-    
+
     print @has_parent.count
     return "<span style='color: green'>TE</span>".html_safe
   end
-  
+
   def check_parent_exist(cur_obj)
-    
+
     if cur_obj.id === nil
       return cur_obj.parent
     else
       return false
     end
-    
+
   end
+
 end

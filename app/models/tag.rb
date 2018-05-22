@@ -30,7 +30,7 @@ class Tag < ActiveRecord::Base
   end
 
   # statistics
-  def self.group_by_tag(limit)
+  def self.group_by_tag(limit, tag)
     # Tag.find_by_sql("select tags.name, count(kols.id) counter from kols, kol_tags, tags where kols.id = kol_tags.kol_id and tags.id = kol_tags.tag_id and tags.enabled = 1 GROUP BY tags.name order by count(kols.id) desc limit " + limit.to_s)
     Tag.find_by_sql("select c.* from (
 
@@ -41,7 +41,7 @@ from kols, kol_tags, tags, admintags_kols , admintags
 where kols.id = kol_tags.kol_id
 and tags.id = kol_tags.tag_id
 and tags.enabled = 1
-and admintags.tag = 'geometry'
+and admintags.tag = '" + tag + "'
 and admintags_kols.admintag_id = admintags.id
 and kols.id = admintags_kols.kol_id
 group by tags.name
@@ -55,7 +55,7 @@ from kols, kol_tags, tags, admintags_kols , admintags
 where kols.id = kol_tags.kol_id
 and tags.id = kol_tags.tag_id
 and tags.enabled = 1
-and admintags.tag = 'geometry'
+and admintags.tag = '" + tag + "'
 and admintags_kols.admintag_id = admintags.id
 and kols.id = admintags_kols.kol_id
 ) b on 1 = 1
@@ -65,18 +65,18 @@ and kols.id = admintags_kols.kol_id
   end
 
   # statistics by app_city
-  def self.group_by_app_city(limit)
+  def self.group_by_app_city(limit, tag)
     Tag.find_by_sql("select c.* from (
 select a.* , b.*, (a.city_count / b.total_count ) * 100 as percentage from (
 select kols.app_city, count(*) as city_count
-from kols, admintags_kols , admintags where admintags.tag = 'geometry'
+from kols, admintags_kols , admintags where admintags.tag = '" + tag + "'
 and admintags_kols.admintag_id = admintags.id and kols.id = admintags_kols.kol_id
 group by app_city
 having app_city is not null
 ) a
 inner join (
 select count(*) as total_count
-from kols, admintags_kols , admintags where admintags.tag = 'geometry'
+from kols, admintags_kols , admintags where admintags.tag = '" + tag + "'
 and admintags_kols.admintag_id = admintags.id and kols.id = admintags_kols.kol_id
 ) b
 ) c order by percentage desc limit " + limit.to_s

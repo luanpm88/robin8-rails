@@ -370,6 +370,15 @@ en:
       music: Music
       entertainment: Entertainment
   partner:
+    dashboard:
+      chart5:
+        title: Daily Campaign Activities
+      chart6:
+        title: Active User Region
+      chart7:
+        title: Brand Campaign Expense
+      chart8: 
+        title: User Tag Statistics
     kols:
       id: Id
       name: Name

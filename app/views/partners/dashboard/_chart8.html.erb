@@ -1,6 +1,6 @@
-<div class="card mb-12">
-  <div class="card-header">
-
+<div style="border: 1px solid #eee" class="card mb-12">
+  <div class="text-center card-header">
+      <i class="fa fa-bar-chart"></i><%= t('partner.dashboard.chart7.title') %>
   </div>
   <div class="card-body">
     <div class="row">
@@ -9,12 +9,14 @@
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted"><i class="fa fa-bar-chart"></i>用户标签统计</div>
+  <div class="card-footer small text-muted"></div>
 </div>
 
 <script type="text/javascript">
   $(document).ready(function () {
-    var chartJson = $.ajax({url: "/partners/dashboard/chart8.json", async: false});
+    var chartJson = $.ajax({url: "/partners/dashboard/chart8.json", async: true}).done(function() {
+   //   alert("done");
+
     console.log(chartJson.responseText);
     //  alert(chartJson.responseText);
 
@@ -26,10 +28,12 @@
     console.log(chartlabels);
     var chartData = array.data;
     var ctx = document.getElementById("chart8");
-    // alert("ctx = " +ctx);
+   // alert("chart8 ctx = " +ctx);
+
     var myLineChart = new Chart(ctx, {
       //   type: 'bar',
       type: 'horizontalBar',
+
       data: {
         labels: chartlabels, //["January", "February", "March", "April", "May"],
         datasets: [{
@@ -43,31 +47,33 @@
             'rgba(40, 107, 69, 0.8)',
             'rgba(0, 159, 255, 0.8)'
           ],
+
           borderColor: "rgba(2,117,216,1)",
           data: chartData, //[4215, 5312, 6251, 7841, 9821],
         }],
       },
       options: {
+
         scales: {
           xAxes: [{
 
             gridLines: {
-              display: true
+              display: false
             },
-            ticks: {
-             // max: 100,
-              maxTicksLimit: 6
-
-            }
+            // ticks: {
+            //  // max: 100,
+            //   maxTicksLimit: 6
+            //
+            // }
           }],
           yAxes: [{
-            ticks: {
-              min: 0,
-              max: 15000,
-              maxTicksLimit: 5
-            },
+            // ticks: {
+            //   min: 0,
+            //   max: 15000,
+            //   maxTicksLimit: 5
+            // },
             gridLines: {
-              display: true
+              display: false
             }
           }],
         },
@@ -75,6 +81,7 @@
           display: false
         }
       }
+    });
     });
   });
 </script>

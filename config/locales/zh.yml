@@ -369,6 +369,15 @@ zh:
       music: 音乐
       entertainment: 娱乐
   partner:
+    dashboard:
+      chart5:
+        title: 活动接单数
+      chart6:
+        title: 活跃用户地区
+      chart7:
+        title: 品牌活动消耗
+      chart8:
+        title: 用户标签统计
       kols:
         id: Id
         name: 昵称

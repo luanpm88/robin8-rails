@@ -34,6 +34,13 @@ Rails.application.routes.draw do
   get 'partners/dashboard/chart7'
   get 'partners/dashboard/chart8'
 
+  get 'fergus/test'
+  get 'fergus/index'
+  get 'fergus/chart_demo'
+  get 'fergus/chart1'
+  get 'fergus/chart2'
+  get 'fergus/layout_demo'
+
 
   get 'track_urls/:id', to: "pages#track_url"
 
