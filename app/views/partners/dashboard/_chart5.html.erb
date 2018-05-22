@@ -1,13 +1,169 @@
-<div class="card mb-12">
-  <div class="card-header">
-    <i class="fa fa-bar-chart"></i> Bar Chart Example
+<div style="border: 1px solid #eee" class="card mb-12">
+  <div class="text-center card-header">
+    <i class="fa fa-bar-chart"></i> <%= t('partner.dashboard.chart5.title') %>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-sm-12 my-auto">
-        <canvas id="chart5" width="100" height="100"></canvas>
+        <canvas id="chart5" width="100%" height="30"></canvas>
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  <div class="card-footer small text-muted"></div>
 </div>
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    var chartJson = $.ajax({url: "/partners/dashboard/chart5.json", async: true}).done(function() {
+
+    console.log(chartJson.responseText);
+    //  alert(chartJson.responseText);
+
+    var array = JSON.parse(chartJson.responseText);
+    //  alert("array " +array);
+
+    var chartlabels = array.labels;
+    //   alert("xxx" + labels);
+    console.log(chartlabels);
+    var chartData = array.data;
+    var ctx = document.getElementById("chart5");
+      var gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 200);
+
+      gradient.addColorStop(0, 'rgba(255,135,67,0.5)');
+      gradient.addColorStop(0.2, 'rgba(255,135,67,0.25)');
+      gradient.addColorStop(0.5, 'rgba(0,135,67,0.05)');
+      gradient.addColorStop(1, 'rgba(255,135,67,0)');
+
+    var data = {
+      labels: chartlabels,
+      datasets: [
+        {
+          label: "# of Activities",
+          // fillColor: "rgba(220,220,220,0.2)",
+          // strokeColor: "rgba(220,220,220,1)",
+          // pointColor: "rgba(220,220,220,1)",
+          // pointStrokeColor: "#fff",
+          // pointHighlightFill: "#fff",
+          // pointHighlightStroke: "rgba(220,220,220,1)",
+
+//          backgroundColor:"rgba(2,117,216,0.2)",
+          backgroundColor: gradient,
+          borderColor:"rgba(2,117,216,1)",
+          pointRadius:5,
+          pointBackgroundColor:"rgba(2,117,216,1)",
+          pointBorderColor:"rgba(255,255,255,0.8)",
+          pointHoverRadius:5,
+          pointHoverBackgroundColor:"rgba(2,117,216,1)",
+          pointHitRadius:20,pointBorderWidth:2,
+
+        //  fill: false,
+
+          // backgroundColor: [
+          //   pattern.draw('square', '#ff6384'),
+          //   pattern.draw('circle', '#36a2eb'),
+          //   pattern.draw('diamond', '#cc65fe'),
+          //   pattern.draw('triangle', '#ffce56'),
+          // ],
+          data: chartData
+        }
+        // {
+        //   label: "My Second dataset",
+        //   fillColor: "rgba(151,187,205,0.2)",
+        //   strokeColor: "rgba(151,187,205,1)",
+        //   pointColor: "rgba(151,187,205,1)",
+        //   pointStrokeColor: "#fff",
+        //   pointHighlightFill: "#fff",
+        //   pointHighlightStroke: "rgba(151,187,205,1)",
+        //   data: [28, 48, 40, 19, 86, 27, 90]
+        // }
+      ]
+    };
+
+    var options =
+      {
+      //   ///Boolean - Whether grid lines are shown across the chart
+      //   scaleShowGridLines: true,
+        backgroundColor: "rgba(0,0,0,1)",
+      //
+      //   //String - Colour of the grid lines
+      //   scaleGridLineColor: "rgba(0,0,0,.05)",
+      //
+      //   //Number - Width of the grid lines
+      //   scaleGridLineWidth: 3,
+      //
+      //   //Boolean - Whether to show horizontal lines (except X axis)
+      //   scaleShowHorizontalLines: true,
+      //
+      //   //Boolean - Whether to show vertical lines (except Y axis)
+      //   scaleShowVerticalLines: true,
+      //
+      //   //Boolean - Whether the line is curved between points
+      //  // bezierCurve: true,
+      //
+      //   //Number - Tension of the bezier curve between points
+      //  // bezierCurveTension: 0.4,
+      //
+      //   //Boolean - Whether to show a dot for each point
+      //   pointDot: true,
+      //
+      //   //Number - Radius of each point dot in pixels
+      //   pointDotRadius: 4,
+      //
+      //   //Number - Pixel width of point dot stroke
+      //   pointDotStrokeWidth: 1,
+      //
+      //   //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+      //   pointHitDetectionRadius: 20,
+      //
+      //   //Boolean - Whether to show a stroke for datasets
+      //   datasetStroke: true,
+      //
+      //   //Number - Pixel width of dataset stroke
+      //   datasetStrokeWidth: 2,
+      //
+      //   //Boolean - Whether to fill the dataset with a colour
+      // //  datasetFill: true,
+      //
+      //   //String - A legend template
+
+        scales: {
+          xAxes: [{
+            // time: {
+            //   unit: 'day'
+            // },
+            gridLines: {
+              display: false
+            }
+            // ticks: {
+            //   max: 100,
+            //   maxTicksLimit: 6
+            // }
+          }],
+          yAxes: [{
+             ticks: {
+            //   min: 0,
+            //   max: 15000,
+               maxTicksLimit: 6
+             },
+            gridLines: {
+              display: false
+            }
+          }],
+        },
+        legend: {
+          display: false
+        }
+      };
+
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+    });
+
+  });
+
+</script>

@@ -1,8 +1,85 @@
-<div class="card mb-3">
-  <div class="card-header">
-    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-  <div class="card-body"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-    <canvas id="myPieChart" width="231" height="231" class="chartjs-render-monitor" style="display: block; width: 231px; height: 231px;"></canvas>
+<div style="border: 1px solid #eee" class="card mb-12">
+  <div class="card-header text-center">
+    <i class="fa fa-bar-chart"></i> <%= t('partner.dashboard.chart7.title') %>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12 my-auto">
+        <canvas id="chart7" width="100" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer small text-muted"></div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    var chartJson = $.ajax({url: "/partners/dashboard/chart7.json", async: true}).done(function() {
+
+    console.log(chartJson.responseText);
+    //  alert(chartJson.responseText);
+
+    var array = JSON.parse(chartJson.responseText);
+    //  alert("array " +array);
+
+    var chartlabels = array.labels;
+    //   alert("xxx" + labels);
+    console.log(chartlabels);
+    var chartData = array.data;
+    var ctx = document.getElementById("chart7");
+    // alert("chart6" + ctx);
+    var myLineChart = new Chart(ctx, {
+      //   type: 'bar',
+      type: 'horizontalBar',
+      data: {
+        labels: chartlabels, //["January", "February", "March", "April", "May"],
+        datasets: [{
+          label: "Tags Distribution",
+          //   backgroundColor: "rgba(2,117,216,1)",
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: "rgba(2,117,216,1)",
+          data: chartData, //[4215, 5312, 6251, 7841, 9821],
+        }],
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'dollar'
+            },
+            gridLines: {
+              display: false
+            }
+            // ticks: {
+            //   max: 100,
+            //   maxTicksLimit: 6
+            // }
+          }],
+          yAxes: [{
+            // ticks: {
+            //   min: 0,
+            //   max: 15000,
+            //   maxTicksLimit: 5
+            // },
+            gridLines: {
+              display: false
+            }
+          }],
+        },
+        legend: {
+          display: false
+        }
+      }
+    });
+    });
+
+  });
+
+</script>

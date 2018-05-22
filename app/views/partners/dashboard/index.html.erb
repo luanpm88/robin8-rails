@@ -1,32 +1,43 @@
 
-<br />
-<br />
-<div class="padding-left-20">
-  <div class="row">
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart1" %>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart2" %>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart3" %>
-    </div>
-    <div class="col-md-6 col-lg-6">
-      <%= render :partial => "partners/dashboard/chart4" %>
-    </div>
-    <div class="col-md-6 col-lg-6">
-      <%= render :partial => "partners/dashboard/chart5" %>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart6" %>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart7" %>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <%= render :partial => "partners/dashboard/chart8" %>
-    </div>
+<%#= stylesheet_link_tag 'gentelella/gentelella' %>
+<%#= javascript_include_tag 'gentelella/gentelella' %>
+
+<style>
+  .row {
+    margin: 10px;
+  }
+
+</style>
+<h3>Geometry KOL 收益榜</h3>
+<div class="row">
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart1" %>
+  </div>
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart2" %>
+  </div>
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart3" %>
   </div>
 </div>
-    
+<h3>Geometry 数据统计</h3>
+<div class="row">
+  <div class="col-md-6">
+    <%= render :partial => "partners/dashboard/chart4" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= render :partial => "partners/dashboard/chart5" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart6" %>
+  </div>
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart7" %>
+  </div>
+  <div class="col-md-4">
+    <%= render :partial => "partners/dashboard/chart8" %>
+  </div>
+</div>

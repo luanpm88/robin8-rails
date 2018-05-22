@@ -1,6 +1,6 @@
-<div class="card mb-12">
-  <div class="card-header">
-
+<div style="border: 1px solid #eee" class="card mb-12">
+  <div class="text-center card-header">
+    <i class="fa fa-bar-chart"></i> <%= t('partner.dashboard.chart6.title') %>
   </div>
   <div class="card-body">
     <div class="row">
@@ -9,13 +9,14 @@
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted"><i class="fa fa-bar-chart"></i> 活跃用户地区</div>
+  <div class="card-footer small text-muted"></div>
 </div>
 
 <script type="text/javascript">
   $(document).ready(function () {
 
-    var chartJson = $.ajax({url: "/partners/dashboard/chart6.json", async: false});
+    var chartJson = $.ajax({url: "/partners/dashboard/chart6.json", async: true}).done(function() {
+
     console.log(chartJson.responseText);
     //  alert(chartJson.responseText);
 
@@ -27,6 +28,7 @@
     console.log(chartlabels);
     var chartData = array.data;
     var ctx = document.getElementById("chart6");
+    // alert("chart6" + ctx);
     var myLineChart = new Chart(ctx, {
       //   type: 'bar',
       type: 'horizontalBar',
@@ -54,20 +56,20 @@
             },
             gridLines: {
               display: false
-            },
-            ticks: {
-              max: 100,
-              maxTicksLimit: 6
             }
+            // ticks: {
+            //   max: 100,
+            //   maxTicksLimit: 6
+            // }
           }],
           yAxes: [{
-            ticks: {
-              min: 0,
-              max: 15000,
-              maxTicksLimit: 5
-            },
+            // ticks: {
+            //   min: 0,
+            //   max: 15000,
+            //   maxTicksLimit: 5
+            // },
             gridLines: {
-              display: true
+              display: false
             }
           }],
         },
@@ -76,8 +78,7 @@
         }
       }
     });
-
-
+    });
   });
 
 </script>
