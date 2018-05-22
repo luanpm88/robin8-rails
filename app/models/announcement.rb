@@ -1,7 +1,7 @@
 class Announcement < ActiveRecord::Base
 	include Redis::Objects
 
-	counter: redis_clicks_count
+	counter :redis_clicks_count
 
   mount_uploader :logo, ImageUploader
   mount_uploader :banner, ImageUploader

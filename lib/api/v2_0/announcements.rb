@@ -18,10 +18,7 @@ module API
         		params_json: params[:params_json].to_json
         	)
 
-        	as.kol.redis_announcement_clicks_count.increment
-        	as.announcement.redis_clicks_count.increment
-
-        	present: error: 0, alert: '操作成功'
+        	present error: 0, alert: '操作成功'
 
         end
 

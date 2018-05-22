@@ -22,4 +22,8 @@ class AppUpgrade < ActiveRecord::Base
     end
   end
 
+  def self.ios_last
+    self.IOS.last.app_version
+  end
+
 end
