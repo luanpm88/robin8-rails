@@ -100,6 +100,16 @@ every 1.day, :at => '0:30 am', :roles => [:prod_server] do
   rake "schedule:sidekiq_restart"
 end
 
+# 定时处理geometry dashboard数据
+
+every 1.day, :at => '02:00 am' do
+  runner "KolIncomeActivities.job_for_kol_dashboard_income_data", environment: 'qa'
+end
+
+every 1.day, :at => '02:00 pm' do
+  runner "KolIncomeActivities.job_for_kol_dashboard_income_data", environment: 'production'
+end
+
 # every 12.hours do
 #   runner "KolStatus.schedule_update_status"
 # end

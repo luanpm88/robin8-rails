@@ -1,13 +1,71 @@
 <div class="card mb-12">
   <div class="card-header">
-    <i class="fa fa-bar-chart"></i> Bar Chart Example
+    <i class="fa fa-line-chart"></i> 用户增长数
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-sm-12 my-auto">
-        <canvas id="chart4" width="100" height="100"></canvas>
+      <div class="col-sm-9 col-lg-9 col-md-9">
+        <canvas id="chart4" width="50" height="50"></canvas>
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    <div class="card-footer small text-muted" >最后更新 <span id="lastupdate4"></span></div>
 </div>
+
+
+<script>
+  $(document).ready(function () {
+    
+    var chartJson = 
+    $.ajax({url: "/partners/dashboard/chart4.json"})
+    .done(function(chartJson){
+      var ctx = document.getElementById("chart4");
+      console.log(chartJson)
+      var count = chartJson.length;
+      console.log(count)
+      var data = {
+        labels: [],
+        datasets: []
+      };
+      var tmpData = {};
+      while(count--){
+        var cur = moment(chartJson[count].created_at).format("DD-MMM");
+        if(typeof tmpData[cur] === "undefined"){
+          tmpData[cur] = [];
+        }
+        tmpData[cur].push(chartJson[count]);
+      }
+      console.log(tmpData)
+      var count = tmpData.length;
+      var labels = Object.keys(tmpData);
+      var dd = [];
+      for(var x in tmpData){
+        dd.push(tmpData[x].length);
+      }
+      
+      var data = {
+            labels: labels,
+            datasets: [
+              {
+                label: "用户增长数",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: dd
+              }
+            
+            ]
+            };
+      var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: data
+      });
+      
+      
+      $('#lastupdate4').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
+    });
+    
+    console.log(chartJson);
+  });
+</script>

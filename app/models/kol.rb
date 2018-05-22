@@ -91,8 +91,10 @@ class Kol < ActiveRecord::Base
 
 
   has_many :kol_keywords
-
-  #社团
+  
+  has_and_belongs_to_many :kol_income_activities
+     
+ #社团
   has_one :club
   # belongs_to :club_member
   has_one :club_member
@@ -363,7 +365,7 @@ class Kol < ActiveRecord::Base
     count = count_count + sum_count +  task_count
     [income, count]
   end
-
+  
   # def campaign_count_by_date(date)
   #   self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at < '#{date.end_of_day}'")
   #       .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time > '#{date.beginning_of_day}'").count
@@ -411,7 +413,7 @@ class Kol < ActiveRecord::Base
     end
     [income, count]
   end
-
+  
 
   # 最近7天的收入情况
   def recent_income

@@ -1,13 +1,45 @@
 <div class="card mb-12">
   <div class="card-header">
-    <i class="fa fa-bar-chart"></i> Bar Chart Example
+      <h4><i class="fa fa-line-chart" aria-hidden="true"></i> 总冠军</h4>
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-sm-12 my-auto">
-        <canvas id="chart3" width="100" height="100"></canvas>
+    <div class="well profile_view">
+      <div class="col-sm-12">
+        <div class="left col-xs-7">
+            <h4 id="kol_historical_winner_name">No Person</h4>
+            <h3 class="text-success">
+                <i class="fa fa-jpy" aria-hidden="true"></i> <span id="cur_historical_winner_price">0</span>
+            </h3>
+            <br />
+        </div>
+        <div class="right col-xs-5 text-center">
+            <%= image_tag("partners/user.png", alt: "", id: "avatar_url_historical", class: "img-circle img-responsive") %>
+            <br />
+        </div>
+      </div>
+      <div class="col-xs-12 bottom text-center">
+        <div class="col-xs-12 col-sm-12 emphasis">
+            <div class="card-footer small text-muted" >最后更新 <span id="lastupdate3"></span></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    var imgSrc3 = $("#avatar_url_historical").attr('src');
+    var chartJson = 
+    $.ajax({url: "/partners/dashboard/chart3.json"})
+    .done(function(chartJson){
+      $("#cur_historical_winner_price").text(chartJson.income);
+      $("#kol_historical_winner_name").text(chartJson.name);
+      $("#avatar_url_historical").attr('src', chartJson.avatar_url).on("error", function(){
+        this.src = imgSrc3;
+      });
+      $('#lastupdate3').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
+    });
+    
+    console.log(chartJson);
+  });
+</script>
