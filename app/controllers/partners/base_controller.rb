@@ -2,7 +2,10 @@ class Partners::BaseController < ApplicationController
 
   layout 'partners'
 
-	before_action :admintag
+  before_action :set_locale
+  before_action :set_link
+
+  before_action :admintag
 
 
 	private
@@ -21,7 +24,7 @@ class Partners::BaseController < ApplicationController
 	def admintag
     # $redis.set 'geometry', 'geometry2018' # set this to redis
 		@admintag = Admintag.find_by_tag session[:admin_tag]
-    
+
     redirect_to partners_sign_in_path unless @admintag
 	end
 
