@@ -47,15 +47,47 @@
       .checked-img {
         background-image: url(~radio_checked.png);
       }
+
+      .check-credit {
+        width: 24px;
+        height: 24px;
+        display: block;
+        border: solid 1px #9b9a9a;
+        cursor: pointer;
+        float: right;
+        margin-top: 5px;
+        margin-right: 50px;
+
+        .ok-sign {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          position: relative;
+          right: 1px;
+          top: -1px;
+        }
+
+        .checked-img {
+          background-color: #00cacf;
+        }
+      }
+    }
+
+    .total-pay-status {
+      margin: 40px 0 20px;
+      text-align: center;
+      span {
+        margin: 0 40px;
+      }
     }
 
     .total-pay-amount {
       text-align: center;
       .pay-amount-text {
-        font-size: 18px;
+        font-size: 20px;
       }
       .need-pay-amount {
-        font-size: 26px;
+        font-size: 20px;
       }
     }
   }
