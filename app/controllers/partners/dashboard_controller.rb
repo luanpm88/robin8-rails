@@ -97,17 +97,12 @@ class Partners::DashboardController < Partners::BaseController
   #7 days users incre
   def chart4
 
-    _start = Date.today - 310.days
-    
     _start = Date.today - 310.days # FIXME should change to 7 days
     _end = Date.today - 1.days
 
     @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @kol = @q.result.order("created_at desc")
-
-    res = []
     @kol = @q.result.order("created_at asc")
-    
+
     res = {}
     
     if @kol.first != nil
@@ -123,9 +118,13 @@ class Partners::DashboardController < Partners::BaseController
         res[curDate] += 1
       end
     end
+    
     respond_to do |format|
       format.html
       format.json {
+        render json: res
+      }
+    end
   end
 
   def chart7
@@ -143,12 +142,16 @@ class Partners::DashboardController < Partners::BaseController
       data[counter] = c.total_take_budget
       counter = counter + 1
     end
-    chartJson = { "labels" => labels, "data" => data }
-
-
+    respond_to do |format|
+      format.html
+      format.json {
+        ##   render json: Tag.group_by_tag( 5)}
+        render :json => chartJson
+        ##   :json=>@product
       }
     end
   end
+  
 
   def chart8
     #Tag.group_by_tag
@@ -233,8 +236,5 @@ class Partners::DashboardController < Partners::BaseController
       }
     end
   end
-end
-        ##   render json: Tag.group_by_tag( 5)}
+end  
 
-        render :json => chartJson
-        ##   :json=>@product
