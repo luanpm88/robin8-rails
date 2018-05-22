@@ -20,31 +20,9 @@
     $.ajax({url: "/partners/dashboard/chart4.json"})
     .done(function(chartJson){
       var ctx = document.getElementById("chart4");
-      console.log(chartJson)
-      var count = chartJson.length;
-      console.log(count)
-      var data = {
-        labels: [],
-        datasets: []
-      };
-      var tmpData = {};
-      while(count--){
-        var cur = moment(chartJson[count].created_at).format("DD-MMM");
-        if(typeof tmpData[cur] === "undefined"){
-          tmpData[cur] = [];
-        }
-        tmpData[cur].push(chartJson[count]);
-      }
-      console.log(tmpData)
-      var count = tmpData.length;
-      var labels = Object.keys(tmpData);
-      var dd = [];
-      for(var x in tmpData){
-        dd.push(tmpData[x].length);
-      }
       
       var data = {
-            labels: labels,
+            labels: Object.keys(chartJson),
             datasets: [
               {
                 label: "用户增长数",
@@ -52,7 +30,7 @@
                 strokeColor: "rgba(220,220,220,0.8)",
                 highlightFill: "rgba(220,220,220,0.75)",
                 highlightStroke: "rgba(220,220,220,1)",
-                data: dd
+                data: Object.values(chartJson)
               }
             
             ]
@@ -63,7 +41,7 @@
       });
       
       
-      $('#lastupdate4').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
+      $('#lastupdate4').text(moment().subtract(1, 'days').hour(23).minute(59).format("LLL"));
     });
     
     console.log(chartJson);

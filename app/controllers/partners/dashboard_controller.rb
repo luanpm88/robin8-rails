@@ -29,9 +29,7 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render json: res
-        ##   :json=>@product
       }
     end
   end
@@ -43,9 +41,7 @@ class Partners::DashboardController < Partners::BaseController
     _end = Date.today - 1.days
     @day30q = KolIncomeActivities.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
     @res = @day30q.result.order('day_of_income DESC').limit(1);
-#    @kols_count_all.each do |kkk|
-#      puts kkk
-#    end
+    
     res = {record: {}, kol: {}}
     if @res.first != nil
       puts "empty!!!!!!!!!!!!!!=================="
@@ -61,9 +57,7 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render json: res
-        ##   :json=>@product
       }
     end
   end
@@ -91,9 +85,7 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render json: res
-        ##   :json=>@product
       }
     end
   end
@@ -101,30 +93,32 @@ class Partners::DashboardController < Partners::BaseController
   #7 days users incre
   def chart4
     
-    _start = Date.today - 310.days
+    _start = Date.today - 310.days # FIXME should change to 7 days
     _end = Date.today - 1.days
     
     @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @kol = @q.result.order("created_at desc")
+    @kol = @q.result.order("created_at asc")
     
-    res = []
+    res = {}
+    
     if @kol.first != nil
       puts "not empty!!!!!!!!!!!!!!=================="
       @kol.each do |kk|
-        res << {
-          id: kk.id,
-          created_at: kk.created_at
-        }
+        dd = Date.parse kk.created_at.to_s
+        curDate = dd.month.to_s + "-" + dd.year.to_s
+        
+        puts dd.month.to_s + "-" + dd.year.to_s
+        if res[curDate] == nil
+          res[curDate] = 0
+        end
+        res[curDate] += 1
       end
-      #res = { name: @kol.first.name, income: @kol.first.historical_income, updated_at: _end.end_of_day}
     end
-    #puts @kol.first.id
+    
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render json: res
-        ##   :json=>@product
       }
     end
   end
