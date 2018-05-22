@@ -16,7 +16,13 @@ module Brand
 
       desc 'Get current user profile'
       get '/' do
-        present current_user: current_user, promotion: Promotion.valid
+        present current_user
+        # present current_user: current_user, promotion: Promotion.valid
+      end
+
+      desc '促销送积分'
+      get 'promotion' do
+        present error: 0, promotion: Promotion.valid.to_hash
       end
 
       desc 'Update current user profile'
@@ -25,6 +31,7 @@ module Brand
         requires :real_name   , type: String
         requires :description , type: String
         requires :keywords    , type: String
+        requires :campany_name, type: String
         optional :url         , type: String
       end
       put '/' do

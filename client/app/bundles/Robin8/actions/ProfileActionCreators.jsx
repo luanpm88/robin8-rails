@@ -5,7 +5,14 @@ const baseUrl = "/brand_api/v1"
 export function fetchBrandProfile() {
   return {
     type: actionTypes.FETCH_BRAND_PROFILE,
-    promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
+    promise: fetch(`${baseUrl}/user`, { credentials: 'same-origin' })
+  };
+}
+
+export function fetchBrandPromotion() {
+  return {
+    type: actionTypes.FETCH_BRAND_PROMOTION,
+    promise: fetch(`${baseUrl}/user/promotion`, { credentials: 'same-origin' })
   };
 }
 
@@ -29,7 +36,7 @@ export function updateBrandProfile(profile) {
 export function updateBrandPassword(password_fields) {
   return {
     type: actionTypes.UPDATE_BRAND_PASSWORD,
-    promise: fetch(`/brand_api/v1/user/password`, {
+    promise: fetch(`${baseUrl}/user/password`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

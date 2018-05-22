@@ -2,8 +2,15 @@ import React from 'react';
 
 export default class Transaction extends React.Component {
   render() {
-    const transaction = this.props.transaction
-    const creditsStyle = (transaction.get("direct") == "充值" || transaction.get("direct") == "退还佣金") ? {color: 'black'} : {color: 'yellow'}
+    const transaction = this.props.transaction;
+    let creditsStyle;
+    if (transaction.get("direct") == "活动消耗") {
+      creditsStyle = {color: 'red'}
+    } else if (transaction.get("direct") == "活动取消退还") {
+      creditsStyle = {color: 'green'}
+    } else {
+      creditsStyle = {color: 'black'}
+    }
     return (
       <tr className={this.props.tagColor}>
         <td>{transaction.get("trade_no")}</td>

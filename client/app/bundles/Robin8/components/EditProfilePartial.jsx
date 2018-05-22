@@ -37,6 +37,7 @@ const validate = new BrandFormValidate({
   name: { require: true },
   description: { require: true },
   real_name: { require: true },
+  campany_name: { require: true },
   url: { url: { require_protocol: false} }
 })
 
@@ -102,9 +103,11 @@ class EditProfilePartial extends Component {
   }
 
   render() {
-    const { name, url, description, real_name, keywords} = this.props.fields;
+    const { name, url, description, real_name, keywords, campany_name} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const brand = this.props.brand
+
+    console.log(this.props);
     return (
       <div className="page page-profile page-profile-edit">
         <div className="container">
@@ -136,7 +139,7 @@ class EditProfilePartial extends Component {
 
               <div className="form-part">
                 <Input field={name} id="name" label="品牌名称" placeholder="必填" />
-                <Input field={url} id="url" label="公司名称" placeholder="选填" />
+                <Input field={campany_name} id="campany_name" label="公司名称" placeholder="必填" />
                 <Input field={url} id="url" label="官方网站" placeholder="选填" />
                 <Textarea field={description} id="desc" label="品牌介绍" placeholder="必填" />
 
@@ -172,7 +175,7 @@ class EditProfilePartial extends Component {
 
 EditProfilePartial = reduxForm({
   form: 'profile_form',
-  fields: ['name', 'url', 'description', 'real_name', 'keywords'],
+  fields: ['name', 'url', 'description', 'real_name', 'keywords', 'campany_name'],
   returnRejectedSubmitPromise: true,
   validate
 },

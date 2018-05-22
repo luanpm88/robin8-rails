@@ -220,6 +220,10 @@ class User < ActiveRecord::Base
     credits.last.try(:amount).to_i
   end
 
+  def credit_expired_at
+    credits.last.try(:expired_at_show)
+  end
+
   private
 
     def needed_user

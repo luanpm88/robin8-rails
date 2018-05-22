@@ -5,6 +5,7 @@ module Brand
         expose :id
         expose :name
         expose :real_name
+        expose :campany_name
         expose :description
         expose :keywords
         expose :url
@@ -14,6 +15,8 @@ module Brand
         expose :amount
         expose :frozen_amount
         expose :avail_amount
+        expose :credit_amount
+        expose :credit_expired_at
         expose :recharge_min_budget do |user|
           MySettings.recharge_min_budget
         end
