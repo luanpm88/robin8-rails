@@ -10,6 +10,7 @@
       <th>描述</th>
       <th>Banner</th>
       <th>内容URL</th>
+      <th>点击次数</th>
       <th>Ops</th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= announcement.desc %></td>
         <td><%= image_tag announcement.banner.url('200') %></td>
         <td><%= link_to announcement.url,announcement.url %></td>
+        <td><%= announcement.redis_clicks_count.value %></td>
         <td>
           <%= link_to 'Edit', edit_marketing_dashboard_announcement_path(announcement), method: :get %>
           <%= link_to 'Destroy', marketing_dashboard_announcement_path(announcement), method: :delete, data: { confirm: 'Are you sure?' } %></td>

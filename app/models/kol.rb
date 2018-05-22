@@ -18,6 +18,9 @@ class Kol < ActiveRecord::Base
   counter :redis_elastic_likes_count
   counter :redis_elastic_stay_time
 
+  # announcement click counter
+  counter :redis_announcement_clicks_count
+
   include Concerns::PayTransaction
   include Concerns::Unionability
   include Concerns::KolCampaign
@@ -104,6 +107,8 @@ class Kol < ActiveRecord::Base
 
   # ElasticArticle
   has_many :elastic_article_actions
+
+  has_many :announcement_shows
 
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)

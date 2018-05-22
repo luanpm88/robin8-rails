@@ -9,6 +9,7 @@ module API
       mount API::V2_0::Articles
       mount API::V2_0::My
       mount API::V2_0::Tasks
+      mount API::V2_0::Announcements
     end
   end
 end
