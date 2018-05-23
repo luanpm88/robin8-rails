@@ -1,11 +1,8 @@
-class Statistics::StatCampaignInvite < ActiveRecord::Base
-
-  self.table_name = "stat_campaign_invite";
-
+class Statistics::CampaignInvite < ActiveRecord::Base
   def self.find_campaign_invite(tag_name, report_date)
 
     adminTag = Admintag.find_by(tag: tag_name)
-    Statistics::StatCampaignInvite.find_by_sql("select
+    Statistics::CampaignInvite.find_by_sql("select
 admintags.tag,
 DATE_FORMAT(ci.created_at, '%Y-%m-%d') as data_date,
 count(ci.id) as total_activity_count
@@ -31,10 +28,4 @@ order by data_date asc "
     )
 
   end
-
-  # def self.load_data
-  #   #Statistics::StatCampaignInvite.find_by_sql("insert into stat_campaign_invite ('tag)
-  #
-  # end
-
 end

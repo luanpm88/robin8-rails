@@ -371,6 +371,14 @@ en:
       entertainment: Entertainment
   partner:
     dashboard:
+      chart1:
+        title: Past 7 days Champion
+      chart2:
+        title: Past 30 days Champion
+      chart3:
+        title: Champion
+      chart4:
+        title: KOLs Growth
       chart5:
         title: Daily Campaign Activities
       chart6:
@@ -379,6 +387,8 @@ en:
         title: Brand Campaign Expense
       chart8: 
         title: User Tag Statistics
+      error:
+        msg: There are no statistics
     kols:
       id: Id
       name: Name

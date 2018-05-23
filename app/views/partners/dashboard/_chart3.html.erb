@@ -1,12 +1,14 @@
 <div class="card mb-12">
   <div class="card-header">
-      <h4><i class="fa fa-line-chart" aria-hidden="true"></i> 总冠军</h4>
+      <h4><i class="fa fa-line-chart" aria-hidden="true"></i> <%= t('partner.dashboard.chart3.title') %></h4>
   </div>
   <div class="card-body">
-    <div class="well profile_view">
+    <div class="well profile_view card-shadow">
       <div class="col-sm-12">
         <div class="left col-xs-7">
-            <h4 id="kol_historical_winner_name">No Person</h4>
+            <h4 id="kol_historical_winner_name">
+                <%= t('partner.dashboard.error.msg') %>
+            </h4>
             <h3 class="text-success">
                 <i class="fa fa-jpy" aria-hidden="true"></i> <span id="cur_historical_winner_price">0</span>
             </h3>
@@ -17,11 +19,7 @@
             <br />
         </div>
       </div>
-      <div class="col-xs-12 bottom text-center">
-        <div class="col-xs-12 col-sm-12 emphasis">
-            <div class="card-footer small text-muted" >最后更新 <span id="lastupdate3"></span></div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>
@@ -38,8 +36,10 @@
         this.src = imgSrc3;
       });
       $('#lastupdate3').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
+    })
+    .fail(function(){
+      console.log('error in ')
     });
-    
     console.log(chartJson);
   });
 </script>

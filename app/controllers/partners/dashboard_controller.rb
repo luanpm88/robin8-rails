@@ -7,7 +7,6 @@ class Partners::DashboardController < Partners::BaseController
 
 	def index
 
-    render 'index'
   end
 
   # 7 days winner
@@ -16,20 +15,20 @@ class Partners::DashboardController < Partners::BaseController
     _start = Date.today - 7.days
     _end = Date.today - 1.days
 
-    @day7q = KolIncomeActivities.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @res = @day7q.result.order('day_of_income DESC').limit(1);
+    @day7q = Statistics::KolIncome.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
+    @winner = @day7q.result.order('day_of_income DESC').limit(1);
 
     res = {record: {}, kol: {}}
-    if @res.first != nil
-      puts "empty!!!!!!!!!!!!!!=================="
+    
+    if !@winner.empty?
       res = {
-        record: @res.first,
-        kol: @res.first.kol.name,
-        avatar_url: @res.first.kol.avatar_url,
+        record: @winner.first,
+        kol: @winner.first.kol.name,
+        avatar_url: @winner.first.kol.avatar_url,
         updated_at: _end.end_of_day
       }
     end
-    puts @res.first
+    
     respond_to do |format|
       format.html
       format.json {
@@ -43,21 +42,21 @@ class Partners::DashboardController < Partners::BaseController
 
     _start = Date.today - 31.days
     _end = Date.today - 1.days
-    @day30q = KolIncomeActivities.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @res = @day30q.result.order('day_of_income DESC').limit(1);
+    @day30q = Statistics::KolIncome.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
+    @winner = @day30q.result.order('day_of_income DESC').limit(1);
     
     res = {record: {}, kol: {}}
-    if @res.first != nil
-      puts "empty!!!!!!!!!!!!!!=================="
+    if !@winner.empty?
+      
       res = {
-        record: @res.first,
-        kol: @res.first.kol.name,
-        avatar_url: @res.first.kol.avatar_url,
+        record: @winner.first,
+        kol: @winner.first.kol.name,
+        avatar_url: @winner.first.kol.avatar_url,
         updated_at: _end.end_of_day
 
       }
     end
-    puts @res.first
+    
     respond_to do |format|
       format.html
       format.json {
@@ -76,8 +75,8 @@ class Partners::DashboardController < Partners::BaseController
     @historical_kol = @q.result.order('historical_income desc').limit(1)
 
     res = {}
-    if @historical_kol.first != nil
-      puts "not empty!!!!!!!!!!!!!!=================="
+    if !@historical_kol.empty?
+      
       res = {
         name: @historical_kol.first.name,
         income: @historical_kol.first.historical_income,
@@ -85,7 +84,7 @@ class Partners::DashboardController < Partners::BaseController
         updated_at: _end.end_of_day
       }
     end
-    puts @historical_kol.first.id
+    
     respond_to do |format|
       format.html
       format.json {
@@ -101,17 +100,15 @@ class Partners::DashboardController < Partners::BaseController
     _end = Date.today - 1.days
 
     @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @kol = @q.result.order("created_at asc")
+    @kols = @q.result.order("created_at asc")
 
     res = {}
     
-    if @kol.first != nil
-      puts "not empty!!!!!!!!!!!!!!=================="
-      @kol.each do |kk|
-        dd = Date.parse kk.created_at.to_s
-        curDate = dd.month.to_s + "-" + dd.year.to_s
+    if !@kols.empty?
+      @kols.each do |kk|
         
-        puts dd.month.to_s + "-" + dd.year.to_s
+        curDate = DateTime.parse(kk.created_at.to_s).strftime('%b-%Y').to_s
+        
         if res[curDate] == nil
           res[curDate] = 0
         end
@@ -129,12 +126,12 @@ class Partners::DashboardController < Partners::BaseController
 
   def chart7
     result =
-    Statistics::StatBrandSettledTakeBudget.where(:tag => @admintag.tag).limit(5).order("total_take_budget desc")
+    Statistics::BrandSettledTakeBudget.where(:tag => @admintag.tag).limit(5).order("total_take_budget desc")
     labels = Array.new(result.size)
     data = Array.new(result.size)
     counter = 0
     result.each do | c |
-      puts "Tag Name " + c.tag
+      
       user = User.find(c.user_id)
 
       labels[counter] = user.smart_name
@@ -163,14 +160,14 @@ class Partners::DashboardController < Partners::BaseController
     data = Array.new(result.size)
     counter = 0
     result.each do | c |
-      puts "Tag Name " + c.name
-      puts "tag.label.name"
+      
       labelKey = "tags.label."+ c.name
       labels[counter] = t labelKey
     #  data[counter] = c.counter
       data[counter] = c.percentage
       counter = counter + 1
     end
+    
     chartJson = { "labels" => labels, "data" => data }
 
 
@@ -192,7 +189,7 @@ class Partners::DashboardController < Partners::BaseController
     counter = 0
     total = 0;
     result.each do | c |
-      puts "App City Name " + c.app_city
+      
       labelKey = "cities.label."+ c.app_city
       labels[counter] = t labelKey
       data[counter] = c.percentage
@@ -216,14 +213,13 @@ class Partners::DashboardController < Partners::BaseController
 
   def chart5
     #Tag.group_by_tag
-    result = Statistics::StatCampaignInvite.find_campaign_invite(@admintag.tag, '2017-09-18')
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, '2017-09-18')
     labels = Array.new(result.size)
     data = Array.new(result.size)
     counter = 0
     total = 0;
     result.each do | c |
-      puts "Data Date " + c.data_date.to_s + " count " + c.total_activity_count.to_s
-      labels[counter] = c.data_date
+      labels[counter] = DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
       data[counter] = c.total_activity_count
       counter = counter + 1
     end

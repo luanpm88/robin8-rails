@@ -370,6 +370,14 @@ zh:
       entertainment: 娱乐
   partner:
     dashboard:
+      chart1:
+        title: 过去7天冠军
+      chart2:
+        title: 过去30天冠军
+      chart3:
+        title: 总冠军
+      chart4:
+        title: 用户增长数
       chart5:
         title: 活动接单数
       chart6:
@@ -378,6 +386,8 @@ zh:
         title: 品牌活动消耗
       chart8:
         title: 用户标签统计
+      error:
+        msg: 暂时没有数据
       kols:
         id: Id
         name: 昵称

@@ -1,87 +1,93 @@
-<div style="border: 1px solid #eee" class="card mb-12">
+<div class="card mb-12">
   <div class="text-center card-header">
-      <i class="fa fa-bar-chart"></i><%= t('partner.dashboard.chart7.title') %>
+    
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-sm-12 my-auto">
-        <canvas id="chart8" width="100" height="100"></canvas>
-      </div>
+      <div class="well profile_view card-shadow">
+          <div class="row">
+              <span class="col-sm-8">
+                <i class="fa fa-line-chart"></i> <%= t('partner.dashboard.chart8.title') %>
+              </span>
+              <span class="col-sm-4">
+                  <select class="form-control" style="">
+                      <option>1</option>
+                  </select>
+              </span>
+          </div>
+        
+        <div class="col-sm-12">
+          <canvas class="hide" id="chart8" width="100" height="100"></canvas>
+          <div class="no-data-found" id="not-found8">
+            <div>
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <%= t('partner.dashboard.error.msg') %>
+            </div>
+        </div>
+        </div>
+        <br />
+        
     </div>
+    
   </div>
-  <div class="card-footer small text-muted"></div>
 </div>
 
 <script type="text/javascript">
   $(document).ready(function () {
-    var chartJson = $.ajax({url: "/partners/dashboard/chart8.json", async: true}).done(function() {
-   //   alert("done");
+    
+    $.ajax({url: "/partners/dashboard/chart8.json", async: true})
+    .done(function(chartJson) {
+      if(chartJson.data.length < 1){
+        dataIsFound(false, 8);
+        return;
+      }
+      
+      var chartlabels = chartJson.labels;
 
-    console.log(chartJson.responseText);
-    //  alert(chartJson.responseText);
+      var chartData = chartJson.data;
+      
+      var ctx = $("#chart8");
+      var myLineChart = new Chart(ctx.get(0), {
+        type: 'horizontalBar',
+        data: {
+          labels: chartlabels,
+          datasets: [{
+            label: "用户标签统计",
+            backgroundColor: [
+              'rgba(0, 93, 255, 0.8)',
+              'rgba(208, 53, 69, 0.8)',
+              'rgba(255, 193, 7, 0.8)',
+              'rgba(40, 107, 69, 0.8)',
+              'rgba(0, 159, 255, 0.8)'
+            ],
 
-    var array = JSON.parse(chartJson.responseText);
-    //  alert("array " +array);
-
-    var chartlabels = array.labels;
-    //   alert("xxx" + chartlabels);
-    console.log(chartlabels);
-    var chartData = array.data;
-    var ctx = document.getElementById("chart8");
-   // alert("chart8 ctx = " +ctx);
-
-    var myLineChart = new Chart(ctx, {
-      //   type: 'bar',
-      type: 'horizontalBar',
-
-      data: {
-        labels: chartlabels, //["January", "February", "March", "April", "May"],
-        datasets: [{
-          label: "用户标签统计",
-          //   backgroundColor: "rgba(2,117,216,1)",
-          backgroundColor: [
-          //  #007bff","#dc3545","#ffc107","#28a745"
-            'rgba(0, 93, 255, 0.8)',
-            'rgba(208, 53, 69, 0.8)',
-            'rgba(255, 193, 7, 0.8)',
-            'rgba(40, 107, 69, 0.8)',
-            'rgba(0, 159, 255, 0.8)'
-          ],
-
-          borderColor: "rgba(2,117,216,1)",
-          data: chartData, //[4215, 5312, 6251, 7841, 9821],
-        }],
-      },
-      options: {
-
-        scales: {
-          xAxes: [{
-
-            gridLines: {
-              display: false
-            },
-            // ticks: {
-            //  // max: 100,
-            //   maxTicksLimit: 6
-            //
-            // }
-          }],
-          yAxes: [{
-            // ticks: {
-            //   min: 0,
-            //   max: 15000,
-            //   maxTicksLimit: 5
-            // },
-            gridLines: {
-              display: false
-            }
+            borderColor: "rgba(2,117,216,1)",
+            data: chartData, 
           }],
         },
-        legend: {
-          display: false
+        options: {
+
+          scales: {
+            xAxes: [{
+
+              gridLines: {
+                display: false
+              },
+            }],
+            yAxes: [{
+              gridLines: {
+                display: false
+              }
+            }],
+          },
+          legend: {
+            display: false
+          }
         }
-      }
-    });
+      });
+      dataIsFound(true, 8);
+      
+    })
+    .fail(function(){
+      dataIsFound(false, 8);
     });
   });
 </script>

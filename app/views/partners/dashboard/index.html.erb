@@ -8,7 +8,7 @@
   }
 
 </style>
-<h3>Geometry KOL 收益榜</h3>
+<h3><%= @admintag.tag %>  KOL 收益榜</h3>
 <div class="row">
   <div class="col-md-4">
     <%= render :partial => "partners/dashboard/chart1" %>
@@ -20,7 +20,7 @@
     <%= render :partial => "partners/dashboard/chart3" %>
   </div>
 </div>
-<h3>Geometry 数据统计</h3>
+<h3><%= @admintag.tag %> 数据统计</h3>
 <div class="row">
   <div class="col-md-6">
     <%= render :partial => "partners/dashboard/chart4" %>
@@ -41,3 +41,14 @@
     <%= render :partial => "partners/dashboard/chart8" %>
   </div>
 </div>
+<script>
+  var dataIsFound = function(found, id){
+    if(found === true){
+      $("#chart"+id).removeClass("hide");
+      $("#not-found"+id).addClass("hide");
+    }else{
+      $("#chart"+id).addClass("hide");
+      $("#not-found"+id).removeClass("hide");
+    }
+  };
+</script>

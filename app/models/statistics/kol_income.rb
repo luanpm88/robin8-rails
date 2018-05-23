@@ -1,12 +1,5 @@
-# To change this license header, choose License Headers in Project Properties.
-# To change this template file, choose Tools | Templates
-# and open the template in the editor.
-
-class KolIncomeActivities < ActiveRecord::Base
-  
+class Statistics::KolIncome < ActiveRecord::Base
   belongs_to :kol, class_name: "Kol"
-#  belongs_to :inviter, inverse_of: :registered_invitations, class_name: "Kol"
-#  belongs_to :invitee, inverse_of: :registered_invitation, class_name: "Kol"
   
   def self.job_for_kol_dashboard_income_data testdate=nil
     puts "starts====================================="
@@ -25,7 +18,6 @@ class KolIncomeActivities < ActiveRecord::Base
     
     puts "=================="
     
-    #puts err
     @kols_count_all.each do |kol|
       cpp_count_income, cpp_count_count = kol.post_or_recruit_campaign_income(_excute_day)
       cpc_sum_income, cpc_sum_count = kol.click_or_action_campaign_income(_excute_day)
@@ -60,9 +52,8 @@ class KolIncomeActivities < ActiveRecord::Base
       
       puts options
       puts "=========ends============"
-      #KolIncomeActivities.create(options)
+      self.create(options)
 
     end
   end
-  
 end

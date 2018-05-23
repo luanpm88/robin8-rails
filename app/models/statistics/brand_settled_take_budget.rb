@@ -1,7 +1,4 @@
-class Statistics::StatBrandSettledTakeBudget < ActiveRecord::Base
-
-  self.table_name = "stat_brand_settled_take_budget";
-
+class Statistics::BrandSettledTakeBudget < ActiveRecord::Base
   def self.calculate_brand_settled_take_budget(tag_name)
     adminTag = Admintag.find_by(tag: tag_name)
     page_size = 100
@@ -29,7 +26,7 @@ sum(take_budget) as total_take_budget from stat_campaign_settled_take_budget gro
         campaigns.each do |c|
           puts "c id " + c.id.to_s
           take_budget = c.take_budget
-          cTakeBudget = Statistics::StatBrandSettledTakeBudget.new(c.id, take_budget, c.user_id)
+          cTakeBudget = Statistics::BrandSettledTakeBudget.new(c.id, take_budget, c.user_id)
           result[result.length] = cTakeBudget;
 
         end
@@ -48,5 +45,4 @@ sum(take_budget) as total_take_budget from stat_campaign_settled_take_budget gro
 
 
   end
-
 end

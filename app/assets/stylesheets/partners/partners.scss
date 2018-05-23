@@ -74,3 +74,14 @@
 .profile_left {
   background: white;
 }
+
+.no-data-found{
+    width: 100%;
+    min-height: 250px;
+    transform: translate3d(0%, 50%, 0);
+    text-align: center;
+}
+
+.card-shadow{
+    box-shadow: 0px 0px 30px rgba(0,0,255,0.16);
+}
