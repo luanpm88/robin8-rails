@@ -22,7 +22,7 @@ module Brand
 
       desc '促销送积分'
       get 'promotion' do
-        present error: 0, promotion: Promotion.valid.to_hash
+        present error: 0, promotion: Promotion.valid.try(:to_hash)
       end
 
       desc 'Update current user profile'

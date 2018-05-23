@@ -132,6 +132,7 @@ module Brand
           params do
             requires :campaign_id, type: Integer
             requires :pay_way, type: String
+            requires :use_credit, type: Boolean, default: true
           end
           patch ":id/pay_by_balance" do
             @campaign = Campaign.find declared(params)[:campaign_id]
