@@ -194,8 +194,8 @@ export function goPayCampaign(campaign_id) {
   };
 }
 
-export function payCampaignByBalance(campaign_id) {
-  const data = { campaign_id, pay_way: "balance" };
+export function payCampaignByBalance(campaign_id, use_credit) {
+  const data = { campaign_id, pay_way: "balance", use_credit: use_credit };
   return {
     type: actionTypes.PAY_CAMPAIGN_BY_BALANCE,
     promise: fetch(
@@ -214,8 +214,8 @@ export function payCampaignByBalance(campaign_id) {
   };
 }
 
-export function payCampaignByAlipay(campaign_id) {
-  const data = { campaign_id };
+export function payCampaignByAlipay(campaign_id, use_credit) {
+  const data = { campaign_id, use_credit: use_credit };
   return {
     type: actionTypes.PAY_CAMPAIGN_BY_ALIPAY,
     promise: fetch(

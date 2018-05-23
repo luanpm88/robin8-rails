@@ -132,9 +132,12 @@ module Brand
           params do
             requires :campaign_id, type: Integer
             requires :pay_way, type: String
-            requires :use_credit, type: Boolean, default: true
+            requires :use_credit, type: Boolean
           end
           patch ":id/pay_by_balance" do
+            Rails.logger.info "*" * 100
+            Rails.logger.info params
+            Rails.logger.info "*" * 100
             @campaign = Campaign.find declared(params)[:campaign_id]
             if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
               if current_user.avail_amount >= @campaign.need_pay_amount

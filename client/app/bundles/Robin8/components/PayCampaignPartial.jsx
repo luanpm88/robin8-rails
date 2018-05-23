@@ -42,10 +42,10 @@ class PayCampaignPartial extends React.Component {
     const { payCampaignByBalance, payCampaignByAlipay } = this.props.actions;
     const campaign = this.props.campaign;
     if ($('.check-alipay').attr('value') === 'alipay' && $('.check-balance').attr('value') === "") {
-      payCampaignByAlipay(campaign.get("id"));
+      payCampaignByAlipay(campaign.get("id"), this.state.userDeduction);
     }
     if ($('.check-alipay').attr('value') === '' && $('.check-balance').attr('value') === "balance") {
-      payCampaignByBalance(campaign.get("id"));
+      payCampaignByBalance(campaign.get("id"), this.state.userDeduction);
     }
   }
 
