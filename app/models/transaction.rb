@@ -94,7 +94,68 @@ class Transaction < ActiveRecord::Base
       when 'cps_writing_commission'
         "CPS写作佣金(#{self.item.cps_article.title})"
       when 'percentage_on_friend'
-        "徒弟(ID: #{opposite_id} #{opposite.try(:name)})通过活动(ID: #{item_id} #{item.try(:name)})带来的收益"
+        "徒弟(ID: <a href=/marketing_dashboard/kols/#{opposite_id}>#{opposite_id}</a> #{opposite.try(:name)})通过活动(ID: #{item_id} #{item.try(:name)})带来的收益".html_safe
+      when 'first_share_campaign'
+        '首次分享内容奖励'
+      when 'first_check_example'
+        '首次查看截图奖励'
+      when 'first_upload_invite'
+        '首次上传截图奖励'
+    end
+  end
+
+    def get_subject_by_app
+    case subject
+      when 'campaign'
+        "营销活动(#{self.item.name rescue nil})"
+      when 'manual_recharge'
+        '人工充值'
+      when 'manual_recharge', 'manaual_recharge'
+        '线下汇款'
+      when 'alipay_recharge'
+        '支付宝'
+      when 'manual_withdraw'
+        '人工提现'
+      when 'withdraw'
+        '提现'
+      when 'lettory_activity'
+        '夺宝活动'
+      when RewardTask::CheckIn
+        '签到'
+      when RewardTask::InviteFriend
+        '邀请好友'
+      when RewardTask::CompleteInfo
+        '完善资料'
+      when RewardTask::FavorableComment
+        '好评'
+      when 'campaign_used_voucher'
+        "营销活动(#{self.item.name rescue nil}) 任务奖金抵用"
+      when 'campaign_tax'
+        "活动税费(#{self.item.name rescue nil})"
+      when "campaign_revoke"
+        "营销活动(#{self.item.name rescue nil}) 撤销"
+      when "campaign_pay_by_alipay"
+        "营销活动(#{self.item.name rescue nil}) 支付宝支付"
+      when "campaign_used_voucher_and_revoke"
+        "营销活动( #{self.item.name rescue nil}) 撤销"
+      when "campaign_refund"
+        "营销活动(#{self.item.name rescue nil}}) 退款"
+      when "campaign_income_revoke"
+        "营销活动(#{self.item.name rescue nil}) 审核失败"
+      when 'campaign_compensation'
+        "活动补偿红包(#{self.item.name rescue nil})"
+      when 'limited_discount'
+        "限时优惠"
+      when 'lottery_reward'
+        "夺宝现金奖励"
+      when 'cps_share_commission'
+        "CPS佣金(#{self.item.cps_article.title})"
+      when 'cps_tax'
+        "CPS税费(#{self.item.cps_article.title})"
+      when 'cps_writing_commission'
+        "CPS写作佣金(#{self.item.cps_article.title})"
+      when 'percentage_on_friend'
+        "徒弟(#{opposite.try(:name)})通过活动(#{item.try(:name)})带来的收益"
       when 'first_share_campaign'
         '首次分享内容奖励'
       when 'first_check_example'
