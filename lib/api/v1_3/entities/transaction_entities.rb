@@ -6,7 +6,7 @@ module API
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :credits, :amount, :avail_amount, :frozen_amount
           expose :subject do |transaction|
-            transaction.get_subject
+            transaction.get_subject_by_app
           end
           expose :direct do |transaction|
             transaction.get_direct
