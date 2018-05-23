@@ -53,7 +53,7 @@ class FinancialRechargePartial extends React.Component {
     const brand = this.props.profileData.get('brand');
     const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
     const promotion = this.props.profileData.get('promotion');
-    const promotion_rate = promotion.get('rate') / 100;
+    const promotion_rate = promotion.get('rate');
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
