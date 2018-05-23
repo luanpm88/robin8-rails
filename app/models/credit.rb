@@ -1,3 +1,4 @@
+# 1积分 == 0.1元
 class Credit < ActiveRecord::Base
 
 	belongs_to :owner, :polymorphic => true

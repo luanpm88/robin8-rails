@@ -6,8 +6,9 @@ class MarketingDashboard::ElasticArticlesController < MarketingDashboard::BaseCo
   end
 
   def kols
-  	@q    = Kol.ransack(params[:q])
-    @kols = @q.result.order('id DESC').paginate(paginate_params)
+  	# @q    = Kol.ransack(params[:q])
+  	@q 		= Kol.joins(:elastic_article_actions).where("kols.id=elastic_article_actions.kol_id").ransack(params[:q])
+    @kols = @q.result.uniq.order('id DESC').paginate(paginate_params)
   end
   
 end

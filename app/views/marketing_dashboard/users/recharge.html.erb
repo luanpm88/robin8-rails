@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
           <label>品牌主公司全名</label>
-          <%= text_field_tag :receiver_name, nil, required: true, class: "form-control", :placeholder => "输入品牌主公司全名" %>
+          <%= text_field_tag :receiver_name, nil, required: true, class: "form-control", value: @user.campany_name %>
         </div>
         <div class="form-group">
           <label>操作人员名称</label>
