@@ -68,7 +68,7 @@ class Partners::DashboardController < Partners::BaseController
   #historical winner
   def chart3
 
-    #KolIncomeActivities.job_for_kol_dashboard_income_data(Date.today - 2.days)
+    Statistics::KolIncome.job_for_kol_dashboard_income_data(16.days.ago)
     _end = Date.today - 1.days
 
     @q    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).ransack(params[:q])
@@ -93,7 +93,7 @@ class Partners::DashboardController < Partners::BaseController
     end
   end
 
-  #7 days users incre
+  #7 days users Growth
   def chart4
 
     _start = Date.today - 310.days # FIXME should change to 7 days

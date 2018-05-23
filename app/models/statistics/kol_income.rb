@@ -2,40 +2,28 @@ class Statistics::KolIncome < ActiveRecord::Base
   belongs_to :kol, class_name: "Kol"
   
   def self.job_for_kol_dashboard_income_data testdate=nil
-    puts "starts====================================="
-    @q    = Kol.joins(:admintags).select("id").where("admintags.tag IS NOT NULL ").ransack()
-    @kols_count_all = @q.result.order('id desc').limit(1)
     
-    puts @kols_count_all.first.id
+    
+    # FIXME for all admintags 給全部的 admintag 跑一次
+    #@q    = Kol.joins(:admintags).select("id").where("admintags.tag IS NOT NULL ").ransack()
+    
+    # FIXME for all admintags 只跑geometry的
+    admintag = Admintag.find_by_tag "geometry"
+    @q    = Kol.joins(:admintags).select("id").where("admintags.tag=? ", admintag).ransack()
+    @kols = @q.result.order('id asc')
+    
     if testdate != nil
       _excute_day = testdate
     else
-      _excute_day = Date.today - 1.days
+      _excute_day = 1.days.ago
     end
     
-    puts @kols_count_all.first.admintags.inspect
-    puts @kols_count_all.first.admintags.first.tag
-    
-    puts "=================="
-    
-    @kols_count_all.each do |kol|
+    @kols.each do |kol|
       cpp_count_income, cpp_count_count = kol.post_or_recruit_campaign_income(_excute_day)
       cpc_sum_income, cpc_sum_count = kol.click_or_action_campaign_income(_excute_day)
       cpt_task_income, cpt_task_count = kol.task_income(_excute_day)
       income =  cpp_count_income + cpc_sum_income +  cpt_task_income
       count = cpp_count_count + cpc_sum_count +  cpt_task_count
-
-      puts income
-      puts cpp_count_income
-      puts cpc_sum_income
-      puts cpt_task_income
-      puts count
-      puts cpp_count_count
-      puts cpc_sum_count
-      puts cpt_task_count
-      puts "========================"
-      puts kol.id
-      puts kol.admintags.first.tag
 
       options = { kol_id: kol.id, 
         admintag: kol.admintags.first.tag, 
@@ -47,13 +35,12 @@ class Statistics::KolIncome < ActiveRecord::Base
         cpt_count: cpt_task_count,
         day_of_income: income,
         day_of_count: count,
-        added_at: _excute_day
+        action_at: _excute_day
       }
-      
-      puts options
-      puts "=========ends============"
-      self.create(options)
-
+      # 沒收益不會存入
+      if income > 0 or count > 0
+        self.create(options)
+      end
     end
   end
 end
