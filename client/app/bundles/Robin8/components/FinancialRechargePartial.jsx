@@ -75,7 +75,8 @@ class FinancialRechargePartial extends React.Component {
     }else {
       $(".error-tips p").hide();
       this.setState({
-        creditPoints: Math.round(price * promotion_rate)
+        // creditPoints: Math.round(price * promotion_rate)
+        creditPoints: parseInt(price * promotion_rate)
       });
     }
   }
