@@ -8,16 +8,18 @@
 }
 
 .brand-header {
-  height: 154px;
+  // height: 154px;
+  padding-top: 20px;
   color: #fff;
   text-align: center;
-  background: url(~robin8_header_bg.jpg) no-repeat center bottom #2c2a2b;
+  // background: url(~robin8_header_bg.jpg) no-repeat center bottom #2c2a2b;
+  background-color: #ebf3f5;
 
   .brand-logo {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 132px;
+    width: 100px;
     height: 100px;
 
     a {
@@ -29,13 +31,13 @@
     img {
       width: 100px;
       height: 100px;
-      border-radius: 5px;
-      box-shadow: 10.5px 18.187px 19px 0px rgba(0, 0, 0, 0.55);
+      border-radius: 50%;
+      // box-shadow: 10.5px 18.187px 19px 0px rgba(0, 0, 0, 0.55);
     }
   }
 
   .brand-name {
-    color: #fff;
+    color: #000;
     font-size: 20px;
     font-weight: 700;
     display: inline-block;
@@ -48,6 +50,23 @@
 
   .brand-content {
     margin-top: 15px;
+  }
+
+  .brand-info-panel {
+    padding: 0 40px;
+  }
+  .brand-info-status {
+    margin-top: 20px;
+    .item {
+      line-height: 24px;
+      font-size: 14px;
+      color: #000;
+      .recharge-btn {
+        width: 60px;
+        line-height: 24px;
+        margin-left: 10px;
+      }
+    }
   }
 }
 

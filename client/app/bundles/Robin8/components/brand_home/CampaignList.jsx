@@ -71,7 +71,7 @@ class CampaignList extends React.Component {
       <div className="wrapper">
         <div className="container">
           <div className="panel brand-activities">
-            <div className="panel-heading">
+            <div className="panel-heading clearfix">
               <a href="#panelActivities" data-toggle="collapse" className="switch">
                 <span className="txt">收起</span>
                 <i className="caret-arrow"></i>
@@ -79,7 +79,7 @@ class CampaignList extends React.Component {
 
               { this.renderNewCampaignButton() }
 
-              <h4 className="panel-title">
+              {/*<h4 className="panel-title">
                 我的推广活动
                 <span className="slash">/</span>
                 <strong className="stat-num">
@@ -94,7 +94,7 @@ class CampaignList extends React.Component {
                 <Link to="/brand/financial/recharge" className="btn btn-blue btn-default recharge-btn">
                   充值
                 </Link>
-              </h4>
+              </h4>*/}
             </div>
 
             <div id="panelActivities" className="panel-collapse collapse in">
