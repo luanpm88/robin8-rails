@@ -3,8 +3,8 @@ class Credit < ActiveRecord::Base
 
 	belongs_to :owner, :polymorphic => true
 	belongs_to :resource, :polymorphic => true
-								# 赠送     花费    过期
-	_METHODS = %w(recharge expend expire)
+								# 赠送     花费    过期   退还
+	_METHODS = %w(recharge expend expire refund)
 
 	validates_inclusion_of :_method, in: _METHODS
 

@@ -135,11 +135,20 @@ module Brand
             requires :use_credit, type: Boolean
           end
           patch ":id/pay_by_balance" do
-            Rails.logger.info "*" * 100
-            Rails.logger.info params
-            Rails.logger.info "*" * 100
             @campaign = Campaign.find declared(params)[:campaign_id]
             if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
+              # 积分抵扣
+              if params[:use_credit]
+                if current_user.credit_amount >= @campaign.need_pay_amount * 10
+                  pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
+                else
+                  pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
+                end
+                ActiveRecord::Base.transaction do
+                  Credit.gen_record('expend', pay_credits, current_user, @campaign, current_user.credit_expired_at)
+                  @campaign.update_columns(need_pay_amount: pay_amount)
+                end
+              end
               if current_user.avail_amount >= @campaign.need_pay_amount
                 @campaign.update_attributes(pay_way: declared(params)[:pay_way])
                 @campaign.pay
@@ -155,9 +164,23 @@ module Brand
           desc 'pay campaign use alipay'  #使用支付宝支付 campaign
           params do
             requires :campaign_id, type: Integer
+            requires :use_credit,  type: Boolean
           end
           post ":id/pay_by_alipay" do
             @campaign = Campaign.find declared(params)[:campaign_id]
+
+            # 积分抵扣
+            if params[:use_credit]
+              if current_user.credit_amount >= @campaign.need_pay_amount * 10
+                pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
+              else
+                pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
+              end
+              ActiveRecord::Base.transaction do
+                Credit.gen_record('expend', pay_credits, current_user, @campaign, current_user.credit_expired_at)
+                @campaign.update_columns(need_pay_amount: pay_amount)
+              end
+            end
 
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand?from=pay_campaign' : "#{Rails.application.secrets[:domain]}/brand?from=pay_campaign"
