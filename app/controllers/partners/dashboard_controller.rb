@@ -68,7 +68,6 @@ class Partners::DashboardController < Partners::BaseController
   #historical winner
   def chart3
 
-    Statistics::KolIncome.job_for_kol_dashboard_income_data(16.days.ago)
     _end = Date.today - 1.days
 
     @q    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).ransack(params[:q])
@@ -96,7 +95,7 @@ class Partners::DashboardController < Partners::BaseController
   #7 days users Growth
   def chart4
 
-    _start = Date.today - 310.days # FIXME should change to 7 days
+    _start = Date.today - 7.days 
     _end = Date.today - 1.days
 
     @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
@@ -127,17 +126,12 @@ class Partners::DashboardController < Partners::BaseController
   def chart7
     result =
     Statistics::BrandSettledTakeBudget.where(:tag => @admintag.tag).limit(5).order("total_take_budget desc")
-    labels = Array.new(result.size)
-    data = Array.new(result.size)
-    counter = 0
+    labels = []
+    data = []
     result.each do | c |
-      
       user = User.find(c.user_id)
-
-      labels[counter] = user.smart_name
-      #  data[counter] = c.counter
-      data[counter] = c.total_take_budget
-      counter = counter + 1
+      labels.push user.smart_name
+      data.push c.total_take_budget
     end
     
     chartJson = { "labels" => labels, "data" => data }
@@ -145,38 +139,30 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render :json => chartJson
-        ##   :json=>@product
       }
     end
   end
   
 
   def chart8
-    #Tag.group_by_tag
+    
     result = Tag.group_by_tag( 5, @admintag.tag)
-    labels = Array.new(result.size)
-    data = Array.new(result.size)
-    counter = 0
+    labels = []
+    data = []
+    
     result.each do | c |
-      
       labelKey = "tags.label."+ c.name
-      labels[counter] = t labelKey
-    #  data[counter] = c.counter
-      data[counter] = c.percentage
-      counter = counter + 1
+      labels.push t labelKey
+      data.push c.percentage
     end
     
     chartJson = { "labels" => labels, "data" => data }
 
-
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render :json => chartJson
-        ##   :json=>@product
       }
     end
   end
@@ -184,44 +170,38 @@ class Partners::DashboardController < Partners::BaseController
   def chart6
     #Tag.group_by_tag
     result = Tag.group_by_app_city( 5, @admintag.tag)
-    labels = Array.new(result.size)
-    data = Array.new(result.size)
-    counter = 0
-    total = 0;
+    labels = []
+    data = []
+    total = 0
     result.each do | c |
       
       labelKey = "cities.label."+ c.app_city
-      labels[counter] = t labelKey
-      data[counter] = c.percentage
+      labels.push t labelKey
+      data.push c.percentage
       total = total + c.percentage
-      counter = counter + 1
     end
-    labels[counter] = t "other.label.name"
-    data[counter] = 100 - total
+    labels.push t "other.label.name"
+    data.push 100 - total
     chartJson = { "labels" => labels, "data" => data }
 
 
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
         render :json => chartJson
-        ##   :json=>@product
       }
     end
   end
 
   def chart5
     #Tag.group_by_tag
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, '2017-09-18')
-    labels = Array.new(result.size)
-    data = Array.new(result.size)
-    counter = 0
-    total = 0;
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, 1.days.ago)
+    labels = []
+    data = []
+    
     result.each do | c |
-      labels[counter] = DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
-      data[counter] = c.total_activity_count
-      counter = counter + 1
+      labels.push DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
+      data.push c.total_activity_count
     end
     chartJson = { "labels" => labels, "data" => data }
 

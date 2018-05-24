@@ -71,17 +71,44 @@
   margin: 0;
   font-weight: 300;
 }
+.well.profile_view .card-bottom {
+    margin-top: -20px;
+    padding: 9px 0;
+    border-top: 2px solid #F4F5FA;
+}
+.profile-img-max{
+    max-height: 120px;
+    text-align: center;
+    display: inline-block;
+}
+.well.profile_view .btn-champions {
+    color: #FFF;
+    width: 80%;
+    cursor: default;
+    border-color: transparent;
+}
+
+.well.profile_view .btn-champions.color1{
+    background: linear-gradient(to left, #7597ff, #df9cfa);
+}
+.well.profile_view .btn-champions.color2{
+    background: linear-gradient(to left, #0e94ff, #74ebff);
+}
+.well.profile_view .btn-champions.color3{
+    background: linear-gradient(to left, #ff5b74, #ffab58);
+}
+
 .profile_left {
   background: white;
 }
 
 .no-data-found{
     width: 100%;
-    min-height: 250px;
+    min-height: 150px;
     transform: translate3d(0%, 50%, 0);
     text-align: center;
 }
 
 .card-shadow{
-    box-shadow: 0px 0px 30px rgba(0,0,255,0.16);
+    box-shadow: 0px 0px 30px rgba(44,101,255,0.16);
 }

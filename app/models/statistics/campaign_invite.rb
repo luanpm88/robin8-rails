@@ -1,7 +1,9 @@
 class Statistics::CampaignInvite < ActiveRecord::Base
-  def self.find_campaign_invite(tag_name, report_date)
-
-    adminTag = Admintag.find_by(tag: tag_name)
+  def self.find_campaign_invite(tag_name, rd)
+    
+    day_past = 6
+    #rd = Date.parse report_date
+    adminTag = Admintag.find_by(tag: tag_name) #FIXME ?
     Statistics::CampaignInvite.find_by_sql("select
 admintags.tag,
 DATE_FORMAT(ci.created_at, '%Y-%m-%d') as data_date,
@@ -14,14 +16,8 @@ and ci.kol_id = kols.id
 and kols.id = admintags_kols.kol_id
 and admintags_kols.admintag_id = admintags.id
 and admintags.tag = '" + tag_name + "'
-and ci.created_at >=
--- '2017-09-11'
-DATE_ADD(DATE_FORMAT('" + report_date + "', '%Y-%m-%d'), INTERVAL -7 DAY)
--- DATE_ADD('" + report_date + "'), INTERVAL -7 DAY),
-
-and ci.created_at <
--- '2017-09-18'
-DATE_FORMAT('" + report_date + "', '%Y-%m-%d')
+and ci.created_at BETWEEN '" + rd.ago(day_past.days).beginning_of_day.to_s + "' 
+AND '" + rd.end_of_day.to_s + "'
 
 group by admintags.tag, data_date
 order by data_date asc "

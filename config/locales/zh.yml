@@ -371,11 +371,14 @@ zh:
   partner:
     dashboard:
       chart1:
-        title: 过去7天冠军
+        title: 过去7天收益
+        champion: 过去7天冠军
       chart2:
-        title: 过去30天冠军
+        title: 过去30天收益
+        champion: 过去30天冠军
       chart3:
-        title: 总冠军
+        title: 总收益
+        champion: 总冠军
       chart4:
         title: 用户增长数
       chart5:

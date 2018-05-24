@@ -1,25 +1,38 @@
 <div class="card mb-12">
   <div class="card-header">
-      <h4><i class="fa fa-line-chart" aria-hidden="true"></i> <%= t('partner.dashboard.chart3.title') %></h4>
   </div>
   <div class="card-body">
     <div class="well profile_view card-shadow">
-      <div class="col-sm-12">
-        <div class="left col-xs-7">
-            <h4 id="kol_historical_winner_name">
-                <%= t('partner.dashboard.error.msg') %>
-            </h4>
-            <h3 class="text-success">
-                <i class="fa fa-jpy" aria-hidden="true"></i> <span id="cur_historical_winner_price">0</span>
-            </h3>
-            <br />
+        <div class="col-sm-12">
+        <div class=" col-xs-12 text-center">
+          <%= image_tag("partners/user.png", alt: "", id: "avatar_url_historical", class: "img-circle img-responsive profile-img-max") %>
+          <br />
         </div>
-        <div class="right col-xs-5 text-center">
-            <%= image_tag("partners/user.png", alt: "", id: "avatar_url_historical", class: "img-circle img-responsive") %>
+        <div class=" col-xs-12 text-center">
+            <h4 id="kol_historical_winner_name">
+              <%= t('partner.dashboard.error.msg') %>
+            </h4>
+            <div class="btn btn-champions color3">
+              <%= t('partner.dashboard.chart3.champion') %>
+            </div>
+            <br />
+            <br />
             <br />
         </div>
       </div>
-      
+      <div class="col-sm-12 card-bottom text-center">
+        <div class="col-xs-12 col-sm-12 ">
+            <div class="card-footer small " >
+                <h3 class="">
+                    <i class="fa fa-jpy" aria-hidden="true"></i> <span id="cur_historical_winner_price">0</span>
+                </h3>
+                <h4 class="text-muted">
+                  <%= t('partner.dashboard.chart3.title') %>
+                </h4>
+
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -30,7 +43,7 @@
     var chartJson = 
     $.ajax({url: "/partners/dashboard/chart3.json"})
     .done(function(chartJson){
-      $("#cur_historical_winner_price").text(chartJson.income);
+      $("#cur_historical_winner_price").text(chartJson.income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
       $("#kol_historical_winner_name").text(chartJson.name);
       $("#avatar_url_historical").attr('src', chartJson.avatar_url).on("error", function(){
         this.src = imgSrc3;
@@ -40,6 +53,5 @@
     .fail(function(){
       console.log('error in ')
     });
-    console.log(chartJson);
   });
 </script>

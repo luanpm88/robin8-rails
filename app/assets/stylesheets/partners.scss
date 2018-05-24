@@ -12,7 +12,7 @@
 @import 'bootstrap';
 @import 'bootstrap-datetimepicker';
 
-$bg_img: "partners/page_bg.png";
+$bg_img: image-url("partners/page_bg.png");
 
 td {
   max-width: 200px !important;

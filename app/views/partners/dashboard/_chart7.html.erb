@@ -5,13 +5,8 @@
   <div class="card-body">
       <div class="well profile_view card-shadow">
           <div class="row">
-              <span class="col-sm-8">
-                <i class="fa fa-line-chart"></i> <%= t('partner.dashboard.chart7.title') %>
-              </span>
-              <span class="col-sm-4">
-                  <select class="form-control" style="">
-                      <option>1</option>
-                  </select>
+              <span class="col-sm-12 text-center">
+                <%= t('partner.dashboard.chart7.title') %>
               </span>
           </div>
         
@@ -48,41 +43,52 @@
       var ctx = document.getElementById("chart7");
       
       var myLineChart = new Chart(ctx, {
-        type: 'horizontalBar',
+        type: 'pie',
         data: {
           labels: chartlabels, 
           datasets: [{
             label: "Tags Distribution",
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
+              'rgba(147, 116, 255, 1)',
+              'rgba(69, 119, 255, 1)',
+              'rgba(76, 156, 255, 1)',
+              'rgba(82, 224, 255, 1)',
+              'rgba(123, 240, 211, 1)',
+              'rgba(255, 191, 12, 1)',
+              'rgba(255, 140, 88, 1)'
             ],
-            borderColor: "rgba(2,117,216,1)",
             data: chartData, 
           }],
         },
         options: {
-          scales: {
-            xAxes: [{
-              time: {
-                unit: 'dollar'
-              },
-              gridLines: {
-                display: false
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                display: false
-              }
-            }],
+          tooltips:{
+            callbacks:{
+              mode: 'single',
+              label: function(tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index] || '';
+                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                    var nf = new Intl.NumberFormat(["zh-CN"], {
+                        style: "currency",
+                        currency: "CNY",
+                        currencyDisplay: "symbol",
+                        maximumFractionDigit: 1
+                    });
+
+                    if (label) {
+                        label += ': '+nf.format(value);
+                    }
+                    return label;
+                }
+            }
           },
           legend: {
-            display: false
-          }
+            display: true,
+            labels: {
+              usePointStyle: true
+            },
+            position: 'bottom',
+            
+          },
         }
       });
       dataIsFound(true, 7);

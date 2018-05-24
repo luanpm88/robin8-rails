@@ -6,10 +6,10 @@
       <div class="well profile_view card-shadow">
           <div class="row">
               <span class="col-sm-8">
-                <i class="fa fa-line-chart"></i> <%= t('partner.dashboard.chart4.title') %>
+                <%= t('partner.dashboard.chart4.title') %>
               </span>
               <span class="col-sm-4">
-                  <select class="form-control" style="">
+                  <select class="form-control hide" style="">
                       <option>1</option>
                   </select>
               </span>
@@ -42,6 +42,12 @@
         return;
       }
       var ctx = $("#chart4");
+      var gradient = ctx.get(0).getContext('2d').createLinearGradient(0, 0, 0, 200);
+
+        gradient.addColorStop(0, 'rgba(2,117,216,0.4)');
+        gradient.addColorStop(0.2, 'rgba(2,117,216,0.3)');
+        gradient.addColorStop(0.5, 'rgba(2,117,216,0.1)');
+        gradient.addColorStop(1, 'rgba(2,117,216,0.0)');
       //var fillPattern = ctx.createPattern(img, 'repeat');
       var data = {
         labels: Object.keys(chartJson),
@@ -50,13 +56,13 @@
           {
             label: "用户增长数",
             data: Object.values(chartJson),
-            fill: false,
-            borderColor: "rgba(2,117,216,1)",
+            backgroundColor: gradient,
+            borderColor: "rgba(44,101,255,1)",
             pointRadius: 5,
-            pointBackgroundColor: "rgba(2,117,216,1)",
-            pointBorderColor: "rgba(255,255,255,0.8)",
+            pointBackgroundColor: "rgba(255,255,255,1)",
+            pointBorderColor: "rgba(44,101,255,0.8)",
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(2,117,216,1)",
+            pointHoverBackgroundColor: "rgba(44,101,255,1)",
             pointHitRadius: 20,
             pointBorderWidth: 2
           }

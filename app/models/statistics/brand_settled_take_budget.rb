@@ -1,16 +1,17 @@
 class Statistics::BrandSettledTakeBudget < ActiveRecord::Base
   def self.calculate_brand_settled_take_budget(tag_name)
-    adminTag = Admintag.find_by(tag: tag_name)
-    page_size = 100
-    index = 0
+    
+    admintag = Admintag.find_by(tag: tag_name)
+    page_size = 100 #FIXME
+    index = 0 #FIXME
     total = Campaign.count
 
     result = Array.new
     loop do
       puts "Looking records for Campaign page size : " + page_size.to_s + " index at: " + index.to_s
-      brand_count = StatCampaignSettledTakeBudget
+      brand_count = CampaignSettledTakeBudget
       .find_by_sql("select user_id, tag, count(id) as total_campaign_count,
-sum(take_budget) as total_take_budget from stat_campaign_settled_take_budget group by user_id, tag").count
+sum(take_budget) as total_take_budget from statistics_campaign_settled_take_budgets group by user_id, tag").count
 #        .select("user_id, count(id) as total_campaign_count, sum(take_budget) as total_take_budget")
  #                     .group("tag, user_id").order("total_take_budget desc").limit(page_size).offset(index)
                    #   .count

@@ -373,10 +373,13 @@ en:
     dashboard:
       chart1:
         title: Past 7 days Champion
+        champion: Past 7 days Incomes
       chart2:
         title: Past 30 days Champion
+        champion: Past 30 days Incomes
       chart3:
         title: Champion
+        champion: Total Revenue
       chart4:
         title: KOLs Growth
       chart5:
