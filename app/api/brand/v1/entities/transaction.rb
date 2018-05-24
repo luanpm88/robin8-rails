@@ -5,18 +5,12 @@ module Brand
         expose :id
         expose :item_type
         expose :subject
-        expose :budget do |object|
-          object.item.try(:budget)
-        end
         expose :credits do |object|
           if object.direct == 'income'
             "+#{object.credits}"
           elsif object.direct == 'payout'
             "-#{object.credits}"
           end
-        end
-        expose :credit do |object|
-          (object.item.try(:budget).to_i - object.credits) * 10 if object.direct == 'payout'
         end
         expose :direct do |object|
           if object.direct == 'income' && object.subject == "campaign_tax"
@@ -35,7 +29,7 @@ module Brand
           object.created_at.strftime("%Y.%m.%d")
         end
         expose :remark do |object|
-          object.get_subject
+          object.get_subject_by_app
         end
       end
     end

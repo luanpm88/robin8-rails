@@ -1,8 +1,8 @@
 # 1积分 == 0.1元
 class Credit < ActiveRecord::Base
 
-	belongs_to :owner, :polymorphic => true
-	belongs_to :resource, :polymorphic => true
+	belongs_to :owner, polymorphic: true
+	belongs_to :resource, polymorphic: true
 								# 赠送     花费    过期   退还
 	_METHODS = %w(recharge expend expire refund)
 

@@ -107,7 +107,11 @@ class Transaction < ActiveRecord::Base
     def get_subject_by_app
     case subject
       when 'campaign'
-        "营销活动(#{self.item.name rescue nil})"
+        if direct == 'payout' && credit = Credit.where(resource: item).first
+          "<p>花费积分: #{credit.score.abs}</p><p>营销活动(#{item.name})</p>".html_safe
+        else
+          "<p>营销活动(#{item.name})</p>".html_safe
+        end
       when 'manual_recharge'
         '人工充值'
       when 'manual_recharge', 'manaual_recharge'
