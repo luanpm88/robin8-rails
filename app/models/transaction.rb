@@ -1,9 +1,16 @@
 class Transaction < ActiveRecord::Base
+
+  include Redis::Objects
+
+  counter :redis_credit_score
+
   belongs_to :account, :polymorphic => true
   belongs_to :opposite, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
   validates :trade_no, allow_nil: true, allow_blank: true, uniqueness: true
+
+  after_create :set_redis_credit_score
 
   RECHARGE_SUBJECTS = ['manual_recharge', 'alipay_recharge', 'campaign_pay_by_alipay']
   WITHDRAW_SUBJECTS = ['manual_withdraw', 'withdraw']
@@ -39,6 +46,13 @@ class Transaction < ActiveRecord::Base
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
                         cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate percentage_on_friend first_share_campaign first_check_example first_upload_invite)
+
+
+  def set_redis_credit_score
+    if direct == 'payout' && credit = Credit.where(resource: item).first
+      self.redis_credit_score.set credit.score.abs
+    end
+  end
 
   # subject
   # manual_recharge manual_withdraw
@@ -107,8 +121,8 @@ class Transaction < ActiveRecord::Base
     def get_subject_by_app
     case subject
       when 'campaign'
-        if direct == 'payout' && credit = Credit.where(resource: item).first
-          "<p>花费积分: #{credit.score.abs}</p><p>营销活动(#{item.name})</p>".html_safe
+        if direct == 'payout' && redis_credit_score.value.to_i > 0
+          "<p>花费积分: #{redis_credit_score.value}</p><p>营销活动(#{item.name})</p>".html_safe
         else
           "<p>营销活动(#{item.name})</p>".html_safe
         end
