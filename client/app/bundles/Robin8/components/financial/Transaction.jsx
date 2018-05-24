@@ -18,11 +18,7 @@ export default class Transaction extends React.Component {
         <td>{transaction.get("created_at")}</td>
         <td style={creditsStyle} className="credits">{transaction.get("credits")}</td>
         <td>{transaction.get("avail_amount")}</td>
-        <td>
-          <div>
-            {transaction.get("remark")}
-          </div>
-        </td>
+        <td dangerouslySetInnerHTML={{ __html: transaction.get("remark")}}></td>
       </tr>
     )
   }

@@ -67,22 +67,14 @@ class FinancialSummaryPartial extends React.Component {
     if (transactions.size) {
       return (
         <table className="table fixed table-bordered">
-          <colgroup>
-            <col width="199px" />
-            <col width="107px" />
-            <col width="108px" />
-            <col width="108px" />
-            <col width="108px" />
-            <col width="199px" />
-          </colgroup>
           <thead>
             <tr>
-              <th className="trade-no">账单编号</th>
-              <th className="cost-type">消费类型</th>
-              <th className="cost-date">日期</th>
-              <th className="cost-price">金额</th>
-              <th className="coce">剩余金额</th>
-              <th className="cost-remark">备注</th>
+              <th width="28%" className="trade-no">账单编号</th>
+              <th width="12%" className="cost-type">消费类型</th>
+              <th width="12%" className="cost-date">日期</th>
+              <th width="11%" className="cost-price">金额</th>
+              <th width="11%" className="coce">剩余金额</th>
+              <th width="26%" className="cost-remark">备注</th>
             </tr>
           </thead>
           <tbody>

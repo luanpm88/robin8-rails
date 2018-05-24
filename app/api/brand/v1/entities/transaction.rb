@@ -16,7 +16,7 @@ module Brand
           end
         end
         expose :credit do |object|
-          (object.item.try(:budget) - object.credits) * 10
+          (object.item.try(:budget).to_i - object.credits) * 10 if object.direct == 'payout'
         end
         expose :direct do |object|
           if object.direct == 'income' && object.subject == "campaign_tax"
