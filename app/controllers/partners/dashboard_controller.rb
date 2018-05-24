@@ -19,7 +19,7 @@ class Partners::DashboardController < Partners::BaseController
     @winner = @day7q.result.order('day_of_income DESC').limit(1);
 
     res = {record: {}, kol: {}}
-    
+
     if !@winner.empty?
       res = {
         record: @winner.first,
@@ -28,7 +28,7 @@ class Partners::DashboardController < Partners::BaseController
         updated_at: _end.end_of_day
       }
     end
-    
+
     respond_to do |format|
       format.html
       format.json {
@@ -44,10 +44,10 @@ class Partners::DashboardController < Partners::BaseController
     _end = Date.today - 1.days
     @day30q = Statistics::KolIncome.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
     @winner = @day30q.result.order('day_of_income DESC').limit(1);
-    
+
     res = {record: {}, kol: {}}
     if !@winner.empty?
-      
+
       res = {
         record: @winner.first,
         kol: @winner.first.kol.name,
@@ -56,7 +56,7 @@ class Partners::DashboardController < Partners::BaseController
 
       }
     end
-    
+
     respond_to do |format|
       format.html
       format.json {
@@ -76,7 +76,7 @@ class Partners::DashboardController < Partners::BaseController
 
     res = {}
     if !@historical_kol.empty?
-      
+
       res = {
         name: @historical_kol.first.name,
         income: @historical_kol.first.historical_income,
@@ -84,7 +84,7 @@ class Partners::DashboardController < Partners::BaseController
         updated_at: _end.end_of_day
       }
     end
-    
+
     respond_to do |format|
       format.html
       format.json {
@@ -103,19 +103,19 @@ class Partners::DashboardController < Partners::BaseController
     @kols = @q.result.order("created_at asc")
 
     res = {}
-    
+
     if !@kols.empty?
       @kols.each do |kk|
-        
+
         curDate = DateTime.parse(kk.created_at.to_s).strftime('%b-%Y').to_s
-        
+
         if res[curDate] == nil
           res[curDate] = 0
         end
         res[curDate] += 1
       end
     end
-    
+
     respond_to do |format|
       format.html
       format.json {
@@ -131,7 +131,7 @@ class Partners::DashboardController < Partners::BaseController
     data = Array.new(result.size)
     counter = 0
     result.each do | c |
-      
+
       user = User.find(c.user_id)
 
       labels[counter] = user.smart_name
@@ -139,9 +139,9 @@ class Partners::DashboardController < Partners::BaseController
       data[counter] = c.total_take_budget
       counter = counter + 1
     end
-    
+
     chartJson = { "labels" => labels, "data" => data }
-    
+
     respond_to do |format|
       format.html
       format.json {
@@ -151,7 +151,7 @@ class Partners::DashboardController < Partners::BaseController
       }
     end
   end
-  
+
 
   def chart8
     #Tag.group_by_tag
@@ -160,14 +160,14 @@ class Partners::DashboardController < Partners::BaseController
     data = Array.new(result.size)
     counter = 0
     result.each do | c |
-      
+
       labelKey = "tags.label."+ c.name
       labels[counter] = t labelKey
     #  data[counter] = c.counter
       data[counter] = c.percentage
       counter = counter + 1
     end
-    
+
     chartJson = { "labels" => labels, "data" => data }
 
 
@@ -189,7 +189,7 @@ class Partners::DashboardController < Partners::BaseController
     counter = 0
     total = 0;
     result.each do | c |
-      
+
       labelKey = "cities.label."+ c.app_city
       labels[counter] = t labelKey
       data[counter] = c.percentage
@@ -213,11 +213,16 @@ class Partners::DashboardController < Partners::BaseController
 
   def chart5
     #Tag.group_by_tag
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, '2017-09-18')
+    # For testing around 2017-09-17
+    # report_date = Date.today - 250
+    report_date = Date.today
+    report_date_str = report_date.strftime("%Y-%m-%d")
+    puts "report actual day " + report_date_str
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag,  report_date_str)
     labels = Array.new(result.size)
     data = Array.new(result.size)
     counter = 0
-    total = 0;
+    total = 0
     result.each do | c |
       labels[counter] = DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
       data[counter] = c.total_activity_count
@@ -235,5 +240,5 @@ class Partners::DashboardController < Partners::BaseController
       }
     end
   end
-end  
+end
 
