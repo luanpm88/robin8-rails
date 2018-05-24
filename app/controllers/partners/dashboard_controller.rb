@@ -196,17 +196,9 @@ class Partners::DashboardController < Partners::BaseController
   end
 
   def chart5
-    #Tag.group_by_tag
-    # For testing around 2017-09-17
-    # report_date = Date.today - 250
-    report_date = Date.today
-    report_date_str = report_date.strftime("%Y-%m-%d")
-    puts "report actual day " + report_date_str
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag,  report_date_str)
-    labels = Array.new(result.size)
-    data = Array.new(result.size)
-    counter = 0
-    total = 0
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, 1.days.ago)
+    labels = []
+    data = []
     result.each do | c |
       labels.push DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
       data.push c.total_activity_count
