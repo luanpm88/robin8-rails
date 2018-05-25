@@ -10,6 +10,7 @@ class Credit < ActiveRecord::Base
 
 	def self.gen_record(_method, score, owner, resource=nil, expired_at=nil, remark=nil)
 		self.create!(
+			trade_no: 	Time.now.strftime("%Y%m%d%H%M%S%L") + "%03d" % ($redis.incr(Date.today.to_s)%1000).to_s + "%04d" % rand(9999).to_s,
 			_method: 		_method,
 			score: 			score,
 			amount: 		owner.credit_amount + score,
