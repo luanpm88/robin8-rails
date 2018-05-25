@@ -9,9 +9,12 @@
                 <%= t('partner.dashboard.chart5.title') %>
               </span>
               <span class="col-sm-4">
-                  <select class="form-control hide" style="">
-                      <option>1</option>
-                  </select>
+                  <div class="input-group date" id="datetimepicker5" >  
+                      <input type="text" class="form-control" data-date-format="DD-MM-YYYY"/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div> 
               </span>
           </div>
         
@@ -34,82 +37,95 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
-    var chartJson = $.ajax({url: "/partners/dashboard/chart5.json"})
-    .done(function() {
-
-      var array = JSON.parse(chartJson.responseText);
-
-      var chartlabels = array.labels;
+    var getDataChart5 = function(){
+      var selectedDate = $('#datetimepicker5').data("DateTimePicker").date().format("DD-MM-YYYY")
       
-      console.log(chartlabels);
-      var chartData = array.data;
-      if(chartData.length < 1){
-        dataIsFound(false, 7);
-        return;
-      }
-      var ctx = document.getElementById("chart5");
-        var gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 200);
+      $.ajax({
+        url: "/partners/dashboard/chart5.json",
+        data: {
+          date: selectedDate
+        }
+        
+      })
+      .done(function(array) {
 
-        gradient.addColorStop(0, 'rgba(2,117,216,0.4)');
-        gradient.addColorStop(0.2, 'rgba(2,117,216,0.3)');
-        gradient.addColorStop(0.5, 'rgba(2,117,216,0.1)');
-        gradient.addColorStop(1, 'rgba(2,117,216,0.0)');
+        var chartlabels = array.labels;
 
-      var data = {
-        labels: chartlabels,
-        datasets: [
-          {
-            label: "# of Activities",
-            backgroundColor: gradient,
-            borderColor: "rgba(44,101,255,1)",
-            pointRadius: 5,
-            pointBackgroundColor: "rgba(255,255,255,1)",
-            pointBorderColor: "rgba(44,101,255,0.8)",
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(44,101,255,1)",
-            pointHitRadius: 20,
-            pointBorderWidth: 2,
-            data: chartData
-          }
-        ]
-      };
+        console.log(chartlabels);
+        var chartData = array.data;
+        if(chartData.length < 1){
+          dataIsFound(false, 7);
+          return;
+        }
+        var ctx = document.getElementById("chart5");
+          var gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 200);
 
-      var options =
-        {
-          
-          backgroundColor: "rgba(0,0,0,1)",
-          scales: {
-            xAxes: [{
-              gridLines: {
-                display: false
-              }
-            }],
-            yAxes: [{
-               ticks: {
-                 
-                 maxTicksLimit: 6
-               },
-              gridLines: {
-                display: false
-              }
-            }],
-          },
-          legend: {
-            display: false
-          }
+          gradient.addColorStop(0, 'rgba(2,117,216,0.4)');
+          gradient.addColorStop(0.2, 'rgba(2,117,216,0.3)');
+          gradient.addColorStop(0.5, 'rgba(2,117,216,0.1)');
+          gradient.addColorStop(1, 'rgba(2,117,216,0.0)');
+
+        var data = {
+          labels: chartlabels,
+          datasets: [
+            {
+              label: "# of Activities",
+              backgroundColor: gradient,
+              borderColor: "rgba(44,101,255,1)",
+              pointRadius: 5,
+              pointBackgroundColor: "rgba(255,255,255,1)",
+              pointBorderColor: "rgba(44,101,255,0.8)",
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(44,101,255,1)",
+              pointHitRadius: 20,
+              pointBorderWidth: 2,
+              data: chartData
+            }
+          ]
         };
 
-      var myLineChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: options
-      });
-      dataIsFound(true, 5);
-    })
-    .fail(function(){
-      dataIsFound(false, 5);
-    });
+        var options =
+          {
 
+            backgroundColor: "rgba(0,0,0,1)",
+            scales: {
+              xAxes: [{
+                gridLines: {
+                  display: false
+                }
+              }],
+              yAxes: [{
+                 ticks: {
+
+                   maxTicksLimit: 6
+                 },
+                gridLines: {
+                  display: false
+                }
+              }],
+            },
+            legend: {
+              display: false
+            }
+          };
+
+        var myLineChart = new Chart(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+        dataIsFound(true, 5);
+      })
+      .fail(function(){
+        dataIsFound(false, 5);
+      });
+    };
+    $('#datetimepicker5').datetimepicker({
+      viewMode: 'years',
+      defaultDate: true
+    }).on('dp.hide',getDataChart5); 
+    $('#datetimepicker5').data("DateTimePicker").date(moment());
+    getDataChart5();
   });
 
 </script>

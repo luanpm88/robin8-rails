@@ -94,11 +94,11 @@ class Partners::DashboardController < Partners::BaseController
 
   #7 days users Growth
   def chart4
-
-    _start = Date.today - 7.days 
-    _end = Date.today - 1.days
-
-    @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
+    puts params[:date]
+    _ago_day = 6
+    _end = Date.parse(params[:date])
+    
+    @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _end.ago(_ago_day.days).beginning_of_day.._end.end_of_day).ransack(params[:q])
     @kols = @q.result.order("created_at asc")
 
     res = {}
@@ -106,7 +106,7 @@ class Partners::DashboardController < Partners::BaseController
     if !@kols.empty?
       @kols.each do |kk|
 
-        curDate = DateTime.parse(kk.created_at.to_s).strftime('%b-%Y').to_s
+        curDate = DateTime.parse(kk.created_at.to_s).strftime('%d-%b').to_s
 
         if res[curDate] == nil
           res[curDate] = 0
@@ -196,7 +196,10 @@ class Partners::DashboardController < Partners::BaseController
   end
 
   def chart5
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, 1.days.ago)
+    
+    _end = Date.parse(params[:date])
+    
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _end)
     labels = []
     data = []
     result.each do | c |
