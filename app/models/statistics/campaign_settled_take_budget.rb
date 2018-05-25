@@ -1,16 +1,22 @@
 class Statistics::CampaignSettledTakeBudget < ActiveRecord::Base
   
-  def self.calculate_campaign_settled_take_budget(tag_name)
-    adminTag = Admintag.find_by(tag: tag_name)
+  
+  def self.calculate_campaign_settled_take_budget_daily 
+    
+    adminTag = Admintag.find_by_tag "geometry"
     
     beginTime = Time.new #FIXME
     page_size = 30
     index = 0
     total = Campaign.count
-
+    
+    self.delete_all 
+    
     result = Array.new
     loop do
-      
+      # may have issue, the campaign payment status is not set
+      # status = settled << should check 
+      # duplicate count?
       campaign_count = Campaign.joins(kols: :admintags).where("admintags.tag=?", adminTag.tag).order(id: :asc).uniq(:id).count
       
       if index > campaign_count
@@ -43,7 +49,6 @@ class Statistics::CampaignSettledTakeBudget < ActiveRecord::Base
       end
       index = index + page_size
     end
-    
+    Statistics::BrandSettledTakeBudget.calculate_brand_settled_take_budget()
   end
-  
 end

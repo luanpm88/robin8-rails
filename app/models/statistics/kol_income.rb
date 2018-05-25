@@ -9,8 +9,7 @@ class Statistics::KolIncome < ActiveRecord::Base
     
     # FIXME for all admintags 只跑geometry的
     admintag = Admintag.find_by_tag "geometry"
-    @q    = Kol.joins(:admintags).select("id").where("admintags.tag=? ", admintag).ransack()
-    @kols = @q.result.order('id asc')
+    @kols    = Kol.joins(:admintags).where("admintags.tag=? ", admintag.tag).order('id asc')
     
     if testdate != nil
       _excute_day = testdate
