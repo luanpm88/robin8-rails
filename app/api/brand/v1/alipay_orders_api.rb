@@ -57,7 +57,14 @@ module Brand
               @alipay_order.save_trade_no_to_transaction(params[:out_trade_no])
               # 送积分{_method, score, owner, resource, expired_at, remark}
               if pr = Promotion.valid && pr.min_credit < @alipay_order.credits
-                Credit.gen_record('recharge', (@alipay_order.credits * pr.rate).to_i, @alipay_order.user, @alipay_order, pr.valid_days_count.days.since)
+                Credit.gen_record(
+                  'recharge',
+                  (@alipay_order.credits * pr.rate).to_i,
+                  @alipay_order.user,
+                  @alipay_order,
+                  pr.valid_days_count.days.since,
+                  "充#{@alipay_order.credits}元, 赠送#{(@alipay_order.credits * pr.rate).to_i}积分"
+                )
               end
               env['api.format'] = :txt
               body "success"
