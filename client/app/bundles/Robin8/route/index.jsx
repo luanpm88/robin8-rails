@@ -127,6 +127,12 @@ export default (
       }, "FinancialSummary");
   }}/>
 
+  <Route path="financial/summary/integral" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/FinancialSummaryIntegralPartial').default);
+      }, "FinancialSummaryIntegral");
+  }}/>
+
   <Route path="financial/invoice" getComponent={(nextState, cb) => {
     require.ensure([], (require) => {
       cb(null, require('../components/FinancialInvoicePartial').default);
