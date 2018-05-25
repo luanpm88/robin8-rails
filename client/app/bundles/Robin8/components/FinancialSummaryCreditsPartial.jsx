@@ -30,7 +30,6 @@ class FinancialSummaryCreditsPartial extends React.Component {
   }
 
   hide_or_show_paginator() {
-    console.log(this.props.credits.size);
     if (!this.props.credits.size) {
       $("#transactions-paginator").hide();
     } else {
