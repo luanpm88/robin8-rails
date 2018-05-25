@@ -78,6 +78,7 @@ module API
             if pr = Promotion.valid && pr.min_credit < alipay_order.credits
               Credit.gen_record(
                 'recharge',
+                1,
                 (alipay_order.credits * pr.rate).to_i,
                 alipay_order.user,
                 alipay_order,

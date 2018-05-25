@@ -137,20 +137,25 @@ module Brand
           patch ":id/pay_by_balance" do
             @campaign = Campaign.find declared(params)[:campaign_id]
             if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
+
               # 积分抵扣
+              pay_credits, pay_amount = 0, @campaign.need_pay_amount
               if params[:use_credit]
                 if current_user.credit_amount >= @campaign.need_pay_amount * 10
                   pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
                 else
                   pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
                 end
-                ActiveRecord::Base.transaction do
-                  Credit.gen_record('expend', pay_credits, current_user, @campaign, current_user.credit_expired_at)
-                  @campaign.update_columns(need_pay_amount: pay_amount)
-                end
               end
-              if current_user.avail_amount >= @campaign.need_pay_amount
-                @campaign.update_attributes(pay_way: declared(params)[:pay_way])
+
+              if current_user.avail_amount >= pay_amount
+                if pay_credits > 0
+                  Credit.gen_record('expend', 1, pay_credits, current_user, @campaign, current_user.credit_expired_at)
+                  @campaign.update_attributes(need_pay_amount: pay_amount, pay_way: declared(params)[:pay_way])
+                else
+                  @campaign.update_attributes(pay_way: declared(params)[:pay_way])
+                end
+                @campaign.reload
                 @campaign.pay
                 present @campaign
               else
@@ -170,36 +175,42 @@ module Brand
             @campaign = Campaign.find declared(params)[:campaign_id]
 
             # 积分抵扣
+            pay_credits, pay_amount = 0, @campaign.need_pay_amount
             if params[:use_credit]
               if current_user.credit_amount >= @campaign.need_pay_amount * 10
                 pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
               else
                 pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
               end
-              ActiveRecord::Base.transaction do
-                Credit.gen_record('expend', pay_credits, current_user, @campaign, current_user.credit_expired_at)
-                @campaign.update_columns(need_pay_amount: pay_amount)
-              end
             end
 
-            ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
-            return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand?from=pay_campaign' : "#{Rails.application.secrets[:domain]}/brand?from=pay_campaign"
-            notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
+            if pay_amount > 0
+              Credit.gen_record('expend', 0, pay_credits, current_user, @campaign, current_user.credit_expired_at)
 
-            alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
-              {
-                out_trade_no: @campaign.trade_number,
-                subject: 'Robin8活动付款',
-                total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
-                return_url: return_url,
-                notify_url: notify_url
-              },
-              {
-                sign_type: 'RSA',
-                key: ALIPAY_RSA_PRIVATE_KEY
-              }
-            )
-            return { alipay_recharge_url: alipay_recharge_url }
+              ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
+              return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand?from=pay_campaign' : "#{Rails.application.secrets[:domain]}/brand?from=pay_campaign"
+              notify_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand_api/v1/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/campaigns/alipay_notify"
+
+              alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
+                {
+                  out_trade_no: @campaign.trade_number,
+                  subject: 'Robin8活动付款',
+                  total_fee: (ENV["total_fee"] || pay_amount).to_f,
+                  return_url: return_url,
+                  notify_url: notify_url
+                },
+                {
+                  sign_type: 'RSA',
+                  key: ALIPAY_RSA_PRIVATE_KEY
+                }
+              )
+              return { alipay_recharge_url: alipay_recharge_url }
+            else
+              Credit.gen_record('expend', 1, pay_credits, current_user, @campaign, current_user.credit_expired_at)
+              @campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+              @campaign.reload
+              present @campaign
+            end
           end
 
           desc 'revoke campaign'  #撤销 campaign
@@ -460,12 +471,21 @@ module Brand
               @campaign.with_lock do
                 @campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
                 @campaign.pay
+                # 支付成功，修改积分记录状态
+                if credit = Credit.where(resource: @campaign, state: 0, _method: 'expend').last
+                  credit.update_attributes(state: 1, remark: "支付宝抵扣 活动 #{@campaign.id}")
+                end
               end
             end
             Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
             env['api.format'] = :txt
             body "success"
           else
+            # 支付失败，返还积分
+            if credit = Credit.where(resource: @campaign, state: 0, _method: 'expend').last
+              credit.update_attributes(state: -1, remark: "支付宝抵扣 活动: #{@campaign.id}")
+              Credit.gen_record('refund', 1, credit.score, credit.owner, @campaign, credit.owner.credit_expired_at, "活动: #{campaign.id} 退还")
+            end
             return error_unprocessable! "支付失败，请重试"
           end
         end

@@ -266,6 +266,7 @@ module API
         params do
           requires :id, type: Integer
           requires :pay_way, type: String
+          optional :use_credit, type: Boolean
         end
 
         put "/pay" do

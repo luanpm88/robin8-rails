@@ -6,12 +6,21 @@ class Credit < ActiveRecord::Base
 								# 赠送     花费    过期   退还
 	_METHODS = %w(recharge expend expire refund)
 
+	STATE = {
+    -1 => 'invalid',
+    0  => 'prehead',
+    1  => 'completed'
+  }
+
 	validates_inclusion_of :_method, in: _METHODS
 
-	def self.gen_record(_method, score, owner, resource=nil, expired_at=nil, remark=nil)
+	scope :completed, -> { where(state: 1) }
+
+	def self.gen_record(_method, state, score, owner, resource=nil, expired_at=nil, remark=nil)
 		self.create!(
 			trade_no: 	Time.now.strftime("%Y%m%d%H%M%S%L") + "%03d" % ($redis.incr(Date.today.to_s)%1000).to_s + "%04d" % rand(9999).to_s,
 			_method: 		_method,
+			state: 			state,
 			score: 			score,
 			amount: 		owner.credit_amount + score,
 			owner: 			owner,

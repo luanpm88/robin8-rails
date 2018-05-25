@@ -100,6 +100,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       # 送积分{_method, score, owner, resource, expired_at, remark}
       Credit.gen_record(
         'recharge',
+        1,
         score,
         @user,
         recharge_record,
