@@ -5,6 +5,7 @@ import _ from 'lodash';
 export const initialState = Immutable.fromJS({
   readyState: 'init',
   transactions: [],
+  credits: [],
   invoice: {},
   specialInvoice: {},
   invoiceReceiver: {},
@@ -31,6 +32,16 @@ export default function financialReducer($$state = initialState, action=nil) {
       if(fetchState === 'success') {
         $$state = $$state.merge({
           "transactions": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate)
+        });
+      }
+      return $$state;
+
+    case actionTypes.FETCH_CREDITS:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({
+          "credits": Immutable.fromJS(action.result.items),
           "paginate": Immutable.fromJS(action.result.paginate)
         });
       }
