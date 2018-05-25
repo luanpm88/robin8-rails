@@ -35,6 +35,8 @@ module Brand
       represent Kol,              with: Entities::Kol
       represent Tag,              with: Entities::Tag
       represent SocialAccount,    with: Entities::SocialAccount
+      represent Credit,           with: Entities::Credit
+
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
@@ -59,6 +61,7 @@ module Brand
       mount KolsAPI
       mount SocialAccountsAPI
       mount InvoicesAPI
+      mount CreditsAPI
     end
   end
 end

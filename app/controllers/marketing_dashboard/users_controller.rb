@@ -98,7 +98,14 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       @user.increment!(:appliable_credits, credits)
       @user.update(seller_id: params[:seller_id]) if params[:seller_id]
       # 送积分{_method, score, owner, resource, expired_at, remark}
-      Credit.gen_record('recharge', score, @user, recharge_record, expired_at) if score > 0
+      Credit.gen_record(
+        'recharge',
+        score,
+        @user,
+        recharge_record,
+        expired_at,
+        "充#{credits}元, 赠送#{score}积分"
+      ) if score > 0
 
       flash[:notice] = '为品牌主充值成功'
     else
