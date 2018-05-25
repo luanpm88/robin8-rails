@@ -26,6 +26,13 @@ export function fetchTransactions(current_page) {
   };
 }
 
+export function fetchCredits(current_page) {
+  return {
+    type: actionTypes.FETCH_CREDITS,
+    promise: fetch(`${baseUrl}/credits?page=${current_page.page}`, { credentials: 'same-origin' })
+  };
+}
+
 export function fetchCommonInvoice() {
   return {
     type: actionTypes.FETCH_COMMON_INVOICE,

@@ -127,10 +127,10 @@ export default (
       }, "FinancialSummary");
   }}/>
 
-  <Route path="financial/summary/integral" getComponent={(nextState, cb) => {
+  <Route path="financial/summary/credits" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
-        cb(null, require('../components/FinancialSummaryIntegralPartial').default);
-      }, "FinancialSummaryIntegral");
+        cb(null, require('../components/FinancialSummaryCreditsPartial').default);
+      }, "FinancialSummaryCredits");
   }}/>
 
   <Route path="financial/invoice" getComponent={(nextState, cb) => {

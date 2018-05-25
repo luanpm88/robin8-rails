@@ -4,25 +4,24 @@ import { connect } from 'react-redux'
 
 import BreadCrumb           from './shared/BreadCrumb';
 import FinancialMenu        from './shared/FinancialMenu';
-import Transaction          from './financial/Transaction';
+import TransactionCredits          from './financial/TransactionCredits';
 import getUrlQueryParams    from '../helpers/GetUrlQueryParams';
 
 import 'recharge/summary.scss'
 
 function select(state) {
   return {
-    transactions: state.financialReducer.get('transactions'),
+    credits: state.financialReducer.get('credits'),
     paginate: state.financialReducer.get("paginate")
   }
 }
 
-class FinancialSummaryIntegralPartial extends React.Component {
-
+class FinancialSummaryCreditsPartial extends React.Component {
   componentDidMount() {
-    const { fetchTransactions } = this.props.actions;
+    const { fetchCredits } = this.props.actions;
     const page_params = getUrlQueryParams()["page"]
     const currentPage = page_params ? page_params : 1
-    fetchTransactions({page: currentPage});
+    fetchCredits({page: currentPage});
   }
 
   componentDidUpdate() {
@@ -31,7 +30,8 @@ class FinancialSummaryIntegralPartial extends React.Component {
   }
 
   hide_or_show_paginator() {
-    if (!this.props.transactions.size) {
+    console.log(this.props.credits.size);
+    if (!this.props.credits.size) {
       $("#transactions-paginator").hide();
     } else {
       $("#transactions-paginator").show();
@@ -39,7 +39,7 @@ class FinancialSummaryIntegralPartial extends React.Component {
   }
 
   displayPaginator(props) {
-    const { fetchTransactions } = this.props.actions;
+    const { fetchCredits } = this.props.actions;
     if (this.props.paginate.get("X-Page")) {
       let totalPage = this.props.paginate.get("X-Total-Pages")
       if (totalPage < this.props.paginate.get("X-Page")){
@@ -55,7 +55,7 @@ class FinancialSummaryIntegralPartial extends React.Component {
           }
         },
         onPageClicked: function(e,originalEvent,type,page){
-          fetchTransactions({ page: page });
+          fetchCredits({ page: page });
         }
       }
       $("#transactions-paginator").bootstrapPaginator(pagination_options);
@@ -63,31 +63,30 @@ class FinancialSummaryIntegralPartial extends React.Component {
   }
 
   render_transactions_table() {
-    const transactions = this.props.transactions;
-
-    console.log(transactions);
-    if (transactions.size) {
+    const credits = this.props.credits;
+    console.log(credits);
+    if (credits.size) {
       return (
         <table className="table fixed table-bordered">
           <thead>
             <tr>
-              <th width="28%" className="trade-no">账单编号</th>
+              <th width="28%" className="trade-no">积分编号</th>
               <th width="12%" className="cost-type">消费类型</th>
               <th width="12%" className="cost-date">日期</th>
-              <th width="11%" className="cost-price">金额</th>
-              <th width="11%" className="coce">剩余金额</th>
+              <th width="11%" className="cost-price">积分</th>
+              <th width="11%" className="coce">剩余积分</th>
               <th width="26%" className="cost-remark">备注</th>
             </tr>
           </thead>
           <tbody>
             { do
               {
-                if (transactions.size) {
-                  transactions.map(function(transaction, index){
+                if (credits.size) {
+                  credits.map(function(transaction, index){
                     if (index % 2 === 0) {
-                      return <Transaction transaction={transaction} tagColor="ood-transaction" key={index} />
+                      return <TransactionCredits transaction={transaction} tagColor="ood-transaction" key={index} />
                     } else {
-                      return <Transaction transaction={transaction} tagColor="even-transaction" key={index} />
+                      return <TransactionCredits transaction={transaction} tagColor="even-transaction" key={index} />
                     }
                   })
                 }
@@ -126,4 +125,4 @@ class FinancialSummaryIntegralPartial extends React.Component {
   }
 }
 
-export default connect(select)(FinancialSummaryIntegralPartial);
+export default connect(select)(FinancialSummaryCreditsPartial);
