@@ -14,7 +14,7 @@ class Credit < ActiveRecord::Base
 
 	validates_inclusion_of :_method, in: _METHODS
 
-	scope :completed, -> { where(state: 1) }
+	scope :completed, -> { where(state: 1).order(updated_at: :desc) }
 
 	def self.gen_record(_method, state, score, owner, resource=nil, expired_at=nil, remark=nil)
 		self.create!(

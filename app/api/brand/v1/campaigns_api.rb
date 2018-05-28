@@ -180,6 +180,8 @@ module Brand
               if current_user.credit_amount >= @campaign.need_pay_amount * 10
                 pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
               else
+                # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
+                Credit.where(resource: @campaign, state: 0, _method: 'expend').delete_all
                 pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
               end
             end
@@ -473,7 +475,8 @@ module Brand
                 @campaign.pay
                 # 支付成功，修改积分记录状态
                 if credit = Credit.where(resource: @campaign, state: 0, _method: 'expend').last
-                  credit.update_attributes(state: 1, remark: "支付宝抵扣 活动 #{@campaign.id}")
+                  # amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
+                  credit.update_attributes(state: 1, amount: credit.user.credit_amount, remark: "支付宝抵扣 活动 #{@campaign.id}")
                 end
               end
             end

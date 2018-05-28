@@ -277,11 +277,29 @@ module API
           if not %w(balance alipay).include? params[:pay_way]
             error_403!({error: 1, detail: "支付方式不正确"})  and return
           end
+
+          # 积分抵扣
+          pay_credits, pay_amount = 0, campaign.need_pay_amount
+          if params[:use_credit]
+            if current_user.credit_amount >= campaign.need_pay_amount * 10
+              pay_credits, pay_amount = -campaign.need_pay_amount * 10, 0
+            else
+              # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
+              Credit.where(resource: campaign, state: 0, _method: 'expend').delete_all
+              pay_credits, pay_amount = -current_user.credit_amount, campaign.need_pay_amount - current_user.credit_amount.to_f/10
+            end
+          end
+
           if params[:pay_way] == "balance"
-            if campaign.user.avail_amount < campaign.need_pay_amount
+            if campaign.user.avail_amount < pay_amount
               error_403!({error: 1, detail: "余额不足, 请尝试支付宝支付!!"})  and return
             else
-              campaign.update_attributes(pay_way: params[:pay_way])
+              if pay_credits > 0
+                Credit.gen_record('expend', 1, pay_credits, current_user, campaign, current_user.credit_expired_at)
+                campaign.update_attributes(need_pay_amount: pay_amount, pay_way: params[:pay_way])
+              else
+                campaign.update_attributes(pay_way: params[:pay_way])
+              end
               campaign.pay
               present :error, 0
               present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignBalancePayEntity
@@ -289,13 +307,21 @@ module API
           end
 
           if params[:pay_way] == "alipay"
-            campaign.pay_way = "alipay"
-            campaign.save
+            if pay_credits > 0
+              Credit.gen_record('expend', 0, pay_credits, current_user, campaign, current_user.credit_expired_at)
+              campaign.pay_way = "alipay"
+              campaign.save
 
-            campaign.user.generate_alipay_recharge_order_for_app campaign.need_pay_amount, Rails.application.secrets[:alipay][:notify_url]
+              campaign.user.generate_alipay_recharge_order_for_app pay_amount, Rails.application.secrets[:alipay][:notify_url]
 
-            present :error, 0
-            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignAlipayEntity
+              present :error, 0
+              present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignAlipayEntity
+            else
+              Credit.gen_record('expend', 1, pay_credits, current_user, campaign, current_user.credit_expired_at)
+              @campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+              @campaign.reload
+              present @campaign
+            end
           end
         end
 
@@ -339,6 +365,11 @@ module API
           if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
             campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
             campaign.pay
+            # 支付成功，修改积分记录状态
+            if credit = Credit.where(resource: campaign, state: 0, _method: 'expend').last
+              # amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
+              credit.update_attributes(state: 1, amount: credit.user.credit_amount, remark: "支付宝抵扣 活动 #{@campaign.id}")
+            end
             body "success"
             return
           end
