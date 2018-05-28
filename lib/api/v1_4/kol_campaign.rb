@@ -186,34 +186,57 @@ module API
         params do
           requires :id, type: Integer
           requires :used_voucher, type: Integer
+          optional :use_credit, type: Boolean
         end
 
         put "/pay_by_voucher" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
-          campaign.budget_editable = false
-          if params[:used_voucher].to_i == 1 and campaign.used_voucher == false
-            if current_kol.avail_amount > 0
-              pay_amount = 0
-              if campaign.need_pay_amount > current_kol.avail_amount
-                pay_amount = current_kol.avail_amount
-                current_kol.frozen pay_amount, "campaign_used_voucher", campaign
-              else
-                pay_amount = campaign.need_pay_amount
-                current_kol.payout pay_amount, "campaign_used_voucher", campaign
-                campaign.pay_way = "kol_voucher"
-              end
-              campaign.need_pay_amount = campaign.need_pay_amount - pay_amount
-              campaign.voucher_amount =  pay_amount
-              campaign.used_voucher = true
-              if campaign.need_pay_amount == 0 and campaign.status.to_s == 'unpay'
-                campaign.status = 'unexecute'
-              end
+
+          # 积分抵扣
+          pay_credits, pay_amount = 0, campaign.need_pay_amount
+          if params[:use_credit] == 'true'
+            if current_user.credit_amount >= campaign.need_pay_amount * 10
+              pay_credits, pay_amount = -campaign.need_pay_amount * 10, 0
+            else
+              # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
+              Credit.where(resource: campaign, state: 0, _method: 'expend').delete_all
+              pay_credits, pay_amount = -current_user.credit_amount, campaign.need_pay_amount - current_user.credit_amount.to_f/10
             end
           end
-          campaign.save
-          present :error, 0
-          present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
+
+          if pay_amount > 0
+            campaign.budget_editable = false
+            if params[:used_voucher].to_i == 1 and campaign.used_voucher == false
+              if current_kol.avail_amount > 0
+                pay_amount_1 = 0
+                if pay_amount > current_kol.avail_amount
+                  pay_amount_1 = current_kol.avail_amount
+                  current_kol.frozen pay_amount_1, "campaign_used_voucher", campaign
+                else
+                  pay_amount_1 = pay_amount
+                  current_kol.payout pay_amount_1, "campaign_used_voucher", campaign
+                  campaign.pay_way = "kol_voucher"
+                end
+                campaign.need_pay_amount = pay_amount - pay_amount_1
+                campaign.voucher_amount =  pay_amount_1
+                campaign.used_voucher = true
+                if campaign.need_pay_amount == 0 and campaign.status.to_s == 'unpay'
+                  campaign.status = 'unexecute'
+                end
+              end
+            end
+            campaign.save
+            Credit.gen_record('expend', 0, pay_credits, current_user, campaign, current_user.credit_expired_at) if pay_credits > 0
+            present :error, 0
+            present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
+          else
+            Credit.gen_record('expend', 1, pay_credits, current_user, campaign, current_user.credit_expired_at)
+            campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+            campaign.reload
+
+            present campaign
+          end
         end
 
         desc "获取详情"
@@ -318,9 +341,10 @@ module API
               present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignAlipayEntity
             else
               Credit.gen_record('expend', 1, pay_credits, current_user, campaign, current_user.credit_expired_at)
-              @campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
-              @campaign.reload
-              present @campaign
+              campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+              campaign.reload
+
+              present campaign
             end
           end
         end
