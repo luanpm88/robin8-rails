@@ -6,33 +6,16 @@ class Partners::DashboardController < Partners::BaseController
  # layout 'gentelella'
 
 	def index
-
   end
 
   # 7 days winner
   def chart1
-
-    _start = Date.today - 7.days
-    _end = Date.today - 1.days
-
-    @day7q = Statistics::KolIncome.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @winner = @day7q.result.order('day_of_income DESC').limit(1);
-
-    res = {record: {}, kol: {}}
-
-    if !@winner.empty?
-      res = {
-        record: @winner.first,
-        kol: @winner.first.kol.name,
-        avatar_url: @winner.first.kol.avatar_url,
-        updated_at: _end.end_of_day
-      }
-    end
+    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 7.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
 
     respond_to do |format|
       format.html
       format.json {
-        render json: res
+        render json: (winner.to_hash rescue {})
       }
     end
   end

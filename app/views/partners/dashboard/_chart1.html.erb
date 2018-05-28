@@ -46,8 +46,8 @@
     var chartJson = 
     $.ajax({url: "/partners/dashboard/chart1.json"})
     .done(function(chartJson){
-      $("#cur_winner_price").text(chartJson.record.day_of_income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
-      $("#kol_winner_name").text(chartJson.kol);
+      $("#cur_winner_price").text(chartJson.day_of_income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+      $("#kol_winner_name").text(chartJson.kol_name);
       $("#avatar_url7").attr('src', chartJson.avatar_url).on("error", function(){
         this.src = imgSrc1;
       });
