@@ -12,6 +12,7 @@ module API
           brand_user = current_kol.find_or_create_brand_user
           present :error, 0
           present :brand_amount, brand_user.avail_amount.to_f
+          present :brand_credit, brand_user.credit_amount
         end
 
         desc "活动账单"
