@@ -484,11 +484,6 @@ module Brand
             env['api.format'] = :txt
             body "success"
           else
-            # 支付失败，返还积分
-            if credit = Credit.where(resource: @campaign, state: 0, _method: 'expend').last
-              credit.update_attributes(state: -1, remark: "支付宝抵扣 活动: #{@campaign.id}")
-              Credit.gen_record('refund', 1, credit.score, credit.owner, @campaign, credit.owner.credit_expired_at, "活动: #{campaign.id} 退还")
-            end
             return error_unprocessable! "支付失败，请重试"
           end
         end

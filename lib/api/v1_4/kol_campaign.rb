@@ -280,7 +280,7 @@ module API
 
           # 积分抵扣
           pay_credits, pay_amount = 0, campaign.need_pay_amount
-          if params[:use_credit]
+          if params[:use_credit] == 'true'
             if current_user.credit_amount >= campaign.need_pay_amount * 10
               pay_credits, pay_amount = -campaign.need_pay_amount * 10, 0
             else
