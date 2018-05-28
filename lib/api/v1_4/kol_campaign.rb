@@ -221,7 +221,7 @@ module API
         desc "是否使用 积分 抵用"
         params do
           requires :id, type: Integer
-          requires :use_credit, type: Boolean
+          requires :use_credit, type: Integer
         end
 
         put "/pay_by_credit" do
@@ -230,7 +230,7 @@ module API
 
           # 积分抵扣
           pay_credits, pay_amount = 0, campaign.need_pay_amount
-          if params[:use_credit] == true
+          if params[:use_credit].to_i == 1
             if current_user.credit_amount >= campaign.need_pay_amount * 10
               pay_credits, pay_amount = -campaign.need_pay_amount * 10, 0
             else
