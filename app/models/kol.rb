@@ -426,7 +426,7 @@ class Kol < ActiveRecord::Base
     _array = []
     DateTimeExtend.sequence(6.days.ago.beginning_of_day, Date.today.end_of_day, 1.day).each do |time|
       trs = transactions.income_transaction.recent(time, time)
-      _array << {date: time.strftime('%m/%d'), total_amount: trs.sum(:credits), count: trs.count}
+      _array << {date: time.strftime('%F'), total_amount: trs.sum(:credits), count: trs.count}
     end
     _array
   end
