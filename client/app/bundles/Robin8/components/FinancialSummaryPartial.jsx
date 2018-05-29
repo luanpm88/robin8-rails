@@ -108,10 +108,16 @@ class FinancialSummaryPartial extends React.Component {
           <div className="page-summary">
             <FinancialMenu />
             <div className="main-content">
-              <div className="cost-text">
-                <span>
-                  <span>消费记录</span>
-                </span>
+              <div className="cost-text clearfix">
+                <div className="cost-text-title pull-left">消费记录</div>
+                <ul className="nav nav-pills sm pull-right">
+                  <li className="active">
+                    <Link to={'/brand/financial/summary'}>消费记录</Link>
+                  </li>
+                  <li>
+                    <Link to={'/brand/financial/summary/credits'}>积分记录</Link>
+                  </li>
+                </ul>
               </div>
               { this.render_transactions_table() }
               <div id="transactions-paginator">
