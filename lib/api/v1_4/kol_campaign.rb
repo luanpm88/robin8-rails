@@ -304,6 +304,7 @@ module API
           if %w(unpay unexecute rejected).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::DetailEntity
             present :kol_amount, current_kol.avail_amount.to_f
+            present :kol_credit, brand_user.credit_amount
           end
           if campaign.need_pay_amount == 0 and %w(agreed executing executed settled).include? campaign.status
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
