@@ -75,6 +75,7 @@
     <tr>
       <th width="50px;">ID</th>
       <th>品牌主ID</th>
+      <th>公司名称</th>
       <th>品牌昵称</th>
       <th width="110px;">品牌主手机</th>
       <th>销售人员</th>
@@ -92,6 +93,7 @@
       <tr>
         <td><%= a.id %></td>
         <td><%= link_to a.user_id, marketing_dashboard_user_path(:id => a.user_id), :target => "_blank" %></td>
+        <td><%= a.user.campany_name %></td>
         <td><%= a.user.smart_name if a.user %></td>
         <td><%= a.user.mobile_number if a.user %></td>
         <td>

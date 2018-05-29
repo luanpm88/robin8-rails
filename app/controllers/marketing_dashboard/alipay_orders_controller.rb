@@ -2,19 +2,17 @@ require 'csv'
 
 class MarketingDashboard::AlipayOrdersController < MarketingDashboard::BaseController
   def index
-    @alipay_orders = AlipayOrder.all
+    @alipay_orders = AlipayOrder.includes(:user).all
     get_alipay_orders
   end
 
   def from_pc
-    @alipay_orders = AlipayOrder.where(recharge_from: ["pc", nil])
+    @alipay_orders = AlipayOrder.includes(:user).where(recharge_from: ["pc", nil])
     get_alipay_orders
-
-
   end
 
   def from_app
-    @alipay_orders = AlipayOrder.where(recharge_from: "app")
+    @alipay_orders = AlipayOrder.includes(:user).where(recharge_from: "app")
     get_alipay_orders
   end
 
@@ -62,12 +60,12 @@ private
       format.html {render :index}
       format.csv {
         csv_string = CSV.generate do |csv|
-          csv << ["ID", "品牌主ID", "品牌昵称", "品牌主手机", "下单时间", "订单号", "支付宝订单号", "充值金额", "税费", "充值状态", "查看流水（若未付款则为空）"]
+          csv << ["ID", "品牌主ID", "公司名称", "品牌昵称", "品牌主手机", "下单时间", "订单号", "支付宝订单号", "充值金额", "税费", "充值状态", "查看流水（若未付款则为空）"]
           @alipay_orders.each do |c|
-            csv << [c.id, c.user_id, c.user.smart_name, c.user.mobile_number,  c.created_at.strftime("%Y-%m-%d %H:%M:%S"), c.trade_no, c.alipay_trade_no, c.credits, c.tax, c.status, "查看流水" ]
+            csv << [c.id, c.user_id, c.user.campany_name, c.user.smart_name, c.user.mobile_number,  c.created_at.strftime("%Y-%m-%d %H:%M:%S"), c.trade_no, c.alipay_trade_no, c.credits, c.tax, c.status, "查看流水" ]
           end
         end
-        send_data csv_string, :filename => "支付宝充值列表##{Time.current.strftime("%Y-%m-%d")}.csv"
+        send_data csv_string, filename: "支付宝充值列表##{Time.current.strftime("%Y-%m-%d")}.csv"
       }
     end
   end

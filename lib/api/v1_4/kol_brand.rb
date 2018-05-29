@@ -11,8 +11,38 @@ module API
         get '/' do
           brand_user = current_kol.find_or_create_brand_user
           present :error, 0
+          present :name,         brand_user.name
+          present :avatar_url,   brand_user.avatar_url
+          present :campany_name, brand_user.campany_name
+          present :url,          brand_user.url
+          present :description,  brand_user.description
           present :brand_amount, brand_user.avail_amount.to_f
           present :brand_credit, brand_user.credit_amount
+        end
+
+        desc "修改广告主资料"
+        params do
+          requires :name,         type: String
+          requires :campany_name, type: String
+          requires :url,          type: String
+          requires :description,  type: String
+          optional :avatar,       type: Hash
+        end
+        put 'update_profile' do
+          Rails.logger.info "*" * 100
+          Rails.logger.info params
+          Rails.logger.info "*" * 100
+          brand_user = current_kol.find_or_create_brand_user
+
+          brand_user.name         = params[:name]
+          brand_user.campany_name = params[:campany_name]
+          brand_user.url          = params[:url]
+          brand_user.description  = params[:description]
+          brand_user.avatar_url   = avatar_uploader(params[:avatar]) if params[:avatar]
+
+          brand_user.save
+
+          present error: 0, alert: '更新成功'
         end
 
         desc "活动账单"
