@@ -231,7 +231,7 @@ module API
           # 积分抵扣
           pay_credits, pay_amount = 0, campaign.need_pay_amount
           if params[:use_credit].to_i == 1
-            if current_user.credit_amount >= campaign.need_pay_amount * 10
+            if brand_user.credit_amount >= campaign.need_pay_amount * 10
               pay_credits, pay_amount = -campaign.need_pay_amount * 10, 0
             else
               # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
@@ -240,27 +240,27 @@ module API
                 campaign.update_columns(need_pay_amount: campaign.budget)
                 credits.delete_all
               end
-              pay_credits, pay_amount = -current_user.credit_amount, campaign.need_pay_amount - current_user.credit_amount.to_f/10
+              pay_credits, pay_amount = -brand_user.credit_amount, campaign.need_pay_amount - brand_user.credit_amount.to_f/10
             end
           end
           
           # 根据need_pay_amount判断是否需要使用支付宝支付
           if pay_amount > 0
             if pay_credits > 0
-              Credit.gen_record('expend', 0, pay_credits, current_user, campaign, current_user.credit_expired_at)
+              Credit.gen_record('expend', 0, pay_credits, brand_user, campaign, brand_user.credit_expired_at)
             end
-
+            campaign.update_attributes(need_pay_amount: pay_amount)
+            
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
           else
-            Credit.gen_record('expend', 1, pay_credits, current_user, campaign, current_user.credit_expired_at)
+            Credit.gen_record('expend', 1, pay_credits, brand_user, campaign, brand_user.credit_expired_at)
             campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
             campaign.reload
 
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignStatsEntity
           end
-          campaign.save
           
         end
 
