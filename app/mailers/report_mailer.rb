@@ -19,7 +19,7 @@ class ReportMailer < ApplicationMailer
     #@day_invite = day_invite
     #@week_invite = week_invite
     #@all_invite = all_invite
-    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <system@robin8.com>")
+    mail(:to => 'app_report@robin8.com', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <system@robin8.com>")
     puts "Daily email sent"
   end
 
@@ -31,7 +31,7 @@ class ReportMailer < ApplicationMailer
     @total_consumed = total_consumed
     @kol_count = kol_count
     @real_kol_count = real_kol_count
-    mail(:to => 'report@robin8.com', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <system@robin8.com>")
+    mail(:to => 'app_report@robin8.com', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <system@robin8.com>")
     puts "Weekly email sent"
   end
 
