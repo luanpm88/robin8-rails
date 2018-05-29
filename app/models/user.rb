@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   has_many :campaign_payout_transactions, -> {payout_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   has_many :campaign_income_transactions, -> {income_transaction_of_user_campaign}, class_name: 'Transaction', as: :account
   belongs_to :kol, inverse_of: :user
-  has_many :credits, :as => :owner
+  has_many :credits, as: :owner
 
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
   after_create :init_appid
@@ -217,11 +217,11 @@ class User < ActiveRecord::Base
   end
 
   def credit_amount
-    credits.completed.last.try(:amount).to_i
+    credits.completed.first.try(:amount).to_i
   end
 
   def credit_expired_at
-    credits.completed.last.try(:expired_at_show)
+    credits.completed.first.try(:expired_at_show)
   end
 
   private
