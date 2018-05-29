@@ -10,7 +10,7 @@
 </style>
 <div class="row">
     
-  <h3 style="padding-left: 15px;"><%= @admintag.tag %>  KOL 收益榜</h3>
+  <h3 style="padding-left: 15px;"><%= @admintag.tag %>  <%= t('partner.dashboard.kol_incomes') %></h3>
   <br />
   <div class="col-md-4">
     <%= render partial:  "chart1" %>
@@ -23,7 +23,7 @@
   </div>
 </div>
 <div class="row">
-  <h3 style="padding-left: 15px;"><%= @admintag.tag %> 数据统计</h3>
+  <h3 style="padding-left: 15px;"><%= @admintag.tag %> <%= t('partner.dashboard.data_statistics') %></h3>
   <br />
   <div class="col-md-6">
     <%= render partial: "chart4" %>

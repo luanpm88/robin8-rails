@@ -1,10 +1,5 @@
 class Partners::DashboardController < Partners::BaseController
- # before_filter except: [:index]
- #  before_action :set_locale
- #  before_action :set_link
-
- # layout 'gentelella'
-
+ 
 	def index
   end
 
@@ -23,27 +18,12 @@ class Partners::DashboardController < Partners::BaseController
   # 30 days winner
   def chart2
 
-    _start = Date.today - 31.days
-    _end = Date.today - 1.days
-    @day30q = Statistics::KolIncome.includes(:kol).joins(:kol).where("admintag=? ", @admintag.tag).where(action_at:  _start.beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @winner = @day30q.result.order('day_of_income DESC').limit(1);
-
-    res = {record: {}, kol: {}}
-    if !@winner.empty?
-
-      res = {
-        record: @winner.first,
-        kol: @winner.first.kol.name,
-        avatar_url: @winner.first.kol.avatar_url,
-        updated_at: _end.end_of_day
-
-      }
-    end
-
+    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 31.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
+    
     respond_to do |format|
       format.html
       format.json {
-        render json: res
+        render json: (winner.to_hash rescue {})
       }
     end
   end
@@ -51,19 +31,15 @@ class Partners::DashboardController < Partners::BaseController
   #historical winner
   def chart3
 
-    _end = Date.today - 1.days
-
-    @q    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).ransack(params[:q])
-    @historical_kol = @q.result.order('historical_income desc').limit(1)
-
+    kol    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).order('historical_income desc').first
+    #kol.inspect
+    puts kol.inspect
     res = {}
-    if !@historical_kol.empty?
-
+    if !kol.nil?
       res = {
-        name: @historical_kol.first.name,
-        income: @historical_kol.first.historical_income,
-        avatar_url: @historical_kol.first.avatar_url,
-        updated_at: _end.end_of_day
+        name: kol.name,
+        income: kol.historical_income,
+        avatar_url: kol.avatar_url
       }
     end
 
@@ -77,21 +53,19 @@ class Partners::DashboardController < Partners::BaseController
 
   #7 days users Growth
   def chart4
-    puts params[:date]
-    _ago_day = 6
-    _end = Date.parse(params[:date])
     
-    @q = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _end.ago(_ago_day.days).beginning_of_day.._end.end_of_day).ransack(params[:q])
-    @kols = @q.result.order("created_at asc")
-
+    _date = Date.parse(params[:date])
+    
+    kols = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _date.ago(6.days).beginning_of_day.._date.end_of_day).order("created_at asc")
+    
     res = {}
 
-    if !@kols.empty?
-      @kols.each do |kk|
+    if !kols.empty?
+      kols.each do |kk|
 
         curDate = DateTime.parse(kk.created_at.to_s).strftime('%d-%b').to_s
 
-        if res[curDate] == nil
+        if res[curDate].nil?
           res[curDate] = 0
         end
         res[curDate] += 1
@@ -123,7 +97,7 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        render :json => chartJson
+        render json: chartJson
       }
     end
   end
@@ -147,13 +121,12 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        render :json => chartJson
+        render json: chartJson
       }
     end
   end
 
   def chart6
-    #Tag.group_by_tag
     result = Tag.group_by_app_city( 5, @admintag.tag)
     labels = []
     data = []
@@ -173,16 +146,16 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        render :json => chartJson
+        render json: chartJson
       }
     end
   end
 
   def chart5
     
-    _end = Date.parse(params[:date])
+    _date = Date.parse(params[:date])
     
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _end)
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
     labels = []
     data = []
     result.each do | c |
@@ -195,9 +168,7 @@ class Partners::DashboardController < Partners::BaseController
     respond_to do |format|
       format.html
       format.json {
-        ##   render json: Tag.group_by_tag( 5)}
-        render :json => chartJson
-        ##   :json=>@product
+        render json: chartJson
       }
     end
   end

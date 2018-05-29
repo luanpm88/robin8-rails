@@ -44,15 +44,23 @@
     var chartJson = 
     $.ajax({url: "/partners/dashboard/chart2.json"})
     .done(function(chartJson){
-      $("#cur_30_winner_price").text(chartJson.record.day_of_income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
-      $("#kol_30_winner_name").text(chartJson.kol);
+      if(Object.keys(chartJson).length < 1){
+        $("#cur_30_winner_price").text(0);
+        $("#cur_30_winner_price").text("<%= t('partner.dashboard.error.msg') %>");
+        $("#avatar_url30").attr('src', imgSrc2);
+        return;
+      }
+      $("#cur_30_winner_price").text(chartJson.day_of_income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+      $("#kol_30_winner_name").text(chartJson.kol_name);
       $("#avatar_url30").attr('src', chartJson.avatar_url).on("error", function(){
         this.src = imgSrc2;
       });
       $('#lastupdate2').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
     })
     .fail(function(){
-      console.log('error in ')
+      $("#cur_30_winner_price").text(0);
+      $("#cur_30_winner_price").text("<%= t('partner.dashboard.error.msg') %>");
+      $("#avatar_url30").attr('src', imgSrc2);
     });
   });
 </script>

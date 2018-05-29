@@ -370,6 +370,8 @@ zh:
       entertainment: 娱乐
   partner:
     dashboard:
+      data_statistics: 数据统计
+      kol_incomes: KOL 收益榜
       chart1:
         title: 过去7天收益
         champion: 过去7天冠军

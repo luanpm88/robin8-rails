@@ -44,6 +44,12 @@
     var chartJson = 
     $.ajax({url: "/partners/dashboard/chart3.json"})
     .done(function(chartJson){
+      if(Object.keys(chartJson).length < 1){
+        $("#cur_historical_winner_price").text(0);
+        $("#kol_historical_winner_name").text("<%= t('partner.dashboard.error.msg') %>");
+        $("#avatar_url_historical").attr('src', imgSrc3);
+        return;
+      }
       $("#cur_historical_winner_price").text(chartJson.income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
       $("#kol_historical_winner_name").text(chartJson.name);
       $("#avatar_url_historical").attr('src', chartJson.avatar_url).on("error", function(){
@@ -52,7 +58,9 @@
       $('#lastupdate3').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
     })
     .fail(function(){
-      console.log('error in ')
+      $("#cur_historical_winner_price").text(0);
+      $("#kol_historical_winner_name").text("<%= t('partner.dashboard.error.msg') %>");
+      $("#avatar_url_historical").attr('src', imgSrc3);
     });
   });
 </script>

@@ -39,5 +39,16 @@ class Statistics::KolIncome < ActiveRecord::Base
       avatar_url:        kol.avatar_url
     }
   end
-
+  
+  def self.job_for_init_data admintag, _start_date, _end_date
+    if _start_date.empty? or _end_date.empty?
+      puts "start or end date missing" and return
+    end
+    sd = Date.parse _start_date
+    ed = Date.parse _end_date
+    sd.upto(ed) { |date|
+      self.job_for_kol_dashboard_income_data(admintag, date)
+    }
+    
+  end
 end
