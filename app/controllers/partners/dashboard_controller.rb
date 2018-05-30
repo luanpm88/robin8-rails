@@ -108,23 +108,18 @@ class Partners::DashboardController < Partners::BaseController
   end
 
   def chart7
-    result =
-    Statistics::BrandSettledTakeBudget.where(:tag => @admintag.tag).limit(5).order("total_take_budget desc")
-    labels = []
-    data = []
+    res    = {labels: [], data: []}
+    result = Statistics::BrandSettledTakeBudget.includes(:user).where(tag: @admintag.tag).limit(5).order("total_take_budget desc")
+    
     result.each do | c |
-
-      user = User.find(c.user_id)
-      labels.push user.smart_name
-      data.push c.total_take_budget
+      res[:labels] << c.user.try(:smart_name)
+      res[:data] << c.total_take_budget
     end
-
-    chartJson = { "labels" => labels, "data" => data }
 
     respond_to do |format|
       format.html
       format.json {
-        render json: chartJson
+        render json: res
       }
     end
   end
