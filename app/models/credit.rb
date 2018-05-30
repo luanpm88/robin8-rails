@@ -31,7 +31,7 @@ class Credit < ActiveRecord::Base
 	end
 
 	def show_time
-		created_at.strftime("%F %T")
+		created_at.strftime("%F")
 	end
 
 	def show_expired_at
