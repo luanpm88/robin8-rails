@@ -73,6 +73,7 @@ class Partners::DashboardController < Partners::BaseController
     res   = {labels: [], data: []}
 
     result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
+    
     result.each do | c |
       res[:labels] << c.data_date.strftime('%d-%b')
       res[:data]   << c.total_activity_count
@@ -88,14 +89,14 @@ class Partners::DashboardController < Partners::BaseController
 
   def chart6
     res, total = {labels: [], data: []}, 0
-
-    result = Tag.group_by_app_city( 5, @admintag.tag)
-    result.each do | c |
+ 
+    Tag.group_by_app_city( 5, @admintag.tag).each do | c |
       res[:labels] << t("cities.label."+ c.app_city)
       res[:data]   << c.percentage
 
       total += c.percentage
     end
+
     res[:labels] << t("other.label.name")
     res[:data]   << 100 - total
 
@@ -126,24 +127,17 @@ class Partners::DashboardController < Partners::BaseController
 
 
   def chart8
-    
-    result = Tag.group_by_tag( 5, @admintag.tag)
-    labels = []
-    data = []
-    
-    result.each do | c |
+    res = {labels: [], data: []}
 
-      labelKey = "tags.label."+ c.name
-      labels.push t labelKey
-      data.push c.percentage
+    Tag.group_by_tag(5, @admintag.tag).each do | c |
+      res[:labels] << t("tags.label."+ c.name)
+      res[:data]   << c.percentage
     end
-
-    chartJson = { "labels" => labels, "data" => data }
 
     respond_to do |format|
       format.html
       format.json {
-        render json: chartJson
+        render json: res
       }
     end
   end
