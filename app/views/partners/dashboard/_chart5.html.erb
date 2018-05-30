@@ -38,7 +38,7 @@
   $(document).ready(function () {
 
     var getDataChart5 = function(){
-      var selectedDate = $('#datetimepicker5').data("DateTimePicker").date().format("DD-MM-YYYY")
+      var selectedDate = $('#datetimepicker5').data("DateTimePicker").date().format("YYYY-MM-DD")
       
       $.ajax({
         url: "/partners/dashboard/chart5.json",
@@ -54,7 +54,7 @@
         console.log(chartlabels);
         var chartData = array.data;
         if(chartData.length < 1){
-          dataIsFound(false, 7);
+          dataIsFound(false, 5);
           return;
         }
         var ctx = document.getElementById("chart5");

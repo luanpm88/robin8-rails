@@ -39,7 +39,7 @@
   $(document).ready(function () {
     
     var getData = function(){
-      var selectedDate = $('#datetimepicker4').data("DateTimePicker").date().format("DD-MM-YYYY")
+      var selectedDate = $('#datetimepicker4').data("DateTimePicker").date().format("YYYY-MM-DD")
       $.ajax({
         url: "/partners/dashboard/chart4.json",
         data: {
@@ -48,7 +48,7 @@
       })
       .done(function(chartJson){
         if(Object.keys(chartJson).length < 1){
-          dataIsFound(false, 7);
+          dataIsFound(false, 4);
           return;
         }
         var ctx = $("#chart4");

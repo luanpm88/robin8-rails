@@ -17,7 +17,6 @@ class Partners::DashboardController < Partners::BaseController
 
   # 30 days winner
   def chart2
-
     winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 31.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
     
     respond_to do |format|
@@ -30,18 +29,14 @@ class Partners::DashboardController < Partners::BaseController
 
   #historical winner
   def chart3
-
-    kol    = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).order('historical_income desc').first
-    #kol.inspect
-    puts kol.inspect
+    kol = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).order('historical_income desc').first
     res = {}
-    if !kol.nil?
-      res = {
-        name: kol.name,
-        income: kol.historical_income,
-        avatar_url: kol.avatar_url
-      }
-    end
+    
+    res = {
+      name:       kol.name,
+      income:     kol.historical_income,
+      avatar_url: kol.avatar_url
+    } if kol
 
     respond_to do |format|
       format.html
@@ -53,29 +48,43 @@ class Partners::DashboardController < Partners::BaseController
 
   #7 days users Growth
   def chart4
-    
     _date = Date.parse(params[:date])
     
-    kols = Kol.joins(:admintags).where("admintags.tag=? ", @admintag.tag).where(created_at:  _date.ago(6.days).beginning_of_day.._date.end_of_day).order("created_at asc")
+    kols = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).where(created_at:  _date.ago(6.days).beginning_of_day.._date.end_of_day).order("created_at asc")
     
     res = {}
 
-    if !kols.empty?
-      kols.each do |kk|
-
-        curDate = DateTime.parse(kk.created_at.to_s).strftime('%d-%b').to_s
-
-        if res[curDate].nil?
-          res[curDate] = 0
-        end
-        res[curDate] += 1
-      end
+    kols.each do |kk|
+      curDate = kk.created_at.strftime('%d-%b')
+      res[curDate] = 0 unless res[curDate]
+      res[curDate] += 1
     end
 
     respond_to do |format|
       format.html
       format.json {
         render json: res
+      }
+    end
+  end
+
+  def chart5
+    _date = Date.parse(params[:date])
+    
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
+    labels = []
+    data = []
+    result.each do | c |
+      labels.push DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
+      data.push c.total_activity_count
+    end
+    chartJson = { "labels" => labels, "data" => data }
+
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: chartJson
       }
     end
   end
@@ -151,26 +160,5 @@ class Partners::DashboardController < Partners::BaseController
     end
   end
 
-  def chart5
-    
-    _date = Date.parse(params[:date])
-    
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
-    labels = []
-    data = []
-    result.each do | c |
-      labels.push DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
-      data.push c.total_activity_count
-    end
-    chartJson = { "labels" => labels, "data" => data }
-
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: chartJson
-      }
-    end
-  end
 end
 
