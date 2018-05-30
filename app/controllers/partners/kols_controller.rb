@@ -19,6 +19,10 @@ class Partners::KolsController < Partners::BaseController
     end
 	end
 
+	def children
+		@kols = @kol.children.paginate(paginate_params)
+	end
+
 	def activities
     @campaigns = @kol.campaigns.paginate(paginate_params)
 	end

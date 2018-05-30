@@ -1,0 +1,53 @@
+<style>
+  .row {
+    margin: 10px;
+  }
+
+</style>
+<div class="row">
+    
+  <h3 style="padding-left: 15px;"><%= @admintag.tag %>  <%= t('partner.dashboard.kol_incomes') %></h3>
+  <br />
+  <div class="col-md-4">
+    <%= render partial:  "chart1" %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "chart2" %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "chart3" %>
+  </div>
+</div>
+<div class="row">
+  <h3 style="padding-left: 15px;"><%= @admintag.tag %> <%= t('partner.dashboard.data_statistics') %></h3>
+  <br />
+  <div class="col-md-6">
+    <%= render partial: "chart4" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= render partial: "chart5" %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <%= render partial: "chart6" %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "chart7" %>
+  </div>
+  <div class="col-md-4">
+    <%= render partial: "chart8" %>
+  </div>
+</div>
+<script>
+  var dataIsFound = function(found, id){
+    if(found === true){
+      $("#chart"+id).removeClass("hide");
+      $("#not-found"+id).addClass("hide");
+    }else{
+      $("#chart"+id).addClass("hide");
+      $("#not-found"+id).removeClass("hide");
+    }
+  };
+</script>

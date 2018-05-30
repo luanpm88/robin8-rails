@@ -8,7 +8,6 @@
 //= require moment/zh-cn.js
 //= require bootstrap-datetimepicker
 //= require marketing_dashboard/jqzoom
-//= require Chart.min
 
 if (!jQuery.fn.size) {
   jQuery.fn.extend({

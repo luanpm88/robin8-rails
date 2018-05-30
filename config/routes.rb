@@ -279,10 +279,22 @@ Rails.application.routes.draw do
   end
 
   namespace :partners do
+    get '/',          to: 'dashboard#index'
     get 'sign_in',    to: 'sessions#new'
     post 'login',     to: 'sessions#create'
     get 'sign_out',   to: 'sessions#destroy'
-
+    resources :dashboard , only: [:index] do
+      collection do
+        get :chart1
+        get :chart2
+        get :chart3
+        get :chart4
+        get :chart5
+        get :chart6
+        get :chart7
+        get :chart8
+      end
+    end
     resources :campaigns, only: [:index]
     resources :campaign_invites, only: [:index] do
       get :shows
@@ -292,6 +304,7 @@ Rails.application.routes.draw do
         get :activities
         get :shows
         get :capital_flow_sheet
+        get :children
       end
     end
   end

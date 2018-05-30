@@ -1,8 +1,90 @@
-<div class="container">
+
+<div class="login-bg">
+    <div class="login-dialog-center">
+        <div class="dialog-box-main" ng-class="{'shake': isError}">
+            <div class="login-dialog-box-bg"></div>
+            <div class="login-dialog-box">
+                <div class="login-inputs">
+                    <div class="login-logo">
+                        <%= image_tag("partners/logo.png", alt: "Robin8 logo") %>
+                    </div>
+                    <%= form_tag '/partners/login', class: "form" do %>
+                    <div class="form-group text-danger"><%= flash[:notice] %></div>
+                    <div class="form-group" ng-class="{'has-error' : emailHasErr}">
+                        <!--<label for="exampleInputEmail1">Email address</label>-->
+                        <%= text_field_tag :name, params[:name], class: "form-control", placeholder: "用户名" %>
+                        <!-- <input 
+                            uib-tooltip="Email Wrong"
+                            tooltip-trigger="'none'"
+                            tooltip-placement="top"
+                            tooltip-is-open="emailHasErr"
+                            ng-model="email"
+                            type="text"
+                            class="form-control"
+                            placeholder="Email" /> -->
+                    </div>
+                    <div class="form-group" ng-class="{'has-error' : pwdHasErr}">
+                        <!--<label for="exampleInputPassword1">Password</label>-->
+                        
+                        <%= password_field_tag :password, params[:password], class: "form-control", placeholder: "密码" %>
+
+                        <!-- <input 
+                            uib-tooltip="Password Wrong"
+                            tooltip-trigger="'none'"
+                            tooltip-placement="top"
+                            tooltip-is-open="pwdHasErr"
+                            ng-model="password"
+                            type="password"
+                            class="form-control"
+                            placeholder="Password" /> -->
+                        
+                    </div>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button ng-click="changeLang('en')"
+                                    ng-class="{'active': currLang === 'en'}"
+                                    type="button"
+                                    class="btn btn-primary btn-outline">
+                                Eng.
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button ng-click="changeLang('zh_TC')"
+                                ng-class="{'active': currLang === 'zh_TC'}"
+                                type="button"
+                                class="btn btn-primary btn-outline">
+                                繁中
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button ng-click="changeLang('zh_SC')"
+                                    ng-class="{'active': currLang === 'zh_SC'}"
+                                    type="button"
+                                    class="btn btn-primary btn-outline">
+                                简中
+                            </button>
+                        </div>
+                    </div>
+                    <br />
+                    <%= submit_tag "登录", class: "btn btn-primary btn-lg btn-block" %>
+                    <!-- <button ng-click="login()" class="btn btn-primary btn-lg btn-block" type="submit">Login</button> -->
+                    <% end %>
+
+                </div>
+                <label class="whiteText"><span>Powered by </span> Robin8</label>
+                <label class="version-txt">Build: 1</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= stylesheet_link_tag 'partners' %>
+
+<!-- <div class="container">
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
       <div class="panel" style="margin-top: 30px;">
-        <div class="panel-heading">
+        <div class="panel-heading chris-test">
           <h2>合作伙伴数据后台</h2>
         </div>
         <div class="panel-body">
@@ -27,4 +109,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

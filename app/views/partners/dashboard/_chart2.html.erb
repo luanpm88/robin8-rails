@@ -1,0 +1,66 @@
+<div class="card mb-12">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <div class="well profile_view card-shadow">
+        <br />
+      <div class="col-sm-12">
+        <div class=" col-xs-12 text-center">
+          <%= image_tag("partners/user.png", alt: "", id: "avatar_url30", class: "img-circle img-responsive profile-img-max") %>
+          <br />
+        </div>
+        <div class="winner-margin col-xs-12 text-center">
+            <h4 class="winner-name" id="kol_30_winner_name">
+              <%= t('partner.dashboard.error.msg') %>
+            </h4>
+            <div class="btn btn-champions color2">
+              <%= t('partner.dashboard.chart2.champion') %>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+      </div>
+      <div class="col-sm-12 card-bottom text-center">
+        <div class="col-xs-12 col-sm-12 ">
+            <div class="card-footer small " >
+                <h3 class="">
+                    <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="cur_30_winner_price">0</span>
+                </h3>
+                <h4 class="text-muted winner-title">
+                  <%= t('partner.dashboard.chart2.title') %>
+                </h4>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var imgSrc2 = $("#avatar_url30").attr('src');
+    var chartJson = 
+    $.ajax({url: "/partners/dashboard/chart2.json"})
+    .done(function(chartJson){
+      if(Object.keys(chartJson).length < 1){
+        $("#cur_30_winner_price").text(0);
+        $("#cur_30_winner_price").text("<%= t('partner.dashboard.error.msg') %>");
+        $("#avatar_url30").attr('src', imgSrc2);
+        return;
+      }
+      $("#cur_30_winner_price").text(chartJson.day_of_income.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+      $("#kol_30_winner_name").text(chartJson.kol_name);
+      $("#avatar_url30").attr('src', chartJson.avatar_url).on("error", function(){
+        this.src = imgSrc2;
+      });
+      $('#lastupdate2').text(moment().subtract(1, 'days').hour(1).minute(59).format("LLL"));
+    })
+    .fail(function(){
+      $("#cur_30_winner_price").text(0);
+      $("#cur_30_winner_price").text("<%= t('partner.dashboard.error.msg') %>");
+      $("#avatar_url30").attr('src', imgSrc2);
+    });
+  });
+</script>

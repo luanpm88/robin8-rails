@@ -1,0 +1,94 @@
+<div class="card mb-12">
+  <div class="text-center card-header">
+    
+  </div>
+  <div class="card-body">
+      <div class="well profile_view card-shadow">
+          <div class="row">
+              <span class="col-sm-12 text-center">
+                <%= t('partner.dashboard.chart8.title') %>
+              </span>
+          </div>
+        
+        <div class="col-sm-12" style="min-height:350px;">
+          <canvas class="hide" id="chart8" width="100" height="100"></canvas>
+          <div class="no-data-found" id="not-found8">
+            <div>
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <%= t('partner.dashboard.error.msg') %>
+            </div>
+        </div>
+        </div>
+        <br />
+        
+    </div>
+    
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    
+    $.ajax({url: "/partners/dashboard/chart8.json", async: true})
+    .done(function(chartJson) {
+      if(chartJson.data.length < 1){
+        dataIsFound(false, 8);
+        return;
+      }
+      
+      var chartlabels = chartJson.labels;
+
+      var chartData = chartJson.data;
+      
+      var ctx = $("#chart8");
+      var myLineChart = new Chart(ctx.get(0), {
+        type: 'pie',
+        data: {
+          labels: chartlabels,
+          datasets: [{
+            label: "<%= t('partner.dashboard.chart8.title') %>",
+            backgroundColor: [
+              'rgba(147, 116, 255, 1)',
+              'rgba(69, 119, 255, 1)',
+              'rgba(76, 156, 255, 1)',
+              'rgba(82, 224, 255, 1)',
+              'rgba(123, 240, 211, 1)',
+              'rgba(255, 191, 12, 1)',
+              'rgba(255, 140, 88, 1)'
+            ],
+            data: chartData, 
+          }],
+        },
+        options: {
+          tooltips:{
+            callbacks:{
+              mode: 'single',
+              label: function(tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index] || '';
+                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                    
+                    if (label) {
+                        label += ': '+Number(value).toFixed(2)+'%';
+                    }
+                    return label;
+                }
+            }
+          },
+          legend: {
+            display: true,
+            labels: {
+              usePointStyle: true
+            },
+            position: 'bottom',
+            
+          },
+          
+        }
+      });
+      dataIsFound(true, 8);
+      
+    })
+    .fail(function(){
+      dataIsFound(false, 8);
+    });
+  });
+</script>

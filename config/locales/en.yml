@@ -1,5 +1,423 @@
 ---
 en:
+  other:
+    label:
+      name: Others
+  cities:
+    label:
+      beijing: beijing
+      tianjin: tianjin
+      shijiazhuang: shijiazhuang
+      tangshan: tangshan
+      qinhuangdao: qinhuangdao
+      handan: handan
+      xingtai: xingtai
+      baoding: baoding
+      zhangjiakou: zhangjiakou
+      chengde: chengde
+      cangzhou: cangzhou
+      langfang: langfang
+      hengshui: hengshui
+      taiyuan: taiyuan
+      datong: datong
+      yangquan: yangquan
+      changzhi: changzhi
+      jincheng: jincheng
+      shuozhou: shuozhou
+      jinzhong: jinzhong
+      yuncheng: yuncheng
+      xinzhou: xinzhou
+      linfen: linfen
+      lvliang: lvliang
+      huhehaote: huhehaote
+      baotou: baotou
+      wuhai: wuhai
+      chifeng: chifeng
+      tongliao: tongliao
+      eerduosi: eerduosi
+      hulunbeier: hulunbeier
+      bayannaoer: bayannaoer
+      wulanchabu: wulanchabu
+      xinganmeng: xinganmeng
+      xilinguolemeng: xilinguolemeng
+      alashanmeng: alashanmeng
+      chenyang: chenyang
+      dalian: dalian
+      anshan: anshan
+      fushun: fushun
+      benxi: benxi
+      dandong: dandong
+      jinzhou: jinzhou
+      yingkou: yingkou
+      fuxin: fuxin
+      liaoyang: liaoyang
+      panjin: panjin
+      tieling: tieling
+      zhaoyang: zhaoyang
+      huludao: huludao
+      changchun: changchun
+      jilin: jilin
+      siping: siping
+      liaoyuan: liaoyuan
+      tonghua: tonghua
+      baishan: baishan
+      songyuan: songyuan
+      baicheng: baicheng
+      yanbian: yanbian
+      haerbin: haerbin
+      qiqihaer: qiqihaer
+      jixi: jixi
+      hegang: hegang
+      shuangyashan: shuangyashan
+      daqing: daqing
+      yichun: yichun
+      jiamusi: jiamusi
+      qitaihe: qitaihe
+      mudanjiang: mudanjiang
+      heihe: heihe
+      suihua: suihua
+      daxinganling: daxinganling
+      shanghai: shanghai
+      nanjing: nanjing
+      wuxi: wuxi
+      xuzhou: xuzhou
+      changzhou: changzhou
+      suzhou: suzhou
+      nantong: nantong
+      lianyungang: lianyungang
+      huaian: huaian
+      yancheng: yancheng
+      yangzhou: yangzhou
+      zhenjiang: zhenjiang
+      taizhou: taizhou
+      suqian: suqian
+      hangzhou: hangzhou
+      ningbo: ningbo
+      wenzhou: wenzhou
+      jiaxing: jiaxing
+      huzhou: huzhou
+      shaoxing: shaoxing
+      jinhua: jinhua
+      quzhou: quzhou
+      zhoushan: zhoushan
+      taizhou: taizhou
+      lishui: lishui
+      hefei: hefei
+      wuhu: wuhu
+      bangbu: bangbu
+      huainan: huainan
+      maanshan: maanshan
+      huaibei: huaibei
+      tongling: tongling
+      anqing: anqing
+      huangshan: huangshan
+      chuzhou: chuzhou
+      fuyang: fuyang
+      suzhou: suzhou
+      chaohu: chaohu
+      liuan: liuan
+      bozhou: bozhou
+      chizhou: chizhou
+      xuancheng: xuancheng
+      fuzhou: fuzhou
+      shamen: shamen
+      futian: futian
+      sanming: sanming
+      quanzhou: quanzhou
+      zhangzhou: zhangzhou
+      nanping: nanping
+      longyan: longyan
+      ningde: ningde
+      nanchang: nanchang
+      jingdezhen: jingdezhen
+      pingxiang: pingxiang
+      jiujiang: jiujiang
+      xinyu: xinyu
+      yingtan: yingtan
+      ganzhou: ganzhou
+      jian: jian
+      yichun: yichun
+      fuzhou: fuzhou
+      shangrao: shangrao
+      jinan: jinan
+      qingdao: qingdao
+      zibo: zibo
+      zaozhuang: zaozhuang
+      dongying: dongying
+      yantai: yantai
+      weifang: weifang
+      jining: jining
+      taian: taian
+      weihai: weihai
+      rizhao: rizhao
+      laiwu: laiwu
+      linyi: linyi
+      dezhou: dezhou
+      liaocheng: liaocheng
+      binzhou: binzhou
+      heze: heze
+      zhengzhou: zhengzhou
+      kaifeng: kaifeng
+      luoyang: luoyang
+      pingdingshan: pingdingshan
+      anyang: anyang
+      hebi: hebi
+      xinxiang: xinxiang
+      jiaozuo: jiaozuo
+      puyang: puyang
+      xuchang: xuchang
+      tahe: tahe
+      sanmenxia: sanmenxia
+      nanyang: nanyang
+      shangqiu: shangqiu
+      xinyang: xinyang
+      zhoukou: zhoukou
+      zhumadian: zhumadian
+      wuhan: wuhan
+      huangshi: huangshi
+      shiyan: shiyan
+      yichang: yichang
+      xiangfan: xiangfan
+      ezhou: ezhou
+      jingmen: jingmen
+      xiaogan: xiaogan
+      jingzhou: jingzhou
+      huanggang: huanggang
+      xianning: xianning
+      suizhou: suizhou
+      enshi: enshi
+      shennongjia: shennongjia
+      changsha: changsha
+      zhuzhou: zhuzhou
+      xiangtan: xiangtan
+      hengyang: hengyang
+      shaoyang: shaoyang
+      yueyang: yueyang
+      changde: changde
+      zhangjiajie: zhangjiajie
+      yiyang: yiyang
+      chenzhou: chenzhou
+      yongzhou: yongzhou
+      huaihua: huaihua
+      loudi: loudi
+      xiangxi: xiangxi
+      guangzhou: guangzhou
+      shaoguan: shaoguan
+      shenzhen: shenzhen
+      zhuhai: zhuhai
+      shantou: shantou
+      foshan: foshan
+      jiangmen: jiangmen
+      zhanjiang: zhanjiang
+      maoming: maoming
+      zhaoqing: zhaoqing
+      huizhou: huizhou
+      meizhou: meizhou
+      shanwei: shanwei
+      heyuan: heyuan
+      yangjiang: yangjiang
+      qingyuan: qingyuan
+      dongguan: dongguan
+      zhongshan: zhongshan
+      chaozhou: chaozhou
+      jieyang: jieyang
+      yunfu: yunfu
+      nanning: nanning
+      liuzhou: liuzhou
+      guilin: guilin
+      wuzhou: wuzhou
+      beihai: beihai
+      fangchenggang: fangchenggang
+      qinzhou: qinzhou
+      guigang: guigang
+      yulin: yulin
+      baise: baise
+      hezhou: hezhou
+      hechi: hechi
+      laibin: laibin
+      chongzuo: chongzuo
+      haikou: haikou
+      sanya: sanya
+      sansha: sansha
+      chongqing: chongqing
+      chengdu: chengdu
+      zigong: zigong
+      panzhihua: panzhihua
+      luzhou: luzhou
+      deyang: deyang
+      mianyang: mianyang
+      guangyuan: guangyuan
+      suining: suining
+      neijiang: neijiang
+      leshan: leshan
+      nanchong: nanchong
+      meishan: meishan
+      yibin: yibin
+      guangan: guangan
+      dazhou: dazhou
+      yaan: yaan
+      bazhong: bazhong
+      ziyang: ziyang
+      aba: aba
+      ganzi: ganzi
+      liangshan: liangshan
+      guiyang: guiyang
+      liupanshui: liupanshui
+      zunyi: zunyi
+      anshun: anshun
+      tongren: tongren
+      qianxinan: qianxinan
+      bijie: bijie
+      qiandongnan: qiandongnan
+      qiannanbu: qiannanbu
+      kunming: kunming
+      qujing: qujing
+      yuxi: yuxi
+      baoshan: baoshan
+      zhaotong: zhaotong
+      lijiang: lijiang
+      simao: simao
+      lincang: lincang
+      chuxiong: chuxiong
+      honghehanizuyizu: honghehanizuyizu
+      wenshanzhuangzumiaozu: wenshanzhuangzumiaozu
+      xishuangbannadaizu: xishuangbannadaizu
+      dalibaizu: dalibaizu
+      dehongdaizujingpozu: dehongdaizujingpozu
+      nujianglisuzu: nujianglisuzu
+      diqingcangzu: diqingcangzu
+      lasa: lasa
+      changdu: changdu
+      shannan: shannan
+      rikaze: rikaze
+      naqu: naqu
+      ali: ali
+      linzhi: linzhi
+      xian: xian
+      tongchuan: tongchuan
+      baoji: baoji
+      xianyang: xianyang
+      weinan: weinan
+      yanan: yanan
+      hanzhong: hanzhong
+      yulin: yulin
+      ankang: ankang
+      shangluo: shangluo
+      lanzhou: lanzhou
+      jiayuguan: jiayuguan
+      jinchang: jinchang
+      baiyin: baiyin
+      tianshui: tianshui
+      wuwei: wuwei
+      zhangye: zhangye
+      pingliang: pingliang
+      jiuquan: jiuquan
+      qingyang: qingyang
+      dingxi: dingxi
+      longnan: longnan
+      linxiahuizu: linxiahuizu
+      gannancangzu: gannancangzu
+      xining: xining
+      haidong: haidong
+      haibeicangzu: haibeicangzu
+      huangnancangzu: huangnancangzu
+      hainancangzu: hainancangzu
+      guoluocangzu: guoluocangzu
+      yushucangzu: yushucangzu
+      haiximengguzucangzu: haiximengguzucangzu
+      yinchuan: yinchuan
+      shizuishan: shizuishan
+      wuzhong: wuzhong
+      guyuan: guyuan
+      zhongwei: zhongwei
+      wulumuqi: wulumuqi
+      kelamayi: kelamayi
+      tulufan: tulufan
+      hami: hami
+      changjihuizu: changjihuizu
+      boertalamenggu: boertalamenggu
+      bayinguolengmenggu: bayinguolengmenggu
+      akesu: akesu
+      kezilesukeerkezi: kezilesukeerkezi
+      kashi: kashi
+      hetian: hetian
+      yilihasake: yilihasake
+      tacheng: tacheng
+      aletai: aletai
+      shihezi: shihezi
+      alaer: alaer
+      tumushuke: tumushuke
+      wujiaqu: wujiaqu
+      xianggang: xianggang
+      aomen: aomen
+      taibei: taibei
+      jilong: jilong
+      taizhong: taizhong
+      xinzhu: xinzhu
+      tainan: tainan
+      jiayi: jiayi
+
+  tags:
+    label:
+      food: Food
+      travel: Travel
+      beauty: Beauty
+      fitness: Fitness
+      auto: Auto
+      babies: Babies
+      appliances: Appliances
+      airline: Airline
+      music: Music
+      entertainment: Entertainment
+  partner:
+    dashboard:
+      data_statistics: Statistics
+      kol_incomes: KOL Gains List
+      chart1:
+        title: Past 7 days Champion
+        champion: Past 7 days Incomes
+      chart2:
+        title: Past 30 days Champion
+        champion: Past 30 days Incomes
+      chart3:
+        title: Champion
+        champion: Total Revenue
+      chart4:
+        title: KOLs Growth
+      chart5:
+        title: Daily Campaign Activities
+      chart6:
+        title: Active User Region
+      chart7:
+        title: Brand Campaign Expense
+      chart8: 
+        title: User Tag Statistics
+      error:
+        msg: There are no statistics
+    kols:
+      id: Id
+      name: Name
+      mobile_number: Mobile Number
+      created_at: Created At
+      invites_count: Invites Count
+      show_valid_count: Valid Show Count
+      show_count: Show Count
+      avail_amount: Available Amount
+      historical_income: Historical Income
+      child_count: Children Count
+      view:	View
+  
+  campaign: 
+  
+    name: "Campaign"
+    status: "Status"
+    startTime: "Start Time"
+    deadline: "Deadline"
+    budget: "Budget"
+    inviteCount: "Invite Count"
+    totalCount: "Total Count"
+    totalValidCount: "Total Valid Count"
+    
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.

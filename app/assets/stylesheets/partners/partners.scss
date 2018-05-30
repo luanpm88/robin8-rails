@@ -1,0 +1,143 @@
+
+
+.tags-group {
+    font-size: 18px;
+}
+
+.tags-group span {
+    margin-right: 5px;
+}
+.padding-left-20{
+    padding-left: 20px;
+}
+
+.profile_view {
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 100%;
+  border: 1px solid #FFF;
+}
+.well.profile_view {
+  padding: 10px 0 0;
+}
+.well.profile_view .divider {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 5px;
+  margin-top: 5px;
+}
+.well.profile_view .ratings {
+  margin-bottom: 0;
+}
+.pagination.pagination-split li {
+  display: inline-block;
+  margin-right: 3px;
+}
+.pagination.pagination-split li a {
+  border-radius: 4px;
+  color: #768399;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+.well.profile_view {
+  background: #fff;
+}
+.well.profile_view .bottom {
+  margin-top: -20px;
+  background: #F2F5F7;
+  padding: 9px 0;
+  border-top: 1px solid #E6E9ED;
+}
+.well.profile_view .left {
+  margin-top: 20px;
+}
+.well.profile_view .left p {
+  margin-bottom: 3px;
+}
+.well.profile_view .right {
+  margin-top: 0px;
+  padding: 10px;
+}
+.well.profile_view .img-circle {
+  border: 1px solid #E6E9ED;
+  padding: 2px;
+}
+.well.profile_view h2 {
+  margin: 5px 0;
+}
+.well.profile_view .ratings {
+  text-align: left;
+  font-size: 16px;
+}
+.well.profile_view .brief {
+  margin: 0;
+  font-weight: 300;
+}
+.well.profile_view .card-bottom {
+    margin-top: -20px;
+    padding: 9px 0;
+    border-top: 2px solid #F4F5FA;
+}
+.profile-img-max{
+    max-height: 70px;
+    text-align: center;
+    display: inline-block;
+}
+.well.profile_view .btn-champions {
+    color: #FFF;
+    width: 75%;
+    cursor: default;
+    border-color: transparent;
+}
+
+.well.profile_view .btn-champions.color1{
+    background: linear-gradient(to left, #7597ff, #df9cfa);
+    border: none;
+    font-weight: 100;
+    max-height: 28px;
+    line-height: 28px;
+    padding: 0;
+}
+.well.profile_view .btn-champions.color2{
+    background: linear-gradient(to left, #0e94ff, #74ebff);
+    border: none;
+    font-weight: 100;
+    max-height: 28px;
+    line-height: 28px;
+    padding: 0;
+}
+.well.profile_view .btn-champions.color3{
+    background: linear-gradient(to left, #ff5b74, #ffab58);
+    border: none;
+    font-weight: 100;
+    max-height: 28px;
+    line-height: 28px;
+    padding: 0;
+}
+
+.well.profile_view .winner-name{
+    color: #3b3c42;
+}
+
+.well.profile_view .winner-title{
+    color: #7d8094;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.winner-margin{
+    margin-top: 8px;
+}
+.profile_left {
+  background: white;
+}
+
+.no-data-found{
+    width: 100%;
+    min-height: 150px;
+    transform: translate3d(0%, 50%, 0);
+    text-align: center;
+}
+
+.card-shadow{
+    box-shadow: 0px 0px 16px rgba(44,101,255,0.16);
+}

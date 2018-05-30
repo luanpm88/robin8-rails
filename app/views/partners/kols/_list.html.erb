@@ -1,0 +1,42 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th><%= t('partner.kols.name') %> </th>
+      <th><%= t('partner.kols.mobile_number') %></th>
+      <th><%= t('partner.kols.created_at') %></th>
+      <th class="text-center"><%= t('partner.kols.invites_count') %></th>
+      <th class="text-center"><%= t('partner.kols.show_valid_count') %></th>
+      <th class="text-center"><%= t('partner.kols.show_count') %></th>
+      <th class="text-center"><%= t('partner.kols.avail_amount') %></th>
+      <th class="text-center"><%= t('partner.kols.historical_income') %></th>
+      <th class="text-center"><%= t('partner.kols.child_count') %></th>
+      <th class="text-center"><%= t('partner.kols.view') %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |kol| %>
+      <tr>
+        <td><%= kol.name %></td>
+        <td><%= kol.mobile_number %></td>
+        <td><%= kol.created_at.to_s(:db) %></td>
+        <td align="center"><%= kol.campaign_invites.count %></td>
+        <td align="center"><%= kol.campaign_shows.valid.count %></td>
+        <td align="center"><%= kol.campaign_shows.count %></td>
+        <td align="center"><%= kol.avail_amount %></td>
+        <td align="center"><%= kol.historical_income %></td>
+        <td align="center"><%= kol.children.count %></td>
+        <td align="center">
+          <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
+          <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
+          <li><%= link_to "收益流水", capital_flow_sheet_partners_kol_path(kol.id), target: "_blank" %></li>
+          <% if kol.children.count > 0 %>
+            <li><%= link_to "查看徒弟", children_partners_kol_path(kol.id), target: "_blank" %></li>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>
