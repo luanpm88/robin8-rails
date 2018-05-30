@@ -70,21 +70,39 @@ class Partners::DashboardController < Partners::BaseController
 
   def chart5
     _date = Date.parse(params[:date])
-    
-    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
-    labels = []
-    data = []
-    result.each do | c |
-      labels.push DateTime.parse(c.data_date.to_s).strftime('%d-%b').to_s
-      data.push c.total_activity_count
-    end
-    chartJson = { "labels" => labels, "data" => data }
+    res   = {labels: [], data: []}
 
+    result = Statistics::CampaignInvite.find_campaign_invite(@admintag.tag, _date)
+    result.each do | c |
+      res[:labels] << c.data_date.strftime('%d-%b')
+      res[:data]   << c.total_activity_count
+    end
 
     respond_to do |format|
       format.html
       format.json {
-        render json: chartJson
+        render json: res
+      }
+    end
+  end
+
+  def chart6
+    res, total = {labels: [], data: []}, 0
+
+    result = Tag.group_by_app_city( 5, @admintag.tag)
+    result.each do | c |
+      res[:labels] << t("cities.label."+ c.app_city)
+      res[:data]   << c.percentage
+
+      total += c.percentage
+    end
+    res[:labels] << t("other.label.name")
+    res[:data]   << 100 - total
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: res
       }
     end
   end
@@ -126,31 +144,6 @@ class Partners::DashboardController < Partners::BaseController
     end
 
     chartJson = { "labels" => labels, "data" => data }
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: chartJson
-      }
-    end
-  end
-
-  def chart6
-    result = Tag.group_by_app_city( 5, @admintag.tag)
-    labels = []
-    data = []
-    total = 0
-    result.each do | c |
-
-      labelKey = "cities.label."+ c.app_city
-      labels.push t labelKey
-      data.push c.percentage
-      total = total + c.percentage
-    end
-    labels.push t "other.label.name"
-    data.push 100 - total
-    chartJson = { "labels" => labels, "data" => data }
-
 
     respond_to do |format|
       format.html

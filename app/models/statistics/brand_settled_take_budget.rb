@@ -35,8 +35,6 @@ class Statistics::BrandSettledTakeBudget < ActiveRecord::Base
             bTakeBudget.total_campaign_count = c.total_campaign_count
             bTakeBudget.total_take_budget = c.total_take_budget
             bTakeBudget.deleted = 0
-            bTakeBudget.created_at = Time.now
-            bTakeBudget.updated_at = Time.now
             bTakeBudget.created_by = "system"
             bTakeBudget.updated_by = "system"
             bTakeBudget.save

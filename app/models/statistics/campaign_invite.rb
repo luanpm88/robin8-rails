@@ -1,8 +1,6 @@
 class Statistics::CampaignInvite < ActiveRecord::Base
   
   def self.find_campaign_invite(tag_name, rd)
-  	
-    adminTag = Admintag.find_by(tag: tag_name) #FIXME ?
     Statistics::CampaignInvite.find_by_sql("select
 			admintags.tag,
 			DATE_FORMAT(ci.created_at, '%Y-%m-%d') as data_date,
