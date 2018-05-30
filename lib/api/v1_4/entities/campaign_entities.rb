@@ -95,6 +95,9 @@ module API
           expose :evaluation_status
           expose :effect_score
           expose :review_content
+          expose :used_credits do |object|
+            object.credit.try(:score) 
+          end
         end
 
         class CampaignPayEntity < Grape::Entity
