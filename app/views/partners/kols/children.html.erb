@@ -1,1 +1,48 @@
+<p>shifu <%= @kol.name %> 的徒弟列表</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>手机号</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "品牌主手机" %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "品牌主昵称" %>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>创建时间</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.search_field :created_at_gt, class: "form-control datetime", placeholder: "最小时间" %>
+              </div>
+              <div class="col-md-6">
+                <%= f.search_field :created_at_lt, class: "form-control datetime", placeholder: "最大时间" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
 <%= render partial:  "list" %>
