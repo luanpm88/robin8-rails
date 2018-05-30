@@ -54,6 +54,10 @@ module API
             target.target_content if target
           end
 
+          expose :used_credits do |object|
+            object.credit.try(:score)
+          end
+
         end
 
         class CampaignAlipayEntity < Grape::Entity
@@ -96,7 +100,7 @@ module API
           expose :effect_score
           expose :review_content
           expose :used_credits do |object|
-            object.credit.try(:score) 
+            object.credit.try(:score)
           end
         end
 
@@ -168,6 +172,10 @@ module API
           expose :age do |object|
             target = object.age_target
             target.target_content if target
+          end
+
+          expose :used_credits do |object|
+            object.credit.try(:score)
           end
         end
 
