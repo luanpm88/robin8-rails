@@ -13,15 +13,15 @@
     <th>项目</th>
     <th><%= sort_link(@q, :credits, "金额") %></th>
     <th>可用余额</th>
-    <th>余额</th>
     <th>冻结余额</th>
+    <th>总余额（可用+冻结）</th>
   </tr>
   </thead>
   <tbody>
   <% @transactions.each do |w| %>
     <tr>
       <td> <%= w.created_at.to_s(:date_time) %> </td>
-      <% %w( direct get_subject credits avail_amount amount frozen_amount).each do |v| %>
+      <% %w( direct get_subject credits avail_amount frozen_amount amount).each do |v| %>
         <td> <%= multi_send w, v %> </td>
       <% end %>
     </tr>
