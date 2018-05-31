@@ -53,7 +53,7 @@ class FinancialRechargePartial extends React.Component {
     const brand = this.props.profileData.get('brand');
     const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
     const promotion = this.props.profileData.get('promotion');
-    const promotion_rate = promotion.get('rate');
+    const promotion_rate = !!promotion ? promotion.get('rate') : 0;
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
@@ -165,7 +165,7 @@ class FinancialRechargePartial extends React.Component {
     const brand = this.props.profileData.get('brand');
     const promotion = this.props.profileData.get('promotion');
     console.log(this.props.profileData);
-    console.log('promotion', promotion.size);
+    // console.log('promotion', promotion.size);
     return (
       <div className="financial page">
         <div className="container">
