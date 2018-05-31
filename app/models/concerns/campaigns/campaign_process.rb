@@ -355,8 +355,7 @@ module Campaigns
     end
 
     def cal_actual_per_action_budget
-      actual_per_action_budget = (self.per_action_budget * KolBudgetRate).round(2)  rescue nil
-      actual_per_action_budget
+      (self.per_action_budget * KolBudgetRate).round(2)  rescue nil
     end
 
     def add_click(valid, only_increment_avail = false)
