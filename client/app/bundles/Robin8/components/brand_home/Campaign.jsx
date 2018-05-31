@@ -199,7 +199,7 @@ export default class Campaign extends React.Component {
           <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
           <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
           <li>
-            <span className="txt">{ campaign.get("per_budget_type") === "post" ? "转发量" : "有效点击"}</span>
+            <span className="txt">{ campaign.get("per_budget_type_show") }</span>
             <div  className="remain-time">
               <strong className="stat-num">{campaign.get("per_budget_type") === "post" ? campaign.get("post_count") : campaign.get("avail_click") }</strong>
             </div>
