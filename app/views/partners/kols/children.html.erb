@@ -3,9 +3,9 @@
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>师傅名称：</th>
-      <th>师傅手机号码：</th>
-      <th>徒弟数量：</th>
+      <th>师傅名称：<%= @kol.name %></th>
+      <th>师傅手机号码：<%= @kol.mobile_number %></th>
+      <th>徒弟数量：<%= @kol.children.count %></th>
     </tr>
   </thead>
 </table>
