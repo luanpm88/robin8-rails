@@ -294,44 +294,65 @@ module Campaigns
 
     # 结算 for brand
     def settle_accounts_for_brand
-       Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
-       # 一个user针对一个campaign只能产生一条campaign_refund # evan 2018.2.28 11:00am
-       return unless Transaction.where(account: self.user, direct: 'income', item: self, subject: "campaign_refund").empty?
-       return if self.status != 'executed'
-       #首先先付款给期间审核的kol
-       self.finish_need_check_invites.update_all({:img_status => 'passed', :auto_check => true})      unless self.is_invite_type?
-       #剩下的邀请  状态全设置为拒绝
-       self.campaign_invites.should_reject.update_all({:status => 'rejected', :img_status => 'rejected', :auto_check => true})
-       settle_accounts_for_kol
-       self.update_columns(status: 'settled', evaluation_status: 'evaluating')
-       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-       actual_per_action_budget = (self.actual_per_action_budget ||  self.per_action_budget)
-       if is_click_type?  || is_cpa_type? || is_cpi_type?
-         pay_total_click = self.settled_invites.sum(:avail_click)
-         User.get_platform_account.income((pay_total_click * (per_action_budget - actual_per_action_budget)), 'campaign_tax', self)
-         if (self.budget - (pay_total_click * self.per_action_budget)) > 0
-           self.user.income(self.budget - (pay_total_click * self.per_action_budget) , 'campaign_refund', self )
-         end
-         Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-       elsif is_invite_type?
-         user_payout = self.campaign_invites.settled.sum(:sale_price)
-         kol_income_amount = self.campaign_invites.settled.sum(:price)
-         platform_income_amount = user_payout -  kol_income_amount
-         User.get_platform_account.income(platform_income_amount, 'campaign_tax', self)
-         if self.budget > user_payout
-           self.user.income(self.budget - user_payout , 'campaign_refund', self )
-         end
-       else
-         settled_invite_size = self.settled_invites.size
-         User.get_platform_account.income(((per_action_budget - actual_per_action_budget) * settled_invite_size), 'campaign_tax', self)
+      Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+      # 一个user针对一个campaign只能产生一条campaign_refund # evan 2018.2.28 11:00am
+      return unless Transaction.where(account: self.user, direct: 'income', item: self, subject: "campaign_refund").empty?
+      return if self.status != 'executed'
+      
+      #首先先付款给期间审核的kol, 剩下的邀请状态全设置为拒绝
+      self.finish_need_check_invites.update_all({img_status: 'passed', auto_check: true}) unless self.is_invite_type?
+      self.campaign_invites.should_reject.update_all({status: 'rejected', img_status: 'rejected', auto_check: true})
+       
+      settle_accounts_for_kol
+      
+      self.update_columns(status: 'settled', evaluation_status: 'evaluating')
+      Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+      
+      # 平台收益
+      platform_income_amount   = 0
+      # 活动剩余
+      remaining_budget         = 0
+      actual_per_action_budget = self.actual_per_action_budget ||  self.per_action_budget
+      
+      if is_click_type? || is_cpa_type? || is_cpi_type?
+        pay_total_click         = self.settled_invites.sum(:avail_click)
+        platform_income_amount  = pay_total_click * (per_action_budget - actual_per_action_budget)
+        remaining_budget        = self.budget - (pay_total_click * self.per_action_budget)
+        
+        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+      elsif is_invite_type?
+        user_payout             = self.campaign_invites.settled.sum(:sale_price)
+        platform_income_amount  = user_payout -  self.campaign_invites.settled.sum(:price)
+        remaining_budget        = self.budget - user_payout
+      else
+        settled_invite_size     = self.settled_invites.size
+        platform_income_amount  = (per_action_budget - actual_per_action_budget) * settled_invite_size
+        remaining_budget        = self.budget - (self.per_action_budget * settled_invite_size)
+        
+        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+      end
 
-         if (self.budget - (self.per_action_budget * settled_invite_size) ) > 0
-           self.user.income(self.budget - (self.per_action_budget * settled_invite_size) , 'campaign_refund', self )
-         end
+      plattform_gains(platform_income_amount) if platform_income_amount > 0
+      refund_brand(remaining_budget)          if remaining_budget > 0
+    end
 
-         Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{per_action_budget  * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-       end
-     end
+    # 平台收益
+    def plattform_gains(platform_income_amount)
+      User.get_platform_account.income(platform_income_amount, 'campaign_tax', self)
+    end
+
+    # 由于加了积分抵扣（先消耗积分，再消耗钱），所以退还未消耗的部分也有可能是(积分，钱， 积分+钱)
+    def refund_brand(remaining_budget)
+      # 实付金额 self.credit为抵扣积分的记录(score: 负数)
+      pay_amount = self.budget + self.credit.try(:score).to_f/10
+      # 总金额为以积分全部支付
+      if remaining_budget > pay_amount
+        self.user.income(pay_amount, 'campaign_refund', self)
+        Credit.gen_record('refund', 1, ((remaining_budget - pay_amount) * 10).to_i, self.user, self, self.user.credit_expired_at, "活动未消耗: #{self.id} 退还")
+      else
+        self.user.income(remaining_budget, 'campaign_refund', self)
+      end
+    end
 
     def cal_actual_per_action_budget
       actual_per_action_budget = (self.per_action_budget * KolBudgetRate).round(2)  rescue nil
