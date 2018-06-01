@@ -17,7 +17,8 @@ module API
           present :url,          brand_user.url
           present :description,  brand_user.description
           present :brand_amount, brand_user.avail_amount.to_f
-          present :brand_credit, brand_user.credit_amount
+          present :brand_credit, brand_user.credit_amount,
+          present :brand_credit_expired_at, brand_user.credit_expired_at
         end
 
         desc "修改广告主资料"
