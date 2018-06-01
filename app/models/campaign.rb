@@ -518,7 +518,7 @@ class Campaign < ActiveRecord::Base
 
   # 机器人刷点击 start
   def avg_avail_click
-    redis_avail_click.value.to_i / valid_invites.count
+    valid_invites.empty? ? 0 : redis_avail_click.value.to_i / valid_invites.count
   end
 
   def need_add_avail_click
