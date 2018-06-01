@@ -1,14 +1,16 @@
 # evan 2018.05.17
 class MathExtend
 
-	# 将一个整数随机分成N份, 平均值上下10的浮动，负数默认为1
+	# 将一个整数(num)随机分成(count)份正整数
 	def self.rand_array(num, count)
-		ary = []
+		ary, total = [], num - count
 		while count > 0
-			ele = (num / count) + (-10..10).to_a.sample
-			ele = 1 if ele <= 0
+			ele = 1
+			if total > 0
+				ele += count == 1 ? total : rand(total/count)
+			end
 			ary << ele
-			num -= ele
+			total = total - ele + 1
 			count -= 1
 		end
 		ary
