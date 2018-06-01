@@ -106,7 +106,7 @@ module API
             alipay_order.pay
             alipay_order.save_alipay_trade_no(params[:trade_no])
             # 送积分{_method, score, owner, resource, expired_at, remark}
-            if pr = Promotion.valid && pr.min_credit < alipay_order.credits
+            if pr = Promotion.valid && pr.min_credit <= alipay_order.credits
               Credit.gen_record(
                 'recharge',
                 1,
