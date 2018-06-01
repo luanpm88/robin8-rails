@@ -54,6 +54,9 @@ class FinancialRechargePartial extends React.Component {
     const recharge_min_budget = parseInt(brand.get("recharge_min_budget"));
     const promotion = this.props.profileData.get('promotion');
     const promotion_rate = !!promotion ? promotion.get('rate') : 0;
+    const promotion_min_budget = !!promotion ? parseInt(promotion.get('min_credit')) : 0;
+    console.log(promotion_min_budget);
+    console.log(price >= promotion_min_budget);
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
       $(".must-input").show();
@@ -66,13 +69,19 @@ class FinancialRechargePartial extends React.Component {
       this.setState({
         creditPoints: 0
       });
-    }else if(!validator.isInt(price, {min: recharge_min_budget})) {
+    } else if(!validator.isInt(price, {min: recharge_min_budget})) {
       $(".error-tips p").hide();
       $(".must-greater-than").show();
       this.setState({
         creditPoints: 0
       });
-    }else {
+    } else if(!!validator.isInt(price, {min: recharge_min_budget}) && price < promotion_min_budget) {
+      $(".error-tips p").hide();
+      $(".promotion-greater-than").show();
+      this.setState({
+        creditPoints: 0
+      });
+    } else {
       $(".error-tips p").hide();
       this.setState({
         // creditPoints: Math.round(price * promotion_rate)
@@ -143,6 +152,9 @@ class FinancialRechargePartial extends React.Component {
               <div className="input-group">
                 <input type="text" ref="creditInput" className="form-control input-small points-input" value={this.state.creditPoints} readOnly />
                 <span className="input-group-addon">积分（10积分=1元）</span>
+              </div>
+              <div className="help-block error-tips">
+                <p className="promotion-greater-than">充值{promotion.get("min_credit")}元可获赠积分</p>
               </div>
             </div>
           </div>

@@ -35,7 +35,7 @@ const getUploader = function() {
 
 const validate = new BrandFormValidate({
   name: { require: true },
-  description: { require: true },
+  description: { require: false },
   real_name: { require: true },
   campany_name: { require: true },
   url: { url: { require_protocol: false} }
@@ -141,7 +141,7 @@ class EditProfilePartial extends Component {
                 <Input field={name} id="name" label="品牌名称" placeholder="必填" />
                 <Input field={campany_name} id="campany_name" label="公司名称" placeholder="必填" />
                 <Input field={url} id="url" label="官方网站" placeholder="选填" />
-                <Textarea field={description} id="desc" label="品牌介绍" placeholder="必填" />
+                <Textarea field={description} id="desc" label="品牌介绍" placeholder="选填" />
 
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
