@@ -102,7 +102,8 @@ class PayCampaignPartial extends React.Component {
     const promotion = this.props.promotion;
     // const promotion_rate = promotion.get('rate');
     const promotion_rate = 0.1;
-    const deduction_price = Math.floor(promotion_points * promotion_rate) > need_pay_amount ? need_pay_amount : Math.floor(promotion_points * promotion_rate);
+    // const deduction_price = Math.floor(promotion_points * promotion_rate) > need_pay_amount ? need_pay_amount : Math.floor(promotion_points * promotion_rate);
+    const deduction_price = (promotion_points * promotion_rate).toFixed(1) > need_pay_amount ? need_pay_amount : (promotion_points * promotion_rate).toFixed(1);
 
     console.log('brand', brand);
     console.log('promotion', promotion);
