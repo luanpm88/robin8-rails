@@ -43,9 +43,9 @@ module Campaigns
           self.update_attributes!(status: "revoked", revoke_time: Time.now)
         elsif %w(unexecute rejected).include? self.status
           # 支付失败，返还积分
-          if credit = Credit.where(resource: self, state: 1, _method: 'expend').last
-            credit.update_attributes(state: -1, remark: "积分抵扣 活动: #{@campaign.id} 撤销")
-            Credit.gen_record('refund', 1, credit.score.abs, credit.owner, self, credit.owner.credit_expired_at, "活动: #{campaign.id} 退还")
+          if credit
+            credit.update_attributes(state: -1, remark: "积分抵扣 活动: #{id} 撤销")
+            Credit.gen_record('refund', 1, credit.score.abs, credit.owner, self, user.credit_expired_at, "活动: #{id} 退还")
           end
           if self.used_voucher
             self.user.kol.income(self.voucher_amount, 'campaign_used_voucher_and_revoke', self)
