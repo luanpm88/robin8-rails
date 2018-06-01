@@ -531,7 +531,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def need_add_avail_click
-    (c.remain_budget / c.per_action_budget).to_i
+    (remain_budget / per_action_budget).to_i
   end
 
   def need_add_kols_count
