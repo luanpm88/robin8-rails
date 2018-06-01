@@ -55,7 +55,7 @@ module API
           end
 
           expose :used_credits do |object|
-            object.credit.try(:score)
+            object.expend_credit.try(:score)
           end
 
         end
@@ -100,7 +100,7 @@ module API
           expose :effect_score
           expose :review_content
           expose :used_credits do |object|
-            object.credit.try(:score)
+            object.expend_credit.try(:score)
           end
         end
 
@@ -175,7 +175,7 @@ module API
           end
 
           expose :used_credits do |object|
-            object.credit.try(:score)
+            object.expend_credit.try(:score)
           end
         end
 
