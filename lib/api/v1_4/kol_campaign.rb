@@ -333,7 +333,7 @@ module API
               # 支付成功，修改积分记录状态, amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
               campaign.expend_credit.update_attributes(
                 state:  1, 
-                amount: campaign.user.credit_amount, 
+                amount: campaign.user.credit_amount - campaign.expend_credit.score, 
                 remark: '余额支付 活动 #{campaign.id}'
               ) if campaign.expend_credit
               
@@ -396,7 +396,7 @@ module API
             # 支付成功，修改积分记录状态, amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
             campaign.expend_credit.update_attributes(
               state:  1, 
-              amount: campaign.user.credit_amount, 
+              amount: campaign.user.credit_amount - campaign.expend_credit.score, 
               remark: '支付宝抵扣 活动 #{campaign.id}'
             ) if campaign.expend_credit
             

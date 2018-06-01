@@ -43,7 +43,7 @@ module Campaigns
           self.update_attributes!(status: "revoked", revoke_time: Time.now)
         elsif %w(unexecute rejected).include? self.status
           # 返还积分
-          if expend_credit
+          if expend_credit.try(:state) == 1
             expend_credit.update_attributes(remark: "积分抵扣 活动: #{id} 撤销")
             Credit.gen_record('refund', 1, expend_credit.score.abs, user, self, user.credit_expired_at, "活动: #{id} 退还")
             pay_amount = budget - expend_credit.score.to_f/10
