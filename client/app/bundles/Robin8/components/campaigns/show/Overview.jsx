@@ -8,7 +8,7 @@ export default class Overview extends React.Component{
 
   render_total_count(campaign){
     return(
-      <li><span className="txt">点击量</span><small className="stat-num">{ campaign.get("total_click") }</small></li>
+      <li><span className="txt">点击数</span><small className="stat-num">{ campaign.get("total_click") }</small></li>
     )
   }
 
