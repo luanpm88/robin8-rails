@@ -88,7 +88,7 @@ class Campaign < ActiveRecord::Base
   has_one :effect_evaluation, -> {where(item: 'effect')}, class: CampaignEvaluation
   has_one :experience_evaluation, -> {where(item: 'experience')}, class: CampaignEvaluation
   has_one :review_evaluation, -> {where(item: 'review')}, class: CampaignEvaluation
-  has_one :credit, as: :resource
+  has_many :credits, as: :resource
 
 
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
@@ -120,6 +120,15 @@ class Campaign < ActiveRecord::Base
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
   ReceiveCampaignInterval = Rails.env.production? ? 2.hours : 1.second
+
+  def expend_credit
+    credits.where(_method: 'expend', state: 1).order(updated_at: :desc).first
+  end
+
+  def refund_credit
+    credits.where(_method: 'refund', state: 1).order(updated_at: :desc).first
+  end
+
   def email
     user.try :email
   end
