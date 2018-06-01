@@ -221,7 +221,7 @@ class User < ActiveRecord::Base
   end
 
   def credit_expired_at
-    credits.completed.first.try(:expired_at_show)
+    credits.completed.first.try(:show_expired_at)
   end
 
   private
