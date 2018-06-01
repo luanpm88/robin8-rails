@@ -230,9 +230,9 @@ module API
 
           # 积分抵扣
           # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
-          unless credits.empty?
+          unless campaign.credits.empty?
             campaign.update_columns(need_pay_amount: campaign.budget)
-            credits.update_attributes(state: -1, remark: '失效')
+            campaign.credits.update_all(state: -1, remark: '失效')
           end
 
           pay_credits, pay_amount = 0, campaign.need_pay_amount
