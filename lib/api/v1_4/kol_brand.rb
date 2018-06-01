@@ -18,6 +18,7 @@ module API
           present :description,  brand_user.description
           present :brand_amount, brand_user.avail_amount.to_f
           present :brand_credit, brand_user.credit_amount
+          present :brand_credit_expired_at, brand_user.credit_expired_at
         end
 
         desc "修改广告主资料"
@@ -29,9 +30,6 @@ module API
           optional :avatar,       type: Hash
         end
         put 'update_profile' do
-          Rails.logger.info "*" * 100
-          Rails.logger.info params
-          Rails.logger.info "*" * 100
           brand_user = current_kol.find_or_create_brand_user
 
           brand_user.name         = params[:name]
@@ -40,9 +38,11 @@ module API
           brand_user.description  = params[:description]
           brand_user.avatar_url   = avatar_uploader(params[:avatar]) if params[:avatar]
 
-          brand_user.save
-
-          present error: 0, alert: '更新成功'
+          if brand_user.save
+            present error: 0, alert: '更新成功'
+          else
+            present error: 1, detail: brand_user.errors.messages.values.join(',')
+          end
         end
 
         desc "活动账单"
@@ -106,7 +106,7 @@ module API
             alipay_order.pay
             alipay_order.save_alipay_trade_no(params[:trade_no])
             # 送积分{_method, score, owner, resource, expired_at, remark}
-            if pr = Promotion.valid && pr.min_credit <= alipay_order.credits
+            if (pr = Promotion.valid) && pr.min_credit <= alipay_order.credits
               Credit.gen_record(
                 'recharge',
                 1,

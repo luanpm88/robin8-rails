@@ -42,18 +42,21 @@ module Campaigns
           end
           self.update_attributes!(status: "revoked", revoke_time: Time.now)
         elsif %w(unexecute rejected).include? self.status
-          # 支付失败，返还积分
-          if credit = Credit.where(resource: self, state: 1, _method: 'expend').last
-            credit.update_attributes(state: -1, remark: "积分抵扣 活动: #{@campaign.id} 撤销")
-            Credit.gen_record('refund', 1, credit.score.abs, credit.owner, self, credit.owner.credit_expired_at, "活动: #{campaign.id} 退还")
-          end
-          if self.used_voucher
-            self.user.kol.income(self.voucher_amount, 'campaign_used_voucher_and_revoke', self)
-            Rails.logger.transaction.info "--------活动撤销退款给kol, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
-          end
+          # 返还积分
+          if credit
+            credit.update_attributes(remark: "积分抵扣 活动: #{id} 撤销")
+            Credit.gen_record('refund', 1, credit.score.abs, credit.owner, self, user.credit_expired_at, "活动: #{id} 退还")
+            pay_amount = budget - credit.score.to_f/10
+            self.user.income(pay_amount, "campaign_revoke", self) if pay_amount > 0
+          else
+            if self.used_voucher
+              self.user.kol.income(self.voucher_amount, 'campaign_used_voucher_and_revoke', self)
+              Rails.logger.transaction.info "--------活动撤销退款给kol, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
+            end
 
-          if(self.budget - self.voucher_amount) > 0
-            self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
+            if(self.budget - self.voucher_amount) > 0
+              self.user.income(self.budget - self.voucher_amount, "campaign_revoke", self)
+            end
           end
 
           Rails.logger.transaction.info "--------活动撤销退款给user, 执行kol income: ---cid:#{self.id}--status:#{self.status}--kol_id:#{self.user.kol_id}---#{self.user.kol.inspect}"
