@@ -29,9 +29,6 @@ module API
           optional :avatar,       type: Hash
         end
         put 'update_profile' do
-          Rails.logger.info "*" * 100
-          Rails.logger.info params
-          Rails.logger.info "*" * 100
           brand_user = current_kol.find_or_create_brand_user
 
           brand_user.name         = params[:name]
@@ -40,9 +37,11 @@ module API
           brand_user.description  = params[:description]
           brand_user.avatar_url   = avatar_uploader(params[:avatar]) if params[:avatar]
 
-          brand_user.save
-
-          present error: 0, alert: '更新成功'
+          if brand_user.save
+            present error: 0, alert: '更新成功'
+          else
+            present error: 1, detail: brand_user.errors.messages.values.join(',')
+          end
         end
 
         desc "活动账单"
