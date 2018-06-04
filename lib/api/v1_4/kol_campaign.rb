@@ -262,6 +262,9 @@ module API
         get "/show" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+
+          campaign.reset_unpay_info
+
           if campaign.need_pay_amount > 0 or (campaign.need_pay_amount == 0 and params[:check_pay].to_i == 1)
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
@@ -290,6 +293,8 @@ module API
         get "/detail" do
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
+
+          campaign.reset_unpay_info
 
           present :error, 0
           if %w(unpay unexecute rejected).include? campaign.status
