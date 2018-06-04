@@ -214,23 +214,43 @@ export function payCampaignByBalance(campaign_id, use_credit) {
   };
 }
 
-export function payCampaignByAlipay(campaign_id, use_credit) {
+export function payCampaignByAlipay(campaign_id, use_credit, need_pay) {
   const data = { campaign_id, use_credit: use_credit };
-  return {
-    type: actionTypes.PAY_CAMPAIGN_BY_ALIPAY,
-    promise: fetch(
-      `${baseUrl}/campaigns/${campaign_id}/pay_by_alipay`, {
-        headers: {
-          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        credentials: "same-origin",
-        method: 'POST',
-        body: JSON.stringify(data)
-      }
-    )
-  };
+  if (!!need_pay) {
+    return {
+      type: actionTypes.PAY_CAMPAIGN_BY_ALIPAY,
+      promise: fetch(
+        `${baseUrl}/campaigns/${campaign_id}/pay_by_alipay`, {
+          headers: {
+            "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: "same-origin",
+          method: 'POST',
+          body: JSON.stringify(data)
+        }
+      )
+    };
+  } else {
+    return {
+      type: actionTypes.PAY_CAMPAIGN_BY_ALIPAY,
+      promise: fetch(
+        `${baseUrl}/campaigns/${campaign_id}/pay_by_alipay`, {
+          headers: {
+            "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content'),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: "same-origin",
+          method: 'POST',
+          body: JSON.stringify(data)
+        }
+      ),
+      redirect: '/brand/'
+    };
+  }
+
 }
 
 export function revokeCampaign(campaign_id) {

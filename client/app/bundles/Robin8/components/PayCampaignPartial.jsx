@@ -41,8 +41,26 @@ class PayCampaignPartial extends React.Component {
   _pay() {
     const { payCampaignByBalance, payCampaignByAlipay } = this.props.actions;
     const campaign = this.props.campaign;
+    const need_pay_amount = campaign.get("need_pay_amount");
+    const brand = this.props.brand;
+    const promotion_points = brand.get('credit_amount');
+    const promotion = this.props.promotion;
+    const promotion_rate = 0.1;
+    const deduction_price = (promotion_points * promotion_rate).toFixed(1) > need_pay_amount ? need_pay_amount : (promotion_points * promotion_rate).toFixed(1);
+
+    let need_pay = true;
+
+    console.log(this.state.userDeduction);
+    console.log('need_pay_amount', need_pay_amount);
+    console.log('deduction_price', deduction_price);
+
+    if (!!this.state.userDeduction && deduction_price >= need_pay_amount) {
+      need_pay = false;
+    }
+    console.log(need_pay);
+
     if ($('.check-alipay').attr('value') === 'alipay' && $('.check-balance').attr('value') === "") {
-      payCampaignByAlipay(campaign.get("id"), this.state.userDeduction);
+      payCampaignByAlipay(campaign.get("id"), this.state.userDeduction, need_pay);
     }
     if ($('.check-alipay').attr('value') === '' && $('.check-balance').attr('value') === "balance") {
       payCampaignByBalance(campaign.get("id"), this.state.userDeduction);
