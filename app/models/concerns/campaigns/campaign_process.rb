@@ -45,7 +45,7 @@ module Campaigns
           # 返还积分
           if used_credit && credit_amount > 0
             Credit.gen_record('refund', 1, credit_amount, user, self, user.credit_expired_at, "活动: #{id} 退还")
-            pay_amount = budget - expend_credit.score.to_f/10
+            pay_amount = budget - credit_amount.to_f/10
             self.user.income(pay_amount, "campaign_revoke", self) if pay_amount > 0
           else
             if self.used_voucher
@@ -345,10 +345,9 @@ module Campaigns
 
     # 由于加了积分抵扣（先消耗积分，再消耗钱），所以退还未消耗的部分也有可能是(积分，钱， 积分+钱)
     def refund_brand(remaining_budget)
-      # 实付金额 self.expend_credit为抵扣积分的记录(score: 负数)
       pay_amount = self.budget - credit_amount.to_f/10
       # 总金额为以积分全部支付
-      if remaining_budget > pay_amount
+      if used_credit && remaining_budget > pay_amount
         self.user.income(pay_amount, 'campaign_refund', self)
         Credit.gen_record('refund', 1, ((remaining_budget - pay_amount) * 10).to_i, self.user, self, self.user.credit_expired_at, "活动未消耗: #{self.id} 退还")
       else
