@@ -224,6 +224,16 @@ class User < ActiveRecord::Base
     credits.completed.first.try(:show_expired_at)
   end
 
+  def credit_expired
+    credits.completed.first.try(:expired_at)
+  end
+
+  def invalid_credit
+    if credit_amount > 0 && credit_expired < Time.now
+      Credit.gen_record('expire', 1, -credit_amount, self, nil, credit_expired, "已于 #{credit_expired} 失效")
+    end
+  end
+
   private
 
     def needed_user
