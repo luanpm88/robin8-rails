@@ -166,7 +166,7 @@ class PayCampaignPartial extends React.Component {
             <div className="total-pay-amount">
               <span className="pay-amount-text">实际支付：</span>
               <span className="pay-amount-text">￥</span>
-              <span className="need-pay-amount">{need_pay_amount - (this.state.userDeduction ? deduction_price : 0)}</span>
+              <span className="need-pay-amount">{(need_pay_amount - (this.state.userDeduction ? deduction_price : 0)).toFixed(1)}</span>
             </div>
           </div>
           { this.renderSubmitButton() }
