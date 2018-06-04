@@ -237,16 +237,16 @@ module API
               used_credit, credit_amount, pay_amount = true, brand_user.credit_amount, campaign.need_pay_amount - brand_user.credit_amount.to_f/10
             end
           end
+
+          campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount)
           
           # 根据need_pay_amount判断是否需要使用支付宝支付
           if pay_amount > 0
-            campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount)
-            
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
           else
             Credit.gen_record('expend', 1, -credit_amount, brand_user, campaign, brand_user.credit_expired_at)
-            campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+            campaign.update_attributes(pay_way: 'alipay', status: 'unexecute')
             campaign.reload
 
             present :error, 0
@@ -322,12 +322,9 @@ module API
             else
               campaign.update_attributes(pay_way: params[:pay_way])
               campaign.pay
-              # 支付成功，修改积分记录状态, amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
-              campaign.expend_credit.update_attributes(
-                state:  1, 
-                amount: campaign.user.credit_amount + campaign.expend_credit.score, 
-                remark: '余额支付 活动 #{campaign.id}'
-              ) if campaign.expend_credit.try(:state) == 0
+
+              Credit.gen_record('expend', 1, -campaign.credit_amount, campaign.user, campaign, campaign.user.credit_expired_at,
+                '余额支付 活动 #{campaign.id}') if campaign.used_credit && campaign.credit_amount > 0
               
               present :error, 0
               present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignBalancePayEntity

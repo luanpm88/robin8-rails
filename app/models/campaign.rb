@@ -121,14 +121,6 @@ class Campaign < ActiveRecord::Base
   BaseTaxRate = 0.3
   ReceiveCampaignInterval = Rails.env.production? ? 2.hours : 1.second
 
-  def expend_credit
-    credits.where(_method: 'expend').order(updated_at: :desc).first
-  end
-
-  def refund_credit
-    credits.where(_method: 'refund').order(updated_at: :desc).first
-  end
-
   def email
     user.try :email
   end
