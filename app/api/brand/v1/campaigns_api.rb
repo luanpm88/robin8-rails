@@ -139,19 +139,19 @@ module Brand
             if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
 
               # 积分抵扣
-              pay_credits, pay_amount = 0, @campaign.need_pay_amount
+              used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
               if params[:use_credit]
                 if current_user.credit_amount >= @campaign.need_pay_amount * 10
-                  pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
+                  used_credit, credit_amount, pay_amount = true, @campaign.need_pay_amount * 10, 0
                 else
-                  pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
+                  used_credit, credit_amount, pay_amount = true, current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
                 end
               end
 
               if current_user.avail_amount >= pay_amount
-                if pay_credits > 0
-                  Credit.gen_record('expend', 1, pay_credits, current_user, @campaign, current_user.credit_expired_at)
-                  @campaign.update_attributes(need_pay_amount: pay_amount, pay_way: declared(params)[:pay_way])
+                if credit_amount > 0
+                  Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
+                  @campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount, pay_way: declared(params)[:pay_way])
                 else
                   @campaign.update_attributes(pay_way: declared(params)[:pay_way])
                 end
@@ -175,19 +175,23 @@ module Brand
             @campaign = Campaign.find declared(params)[:campaign_id]
 
             # 积分抵扣
-            pay_credits, pay_amount = 0, @campaign.need_pay_amount
+            used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
             if params[:use_credit]
               if current_user.credit_amount >= @campaign.need_pay_amount * 10
-                pay_credits, pay_amount = -@campaign.need_pay_amount * 10, 0
+                used_credit, credit_amount, pay_amount = true, @campaign.need_pay_amount * 10, 0
               else
-                # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
-                Credit.where(resource: @campaign, state: 0, _method: 'expend').delete_all
-                pay_credits, pay_amount = -current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
+                used_credit, credit_amount, pay_amount = true, current_user.credit_amount, @campaign.need_pay_amount - current_user.credit_amount.to_f/10
               end
             end
 
+            @campaign.update_attributes(
+              used_credit:      used_credit, 
+              credit_amount:    credit_amount, 
+              need_pay_amount:  pay_amount, 
+              pay_way:          'alipay'
+            )
+
             if pay_amount > 0
-              Credit.gen_record('expend', 0, pay_credits, current_user, @campaign, current_user.credit_expired_at)
 
               ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
               return_url = Rails.env.development? ? 'http://acacac.ngrok.cc/brand?from=pay_campaign' : "#{Rails.application.secrets[:domain]}/brand?from=pay_campaign"
@@ -197,7 +201,7 @@ module Brand
                 {
                   out_trade_no: @campaign.trade_number,
                   subject: 'Robin8活动付款',
-                  total_fee: (ENV["total_fee"] || pay_amount).to_f,
+                  total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
                   return_url: return_url,
                   notify_url: notify_url
                 },
@@ -208,8 +212,8 @@ module Brand
               )
               return { alipay_recharge_url: alipay_recharge_url }
             else
-              Credit.gen_record('expend', 1, pay_credits, current_user, @campaign, current_user.credit_expired_at)
-              @campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
+              Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
+              @campaign.update_attributes(status: 'unexecute')
               @campaign.reload
               present @campaign
             end
@@ -473,11 +477,9 @@ module Brand
               @campaign.with_lock do
                 @campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
                 @campaign.pay
-                # 支付成功，修改积分记录状态
-                if credit = Credit.where(resource: @campaign, state: 0, _method: 'expend').last
-                  # amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
-                  credit.update_attributes(state: 1, amount: credit.user.credit_amount, remark: "支付宝抵扣 活动 #{@campaign.id}")
-                end
+                # 支付成功，扣除积分
+                Credit.gen_record('expend', 1, -@campaign.credit_amount, @campaign.user, campaign, @campaign.user.credit_expired_at,
+                  '支付宝抵扣 活动 #{campaign.id}') if @campaign.used_credit && @campaign.credit_amount > 0
               end
             end
             Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
