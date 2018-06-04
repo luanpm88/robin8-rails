@@ -139,12 +139,12 @@
       <th width="60px">KOL ID</th>
       <th>KOL昵称</th>
       <th>KOL手机</th>
-      <th>提现金额</th>
+      <th><%= sort_link(@q, :credits, "提现金额") %></th>
       <th>提现状态</th>
       <th>支付宝关联用户</th>
       <th>提现次数</th>
       <th>上次成功提现时间</th>
-      <th>申请时间</th>
+      <th><%= sort_link(@q, :created_at, "申请时间") %></th>
       <th>KOL等级</th>
       <th>拉黑时间</th>
       <th>来源</th>
