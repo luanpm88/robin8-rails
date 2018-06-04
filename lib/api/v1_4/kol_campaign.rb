@@ -228,32 +228,24 @@ module API
           brand_user = current_kol.find_or_create_brand_user
           campaign = Campaign.find params[:id]
 
-          # 积分抵扣
-          # 第一次付款时勾选积分抵扣，第二次没有，要清除记录
-          unless campaign.credits.empty?
-            campaign.update_columns(need_pay_amount: campaign.budget)
-            campaign.credits.update_all(state: -1, remark: '失效')
-          end
-
-          pay_credits, pay_amount = 0, campaign.need_pay_amount
+          used_credit, credit_amount, pay_amount = false, 0, campaign.need_pay_amount
 
           if params[:use_credit].to_i == 1
             if brand_user.credit_amount >= campaign.need_pay_amount * 10
-              pay_credits, pay_amount = campaign.need_pay_amount * 10, 0
+              used_credit, credit_amount, pay_amount = true, campaign.need_pay_amount * 10, 0
             else
-              pay_credits, pay_amount = brand_user.credit_amount, campaign.need_pay_amount - brand_user.credit_amount.to_f/10
+              used_credit, credit_amount, pay_amount = true, brand_user.credit_amount, campaign.need_pay_amount - brand_user.credit_amount.to_f/10
             end
           end
           
           # 根据need_pay_amount判断是否需要使用支付宝支付
           if pay_amount > 0
-            Credit.gen_record('expend', 0, -pay_credits, brand_user, campaign, brand_user.credit_expired_at) if pay_credits > 0
-            campaign.update_attributes(need_pay_amount: pay_amount)
+            campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount)
             
             present :error, 0
             present :campaign, campaign, with: API::V1_4::Entities::CampaignEntities::CampaignPayEntity
           else
-            Credit.gen_record('expend', 1, -pay_credits, brand_user, campaign, brand_user.credit_expired_at)
+            Credit.gen_record('expend', 1, -credit_amount, brand_user, campaign, brand_user.credit_expired_at)
             campaign.update_attributes(need_pay_amount: 0, pay_way: 'alipay', status: 'unexecute')
             campaign.reload
 
@@ -393,12 +385,9 @@ module API
           if campaign.alipay_status == 0 && Alipay::Sign.verify?(declared_params) && Alipay::Notify.verify?(declared_params)
             campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
             campaign.pay
-            # 支付成功，修改积分记录状态, amount中间有可能被更新，所以要将最新的amount赋给当前credit.amount
-            campaign.expend_credit.update_attributes(
-              state:  1, 
-              amount: campaign.user.credit_amount + campaign.expend_credit.score, 
-              remark: '支付宝抵扣 活动 #{campaign.id}'
-            ) if campaign.expend_credit.try(:state) == 0
+            # 支付成功，扣除积分
+            Credit.gen_record('expend', 1, -campaign.credit_amount, campaign.user, campaign, campaign.user.credit_expired_at,
+              '支付宝抵扣 活动 #{campaign.id}') if campaign.used_credit && campaign.credit_amount > 0
             
             body "success"
             return
