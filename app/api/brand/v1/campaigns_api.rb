@@ -57,6 +57,9 @@ module Brand
           end
           get ':id' do
             @campaign = Campaign.find_by(id: params[:id])
+
+            @campaign.reset_unpay_info
+
             if can?(:read, @campaign)
               present @campaign
             else
@@ -157,6 +160,7 @@ module Brand
                 end
                 @campaign.reload
                 @campaign.pay
+
                 present @campaign
               else
                 return error_unprocessable! ["amount_not_engouh", '账号余额不足, 请充值!']
@@ -217,6 +221,7 @@ module Brand
               Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
               @campaign.update_attributes(status: 'unexecute')
               @campaign.reload
+
               present @campaign
             end
           end

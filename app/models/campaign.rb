@@ -530,6 +530,10 @@ class Campaign < ActiveRecord::Base
     need_add_avail_click / (avg_avail_click == 0 ?  (2...6).to_a.sample : avg_avail_click)
   end
   # 机器人刷点击 end
+
+  def reset_unpay_info
+    self.update_attributes(used_credit: false, credit_amount: 0, need_pay_amount: budget) if used_credit && status == 'unpay'
+  end
   
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
