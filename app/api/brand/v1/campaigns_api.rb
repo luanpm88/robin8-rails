@@ -174,6 +174,8 @@ module Brand
           post ":id/pay_by_alipay" do
             @campaign = Campaign.find declared(params)[:campaign_id]
 
+            return error_unprocessable! "已经支付成功, 请勿重复支付!" unless @campaign.status == 'unpay'
+
             # 积分抵扣
             used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
             if params[:use_credit]
