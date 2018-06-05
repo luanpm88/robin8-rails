@@ -9,7 +9,7 @@ module API
         get 'show' do
           present :error, 0
           present :hide, 1
-          present :detail, AppUpgrade.ios_last
+          present :detail, $redis.get('ios_detail') || 20
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
           present :has_any_unread_message, current_kol.unread_messages.any?
