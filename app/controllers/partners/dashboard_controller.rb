@@ -5,7 +5,7 @@ class Partners::DashboardController < Partners::BaseController
 
   # 7 days winner
   def chart1
-    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 7.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
+    winner = Statistics::KolIncome.admintag(@admintag.tag).recent(7.days.ago, 1.days.ago).order('day_of_income DESC').first
 
     respond_to do |format|
       format.html
@@ -17,7 +17,7 @@ class Partners::DashboardController < Partners::BaseController
 
   # 30 days winner
   def chart2
-    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 31.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
+    winner = Statistics::KolIncome.admintag(@admintag.tag).recent(31.days.ago, 1.days.ago).order('day_of_income DESC').first
     
     respond_to do |format|
       format.html
@@ -29,7 +29,7 @@ class Partners::DashboardController < Partners::BaseController
 
   #historical winner
   def chart3
-    kol = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).order('historical_income desc').first
+    kol = Kol.admintag(@admintag.tag).order('historical_income desc').first
     res = {}
     
     res = {
@@ -50,7 +50,7 @@ class Partners::DashboardController < Partners::BaseController
   def chart4
     _date = Date.parse(params[:date])
     
-    kols = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).where(created_at:  _date.ago(6.days).beginning_of_day.._date.end_of_day).order("created_at asc")
+    kols = Kol.admintag(@admintag.tag).recent(_date.ago(6.days), _date).order("created_at asc")
     
     res = {}
 

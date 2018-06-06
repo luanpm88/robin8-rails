@@ -3,7 +3,7 @@ class Statistics::KolIncome < ActiveRecord::Base
 
 
   scope :admintag, ->(admintag) { includes(:kol).joins(:kol).where("admintag=? ", admintag) }
-  # scope :time_range, ->(t1, t2)
+  scope :recent, ->(_start,_end){ where(action_at: _start.beginning_of_day.._end.end_of_day) }
   
   def self.job_for_kol_dashboard_income_data(admintag='geometry', _excute_day=1.days.ago) 
     Kol.joins(:admintags).where("admintags.tag=? ", admintag).each do |kol|

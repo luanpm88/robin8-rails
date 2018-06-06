@@ -165,6 +165,8 @@ class Kol < ActiveRecord::Base
   scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
 
   scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
+  
+  scope :admintag, ->(admintag) { joins(:admintags).where("admintags.tag=?", admintag) }
 
   AdminKolIds = [79,48587]
   TouristMobileNumber = "13000000000"
