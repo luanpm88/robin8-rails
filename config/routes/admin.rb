@@ -281,6 +281,13 @@ Rails.application.routes.draw do
           put :invalid
         end
       end
+      resources :redis_extends, only: [] do
+        collection do
+          get :ios_detail
+          get :invite_switch
+          put :update_redis_value
+        end
+      end
     end
   end
 end

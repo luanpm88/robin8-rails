@@ -1,0 +1,34 @@
+<h1>Invite Switch</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>值</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>邀请码开关</td>
+      <td>
+          <input class='data-value' type="hidden" value="<%= $redis.get('invite_switch') == '1' ? '0' : '1' %>">
+          <%= link_to $redis.get('invite_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'invite_switch' %>
+      </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'PUT',
+        url: '/marketing_dashboard/utilities/redis_extends/update_redis_value',
+        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
+      })
+
+    })
+  })
+</script>

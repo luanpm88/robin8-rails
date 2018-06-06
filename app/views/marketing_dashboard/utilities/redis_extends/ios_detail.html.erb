@@ -1,0 +1,33 @@
+<h1>IOS Detail</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>值</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>IOS最终版本</td>
+      <td><%= text_field_tag :ios_detail, $redis.get('ios_detail'), :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'ios_detail', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'PUT',
+        url: '/marketing_dashboard/utilities/redis_extends/update_redis_value',
+        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
+      })
+
+    })
+  })
+</script>
