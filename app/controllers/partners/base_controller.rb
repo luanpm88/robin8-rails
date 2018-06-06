@@ -20,11 +20,7 @@ class Partners::BaseController < ApplicationController
       per_page: params[:per_page] || 20
     }
   end
-  def kol_params
-    {
-      id: params[:id] || 0
-    }
-  end
+
 	def admintag
     # $redis.set 'geometry', 'geometry2018' # set this to redis
 		@admintag = Admintag.find_by_tag session[:admin_tag]
