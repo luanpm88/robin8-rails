@@ -13,7 +13,7 @@ module API
           present :kol, current_kol, with: API::V1_6::Entities::BigVEntities::My
           present :is_open_indiana, true
           present :has_any_unread_message, current_kol.unread_messages.any?
-          present :brand_campany_name, current_kol.user.try(:campany_name),
+          present :brand_campany_name, current_kol.user.try(:campany_name)
           present :is_show_invite_code, $redis.get('invite_switch')
         end
 
