@@ -7,7 +7,7 @@ module Brand
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
                :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,
-               :example_screenshot_count, :enable_append_push
+               :example_screenshot_count, :enable_append_push, :exposures_count
 
         expose :user, using: Entities::User
 

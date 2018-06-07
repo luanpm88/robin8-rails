@@ -136,7 +136,7 @@ export default class Campaign extends React.Component {
 
   renderRecruitCampaignStatInfo(campaign) {
     return (
-      <ul className="stat-info grid-4">
+      <ul className="stat-info grid-5">
         <li>
           <span className="txt">预计招募人数</span>
           <div className="cl-recruiters-count">
@@ -151,13 +151,14 @@ export default class Campaign extends React.Component {
             <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
           </div>
         </li>
+        <li><span className="txt">总曝光数</span><strong className="stat-num">{ campaign.get("exposures_count") }</strong></li>
       </ul>
     )
   }
 
   renderInviteCampaignStatInfo(campaign) {
     return (
-      <ul className="stat-info invite-campaign grid-4">
+      <ul className="stat-info invite-campaign grid-5">
         <li id="invites-count">
           <span className="txt">预计邀请人数</span>
           <div id="cl-invites-count">
@@ -171,16 +172,18 @@ export default class Campaign extends React.Component {
             <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
           </div>
         </li>
+        <li><span className="txt">总曝光数</span><strong className="stat-num">{ campaign.get("exposures_count") }</strong></li>
       </ul>
     )
   }
 
   renderCptCampaignStatInfo(campaign) {
     return (
-      <ul className="stat-info grid-4">
+      <ul className="stat-info grid-5">
         <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
         <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
         <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+        <li><span className="txt">总曝光数</span><strong className="stat-num">{ campaign.get("exposures_count") }</strong></li>
       </ul>
     )
   }
@@ -194,7 +197,7 @@ export default class Campaign extends React.Component {
       return this.renderInviteCampaignStatInfo(campaign);
     } else {
       return (
-        <ul className="stat-info grid-4">
+        <ul className="stat-info grid-5">
           <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
           <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
           <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
@@ -204,6 +207,7 @@ export default class Campaign extends React.Component {
               <strong className="stat-num">{campaign.get("per_budget_type") === "post" ? campaign.get("post_count") : campaign.get("avail_click") }</strong>
             </div>
           </li>
+          <li><span className="txt">总曝光数</span><strong className="stat-num">{ campaign.get("exposures_count") }</strong></li>
         </ul>
       )
     }
