@@ -207,12 +207,15 @@ Rails.application.routes.draw do
   get '/invite', to: 'pages#invite' #进入填写手机号、验证码的页面
   get '/kol_publish_campaign_help', to: 'pages#kol_publish_campaign_help' #填写活动帮助说明
 
+  get '/kol_invite', to: 'pages#kol_invite' # admintag邀请成为kol
+
   #无法访问
   resources :campaign, only: [:index, :create, :update, :show]
 
   #无法访问
   resources :registered_invitations do
     post :sms, on: :collection
+    post :kol, on: :collection
   end
   get 'club_campaign/campaign_page'
   get 'club_campaign/kol_register'

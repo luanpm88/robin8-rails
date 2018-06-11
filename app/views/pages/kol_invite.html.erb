@@ -1,0 +1,373 @@
+<%
+  title = "我最近发现一款每天都可以赚钱的APP，您也来试试？"
+  description = "Robin8基于大数据的社交影响力平台"
+  poster_url = "http://7xuw3n.com1.z0.glb.clouddn.com/logo.png?imageView2/1/w/150/h/150"
+  url = request.url
+  sign_package = ($weixin_client.get_jssign_package(url) rescue {})
+  app_id = sign_package['appId']
+  nonce = sign_package['nonceStr']
+  ts = sign_package['timestamp']
+  signature = sign_package['signature']
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    <!-- Open Graph meta -->
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:site_name" content="Robin8" />
+    <meta property="og:url" content="<%= url %>" />
+    <meta property="og:image" content="<%= poster_url %>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="150" />
+    <meta property="og:image:height" content="150" />
+    <!-- Wechat meta -->
+    <meta property="weixin:timeline_title" content="<%= title %>" />
+    <meta property="weixin:chat_title" content="<%= title %>" />
+    <meta property="weixin:description" content="<%= description %>" />
+    <meta property="weixin:image" content="<%= poster_url %>" />
+    <%= favicon_link_tag 'favicon.ico' %>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+        font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+      }
+      input, button {
+        font: inherit;
+      }
+      .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
+      .container {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        position: absolute;
+      }
+      .container:after {
+        content: "";
+        clear: both;
+        display: block;
+      }
+
+      .ft-wrapper {
+        position: fixed;
+        width: 100%;
+        max-width: 430px;
+        height: 240px;
+        top: 270px;
+        left: 50%;
+        padding: 15px 35px;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+      }
+
+      .ft-wrapper .reg-bt {
+        width: 100%;
+        position: relative;
+        margin-top: 20px;
+      }
+      .reg-bt button {
+        display: block;
+        width: 100%;
+        height: 42px;
+        color: #fff;
+        font-size: 15px;
+        line-height: 42px;
+        background-color: #2dcad0;
+        text-align: center;
+        text-decoration: none;
+        border: 0;
+        border-radius: 5px;
+        margin: 0 auto;
+      }
+
+      .ft-wrapper .f-field {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.1);
+        margin-top: 1px;
+        padding: 5px 15px 5px 60px;
+      }
+      .ft-wrapper .f-field.f-with-req {
+        padding-right: 105px;
+      }
+      .ft-wrapper .f-field input {
+        background-color: transparent;
+        border: 0;
+        line-height: 40px;
+        height: 40px;
+        display: block;
+        width: 100%;
+        color: #fff;
+        font-size: 15px;
+        letter-spacing: 1px;
+      }
+      .ft-wrapper .f-field input:focus {
+        outline: 0;
+      }
+      .ft-wrapper .f-field .f-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 50px;
+        width: 60px;
+        text-align: center;
+        padding-top: 11px;
+      }
+      .ft-wrapper .f-field .f-icon img {
+        width: 28px;
+        height: 28px;
+      }
+      .f-btn-req {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        display: block;
+        width: 90px;
+        height: 32px;
+        color: #fff;
+        font-size: 14px;
+        line-height: 32px;
+        background-color: #2dcad0;
+        text-align: center;
+        text-decoration: none;
+        border: 0;
+        border-radius: 5px;
+      }
+      .f-btn-req:hover,
+      .f-btn-req:focus,
+      .reg-bt button:hover,
+      .reg-bt button:focus {
+        background-color: #10777b;
+      }
+      .f-error {
+        text-align: center;
+        width: 100%;
+        color: #ff1818;
+        margin-top: 8px;
+      }
+      .f-info {
+        text-align: center;
+        width: 100%;
+        color: #1bb120;
+        margin-top: 8px;
+      }
+    </style>
+
+    <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      wx.config({
+          debug: false,
+          appId: '<%= app_id %>',
+          timestamp: '<%= ts %>',
+          nonceStr: '<%= nonce %>',
+          signature: '<%= signature %>',
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo'
+          ]
+      });
+
+      wx.ready(function () {
+        var shareData = {
+          title: '<%= title %>',
+          desc: '<%= description %>',
+          link: '<%= url %>',
+          imgUrl: '<%= poster_url %>'
+        };
+
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+      });
+
+      wx.error(function (res) {
+        console.log(res.errMsg);
+      });
+    </script>
+  </head>
+  <body>
+    <div class="bg" style="background-image: url(<%= asset_url("invite-bg-02.jpg") %>)"></div>
+    <div class="container">
+      <!--
+      <div class="logo">
+        <%= image_tag "logo-sd.png" %>
+      </div>
+      <div class="ft-wrapper">
+        <div class="feature">
+          <h3>你，比想象中更有价值</h3>
+          <p>用您的社交账号赚钱</p>
+          <a class="btn" href="/download_invitation?inviter_id=<%= params[:inviter_id] %>&redirect_url=http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
+            立即下载
+          </a>
+        </div>
+      </div>
+      -->
+      <div class="ft-wrapper">
+        <%= form_for RegisteredInvitation.new, url: kol_registered_invitations_path do |f| %>
+          <div class="f-field f-with-req">
+            <span class="f-icon"><%= image_tag "message.png" %></span>
+            <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
+            <%= f.text_field :mobile_number, id: "mobileNumber", placeholder: "请填写您的手机号" %>
+          </div>
+          <div class="f-field">
+            <span class="f-icon"><%= image_tag "email.png" %></span>
+            <%= f.text_field :sms_code, id: "smsCode" %>
+          </div>
+          <%= f.hidden_field :invite_value, id: "inviteValue", value: @invite_code.invite_value %>
+          <div class="reg-bt">
+            <button id="submit" type="submit">立即体验</button>
+          </div>
+          <div class="f-error"></div>
+          <div class="f-info"></div>
+        <% end %>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var smsUrl = "<%= sms_registered_invitations_path %>";
+      var createUrl = "<%= kol_registered_invitations_path %>";
+      var smsBtn = $("#request-sms");
+      var submitBtn = $("#submit");
+      var remainingNumber = smsBtn.data("remaining");
+      var errorAlert = $(".f-error");
+      var infoAlert = $(".f-info");
+
+      var smsTimeCounter = (function(element) {
+        var counter, countNumber;
+
+        return {
+          run: function(number) {
+            if (!!counter) return;
+
+            countNumber = number || 60;
+            element.data("txt", element.html());
+            element.attr('disabled', true);
+
+            counter = setInterval(function() {
+              element.html(countNumber + " (秒)");
+              countNumber -= 1;
+              if (countNumber < 0) {
+                clearInterval(counter);
+                counter = null;
+                element.html(element.data("txt"));
+                element.attr('disabled', false);
+              }
+            }, 1000);
+          }
+        }
+      })(smsBtn);
+
+      if (remainingNumber) {
+        smsTimeCounter.run(remainingNumber);
+      }
+
+      smsBtn.click(function() {
+        var mobileNumber = $("#mobileNumber").val();
+
+        if (!!smsBtn.attr('disabled'))
+            return false;
+
+        smsBtn.attr('disabled', true);
+        $.ajax({
+          method: 'POST',
+          url: smsUrl,
+          data: {
+            'mobile_number': mobileNumber
+          },
+          beforeSend: function(xhr){
+            var token = $('meta[name="csrf-token"]').attr('content');
+            xhr.setRequestHeader('X-CSRF-Token', token);
+          }
+        }).done(function(data){
+          if (!!data.error) {
+            errorAlert.html(data.error).fadeIn();
+            errorAlert.delay(3000).fadeOut()
+            smsBtn.attr('disabled', false);
+          } else {
+            infoAlert.html("短信验证码发送成功").fadeIn();
+            infoAlert.delay(3000).fadeOut()
+            smsTimeCounter.run();
+          }
+        }).fail(function(xhr, status) {
+          errorAlert.html("发生错误了，请重新尝试").fadeIn();
+          errorAlert.delay(3000).fadeOut();
+          smsBtn.attr('disabled', false);
+        });
+      });
+
+      $("form").submit(function(event) {
+        var mobileNumber = $("#mobileNumber").val();
+        var inviteValue = $("#inviteValue").val();
+        var smsCode = $("#smsCode").val();
+
+        if (!!submitBtn.attr('disabled'))
+            return false;
+
+        submitBtn.attr('disabled', true);
+        $.ajax({
+          method: 'POST',
+          url: createUrl,
+          data: {
+            'mobile_number': mobileNumber,
+            'invite_value': inviteValue,
+            'sms_code': smsCode
+          },
+          beforeSend: function(xhr){
+            var token = $('meta[name="csrf-token"]').attr('content');
+            xhr.setRequestHeader('X-CSRF-Token', token);
+          }
+        }).done(function(data){
+          if (!!data.error) {
+            errorAlert.html(data.error).fadeIn();
+            errorAlert.delay(3000).fadeOut()
+          } else {
+            infoAlert.html("成功接受邀请，即将开始下载 Robin8 ...").fadeIn();
+            infoAlert.delay(3000).fadeOut();
+            window.location.href = data.url;
+          }
+          submitBtn.attr('disabled', false);
+        }).fail(function(xhr, status) {
+          errorAlert.html("发生错误了，请重新尝试").fadeIn();
+          errorAlert.delay(3000).fadeOut();
+          submitBtn.attr('disabled', false);
+        });
+
+        event.preventDefault();
+        return false;
+      });
+
+    </script>
+
+  </body>
+</html>
