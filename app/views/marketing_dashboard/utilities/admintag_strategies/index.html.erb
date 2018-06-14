@@ -9,9 +9,9 @@
   <div class="panel-heading">默认</div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-4">活动单价比例：</div>
-      <div class="col-sm-4">师傅抽成比例：</div>
-      <div class="col-sm-4">邀请好友奖励：</div>
+      <div class="col-sm-4">活动单价比例：<%= show_percentage(AdmintagStrategy::Rate) %></div>
+      <div class="col-sm-4">师傅抽成比例：<%= show_percentage(AdmintagStrategy::MasterIncomeRate) %></div>
+      <div class="col-sm-4">邀请好友奖励：<%= AdmintagStrategy::InviteBounty %>/元</div>
     </div>
   </div>
 </div>
@@ -32,17 +32,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
+    <% @admintag_strategies.each do |ele| %>
+      <tr>
+        <td><%= ele.id %></td>
+        <td><%= ele.admintag.tag %></td>
+        <td><%= ele.register_bounty %></td>
+        <td><%= ele.invite_bounty %></td>
+        <td><%= ele.invite_bounty_for_admin %></td>
+        <td><%= ele. first_task_bounty%></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @admintag_strategies %>

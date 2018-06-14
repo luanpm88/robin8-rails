@@ -15,6 +15,10 @@ module ApplicationHelper
     URI.join(root_url(opts), path).to_s
   end
 
+  def show_percentage(ele)
+    number_to_percentage(ele * 100, precision: 0)
+  end
+
   private
 
   def send_tag_method(tag_method_name, args)
