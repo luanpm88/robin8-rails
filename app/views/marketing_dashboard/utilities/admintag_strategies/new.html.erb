@@ -3,14 +3,12 @@
 <hr>
 
 <%= form_for(@admintag_strategy, url: marketing_dashboard_utilities_admintag_strategies_path, html: { class: "form-horizontal"}) do |f| %>
-  
+
   <h4>合作方</h4>
     <div class="form-group">
       <label for="" class="col-sm-3 control-label">Admin Tag: </label>
       <div class="col-sm-3">
-        <div class="input-group">
-          <%= f.select :admintag_id, Admintag.all.collect{|ele| [ele.tag, ele.id]}, class: "form-control" %>
-        </div>
+        <%= f.select :admintag_id, Admintag.all.collect{|ele| [ele.tag, ele.id]}, {}, class: "form-control" %>
       </div>
     </div>
   <h4>注册</h4>
@@ -56,7 +54,7 @@
     <label for="" class="col-sm-3 control-label">KOL单价比例：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <%= f.number_field :unit_price_rate_for_kol, class: "form-control" %>
+        <%= f.number_field :unit_price_rate_for_kol, class: "form-control", max: 100, min: 0 %>
         <div class="input-group-addon">%</div>
       </div>
     </div>
@@ -65,7 +63,7 @@
     <label for="" class="col-sm-3 control-label">管理员抽成比例：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <%= f.number_field :unit_price_rate_for_admin, class: "form-control", readonly: true %>
+        <%= f.number_field :unit_price_rate_for_admin, class: "form-control", readonly: true, max: 100, min: 0 %>
         <div class="input-group-addon">%</div>
       </div>
     </div>
@@ -85,3 +83,13 @@
     </div>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#admintag_strategy_unit_price_rate_for_kol').bind('keyup change', function() {
+      var max_val = 100;
+      var kol_val = $(this).val();
+      $('#admintag_strategy_unit_price_rate_for_admin').val(parseInt(max_val - kol_val));
+    });
+  });
+</script>
