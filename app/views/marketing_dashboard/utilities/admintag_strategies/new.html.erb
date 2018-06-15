@@ -2,13 +2,23 @@
 
 <hr>
 
-<form action="" class="form-horizontal">
+<%= form_for(@admintag_strategy, url: marketing_dashboard_utilities_admintag_strategies_path, html: { class: "form-horizontal"}) do |f| %>
+  
+  <h4>合作方</h4>
+    <div class="form-group">
+      <label for="" class="col-sm-3 control-label">Admin Tag: </label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <%= f.select :admintag_id, Admintag.all.collect{|ele| [ele.tag, ele.id]}, class: "form-control" %>
+        </div>
+      </div>
+    </div>
   <h4>注册</h4>
   <div class="form-group">
     <label for="" class="col-sm-3 control-label">注册奖励：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :register_bounty, class: "form-control" %>
         <div class="input-group-addon">元</div>
       </div>
     </div>
@@ -17,7 +27,7 @@
     <label for="" class="col-sm-3 control-label">邀请好友奖励：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :invite_bounty, class: "form-control" %>
         <div class="input-group-addon">元</div>
       </div>
     </div>
@@ -26,7 +36,7 @@
     <label for="" class="col-sm-3 control-label">注册成功管理员奖励：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :invite_bounty_for_admin, class: "form-control" %>
         <div class="input-group-addon">元</div>
       </div>
     </div>
@@ -35,7 +45,7 @@
     <label for="" class="col-sm-3 control-label">首次任务奖励：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :first_task_bounty, class: "form-control" %>
         <div class="input-group-addon">元</div>
       </div>
     </div>
@@ -46,7 +56,7 @@
     <label for="" class="col-sm-3 control-label">KOL单价比例：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :unit_price_rate_for_kol, class: "form-control" %>
         <div class="input-group-addon">%</div>
       </div>
     </div>
@@ -55,7 +65,7 @@
     <label for="" class="col-sm-3 control-label">管理员抽成比例：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="" readonly="readonly">
+        <%= f.number_field :unit_price_rate_for_admin, class: "form-control", readonly: true %>
         <div class="input-group-addon">%</div>
       </div>
     </div>
@@ -64,7 +74,7 @@
     <label for="" class="col-sm-3 control-label">师傅抽成比例：</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" id="" placeholder="">
+        <%= f.number_field :master_income_rate, class: "form-control" %>
         <div class="input-group-addon">%</div>
       </div>
     </div>
@@ -74,4 +84,4 @@
       <button type="submit" class="btn btn-primary">提 交</button>
     </div>
   </div>
-</form>
+<% end %>
