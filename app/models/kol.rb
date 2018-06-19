@@ -805,6 +805,8 @@ class Kol < ActiveRecord::Base
     if code.size == 8
       invite_code = KolInviteCode.find_by(code: code)
       RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
+      # 受邀请人的admintags赋给受邀人
+      self.admintags = invite_code.kol.admintags
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
