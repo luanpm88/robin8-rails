@@ -27,6 +27,29 @@ class RegisteredInvitationsController < ApplicationController
     end
   end
 
+  def kol
+    verify_code = $redis.get(params[:mobile_number])
+
+    return render json: {error: "请填写正确的手机号" }  unless verify_code
+    return render json: {error: "请填写短信验证码" }    unless verify_code == params[:sms_code]
+    return render json: {error: "手机号已经被注册" }    if Kol.where(mobile_number: params[:mobile_number]).exists?
+
+    admintag = Admintag.find_by_tag params[:invite_value]
+
+    kol = Kol.new(mobile_number: params[:mobile_number])
+    if admintag
+      kol.channel = admintag.tag
+      kol.admintags << admintag
+    end
+    
+    if kol.save
+      render json: {url: Rails.application.secrets[:download_url] || root_url }
+    else
+      render json: {error: "邀请异常，请重新尝试" }
+    end
+    
+  end
+
   def sms
     if !Rails.env.development? and !sms_request_is_valid?
       return render json: { error: "请求异常，请重新尝试" }

@@ -173,6 +173,16 @@ class PagesController < ApplicationController
     render :layout => false
   end
 
+  def kol_invite
+    @invite_code = InviteCode.find_by_code params[:invite_code]
+
+    if @invite_code
+      render layout: false
+    else
+      render text: 'not_found' 
+    end
+  end
+
   #TODO redirect_to  url
   def download_invitation
     remote_ip = request.env['HTTP_X_FORWARDED_FOR'].split(",")[0]   rescue nil

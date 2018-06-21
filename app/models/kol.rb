@@ -144,6 +144,10 @@ class Kol < ActiveRecord::Base
 
   has_one :kol_invite_code
 
+  # add kol admin
+  belongs_to :admin,    class_name: 'Kol', foreign_key: :admin_id
+  has_many   :leaguers, class_name: 'Kol', foreign_key: :admin_id
+
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :android, ->{ where("app_platform = 'Android'") }
@@ -805,6 +809,8 @@ class Kol < ActiveRecord::Base
     if code.size == 8
       invite_code = KolInviteCode.find_by(code: code)
       RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
+      # 受邀请人的admintags赋给受邀人
+      self.admintags = invite_code.kol.admintags
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
@@ -850,4 +856,9 @@ class Kol < ActiveRecord::Base
   #   proportion = self.club_number.club.proportion
   #   [proportion * credits , (1 - proportion) * credits]
   # end
+
+  # 业务更改，每个kol接活动的单价都不一样，详情查看app/models/admintag_strategy.rb
+  def strategy
+    admintags.map(&:admintag_strategy).first.owner_sets rescue AdmintagStrategy::InitHash
+  end
 end

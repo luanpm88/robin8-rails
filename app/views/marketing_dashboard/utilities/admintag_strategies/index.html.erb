@@ -1,0 +1,54 @@
+<h3>
+  第三方合作价格配置
+  <%= link_to '新建第三方价格配置', new_marketing_dashboard_utilities_admintag_strategy_path, class: 'btn btn-primary pull-right' %>
+</h3>
+
+<hr>
+
+<div class="panel panel-default">
+  <div class="panel-heading">默认</div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-4">活动单价比例：<%= show_percentage(AdmintagStrategy::InitHash[:unit_price_rate_for_kol]) %></div>
+      <div class="col-sm-4">师傅抽成比例：<%= show_percentage(AdmintagStrategy::InitHash[:master_income_rate]) %></div>
+      <div class="col-sm-4">邀请好友奖励：<%= AdmintagStrategy::InitHash[:invite_bounty] %>/元</div>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>合作方</th>
+      <th>注册奖励</th>
+      <th>邀请奖励</th>
+      <th>管理员邀请额外奖励</th>
+      <th>首次任务奖励</th>
+      <th>活动单价比例</th>
+      <th>管理员活动抽成比例</th>
+      <th>师傅抽成比例</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @admintag_strategies.each do |ele| %>
+      <tr>
+        <td><%= ele.id %></td>
+        <td><%= ele.admintag.tag %></td>
+        <td><%= ele.register_bounty %>/元</td>
+        <td><%= ele.invite_bounty %>/元</td>
+        <td><%= ele.invite_bounty_for_admin %>/元</td>
+        <td><%= ele.first_task_bounty%>/元</td>
+        <td><%= show_percentage(ele.unit_price_rate_for_kol) %></td>
+        <td><%= show_percentage(ele.unit_price_rate_for_admin) %></td>
+        <td><%= show_percentage(ele.master_income_rate) %></td>
+        <td>
+          <%= link_to '编辑', edit_marketing_dashboard_utilities_admintag_strategy_path(ele) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @admintag_strategies %>

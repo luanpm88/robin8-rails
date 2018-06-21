@@ -374,10 +374,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
         uuid      = Base64.encode64({campaign_id: @campaign.id, kol_id: k.id}.to_json).gsub("\n","")
         short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
       
-        ci.img_status   =  'pending', 
-        ci.approved_at  = Time.now, 
-        ci.status       = 'approved', 
-        ci.uuid         = uuid, 
+        ci.img_status   = 'pending'
+        ci.approved_at  = Time.now 
+        ci.status       = 'approved' 
+        ci.uuid         = uuid
         ci.share_url    = short_url
 
         ci.save

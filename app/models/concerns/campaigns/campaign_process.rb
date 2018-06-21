@@ -382,20 +382,12 @@ module Campaigns
     end
 
     class_methods do
-      PushStartHour = 8
-      PushEndHour = 22
-      PushInterval = Rails.env.production? ? 3.hours  : 5.minutes
       def can_push_message(campaign)
-        now =  Time.now
-        if now.hour >= PushStartHour && now.hour < PushEndHour
-          return true
-        else
-          return false
-        end
+        (8...22).include? Time.now.hour
       end
 
       def today_had_pushed_message
-        Campaign.where(:status => ['executing', 'executed']).where("start_time > '#{Date.today.to_s} #{PushStartHour}:00'").count > 0 ? true : false
+        Campaign.where(status: ['executing', 'executed']).where("start_time > '#{Time.now.at_midday.ago(4.hours)}'").count > 0
       end
     end
 

@@ -20,7 +20,7 @@ class MarketingDashboard::Utilities::PromotionsController < MarketingDashboard::
       flash[:notice] = '创建成功'
       redirect_to marketing_dashboard_utilities_promotions_path
     else
-      flash[:alert] = '创建成功'
+      flash[:alert] = '创建失败'
       render :new
     end
   end

@@ -288,6 +288,7 @@ Rails.application.routes.draw do
           put :update_redis_value
         end
       end
+      resources :admintag_strategies
     end
   end
 end

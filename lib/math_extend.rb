@@ -7,7 +7,7 @@ class MathExtend
 		while count > 0
 			ele = 1
 			if total > 0
-				ele += count == 1 ? total : rand(total/count)
+				ele += count == 1 ? total : rand(total/count).round
 			end
 			ary << ele
 			total = total - ele + 1

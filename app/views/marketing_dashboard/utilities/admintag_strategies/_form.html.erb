@@ -1,0 +1,92 @@
+<%= form_for([:marketing_dashboard, :utilities, @admintag_strategy], html: { class: "form-horizontal", multiple: true}) do |f| %>
+  <% if @admintag_strategy.new_record? %>
+    <h4>合作方</h4>
+    <div class="form-group">
+      <label for="" class="col-sm-3 control-label">Admin Tag: </label>
+      <div class="col-sm-3">
+        <%= f.select :admintag_id, Admintag.where.not(id: AdmintagStrategy.all.map(&:admintag_id)).collect{|ele| [ele.tag, ele.id]}, {}, class: "form-control" %>
+      </div>
+    </div>
+  <% end %>
+  <h4>注册</h4>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">注册奖励：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :register_bounty, class: "form-control" %>
+        <div class="input-group-addon">元</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">邀请好友奖励：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :invite_bounty, class: "form-control" %>
+        <div class="input-group-addon">元</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">注册成功管理员奖励：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :invite_bounty_for_admin, class: "form-control" %>
+        <div class="input-group-addon">元</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">首次任务奖励：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :first_task_bounty, class: "form-control" %>
+        <div class="input-group-addon">元</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>活动</h4>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">KOL单价比例：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :unit_price_rate_for_kol, value: (@admintag_strategy.unit_price_rate_for_kol * 100).to_i, class: "form-control", max: 100, min: 0 %>
+        <div class="input-group-addon">%</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">管理员抽成比例：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :unit_price_rate_for_admin, value: (@admintag_strategy.unit_price_rate_for_admin * 100).to_i, class: "form-control", readonly: true, max: 100, min: 0 %>
+        <div class="input-group-addon">%</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">师傅抽成比例：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.number_field :master_income_rate, value: (@admintag_strategy.master_income_rate * 100).to_i, class: "form-control" %>
+        <div class="input-group-addon">%</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-3">
+      <button type="submit" class="btn btn-primary">提 交</button>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#admintag_strategy_unit_price_rate_for_kol').bind('keyup change', function() {
+      var max_val = 100;
+      var kol_val = $(this).val();
+      $('#admintag_strategy_unit_price_rate_for_admin').val(parseInt(max_val - kol_val));
+    });
+  });
+</script>

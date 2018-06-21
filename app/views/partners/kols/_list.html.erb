@@ -25,12 +25,12 @@
         <td align="center"><%= kol.campaign_shows.count %></td>
         <td align="center"><%= kol.avail_amount %></td>
         <td align="center"><%= kol.historical_income %></td>
-        <td align="center"><%= kol.children.count %></td>
+        <td align="center"><%= kol.children.admintag(@admintag.tag).count %></td>
         <td align="center">
           <li><%= link_to '参与活动', activities_partners_kol_path(kol.id),         target: "_blank" %></li>
           <li><%= link_to '点击数据', shows_partners_kol_path(kol.id),              target: "_blank" %></li>
           <li><%= link_to "收益流水", capital_flow_sheet_partners_kol_path(kol.id), target: "_blank" %></li>
-          <% if kol.children.count > 0 %>
+          <% if kol.children.admintag(@admintag.tag).count > 0 %>
             <li><%= link_to "查看徒弟", children_partners_kol_path(kol.id), target: "_blank" %></li>
           <% end %>
         </td>
