@@ -273,7 +273,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click" or self.is_cpa_type?  or self.is_cpi_type?
+    if self.is_click_type? or self.is_cpa_type?  or self.is_cpi_type?
       return -1
     end
     return valid_invites.count
@@ -289,23 +289,38 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
+  # 活动类型的判断方法的封装  
   ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite', 'cpt'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
     end
   end
 
-  def recruit_status
-    return 'unpay' if self.status == 'unpay'
-    return 'pending' if self.status == 'unexecute'
-    return 'rejected' if self.status == 'rejected'
-    return 'coming' if self.status == 'agreed'
-    return 'settling' if self.status == 'executed'
-    return 'settled' if self.status == 'settled'
+  #活动状态判断方法的封装
+  ['unpay','pending','agreed','executing','executed','settled','finished','unexecute','rejected'].each do |value|
+    define_method "is_#{value}_status?" do 
+      self.status == value
+    end
+  end
 
-    if self.status == 'executing'
+
+  def recruit_status
+    case self.status 
+    when 'unpay'
+      return 'unpay'
+    when 'unexecute'
+      return 'pending'
+    when 'rejected'
+      return 'rejected'
+    when 'agreed'
+      return 'coming'
+    when 'executed'
+      return 'settling'
+    when 'settled'
+      return 'settled'
+    when 'executing'
       if self.end_apply_check
-        'running'
+        return 'running'
       elsif Time.now >= self.recruit_end_time
         'choosing'
       else
