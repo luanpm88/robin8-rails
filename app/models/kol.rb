@@ -852,4 +852,9 @@ class Kol < ActiveRecord::Base
   #   proportion = self.club_number.club.proportion
   #   [proportion * credits , (1 - proportion) * credits]
   # end
+
+  # 业务更改，每个kol接活动的单价都不一样，详情查看app/models/admintag_strategy.rb
+  def strategy
+    admintags.map(&:admintag_strategy).first.owner_sets rescue AdmintagStrategy::InitHash
+  end
 end

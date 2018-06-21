@@ -9,9 +9,9 @@
   <div class="panel-heading">默认</div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-4">活动单价比例：<%= show_percentage(AdmintagStrategy::Rate) %></div>
-      <div class="col-sm-4">师傅抽成比例：<%= show_percentage(AdmintagStrategy::MasterIncomeRate) %></div>
-      <div class="col-sm-4">邀请好友奖励：<%= AdmintagStrategy::InviteBounty %>/元</div>
+      <div class="col-sm-4">活动单价比例：<%= show_percentage(AdmintagStrategy::InitHash[:unit_price_rate_for_kol]) %></div>
+      <div class="col-sm-4">师傅抽成比例：<%= show_percentage(AdmintagStrategy::InitHash[:master_income_rate]) %></div>
+      <div class="col-sm-4">邀请好友奖励：<%= AdmintagStrategy::InitHash[:invite_bounty] %>/元</div>
     </div>
   </div>
 </div>

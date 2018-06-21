@@ -4,7 +4,7 @@
     <div class="form-group">
       <label for="" class="col-sm-3 control-label">Admin Tag: </label>
       <div class="col-sm-3">
-        <%= f.select :admintag_id, Admintag.all.collect{|ele| [ele.tag, ele.id]}, {}, class: "form-control" %>
+        <%= f.select :admintag_id, Admintag.where.not(id: AdmintagStrategy.all.map(&:admintag_id)).collect{|ele| [ele.tag, ele.id]}, {}, class: "form-control" %>
       </div>
     </div>
   <% end %>
