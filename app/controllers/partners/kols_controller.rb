@@ -20,7 +20,7 @@ class Partners::KolsController < Partners::BaseController
 	end
 
 	def children
-		@q    = @kol.children.ransack(params[:q])
+		@q    = @kol.children.admintag(@admintag.tag).ransack(params[:q])
 
     @kols = @q.result.order('id DESC').paginate(paginate_params)
 	end
