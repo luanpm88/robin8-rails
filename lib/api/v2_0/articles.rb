@@ -7,6 +7,8 @@ module API
           authenticate!
         end
 
+        ORIGIN_ARRAY = Array.new(20, 0) + (0.01..0.1).step(0.01).collect{|ele| ele.round(2)}
+
         params do
           requires :page, type: Integer
           optional :_type, type: String
@@ -96,7 +98,19 @@ module API
           current_kol.redis_elastic_reads_count.increment
           current_kol.redis_elastic_stay_time.incr(eaa.stay_time)
 
-          present :error, 0, alert: '操作成功'
+          present :error, 0
+          present :alert, '操作成功'
+          present :red_money, current_kol.transactions.recent(Time.now, Time.now).rsubjects('red_money').count < 10 ? ORIGIN_AEEAY.sample : 0
+        end
+
+        params do
+          requires :red_money, type: Float
+        end
+        post 'split_red' do 
+          current_kol.income(params[:red_money], 'red_money')
+
+          present :error, 0
+          present :alert, '操作成功' 
         end
 
       end
