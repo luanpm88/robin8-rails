@@ -144,6 +144,10 @@ class Kol < ActiveRecord::Base
 
   has_one :kol_invite_code
 
+  # add kol admin
+  belongs_to :admin,    class_name: 'Kol', foreign_key: :admin_id
+  has_many   :leaguers, class_name: 'Kol', foreign_key: :admin_id
+
   #scope :active, -> {where("`kols`.`updated_at` > '#{3.months.ago}'").where("kol_role='mcn_big_v' or device_token is not null")}
   scope :ios, ->{ where("app_platform = 'IOS'") }
   scope :android, ->{ where("app_platform = 'Android'") }
