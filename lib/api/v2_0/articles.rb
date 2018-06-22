@@ -100,7 +100,7 @@ module API
 
           present :error, 0
           present :alert, '操作成功'
-          present :red_money, current_kol.transactions.recent(Time.now, Time.now).subjects('red_money').count < 10 ? ORIGIN_AEEAY.sample : 0
+          present :red_money, current_kol.transactions.recent(Time.now, Time.now).subjects('red_money').count < 10 ? ORIGIN_ARRAY.sample : 0
         end
 
         params do
