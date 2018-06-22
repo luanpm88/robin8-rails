@@ -23,6 +23,7 @@
       <th>合作方</th>
       <th>注册奖励</th>
       <th>邀请奖励</th>
+      <th>每日最多邀请奖励次数</th>
       <th>管理员邀请额外奖励</th>
       <th>首次任务奖励</th>
       <th>活动单价比例</th>
@@ -38,6 +39,7 @@
         <td><%= ele.admintag.tag %></td>
         <td><%= ele.register_bounty %>/元</td>
         <td><%= ele.invite_bounty %>/元</td>
+        <td><%= ele.invites_max_count %></td>
         <td><%= ele.invite_bounty_for_admin %>/元</td>
         <td><%= ele.first_task_bounty%>/元</td>
         <td><%= show_percentage(ele.unit_price_rate_for_kol) %></td>
