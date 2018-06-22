@@ -100,31 +100,15 @@ module Concerns
       ActiveRecord::Base.transaction do
         inviter = invitation.inviter
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
-        task_record = inviter.task_records.create(task_type: RewardTask::InviteFriend, status: 'active', invitees_id: self.id)
-        task_record.sync_to_transaction if inviter.today_invite_count <= Rails.application.secrets[:invite_limit]
+        # 完成注册后，邀请人，被邀请人以及被邀请人的管理员都会得到相应的奖励
+        task_record = inviter.task_records.create(task_type: RewardTask::InviteFriend, reward_amount: self.strategy[:invite_bounty], status: 'active', invitees_id: self.id)
+        task_record.sync_to_transaction if inviter.today_invite_count <= inviter.strategy[:invites_max_count] && task_record.reward_amount > 0
+        # 注册奖励
+        self.income(self.strategy[:register_bounty], 'register_bounty') if self.strategy[:register_bounty] > 0
+        # self.admin奖励
+        self.admin.income(self.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if self.admin && self.strategy[:invite_bounty_for_admin] > 0
       end
     end
-
-    # def generate_invite_code
-    #   return if invite_code.present?
-    #   while true
-    #     invite_code = ((0..9).to_a + ('A'..'Z').to_a).sample(5).join("")
-    #     code_exist = Kol.find_by(:invite_code => invite_code).present?
-    #     if !code_exist
-    #       self.update_column(:invite_code, invite_code)
-    #       return
-    #     end
-    #   end
-    # end
-
-    # def invited_from(invite_code)
-    #   return if invite_code.blank?
-    #   inviter = Kol.find_by :invite_code => invite_code.upcase
-    #   if inviter
-    #     task_record = inviter.task_records.create(:task_type => RewardTask::InviteFriend, :status => 'active', :invitees_id => self.id  )
-    #     task_record.sync_to_transaction
-    #   end
-    # end
 
     def complete_info
       task_record = self.task_records.create(:task_type => RewardTask::CompleteInfo, :status => 'active')

@@ -30,9 +30,9 @@ module API
           end
           expose :per_action_budget do |campaign, options|
             if campaign.is_invite_type?
-              options[:campaign_invite].price
+              options[:campaign_invite].price * options[:unit_price_rate_for_kol]
             else
-              campaign.get_per_action_budget(false)
+              campaign.get_per_action_budget(false) * options[:unit_price_rate_for_kol]
             end
           end
           expose :budget do |campaign|

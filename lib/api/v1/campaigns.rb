@@ -21,7 +21,7 @@ module API
             campaign_invite = campaign.get_campaign_invite(current_kol.try(:id))
             invitees_count, campaign_invites = CampaignInvite.get_invitees(params[:id], params[:invitee_page])
             present :error, 0
-            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
             present :invitees_count, invitees_count
             present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
             present :leader_club, club_name
