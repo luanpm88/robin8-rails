@@ -25,6 +25,14 @@ class CampaignInvite < ActiveRecord::Base
     rejected: '已拒绝'
   }
 
+
+  #活动邀请状态判断方法的封装
+  ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"].each do |value|
+    define_method "is_#{value}_status?" do 
+      self.status == value
+    end
+  end
+
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
@@ -356,24 +364,33 @@ class CampaignInvite < ActiveRecord::Base
     # 一个kol针对一个campaign只能产生一条income # evan 2018.2.26 3:47pm
     # 徒弟带来的收益,opposite 为徒弟
     return unless Transaction.where(account: kol, direct: 'income', item: campaign, opposite: campaign.user).empty?
-    return if self.status == 'rejected'
+    return if self.is_rejected_status?
+    return if self.is_settled_status?
+
+
     self.settle_lock.lock  do
       percentage_on_friend = 0
-      if ['click'].include? self.campaign.per_budget_type
+      percentage_on_admin = 0
+      unit_price_rate_for_kol = self.kol.strategy[:unit_price_rate_for_kol]
+      unit_price_rate_for_admin = self.kol.strategy[:unit_price_rate_for_admin]
+      master_income_rate = self.kol.strategy[:master_income_rate]
+      if self.campaign.is_click_type?
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
-        self.update_columns(:img_status => 'passed', :auto_check => true) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
+        self.update_columns(:status => 'finished'，:img_status => 'passed', :auto_check => true ) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         if campaign_shows.size > 0
-          credits = campaign_shows.size * self.campaign.get_per_action_budget(false)
+          credits = campaign_shows.size * self.campaign.get_per_action_budget(false) * unit_price_rate_for_kol
+          percentage_on_admin = campaign_shows.size * self.campaign.get_per_action_budget(false) * unit_price_rate_for_admin
           transaction = self.kol.income(credits, 'campaign', self.campaign, self.campaign.user, transaction_time)
           percentage_on_friend = credits
           campaign_shows.update_all(:transaction_id => transaction.id)
           Rails.logger.transaction.info "---settle  kol_id:#{self.kol.id}-----invite_id:#{self.id}--tid:#{transaction.id}-credits:#{credits}---#avail_amount:#{self.kol.avail_amount}-"
         end
-      elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi', 'cpt'].include?(self.campaign.per_budget_type) && self.status == 'finished' && self.img_status == 'passed'
-        self.kol.income(self.campaign.get_per_action_budget(false), 'campaign', self.campaign, self.campaign.user)
+      elsif ['recruit', 'post', 'simple_cpi', 'cpa', 'cpi', 'cpt'].include?(self.campaign.per_budget_type) && self.is_finished_status? && self.img_status == 'passed'
+        self.kol.income(self.campaign.get_per_action_budget(false) * unit_price_rate_for_kol, 'campaign', self.campaign, self.campaign.user)
         percentage_on_friend = self.campaign.get_per_action_budget(false)
+        percentage_on_admin =  self.campaign.get_per_action_budget(false) * unit_price_rate_for_admin
         Rails.logger.transaction.info "---settle kol_id:#{self.kol.id}----- cid:#{campaign.id}---fee:#{campaign.get_per_action_budget(false)}---#avail_amount:#{self.kol.avail_amount}-"
       elsif self.campaign.is_invite_type? && self.status == 'finished' && self.img_status == 'passed'
         if self.kol.kol_role == "mcn_big_v"
@@ -383,15 +400,20 @@ class CampaignInvite < ActiveRecord::Base
           settle_kol = self.kol
         end
         next if  settle_kol.blank?
-        settle_kol.income(self.price, 'campaign', self.campaign, self.campaign.user)
-        percentage_on_friend = self.price
+        settle_kol.income(self.price * unit_price_rate_for_kol, 'campaign', self.campaign, self.campaign.user)
+        percentage_on_friend = self.price 
+        percentage_on_admin = self.price * unit_price_rate_for_admin
         Rails.logger.transaction.info "---settle settle_kol_id:#{settle_kol.id}----- cid:#{campaign.id}---fee:#{self.price}---#avail_amount:#{settle_kol.avail_amount}-"
       end
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
       # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
       if self.kol.parent && percentage_on_friend > 0
-        amount = percentage_on_friend * 0.05 > 50 ? 50 : percentage_on_friend * 0.05
-        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol)
+        amount = percentage_on_friend * master_income_rate > 50 ? 50 : percentage_on_friend * master_income_rate
+        self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol) if amount > 0
+      end
+
+      if self.kol.admin && percentage_on_admin > 0 
+        self.kol.admin.income(percentage_on_admin, 'percentage_on_admin', self.campaign, self.kol)
       end
       # end: 2018-3-5 15:32
     end
