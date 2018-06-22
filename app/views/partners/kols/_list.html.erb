@@ -4,7 +4,6 @@
       <th><%= t('partner.kols.name') %> </th>
       <th><%= t('partner.kols.mobile_number') %></th>
       <th><%= t('partner.kols.created_at') %></th>
-      <th><%= t('partner.kols.child_count') %></th>
       <th class="text-center"><%= t('partner.kols.friend_mobile_number')%></th>
       <th class="text-center"><%= t('partner.kols.invites_count') %></th>
       <th class="text-center"><%= t('partner.kols.show_valid_count') %></th>
@@ -21,9 +20,9 @@
       <tr>
         <td><%= kol.name %></td>
         <td><%= kol.mobile_number %></td>
-        <td><%= kol.created_at.to_s(:db) %></td>
-        <td align="center"><%= kol.campaign_invites.count %></td>
+        <td><%= kol.created_at.to_s(:db) %></td>        
         <td align="center"><%= link_to kol.parent.mobile_number, children_partners_kol_path(kol.parent.id), target: "_blank"  if kol.parent.present? %></td>
+        <td align="center"><%= kol.campaign_invites.count %></td>
         <td align="center"><%= kol.campaign_shows.valid.count %></td>
         <td align="center"><%= kol.campaign_shows.count %></td>
         <td align="center"><%= kol.avail_amount %></td>
