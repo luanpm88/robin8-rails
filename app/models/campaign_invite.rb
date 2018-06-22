@@ -377,7 +377,7 @@ class CampaignInvite < ActiveRecord::Base
       if self.campaign.is_click_type?
         next if (self.status == 'executing' || self.observer_status == 2 || self.get_avail_click > 30 || self.get_total_click > 100 || self.from_meesage_click_count > 0) && auto == true
         #1. 先自动审核通过
-        self.update_columns(:status => 'finished'，:img_status => 'passed', :auto_check => true ) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
+        self.update_columns(:status => 'finished', :img_status => 'passed', :auto_check => true ) if auto == true && self.img_status == 'pending' && self.screenshot.present? && self.upload_time < CanAutoCheckInterval.ago
         campaign_shows = CampaignShow.invite_need_settle(self.campaign_id, self.kol_id, transaction_time)
         if campaign_shows.size > 0
           credits = campaign_shows.size * self.campaign.get_per_action_budget(false) * unit_price_rate_for_kol
