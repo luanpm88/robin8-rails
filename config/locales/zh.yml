@@ -393,18 +393,19 @@ zh:
         title: 用户标签统计
       error:
         msg: 暂时没有数据
-      kols:
-        id: Id
-        name: 昵称
-        mobile_number: 手机号
-        created_at: 创建时间
-        invites_count: 已接活动数
-        show_valid_count: 有效点击数
-        show_count: 总点击数
-        avail_amount: 可提现金额
-        historical_income: 历史净收益
-        child_count: 下层人数
-        view:	查看
+    kols:
+      id: Id
+      name: 昵称
+      mobile_number: 手机号
+      friend_mobile_number: 师傅手机号
+      created_at: 创建时间
+      invites_count: 已接活动数
+      show_valid_count: 有效点击数
+      show_count: 总点击数
+      avail_amount: 可提现金额
+      historical_income: 历史净收益
+      child_count: 下层人数
+      view:	查看
 
       
   campaign:			
