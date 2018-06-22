@@ -65,5 +65,40 @@ namespace :campaign  do
       end
     end
   end
+
+  task :robots do
+    Campaign.where(id: [5013, 5012, 5008, 5007]).each do |c|
+      c = Campaign.find 5008
+
+      avail_click, kols_count = c.need_add_avail_click, c.need_add_kols_count
+
+      click_ary = MathExtend.rand_array(avail_click, kols_count)
+
+      Kol.where(channel: 'robot').sample(kols_count).each_with_index do |k, index|
+        ci = CampaignInvite.find_or_initialize_by(campaign_id: c.id, kol_id: k.id)
+
+        if ci.new_record?
+          uuid      = Base64.encode64({campaign_id: c.id, kol_id: k.id}.to_json).gsub("\n","")
+          short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
+        
+          ci.img_status   = 'passed'
+          ci.approved_at  = Time.now 
+          ci.status       = 'settled' 
+          ci.uuid         = uuid
+          ci.share_url    = short_url
+          ci.save
+          k.generate_invite_task_record
+        end
+
+        ci.redis_avail_click.incr click_ary[index]
+        ci.redis_total_click.incr click_ary[index] + rand(20)
+        ci.update_attributes(avail_click: ci.redis_avail_click.value, total_click: ci.redis_total_click.value)
+
+        c.redis_avail_click.incr ci.avail_click
+        c.redis_total_click.incr ci.total_click
+      end
+      c.update_attributes(avail_click: c.redis_avail_click.value, total_click: c.redis_total_click.value)
+    end
+  end
   
 end
