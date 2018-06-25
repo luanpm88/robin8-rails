@@ -570,6 +570,10 @@ class Kol < ActiveRecord::Base
            
       _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
       kol = Kol.create!(_hash)
+      # 注册奖励
+      kol.income(kol.strategy[:register_bounty], 'register_bounty') if kol.strategy[:register_bounty] > 0
+      # kol.admin奖励
+      kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
     end
     kol
   end
