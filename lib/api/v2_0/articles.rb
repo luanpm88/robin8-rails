@@ -107,6 +107,8 @@ module API
           requires :red_money, type: Float
         end
         post 'split_red' do 
+          return error_403!({error: 1, detail: '超出每日红包限制'}) if current_kol.transactions.recent(Time.now, Time.now).subjects('red_money').count >= 10
+
           current_kol.income(params[:red_money].to_f, 'red_money')
 
           present :error, 0
