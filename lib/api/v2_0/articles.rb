@@ -107,7 +107,7 @@ module API
           requires :red_money, type: Float
         end
         post 'split_red' do 
-          current_kol.income(params[:red_money], 'red_money')
+          current_kol.income(params[:red_money].to_f, 'red_money')
 
           present :error, 0
           present :alert, '操作成功' 
