@@ -25,6 +25,8 @@ class AdmintagStrategy < ActiveRecord::Base
 
 	belongs_to :admintag
 
+	mount_uploader :logo, ImageUploader
+
 	def owner_sets
 		{
 			register_bounty: 				 		register_bounty,

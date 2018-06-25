@@ -84,6 +84,17 @@
     </div>
   </div>
   <div class="form-group">
+    <label for="" class="col-sm-3 control-label">品牌logo：</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <%= f.file_field :logo, :class => "form-control" %>
+        <% if @admintag_strategy.logo_url.present? %>
+          <%= image_tag @admintag_strategy.logo_url %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
     <div class="col-sm-offset-3 col-sm-3">
       <button type="submit" class="btn btn-primary">提 交</button>
     </div>
