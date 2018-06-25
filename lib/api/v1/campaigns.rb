@@ -62,7 +62,7 @@ module API
             campaign_invite = current_kol.approve_campaign(params[:id])
             campaign_invite.reload
             present :error, 0
-            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
           end
         end
 
@@ -142,7 +142,7 @@ module API
           else
             campaign_invite = current_kol.apply_campaign(params)
             present :error, 0
-            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
           end
         end
       end

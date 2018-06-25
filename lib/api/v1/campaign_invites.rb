@@ -110,7 +110,7 @@ module API
             campaign_invite.approve
             campaign_invite.reload
             present :error, 0
-            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
           end
         end
 
@@ -147,7 +147,7 @@ module API
             campaign_invite.save
             current_kol.generate_invite_task_record
             present :error, 0
-            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
           else
             return error_403!({error: 1, detail: '该活动已错过上传截图时间' })
           end
@@ -178,7 +178,7 @@ module API
             end
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
-            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
             present :alert, alert
           end
         end
