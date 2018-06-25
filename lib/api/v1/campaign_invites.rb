@@ -27,10 +27,9 @@ module API
             id_str = applied_recruit_campaign_ids.size > 0 ? applied_recruit_campaign_ids.join(",") : '""'
 
             search_criteria = ['unexecuted', 'agreed']
-            search_criteria.push "countdown" if current_kol.app_version >= "2.3.2"
+            search_criteria.push "countdown" if current_kol.app_version && current_kol.app_version >= "2.3.2"
 
-            @campaigns = Campaign.where.not(status: search_criteria).where(id: current_kol.receive_campaign_ids.values)
-                          .recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
+            @campaigns = Campaign.where.not(status: search_criteria).where(id: current_kol.receive_campaign_ids.values).recent_7.order_by_status(id_str).page(params[:page]).per_page(10)
           elsif params[:status] == 'running'
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
           elsif params[:status] == 'waiting_upload'
@@ -49,7 +48,7 @@ module API
             @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
           end
 
-          to_paginate(@campaign_invites)
+          to_paginate(@campaign_invites) unless @campaign_invites
 
           present :error,            0
           present :announcements,    Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary if params[:with_announcements] == 'y'
