@@ -37,7 +37,8 @@ class AdmintagStrategy < ActiveRecord::Base
 			unit_price_rate_for_kol: 		unit_price_rate_for_kol,
 			unit_price_rate_for_admin: 	unit_price_rate_for_admin,
 			master_income_rate: 				master_income_rate,
-			logo: 											logo_url
+			logo: 											logo_url,
+			tag: 												admintag.tag
 		}
 	end
 

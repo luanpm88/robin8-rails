@@ -35,6 +35,7 @@ module API
           present :check_in_7,              current_kol.check_in_7
           present :campaign_invites_count,  current_kol.campaign_invites.today.count
           present :invite_friends,          current_kol.today_invite_count
+          present :is_show_newbie,          current_kol.strategy[:tag] == 'Geometry'
         end
 
       end

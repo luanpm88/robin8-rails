@@ -21,7 +21,7 @@ class Transaction < ActiveRecord::Base
                          'campaign_compensation', 'lottery_reward', 'cps_share_commission', 'cps_writing_commission',
                          'percentage_on_friend', 'first_share_campaign', 'first_check_example', 'first_upload_invite',
                          'percentage_on_friend', 'first_share_campaign', 'first_check_example', 'first_upload_invite',
-                         'red_money', 'register_bounty', 'invite_bounty_for_admin','percentage_on_admin']
+                         'red_money', 'register_bounty', 'invite_bounty_for_admin','percentage_on_admin', 'first_task_bounty']
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
@@ -49,7 +49,7 @@ class Transaction < ActiveRecord::Base
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
                         cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate percentage_on_friend first_share_campaign first_check_example first_upload_invite red_money percentage_on_admin register_bounty
-                        invite_bounty_for_admin)
+                        invite_bounty_for_admin first_task_bounty)
 
 
 
@@ -128,6 +128,8 @@ class Transaction < ActiveRecord::Base
         '注册奖励'
       when 'invite_bounty_for_admin'
         '注册成功奖励管理员'
+      when 'first_task_bounty'
+        '首次任务奖励'
     end
   end
 
@@ -201,6 +203,8 @@ class Transaction < ActiveRecord::Base
         '注册奖励'
       when 'invite_bounty_for_admin'
         '注册成功奖励管理员'
+      when 'first_task_bounty'
+        '首次任务奖励'
     end
   end
 
