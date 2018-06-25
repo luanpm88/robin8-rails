@@ -15,7 +15,7 @@ namespace :daily_report  do
     campaign_count = c.count
 
     # Calculate the number of new KOLs, and how many of those took a campaign.
-    k = Kol.where("created_at > ? and created_at < ?", ending - 1.day, ending)
+    k = Kol.where("created_at > ? and created_at < ? and channel <> ?", ending - 1.day, ending, 'robot')
     kol_count = k.count
     
     # Get number of new clubs
@@ -77,7 +77,7 @@ namespace :daily_report  do
     end
     
     # Calculate the number of new KOLs, and how many of those took a campaign.
-    k = Kol.where("created_at > ? and created_at < ?", ending - 1.week, ending)
+    k = Kol.where("created_at > ? and created_at < ? and channel <> ?", ending - 1.week, ending, 'robot')
     kol_count = k.count
     
     # If the historical_income is more than 1, it is likely that the user did something other that just check in.
@@ -122,8 +122,8 @@ namespace :daily_report  do
     consumed_increase = (total_consumed - last_total_consumed) / last_total_consumed.to_f * 100
     
     # Calculate the number of new KOLs, and how many of those took a campaign.
-    k = Kol.where("created_at > ? and created_at < ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month)
-    last_k = Kol.where("created_at > ? and created_at < ?", 2.month.ago.beginning_of_month, 2.month.ago.end_of_month)
+    k = Kol.where("created_at > ? and created_at < ? and channel <> ?", 1.month.ago.beginning_of_month, 1.month.ago.end_of_month, 'robot')
+    last_k = Kol.where("created_at > ? and created_at < ? and channel <> ?", 2.month.ago.beginning_of_month, 2.month.ago.end_of_month, 'robot')
     kol_count = k.count
     kol_increase = (kol_count - last_k.count) / last_k.count.to_f * 100
     
