@@ -172,8 +172,8 @@ module API
             campaign_invite = current_kol.share_campaign_invite(params[:id] , params[:sub_type])
             # 首次转发活动奖励
             alert = nil
-            if current_kol.campaign_invites.count == 1
-              current_kol.income(current_kol.strategy[:first_task_bounty], 'first_task_bounty') if current_kol.strategy[:first_task_bounty] > 0
+            if current_kol.campaign_invites.count == 1 && current_kol.strategy[:first_task_bounty] > 0
+              current_kol.income(current_kol.strategy[:first_task_bounty], 'first_task_bounty') if 
               alert = "您是#{current_kol.strategy[:tag]}的用户额外#{current_kol.strategy[:first_task_bounty]}元奖励已放入钱包"
             end
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
