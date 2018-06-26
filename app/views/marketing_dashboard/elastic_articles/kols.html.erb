@@ -61,6 +61,10 @@
         <th class="text-center">阅读次数</th>
         <th class="text-center">点赞次数</th>
         <th class="text-center">分享次数</th>
+        <th class="text-center">总红包数</th>
+        <th class="text-center">总红包金额</th>
+        <th class="text-center">今日红包数</th>
+        <th class="text-center">今日红包金额</th>
       </tr>
     </thead>
     <tbody>
@@ -75,6 +79,10 @@
           <td class="text-center"><%= kol.redis_elastic_reads_count %></td>
           <td class="text-center"><%= kol.redis_elastic_likes_count %></td>
           <td class="text-center"><%= kol.redis_elastic_forwards_count %></td>
+          <td class="text-center"><%= kol.transactions.subjects('red_money').count %></td>
+          <td class="text-center"><%= kol.transactions.subjects('red_money').sum(:credits) %></td>
+          <td class="text-center"><%= kol.transactions.recent(Time.now, Time.now).subjects('red_money').count %></td>
+          <td class="text-center"><%= kol.transactions.recent(Time.now, Time.now).subjects('red_money').sum(:credits) %></td>
         </tr>
       <% end %>
     </tbody>
