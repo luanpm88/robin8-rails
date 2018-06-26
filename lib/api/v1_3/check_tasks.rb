@@ -36,6 +36,7 @@ module API
           present :campaign_invites_count,  current_kol.campaign_invites.today.count
           present :invite_friends,          current_kol.today_invite_count
           present :is_show_newbie,          current_kol.strategy[:tag] == 'Geometry'
+          present :red_money_count,         current_kol.transactions.recent(Time.now, Time.now).subjects('red_money').count
         end
 
       end
