@@ -17,9 +17,9 @@ module API
             result = check_invite_code(params[:invite_code] , kol_exist) 
             return error!({error: 2, detail: result}, 403)  unless result == true
           end
-          # 方便记录城市
-          params[:remote_ip] = request.ip
+
           kol = Kol.reg_or_sign_in(params)
+
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
           if params[:kol_uuid].present?
@@ -41,10 +41,23 @@ module API
               end
             end
           end
+
+          alert = nil
+          unless kol_exist
+            # 注册奖励
+            if kol.strategy[:register_bounty] > 0
+              kol.income(kol.strategy[:register_bounty], 'register_bounty') 
+              alert = "您是#{kol.strategy[:tag]}的用户额外#{kol.strategy[:register_bounty]}元奖励已放入钱包"
+            end
+            # kol.admin奖励
+            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+          end
+
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
           present :kol_identities, kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           present :is_new_member, !kol_exist
+          present :alert, alert
         end
 
 
@@ -88,6 +101,7 @@ module API
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           kol = identity.kol   rescue nil
+          alert = nil
           if !kol
             return error!({error: 1, detail: '该设备已绑定3个账号!'}, 403)   if Kol.device_bind_over_3(params[:IMEI], params[:IDFA])
 
@@ -95,8 +109,6 @@ module API
               Rails.logger.info "---- oauth_login --- invalid login data: #{params}"
               return error!({error: 1, detail: 'Invalid oauth login data'}, 403)
             end
-            # 方便记录城市
-            params[:remote_ip] = request.ip
             
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
@@ -105,6 +117,15 @@ module API
               social = update_social(params.merge(:from_type => 'app', :kol_id => kol.id))
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
+
+            # 注册奖励
+            if kol.strategy[:register_bounty] > 0
+              kol.income(kol.strategy[:register_bounty], 'register_bounty') 
+              alert = "您是#{kol.strategy[:tag]}的用户额外#{kol.strategy[:register_bounty]}元奖励已放入钱包"
+            end
+            # kol.admin奖励
+            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+
           else
             kol = Kol.reg_or_sign_in(params, kol)
           end
@@ -119,6 +140,7 @@ module API
           kol.remove_same_device_token(params[:device_token])
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
+          present :alert, alert
         end
       end
     end
