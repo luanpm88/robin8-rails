@@ -5,4 +5,7 @@ class Admintag < ActiveRecord::Base
 
   has_one :admintag_strategy
 
+  scope :select_tag, ->(tag){where(tag: tag)}
+
+
 end
