@@ -36,14 +36,15 @@ module API
 
         get 'invite_info' do
           invite_code = current_kol.kol_invite_code
-          unless invite_code.present?
-            invite_code = KolInviteCode.create(code: create_random_code , kol_id: current_kol.id)   rescue nil
-          end
+
+          invite_code = KolInviteCode.create(code: create_random_code , kol_id: current_kol.id) unless invite_code
+
           present :error, 0
           present :invite_count,  current_kol.children.recent(Time.now, Time.now).count 
           present :invite_amount, current_kol.children.count * 2.0 + current_kol.friend_gains.sum(:credits)
           present :invite_code ,  invite_code.code
           present :is_show_newbie,current_kol.strategy[:tag] == 'Geometry'
+          present :desc,          "徒弟通过活动收入的#{current_kol.strategy[:master_income_rate] * 100}%(收益四舍五入精确到小数点后两位,如0.012为0.01; 0.026为0.03), 收徒越多奖励越多,徒弟总数无上限。"
         end
       end
     end

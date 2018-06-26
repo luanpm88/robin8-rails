@@ -408,7 +408,8 @@ class CampaignInvite < ActiveRecord::Base
       self.update_column(:status, 'settled') if self.status == 'finished' && self.img_status == 'passed'
       # 师傅提成self.kol.parent, transaction percentage_on_friend on: 2018-3-5 15:32
       if self.kol.parent && percentage_on_friend > 0
-        amount = percentage_on_friend * master_income_rate > 50 ? 50 : percentage_on_friend * master_income_rate
+        # amount = percentage_on_friend * master_income_rate > 50 ? 50 : percentage_on_friend * master_income_rate
+        amount = percentage_on_friend * master_income_rate
         self.kol.parent.income(amount, 'percentage_on_friend', self.campaign, self.kol) if amount > 0
       end
 
