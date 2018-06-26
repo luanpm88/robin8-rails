@@ -17,6 +17,8 @@ module API
             result = check_invite_code(params[:invite_code] , kol_exist) 
             return error!({error: 2, detail: result}, 403)  unless result == true
           end
+          # 方便记录城市
+          params[:remote_ip] = request.ip
           kol = Kol.reg_or_sign_in(params)
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
@@ -93,7 +95,9 @@ module API
               Rails.logger.info "---- oauth_login --- invalid login data: #{params}"
               return error!({error: 1, detail: 'Invalid oauth login data'}, 403)
             end
-
+            # 方便记录城市
+            params[:remote_ip] = request.ip
+            
             ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
