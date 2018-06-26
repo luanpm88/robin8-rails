@@ -541,8 +541,8 @@ class Kol < ActiveRecord::Base
   def self.reg_or_sign_in(params, kol = nil)
     Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
-    app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-    app_city = TaobaoIps.get_detail(request.remote_ip)["data"]['city']
+    # app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+    app_city = TaobaoIps.get_detail(params[:remote_ip])["data"]['city']
     if kol.present?
       Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
       retries = true
