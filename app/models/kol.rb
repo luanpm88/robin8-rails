@@ -833,7 +833,7 @@ class Kol < ActiveRecord::Base
         ClubMember.create(club_id: club.id , kol_id: self.id)
       end
     end
-    true
+    trueinvite_bounty
   end
 
   def desc_friend_gains
@@ -861,5 +861,13 @@ class Kol < ActiveRecord::Base
   # 业务更改，每个kol接活动的单价都不一样，详情查看app/models/admintag_strategy.rb
   def strategy
     admintags.map(&:admintag_strategy).first.owner_sets rescue AdmintagStrategy::InitHash
+  end
+
+  def invite_desc
+    if strategy[:tag]
+      "每位好友有#{strategy[:invite_bounty]}元额外奖励"
+    else
+      "每日前10位徒弟有#{strategy[:invite_bounty]}元额外奖励"
+    end
   end
 end
