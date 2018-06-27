@@ -176,6 +176,9 @@ module API
               current_kol.income(current_kol.strategy[:first_task_bounty], 'first_task_bounty') if 
               alert = "您是#{current_kol.strategy[:tag]}的用户额外#{current_kol.strategy[:first_task_bounty]}元奖励已放入钱包"
             end
+            # 当前用户的tag存在，且邀请好友的奖励大于0时
+            current_kol.generate_invite_task_record if current_kol.strategy[:tag] && current_kol.strategy[:invite_bounty] > 0
+
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
