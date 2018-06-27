@@ -4,19 +4,16 @@ class Partners::DashboardController < Partners::BaseController
   end
   
   def income_data
-    
-    tab = params[:cur_tab]
-    
-    case tab
-    when "kol_7d"
-      _date = 8.days.ago
-    when "kol_30d"
-      _date = 31.days.ago
-    when "kol_all"
-      _date = Date.parse("1970-01-01")
-    else
-      _date = 2.days.ago
-    end
+  _date = case params[:cur_tab]
+          when "kol_7d"
+            8.days.ago
+          when "kol_30d"
+            31.days.ago
+          when "kol_all"
+            Date.parse("1970-01-01")
+          else
+            2.days.ago
+          end
     
     incomes = Statistics::KolIncome.find_incomes(@admintag.tag, _date.beginning_of_day, 1.days.ago.end_of_day)
 

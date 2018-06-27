@@ -55,7 +55,6 @@ class Kol < ActiveRecord::Base
   has_many :income_transactions,   -> {income_transaction}, :as => :account, :class => Transaction
   has_many :withdraw_transactions, -> {withdraw_transaction}, :as => :account, :class => Transaction
   has_many :expense_transactions, -> {expense_transaction}, :as => :account, :class => Transaction
-  
   has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
   after_create :create_campaign_invites_after_signup
@@ -415,11 +414,10 @@ class Kol < ActiveRecord::Base
   
   # 計算邀請朋有收入
   def inv_frd_income(date)
-    income = 0
-    count = 0
-    income = self.transactions.recent(date, date).where(:subject => 'invite_friend').sum('credits')
-    count = self.transactions.recent(date, date).where(:subject => 'invite_friend').count('id')
-    [income, count]
+    [
+      transactions.recent(date, date).subjects('invite_friend').sum(:credits),
+      transactions.recent(date, date).subjects('invite_friend').count
+    ]
   end
 
   # 最近7天的收入情况

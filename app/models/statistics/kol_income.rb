@@ -13,7 +13,7 @@ class Statistics::KolIncome < ActiveRecord::Base
       inv_frd_income, inv_frd_count     = kol.inv_frd_income(_excute_day)
       
       income = cpp_count_income + cpc_sum_income + cpt_task_income + inv_frd_income
-      count  = cpp_count_count + cpc_sum_count + cpt_task_count + inv_frd_count
+      count  = cpp_count_count  + cpc_sum_count  + cpt_task_count  + inv_frd_count
       
       if income > 0 || count > 0
         self.create(
@@ -35,11 +35,10 @@ class Statistics::KolIncome < ActiveRecord::Base
     end
   end
   
-  def self.find_incomes admintag, _start_date, _end_date
-    types = ['reg','cpc','inc']
+  def self.find_incomes(admintag, _start_date, _end_date)
     result = {}
     
-    types.each do |type|
+    ['reg','cpc','inc'].each do |type|
       rank = 1
       data = self.get_income(admintag, _start_date, _end_date, type)
       
@@ -47,30 +46,29 @@ class Statistics::KolIncome < ActiveRecord::Base
       data.each do |item|
         tmp["top#{rank}"] = {
           avatar: item.avatar_url,
-          name: item.name,
-          price: item.income,
+          name:   item.name,
+          price:  item.income,
         }
         rank += 1
       end
       result[type] = tmp
     end
     result
-    
   end
   
   def self.get_income admintag, _start_date, _end_date, type
-    cur_type_income = ""
-    cur_type_count = ""
+    cur_type_income, cur_type_count = "", ""
+
     case type
     when "reg"
       cur_type_income = "invite_frd_income"
-      cur_type_count = "invite_frd_count"
+      cur_type_count  = "invite_frd_count"
     when "cpc"
       cur_type_income = "cpc_income"
-      cur_type_count = "cpc_count"
+      cur_type_count  = "cpc_count"
     when "inc"
       cur_type_income = "day_of_income"
-      cur_type_count = "day_of_count"
+      cur_type_count  = "day_of_count"
     end
     self.find_by_sql("
     SELECT kols.name, kols.avatar_url, statistics_kol_incomes.kol_id,
