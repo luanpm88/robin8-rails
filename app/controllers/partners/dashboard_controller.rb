@@ -2,50 +2,31 @@ class Partners::DashboardController < Partners::BaseController
  
 	def index
   end
-
-  # 7 days winner
-  def chart1
-    winner = Statistics::KolIncome.admintag(@admintag.tag).recent(7.days.ago, 1.days.ago).order('day_of_income DESC').first
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: (winner.to_hash rescue {})
-      }
-    end
-  end
-
-  # 30 days winner
-  def chart2
-    winner = Statistics::KolIncome.admintag(@admintag.tag).recent(31.days.ago, 1.days.ago).order('day_of_income DESC').first
+  
+  def income_data
     
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: (winner.to_hash rescue {})
-      }
-    end
-  end
-
-  #historical winner
-  def chart3
-    kol = Kol.admintag(@admintag.tag).order('historical_income desc').first
-    res = {}
+    tab = params[:cur_tab]
     
-    res = {
-      name:       kol.name,
-      income:     kol.historical_income,
-      avatar_url: kol.avatar_url
-    } if kol
+    case tab
+    when "kol_7d"
+      _date = 8.days.ago
+    when "kol_30d"
+      _date = 31.days.ago
+    when "kol_all"
+      _date = Date.parse("1970-01-01")
+    else
+      _date = 2.days.ago
+    end
+    
+    incomes = Statistics::KolIncome.find_incomes(@admintag.tag, _date.beginning_of_day, 1.days.ago.end_of_day)
 
     respond_to do |format|
-      format.html
       format.json {
-        render json: res
+        render json: incomes
       }
     end
   end
-
+  
   #7 days users Growth
   def chart4
     _date = Date.parse(params[:date])

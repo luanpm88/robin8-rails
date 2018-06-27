@@ -288,6 +288,7 @@ Rails.application.routes.draw do
     get 'sign_out',   to: 'sessions#destroy'
     resources :dashboard , only: [:index] do
       collection do
+        get :income_data
         get :chart1
         get :chart2
         get :chart3

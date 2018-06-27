@@ -2,21 +2,206 @@
   .row {
     margin: 10px;
   }
-
+  .nav-tabs{
+      border-bottom: 1px solid #ddd;
+      margin: 0;
+  }
+  .tab-content{
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      border-radius: 0 0 5px 5px;
+      margin: 0;
+  }
 </style>
 <div class="row">
     
   <h3 style="padding-left: 15px;"><%= @admintag.tag %>  <%= t('partner.dashboard.kol_incomes') %></h3>
   <br />
-  <div class="col-md-4">
-    <%= render partial:  "chart1" %>
+  <div class="col-sm-12">
+    <ul id="kol-summary" class="nav nav-tabs nav-justified" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#kol_1d" aria-controls="kol_1d" data-toggle="tab" role="tab">
+            24H
+          </a>
+        </li>
+        <li role="presentation" class="">
+          <a href="#kol_1d" aria-controls="kol_7d" data-toggle="tab" role="tab">
+            7天
+          </a>
+        </li>
+        <li role="presentation" class="">
+          <a href="#kol_1d" aria-controls="kol_30d" data-toggle="tab">
+            30天
+          </a>
+        </li>
+        <li role="presentation" class="">
+          <a href="#kol_1d" aria-controls="kol_all" data-toggle="tab">
+            汇总
+          </a>
+        </li>
+        
+
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane fade in active" id="kol_1d">
+        <div class="row" style="margin: 0;padding: 10px 0;">
+          <!-- 邀请注册人数 -->
+          <div class="col-sm-4" style="">
+            <ul class="list-group">
+              <li class="list-group-item text-center">
+                <h3 style="margin-top: 5px; margin-bottom: 20px;">邀请注册人数</h3>
+                <div class="text-center">
+                  <%= image_tag("partners/user.png", alt: "", id: "reg_top1_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  <br />
+                </div>
+                <div class="winner-margin text-center">
+                    <h4 class="winner-name" id="reg_top1_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h4>
+                    <h3 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="reg_top1_price">0</span>
+                    </h3>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "reg_top2_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="reg_top2_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="reg_top2_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "reg_top3_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="reg_top3_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="reg_top3_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- 总文章点击数 -->
+          <div class="col-sm-4" style="">
+            <ul class="list-group">
+              <li class="list-group-item text-center">
+                <h3 style="margin-top: 5px; margin-bottom: 20px;">总文章点击数</h3>
+                <div class="text-center">
+                  <%= image_tag("partners/user.png", alt: "", id: "cpc_top1_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  <br />
+                </div>
+                <div class="winner-margin text-center">
+                    <h4 class="winner-name" id="cpc_top1_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h4>
+                    <h3 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="cpc_top1_price">0</span>
+                    </h3>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "cpc_top2_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="cpc_top2_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="cpc_top2_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "cpc_top3_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="cpc_top3_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="cpc_top3_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- 收益金额 -->
+          <div class="col-sm-4" style="">
+            <ul class="list-group">
+              <li class="list-group-item text-center">
+                <h3 style="margin-top: 5px; margin-bottom: 20px;">收益金额</h3>
+                <div class="text-center">
+                  <%= image_tag("partners/user.png", alt: "", id: "inc_top1_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  <br />
+                </div>
+                <div class="winner-margin text-center">
+                    <h4 class="winner-name" id="inc_top1_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h4>
+                    <h3 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="inc_top1_price">0</span>
+                    </h3>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "inc_top2_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="inc_top2_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="inc_top2_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row" style="margin: 0;">
+                  <div class="col-sm-4">
+                    <%= image_tag("partners/user.png", alt: "", id: "inc_top3_avatar", class: "img-circle img-responsive profile-img-max") %>
+                  </div>
+                  <div class="col-sm-8">
+                    <h5 class="winner-name" id="inc_top3_name">
+                      <%= t('partner.dashboard.error.msg') %>
+                    </h5>
+                    <h6 class="">
+                        <i style="font-size: 19px;" class="fa fa-jpy" aria-hidden="true"></i> <span id="inc_top3_price">0</span>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+        
+    </div>
   </div>
-  <div class="col-md-4">
-    <%= render partial: "chart2" %>
-  </div>
-  <div class="col-md-4">
-    <%= render partial: "chart3" %>
-  </div>
+  
 </div>
 <div class="row">
   <h3 style="padding-left: 15px;"><%= @admintag.tag %> <%= t('partner.dashboard.data_statistics') %></h3>
@@ -50,4 +235,98 @@
       $("#not-found"+id).removeClass("hide");
     }
   };
+  $('#kol-summary a').click(function(e){
+    e.preventDefault();
+    $(this).tab('show');
+  });
+  var imgSrc = $("#reg_top1_avatar").attr('src');
+  function arr_diff (a1, a2) {
+      var a = [], diff = [];
+
+      for (var i = 0; i < a1.length; i++) {
+          a[a1[i]] = true;
+      }
+
+      for (var i = 0; i < a2.length; i++) {
+          if (a[a2[i]]) {
+              delete a[a2[i]];
+          } else {
+              a[a2[i]] = true;
+          }
+      }
+
+      for (var k in a) {
+          diff.push(k);
+      }
+
+      return diff;
+  }
+  var reqData = function(tab){
+    
+    $.ajax({
+      url: "/partners/dashboard/income_data.json",
+      data: {
+        cur_tab: tab
+      }
+    })
+    .done(function(res){
+      $.each(res, function(cat_key, cat){
+        if(Object.keys(cat).length < 1){
+          defaultEle(cat_key)
+        }
+        $.each(cat, function(rank_key, rank){
+          if(Object.keys(cat).length < 3){
+            defaultEle(cat_key, Object.keys(cat))
+          }
+          $.each(rank, function(item_key, value){
+            var eleID = cat_key + '_' + rank_key + '_' + item_key;
+            switch(item_key){
+              case 'avatar':
+                $('#'+eleID).attr('src', value).on("error", function(){
+                  this.src = imgSrc;
+                });
+                break;
+              case 'name':
+                $('#'+eleID).text(value);
+                break;
+              case 'price':
+                value = value*1;
+                $('#'+eleID).text(value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+                break;
+            }
+          });
+        });
+      });
+    });
+  };
+  
+  var defaultEle = function(cat, rank_key=[]){
+    var items = ['avatar', 'name', 'price'];
+    var defRank = ['top1','top2','top3'];
+    
+    defRank = arr_diff(defRank, rank_key);
+    
+    $.each(defRank, function(index, rank){
+      $.each(items, function(key, v){
+        var eleID = cat + '_' + rank + '_' + v;
+        switch(v){
+          case 'avatar':
+            $('#'+eleID).attr('src', imgSrc);
+            break;
+          case 'name':
+            $('#'+eleID).text("<%= t('partner.dashboard.error.msg') %>");
+            break;
+          case 'price':
+            $('#'+eleID).text(0.00);
+            break;
+        }
+      });
+    });
+    
+  };
+  
+  $('a[data-toggle="tab"]').on('show.bs.tab', function(e){
+    reqData($(e.target).attr('aria-controls'));
+  });
+  reqData('kol_1d');
 </script>
