@@ -833,7 +833,7 @@ class Kol < ActiveRecord::Base
         ClubMember.create(club_id: club.id , kol_id: self.id)
       end
     end
-    trueinvite_bounty
+    true
   end
 
   def desc_friend_gains
