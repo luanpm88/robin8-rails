@@ -41,7 +41,7 @@ module API
 
           present :error, 0
           present :invite_count,  current_kol.children.recent(Time.now, Time.now).count 
-          present :invite_amount, current_kol.children.count * 2.0 + current_kol.friend_gains.sum(:credits)
+          present :invite_amount, current_kol.children.count * current_kol.strategy[:invite_bounty] + current_kol.friend_gains.sum(:credits)
           present :invite_code ,  invite_code.code
           present :is_show_newbie,current_kol.strategy[:tag] == 'Geometry'
           present :invite_desc,   current_kol.invite_desc
