@@ -2,7 +2,30 @@ class Partners::DashboardController < Partners::BaseController
  
 	def index
   end
+  
+  def income_data
+    
+    tab = params[:cur_tab]
+    
+    case tab
+    when "kol_7d"
+      _date = 8.days.ago
+    when "kol_30d"
+      _date = 31.days.ago
+    when "kol_all"
+      _date = Date.parse("1970-01-01")
+    else
+      _date = 2.days.ago
+    end
+    
+    incomes = Statistics::KolIncome.find_incomes(@admintag.tag, _date.beginning_of_day, 1.days.ago.end_of_day)
 
+    respond_to do |format|
+      format.json {
+        render json: incomes
+      }
+    end
+  end
   # 7 days winner
   def chart1
     winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 7.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
@@ -29,19 +52,19 @@ class Partners::DashboardController < Partners::BaseController
 
   #historical winner
   def chart3
-    kol = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).order('historical_income desc').first
-    res = {}
-    
-    res = {
-      name:       kol.name,
-      income:     kol.historical_income,
-      avatar_url: kol.avatar_url
-    } if kol
+    kols = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).order('historical_income desc').limit(3)
+#    res = {}
+#    
+#    res = {
+#      name:       kol.name,
+#      income:     kol.historical_income,
+#      avatar_url: kol.avatar_url
+#    } if kol
 
     respond_to do |format|
       format.html
       format.json {
-        render json: res
+        render json: (kols.to_hash rescue {})
       }
     end
   end
