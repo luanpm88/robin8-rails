@@ -78,9 +78,13 @@
     border-top: 2px solid #F4F5FA;
 }
 .profile-img-max{
+    width: 70px;
+    height: 70px;
     max-height: 70px;
     text-align: center;
     display: inline-block;
+    background: image_url('partners/user.png') no-repeat center;
+    background-size: cover;
 }
 .well.profile_view .btn-champions {
     color: #FFF;
