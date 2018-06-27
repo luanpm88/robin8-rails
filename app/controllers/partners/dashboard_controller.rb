@@ -26,49 +26,7 @@ class Partners::DashboardController < Partners::BaseController
       }
     end
   end
-  # 7 days winner
-  def chart1
-    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 7.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: (winner.to_hash rescue {})
-      }
-    end
-  end
-
-  # 30 days winner
-  def chart2
-    winner = Statistics::KolIncome.admintag(@admintag.tag).where(action_at: 31.days.ago.beginning_of_day..1.days.ago.end_of_day).order('day_of_income DESC').first
-    
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: (winner.to_hash rescue {})
-      }
-    end
-  end
-
-  #historical winner
-  def chart3
-    kols = Kol.joins(:admintags).where("admintags.tag=?", @admintag.tag).order('historical_income desc').limit(3)
-#    res = {}
-#    
-#    res = {
-#      name:       kol.name,
-#      income:     kol.historical_income,
-#      avatar_url: kol.avatar_url
-#    } if kol
-
-    respond_to do |format|
-      format.html
-      format.json {
-        render json: (kols.to_hash rescue {})
-      }
-    end
-  end
-
+  
   #7 days users Growth
   def chart4
     _date = Date.parse(params[:date])
