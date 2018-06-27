@@ -47,7 +47,7 @@ module API
             # 注册奖励
             if kol.strategy[:register_bounty] > 0
               kol.income(kol.strategy[:register_bounty], 'register_bounty') 
-              alert = "您是#{kol.strategy[:tag]}的用户额外#{kol.strategy[:register_bounty]}元奖励已放入钱包"
+              alert = "由于您是 #{kol.strategy[:tag]} 用户，注册赠送奖励#{kol.strategy[:register_bounty]}元"
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
@@ -121,7 +121,7 @@ module API
             # 注册奖励
             if kol.strategy[:register_bounty] > 0
               kol.income(kol.strategy[:register_bounty], 'register_bounty') 
-              alert = "您是#{kol.strategy[:tag]}的用户额外#{kol.strategy[:register_bounty]}元奖励已放入钱包"
+              alert = "由于您是 #{kol.strategy[:tag]} 用户，注册赠送奖励#{kol.strategy[:register_bounty]}元"
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
