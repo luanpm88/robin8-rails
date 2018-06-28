@@ -177,7 +177,11 @@ module API
               alert = "由于您是 #{current_kol.strategy[:tag]} 的用户，额外赠送奖励#{current_kol.strategy[:first_task_bounty]}元"
             end
             # 当前用户的tag存在，且邀请好友的奖励大于0时
-            current_kol.generate_invite_task_record if current_kol.strategy[:tag] && current_kol.strategy[:invite_bounty] > 0
+            if current_kol.strategy[:tag] && current_kol.strategy[:invite_bounty] > 0
+              current_kol.generate_invite_task_record
+              # 如果是点击型活动，将截图状态设置为通过
+              campaign_invite.update_columns(status: 'finished', img_status: 'passed', auto_check: true) if campaign.is_click_type?
+            end
 
             CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
