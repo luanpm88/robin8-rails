@@ -22,7 +22,7 @@ module Concerns
 
     def invite_friend_reward(k)
       task_record = self.task_records.invite_friend.where(invitees_id: k.id, status: 'active').first
-      task_record && self.invite_transactions.where(item_id: task_record.id).first ? 2.0 : 0
+      task_record && self.invite_transactions.where(item_id: task_record.id).first ? self.strategy[:invite_bounty] : 0
     end
 
     def had_complete_reward?

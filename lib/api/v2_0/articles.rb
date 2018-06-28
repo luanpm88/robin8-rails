@@ -7,7 +7,7 @@ module API
           authenticate!
         end
 
-        ORIGIN_ARRAY = Array.new(1, 0) + (0.01..0.1).step(0.01).collect{|ele| ele.round(2)}
+        ORIGIN_ARRAY = Array.new(20, 0) + (0.01..0.1).step(0.01).collect{|ele| ele.round(2)}
 
         params do
           requires :page, type: Integer

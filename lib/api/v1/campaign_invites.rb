@@ -174,7 +174,7 @@ module API
             alert = nil
             if current_kol.campaign_invites.count == 1 && current_kol.strategy[:first_task_bounty] > 0
               current_kol.income(current_kol.strategy[:first_task_bounty], 'first_task_bounty') if 
-              alert = "您是#{current_kol.strategy[:tag]}的用户额外#{current_kol.strategy[:first_task_bounty]}元奖励已放入钱包"
+              alert = "由于您是 #{current_kol.strategy[:tag]} 的用户，额外赠送奖励#{current_kol.strategy[:first_task_bounty]}元"
             end
             # 当前用户的tag存在，且邀请好友的奖励大于0时
             current_kol.generate_invite_task_record if current_kol.strategy[:tag] && current_kol.strategy[:invite_bounty] > 0
