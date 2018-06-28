@@ -59,6 +59,7 @@ class Campaign < ActiveRecord::Base
   has_many :brand_passed_applies, -> {where(status: 'brand_passed')}, :class_name => 'CampaignApply'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
+  has_many :wait_pass_invites, -> {where(screenshot: 'wait_pass')}, class_name: 'CampaignInvite'
   has_many :finish_need_check_invites, -> {where(:status => 'finished', :img_status => 'pending').where("screenshot is not null")}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :settled_invites, -> {where(:status => 'settled', :img_status => 'passed')}, :class_name => 'CampaignInvite'

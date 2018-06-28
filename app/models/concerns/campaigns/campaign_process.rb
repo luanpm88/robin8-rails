@@ -302,7 +302,9 @@ module Campaigns
       return if self.status != 'executed'
       
       #首先先付款给期间审核的kol, 剩下的邀请状态全设置为拒绝
+      self.wait_pass_invites.update_all({img_status: 'passed', auto_check: true}) if self.is_click_type?
       self.finish_need_check_invites.update_all({img_status: 'passed', auto_check: true}) unless self.is_invite_type?
+
       self.campaign_invites.should_reject.update_all({status: 'rejected', img_status: 'rejected', auto_check: true})
        
       settle_accounts_for_kol
