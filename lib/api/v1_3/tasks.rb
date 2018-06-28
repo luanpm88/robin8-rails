@@ -45,7 +45,7 @@ module API
           present :invite_code ,  invite_code.code
           present :is_show_newbie,current_kol.strategy[:tag] == 'Geometry'
           present :invite_desc,   current_kol.invite_desc
-          present :desc,          "徒弟通过活动收入的#{current_kol.strategy[:master_income_rate] * 100}%(收益四舍五入精确到小数点后两位,如0.012为0.01; 0.026为0.03), 收徒越多奖励越多,徒弟总数无上限。"
+          present :desc,          current_kol.master_desc 
         end
       end
     end

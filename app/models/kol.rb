@@ -876,4 +876,12 @@ class Kol < ActiveRecord::Base
       "每日前10位徒弟有#{strategy[:invite_bounty]}元额外奖励"
     end
   end
+
+  def master_desc
+    if strategy[:master_income_rate] > 0
+      "徒弟通过活动收入的#{(strategy[:master_income_rate] * 100).to_i}%(收益四舍五入精确到小数点后两位,如0.012为0.01; 0.026为0.03), 收徒越多奖励越多,徒弟总数无上限。"
+    else
+      ''
+    end
+  end
 end
