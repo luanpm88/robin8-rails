@@ -1,21 +1,55 @@
 <h3>
-  第三方合作价格配置
+  价格配置
   <%= link_to '新建第三方价格配置', new_marketing_dashboard_utilities_admintag_strategy_path, class: 'btn btn-primary pull-right' %>
 </h3>
 
 <hr>
 
 <div class="panel panel-default">
-  <div class="panel-heading">默认</div>
+  <h4 class="panel-heading">Robin8默认价格配置</h4>
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-4">活动单价比例：<%= show_percentage(AdmintagStrategy::InitHash[:unit_price_rate_for_kol]) %></div>
-      <div class="col-sm-4">师傅抽成比例：<%= show_percentage(AdmintagStrategy::InitHash[:master_income_rate]) %></div>
-      <div class="col-sm-4">邀请好友奖励：<%= AdmintagStrategy::InitHash[:invite_bounty] %>/元</div>
+      <div class="col-sm-2"><b>普通用户(Robin8)</b></div>
+      <div class="col-sm-2"><b>比例</b></div>
+      <div class="col-sm-2"><b>举例</b></div>
+    <div>
+  </div>
+  <br/>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-2">活动单价</div>
+      <div class="col-sm-2">100%</div>
+      <div class="col-sm-2">5元</div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">用户收益</div>
+      <div class="col-sm-2">60%</div>
+      <div class="col-sm-2">3元</div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">师傅分红</div>
+      <div class="col-sm-2">5%</div>
+      <div class="col-sm-2">0.15元</div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">邀请好友</div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2">2元</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">每日邀请好友奖励次数</div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2">10次</div>
     </div>
   </div>
 </div>
 
+<hr/>
+
+<h4 class="panel-heading">第三方合作价格配置</h4>
 <table class="table">
   <thead>
     <tr>
