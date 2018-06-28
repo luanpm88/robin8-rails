@@ -81,7 +81,7 @@ class Transaction < ActiveRecord::Base
       when RewardTask::CheckIn
         '签到'
       when RewardTask::InviteFriend
-        '邀请好友'
+        "#{account.strategy[:tag]}用户邀请好友"
       when RewardTask::CompleteInfo
         '完善资料'
       when RewardTask::FavorableComment
@@ -125,11 +125,11 @@ class Transaction < ActiveRecord::Base
       when 'percentage_on_admin'
         '管理员收益'
       when 'register_bounty'
-        '注册奖励'
+        "#{account.strategy[:tag]}用户的额外注册奖励"
       when 'invite_bounty_for_admin'
         '注册成功奖励管理员'
       when 'first_task_bounty'
-        '首次任务奖励'
+        "#{account.strategy[:tag]}用户的额外首单奖励"
     end
   end
 
@@ -156,7 +156,7 @@ class Transaction < ActiveRecord::Base
       when RewardTask::CheckIn
         '签到'
       when RewardTask::InviteFriend
-        '邀请好友'
+        "#{account.strategy[:tag]}用户邀请好友"
       when RewardTask::CompleteInfo
         '完善资料'
       when RewardTask::FavorableComment
@@ -200,11 +200,11 @@ class Transaction < ActiveRecord::Base
       when 'percentage_on_admin'
         '管理员的收益'
       when 'register_bounty'
-        '注册奖励'
+        "#{account.strategy[:tag]}用户的额外注册奖励"
       when 'invite_bounty_for_admin'
         '注册成功奖励管理员'
       when 'first_task_bounty'
-        '首次任务奖励'
+        "#{account.strategy[:tag]}用户的额外首单奖励"
     end
   end
 
