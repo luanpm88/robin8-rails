@@ -19,7 +19,10 @@ class TaskRecord < ActiveRecord::Base
     reward_task = RewardTask.find_by :task_type => self.task_type
     return if reward_task.blank?
     Rails.logger.transaction.info self.inspect
-    self.kol.income(reward_task.reward_amount, self.task_type, self )
+    case task_type
+    when 'invite_friend'
+      self.kol.income(kol.strategy[:invite_bounty], self.task_type, self )
+    end
   end
 
   #新的

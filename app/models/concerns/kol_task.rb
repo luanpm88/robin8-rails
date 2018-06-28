@@ -101,8 +101,8 @@ module Concerns
         inviter = invitation.inviter
         invitation.update!(status: 'completed', invitee_id: self.id, registered_at: Time.now)
         # 完成注册后，邀请人，被邀请人以及被邀请人的管理员都会得到相应的奖励
-        task_record = inviter.task_records.create(task_type: RewardTask::InviteFriend, reward_amount: self.strategy[:invite_bounty], status: 'active', invitees_id: self.id)
-        task_record.sync_to_transaction if inviter.today_invite_count <= inviter.strategy[:invites_max_count] && task_record.reward_amount > 0
+        task_record = inviter.task_records.create(task_type: RewardTask::InviteFriend, status: 'active', invitees_id: self.id)
+        task_record.sync_to_transaction if inviter.today_invite_count <= inviter.strategy[:invites_max_count] && inviter.strategy[:invite_bounty] > 0
       end
     end
 
