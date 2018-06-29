@@ -825,6 +825,7 @@ class Kol < ActiveRecord::Base
         admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
         unless self.admintags.include? admintag
           self.admintags << admintag
+          self.update_attributes(admin_id: admintag.admin.id) if admintag.admin
           CallbackGeometryWorker.perform_async(self.id) if code == "778888"
         end
       elsif invite_code.invite_type == "club_leader"
