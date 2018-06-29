@@ -218,6 +218,8 @@ class Transaction < ActiveRecord::Base
         then '冻结'
       when 'unfrozen'
         then '解冻'
+      when 'confiscate'
+        then '重复奖励扣除'
     end
   end
 
