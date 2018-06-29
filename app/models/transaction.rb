@@ -130,6 +130,8 @@ class Transaction < ActiveRecord::Base
         "admin额外奖励，新增用户（手机号：#{item.mobile_number}）奖励"
       when 'first_task_bounty'
         "#{account.strategy[:tag]}用户的额外首单奖励"
+      when 'confiscate'
+        '扣除同一活动重复奖励'
     end
   end
 
@@ -205,6 +207,8 @@ class Transaction < ActiveRecord::Base
         "admin额外奖励，新增用户（手机号：#{item.mobile_number}）奖励"
       when 'first_task_bounty'
         "#{account.strategy[:tag]}用户的额外首单奖励"
+      when 'confiscate'
+        '扣除同一活动重复奖励'
     end
   end
 
