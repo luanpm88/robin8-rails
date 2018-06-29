@@ -7,5 +7,9 @@ class Admintag < ActiveRecord::Base
 
   scope :select_tag, ->(tag){where(tag: tag)}
 
+  def admin
+  	kols.find_by(role: 'admin')
+  end
+
 
 end

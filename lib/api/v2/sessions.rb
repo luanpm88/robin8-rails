@@ -50,7 +50,7 @@ module API
               alert = "由于您是 #{kol.strategy[:tag]} 用户，注册赠送奖励#{kol.strategy[:register_bounty]}元"
             end
             # kol.admin奖励
-            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
           end
 
           present :error, 0
@@ -124,7 +124,7 @@ module API
               alert = "由于您是 #{kol.strategy[:tag]} 用户，注册赠送奖励#{kol.strategy[:register_bounty]}元"
             end
             # kol.admin奖励
-            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin') if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+            kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
 
           else
             kol = Kol.reg_or_sign_in(params, kol)

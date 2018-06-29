@@ -127,7 +127,7 @@ class Transaction < ActiveRecord::Base
       when 'register_bounty'
         "#{account.strategy[:tag]}用户的额外注册奖励"
       when 'invite_bounty_for_admin'
-        '注册成功奖励管理员'
+        "admin额外奖励，新增用户（手机号：#{item.mobile_number}）奖励"
       when 'first_task_bounty'
         "#{account.strategy[:tag]}用户的额外首单奖励"
     end
@@ -202,7 +202,7 @@ class Transaction < ActiveRecord::Base
       when 'register_bounty'
         "#{account.strategy[:tag]}用户的额外注册奖励"
       when 'invite_bounty_for_admin'
-        '注册成功奖励管理员'
+        "admin额外奖励，新增用户（手机号：#{item.mobile_number}）奖励"
       when 'first_task_bounty'
         "#{account.strategy[:tag]}用户的额外首单奖励"
     end
@@ -218,6 +218,8 @@ class Transaction < ActiveRecord::Base
         then '冻结'
       when 'unfrozen'
         then '解冻'
+      when 'confiscate'
+        then '重复奖励扣除'
     end
   end
 

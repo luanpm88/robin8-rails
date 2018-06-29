@@ -818,6 +818,9 @@ class Kol < ActiveRecord::Base
       RegisteredInvitation.create(mobile_number: self.mobile_number , inviter_id: invite_code.kol_id , status: "pending")
       # 受邀请人的admintags赋给受邀人
       self.admintags = invite_code.kol.admintags
+      # 如果邀请人是角色是管理员或邀请人管理员存在，than
+      self.update_attributes(admin_id: invite_code.kol_id)       if invite_code.kol.role == 'admin'
+      self.update_attributes(admin_id: invite_code.kol.admin_id) if invite_code.kol.admin
       true
     elsif code.size == 6
       invite_code = InviteCode.find_by(code: code)
@@ -825,6 +828,7 @@ class Kol < ActiveRecord::Base
         admintag = Admintag.find_or_create_by(tag: invite_code.invite_value)
         unless self.admintags.include? admintag
           self.admintags << admintag
+          self.update_attributes(admin_id: admintag.admin.id) if admintag.admin
           CallbackGeometryWorker.perform_async(self.id) if code == "778888"
         end
       elsif invite_code.invite_type == "club_leader"
