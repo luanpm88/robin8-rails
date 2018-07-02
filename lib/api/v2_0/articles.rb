@@ -111,7 +111,7 @@ module API
 
           current_kol.income(params[:red_money].to_f, 'red_money')
 
-          $redis.incrby 'elastic_article_red_money', (params[:stay_time].to_f * 100).to_i
+          $redis.incrby 'elastic_article_red_money', (params[:red_money].to_f * 100).to_i
 
           present :error, 0
           present :alert, '操作成功' 
