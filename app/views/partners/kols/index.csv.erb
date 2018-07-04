@@ -3,7 +3,7 @@
   CSV.generate do |csv|
     csv << cols
     @kols.each do |k|
-      csv << [k.name, k.mobile_number, k.created_at.to_s(:db), k.parent.try(:mobile_number), k.campaign_invites.count, k.campaign_shows.valid.count, k.campaign_shows.count, k.avail_amount, k.historical_income]
+      csv << [k.name, k.mobile_number, k.created_at, k.parent.try(:mobile_number), k.campaign_invites.count, k.campaign_shows.valid.count, k.campaign_shows.count, k.avail_amount, k.historical_income]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
 -%>
