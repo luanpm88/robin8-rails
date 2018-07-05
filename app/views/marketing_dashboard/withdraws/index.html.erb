@@ -222,12 +222,13 @@
 </table>
 
 <% if params[:action] == 'pending' %>
-<%= link_to '批量审核', 'javascript:void(0)', "data-action" => 'batch_check', "data-confirm" => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary '  %>
+<%= link_to '批量审核', 'javascript:void(0)', "data-action" => 'batch_check', :class => 'batch_agree batch btn btn-primary '  %>
+<%= link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', :class => 'batch_reject batch btn btn-danger'  %>
 <% elsif params[:action] == 'checked' %>
-<%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', "data-confirm" => '确定批量通过吗？', :class => 'batch_agree batch btn btn-primary ' %>
+<%= link_to '批量通过', 'javascript:void(0)', "data-action" => 'batch_agree', :class => 'batch_agree batch btn btn-primary ' %>
 <% end %>
 
-<% link_to '批量拒绝', 'javascript:void(0)', "data-action" => 'batch_reject', "data-confirm" => '确定批量通过吗？', :class => 'batch_reject batch btn btn-danger'  %>
+
 <%= link_to '导出CSV', request.path + ".csv", :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
 
 <div class="pull-right">
@@ -263,16 +264,19 @@
           batch_ids += ","
         });
         console.log(batch_ids);
-        $.post("/marketing_dashboard/withdraws/batch_handle", {"batch_ids": batch_ids, "handle_action": handle_action},function(data){
-          if(data.status == 'error'){
-            alert(data.text);
-          }else if (data.status == 'ok'){
-            alert("操作成功");
-            location.reload();
-          }
-        })
+        if (confirm('确定此操作?')){
+          $.post("/marketing_dashboard/withdraws/batch_handle", {"batch_ids": batch_ids, "handle_action": handle_action},function(data){
+            if(data.status == 'error'){
+              alert(data.text);
+            }else if (data.status == 'ok'){
+              alert("操作成功");
+              location.reload();
+            }
+          })
+        }else{}
       }else{
         alert("请选择要批量操作的提现申请");
+        return false;
       }
     })
   })
