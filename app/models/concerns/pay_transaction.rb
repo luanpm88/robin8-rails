@@ -114,7 +114,7 @@ module Concerns
           end
         end
         puts "Decreasing #{credits}-------------------------------------------------------------------------------------------------------------"
-        self.decrement!(:amount, credits)
+        self.decrement!(:amount, credits > self.amount ? self.amount : credits)
         transaction = build_transaction(credits, subject, 'confiscate', item , opposite)
         transaction.save!
         #end
