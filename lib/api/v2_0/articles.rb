@@ -93,7 +93,7 @@ module API
           end
 
           $redis.incr 'elastic_article_show_count'
-          $redis.incrby 'elastic_article_show_time', params[:stay_time]
+          $redis.incrby 'elastic_article_show_time', params[:stay_time].to_i
 
           current_kol.redis_elastic_reads_count.increment
           current_kol.redis_elastic_stay_time.incr(eaa.stay_time)
