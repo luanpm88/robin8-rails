@@ -1,10 +1,9 @@
-<% cols = %w(昵称 手机号 注册时间 已接活动数 有效点击数 总点击数 可提现金额 历史净收益) %>
+<% cols = %w(昵称 手机号 注册时间 师傅手机号 已接活动数 有效点击数 总点击数 可提现金额 历史净收益) %>
 <%=
   CSV.generate do |csv|
     csv << cols
     @kols.each do |k|
-      csv << [k.name, k.mobile_number, k.created_at, k.campaign_invites.count, k.campaign_shows.valid.count,
-              k.campaign_shows.count, k.avail_amount, k.historical_income]
+      csv << [k.name, k.mobile_number, k.created_at, k.parent.try(:mobile_number), k.campaign_invites.count, k.campaign_shows.valid.count, k.campaign_shows.count, k.avail_amount, k.historical_income]
     end
   end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
 -%>

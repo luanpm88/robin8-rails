@@ -36,6 +36,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
 
+    <link rel="stylesheet" href="//cdn.bootcss.com/Swiper/4.3.0/css/swiper.min.css" />
     <style>
       * {
         box-sizing: border-box;
@@ -57,16 +58,20 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-size: cover;
-        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-repeat: repeat-y;
+        background-position: center top;
         z-index: -1;
       }
       .container {
         display: block;
         width: 100%;
         height: 100%;
-        padding: 15px;
         position: absolute;
+
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: center top;
       }
       .container:after {
         content: "";
@@ -74,57 +79,91 @@
         display: block;
       }
 
-      .ft-wrapper {
-        position: fixed;
-        width: 100%;
-        max-width: 430px;
-        height: 240px;
-        top: 270px;
+      .container .invite-logo {
+        position: absolute;
+        top: 3%;
         left: 50%;
-        padding: 15px 35px;
         transform: translateX(-50%);
         -webkit-transform: translateX(-50%);
+        width: 27%;
+      }
+
+      .container .invite-title {
+        position: absolute;
+        z-index: 1;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+        width: 63%;
+      }
+
+      .ft-container {
+        position: absolute;
+        bottom: 18%;
+        left: 0;
+        width: 100%;
+      }
+      .invite-gift-img {
+        position: absolute;
+        z-index: 0;
+        width: 80%;
+        top: -46%;
+        left: 50%;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+      }
+
+      .ft-wrapper {
+        position: relative;
+        z-index: 1;
+        width: 91.5%;
+        height: 240px;
+        margin: 0 auto;
+        padding: 20px 26px;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 24px 0px rgba(245, 101, 19, 0.57);
+        background-color: rgb(255, 255, 255);
       }
 
       .ft-wrapper .reg-bt {
         width: 100%;
         position: relative;
-        margin-top: 20px;
       }
       .reg-bt button {
         display: block;
         width: 100%;
-        height: 42px;
-        color: #fff;
-        font-size: 15px;
-        line-height: 42px;
-        background-color: #2dcad0;
+        height: 50px;
+        line-height: 50px;
+        margin: 0 auto;
+        border: none;
+        border-radius: 10px;
         text-align: center;
         text-decoration: none;
-        border: 0;
-        border-radius: 5px;
-        margin: 0 auto;
+        font-size: 20px;
+        color: #fff;
+        background-color: #ef4f31;
       }
 
       .ft-wrapper .f-field {
         position: relative;
         width: 100%;
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.1);
-        margin-top: 1px;
-        padding: 5px 15px 5px 60px;
+        /*height: 50px;*/
+        border: none;
+        margin-bottom: 14px;
       }
       .ft-wrapper .f-field.f-with-req {
-        padding-right: 105px;
+        padding-right: 100px;
       }
       .ft-wrapper .f-field input {
-        background-color: transparent;
-        border: 0;
-        line-height: 40px;
-        height: 40px;
         display: block;
         width: 100%;
-        color: #fff;
+        height: 50px;
+        line-height: 48px;
+        padding: 5px 10px;
+        border: 1px solid #ef4f31;
+        border-radius: 10px;
+        background-color: #fff;
         font-size: 15px;
         letter-spacing: 1px;
       }
@@ -146,25 +185,25 @@
       }
       .f-btn-req {
         position: absolute;
-        top: 9px;
-        right: 9px;
+        top: 0;
+        right: 0;
         display: block;
         width: 90px;
-        height: 32px;
+        height: 50px;
         color: #fff;
         font-size: 14px;
-        line-height: 32px;
-        background-color: #2dcad0;
+        line-height: 50px;
+        background-color: #ef4f31;
         text-align: center;
         text-decoration: none;
         border: 0;
-        border-radius: 5px;
+        border-radius: 10px;
       }
       .f-btn-req:hover,
       .f-btn-req:focus,
       .reg-bt button:hover,
       .reg-bt button:focus {
-        background-color: #10777b;
+        background-color: #c03f27;
       }
       .f-error {
         text-align: center;
@@ -178,10 +217,50 @@
         color: #1bb120;
         margin-top: 8px;
       }
+
+      .invite-foot-info {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 15px;
+        color: #ffe4da;
+      }
+
+      .invite-loops-feedback {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 36px;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, .1);
+      }
+      .invite-loops-feedback .swiper-container {
+        height: 36px;
+      }
+      .invite-loops-feedback .item {
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        font-size: 12px;
+        color: #ffe4da;
+      }
+
+      @media only screen and (device-width:375px) and (device-height:667px) {
+        .ft-container {
+          bottom: 16%;
+        }
+        .invite-gift-img {
+          top: -40%;
+        }
+      }
     </style>
 
     <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
     <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/Swiper/4.3.0/js/swiper.min.js"></script>
     <script type="text/javascript">
       wx.config({
           debug: false,
@@ -217,156 +296,182 @@
     </script>
   </head>
   <body>
-    <div class="bg" style="background-image: url(<%= asset_url("invite-bg-02.jpg") %>)"></div>
-    <div class="container">
-      <!--
-      <div class="logo">
-        <%= image_tag "logo-sd.png" %>
-      </div>
-      <div class="ft-wrapper">
-        <div class="feature">
-          <h3>你，比想象中更有价值</h3>
-          <p>用您的社交账号赚钱</p>
-          <a class="btn" href="/download_invitation?inviter_id=<%= params[:inviter_id] %>&redirect_url=http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
-            立即下载
-          </a>
+    <div class="bg" style="background-image: url(<%= asset_url("page/invite/bg_r.jpg") %>)"></div>
+    <div class="container" style="background-image: url(<%= asset_url("page/invite/bg.jpg") %>)">
+      <%= image_tag 'page/invite/logo.png', alt: 'logo', class: 'invite-logo' %>
+      <%= image_tag 'page/invite/title.png', alt: '分享文章拿现金奖励', class: 'invite-title' %>
+
+      <div class="ft-container">
+        <%= image_tag 'page/invite/gift.png', alt: '', class: 'invite-gift-img' %>
+        <div class="ft-wrapper">
+          <%= form_for RegisteredInvitation.new, url: registered_invitations_path do |f| %>
+            <div class="f-field">
+              <!-- <span class="f-icon"><%= image_tag "message.png" %></span> -->
+              <%= f.text_field :mobile_number, id: "mobileNumber", placeholder: "请输入您的手机号" %>
+            </div>
+            <div class="f-field f-with-req">
+              <!-- <span class="f-icon"><%= image_tag "email.png" %></span> -->
+              <%= f.text_field :sms_code, id: "smsCode", placeholder: "请输入验证码" %>
+              <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
+            </div>
+            <%= f.hidden_field :invite_code, id: "inviteCode", value: params[:inviter_id] %>
+            <div class="reg-bt">
+              <button id="submit" type="submit">免费注册即可领取红包</button>
+            </div>
+            <div class="f-error"></div>
+            <div class="f-info"></div>
+          <% end %>
         </div>
       </div>
-      -->
-      <div class="ft-wrapper">
-        <%= form_for RegisteredInvitation.new, url: registered_invitations_path do |f| %>
-          <div class="f-field f-with-req">
-            <span class="f-icon"><%= image_tag "message.png" %></span>
-            <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
-            <%= f.text_field :mobile_number, id: "mobileNumber", placeholder: "请填写您的手机号" %>
+
+
+
+      <div class="invite-foot-info">下载APP天天做活动赚钱,现金奖励拿不停</div>
+
+      <div class="invite-loops-feedback">
+        <div class="swiper-container" id="invite_loops_feedback">
+          <div class="list swiper-wrapper">
+            <div class="item swiper-slide">133****7865提现成功66元 1分钟前</div>
+            <div class="item swiper-slide">139****3334提现成功57元 1分钟前</div>
+            <div class="item swiper-slide">188****9487提现成功50元 2分钟前</div>
+            <div class="item swiper-slide">156****4395提现成功53元 4分钟前</div>
+            <div class="item swiper-slide">133****2045提现成功62元 5分钟前</div>
+            <div class="item swiper-slide">189****6803提现成功50元 7分钟前</div>
+            <div class="item swiper-slide">173****0185提现成功60元 8分钟前</div>
+            <div class="item swiper-slide">138****4892提现成功50元 11分钟前</div>
+            <div class="item swiper-slide">155****6938提现成功55元 11分钟前</div>
+            <div class="item swiper-slide">188****3242提现成功85元 12分钟前</div>
           </div>
-          <div class="f-field">
-            <span class="f-icon"><%= image_tag "email.png" %></span>
-            <%= f.text_field :sms_code, id: "smsCode" %>
-          </div>
-          <%= f.hidden_field :invite_code, id: "inviteCode", value: params[:inviter_id] %>
-          <div class="reg-bt">
-            <button id="submit" type="submit">立即体验</button>
-          </div>
-          <div class="f-error"></div>
-          <div class="f-info"></div>
-        <% end %>
+        </div>
       </div>
     </div>
 
     <script type="text/javascript">
-      var smsUrl = "<%= sms_registered_invitations_path %>";
-      var createUrl = "<%= registered_invitations_path %>";
-      var smsBtn = $("#request-sms");
-      var submitBtn = $("#submit");
-      var remainingNumber = smsBtn.data("remaining");
-      var errorAlert = $(".f-error");
-      var infoAlert = $(".f-info");
+      $(document).ready(function() {
+        var smsUrl = "<%= sms_registered_invitations_path %>";
+        var createUrl = "<%= registered_invitations_path %>";
+        var smsBtn = $("#request-sms");
+        var submitBtn = $("#submit");
+        var remainingNumber = smsBtn.data("remaining");
+        var errorAlert = $(".f-error");
+        var infoAlert = $(".f-info");
 
-      var smsTimeCounter = (function(element) {
-        var counter, countNumber;
+        var smsTimeCounter = (function(element) {
+          var counter, countNumber;
 
-        return {
-          run: function(number) {
-            if (!!counter) return;
+          return {
+            run: function(number) {
+              if (!!counter) return;
 
-            countNumber = number || 60;
-            element.data("txt", element.html());
-            element.attr('disabled', true);
+              countNumber = number || 60;
+              element.data("txt", element.html());
+              element.attr('disabled', true);
 
-            counter = setInterval(function() {
-              element.html(countNumber + " (秒)");
-              countNumber -= 1;
-              if (countNumber < 0) {
-                clearInterval(counter);
-                counter = null;
-                element.html(element.data("txt"));
-                element.attr('disabled', false);
-              }
-            }, 1000);
+              counter = setInterval(function() {
+                element.html(countNumber + " (秒)");
+                countNumber -= 1;
+                if (countNumber < 0) {
+                  clearInterval(counter);
+                  counter = null;
+                  element.html(element.data("txt"));
+                  element.attr('disabled', false);
+                }
+              }, 1000);
+            }
           }
+        })(smsBtn);
+
+        if (remainingNumber) {
+          smsTimeCounter.run(remainingNumber);
         }
-      })(smsBtn);
 
-      if (remainingNumber) {
-        smsTimeCounter.run(remainingNumber);
-      }
+        smsBtn.click(function() {
+          var mobileNumber = $("#mobileNumber").val();
 
-      smsBtn.click(function() {
-        var mobileNumber = $("#mobileNumber").val();
+          if (!!smsBtn.attr('disabled'))
+              return false;
 
-        if (!!smsBtn.attr('disabled'))
-            return false;
-
-        smsBtn.attr('disabled', true);
-        $.ajax({
-          method: 'POST',
-          url: smsUrl,
-          data: {
-            'mobile_number': mobileNumber
-          },
-          beforeSend: function(xhr){
-            var token = $('meta[name="csrf-token"]').attr('content');
-            xhr.setRequestHeader('X-CSRF-Token', token);
-          }
-        }).done(function(data){
-          if (!!data.error) {
-            errorAlert.html(data.error).fadeIn();
-            errorAlert.delay(3000).fadeOut()
+          smsBtn.attr('disabled', true);
+          $.ajax({
+            method: 'POST',
+            url: smsUrl,
+            data: {
+              'mobile_number': mobileNumber
+            },
+            beforeSend: function(xhr){
+              var token = $('meta[name="csrf-token"]').attr('content');
+              xhr.setRequestHeader('X-CSRF-Token', token);
+            }
+          }).done(function(data){
+            if (!!data.error) {
+              errorAlert.html(data.error).fadeIn();
+              errorAlert.delay(3000).fadeOut()
+              smsBtn.attr('disabled', false);
+            } else {
+              infoAlert.html("短信验证码发送成功").fadeIn();
+              infoAlert.delay(3000).fadeOut()
+              smsTimeCounter.run();
+            }
+          }).fail(function(xhr, status) {
+            errorAlert.html("发生错误了，请重新尝试").fadeIn();
+            errorAlert.delay(3000).fadeOut();
             smsBtn.attr('disabled', false);
-          } else {
-            infoAlert.html("短信验证码发送成功").fadeIn();
-            infoAlert.delay(3000).fadeOut()
-            smsTimeCounter.run();
-          }
-        }).fail(function(xhr, status) {
-          errorAlert.html("发生错误了，请重新尝试").fadeIn();
-          errorAlert.delay(3000).fadeOut();
-          smsBtn.attr('disabled', false);
-        });
-      });
-
-      $("form").submit(function(event) {
-        var mobileNumber = $("#mobileNumber").val();
-        var inviteCode = $("#inviteCode").val();
-        var smsCode = $("#smsCode").val();
-
-        if (!!submitBtn.attr('disabled'))
-            return false;
-
-        submitBtn.attr('disabled', true);
-        $.ajax({
-          method: 'POST',
-          url: createUrl,
-          data: {
-            'mobile_number': mobileNumber,
-            'invite_code': inviteCode,
-            'sms_code': smsCode
-          },
-          beforeSend: function(xhr){
-            var token = $('meta[name="csrf-token"]').attr('content');
-            xhr.setRequestHeader('X-CSRF-Token', token);
-          }
-        }).done(function(data){
-          if (!!data.error) {
-            errorAlert.html(data.error).fadeIn();
-            errorAlert.delay(3000).fadeOut()
-          } else {
-            infoAlert.html("成功接受邀请，即将开始下载 Robin8 ...").fadeIn();
-            infoAlert.delay(3000).fadeOut();
-            window.location.href = data.url;
-          }
-          submitBtn.attr('disabled', false);
-        }).fail(function(xhr, status) {
-          errorAlert.html("发生错误了，请重新尝试").fadeIn();
-          errorAlert.delay(3000).fadeOut();
-          submitBtn.attr('disabled', false);
+          });
         });
 
-        event.preventDefault();
-        return false;
-      });
+        $("form").submit(function(event) {
+          var mobileNumber = $("#mobileNumber").val();
+          var inviteCode = $("#inviteCode").val();
+          var smsCode = $("#smsCode").val();
 
+          if (!!submitBtn.attr('disabled'))
+              return false;
+
+          submitBtn.attr('disabled', true);
+          $.ajax({
+            method: 'POST',
+            url: createUrl,
+            data: {
+              'mobile_number': mobileNumber,
+              'invite_code': inviteCode,
+              'sms_code': smsCode
+            },
+            beforeSend: function(xhr){
+              var token = $('meta[name="csrf-token"]').attr('content');
+              xhr.setRequestHeader('X-CSRF-Token', token);
+            }
+          }).done(function(data){
+            if (!!data.error) {
+              errorAlert.html(data.error).fadeIn();
+              errorAlert.delay(3000).fadeOut()
+            } else {
+              infoAlert.html("成功接受邀请，即将开始下载 Robin8 ...").fadeIn();
+              infoAlert.delay(3000).fadeOut();
+              window.location.href = data.url;
+            }
+            submitBtn.attr('disabled', false);
+          }).fail(function(xhr, status) {
+            errorAlert.html("发生错误了，请重新尝试").fadeIn();
+            errorAlert.delay(3000).fadeOut();
+            submitBtn.attr('disabled', false);
+          });
+
+          event.preventDefault();
+          return false;
+        });
+
+        var invite_loops_feedback = new Swiper('#invite_loops_feedback', {
+          direction: 'vertical',
+          speed: 1000,
+          slidesPerView: 1,
+          spaceBetween: 0,
+          loop: true,
+          autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+          }
+        });
+      });
     </script>
 
   </body>
