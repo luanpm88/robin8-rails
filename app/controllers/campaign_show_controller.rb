@@ -13,7 +13,7 @@ class CampaignShowController < ApplicationController
       end
     else
       Rails.logger.info "------referer:#{request.referer}"
-      Rails.cache.write("visit_url_#{cookies[:_robin8_visitor]}", request.url)
+      $redis.set("visit_url_#{cookies[:_robin8_visitor]}", request.url)
       # Includes invitation which were soft-deleted after campaign has ended
       campaign_invite = CampaignInvite.unscoped.find params[:id]
       if campaign_invite.campaign.deadline < Time.now.ago(10.days)
@@ -38,7 +38,7 @@ class CampaignShowController < ApplicationController
     end
 
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
-    visit_url = Rails.cache.read("visit_url_#{cookies[:_robin8_visitor]}") || request.url
+    visit_url = $redis.get("visit_url_#{cookies[:_robin8_visitor]}") || request.url
     Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} ---visit_url:#{visit_url}--- #{params[:uuid]} ------ #{request.remote_ip}"
     if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign(uuid_params, openid)
