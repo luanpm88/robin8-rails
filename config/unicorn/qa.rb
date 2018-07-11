@@ -27,6 +27,8 @@ before_exec do |_|
   ENV["BUNDLE_GEMFILE"] = File.join(app_root, 'Gemfile')
 end
 
+timeout 180
+
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
