@@ -22,9 +22,8 @@ class ElasticArticleExtend
   def self.get_new
   	res = client.search index: 'weibo_post_v4',
 												body: {
-													size:    1,
-													_source: ["id", "text", "title", "biz_name"]
-													sort:    [{post_date: {order: 'desc'}}]
+													size: 1,
+													sort: [{post_date: {order: 'desc'}}]
 												}
 
     res['hits']['hits'].collect{|t| t["_source"]}[0]['post_id']
