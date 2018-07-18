@@ -12,7 +12,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
                    Campaign.all
                  end.realable
 
-    @q = @campaigns.includes(:manual_campaign_targets, :campaign_invites, :valid_invites, :settled_invites, :campaign_targets).ransack(params[:q])
+    @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC')
 
     respond_to do |format|
