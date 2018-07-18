@@ -10,7 +10,7 @@ class ElasticArticleExtend
   def self.client
     @@client = 	Elasticsearch::Client.new({
     							hosts: Host, 
-    							log: true,
+    							log: false,
     							transport_options: {headers: {'Content-Type' => 'application/json'}}
     						})
   end

@@ -261,6 +261,7 @@ Rails.application.routes.draw do
     resources :elastic_articles, only: [:index] do
       collection do
         get :kols
+        get :kols_red_money
       end
     end
 
