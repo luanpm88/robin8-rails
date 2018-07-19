@@ -44,7 +44,12 @@ module API
           requires :post_id,  type: String
         end
         get 'recommends' do
-          res = ElasticArticleExtend.recommend_by_tag(params[:tag], params[:post_id])
+          post_id = $redis.get("elastic_articles_recommends_#{current_kol.id}")
+          post_id = params[:post_id] unless post_id
+          
+          res = ElasticArticleExtend.recommend_by_tag(params[:tag], post_id)
+
+          $redis.setex("elastic_articles_recommends_#{current_kol.id}", 7200, res.last['post_id'])
 
           present :error, 0
           present :list, res, with: API::V2_0::Entities::InfluenceEntities::Articles, my_elastic_articles: my_elastic_articles(res.collect{|ele| ele['post_id']})

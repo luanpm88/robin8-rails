@@ -127,8 +127,8 @@ class ElasticArticleExtend
 							}
 
 		_sort = [
-							{comments: {order: 'desc'}},
-							{post_date: {order: 'desc'}}
+							{post_date: {order: 'desc'}},
+							{comments:  {order: 'desc'}}	
 						]
 								
 		res = client.search index: 'weibo_post_v4',
