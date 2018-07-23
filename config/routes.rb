@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get 'campaign_share' => "campaign_show#share" #无法访问
   get 'read_hot_item' => 'commons#read_hot_item' #无法访问
   get 'commons/material' =>  'commons#material' #无法访问
+  get '/PtVJevFvqY.txt' => 'pages#index'
 
 
   get "cps_articles/:id" => "cps_articles#show" #是图文，链接到京东

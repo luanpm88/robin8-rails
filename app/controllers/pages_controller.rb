@@ -3,6 +3,10 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   # before_action :authenticate_kol!, only: [:withdraw_apply]
 
+  def index
+    render :layout => false
+  end
+
   def set_locale
     unless params[:locale].blank?
       someone = current_user
