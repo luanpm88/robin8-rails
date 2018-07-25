@@ -12,13 +12,15 @@ module API
           requires :password, type: String
         end
         post 'apply_open' do
-
+          result = PMES.gen_e_wallet(password)
+          token = JSON.parse(result)['token']
+          current_kol.e_wallet_account(token: token)
         end
 
         params do 
           requires :token, type: String
         end
-        get 'info' do 
+        get 'info' do
         end
 
         params do 
