@@ -1,0 +1,41 @@
+<h3>
+  品牌主策略列表
+  <%= link_to "创建品牌主策略", new_marketing_dashboard_e_wallets_promotion_path, class: "btn btn-primary pull-right" %>
+</h3>
+
+<h5><%= devise_error_messages! %></h5>
+
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>策略ID</th>
+      <th>策略标题</th>
+      <th>策略区间（最低～最高）</th>
+      <th>策略开始时间</th>
+      <th>策略结束时间</th>
+      <th>策略方式</th>
+      <th>策略奖励</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @promotions.each do |promotion| %>
+      <tr>
+        <td>
+          <%= link_to promotion.id, marketing_dashboard_e_wallets_promotion_path(promotion.id), :target => "_blank"  %>
+        </td>
+        <td><%= promotion.title%></td>
+        <td><%= promotion.min_amount %>~<%= promotion.max_amount %></td>
+        <td><%= promotion.start_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+        <td><%= promotion.end_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+        <td><%= promotion.promotion_way %></td>
+        <td><%= promotion.extra_percentage %>%</td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @promotions, renderer: BootstrapPagination::Rails  %>

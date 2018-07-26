@@ -265,6 +265,10 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :e_wallets do 
+      resources 'promotions'
+    end
+
 
 
     namespace :utilities do
