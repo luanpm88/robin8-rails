@@ -286,6 +286,7 @@ Rails.application.routes.draw do
         collection do
           get :ios_detail
           get :invite_switch
+          get :vest_bag_switch
           put :update_redis_value
         end
       end
