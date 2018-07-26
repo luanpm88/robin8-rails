@@ -10,7 +10,7 @@
 
   <tbody>
     <tr>
-      <td>邀请码开关</td>
+      <td>马夹包开关</td>
       <td>
           <input class='data-value' type="hidden" value="<%= $redis.get('vest_bag_switch') == '1' ? '0' : '1' %>">
           <%= link_to $redis.get('vest_bag_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vest_bag_switch' %>
