@@ -32,7 +32,9 @@
         <td><%= promotion.end_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
         <td><%= promotion.promotion_way %></td>
         <td><%= promotion.extra_percentage %>%</td>
-        <td></td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_e_wallets_promotion_path(promotion) %>
+        </td>
       </tr>
     <% end %>
   </tbody>
