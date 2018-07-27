@@ -5,7 +5,7 @@ class MarketingDashboard::Utilities::RedisExtendsController < MarketingDashboard
   def invite_switch
   end
 
-  def vest_bag_switch
+  def vest_bag_detail
   end
 
   def update_redis_value

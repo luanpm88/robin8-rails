@@ -10,10 +10,10 @@
 
   <tbody>
     <tr>
-      <td>马夹包开关</td>
+      <td>马夹包版本</td>
       <td>
-          <input class='data-value' type="hidden" value="<%= $redis.get('vest_bag_switch') == '1' ? '0' : '1' %>">
-          <%= link_to $redis.get('vest_bag_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vest_bag_switch' %>
+          <%= text_field_tag :vest_bag_detail, $redis.get('vest_bag_detail'), :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vest_bag_detail', confirm: "确定更改吗？" %>
       </td>
     </tr>
 </table>

@@ -16,7 +16,7 @@ module API
           present :brand_campany_name, current_kol.user.try(:campany_name)
           present :is_show_invite_code, $redis.get('invite_switch')
           present :logo, current_kol.strategy[:logo]
-          present :is_show_vb, $redis.get('vest_bag_switch')
+          present :vest_bag_detail, $redis.get('vest_bag_detail')
         end
 
         params do
