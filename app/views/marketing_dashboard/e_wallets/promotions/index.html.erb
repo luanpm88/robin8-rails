@@ -72,6 +72,7 @@
         <td><%= promotion.extra_percentage %>%</td>
         <td>
           <%= link_to "编辑", edit_marketing_dashboard_e_wallets_promotion_path(promotion) %> |
+          <%= link_to "下架", modify_state_marketing_dashboard_e_wallets_promotion_path(promotion),  method: :put %> |
           <%= link_to "删除", marketing_dashboard_e_wallets_promotion_path(promotion), method: :delete, action: "destroy", data: { confirm: '确定要删除吗?' } %>
         </td>
       </tr>

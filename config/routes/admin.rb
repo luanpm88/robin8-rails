@@ -266,7 +266,11 @@ Rails.application.routes.draw do
     end
 
     namespace :e_wallets do 
-      resources 'promotions'
+      resources 'promotions' do
+        member do 
+          put :modify_state
+        end
+      end
     end
 
 

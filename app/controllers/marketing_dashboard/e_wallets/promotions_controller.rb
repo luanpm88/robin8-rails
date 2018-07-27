@@ -1,5 +1,5 @@
 class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::BaseController
-  before_filter :get_promotion, only: [:edit, :update, :show, :destroy]
+  before_filter :get_promotion, only: [:edit, :update, :show, :destroy, :modify_state]
 
   def index
     @promotions = EWallet::Promotion.all
@@ -41,6 +41,15 @@ class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::B
   def destroy
     @promotion.destroy
     redirect_to :action => :index
+  end
+
+  def modify_state
+    if @promotion.update_attributes!(state: 0)
+      flash[:notice] = '下架成功'
+    else
+      flash[:alert] = '下架失败'
+    end
+    redirect_to marketing_dashboard_e_wallets_promotions_path
   end
 
 
