@@ -10,28 +10,28 @@
   <div class="form-group">
     <label for="inputPassword3" class="col-sm-3 control-label">最低价格</label>
     <div class="col-sm-8">
-      <%= f.number_field :min_amount, :class => "form-control" %>
+      <%= f.text_field :min_amount, :class => "form-control" %>
     </div>
   </div>
 
   <div class="form-group">
     <label for="inputPassword3" class="col-sm-3 control-label">最高价格</label>
     <div class="col-sm-8">
-      <%= f.number_field :max_amount, :class => "form-control" %>
+      <%= f.text_field :max_amount, :class => "form-control" %>
     </div>
   </div>
 
   <div class="form-group">
     <label for="inputPassword3" class="col-sm-3 control-label">策略方式</label>
     <div class="col-sm-8">
-      <%= f.select :promotion_way, options_for_select([['rebate', 'rebate'],['enlarge','enlarge']]), :class => "form-control" %>
+      <%= f.select :promotion_way, options_for_select([['回扣','rebate'],['放大','enlarge']]), :class => "form-control" %>
     </div>
   </div>
 
   <div class="form-group">
     <label for="inputPassword3" class="col-sm-3 control-label">额外比例(%)</label>
     <div class="col-sm-8">
-      <%= f.number_field :extra_percentage, :class => "form-control" %>
+      <%= f.text_field :extra_percentage, :class => "form-control" %>
     </div>
   </div>
 

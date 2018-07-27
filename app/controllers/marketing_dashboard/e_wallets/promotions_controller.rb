@@ -1,5 +1,5 @@
 class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::BaseController
-  before_filter :get_promotion, only: [:edit, :update]
+  before_filter :get_promotion, only: [:edit, :update, :show, :destroy]
 
   def index
     @promotions = EWallet::Promotion.all
@@ -25,6 +25,9 @@ class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::B
   def edit
   end
 
+  def show
+  end
+
   def update
     if @promotion.update_attributes!(promotion_params)
       flash[:notice] = '更新成功'
@@ -35,7 +38,10 @@ class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::B
     end
   end
 
-
+  def destroy
+    @promotion.destroy
+    redirect_to :action => :index
+  end
 
 
 
@@ -58,9 +64,9 @@ class MarketingDashboard::EWallets::PromotionsController < MarketingDashboard::B
 
   def promotion_params
     _hash = params[:e_wallet_promotion].permit!
-
-    _hash[:extra_percentage] = _hash[:extra_percentage].to_f/100
-
+    _hash[:min_amount] = _hash[:min_amount].to_f
+    _hash[:max_amount] = _hash[:max_amount].to_f
+    _hash[:extra_percentage] = _hash[:extra_percentage].to_f
     _hash
   end
 
