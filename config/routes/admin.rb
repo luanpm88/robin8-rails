@@ -271,6 +271,12 @@ Rails.application.routes.draw do
           put :modify_state
         end
       end
+
+      resources 'kol_promotions' do
+        member do 
+          put :modify_state
+        end
+      end
     end
 
 

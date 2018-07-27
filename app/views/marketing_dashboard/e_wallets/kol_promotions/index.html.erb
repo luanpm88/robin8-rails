@@ -1,0 +1,72 @@
+<h3>
+  品牌主策略列表
+  <%= link_to "创建KOL策略", new_marketing_dashboard_e_wallets_kol_promotion_path, class: "btn btn-primary pull-right" %>
+</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>策略 ID</label>
+            <%= f.search_field :id_eq, class: "form-control", placeholder: "策略 ID" %>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>策略方式</label>
+            <%= f.select :income_way, options_for_select([['现金', 'money'],['puts', 'puts']]),{ include_blank: true }, class: "form-control", placeholder: "策略方式" %>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>开始时间</th>
+      <th>结束时间</th>
+      <th>方式</th>
+      <th>奖励</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kol_promotions.each do |promotion| %>
+      <tr>
+        <td>
+          <%= link_to promotion.id, marketing_dashboard_e_wallets_kol_promotion_path(promotion.id), :target => "_blank"  %>
+        </td>
+        <td><%= promotion.start_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+        <td><%= promotion.end_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+        <td><%= promotion.get_kol_income_way %></td>
+        <td><%= promotion.extra_percentage %>%</td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_e_wallets_kol_promotion_path(promotion) %> |
+          <%= link_to "下架", modify_state_marketing_dashboard_e_wallets_kol_promotion_path(promotion),  method: :put %> |
+          <%= link_to "删除", marketing_dashboard_e_wallets_kol_promotion_path(promotion), method: :delete, action: "destroy", data: { confirm: '确定要删除吗?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @kol_promotions, renderer: BootstrapPagination::Rails  %>
