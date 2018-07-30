@@ -121,8 +121,7 @@ module API
           # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
-          Rails.logger.geometry.info "---params:#{params}---kol:#{current_kol}---" if current_kol.admintags.include? Admintag.find(429)
-
+          # Rails.logger.geometry.info "---params:#{params}---kol:#{current_kol}---" if current_kol.admintags.include? Admintag.find(429)
           return error_403!({error: 1, detail: '该账户存在异常,请联系客服!' }) if current_kol.is_forbid?
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
@@ -131,6 +130,8 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           # elsif campaign_invite.can_upload_screenshot
           elsif true
+            GeometryLog.create(mobile: current_kol.mobile_number, _action: 'share', resource: campaign, opts: params) if current_kol.admintags.include? Admintag.find(429)
+
             if params[:screenshot].present?
               url = "#{avatar_uploader params[:screenshot]},"
             else
