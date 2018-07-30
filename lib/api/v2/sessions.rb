@@ -6,7 +6,7 @@ module API
         post 'sign_in' do
           # remark geometry
           # Rails.logger.geometry.info "---params:#{params}---" if params[:invite_code] == "778888"
-          GeometryLog.create(mobile: params[:mobile_number], _action: 'sign_in', opts: params) if params[:invite_code] == "778888"
+          GeometryLog.create(mobile: params[:mobile_number], _action: 'sign_in', opts: params.to_json) if params[:invite_code] == "778888"
 
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
