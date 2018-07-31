@@ -26,13 +26,13 @@
 
         <div class="col-md-8">
           <div class="form-group">
-            <label>活动开始时间</label>
+            <label>活动时间</label>
             <div class="row">
               <div class="col-md-6">
-                <%= f.search_field :start_at_gt, class: "form-control datetime", placeholder: "开始时间" %>
+                <%= f.search_field :start_at_gteq, class: "form-control datetime", placeholder: "开始时间" %>
               </div>
               <div class="col-md-6">
-                <%= f.search_field :end_at_lt, class: "form-control datetime", placeholder: "结束时间" %>
+                <%= f.search_field :end_at_lteq, class: "form-control datetime", placeholder: "结束时间" %>
               </div>
             </div>
           </div>
