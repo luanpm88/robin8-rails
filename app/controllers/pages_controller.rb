@@ -183,7 +183,7 @@ class PagesController < ApplicationController
     if @invite_code
       render layout: false
     else
-      render text: 'not_found' 
+      render text: 'not_found'
     end
   end
 
@@ -199,6 +199,10 @@ class PagesController < ApplicationController
 
   def kol_publish_campaign_help
     render :layout => false
+  end
+
+  def blockchain_intro
+    render :layout => "mobile"
   end
 
 end
