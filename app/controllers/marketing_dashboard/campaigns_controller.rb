@@ -394,6 +394,20 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     redirect_to bots_marketing_dashboard_campaign_path
   end
 
+  def perfect
+    c = Campaign.find(params[:id])
+
+    if c.status == 'settled'
+      
+      c.add_robots_under_settled
+
+      flash[:notice] = "操作成功"
+    else
+      flash[:notice] = "此活动状态下不允许操作"
+    end
+    redirect_to :back
+  end
+
   private
 
   def get_campaign

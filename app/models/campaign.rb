@@ -560,6 +560,46 @@ class Campaign < ActiveRecord::Base
   def exposures_count
     campaign_invites.count * 500
   end
+
+  def add_robots_under_settled
+    return false if status != 'settled'
+
+    if is_click_type?
+      avail_click  = (remain_budget/per_action_budget).to_i
+      kols_count   = need_add_avail_click
+    else
+      kols_count  = (remain_budget/per_action_budget).to_i
+      avail_click = kols_count
+    end
+
+    click_ary = MathExtend.rand_array(avail_click, kols_count)
+
+    Kol.where(channel: 'robot').sample(kols_count).each_with_index do |k, index|
+      ci = CampaignInvite.find_or_initialize_by(campaign_id: id, kol_id: k.id)
+
+      if ci.new_record?
+        uuid      = Base64.encode64({campaign_id: id, kol_id: k.id}.to_json).gsub("\n","")
+        short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
+      
+        ci.img_status   = 'passed'
+        ci.approved_at  = Time.now 
+        ci.status       = 'settled' 
+        ci.uuid         = uuid
+        ci.share_url    = short_url
+        ci.avail_click  = click_ary[index]
+        ci.total_click  = click_ary[index] + rand(5)
+        ci.save
+      end
+
+      ci.redis_avail_click.incr ci.avail_click
+      ci.redis_total_click.incr ci.total_click
+
+      self.redis_avail_click.incr ci.redis_avail_click.value
+      self.redis_total_click.incr ci.redis_total_click.value
+    end
+
+    self.update_columns(avail_click: self.redis_avail_click.value, total_click: self.redis_total_click.value)
+  end
   
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
