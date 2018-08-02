@@ -270,15 +270,24 @@
           batch_ids += ","
         });
         console.log(batch_ids);
+             
         if (confirm('确定此操作?')){
-          $.post("/marketing_dashboard/withdraws/batch_handle", {"batch_ids": batch_ids, "handle_action": handle_action},function(data){
-            if(data.status == 'error'){
-              alert(data.text);
-            }else if (data.status == 'ok'){
-              alert("操作成功");
-              location.reload();
-            }
-          })
+          if(handle_action == "batch_reject"){
+            $('.admin-withdraw-modal').modal("show")
+
+            var url = "/marketing_dashboard/withdraws/batch_handle?batch_ids=" + 
+                                    batch_ids + "&handle_action=" + handle_action
+            $('.admin-withdraw-modal').attr("data-url", url)
+          }else{
+            $.post("/marketing_dashboard/withdraws/batch_handle", {"batch_ids": batch_ids, "handle_action": handle_action},function(data){
+              if(data.status == 'error'){
+                alert(data.text);
+              }else if (data.status == 'ok'){
+                alert("操作成功");
+                location.reload();
+              }
+            })
+          }
         }else{}
       }else{
         alert("请选择要批量操作的提现申请");
@@ -334,7 +343,13 @@
       data: { "reject_reason":  $('.reject_reason').val()}
     })
       .done(function(data) {
-        location.reload();
+        console.log(data);
+        if(data.status == "error"){
+          alert(data.text);
+        }else if (data.status == 'ok'){
+          alert('操作成功');
+          location.reload();
+        }
       });
   });
 
@@ -352,10 +367,11 @@
         xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
       },
       data: { "confiscate_reason":  $('.confiscate_reason').val()}
-    })
-      .done(function(data) {
-        location.reload();
-      });
+    }
+    )
+    .done(function(data) {
+      location.reload();
+    });
   });
 
 </script>
