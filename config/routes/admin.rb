@@ -160,6 +160,8 @@ Rails.application.routes.draw do
         get :download_kol_withdraw_statistics_in_time_range
         get :registered_invitations
         get :campaign_release_count
+        get :cooperation_data_reportes
+        post :cooperation_data_reportes
       end
     end
     resources :feedbacks, except: [:destroy, :new, :create]  do

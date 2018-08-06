@@ -138,6 +138,31 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
       order("DATE(start_time) desc")
   end
 
+  def cooperation_data_reportes
+    if params[:q].blank?
+      params[:q] = {}
+      params[:q][:admintags_tag_eq] = 'Geomatry'
+    end
+    @q    = Kol.includes(:admintags).ransack(params[:q])
+    @kols = @q.result.order('id DESC')
+
+    start_time = params[:start_time]
+    deadline = params[:deadline]
+
+    @campaigns = Campaign.all
+
+    if start_time.present? && deadline.present?
+      @campaigns = @campaigns.where("start_time >= ? and deadline <= ?", start_time, deadline)
+    end
+
+    @campaign_invites = CampaignInvite.where(kol_id: @kols)
+    if start_time.present? && deadline.present?
+      @campaign_invites = @campaign_invites.where("created_at >= ? and decline_date <= ?", start_time, deadline)
+    end
+
+    @transactoins_income = (Transaction.where(item: @campaigns).where(account: @kols).where(subject: 'campaign').map &:amount).sum
+  end
+
   private
   def stastic_data_params
     params.require(:stastic_data).permit(:start_time, :end_time)

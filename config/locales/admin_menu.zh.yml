@@ -84,6 +84,7 @@ zh:
     kol_withdraw_by_period:       '按时段统计kol提现'
     kol_invite_registration:      'kol好友注册邀请'
     campaign_release:             '活动发布日统计'
+    cooperation_data_reportes:    '合作数据统计'
   cps_management:
     cps_materials:                  'cps所有商品'
     cps_hot_materials:              'cps热门商品'
