@@ -273,6 +273,9 @@
                 <% if %w(executing executed).include?(c.status) %>
                   <li><%= link_to ' 点击数据维护', bots_marketing_dashboard_campaign_path(c) %></li>
                 <% end %>
+                <% if c.status == 'settled' %>
+                  <li><%= link_to '完善点击数据', perfect_marketing_dashboard_campaign_path(c), method: "PUT", :"data-confirm" => "确实要用机器人补全这些数据。" %></li>
+                <% end %>
               </ul>
             </div>
             <div class="option-group" role="group">

@@ -5,14 +5,8 @@ class ElasticArticleExtend
 
 	cattr_accessor :client
 
-	Host = '47.100.60.3:56671'
-
   def self.client
-    @@client = 	Elasticsearch::Client.new({
-    							hosts: Host, 
-    							log: false,
-    							transport_options: {headers: {'Content-Type' => 'application/json'}}
-    						})
+    @@client = 	Elasticsearch::Client.new({hosts: Rails.application.secrets.elastic_search_host, log: false, transport_options: {headers: {'Content-Type' => 'application/json'}}})
   end
 
   def self.reset

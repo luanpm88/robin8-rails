@@ -78,6 +78,7 @@ Rails.application.routes.draw do
         put :terminate_ali_campaign
         get :bots
         put :update_bots
+        put :perfect
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
