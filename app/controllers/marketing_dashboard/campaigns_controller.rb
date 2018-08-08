@@ -45,7 +45,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def push_all
     key = "campaign_id_#{params[:id]}_push_all"
-    Rails.cache.write(key, 1, :expires_id => 10.days)
+    $redis.setex(key, 10.days, 1)
     CampaignWorker.perform_async params[:id], "push_all_kols"
     redirect_to request.referer
   end
