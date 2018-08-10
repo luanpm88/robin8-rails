@@ -183,7 +183,7 @@ class PagesController < ApplicationController
     if @invite_code
       render layout: false
     else
-      render text: 'not_found' 
+      render text: 'not_found'
     end
   end
 
@@ -198,6 +198,10 @@ class PagesController < ApplicationController
   end
 
   def kol_publish_campaign_help
+    render :layout => false
+  end
+
+  def pmes_demo
     render :layout => false
   end
 
