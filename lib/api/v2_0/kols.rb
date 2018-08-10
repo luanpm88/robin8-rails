@@ -176,6 +176,20 @@ module API
           present :total_count, @kols.count
           present :list, @kols , with: API::V2_0::Entities::KolOverviewEntities::FriendsPercentage, current_kol: current_kol
         end
+
+        desc '绑定我的e-wallet'
+        params do
+          requires :wallet_id, type: String
+        end
+        post 'bind_e_wallet' do
+          if current_kol.e_wallet_account
+            present :error, 1
+          else
+            e_wallet = current_kol.e_wallet_account.create(token: params[:wallet_id])
+            present :error, 1
+          end
+        end
+
       end
     end
   end
