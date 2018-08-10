@@ -17,7 +17,8 @@ class CampaignShowController < ApplicationController
       # Includes invitation which were soft-deleted after campaign has ended
       campaign_invite = CampaignInvite.unscoped.find params[:id]
       if campaign_invite.campaign.deadline < Time.now.ago(10.days)
-        render text: '活动已结束，该页面不可再访问'
+        # render text: '活动已结束，该页面不可再访问'
+        redirect_to campaign_invite.campaign.url
       else
         redirect_to campaign_invite.origin_share_url
       end
