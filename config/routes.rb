@@ -210,6 +210,8 @@ Rails.application.routes.draw do
 
   get '/kol_invite', to: 'pages#kol_invite' # admintag邀请成为kol
 
+  get '/pages/pmes_demo', to: 'pages#pmes_demo'
+
   #无法访问
   resources :campaign, only: [:index, :create, :update, :show]
 

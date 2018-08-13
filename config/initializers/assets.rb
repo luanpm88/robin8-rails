@@ -14,7 +14,7 @@ end
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 
 Rails.application.config.assets.precompile += %w( landing.js landing.css
-  email.css mail-template.css export_stories.css kol/kol_value.css 
+  email.css mail-template.css export_stories.css kol/kol_value.css
   admin.css admin.js cps_articles.css partners.css partners/partners.scss partners/partners.js)
 
 Rails.application.config.assets.precompile += %w(
@@ -38,3 +38,5 @@ Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpa
 Rails.application.config.assets.precompile += %w( brand-static.css brand-vendor-bundle-static.js brand-app-bundle-static.js server-bundle.js )
 Rails.application.config.assets.precompile << Proc.new { |path| path.start_with?("brand-") }
 NonStupidDigestAssets.whitelist += [/brand-/]
+
+Rails.application.config.assets.precompile += %w( pmes/pmes.min.js )
