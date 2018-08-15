@@ -179,13 +179,13 @@ module API
 
         desc '绑定我的e-wallet'
         params do
-          requires :wallet_id, type: String
+          requires :put_address, type: String
         end
         post 'bind_e_wallet' do
           if current_kol.e_wallet_account
             present :error, 1
           else
-            e_wallet = current_kol.e_wallet_account.create(token: params[:wallet_id])
+            e_wallet = current_kol.e_wallet_account.create(token: params[:put_address])
             present :error, 1
           end
         end
