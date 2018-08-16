@@ -11,6 +11,13 @@ module API
           expose :direct do |transaction|
             transaction.get_direct
           end
+          expose :remark do |transaction|
+            if transaction.item_type == 'Withdraw'
+              transaction.item.reject_reason
+            else
+              ''
+            end
+          end
           with_options(format_with: :iso_timestamp) do
             expose :created_at
           end
