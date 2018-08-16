@@ -6,8 +6,9 @@ class AuthenticationsController < ApplicationController
 
   AUTH_ACTIONS.each do |action|
     define_method(action) do
-      identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-      identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
+      identity = Identity.find_by(provider: params[:provider], uid:     params[:uid])
+      identity = Identity.find_by(provider: params[:provider], unionid: params[:unionid]) if identity.blank? and params[:unionid]
+      identity = Identity.find_by(provider: params[:provider], kol_id:  current_kol.id)   if current_kol
 
       if identity.blank?
         # create identity, redirect to register path
