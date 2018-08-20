@@ -202,12 +202,12 @@ class PagesController < ApplicationController
   end
 
   def pmes_demo
-    result , private_token = AuthToken.valid?(request.headers["Authorization"])
-
+    # result , private_token = AuthToken.valid?(request.headers["Authorization"])
+    result , private_token = AuthToken.valid?(params[:access_token])
     if result
-      @current_token = headers["Authorization"]
-
-      render layout: false
+      # @current_token = headers["Authorization"]
+      @current_token = params[:access_token]
+      render :layout => "mobile"
     else
       render text: 'error'
     end
