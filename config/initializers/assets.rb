@@ -32,6 +32,9 @@ Rails.application.config.assets.precompile += %w( kol_pk/style.css kol_pk/flexib
 # elastic_articles
 Rails.application.config.assets.precompile += %w( elastic_articles.css )
 
+# mobile 模板
+Rails.application.config.assets.precompile += %w( mobile.css mobile.js )
+
 Rails.application.config.assets.precompile += %w( cpses/app-webview-v2.css cpses/zepto.js cpses/common.js cpses/app-webview-v2.js cpses/jweixin-1.js cpses/wxUtil.js)
 # react 部分 编译
 Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack").to_s

@@ -61,7 +61,7 @@ class SelectCampaignPartial extends Component {
 
             {
 
-              <div className="at-s-box">
+              <div className="at-s-box hide">
                 <div className="at-box-mk mk-new">
                   <div className="mk-bg"></div>
                   <i>NEW</i>

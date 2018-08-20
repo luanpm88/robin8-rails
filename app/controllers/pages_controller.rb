@@ -205,14 +205,16 @@ class PagesController < ApplicationController
     result , private_token = AuthToken.valid?(request.headers["Authorization"])
 
     if result
-      @current_kol = Kol.app_auth(private_token)
-
       @current_token = headers["Authorization"]
 
       render layout: false
     else
       render text: 'error'
     end
+  end
+
+  def blockchain_intro
+    render :layout => "mobile"
   end
 
 end
