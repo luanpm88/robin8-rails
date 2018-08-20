@@ -3,6 +3,7 @@ class BrandController < ApplicationController
   before_action :redirect_alipay_request, only: :index
   layout 'brand'
   def index
+    set_union_access_token(current_user.kol)
     @brand_home_props = { brand: current_user }
   end
 

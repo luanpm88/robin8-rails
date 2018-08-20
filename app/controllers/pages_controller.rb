@@ -202,17 +202,19 @@ class PagesController < ApplicationController
   end
 
   def pmes_demo
-    result , private_token = AuthToken.valid?(headers["Authorization"])
-
+    # result , private_token = AuthToken.valid?(request.headers["Authorization"])
+    result , private_token = AuthToken.valid?(params[:access_token])
     if result
-      @current_kol = Kol.app_auth(private_token)
-
-      @current_token = headers["Authorization"]
-
-      render layout: false
+      # @current_token = headers["Authorization"]
+      @current_token = params[:access_token]
+      render :layout => "mobile"
     else
       render text: 'error'
-    end  
+    end
+  end
+
+  def blockchain_intro
+    render :layout => "mobile"
   end
 
 end

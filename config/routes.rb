@@ -200,6 +200,9 @@ Rails.application.routes.draw do
   post '/contact', to: 'pages#contact'
   get '/contact_us', to: "pages#contact_us" #无法访问
 
+  #区块链介绍页面
+  get '/pages/blockchain_intro', to: "pages#blockchain_intro"
+
   #无法访问
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
 

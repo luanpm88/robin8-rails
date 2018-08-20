@@ -78,6 +78,7 @@ Rails.application.routes.draw do
         put :terminate_ali_campaign
         get :bots
         put :update_bots
+        put :perfect
       end
 
       match '/agree' => 'campaigns#agree', via: [:put]
@@ -160,6 +161,8 @@ Rails.application.routes.draw do
         get :download_kol_withdraw_statistics_in_time_range
         get :registered_invitations
         get :campaign_release_count
+        get :cooperation_data_reportes
+        post :cooperation_data_reportes
       end
     end
     resources :feedbacks, except: [:destroy, :new, :create]  do
@@ -309,6 +312,7 @@ Rails.application.routes.draw do
         collection do
           get :ios_detail
           get :invite_switch
+          get :vest_bag_detail
           put :update_redis_value
         end
       end

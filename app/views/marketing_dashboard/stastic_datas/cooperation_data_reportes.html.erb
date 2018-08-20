@@ -1,0 +1,75 @@
+<h3>合作数据统计</h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Admintag</label>
+            <%= f.select :admintags_tag_eq, options_for_select(Admintag.pluck(:tag).uniq, params[:q][:admintags_tag_eq]||'Geomatry'),{},{class: 'form-control' }%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>活动开始时间</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= search_field_tag :start_time, params[:start_time], {class: "form-control datetime", placeholder: "活动开始时间"} %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>活动结束时间</label>
+            <div class="row">
+              <div class="col-md-6">
+                <%= search_field_tag :deadline, params[:deadline], {class: "form-control datetime", placeholder: "活动结束时间"} %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>合作商品牌名</th>
+    <th>合作商用户人数</th>
+    <th>时间段内活动个数</th>
+    <th>合作商接的活动个数</th>
+    <th>合作商接单人数</th>
+    <th>合作商消耗活动金额</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= params[:q].present? ? params[:q][:admintags_tag_eq] : 'Geomatry'  %></td>
+      <td><%= @kols.count %></td>
+      <td><%= @campaigns.count %></td>
+      <td><%= @campaign_invites.count %></td>
+      <td><%= (@campaign_invites.map &:kol_id).uniq.count %></td>
+      <td><%= @transactoins_income %></td>
+    </tr>
+  </tbody>
+</table>

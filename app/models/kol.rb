@@ -551,7 +551,9 @@ class Kol < ActiveRecord::Base
     # app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     app_city = TaobaoIps.get_detail(params[:current_sign_in_ip])["data"]['city']
     if kol.present?
-      Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
+      # Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
+      GeometryLog.create(mobile: kol.mobile_number, _action: 'register', opts: params) if kol.admintags.include? Admintag.find(429)
+
       retries = true
       begin
         kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],

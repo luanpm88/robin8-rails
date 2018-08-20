@@ -1,225 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PMES</title>
-    <%= stylesheet_link_tag 'https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css' %>
-
-    <%= javascript_include_tag 'https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js' %>
-    <%= javascript_include_tag 'https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js' %>
-    <%= javascript_include_tag 'pmes/pmes.min' %>
-  </head>
-
-  <body>
-    <div class="container">
-      <div class="panel panel-default">
-        <div class="panel-heading">PMES</div>
-        <div class="panel-body">
-          <div class="form-horizontal">
-            <div class="form-group">
-              <label for="email" class="col-sm-2 control-label">Email</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" placeholder="Email" disabled="disabled">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="phone" class="col-sm-2 control-label">Phone</label>
-              <div class="col-sm-10">
-                <input type="tel" class="form-control" id="phone" placeholder="phone" disabled="disabled">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="device_id" class="col-sm-2 control-label">Device Id</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="device_id" placeholder="device id" disabled="disabled">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="password" class="col-sm-2 control-label">Password</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" id="password" placeholder="password">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10 text-center">
-                <button type="button" class="btn btn-default" id="submit_btn">Sign in</button>
-              </div>
-            </div>
-          </div>
+<div class="page full-page overflow-hidden pmes-reg-page hide" id="pmes_reg_page">
+  <div class="content-panel">
+    <div class="content-body default-form size-b white-bg">
+      <%= hidden_field_tag 'current_token', @current_token %>
+      <label class="form-group">
+        <div class="form-input">
+          <input type="email" class="form-control" id="email" placeholder="邮箱地址" disabled="disabled" />
         </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">data</div>
-        <div class="panel-body" id="data_container"></div>
-      </div>
+      </label>
+      <label class="form-group">
+        <div class="form-input">
+          <input type="tel" class="form-control" id="phone" placeholder="手机号码" disabled="disabled" />
+        </div>
+      </label>
+      <label class="form-group">
+        <div class="form-input">
+          <input type="text" class="form-control" id="device_id" placeholder="Device ID" disabled="disabled" />
+        </div>
+      </label>
+      <label class="form-group">
+        <div class="form-input">
+          <input type="password" class="form-control" id="password" placeholder="请输入密码" />
+        </div>
+      </label>
+      <label class="form-group">
+        <div class="form-input">
+          <input type="password" class="form-control" id="password_confirm" placeholder="请重复密码" />
+        </div>
+      </label>
     </div>
+  </div>
 
+  <div class="btn-group mt30">
+    <div class="item pl15 pr15">
+      <button type="button" class="button btn-cyan btn-lg btn-block btn-pmes-reg-submit" id="pmes_reg_submit_btn">确定</button>
+    </div>
+  </div>
+</div>
 
-    <script type="text/javascript">
-      $(document).ready(function() {
-        var form_data = {};
-        var phone_data = '';
-        var device_id_data = '';
-        var email_data = '';
+<div class="page full-page overflow-hidden pmes-reg-page" id="pmes_detail_page">
+  <div class="default-card put-balance-card"></div>
 
-        var current_date = new Date();
-        current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
-        console.log('当前时间:'+ current_date);
-
-        if (typeof jwPut != 'undefined' && jwPut.put_ToJs() != '') {
-          form_data = JSON.parse(jwPut.put_ToJs());
-          phone_data = form_data.phone_num;
-          device_id_data = form_data.device_id;
-          email_data = form_data.email;
-        }
-
-        // alert(form_data);
-        // alert(form_data.phone_num);
-        // alert(form_data.device_id);
-        // alert(form_data.email);
-
-        $('#email').val(email_data);
-        $('#phone').val(phone_data);
-        $('#device_id').val(device_id_data);
-
-        var email = $('#email').val();
-        var phone = $('#phone').val();
-        var device_id = $('#device_id').val();
-        var password = $('#password').val();
-
-        var pems_create = PMES.create('test_password');
-        console.log('create:', pems_create);
-
-        var pems_sign = PMES.sign(
-          pems_create.token,
-          {
-            'message': {
-              'timestamp': current_date,
-              'coinid': 'PUTTEST',
-              'amount': '100000000000',
-              'address': 'qZZfBCVXLHBt6ou1ZoZW6LiZH1qDHbWq8i',
-              'recvWindow': 5000
-            }
-          },
-          'test_password'
-        );
-
-        console.log('signature:', pems_sign.signature);
-
-        var post_data = {
-          'public_key': pems_create.public_key, //公開钥匙
-          'message': {
-            'email': email, //Robin8用户电子邮件
-            'phone': phone, //Robin8用户电话
-            'timestamp': current_date // 現在時間 201808091319, 格式 YYYYMMDDHHmm
-          },
-          'signature': pems_sign.signature
-        };
-
-        post_data = JSON.stringify(post_data);
-        console.log(pems_create.public_key);
-
-        $('#submit_btn').click(function(event) {
-          $.ajax({
-            url: 'http://190.2.149.83/api/accounts/',
-            type: 'POST',
-            data: post_data,
-            success: function(data) {
-              console.log(data);
-              console.log(JSON.parse(data.wallets));
-
-              var post_native_data = JSON.stringify(data);
-              console.log(post_native_data);
-
-              $('#data_container').append('<pre>'+ syntaxHighlight(data) +'</pre>');
-
-              if (typeof jwPut != 'undefined') {
-                jwPut.put_Login(post_native_data);
-              }
-            },
-            error: function(xhr, type) {
-              console.log('error');
-            }
-          });
-        });
-      });
-
-      function dataFromNative(demo_data) {
-        alert(demo_data);
-      }
-
-      function syntaxHighlight(json) {
-        if (typeof json != 'string') {
-          json = JSON.stringify(json, undefined, 2);
-        }
-        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-        function(match) {
-          var cls = 'number';
-          if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-              cls = 'key';
-            } else {
-              cls = 'string';
-            }
-          } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-          } else if (/null/.test(match)) {
-            cls = 'null';
-          }
-          return '<span class="' + cls + '">' + match + '</span>';
-        });
-      }
-
-      Date.prototype.customFormat = function(formatString) {
-        var YYYY, YY, MMMM, MMM, MM, M, DDDD, DDD, DD, D, hhhh, hhh, hh, h, mm, m, ss, s, ampm, AMPM, dMod, th;
-        var dateObject = this;
-        YY = ((YYYY = dateObject.getFullYear()) + '').slice(-2);
-        MM = (M = dateObject.getMonth() + 1) < 10 ? ('0' + M) : M;
-        MMM = (MMMM = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][M - 1]).substring(0, 3);
-        DD = (D = dateObject.getDate()) < 10 ? ('0' + D) : D;
-        DDD = (DDDD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dateObject.getDay()]).substring(0, 3);
-        th = (D >= 10 && D <= 20) ? 'th' : ((dMod = D % 10) == 1) ? 'st' : (dMod == 2) ? 'nd' : (dMod == 3) ? 'rd' : 'th';
-        formatString = formatString
-                      .replace('#YYYY#', YYYY)
-                      .replace('#YY#', YY)
-                      .replace('#MMMM#', MMMM)
-                      .replace('#MMM#', MMM)
-                      .replace('#MM#', MM)
-                      .replace('#M#', M)
-                      .replace('#DDDD#', DDDD)
-                      .replace('#DDD#', DDD)
-                      .replace('#DD#', DD)
-                      .replace('#D#', D)
-                      .replace('#th#', th);
-
-        h = (hhh = dateObject.getHours());
-        if (h == 0) {
-          h = 24;
-        }
-        if (h > 12) {
-          h -= 12;
-        }
-        hh = h < 10 ? ('0' + h) : h;
-        hhhh = hhh < 10 ? ('0' + hhh) : hhh;
-        AMPM = (ampm = hhh < 12 ? 'am' : 'pm').toUpperCase();
-        mm = (m = dateObject.getMinutes()) < 10 ? ('0' + m) : m;
-        ss = (s = dateObject.getSeconds()) < 10 ? ('0' + s) : s;
-        return formatString
-              .replace('#hhhh#', hhhh)
-              .replace('#hhh#', hhh)
-              .replace('#hh#', hh)
-              .replace('#h#', h)
-              .replace('#mm#', mm)
-              .replace('#m#', m)
-              .replace('#ss#', ss)
-              .replace('#s#', s)
-              .replace('#ampm#', ampm)
-              .replace('#AMPM#', AMPM);
-      }
-    </script>
-  </body>
-</html>
+  <div class="default-card put-trend-card"></div>
+</div>
