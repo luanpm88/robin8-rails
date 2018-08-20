@@ -37,7 +37,9 @@ module API
         params do 
           requires :token, type: String
         end
-        get 'transfers_list' do
+        post 'transfers' do
+          txid = PMES.transfer(current_kol.e_wallet_account.toke)
+          current_kol.e_wallet_transactions.pending
         end
 
 

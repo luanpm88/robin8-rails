@@ -1,0 +1,30 @@
+<div>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>活动名称</th>
+        <th>参与人数</th>
+        <th>奖励总额</th>
+        <th>未支付人数</th>
+        <th>未支付总额</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @campaigns.each do |campaign|%>
+      <tr>
+        <% transtions = EWallet::Transtion.where(resource: campaign) %>
+        <td><%= campaign.name %></td>
+        <td><%= campaign.kols.count %></td>
+        <td><%= (transtions.map &:amount).sum %></td>
+        <td><%= transtions.pending.count %></td>
+        <td><%= (transtions.pending.map &:amount).sum %></td>
+        <td>
+          <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
+          <%#= link_to "提款", withdraw_marketing_dashboard_e_wallets_campaign_transaction_path(campaign) if transtions.pending.present? %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
