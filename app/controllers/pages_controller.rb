@@ -202,7 +202,17 @@ class PagesController < ApplicationController
   end
 
   def pmes_demo
-    render :layout => false
+    result , private_token = AuthToken.valid?(headers["Authorization"])
+
+    if result
+      @current_kol = Kol.app_auth(private_token)
+
+      @current_token = headers["Authorization"]
+
+      render layout: false
+    else
+      render text: 'error'
+    end  
   end
 
 end
