@@ -88,8 +88,8 @@ class CampaignShow < ActiveRecord::Base
     if openid_current_count >= OpenidMaxCount
       return [false, 'openid_reach_max_count']
     else
-      expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-      
+      expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i
+      expiry_time = 5*3600*24 if expiry_time > 0
       $redis.setex(store_key, expiry_time, openid_current_count.succ)
     end
 
