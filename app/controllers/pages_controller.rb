@@ -202,7 +202,7 @@ class PagesController < ApplicationController
   end
 
   def pmes_demo
-    result , private_token = AuthToken.valid?(headers["Authorization"])
+    result , private_token = AuthToken.valid?(request.headers["Authorization"])
 
     if result
       @current_kol = Kol.app_auth(private_token)
@@ -212,7 +212,7 @@ class PagesController < ApplicationController
       render layout: false
     else
       render text: 'error'
-    end  
+    end
   end
 
 end

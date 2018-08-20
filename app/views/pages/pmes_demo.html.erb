@@ -47,6 +47,8 @@
                 <button type="button" class="btn btn-default" id="submit_btn">Sign in</button>
               </div>
             </div>
+
+            <%= hidden_field_tag 'current_token', @current_token %>
           </div>
         </div>
       </div>
@@ -56,7 +58,6 @@
         <div class="panel-body" id="data_container"></div>
       </div>
     </div>
-
 
     <script type="text/javascript">
       $(document).ready(function() {
@@ -89,6 +90,7 @@
         var phone = $('#phone').val();
         var device_id = $('#device_id').val();
         var password = $('#password').val();
+        var current_token = $('#current_token').val();
 
         var pems_create = PMES.create('test_password');
         console.log('create:', pems_create);
@@ -134,8 +136,6 @@
               var post_native_data = JSON.stringify(data);
               console.log(post_native_data);
 
-              // $('#data_container').append('<pre>'+ syntaxHighlight(data) +'</pre>');
-
               if (typeof jwPut != 'undefined') {
                 jwPut.put_Login(post_native_data);
               }
@@ -151,13 +151,13 @@
               console.log(put_puttest.address);
 
               $.ajax({
-                url: 'http://190.2.149.83/api/v2_0/kols/bind_e_wallet',
+                url: '/api/v2_0/kols/bind_e_wallet',
                 type: 'POST',
                 data: {
                   'put_address': put_puttest.address
                 },
                 beforeSend: function(xhr) {
-                  xhr.setRequestHeader('Authorization', 'Basic bmVvd2F5Oe4lb3dheQ==');
+                  xhr.setRequestHeader('Authorization', current_token);
                 },
                 success: function(data) {
                   alert(data);
@@ -176,29 +176,6 @@
 
       function dataFromNative(demo_data) {
         alert(demo_data);
-      }
-
-      function syntaxHighlight(json) {
-        if (typeof json != 'string') {
-          json = JSON.stringify(json, undefined, 2);
-        }
-        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-        function(match) {
-          var cls = 'number';
-          if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-              cls = 'key';
-            } else {
-              cls = 'string';
-            }
-          } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-          } else if (/null/.test(match)) {
-            cls = 'null';
-          }
-          return '<span class="' + cls + '">' + match + '</span>';
-        });
       }
 
       Date.prototype.customFormat = function(formatString) {
