@@ -1,6 +1,7 @@
+var URLHOST = window.location.host;
+
 $(document).ready(function() {
   if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
-    var URLHOST = window.location.host;
     var form_data = {};
     var phone_data = '';
     var device_id_data = '';
@@ -95,26 +96,51 @@ $(document).ready(function() {
           });
 
           console.log(put_puttest.address);
+          console.log(current_token);
+          // postAddress(put_puttest.address);
+          // var url = URLHOST + '/pages/bind_e_wallet';
+          // $.ajax({
+          //   url: URLHOST + '/pages/bind_e_wallet',
+          //   type: 'POST',
+          //   data: {
+          //     access_token: current_token,
+          //     put_address: put_puttest.address
+          //   },
+          //   // beforeSend: function(xhr) {
+          //   //   xhr.setRequestHeader('Authorization', current_token);
+          //   // },
+          //   success: function(data) {
+          //     createAlert(data);
+          //     $('#amount_active').html(put_puttest.amount_active);
+          //     $('#amount_frozen').html(put_puttest.amount_frozen);
+          //     $('#pmes_reg_page').hide();
+          //     $('#pmes_statistics_page').removeClass('hide');
+          //   },
+          //   error: function(xhr, type) {
+          //     console.log(xhr);
+          //     console.log(type);
+          //     console.log('error');
+          //   }
+          // });
 
-          $('#pmes_reg_page').hide();
-          $('#pmes_statistics_page').removeClass('hide');
-
-        //   $.ajax({
-        //     url: URLHOST + '/api/v2_0/kols/bind_e_wallet',
-        //     type: 'POST',
-        //     data: {
-        //       'put_address': put_puttest.address
-        //     },
-        //     beforeSend: function(xhr) {
-        //       xhr.setRequestHeader('Authorization', current_token);
-        //     },
-        //     success: function(data) {
-        //       createAlert(data);
-        //     },
-        //     error: function(xhr, type) {
-        //       console.log('error');
-        //     }
-        //   });
+          $.ajax({
+            method: 'POST',
+            url: URLHOST + '/pages/bind_e_wallet',
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('Authorization', current_token);
+            },
+            data: {
+              put_address: put_puttest.address
+            }
+          }).done(function(data) {
+            console.log(data);
+            // if(data['result'] == 'reject'){
+            //   location.reload();
+            // }
+            // else {
+            //   $(".error-flash").css("display", "block");
+            // }
+          });
         },
         error: function(xhr, type) {
           console.log('error');
@@ -126,4 +152,46 @@ $(document).ready(function() {
 
 function dataFromNative(demo_data) {
   createAlert(demo_data);
+}
+
+function postAddress(address) {
+  console.log(current_token);
+  var url = URLHOST + '/pages/bind_e_wallet';
+  $.post(
+    url,
+    {
+      access_token: current_token,
+      put_address: address
+    },
+    function(data) {
+      createAlert(data);
+      $('#amount_active').html(put_puttest.amount_active);
+      $('#amount_frozen').html(put_puttest.amount_frozen);
+      $('#pmes_reg_page').hide();
+      $('#pmes_statistics_page').removeClass('hide');
+    }
+  );
+
+//   $.ajax({
+//     url: URLHOST + '/pages/bind_e_wallet',
+//     type: 'POST',
+//     data: {
+//       put_address: address
+//     },
+//     beforeSend: function(xhr) {
+//       xhr.setRequestHeader('Authorization', current_token);
+//     },
+//     success: function(data) {
+//       createAlert(data);
+//       $('#amount_active').html(put_puttest.amount_active);
+//       $('#amount_frozen').html(put_puttest.amount_frozen);
+//       $('#pmes_reg_page').hide();
+//       $('#pmes_statistics_page').removeClass('hide');
+//     },
+//     error: function(xhr, type) {
+//       console.log(xhr);
+//       console.log(type);
+//       console.log('error');
+//     }
+//   });
 }
