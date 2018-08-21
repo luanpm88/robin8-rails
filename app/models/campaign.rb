@@ -121,6 +121,7 @@ class Campaign < ActiveRecord::Base
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
+  after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1' && self.status == "settled"}
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -602,6 +603,13 @@ class Campaign < ActiveRecord::Base
     end
 
     self.update_columns(avail_click: self.redis_avail_click.value, total_click: self.redis_total_click.value)
+  end
+
+  def generate_campaign_e_wattle_transactions
+    amount = $redis.get('put_amount')
+    self.kols.each do |kol|
+      self.e_wallet_transtions.create(kol_id: kol.id, resource_type: 'Campaign', amount: amount) if kol.e_wallet_account.present?
+    end
   end
   
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
