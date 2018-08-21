@@ -280,6 +280,15 @@ Rails.application.routes.draw do
           put :modify_state
         end
       end
+
+      resources 'campaigns', only:[:index] do
+        resources 'transactions', only:[:index] do 
+          member do 
+            put :withdraw
+          end
+        end
+      end
+
     end
 
 
