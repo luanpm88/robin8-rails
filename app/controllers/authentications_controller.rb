@@ -6,14 +6,15 @@ class AuthenticationsController < ApplicationController
 
   AUTH_ACTIONS.each do |action|
     define_method(action) do
-      identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-      identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid]) if identity.blank? and params[:unionid]
-
+      identity = Identity.find_by(provider: params[:provider], uid:     params[:uid])
+      identity = Identity.find_by(provider: params[:provider], unionid: params[:unionid]) if identity.blank? and params[:unionid]
+    
       if identity.blank?
         # create identity, redirect to register path
         if current_kol
+          _identity = Identity.find_by(provider: params[:provider], kol_id:  current_kol.id) 
           params.merge!(kol_id: current_kol.id)
-          identity = Identity.create_identity_from_app(params)
+          identity = Identity.create_identity_from_app(params, _identity)
           return redirect_to omniauth_params['ok_url'] || brand_path
         else
           identity = Identity.create_identity_from_app(params)

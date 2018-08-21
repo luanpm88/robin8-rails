@@ -3,6 +3,10 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   # before_action :authenticate_kol!, only: [:withdraw_apply]
 
+  def index
+    render :layout => false
+  end
+
   def set_locale
     unless params[:locale].blank?
       someone = current_user
@@ -179,7 +183,7 @@ class PagesController < ApplicationController
     if @invite_code
       render layout: false
     else
-      render text: 'not_found' 
+      render text: 'not_found'
     end
   end
 
@@ -195,6 +199,10 @@ class PagesController < ApplicationController
 
   def kol_publish_campaign_help
     render :layout => false
+  end
+
+  def blockchain_intro
+    render :layout => "mobile"
   end
 
 end

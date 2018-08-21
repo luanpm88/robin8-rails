@@ -51,10 +51,10 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              'smtp.office365.com',
-    port:                 "25",
+    port:                 "587",
     domain:               'robin8.com',
     user_name:           'system@robin8.com',
-    password:             'Joq59068',
+    password:             'Poy92339',
     authentication:       'login',
     enable_starttls_auto: true  }
 

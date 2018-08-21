@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get 'campaign_share' => "campaign_show#share" #无法访问
   get 'read_hot_item' => 'commons#read_hot_item' #无法访问
   get 'commons/material' =>  'commons#material' #无法访问
+  get '/PtVJevFvqY.txt' => 'pages#index'
 
 
   get "cps_articles/:id" => "cps_articles#show" #是图文，链接到京东
@@ -198,6 +199,9 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
   get '/contact_us', to: "pages#contact_us" #无法访问
+
+  #区块链介绍页面
+  get '/pages/blockchain_intro', to: "pages#blockchain_intro"
 
   #无法访问
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]

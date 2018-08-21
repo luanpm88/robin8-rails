@@ -12,7 +12,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
                    Campaign.all
                  end.realable
 
-    @q = @campaigns.includes(:manual_campaign_targets, :campaign_invites, :valid_invites, :settled_invites, :campaign_targets).ransack(params[:q])
+    @q = @campaigns.ransack(params[:q])
     @campaigns = @q.result.order('created_at DESC')
 
     respond_to do |format|
@@ -45,7 +45,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def push_all
     key = "campaign_id_#{params[:id]}_push_all"
-    Rails.cache.write(key, 1, :expires_id => 10.days)
+    $redis.setex(key, 10.days, 1)
     CampaignWorker.perform_async params[:id], "push_all_kols"
     redirect_to request.referer
   end
@@ -392,6 +392,20 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     end
 
     redirect_to bots_marketing_dashboard_campaign_path
+  end
+
+  def perfect
+    c = Campaign.find(params[:id])
+
+    if c.status == 'settled'
+      
+      c.add_robots_under_settled
+
+      flash[:notice] = "操作成功"
+    else
+      flash[:notice] = "此活动状态下不允许操作"
+    end
+    redirect_to :back
   end
 
   private

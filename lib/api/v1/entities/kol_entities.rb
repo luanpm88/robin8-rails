@@ -62,6 +62,9 @@ module API
           expose :total_amount do |kol|
             (kol.amount + kol.frozen_amount).round(2)
           end
+          expose :remark do |kol|
+            kol.withdraws.rejected.first.try(:reject_reason) rescue nil
+          end
         end
 
         #左边导航

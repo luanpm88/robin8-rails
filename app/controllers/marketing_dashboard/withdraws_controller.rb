@@ -134,7 +134,7 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
         end
       elsif params[:handle_action] == 'batch_reject'
         @withdraws.each do |withdraw|
-          withdraw.update_attributes(:status => 'rejected')
+          withdraw.update_attributes(:status => 'rejected', reject_reason: params[:reject_reason])
         end
       end
       render :json => {:status => 'ok', :message => '操作成功'}
