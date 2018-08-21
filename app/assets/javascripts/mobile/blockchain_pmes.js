@@ -58,7 +58,7 @@ $(document).ready(function() {
         }
       };
 
-      var pmes_create = PMES.sign(
+      var pmes_sign = PMES.sign(
         pmes_create.token,
         post_data,
         password
