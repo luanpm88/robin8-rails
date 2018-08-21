@@ -7,6 +7,7 @@ class EWallet::Transtion < ActiveRecord::Base
 
   belongs_to :resource, :polymorphic => true
   belongs_to :kol
+  belongs_to :campaign
 
   def pending?
   	self.status == "pending"
