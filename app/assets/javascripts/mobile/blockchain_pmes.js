@@ -58,7 +58,7 @@ $(document).ready(function() {
         }
       };
 
-      var pmes_create = PMES.sign(
+      var pmes_sign = PMES.sign(
         pmes_create.token,
         post_data,
         password
@@ -67,7 +67,7 @@ $(document).ready(function() {
       post_data.signature = pmes_sign.signature;
 
       console.log('public_key', pmes_create.public_key);
-      console.log('signature:', pmes_create.signature);
+      console.log('signature:', pmes_sign.signature);
 
       post_data = JSON.stringify(post_data);
 
