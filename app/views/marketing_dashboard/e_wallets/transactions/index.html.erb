@@ -13,7 +13,6 @@
         <td><%= transaction.kol.name %></td>
         <td><%= transaction.amount %></td>
         <td>
-          <%= link_to "提款", withdraw_marketing_dashboard_e_wallets_campaign_transaction_path(transaction.resource_id, transaction ), method: :put if transaction.pending? %>
         </td>
       </tr>
       <% end %>

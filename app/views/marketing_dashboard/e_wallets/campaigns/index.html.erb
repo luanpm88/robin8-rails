@@ -20,7 +20,7 @@
         <td><%= (campaign.e_wallet_transtions.pending.map &:amount).sum %></td>
         <td>
           <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
-          <%#= link_to "提款", withdraw_marketing_dashboard_e_wallets_campaign_transaction_path(campaign) if transtions.pending.present? %>
+          <%= link_to "提款", withdraw_marketing_dashboard_e_wallets_campaign_transactions_path(campaign), method: :put if campaign.e_wallet_transtions.pending.present? %>
         </td>
       </tr>
       <% end %>
