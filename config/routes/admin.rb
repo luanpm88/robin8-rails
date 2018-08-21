@@ -283,7 +283,7 @@ Rails.application.routes.draw do
 
       resources 'campaigns', only:[:index] do
         resources 'transactions', only:[:index] do 
-          member do 
+          collection do 
             put :withdraw
           end
         end
