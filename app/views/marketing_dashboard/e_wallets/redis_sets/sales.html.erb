@@ -1,0 +1,40 @@
+<h1>Put币 促销设置</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>值</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>开关</td>
+      <td>
+        <input class='data-value' type="hidden" value="<%= $redis.get('put_switch') == '1' ? '0' : '1' %>">
+        <%= link_to $redis.get('put_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'put_switch' %>
+      </td>
+    </tr>
+    <tr>
+      <td>数量</td>
+      <td><%= text_field_tag :put_amount, $redis.get('put_amount'), :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'put_amount', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'PUT',
+        url: '/marketing_dashboard/e_wallets/redis_sets/update_sales',
+        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
+      })
+
+    })
+  })
+</script>
