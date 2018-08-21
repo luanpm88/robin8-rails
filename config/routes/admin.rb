@@ -289,6 +289,13 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :redis_sets, only: [] do
+        collection do
+          get :sales
+          put :update_sales
+        end
+      end
+
     end
 
 
