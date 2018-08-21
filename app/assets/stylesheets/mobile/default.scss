@@ -142,7 +142,7 @@ input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, i
 .btn-group.foot { position: absolute; z-index: 1; bottom: 0; left: 0; }
 .btn-group.foot.transparent { background-color: transparent; }
 .btn-group.fill .item { padding: 0; }
-.btn-group.fill .item .button { padding: 12px; border-radius: 0; font-size: 1.6rem; }
+.btn-group.fill .item .button { border-radius: 0; font-size: 1.6rem; }
 .btn-group.foot.with-bd { border-top: 1px solid #e2e2e2; }
 
 /*
