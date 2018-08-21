@@ -18,7 +18,7 @@
     <%= javascript_include_tag 'mobile', 'data-turbolinks-track' => true %>
   </head>
 
-  <body>
+  <body class="wechat-<%= controller_name %>-<%= action_name %>" id="wechat_<%= controller_name %>_<%= action_name %>">
     <%= yield %>
   </body>
 </html>
