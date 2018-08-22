@@ -99,48 +99,48 @@ $(document).ready(function() {
           console.log(current_token);
           // postAddress(put_puttest.address);
           // var url = URLHOST + '/pages/bind_e_wallet';
-          // $.ajax({
-          //   url: URLHOST + '/pages/bind_e_wallet',
-          //   type: 'POST',
-          //   data: {
-          //     access_token: current_token,
-          //     put_address: put_puttest.address
-          //   },
-          //   // beforeSend: function(xhr) {
-          //   //   xhr.setRequestHeader('Authorization', current_token);
-          //   // },
-          //   success: function(data) {
-          //     createAlert(data);
-          //     $('#amount_active').html(put_puttest.amount_active);
-          //     $('#amount_frozen').html(put_puttest.amount_frozen);
-          //     $('#pmes_reg_page').hide();
-          //     $('#pmes_statistics_page').removeClass('hide');
-          //   },
-          //   error: function(xhr, type) {
-          //     console.log(xhr);
-          //     console.log(type);
-          //     console.log('error');
-          //   }
-          // });
-
           $.ajax({
-            method: 'POST',
             url: URLHOST + '/pages/bind_e_wallet',
+            type: 'POST',
+            data: {
+              // access_token: current_token,
+              put_address: put_puttest.address
+            },
             beforeSend: function(xhr) {
               xhr.setRequestHeader('Authorization', current_token);
             },
-            data: {
-              put_address: put_puttest.address
-            }
-          }).done(function(data) {
-            console.log(data);
-            // if(data['result'] == 'reject'){
-            //   location.reload();
-            // }
-            // else {
-            //   $(".error-flash").css("display", "block");
-            // }
+            success: function(data) {
+              createAlert(data);
+              $('#amount_active').html(put_puttest.amount_active);
+              $('#amount_frozen').html(put_puttest.amount_frozen);
+              $('#pmes_reg_page').hide();
+              $('#pmes_statistics_page').removeClass('hide');
+            },
+            error: function(xhr, type) {
+              console.log(xhr);
+              console.log(type);
+              console.log('error');
+            }
           });
+
+          // $.ajax({
+          //   method: 'POST',
+          //   url: URLHOST + '/pages/bind_e_wallet',
+          //   beforeSend: function(xhr) {
+          //     xhr.setRequestHeader('Authorization', current_token);
+          //   },
+          //   data: {
+          //     put_address: put_puttest.address
+          //   }
+          // }).done(function(data) {
+          //   console.log(data);
+          //   // if(data['result'] == 'reject'){
+          //   //   location.reload();
+          //   // }
+          //   // else {
+          //   //   $(".error-flash").css("display", "block");
+          //   // }
+          // });
         },
         error: function(xhr, type) {
           console.log('error');
