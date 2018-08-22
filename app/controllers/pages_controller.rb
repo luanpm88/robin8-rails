@@ -208,6 +208,9 @@ class PagesController < ApplicationController
     if result
       # @current_token = headers["Authorization"]
       @current_token = params[:access_token]
+
+      @kol = Kol.app_auth(private_token)
+      # @kol.e_wallet_account
       render :layout => "mobile"
     else
       render text: 'error'
