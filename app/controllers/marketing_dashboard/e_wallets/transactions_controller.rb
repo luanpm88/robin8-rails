@@ -6,7 +6,6 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
   end
 
   def withdraw
-    @campaign = Campaign.find params[:campaign_id]
     @password = params[:password]
     token = "token"
     public_key = "public_key"
