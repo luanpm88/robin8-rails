@@ -2,6 +2,7 @@ class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
   # before_action :authenticate_kol!, only: [:withdraw_apply]
+  skip_before_action :verify_authenticity_token, only: [:bind_e_wallet]
 
   def index
     render :layout => false
@@ -207,9 +208,25 @@ class PagesController < ApplicationController
     if result
       # @current_token = headers["Authorization"]
       @current_token = params[:access_token]
+
+      @kol = Kol.app_auth(private_token)
+      # @kol.e_wallet_account
       render :layout => "mobile"
     else
       render text: 'error'
+    end
+  end
+
+  def bind_e_wallet
+    result , private_token = AuthToken.valid?(request.headers["Authorization"])
+    if result
+      kol = Kol.app_auth(private_token)
+
+      EWallet::Account.create(token: params[:put_address], kol_id: current_kol.id) if kol && kol.e_wallet_account.nil?
+
+      return render json: {result: 'success'}
+    else
+      return render json: {result: 'error'}
     end
   end
 

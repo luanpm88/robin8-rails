@@ -15,12 +15,12 @@
       <tr>
         <td><%= campaign.name %></td>
         <td><%= campaign.kols.count %></td>
-        <td><%= (campaign.e_wallet_transtions.map &:amount).sum %></td>
+        <td><%= campaign.e_wallet_transtions.sum(:amount) %></td>
         <td><%= campaign.e_wallet_transtions.pending.count %></td>
-        <td><%= (campaign.e_wallet_transtions.pending.map &:amount).sum %></td>
+        <td><%= campaign.e_wallet_transtions.pending.sum(:amount) %></td>
         <td>
           <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
-          <%= link_to "提款", withdraw_marketing_dashboard_e_wallets_campaign_transactions_path(campaign), method: :put if campaign.e_wallet_transtions.pending.present? %>
+          <%= link_to "打款", withdraw_marketing_dashboard_e_wallets_campaign_transactions_path(campaign), method: :put if campaign.e_wallet_transtions.pending.present? %>
         </td>
       </tr>
       <% end %>
