@@ -3,15 +3,17 @@
     <thead>
       <tr>
         <th>用户名</th>
+        <th>PUT address</th>
         <th>奖励金额</th>
         <th>操作</th>
       </tr>
     </thead>
     <tbody>
-      <% @transactons.each do |transaction|%>
+      <% @transactons.each do |tr|%>
       <tr>
-        <td><%= transaction.kol.name %></td>
-        <td><%= transaction.amount %></td>
+        <td><%= tr.kol.name %></td>
+        <td><%= tr.kol.e_wallet_account.token %>
+        <td><%= tr.amount %></td>
         <td>
         </td>
       </tr>

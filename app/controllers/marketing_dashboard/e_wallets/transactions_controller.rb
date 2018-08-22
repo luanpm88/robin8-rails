@@ -2,7 +2,7 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
   before_filter :get_campaign
 
   def index
-    @transactons = @campaign.e_wallet_transtions.paginate(paginate_params)
+    @transactons = @campaign.e_wallet_transtions.includes(:kol).paginate(paginate_params)
   end
 
   def withdraw
