@@ -56,10 +56,12 @@ input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, i
 /*default form styles*/
 .default-form { width: 100%; }
 .content-panel .content-body.default-form { padding-right: 15px; padding-left: 15px; }
+.default-form .form-title { padding: 10px; margin-bottom: 10px; }
 .default-form .form-group { display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex; position: relative; border-bottom: 1px solid #f2f2f2; background-color: #fff; }
 .default-form .form-group.required { padding-left: 6px; }
 .default-form .form-group.required:before { position: absolute; -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); -o-transform: translateY(-50%); transform: translateY(-50%); left: 4px; z-index: 1; height: 1.4rem; line-height: 1.4rem; content: '*'; font-size: 1.4rem; color: #E13B3E; }
 .default-form .form-group.with-radius { border-radius: 4px; overflow: hidden; }
+.default-form .form-group.with-bd { border: 1px solid #bbb !important; }
 .default-form .form-group:last-child { border-bottom: none; }
 .default-form .form-group .form-label { height: 44px; line-height: 44px; padding-right: 10px; text-align: right; font-size: 1.5rem; color: rgba(0, 0, 0, .8); }
 .default-form .form-group .form-label .icon { display: inline-block; width: 44px; height: 44px; line-height: 44px; vertical-align: middle; text-align: center; font-size: 2.4rem; }
@@ -98,12 +100,12 @@ input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, i
 .default-form.pl10 { padding-left: 10px; }
 .default-form.with-bd { border-bottom: 1px solid #e2e2e2; }
 .default-form.size-b .form-group { height: 52px; }
-.default-form.size-b .form-group .form-label { height: 50; line-height: 50; }
-.default-form.size-b .form-group .form-label .icon { width: 50; height: 50; line-height: 50; }
-.default-form.size-b .form-group .form-control { height: 50; }
-.default-form.size-b .form-group .form-text { height: 50; line-height: 50; }
-.default-form.size-b .form-group .form-tail-btn > .button, .default-form.size-b .form-group .form-tail-btn > button { height: 50; line-height: 44px; }
-.default-form.size-b .form-group .form-tail-text { height: 50; line-height: 50; }
+.default-form.size-b .form-group .form-label { height: 50px; line-height: 50px; }
+.default-form.size-b .form-group .form-label .icon { width: 50px; height: 50px; line-height: 50px; }
+.default-form.size-b .form-group .form-control { height: 50px; }
+.default-form.size-b .form-group .form-text { height: 50px; line-height: 50px; }
+.default-form.size-b .form-group .form-tail-btn > .button, .default-form.size-b .form-group .form-tail-btn > button { height: 50px; line-height: 44px; }
+.default-form.size-b .form-group .form-tail-text { height: 50px; line-height: 50px; }
 
 /*default card styles*/
 .default-card { border-radius: 5px; box-shadow: 0px 4px 8px 0px rgba(0, 11, 30, .04); background-color: #fff; }
