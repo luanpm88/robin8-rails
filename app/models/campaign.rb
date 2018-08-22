@@ -81,7 +81,7 @@ class Campaign < ActiveRecord::Base
   has_many :campaign_materials
   has_many :campaign_push_records, class_name: "CampaignPushRecord"
 
-  has_many :e_wallet_transtions, -> {where("resource_type='Campaign'")}, class_name: "EWallet::Transtion", :foreign_key => :resource_id
+  has_many :e_wallet_transactions, -> {where("resource_type='Campaign'")}, class_name: "EWallet::Transtion", :foreign_key => :resource_id
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
@@ -121,7 +121,7 @@ class Campaign < ActiveRecord::Base
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
-  after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1' && self.status == "settled"}
+  after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1' && status_changed? }
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -606,9 +606,12 @@ class Campaign < ActiveRecord::Base
   end
 
   def generate_campaign_e_wattle_transactions
-    amount = $redis.get('put_amount')
-    self.kols.each do |kol|
-      self.e_wallet_transtions.create(kol_id: kol.id, resource_type: 'Campaign', amount: amount) if kol.e_wallet_account.present?
+    amount = $redis.get('put_amount').to_i
+    binding.pry
+    if self.is_settled_status?
+      self.kols.joins(:e_wallet_account).each do |kol|
+        kol.e_wallet_transactions.create(resource: self, amount: amount) if kol.e_wallet_transactions.where(resource: self).blank?
+      end
     end
   end
   

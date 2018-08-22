@@ -8,8 +8,12 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
 
   def withdraw
     @campaign = Campaign.find params[:campaign_id]
+    @password = params[:password]
+    token = "token"
+    
     @campaign.e_wallet_transtions.pending.each do |transtion|
-      txid = 'XXX' #调用接口获取txid
+      signature= "signature"
+      txid = PMES.transaction(token, public_key, transtion.amount, signature)
       if txid.present?
         transtion.txid = txid
         transtion.status = "successful"
