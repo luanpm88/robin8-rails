@@ -81,7 +81,7 @@ class Campaign < ActiveRecord::Base
   has_many :campaign_materials
   has_many :campaign_push_records, class_name: "CampaignPushRecord"
 
-  has_many :e_wallet_transactions, as: :resource, class: EWallet::Transtion
+  has_many :e_wallet_transtions, as: :resource, class: EWallet::Transtion
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
@@ -609,7 +609,7 @@ class Campaign < ActiveRecord::Base
     amount = $redis.get('put_amount').to_i
     if self.is_settled_status?
       self.kols.joins(:e_wallet_account).each do |kol|
-        kol.e_wallet_transactions.find_or_create_by(resource: self, amount: amount) 
+        kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount) 
       end
     end
   end

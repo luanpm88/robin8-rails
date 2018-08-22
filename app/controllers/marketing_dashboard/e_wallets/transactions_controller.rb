@@ -2,14 +2,14 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
   before_filter :get_campaign
 
   def index
-    @transactons = @campaign.e_wallet_transtions.includes(:kol).paginate(paginate_params)
+    @transtions = @campaign.e_wallet_transtions.includes(:kol).paginate(paginate_params)
   end
 
   def withdraw
     @password = params[:password]
     token = "token"
     public_key = "public_key"
-    @campaign.e_wallet_transtions.pending.each do |transtion|
+    @campaign.e_wallet_tranctions.pending.each do |transtion|
       signature= "signature"
       txid = PMES.transaction(token, public_key, transtion.amount, signature)
       if txid.present?
