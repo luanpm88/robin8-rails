@@ -1,13 +1,11 @@
-
 class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard::BaseController
+  before_filter :get_campaign
 
   def index
-    @campaign = Campaign.find params[:campaign_id]
-    @transactons = EWallet::Transtion.where(resource: @campaign)
+    @transactons = @campaign.e_wallet_transtions.paginate(paginate_params)
   end
 
   def withdraw
-    @campaign = Campaign.find params[:campaign_id]
     @campaign.e_wallet_transtions.pending.each do |transtion|
       txid = 'XXX' #调用接口获取txid
       if txid.present?
@@ -19,6 +17,12 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
       transtion.save
     end
     redirect_to marketing_dashboard_e_wallets_campaign_transactions_path(@campaign)
+  end
+
+  private
+
+  def get_campaign
+    @campaign = Campaign.find params[:campaign_id]
   end
 
 end
