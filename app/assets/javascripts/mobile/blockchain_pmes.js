@@ -3,6 +3,10 @@ var URLHOST = window.location.origin;
 $(document).ready(function() {
   if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
     if ($('#e_wallet_account').val() == '') {
+      $('#pmes_reg_page').show();
+      $('#pmes_statistics_page').hide();
+      $('#pmes_login_page').hide();
+
       var form_data = {};
       var phone_data = '';
       var device_id_data = '';
@@ -52,6 +56,8 @@ $(document).ready(function() {
         console.log(pmes_ctrl);
         pmes_ctrl.sign();
 
+        // createAlert(pmes_ctrl.public_key);
+
         var post_data = {
           'public_key': pmes_ctrl.public_key,
           'message': {
@@ -63,6 +69,8 @@ $(document).ready(function() {
           'signature': pmes_ctrl.signature
         }
         post_data = JSON.stringify(post_data);
+
+        // createAlert(post_data);
 
         var mnemonic_tips = '<p>请记住您的 Mnemonic</p><p>'+ pmes_ctrl.mnemonic +'</p>';
         createConfirm(
@@ -88,6 +96,7 @@ $(document).ready(function() {
                   };
                   console.log(post_native_data);
 
+                  post_native_data = JSON.stringify(post_native_data);
                   if (typeof jwPut != 'undefined') {
                     jwPut.put_Login(post_native_data);
                   }
@@ -113,7 +122,9 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                       // createAlert(data);
-                      location.reload();
+                      // location.reload();
+                      $('#pmes_reg_page').hide();
+                      $('#pmes_login_page').show();
                     },
                     error: function(xhr, type) {
                       console.log('error');
@@ -129,66 +140,82 @@ $(document).ready(function() {
         );
       });
     } else {
-      // 已有帐号
-      $('#pmes_login_btn').click(function(event) {
-        var current_date = new Date();
-        current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
-        var password = $('#password').val();
-        if (password == '') {
-          createAlert('请输入密码');
-          return false;
-        }
-
-        var getNativeData = {
-          token: '',
-          public_key: ''
-        };
-
-        var pmes_sign = PMES.sign(
-          getNativeData.token,
-          {
-            'message': {
-              'timestamp': current_date // 当前201808091319, 格式 YYYYMMDDHHmm
-            }
-          },
-          password
-        );
-
-        var post_data = {
-          'public_key': getNativeData.public_key,
-          'message': {
-            'timestamp': current_date // 当前时间 201808091319, 格式 YYYYMMDDHHmm
-          },
-          'signature': pmes_sign.signature
-        }
-        post_data = JSON.stringify(post_data);
-        console.log(post_data);
-
-        $.ajax({
-          url: 'http://190.2.149.83/api/accounts/' + getNativeData.public_key,
-          type: 'GET',
-          data: post_data,
-          success: function(data) {
-            console.log(data);
-            console.log(JSON.parse(data.wallets));
-            var wallets_data = JSON.parse(data.wallets);
-            var put_puttest = '';
-            $.each(wallets_data, function(index, el) {
-              if (el.coinid === 'PUTTEST') {
-                put_puttest = el;
-              }
-            });
-            $('#amount_active').html(put_puttest.amount_active);
-            $('#amount_frozen').html(put_puttest.amount_frozen);
-
-            $('#pmes_login_page').hide();
-          },
-          error: function(xhr, type) {
-            console.log('error');
-          }
-        });
-      });
+      $('#pmes_reg_page').hide();
+      $('#pmes_login_page').show();
     }
+
+    // 已有帐号
+    $('#pmes_login_btn').click(function(event) {
+      var current_date = new Date();
+      current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
+      var login_password = $('#login_password').val();
+      if (login_password == '') {
+        createAlert('请输入密码');
+        return false;
+      }
+
+      var get_native_data = {
+        token: '',
+        public_key: ''
+      };
+
+      if (typeof jwPut != 'undefined' && jwPut.put_pmes_data() != '') {
+        get_native_data = JSON.parse(jwPut.put_pmes_data());
+      }
+
+      var post_token = get_native_data.token.toString();
+      var post_public_key = get_native_data.public_key.toString();
+
+      // createAlert(get_native_data.token);
+      // createAlert(get_native_data.public_key);
+
+      var pmes_sign = PMES.sign(
+        post_token,
+        {
+          'message': {
+            'timestamp': current_date // 当前201808091319, 格式 YYYYMMDDHHmm
+          }
+        },
+        login_password
+      );
+
+      var post_data = {
+        'public_key': post_public_key,
+        'message': {
+          'timestamp': current_date // 当前时间 201808091319, 格式 YYYYMMDDHHmm
+        },
+        'signature': pmes_sign.signature
+      };
+      post_data = JSON.stringify(post_data);
+      // createAlert(post_public_key);
+
+      $.ajax({
+        url: 'http://190.2.149.83/api/accounts/'+ post_public_key +'/',
+        type: 'GET',
+        success: function(data) {
+          console.log(data);
+          console.log(JSON.parse(data.wallets));
+          var wallets_data = JSON.parse(data.wallets);
+          var put_puttest = '';
+          $.each(wallets_data, function(index, el) {
+            if (el.coinid === 'PUTTEST') {
+              put_puttest = el;
+            }
+          });
+          $('#amount_active').html(put_puttest.amount_active);
+          $('#amount_frozen').html(put_puttest.amount_frozen);
+
+          $('#pmes_login_page').hide();
+          $('#pmes_statistics_page').show();
+        },
+        error: function(xhr, type) {
+          createAlert(xhr);
+          createAlert(type);
+          console.log('error');
+        }
+      });
+    });
+
   }
 });
 
@@ -212,6 +239,8 @@ function PMESCtrl(password, email, phone, device_id) {
 PMESCtrl.prototype = {
   constructor: PMESCtrl,
   sign: function() {
+    var current_date = new Date();
+    current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
     var that = this;
     var pmes_sign = PMES.sign(
       that.token,

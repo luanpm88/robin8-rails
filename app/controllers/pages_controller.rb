@@ -203,11 +203,13 @@ class PagesController < ApplicationController
   end
 
   def pmes_demo
-    # result , private_token = AuthToken.valid?(request.headers["Authorization"])
-    result , private_token = AuthToken.valid?(params[:access_token])
+    Rails.logger.info '*' * 100
+    Rails.logger.info request.headers["Authorization"]
+    result , private_token = AuthToken.valid?(request.headers["Authorization"])
+    # result , private_token = AuthToken.valid?(params[:access_token])
     if result
-      # @current_token = headers["Authorization"]
-      @current_token = params[:access_token]
+      @current_token = request.headers["Authorization"]
+      # @current_token = params[:access_token]
 
       @kol = Kol.app_auth(private_token)
       # @kol.e_wallet_account
@@ -219,10 +221,11 @@ class PagesController < ApplicationController
 
   def bind_e_wallet
     result , private_token = AuthToken.valid?(request.headers["Authorization"])
-    if result
-      kol = Kol.app_auth(private_token)
 
-      EWallet::Account.create(token: params[:put_address], kol_id: current_kol.id) if kol && kol.e_wallet_account.nil?
+    if result
+      @kol = Kol.app_auth(private_token)
+
+      EWallet::Account.create(token: params[:put_address], kol_id: @kol.id) if @kol && @kol.e_wallet_account.nil?
 
       return render json: {result: 'success'}
     else
