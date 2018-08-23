@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'https://cdn.robin8.net/pmes.min.js', 'data-turbolinks-track' => true %>
 <%= hidden_field_tag 'e_wallet_account', @kol.e_wallet_account.try(:token) %>
 
 <div class="page full-page overflow-hidden pmes-statistics-page" id="pmes_statistics_page">
