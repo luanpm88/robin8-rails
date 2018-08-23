@@ -143,24 +143,29 @@ $(document).ready(function() {
           token: '',
           public_key: ''
         };
-        var generatePMESToken = PMES.generatePMESToken(getNativeData.token, password);
-        console.log('generatePMESToken:', generatePMESToken);
 
-        var decryptPMESTokenAndSign = PMES.decryptPMESTokenAndSign(generatePMESToken, {'timestamp': current_date}, password);
-        console.log('decryptPMESTokenAndSign:', decryptPMESTokenAndSign);
+        var pmes_sign = PMES.sign(
+          getNativeData.token,
+          {
+            'message': {
+              'timestamp': current_date // 当前201808091319, 格式 YYYYMMDDHHmm
+            }
+          },
+          password
+        );
 
         var post_data = {
-          'public_key': decryptPMESTokenAndSign.public_key,
+          'public_key': getNativeData.public_key,
           'message': {
             'timestamp': current_date // 当前时间 201808091319, 格式 YYYYMMDDHHmm
           },
-          'signature': decryptPMESTokenAndSign.signature
+          'signature': pmes_sign.signature
         }
         post_data = JSON.stringify(post_data);
         console.log(post_data);
 
         $.ajax({
-          url: 'http://190.2.149.83/api/accounts/',
+          url: 'http://190.2.149.83/api/accounts/' + getNativeData.public_key,
           type: 'GET',
           data: post_data,
           success: function(data) {
