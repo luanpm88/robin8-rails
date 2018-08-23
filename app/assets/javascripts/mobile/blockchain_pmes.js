@@ -73,6 +73,8 @@ $(document).ready(function() {
 
         createAlert('post_data:'+post_data);
 
+        createAlert('domain:'+URLHOST);
+
         var mnemonic_tips = '<p>请记住您的 Mnemonic</p><p>'+ pmes_ctrl.mnemonic +'</p>';
         createConfirm(
           mnemonic_tips,
