@@ -1,7 +1,7 @@
-// var URLHOST = window.location.origin;
-var URLHOST = $('#host_url').val();
-
 $(document).ready(function() {
+  var URLHOST = $('#host_url').val();
+  console.log(URLHOST);
+
   if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
     if ($('#e_wallet_account').val() == '') {
       $('#pmes_reg_page').show();
