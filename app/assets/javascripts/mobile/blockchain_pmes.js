@@ -69,7 +69,7 @@ $(document).ready(function() {
           },
           'signature': pmes_ctrl.signature
         }
-        post_data = JSON.stringify(post_data);
+        // post_data = JSON.stringify(post_data);
 
         createAlert('post_data:'+post_data);
 
@@ -228,7 +228,7 @@ $(document).ready(function() {
         },
         'signature': pmes_sign.signature
       };
-      post_data = JSON.stringify(post_data);
+      // post_data = JSON.stringify(post_data);
       // createAlert(post_public_key);
 
       $.ajax({
