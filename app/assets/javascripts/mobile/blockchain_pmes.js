@@ -57,7 +57,7 @@ $(document).ready(function() {
         console.log(pmes_ctrl);
         pmes_ctrl.sign();
 
-        // createAlert(pmes_ctrl.public_key);
+        createAlert('public_key:'+pmes_ctrl.public_key);
 
         var post_data = {
           'public_key': pmes_ctrl.public_key,
@@ -71,7 +71,7 @@ $(document).ready(function() {
         }
         post_data = JSON.stringify(post_data);
 
-        // createAlert(post_data);
+        createAlert('post_data:'+post_data);
 
         var mnemonic_tips = '<p>请记住您的 Mnemonic</p><p>'+ pmes_ctrl.mnemonic +'</p>';
         createConfirm(
