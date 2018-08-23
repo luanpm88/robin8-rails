@@ -1,5 +1,7 @@
+<%= hidden_field_tag 'e_wallet_account', @kol.e_wallet_account.try(:token) %>
+
 <% if @kol.e_wallet_account %>
-  <div class="page full-page overflow-hidden pmes-statistics-page hide" id="pmes_statistics_page">
+  <div class="page full-page overflow-hidden pmes-statistics-page" id="pmes_statistics_page">
     <div class="default-card put-balance-card">
       <h5 class="card-title">PUT余额</h5>
       <div class="balance-num" id="amount_active">0</div>
@@ -23,7 +25,6 @@
   <div class="page full-page overflow-hidden pmes-login-page" id="pmes_login_page">
     <div class="content-panel">
       <div class="content-body default-form size-b white-bg">
-        <%= hidden_field_tag 'current_token', @current_token %>
         <h5 class="form-title text-center">请输入钱包密码</h5>
         <label class="form-group with-bd">
           <div class="form-input">
