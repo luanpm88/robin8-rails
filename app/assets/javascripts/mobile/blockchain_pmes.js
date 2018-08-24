@@ -69,7 +69,8 @@ $(document).ready(function() {
           },
           'signature': pmes_ctrl.signature
         }
-        // post_data = JSON.stringify(post_data);
+        post_data = JSON.stringify(post_data);
+        console.log(post_data);
 
         createAlert('post_data:'+post_data);
 
@@ -150,43 +151,6 @@ $(document).ready(function() {
     }
 
     // 已有帐号
-    // var pwd = "";
-    // var len = 0;
-    // // type=tel input框
-    // var $inputs = $('.ios-password-input > input');
-    // $('#login_password').on('input', function() {
-    //   if (!$(this).val()) { //无值
-    //   }
-    //   if (/^[0-9]*$/g.test($(this).val())) { //有值且只能是数字（正则）
-    //     pwd = $(this).val().trim();
-    //     len = pwd.length;
-    //     for (var i in pwd) {
-    //       $inputs.eq(i).val(pwd[i]);
-    //     }
-    //     $inputs.each(function() { //将有值的当前input 后面的所有input清空
-    //       var index = $(this).index();
-    //       if (index >= len) {
-    //         $(this).val("");
-    //       }
-    //     });
-    //     if (len === 6) {
-    //       //执行付款操作
-    //     }
-
-    //   } else { //清除val中的非数字，返回纯number的value
-    //     var arr = $(this).val().match(/\d/g);
-    //     try {
-    //       $(this).val($(this).val().slice(0, $(this).val().lastIndexOf(arr[arr.length - 1]) + 1));
-    //     } catch(e) {
-    //       // console.log(e.message)
-    //       //清空
-    //       $(this).val("");
-    //     }
-    //   }
-    //   console.log("password:" + pwd);
-    // })
-
-
     $('#pmes_login_btn').click(function(event) {
       var current_date = new Date();
       current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');

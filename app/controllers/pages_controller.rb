@@ -205,11 +205,11 @@ class PagesController < ApplicationController
   def pmes_demo
     Rails.logger.info '*' * 100
     Rails.logger.info request.headers["Authorization"]
-    result , private_token = AuthToken.valid?(request.headers["Authorization"])
-    # result , private_token = AuthToken.valid?(params[:access_token])
+    # result , private_token = AuthToken.valid?(request.headers["Authorization"])
+    result , private_token = AuthToken.valid?(params[:access_token])
     if result
-      @current_token = request.headers["Authorization"]
-      # @current_token = params[:access_token]
+      # @current_token = request.headers["Authorization"]
+      @current_token = params[:access_token]
 
       @kol = Kol.app_auth(private_token)
       # @kol.e_wallet_account
