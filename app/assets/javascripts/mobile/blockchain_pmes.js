@@ -69,8 +69,7 @@ $(document).ready(function() {
           },
           'signature': pmes_ctrl.signature
         }
-        // post_data = JSON.stringify(post_data);
-        post_data = JSON.parse(post_data);
+        post_data = JSON.stringify(post_data);
         console.log(post_data);
 
         createAlert('post_data:'+post_data);
