@@ -206,7 +206,7 @@ class PagesController < ApplicationController
     Rails.logger.info '*' * 100
     Rails.logger.info request.headers["Authorization"]
     result , private_token = AuthToken.valid?(request.headers["Authorization"])
-    result , private_token = AuthToken.valid?(params[:access_token]) unless result
+    # result , private_token = AuthToken.valid?(params[:access_token]) unless result
     if result
       @current_token = request.headers["Authorization"]
       # @current_token = params[:access_token]

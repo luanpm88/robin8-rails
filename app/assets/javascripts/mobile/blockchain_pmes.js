@@ -87,7 +87,7 @@ $(document).ready(function() {
           function(type) {
             if (type == 'confirm') {
               $.ajax({
-                url: 'http://190.2.149.83/api/accounts/',
+                url: 'http://pmes.robin8.io/api/accounts/',
                 type: 'POST',
                 data: post_data,
                 success: function(data) {
@@ -151,6 +151,33 @@ $(document).ready(function() {
     }
 
     // 已有帐号
+    $('#login_password').pwd('init');
+
+    // var $pw_container = $('#password_input_container');
+    // var $pw_item = $pw_container.find('.password-input-item');
+    // var pw_container_width = $pw_container.outerWidth();
+
+    // $pw_item.each(function(index, el) {
+    //   var $item = $(el);
+    //   $item.css({
+    //     width: (pw_container_width - 7) / 6,
+    //     height: (pw_container_width - 7) / 6,
+    //     lineHeight: (pw_container_width - 7) / 6 + 'px'
+    //   });
+
+    //   $item.click(function(event) {
+    //     $('#login_password').focus();
+    //   });
+    // });
+
+    // $('#login_password').on('keyup change', function(event) {
+    //   var _val = $(this).val();
+    //   $pw_item.html('');
+    //   for (var i = _val.length - 1; i >= 0; i--) {
+    //     $pw_item.eq(i).html(_val[i]);
+    //   }
+    // });
+
     $('#pmes_login_btn').click(function(event) {
       var current_date = new Date();
       current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
@@ -196,7 +223,7 @@ $(document).ready(function() {
       // createAlert(post_public_key);
 
       $.ajax({
-        url: 'http://190.2.149.83/api/accounts/'+ post_public_key +'/',
+        url: 'http://pmes.robin8.io/api/accounts/'+ post_public_key +'/',
         type: 'GET',
         success: function(data) {
           console.log(data);

@@ -27,9 +27,17 @@
   <div class="content-panel">
     <div class="content-body default-form size-b white-bg">
       <h5 class="form-title text-center">请输入钱包密码</h5>
-      <label class="form-group with-bd">
+      <label class="form-group">
         <div class="form-input">
-          <input type="password" class="form-control text-center" id="login_password" minlength="6" maxlength="6" placeholder="请输入密码" />
+          <!-- <div class="password-input-container" id="password_input_container">
+            <div class="password-input-item"></div>
+            <div class="password-input-item"></div>
+            <div class="password-input-item"></div>
+            <div class="password-input-item"></div>
+            <div class="password-input-item"></div>
+            <div class="password-input-item"></div>
+          </div> -->
+          <input type="password" pattern="\d*" class="form-control login-password" id="login_password" minlength="6" maxlength="6" placeholder="请输入密码" />
         </div>
       </label>
     </div>
