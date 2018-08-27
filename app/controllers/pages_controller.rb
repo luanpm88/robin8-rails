@@ -206,10 +206,10 @@ class PagesController < ApplicationController
     Rails.logger.info '*' * 100
     Rails.logger.info request.headers["Authorization"]
     result , private_token = AuthToken.valid?(request.headers["Authorization"])
-    # result , private_token = AuthToken.valid?(params[:access_token]) unless result
+    result , private_token = AuthToken.valid?(params[:access_token]) unless result
     if result
       @current_token = request.headers["Authorization"]
-      # @current_token = params[:access_token]
+      @current_token = params[:access_token] unless @current_token
 
       @kol = Kol.app_auth(private_token)
       # @kol.e_wallet_account
