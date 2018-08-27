@@ -57,7 +57,7 @@ $(document).ready(function() {
         console.log(pmes_ctrl);
         pmes_ctrl.sign();
 
-        createAlert('public_key:'+pmes_ctrl.public_key);
+        // createAlert('public_key:'+pmes_ctrl.public_key);
 
         var post_data = {
           'public_key': pmes_ctrl.public_key,
@@ -72,9 +72,9 @@ $(document).ready(function() {
         post_data = JSON.stringify(post_data);
         console.log(post_data);
 
-        createAlert('post_data:'+post_data);
+        // createAlert('post_data:'+post_data);
 
-        createAlert('domain:'+URLHOST);
+        // createAlert('domain:'+URLHOST);
 
         var mnemonic_tips = '<p>请记住您的 Mnemonic</p><p>'+ pmes_ctrl.mnemonic +'</p>';
         createConfirm(
@@ -127,8 +127,12 @@ $(document).ready(function() {
                     success: function(data) {
                       // createAlert(data);
                       // location.reload();
+
+                      $('#amount_active').html(put_puttest.amount_active);
+                      $('#amount_frozen').html(put_puttest.amount_frozen);
                       $('#pmes_reg_page').hide();
-                      $('#pmes_login_page').show();
+                      $('#pmes_statistics_page').show();
+                      // $('#pmes_login_page').show();
                     },
                     error: function(xhr, type) {
                       createAlert('ruby error');
