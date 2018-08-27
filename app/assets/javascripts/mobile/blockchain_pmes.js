@@ -87,7 +87,7 @@ $(document).ready(function() {
           function(type) {
             if (type == 'confirm') {
               $.ajax({
-                url: 'http://pmes.robin8.io/api/accounts/',
+                url: 'https://pmes.robin8.io/api/accounts/',
                 type: 'POST',
                 data: post_data,
                 success: function(data) {
@@ -223,7 +223,7 @@ $(document).ready(function() {
       // createAlert(post_public_key);
 
       $.ajax({
-        url: 'http://pmes.robin8.io/api/accounts/'+ post_public_key +'/',
+        url: 'https://pmes.robin8.io/api/accounts/'+ post_public_key +'/',
         type: 'GET',
         success: function(data) {
           console.log(data);
