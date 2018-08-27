@@ -32,6 +32,10 @@ module API
           expose :rongcloud_token do |kol|
             kol.get_rongcloud_token
           end
+
+          expose :put_address do |kol|
+            kol.e_wallet_account.try(:token)
+          end
         end
 
         class Account < Grape::Entity

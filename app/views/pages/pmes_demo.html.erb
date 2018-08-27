@@ -2,89 +2,102 @@
 <%= hidden_field_tag 'e_wallet_account', @kol.e_wallet_account.try(:token) %>
 <%= hidden_field_tag 'host_url', Rails.application.secrets.domain %>
 
-<div class="page full-page overflow-hidden pmes-statistics-page" id="pmes_statistics_page">
-  <div class="default-card put-balance-card">
-    <h5 class="card-title">PUT余额</h5>
-    <div class="balance-num" id="amount_active">0</div>
-    <!-- <div class="balance-status left">提现中PUT<span class="num">0</span></div> -->
-    <div class="balance-status right">即将入账PUT<span class="num" id="amount_frozen">0</span></div>
-  </div>
-
-  <!-- <div class="default-card put-trend-card">
-    <h5 class="card-title">PUT价格走势</h5>
-  </div> -->
-
-  <div class="about-put">关于PUT的常见问题解答 <%= image_tag 'mobile/blockchain_pmes/icon_question.png', class: 'icon-question' %></div>
-
-  <!-- <div class="btn-group foot fill">
-    <div class="item">
-      <button type="button" class="button btn-cyan btn-block">PUT兑换</button>
+<% if @kol.e_wallet_account %>
+  <div class="page full-page overflow-hidden pmes-statistics-page" id="pmes_statistics_page">
+    <div class="default-card put-balance-card">
+      <h5 class="card-title">PUT余额</h5>
+      <div class="balance-num" id="amount_active">0</div>
+      <!-- <div class="balance-status left">提现中PUT<span class="num">0</span></div> -->
+      <div class="balance-status right">即将入账PUT<span class="num" id="amount_frozen">0</span></div>
     </div>
-  </div> -->
-</div>
 
-<div class="page full-page overflow-hidden pmes-login-page" id="pmes_login_page">
-  <div class="content-panel">
-    <div class="content-body default-form size-b white-bg">
-      <h5 class="form-title text-center">请输入钱包密码</h5>
-      <label class="form-group">
-        <div class="form-input">
-          <!-- <div class="password-input-container" id="password_input_container">
-            <div class="password-input-item"></div>
-            <div class="password-input-item"></div>
-            <div class="password-input-item"></div>
-            <div class="password-input-item"></div>
-            <div class="password-input-item"></div>
-            <div class="password-input-item"></div>
-          </div> -->
-          <input type="password" pattern="\d*" class="form-control login-password" id="login_password" minlength="6" maxlength="6" placeholder="请输入密码" />
-        </div>
-      </label>
-    </div>
+    <!-- <div class="default-card put-trend-card">
+      <h5 class="card-title">PUT价格走势</h5>
+    </div> -->
+
+    <div class="about-put">关于PUT的常见问题解答 <%= image_tag 'mobile/blockchain_pmes/icon_question.png', class: 'icon-question' %></div>
+
+    <!-- <div class="btn-group foot fill">
+      <div class="item">
+        <button type="button" class="button btn-cyan btn-block">PUT兑换</button>
+      </div>
+    </div> -->
   </div>
+  <div class="page full-page overflow-hidden pmes-login-page" id="pmes_login_page">
+    <div class="content-panel">
+      <div class="content-body default-form size-b white-bg">
+        <h5 class="form-title text-center">请输入钱包密码</h5>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="password" pattern="\d*" class="form-control login-password" id="login_password" minlength="6" maxlength="6" placeholder="请输入密码" />
+          </div>
+        </label>
+      </div>
+    </div>
 
-  <div class="btn-group mt30">
-    <div class="item pl15 pr15">
-      <button type="button" class="button btn-cyan btn-lg btn-block btn-pmes-submit" id="pmes_login_btn">确定</button>
+    <div class="btn-group mt30">
+      <div class="item pl15 pr15">
+        <button type="button" class="button btn-cyan btn-lg btn-block btn-pmes-submit" id="pmes_login_btn">确定</button>
+      </div>
     </div>
   </div>
-</div>
+<% else %>
+  <div class="page full-page overflow-hidden pmes-statistics-page" id="pmes_statistics_page">
+    <div class="default-card put-balance-card">
+      <h5 class="card-title">PUT余额</h5>
+      <div class="balance-num" id="amount_active">0</div>
+      <!-- <div class="balance-status left">提现中PUT<span class="num">0</span></div> -->
+      <div class="balance-status right">即将入账PUT<span class="num" id="amount_frozen">0</span></div>
+    </div>
 
-<div class="page full-page overflow-hidden pmes-reg-page" id="pmes_reg_page">
-  <div class="content-panel">
-    <div class="content-body default-form size-b white-bg">
-      <%= hidden_field_tag 'current_token', @current_token %>
-      <label class="form-group">
-        <div class="form-input">
-          <input type="email" class="form-control" id="email" placeholder="邮箱地址" disabled="disabled" />
-        </div>
-      </label>
-      <label class="form-group">
-        <div class="form-input">
-          <input type="tel" class="form-control" id="phone" placeholder="手机号码" disabled="disabled" />
-        </div>
-      </label>
-      <label class="form-group">
-        <div class="form-input">
-          <input type="text" class="form-control" id="device_id" placeholder="Device ID" disabled="disabled" />
-        </div>
-      </label>
-      <label class="form-group">
-        <div class="form-input">
-          <input type="password" class="form-control" id="password" minlength="6" maxlength="6" placeholder="请输入密码" />
-        </div>
-      </label>
-      <label class="form-group">
-        <div class="form-input">
-          <input type="password" class="form-control" id="password_confirm" minlength="6" maxlength="6" placeholder="请重复密码" />
-        </div>
-      </label>
+    <!-- <div class="default-card put-trend-card">
+      <h5 class="card-title">PUT价格走势</h5>
+    </div> -->
+
+    <div class="about-put">关于PUT的常见问题解答 <%= image_tag 'mobile/blockchain_pmes/icon_question.png', class: 'icon-question' %></div>
+
+    <!-- <div class="btn-group foot fill">
+      <div class="item">
+        <button type="button" class="button btn-cyan btn-block">PUT兑换</button>
+      </div>
+    </div> -->
+  </div>
+  <div class="page full-page overflow-hidden pmes-reg-page" id="pmes_reg_page">
+    <div class="content-panel">
+      <div class="content-body default-form size-b white-bg">
+        <%= hidden_field_tag 'current_token', @current_token %>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="email" class="form-control" id="email" placeholder="邮箱地址" disabled="disabled" />
+          </div>
+        </label>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="tel" class="form-control" id="phone" placeholder="手机号码" disabled="disabled" />
+          </div>
+        </label>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="text" class="form-control" id="device_id" placeholder="Device ID" disabled="disabled" />
+          </div>
+        </label>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="password" class="form-control" id="password" minlength="6" maxlength="6" placeholder="请输入密码" />
+          </div>
+        </label>
+        <label class="form-group">
+          <div class="form-input">
+            <input type="password" class="form-control" id="password_confirm" minlength="6" maxlength="6" placeholder="请重复密码" />
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-group mt30">
+      <div class="item pl15 pr15">
+        <button type="button" class="button btn-cyan btn-lg btn-block btn-pmes-reg-submit" id="pmes_reg_submit_btn">确定</button>
+      </div>
     </div>
   </div>
-
-  <div class="btn-group mt30">
-    <div class="item pl15 pr15">
-      <button type="button" class="button btn-cyan btn-lg btn-block btn-pmes-reg-submit" id="pmes_reg_submit_btn">确定</button>
-    </div>
-  </div>
-</div>
+<% end %>

@@ -4,9 +4,8 @@ $(document).ready(function() {
 
   if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
     if ($('#e_wallet_account').val() == '') {
-      $('#pmes_reg_page').show();
       $('#pmes_statistics_page').hide();
-      $('#pmes_login_page').hide();
+      $('#pmes_reg_page').show();
 
       var form_data = {};
       var phone_data = '';
@@ -19,11 +18,6 @@ $(document).ready(function() {
         device_id_data = form_data.device_id;
         email_data = form_data.email;
       }
-
-      // createAlert(form_data);
-      // createAlert(form_data.phone_num);
-      // createAlert(form_data.device_id);
-      // createAlert(form_data.email);
 
       $('#email').val(email_data);
       $('#phone').val(phone_data);
@@ -73,7 +67,6 @@ $(document).ready(function() {
         console.log(post_data);
 
         // createAlert('post_data:'+post_data);
-
         // createAlert('domain:'+URLHOST);
 
         var mnemonic_tips = '<p>请记住您的 Mnemonic</p><p>'+ pmes_ctrl.mnemonic +'</p>';
@@ -150,38 +143,12 @@ $(document).ready(function() {
         );
       });
     } else {
-      $('#pmes_reg_page').hide();
+      $('#pmes_statistics_page').hide();
       $('#pmes_login_page').show();
     }
 
     // 已有帐号
     $('#login_password').pwd('init');
-
-    // var $pw_container = $('#password_input_container');
-    // var $pw_item = $pw_container.find('.password-input-item');
-    // var pw_container_width = $pw_container.outerWidth();
-
-    // $pw_item.each(function(index, el) {
-    //   var $item = $(el);
-    //   $item.css({
-    //     width: (pw_container_width - 7) / 6,
-    //     height: (pw_container_width - 7) / 6,
-    //     lineHeight: (pw_container_width - 7) / 6 + 'px'
-    //   });
-
-    //   $item.click(function(event) {
-    //     $('#login_password').focus();
-    //   });
-    // });
-
-    // $('#login_password').on('keyup change', function(event) {
-    //   var _val = $(this).val();
-    //   $pw_item.html('');
-    //   for (var i = _val.length - 1; i >= 0; i--) {
-    //     $pw_item.eq(i).html(_val[i]);
-    //   }
-    // });
-
     $('#pmes_login_btn').click(function(event) {
       var current_date = new Date();
       current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');

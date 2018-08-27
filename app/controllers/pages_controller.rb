@@ -227,7 +227,7 @@ class PagesController < ApplicationController
 
       EWallet::Account.create(token: params[:put_address], kol_id: @kol.id) if @kol && @kol.e_wallet_account.nil?
 
-      return render json: {result: 'success'}
+      return render json: {result: 'success', put_address: params[:put_address]}
     else
       return render json: {result: 'error'}
     end
