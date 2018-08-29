@@ -890,4 +890,9 @@ class Kol < ActiveRecord::Base
       ''
     end
   end
+
+  def qr_invite
+    qr_url = "#{Rails.application.secrets.domain}/invite?inviter_id=#{id}"
+    RQRCode::QRCode.new(qr_url, size: 12, level: :h).as_svg(module_size: 3)
+  end
 end
