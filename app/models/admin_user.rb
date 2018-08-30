@@ -6,4 +6,8 @@ class AdminUser < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
+
+
+  has_one :e_wallet_account, class_name: "EWallet::Account"
+
 end

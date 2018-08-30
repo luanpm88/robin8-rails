@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       member  do
         get :edit_auth
         patch :update_auth
+        put :bind_e_wallet
       end
     end
 
