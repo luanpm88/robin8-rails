@@ -1,8 +1,7 @@
 $(document).ready(function() {
-  var URLHOST = $('#host_url').val();
-  console.log(URLHOST);
-
   if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
+    var URLHOST = $('#host_url').val();
+    console.log(URLHOST);
     if ($('#e_wallet_account').val() == '') {
       $('#pmes_statistics_page').hide();
       $('#pmes_reg_page').show();
