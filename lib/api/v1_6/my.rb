@@ -17,6 +17,7 @@ module API
           present :is_show_invite_code, $redis.get('invite_switch')
           present :logo, current_kol.strategy[:logo]
           present :vest_bag_detail, $redis.get('vest_bag_detail')
+          present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
         end
 
         params do
