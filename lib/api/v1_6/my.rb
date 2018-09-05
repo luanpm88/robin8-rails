@@ -18,6 +18,7 @@ module API
           present :logo, current_kol.strategy[:logo]
           present :vest_bag_detail, $redis.get('vest_bag_detail')
           present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
+          present :put_count, $redis.get('put_count')
         end
 
         params do
