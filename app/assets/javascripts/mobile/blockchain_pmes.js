@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if ($('body').attr('id') === 'wechat_pages_pmes_demo') {
+  if ($('body').attr('id') === 'mobile_pages_pmes_demo') {
     var URLHOST = $('#host_url').val();
     console.log(URLHOST);
     if ($('#e_wallet_account').val() == '') {

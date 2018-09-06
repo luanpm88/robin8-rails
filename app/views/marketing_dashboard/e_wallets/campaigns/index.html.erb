@@ -1,105 +1,33 @@
 <%= hidden_field_tag 'current_admin_user_id', @current_admin_user.id %>
 <%= hidden_field_tag 'host_url', Rails.application.secrets.domain %>
 
-<% if @current_admin_user.put_address %>
-  <div id="put_remit_container">
-    <h3>PUT活动奖励列表</h3>
-    <hr>
-    <table class="table table-striped">
-      <thead>
+<div id="put_remit_container">
+  <h3>PUT活动奖励列表</h3>
+  <hr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>活动名称</th>
+        <th>参与人数</th>
+        <th>奖励总额</th>
+        <th>未支付人数</th>
+        <th>未支付总额</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @campaigns.each do |campaign|%>
         <tr>
-          <th>活动名称</th>
-          <th>参与人数</th>
-          <th>奖励总额</th>
-          <th>未支付人数</th>
-          <th>未支付总额</th>
-          <th>操作</th>
+          <td><%= campaign.name %></td>
+          <td><%= campaign.kols.count %></td>
+          <td><%= campaign.e_wallet_transtions.sum(:amount) %></td>
+          <td><%= campaign.e_wallet_transtions.pending.count %></td>
+          <td><%= campaign.e_wallet_transtions.pending.sum(:amount) %></td>
+          <td>
+            <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <% @campaigns.each do |campaign|%>
-          <tr>
-            <td><%= campaign.name %></td>
-            <td><%= campaign.kols.count %></td>
-            <td><%= campaign.e_wallet_transtions.sum(:amount) %></td>
-            <td><%= campaign.e_wallet_transtions.pending.count %></td>
-            <td><%= campaign.e_wallet_transtions.pending.sum(:amount) %></td>
-            <td>
-              <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
-              <%= link_to "打款", withdraw_marketing_dashboard_e_wallets_campaign_transactions_path(campaign), method: :put if campaign.e_wallet_transtions.pending.present? %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% else %>
-  <div class="panel panel-default put-open-panel" id="put_open_panel">
-    <div class="panel-heading">
-      <h3 class="panel-title">开通PUT钱包</h3>
-    </div>
-    <div class="panel-body">
-      <div class="form-horizontal">
-        <div class="form-group">
-          <label for="email" class="col-sm-3 control-label">邮箱地址</label>
-          <div class="col-sm-7">
-            <%= text_field_tag 'email', @current_admin_user.email, class: 'form-control', placeholder: '邮箱地址', disabled: true %>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="password" class="col-sm-3 control-label">密码</label>
-          <div class="col-sm-7">
-            <input type="password" class="form-control" id="password" minlength="6" maxlength="6" placeholder="请输入密码(6位数字)" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="password_confirm" class="col-sm-3 control-label">确认密码</label>
-          <div class="col-sm-7">
-            <input type="password" class="form-control" id="password_confirm" minlength="6" maxlength="6" placeholder="请重复密码(6位数字)" />
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-3 col-sm-7">
-            <button type="submit" class="btn btn-primary" id="pmes_reg_submit_btn">Sign in</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="mnemonic_modal" tabindex="-1" role="dialog" aria-labelledby="mnemonic_modal_label">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="mnemonic_modal_label">请截图保存或纸笔记录此安全码，用于找回账户</h4>
-        </div>
-        <div class="modal-body">
-          <div class="mnemonic-modal-text" id="mnemonic_modal_text"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="mnemonic_text_get">已记下</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="mnemonic_input_modal" tabindex="-1" role="dialog" aria-labelledby="mnemonic_input_modal_label">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="mnemonic_input_modal_label">请输入您的安全码</h4>
-        </div>
-        <div class="modal-body">
-          <textarea class="form-control" rows="4" id="mnemonic_input"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">重新获取</button>
-          <button type="button" class="btn btn-primary" id="mnemonic_confirm">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
