@@ -285,7 +285,7 @@ Rails.application.routes.draw do
       resources 'campaigns', only:[:index] do
         resources 'transactions', only:[:index] do
           collection do
-            put :withdraw
+            post :update_txid
           end
         end
       end
