@@ -7,7 +7,6 @@
 //= require moment
 //= require moment/zh-cn.js
 //= require bootstrap-datetimepicker
-//= require marketing_dashboard/pmes.min
 //= require marketing_dashboard/common
 //= require marketing_dashboard/jqzoom
 //= require Chart.min
