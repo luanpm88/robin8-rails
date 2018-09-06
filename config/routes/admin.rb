@@ -130,7 +130,7 @@ Rails.application.routes.draw do
       member  do
         get :edit_auth
         patch :update_auth
-        put :bind_e_wallet
+        post :bind_e_wallet
       end
     end
 
@@ -269,22 +269,22 @@ Rails.application.routes.draw do
       end
     end
 
-    namespace :e_wallets do 
+    namespace :e_wallets do
       resources 'promotions' do
-        member do 
+        member do
           put :modify_state
         end
       end
 
       resources 'kol_promotions' do
-        member do 
+        member do
           put :modify_state
         end
       end
 
       resources 'campaigns', only:[:index] do
-        resources 'transactions', only:[:index] do 
-          collection do 
+        resources 'transactions', only:[:index] do
+          collection do
             put :withdraw
           end
         end
