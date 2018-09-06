@@ -74,8 +74,9 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
 
   def bind_e_wallet
     @admin_user = AdminUser.find(params[:id])
-    if @admin_user && @admin_user.e_wallet_account.nil? 
-      if EWallet::Account.create(token: params[:put_address], admin_user_id: @admin_user.id)
+    if @admin_user && @admin_user.put_address.blank?
+      @admin_user.put_address = params[:put_address]
+      if @admin_user.save
         return render json: {result: 'success', put_address: params[:put_address]}
       else
         return render json: {result: 'error'}
