@@ -118,6 +118,7 @@ class Campaign < ActiveRecord::Base
   before_validation :format_url
   after_save :create_job
   before_create :generate_campaign_number, :deal_wechat_auth_type
+  before_create :change_present_put, if: ->{$redis.get('put_switch') == '1'}
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
@@ -614,6 +615,9 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def change_present_put
+    self.is_present_put = true
+  end
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign
