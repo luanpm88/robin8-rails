@@ -2,10 +2,10 @@
 <%= hidden_field_tag 'host_url', Rails.application.secrets.domain %>
 
 <% if @current_admin_user.put_address %>
-  <div id="put_remit_table">
+  <div id="put_remit_container">
     <h3>PUT活动奖励列表</h3>
     <hr>
-    <table class='table table-striped'>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>活动名称</th>

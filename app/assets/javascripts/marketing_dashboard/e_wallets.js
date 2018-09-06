@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  var current_token = '';
   var current_admin_user_id = $('#current_admin_user_id').val();
 
   // 创建帐号
@@ -110,5 +109,17 @@ $(document).ready(function() {
       }
     });
 
+  });
+
+  // 批量付款
+  $('#put_remit_btn').click(function(event) {
+    var $put_remit_table = $('#put_remit_table');
+    var put_remit_token = $put_remit_table.find('.put-remit-token');
+
+    $.each(put_remit_token, function(index, el) {
+      var $item = $(el);
+      var _token = $item.html();
+      console.log(_token);
+    });
   });
 });

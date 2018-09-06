@@ -1,23 +1,27 @@
-<div>
-  <table class='table'>
-    <thead>
-      <tr>
-        <th>用户名</th>
-        <th>PUT address</th>
-        <th>奖励金额</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @transtions.each do |tr|%>
+<h3>
+  PUT活动奖励列表
+  <button type="button" class="btn btn-primary pull-right" id="put_remit_btn">批量付款</button>
+</h3>
+<hr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>PUT address</th>
+      <th>奖励金额</th>
+      <th>tx_id</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody id="put_remit_table">
+    <% @transtions.each do |tr|%>
       <tr>
         <td><%= tr.kol.name %></td>
-        <td><%= tr.kol.e_wallet_account.token %>
+        <td class="put-remit-token"><%= tr.kol.e_wallet_account.token %></td>
         <td><%= tr.amount %></td>
-        <td>
-        </td>
+        <td><%= tr.txid %></td>
+        <td></td>
       </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+    <% end %>
+  </tbody>
+</table>

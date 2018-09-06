@@ -27,7 +27,7 @@ class Campaign < ActiveRecord::Base
     unexecute:  '未执行',
     rejected:   '已拒绝'
   }
-  
+
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = Hash.new
@@ -294,7 +294,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  # 活动类型的判断方法的封装  
+  # 活动类型的判断方法的封装
   ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite', 'cpt'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
@@ -303,14 +303,14 @@ class Campaign < ActiveRecord::Base
 
   #活动状态判断方法的封装
   ['unpay','pending','agreed','executing','executed','settled','finished','unexecute','rejected'].each do |value|
-    define_method "is_#{value}_status?" do 
+    define_method "is_#{value}_status?" do
       self.status == value
     end
   end
 
 
   def recruit_status
-    case self.status 
+    case self.status
     when 'unpay'
       return 'unpay'
     when 'unexecute'
@@ -481,11 +481,11 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_example_screenshot(multi = false)  
+  def get_example_screenshot(multi = false)
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")   rescue []
-      return example_screenshot[0]   unless multi 
+      return example_screenshot[0]   unless multi
       return example_screenshot
     else
       return ExampleScreenshots[user_id][sub_type.to_sym] unless multi
@@ -584,10 +584,10 @@ class Campaign < ActiveRecord::Base
       if ci.new_record?
         uuid      = Base64.encode64({campaign_id: id, kol_id: k.id}.to_json).gsub("\n","")
         short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
-      
+
         ci.img_status   = 'passed'
-        ci.approved_at  = Time.now 
-        ci.status       = 'settled' 
+        ci.approved_at  = Time.now
+        ci.status       = 'settled'
         ci.uuid         = uuid
         ci.share_url    = short_url
         ci.avail_click  = click_ary[index]
@@ -606,14 +606,14 @@ class Campaign < ActiveRecord::Base
   end
 
   def generate_campaign_e_wattle_transactions
-    amount = $redis.get('put_amount').to_i
+    amount = $redis.get('put_count').to_i
     if self.is_settled_status?
       self.kols.joins(:e_wallet_account).each do |kol|
-        kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount) 
+        kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount)
       end
     end
   end
-  
+
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign
