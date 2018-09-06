@@ -292,8 +292,6 @@ module Campaigns
       self.passed_invites.each do |invite|
         invite.settle
       end
-
-      self.generate_campaign_e_wattle_transactions if $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
     end
 
     # 结算 for brand
@@ -312,6 +310,9 @@ module Campaigns
       settle_accounts_for_kol
       
       self.update_columns(status: 'settled', evaluation_status: 'evaluating')
+
+      self.generate_campaign_e_wattle_transactions if $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
+      
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       
       # 平台收益
