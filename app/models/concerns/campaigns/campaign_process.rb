@@ -292,6 +292,8 @@ module Campaigns
       self.passed_invites.each do |invite|
         invite.settle
       end
+
+      self.generate_campaign_e_wattle_transactions if $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
     end
 
     # 结算 for brand
