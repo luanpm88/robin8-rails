@@ -10,7 +10,6 @@
 //= require marketing_dashboard/pmes.min
 //= require marketing_dashboard/common
 //= require marketing_dashboard/jqzoom
-//= require marketing_dashboard/e_wallets
 //= require Chart.min
 
 if (!jQuery.fn.size) {
