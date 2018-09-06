@@ -1,26 +1,20 @@
 class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard::BaseController
-  before_filter :get_campaign
+  before_filter :get_campaign, only: [:index]
 
   def index
     @transtions = @campaign.e_wallet_transtions.includes(:kol).paginate(paginate_params)
   end
 
-  def withdraw
-    @password = params[:password]
-    token = "token"
-    public_key = "public_key"
-    @campaign.e_wallet_tranctions.pending.each do |transtion|
-      signature= "signature"
-      txid = PMES.transaction(token, public_key, transtion.amount, signature)
-      if txid.present?
-        transtion.txid = txid
-        transtion.status = "successful"
-      else
-        transtion.status = "falied"
-      end
-      transtion.save
+  def update_txid
+    tr = EWallet::Transtion.find_by_id params[:tr_id]
+
+    if tr && params[:tx_id]
+      tr.update_attributes(status: 'successful', txid: params[:tx_id])
+    else 
+      tr.update_attributes(status: 'failed') if tr
     end
-    redirect_to marketing_dashboard_e_wallets_campaign_transactions_path(@campaign)
+
+    return render json: {result: 'success'}
   end
 
   private
