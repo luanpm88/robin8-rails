@@ -214,7 +214,7 @@ module Campaigns
             CampaignObserverWorker.new.perform(self.id)
           end
           Partners::Alizhongbao.finish_campaign(self.id)  if self.channel == 'azb'
-          self.generate_campaign_e_wattle_transactions if self.is_present_put && $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
+          self.generate_campaign_e_wattle_transactions
         end
       elsif self.status == 'agreed'
         ActiveRecord::Base.transaction do

@@ -609,8 +609,10 @@ class Campaign < ActiveRecord::Base
   def generate_campaign_e_wattle_transactions
     amount = $redis.get('put_count').to_f
     
-    self.kols.joins(:e_wallet_account).each do |kol|
-      kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount)
+    if is_present_put && $redis.get('put_switch') == '1' && amount > 0
+      self.kols.joins(:e_wallet_account).each do |kol|
+        kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount)
+      end
     end
   end
 
