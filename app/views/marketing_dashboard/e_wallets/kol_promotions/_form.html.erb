@@ -1,0 +1,46 @@
+<%= form_for(@kol_promotion, url: url, html: { class: "form-horizontal"}) do |f| %>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">策略方式</label>
+    <div class="col-sm-8">
+      <%= f.select :income_way, options_for_select([['现金','money'],['PUTS','puts']]), :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">额外比例(%)</label>
+    <div class="col-sm-8">
+      <%= f.text_field :extra_percentage, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">说明</label>
+    <div class="col-sm-8">
+      <%= f.text_area :description, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">开始</label>
+    <div class="col-sm-8">
+      <%= f.date_select :start_at, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">结束</label>
+    <div class="col-sm-8">
+      <%= f.date_select :end_at, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit '提交', :class => 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>

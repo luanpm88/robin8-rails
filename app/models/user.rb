@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
   belongs_to :kol, inverse_of: :user
   has_many :credits, as: :owner
 
+
+  delegate :e_wallet_account , to: :kol
+
+
   validates_presence_of :name, :if => Proc.new{|user| (user.new_record? and self.kol_id.blank?) or user.name_changed?}
   after_create :init_appid
 

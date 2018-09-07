@@ -1,4 +1,5 @@
 class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseController
+
   def index
     authorize! :write, AdminUser
 
@@ -70,4 +71,20 @@ class MarketingDashboard::AdminUsersController < MarketingDashboard::BaseControl
       redirect_to action: :index
     end
   end
+
+  def bind_e_wallet
+    @admin_user = AdminUser.find(params[:id])
+    if @admin_user && @admin_user.put_address.blank?
+      @admin_user.put_address = params[:put_address]
+      if @admin_user.save
+        return render json: {result: 'success', put_address: params[:put_address]}
+      else
+        return render json: {result: 'error'}
+      end
+    else 
+      return render json: {result: '钱包已存在' }
+    end
+  end
+
+
 end

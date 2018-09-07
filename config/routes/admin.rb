@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       member  do
         get :edit_auth
         patch :update_auth
+        post :bind_e_wallet
       end
     end
 
@@ -266,6 +267,36 @@ Rails.application.routes.draw do
         get :kols
         get :kols_red_money
       end
+    end
+
+    namespace :e_wallets do
+      resources 'promotions' do
+        member do
+          put :modify_state
+        end
+      end
+
+      resources 'kol_promotions' do
+        member do
+          put :modify_state
+        end
+      end
+
+      resources 'campaigns', only:[:index] do
+        resources 'transactions', only:[:index] do
+          collection do
+            post :update_txid
+          end
+        end
+      end
+
+      resources :redis_sets, only: [] do
+        collection do
+          get :sales
+          put :update_sales
+        end
+      end
+
     end
 
 

@@ -147,10 +147,10 @@ module API
           _hash = {}
           current_kol.children.where(id: select_ids).each do |kol|
             _hash[kol.id] = {
-              kol_id:                 kol.id, 
-              kol_name:               kol.name, 
-              avatar_url:             kol.avatar_url, 
-              campaign_invites_count: kol.campaign_invites.count, 
+              kol_id:                 kol.id,
+              kol_name:               kol.name,
+              avatar_url:             kol.avatar_url,
+              campaign_invites_count: kol.campaign_invites.count,
               amount:                 current_kol.friend_amount(kol)
             }
           end
@@ -176,6 +176,7 @@ module API
           present :total_count, @kols.count
           present :list, @kols , with: API::V2_0::Entities::KolOverviewEntities::FriendsPercentage, current_kol: current_kol
         end
+
       end
     end
   end

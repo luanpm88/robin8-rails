@@ -25,6 +25,8 @@ module API
             present :invitees_count, invitees_count
             present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
             present :leader_club, club_name
+            present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
+            present :put_count, $redis.get('put_count')
           end
         end
 

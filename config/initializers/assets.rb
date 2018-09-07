@@ -41,3 +41,5 @@ Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpa
 Rails.application.config.assets.precompile += %w( brand-static.css brand-vendor-bundle-static.js brand-app-bundle-static.js server-bundle.js )
 Rails.application.config.assets.precompile << Proc.new { |path| path.start_with?("brand-") }
 NonStupidDigestAssets.whitelist += [/brand-/]
+
+Rails.application.config.assets.precompile += %w( pmes/pmes.min.js )

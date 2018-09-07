@@ -108,6 +108,8 @@ class Kol < ActiveRecord::Base
   has_many :elastic_article_actions
 
   has_many :announcement_shows
+  has_one :e_wallet_account, class_name: "EWallet::Account"
+  has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
 
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
@@ -889,5 +891,10 @@ class Kol < ActiveRecord::Base
     else
       ''
     end
+  end
+
+  def qr_invite
+    qr_url = "#{Rails.application.secrets.domain}/invite?inviter_id=#{id}"
+    RQRCode::QRCode.new(qr_url, size: 12, level: :h).as_svg(module_size: 3)
   end
 end

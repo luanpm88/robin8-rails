@@ -1,0 +1,33 @@
+<%= hidden_field_tag 'current_admin_user_id', @current_admin_user.id %>
+<%= hidden_field_tag 'host_url', Rails.application.secrets.domain %>
+
+<div id="put_remit_container">
+  <h3>PUT活动奖励列表</h3>
+  <hr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>活动名称</th>
+        <th>参与人数</th>
+        <th>奖励总额</th>
+        <th>未支付人数</th>
+        <th>未支付总额</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @campaigns.each do |campaign|%>
+        <tr>
+          <td><%= campaign.name %></td>
+          <td><%= campaign.kols.count %></td>
+          <td><%= campaign.e_wallet_transtions.sum(:amount) %></td>
+          <td><%= campaign.e_wallet_transtions.pending.count %></td>
+          <td><%= campaign.e_wallet_transtions.pending.sum(:amount) %></td>
+          <td>
+            <%= link_to "详情", marketing_dashboard_e_wallets_campaign_transactions_path(campaign) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
