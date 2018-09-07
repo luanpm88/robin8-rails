@@ -214,6 +214,7 @@ module Campaigns
             CampaignObserverWorker.new.perform(self.id)
           end
           Partners::Alizhongbao.finish_campaign(self.id)  if self.channel == 'azb'
+          self.generate_campaign_e_wattle_transactions if self.is_present_put && $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
         end
       elsif self.status == 'agreed'
         ActiveRecord::Base.transaction do
@@ -310,8 +311,6 @@ module Campaigns
       settle_accounts_for_kol
       
       self.update_columns(status: 'settled', evaluation_status: 'evaluating')
-
-      self.generate_campaign_e_wattle_transactions if $redis.get('put_switch') == '1' && $redis.get('put_count').to_f > 0
       
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       
