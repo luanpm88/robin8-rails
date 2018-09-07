@@ -1,11 +1,17 @@
+<%= javascript_include_tag 'https://cdn.robin8.net/pmes.min.js', 'data-turbolinks-track' => true %>
+
+<%= hidden_field_tag 'campaign_id', @campaign.id %>
+
 <h3>
   PUT活动奖励列表
-  <!-- <button type="button" class="btn btn-primary pull-right" id="put_remit_btn">批量付款</button> -->
+  <button type="button" class="btn btn-primary pull-right" id="put_remit_btn">批量付款</button>
+  <button type="button" class="btn btn-info pull-right mr-10" id="wallet_detail_btn">钱包详情</button>
 </h3>
 <hr>
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>ID</th>
       <th>用户名</th>
       <th>PUT address</th>
       <th>奖励数量</th>
@@ -16,10 +22,11 @@
   <tbody id="put_remit_table">
     <% @transtions.each do |tr|%>
       <tr>
+        <td class="put-tr-id"><%= tr.id %></td>
         <td><%= tr.kol.name %></td>
         <td class="put-remit-token"><%= tr.kol.e_wallet_account.token %></td>
-        <td><%= tr.amount %></td>
-        <td><%= tr.txid %></td>
+        <td class="put-remit-amount"><%= tr.amount %></td>
+        <td class="put-tx-id"><%= tr.txid %></td>
         <td></td>
       </tr>
     <% end %>
@@ -36,16 +43,36 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="password_input">Password:</label>
-          <input type="password" class="form-control" id="password_input" placeholder="Password">
+          <input type="password" minlength="6" maxlength="6" class="form-control" id="password_input" placeholder="Password">
         </div>
         <div class="form-group">
           <label for="token_input">Token:</label>
-          <textarea class="form-control" rows="4" id="token_input" placeholder="Token"></textarea>
+          <textarea class="form-control" rows="6" id="token_input" placeholder="Token"></textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" id="token_confirm">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="wallet_detail_modal" tabindex="-1" role="dialog" aria-labelledby="wallet_detail_modal_label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="wallet_detail_modal_label">钱包详情</h4>
+      </div>
+      <div class="modal-body" id="wallet_detail_container">
+        <div class="wallet-detail-publickey">
+          <p><strong>public_key:</strong></p>
+          <p id="wallet_detail_publickey"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
       </div>
     </div>
   </div>
