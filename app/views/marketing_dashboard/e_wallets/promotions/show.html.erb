@@ -1,0 +1,32 @@
+<table class="table table-bordered table-striped" style="margin-top: 15px;">
+  <col width="200px" />
+  <tr>
+    <td>策略 ID</td>
+    <td><%= @promotion.id %></td>
+  </tr>
+  <tr>
+    <td>策略最低值</td>
+    <td><%= @promotion.min_amount %></td>
+  </tr>
+  <tr>
+    <td>策略最高值</td>
+    <td><%= @promotion.max_amount %></td>
+  </tr>
+  <tr>
+    <td>策略开始时间</td>
+    <td><%= @promotion.start_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+  </tr>
+  <tr>
+    <td>策略结束时间</td>
+    <td><%= @promotion.end_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+  </tr>
+  <tr>
+    <td>策略方式</td>
+    <td><%= @promotion.promotion_way %></td>
+  </tr>
+  <tr>
+    <td>策略额外比例</td>
+    <td><%= @promotion.extra_percentage %>%</td>
+  </tr>
+  
+</table>

@@ -27,7 +27,7 @@ class Campaign < ActiveRecord::Base
     unexecute:  '未执行',
     rejected:   '已拒绝'
   }
-  
+
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = Hash.new
@@ -81,6 +81,8 @@ class Campaign < ActiveRecord::Base
   has_many :campaign_materials
   has_many :campaign_push_records, class_name: "CampaignPushRecord"
 
+  has_many :e_wallet_transtions, as: :resource, class: EWallet::Transtion
+
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :recent_7, ->{ where("deadline > '#{7.days.ago}'")}
@@ -90,6 +92,7 @@ class Campaign < ActiveRecord::Base
   has_one :experience_evaluation, -> {where(item: 'experience')}, class: CampaignEvaluation
   has_one :review_evaluation, -> {where(item: 'review')}, class: CampaignEvaluation
   has_many :credits, as: :resource
+  scope :is_present_puts, ->{ where(is_present_put: true)}
 
 
   # 报名中的招募活动和特邀活动最优先,其次是参加中的招募活动,再是进行中的活动(招募报名失败的除外)
@@ -115,9 +118,11 @@ class Campaign < ActiveRecord::Base
   before_validation :format_url
   after_save :create_job
   before_create :generate_campaign_number, :deal_wechat_auth_type
+  before_create :change_present_put, if: ->{$redis.get('put_switch') == '1'}
   after_create :update_user_status
   after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
+  # after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1'}
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   BaseTaxRate = 0.3
@@ -290,7 +295,7 @@ class Campaign < ActiveRecord::Base
   end
   alias_method :share_times, :get_share_time
 
-  # 活动类型的判断方法的封装  
+  # 活动类型的判断方法的封装
   ['click', 'post', 'recruit', 'cpa', 'simple_cpi' ,'cpi', 'invite', 'cpt'].each do |value|
     define_method "is_#{value}_type?" do
       self.per_budget_type == value
@@ -299,14 +304,14 @@ class Campaign < ActiveRecord::Base
 
   #活动状态判断方法的封装
   ['unpay','pending','agreed','executing','executed','settled','finished','unexecute','rejected'].each do |value|
-    define_method "is_#{value}_status?" do 
+    define_method "is_#{value}_status?" do
       self.status == value
     end
   end
 
 
   def recruit_status
-    case self.status 
+    case self.status
     when 'unpay'
       return 'unpay'
     when 'unexecute'
@@ -477,11 +482,11 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  def get_example_screenshot(multi = false)  
+  def get_example_screenshot(multi = false)
     #multi 区别是否返回多图,适配老版本
     if self.example_screenshot.present?
       example_screenshot = self.example_screenshot.split(",")   rescue []
-      return example_screenshot[0]   unless multi 
+      return example_screenshot[0]   unless multi
       return example_screenshot
     else
       return ExampleScreenshots[user_id][sub_type.to_sym] unless multi
@@ -580,10 +585,10 @@ class Campaign < ActiveRecord::Base
       if ci.new_record?
         uuid      = Base64.encode64({campaign_id: id, kol_id: k.id}.to_json).gsub("\n","")
         short_url = ShortUrl.convert("#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}")
-      
+
         ci.img_status   = 'passed'
-        ci.approved_at  = Time.now 
-        ci.status       = 'settled' 
+        ci.approved_at  = Time.now
+        ci.status       = 'settled'
         ci.uuid         = uuid
         ci.share_url    = short_url
         ci.avail_click  = click_ary[index]
@@ -600,7 +605,21 @@ class Campaign < ActiveRecord::Base
 
     self.update_columns(avail_click: self.redis_avail_click.value, total_click: self.redis_total_click.value)
   end
-  
+
+  def generate_campaign_e_wattle_transactions
+    Rails.logger.info "*" * 100
+    amount = $redis.get('put_count').to_f
+    if self.is_settled_status?
+      Rails.logger.info "&" * 100
+      self.kols.joins(:e_wallet_account).each do |kol|
+        kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount)
+      end
+    end
+  end
+
+  def change_present_put
+    self.is_present_put = true
+  end
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

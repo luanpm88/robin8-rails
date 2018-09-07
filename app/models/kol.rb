@@ -108,6 +108,8 @@ class Kol < ActiveRecord::Base
   has_many :elastic_article_actions
 
   has_many :announcement_shows
+  has_one :e_wallet_account, class_name: "EWallet::Account"
+  has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
 
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)

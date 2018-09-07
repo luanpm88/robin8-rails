@@ -13,7 +13,8 @@
     <%= csrf_meta_tag %>
     <%= favicon_link_tag 'favicon.ico' %>
   </head>
-  <body>
+
+  <body class="admin-<%= controller_name %>-<%= action_name %>" id="admin_<%= controller_name %>_<%= action_name %>">
     <% if (params[:controller].include? 'sessions'  rescue false) %>
       <%= yield %>
     <% else %>

@@ -18,7 +18,7 @@
     <%= javascript_include_tag 'mobile', 'data-turbolinks-track' => true %>
   </head>
 
-  <body>
+  <body class="mobile-<%= controller_name %>-<%= action_name %>" id="mobile_<%= controller_name %>_<%= action_name %>">
     <%= yield %>
   </body>
 </html>

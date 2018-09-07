@@ -1,0 +1,85 @@
+.pmes-reg-page {
+}
+
+.pmes-login-page {
+  background-color: #fff;
+}
+
+.pmes-statistics-page {
+  .about-put {
+    position: absolute;
+    bottom: 60px;
+    @include center(x);
+    font-size: $font-sm;
+    color: #777;
+
+    .icon-question {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin: -4px 0 0 4px;
+      vertical-align: center;
+    }
+
+  }
+
+}
+
+.btn-pmes-submit {
+  border-radius: 22px;
+}
+
+.put-balance-card {
+  position: relative;
+  height: 180px;
+  padding: 18px;
+  margin: 15px;
+  color: #fff;
+  background: image_url('mobile/blockchain_pmes/balance_card.jpg') no-repeat center;
+  background-size: cover;
+
+  .card-title {
+    margin-top: 10px;
+    font-size: $font-nm-b;
+  }
+
+  .balance-num {
+    margin-top: 4px;
+    font-size: 4rem;
+  }
+
+  .balance-status {
+    position: absolute;
+    bottom: 10px;
+    font-size: $font-sm;
+
+    .num {
+      margin-left: 10px;
+      font-size: $font-lg;
+    }
+
+    &.left {
+      left: 18px;
+    }
+
+    &.right {
+      right: 18px;
+    }
+
+  }
+
+}
+
+.put-trend-card {
+  height: 280px;
+  padding: 18px;
+  margin: 15px;
+  background-color: #fff;
+
+  .card-title {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: #777;
+  }
+
+}

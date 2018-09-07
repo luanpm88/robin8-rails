@@ -3,6 +3,7 @@
 module Brand
   module V1
     class CampaignAppliesAPI < Base
+      include Grape::Kaminari
       before do
         authenticate!
       end
@@ -46,7 +47,9 @@ module Brand
 
         get '/' do
           @campaign = Campaign.find_by :id => params[:campaign_id]
-          @campaign_applies = @campaign.valid_applies.includes(:kol, :campaign_invite)
+          @campaign_applies = @campaign ? paginate(Kaminari.paginate_array(@campaign.valid_applies.includes(:kol, :campaign_invite))) : []
+
+          
           present @campaign_applies
         end
 
