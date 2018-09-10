@@ -175,7 +175,8 @@ class PagesController < ApplicationController
   def invite
     Rails.logger.info "------get_visitor_ip---------"
     Rails.logger.info  request.env['HTTP_X_FORWARDED_FOR']
-    render :layout => false
+    # render :layout => false
+    render :layout => "mobile"
   end
 
   def kol_invite

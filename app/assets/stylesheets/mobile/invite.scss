@@ -1,0 +1,180 @@
+.invite-page {
+  background-image: image_url('page/invite/bg.jpg');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+  z-index: -1;
+}
+
+.invite-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: image_url('page/invite/container_bg.png');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+
+  .invite-rewards {
+    position: absolute;
+    @include center();
+    margin-top: -20%;
+    text-align: center;
+
+    @include respond-to(iphonex) {
+      margin-top: 0;
+    }
+
+    .title {
+      font-size: 14px;
+      color: #927245;
+    }
+
+    .rewards-num {
+      font-size: 70px;
+      color: #ed3814;
+    }
+
+  }
+
+}
+
+.ft-container {
+  position: absolute;
+  bottom: 6%;
+  left: 0;
+  width: 100%;
+}
+
+.ft-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 91.5%;
+  height: 220px;
+  margin: 0 auto;
+  padding: 20px 26px;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 24px 0px rgba(245, 101, 19, 0.57);
+  background-color: rgb(255, 255, 255);
+}
+
+.ft-wrapper .reg-bt {
+  width: 100%;
+  position: relative;
+}
+
+.reg-bt button {
+  display: block;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  color: #fff;
+  background-color: #ef4f31;
+}
+
+.ft-wrapper .f-field {
+  position: relative;
+  width: 100%;  /*height: 50px;*/
+  border: none;
+  margin-bottom: 14px;
+}
+
+.ft-wrapper .f-field.f-with-req {
+  padding-right: 100px;
+}
+
+.ft-wrapper .f-field input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  line-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid #ef4f31;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.ft-wrapper .f-field input:focus {
+  outline: 0;
+}
+
+.ft-wrapper .f-field .f-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 44px;
+  text-align: center;
+  padding-top: 11px;
+}
+
+.ft-wrapper .f-field .f-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.f-btn-req {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 90px;
+  height: 44px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 44px;
+  background-color: #ef4f31;
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  border-radius: 10px;
+}
+
+.f-btn-req:hover, .f-btn-req:focus, .reg-bt button:hover, .reg-bt button:focus {
+  background-color: #c03f27;
+}
+
+.f-error {
+  text-align: center;
+  width: 100%;
+  color: #ff1818;
+  margin-top: 8px;
+}
+
+.f-info {
+  text-align: center;
+  width: 100%;
+  color: #1bb120;
+  margin-top: 8px;
+}
+
+.invite-loops-feedback {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 36px;
+  overflow: hidden;
+}
+
+.invite-loops-feedback .swiper-container {
+  height: 36px;
+}
+
+.invite-loops-feedback .item {
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 12px;
+  color: #ffe4da;
+}

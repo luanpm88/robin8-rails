@@ -12,8 +12,9 @@
     <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" />
     <meta name="keywords" content="">
     <meta name="description" content="">
+    <%= csrf_meta_tags %>
+    <%= favicon_link_tag 'favicon.ico' %>
     <title>Robin8</title>
-
     <%= stylesheet_link_tag    'mobile', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'mobile', 'data-turbolinks-track' => true %>
   </head>
