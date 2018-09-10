@@ -49,6 +49,15 @@ module API
           #   return {:error => 1, :detail => '提现金额超出可用金额'}
           # end
         end
+
+
+        put 'update_is_read' do 
+          present :error, 0
+          withdraw = current_kol.withdraws.rejected.first
+          withdraw.update_column(is_read: true) if withdraw.present?
+          present :detail, "已读"
+        end
+
       end
     end
   end

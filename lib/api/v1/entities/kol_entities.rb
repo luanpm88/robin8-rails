@@ -67,7 +67,12 @@ module API
             (kol.amount + kol.frozen_amount).round(2)
           end
           expose :remark do |kol|
-            kol.withdraws.rejected.first.try(:reject_reason) rescue nil
+            withdraw = kol.withdraws.order('created_at desc').first
+            if withdraw.present? && withdraw.status == "rejected" && withdraw.is_read == false
+              withdraw.reject_reason
+            else
+              nil
+            end
           end
         end
 
