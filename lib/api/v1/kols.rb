@@ -28,6 +28,7 @@ module API
           # present :stats, current_kol.recent_income
           present :stats, current_kol.recent_7_income
         end
+        
 
         get 'primary' do
           present :error, 0
