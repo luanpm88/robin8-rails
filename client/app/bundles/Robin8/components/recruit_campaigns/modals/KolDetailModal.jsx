@@ -27,7 +27,7 @@ export default class KolDetailModal extends Component {
 
   render_screenshots() {
     const campaign_invite = this.props.campaignInvite;
-    if (campaign_invite.get("images").size) {
+    if (!!campaign_invite.get("images") && campaign_invite.get("images").size) {
       return <Carousel prevIcon={this.state.prevIcon} nextIcon={this.state.nextIcon}>
         { do
           {
