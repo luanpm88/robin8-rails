@@ -57,7 +57,8 @@ export default class InviteKol extends React.Component {
     const { campaign, campaign_id, campaign_invite, actions } = this.props;
     const status = campaign.get("recruit_status");
     let screenshot_arr = !!campaign_invite.get("screenshot") ? campaign_invite.get("screenshot") : '';
-    console.log(campaign_invite.get("screenshot"));
+    console.log('campaign_invite:', campaign_invite);
+    console.log('截图:', campaign_invite.get("screenshot"));
     const screenshots = screenshot_arr.split(",");
     // const screenshots = campaign_invite.get("screenshot").split(",")
     const renderScreenshots = screenshots.map(function(screenshot) {
