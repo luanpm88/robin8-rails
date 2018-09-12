@@ -62,19 +62,29 @@ $(document).ready(function() {
       $('#mnemonic_modal').modal('show');
 
       $('#mnemonic_text_get').click(function(event) {
+        $(this).attr('disabled', true);
         $('#mnemonic_modal').modal('hide');
         $('#mnemonic_input_modal').modal('show');
       });
+      $('#mnemonic_modal').on('hidden.bs.modal', function (e) {
+        $('#mnemonic_text_get').attr('disabled', false);
+      });
 
       $('#mnemonic_confirm').click(function(event) {
+        $(this).attr('disabled', true);
         $('#mnemonic_input_modal').modal('hide');
         $('#pmestoken_modal').modal('show');
+      });
+      $('#mnemonic_input_modal').on('hidden.bs.modal', function (e) {
+        $('#mnemonic_confirm').attr('disabled', false);
       });
 
       $('#pmestoken_text_get').click(function(event) {
         var mnemonic_input_val = $.trim($('#mnemonic_input').val());
+        var $btn = $(this);
 
         if (mnemonic_input_val === pmes_mnemonic) {
+          $btn.attr('disabled', true);
           $.ajax({
             url: URLHOST + '/api/accounts/',
             type: 'POST',
@@ -83,6 +93,10 @@ $(document).ready(function() {
               console.log(data);
               console.log(JSON.parse(data.wallets));
               alert('创建成功！');
+              $('#pmestoken_modal').modal('hide');
+              $('#pmestoken_modal').on('hidden.bs.modal', function (e) {
+                $btn.attr('disabled', false);
+              });
               // var wallets_data = JSON.parse(data.wallets);
               // var put_put = '';
               // $.each(wallets_data, function(index, el) {
@@ -95,6 +109,7 @@ $(document).ready(function() {
             },
             error: function(xhr, type) {
               alert('pmes post error');
+              $btn.attr('disabled', false);
               console.log('error');
             }
           });
@@ -122,6 +137,7 @@ $(document).ready(function() {
     });
 
     $('#token_confirm').click(function(event) {
+      var $btn = $(this);
       var password = $.trim($('#password_input').val());
       var token = $.trim($('#token_input').val());
       var current_date = new Date();
@@ -152,7 +168,7 @@ $(document).ready(function() {
       }
 
       console.log(pmes_sign);
-
+      $btn.attr('disabled', true);
       if (btn_type === 'pay') {
         console.log('批量付款');
         var $put_remit_table = $('#put_remit_table');
@@ -193,6 +209,10 @@ $(document).ready(function() {
             data: post_data,
             success: function(data) {
               console.log(data);
+              $('#token_input_modal').modal('hide');
+              $('#token_input_modal').on('hidden.bs.modal', function (e) {
+                $btn.attr('disabled', false);
+              });
 
             //   $.ajax({
             //     url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
@@ -232,6 +252,9 @@ $(document).ready(function() {
 
               $('#wallet_detail_publickey').html(pmes_sign.public_key);
               $('#token_input_modal').modal('hide');
+              $('#token_input_modal').on('hidden.bs.modal', function (e) {
+                $btn.attr('disabled', false);
+              });
               $('#wallet_detail_modal').modal('show');
             } else {
               alert('没有钱包数据');
