@@ -16,7 +16,7 @@
       <th>PUT address</th>
       <th>奖励数量</th>
       <th>tx_id</th>
-      <th>操作</th>
+      <th>状态</th>
     </tr>
   </thead>
   <tbody id="put_remit_table">
@@ -27,7 +27,7 @@
         <td class="put-remit-token"><%= tr.kol.e_wallet_account.token %></td>
         <td class="put-remit-amount"><%= tr.amount %></td>
         <td class="put-tx-id"><%= tr.txid %></td>
-        <td></td>
+        <td><%= tr.status %></td>
       </tr>
     <% end %>
   </tbody>
