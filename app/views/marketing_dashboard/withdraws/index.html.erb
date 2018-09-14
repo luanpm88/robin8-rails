@@ -7,12 +7,10 @@
         <h4 class="modal-title">请填写拒绝理由</h4>
       </div>
       <div class="modal-body admin-reject-modal-body">
-          <h3>请输入拒绝理由（非必填）</h3>
-          <div class="col-sm-4">
-            <div class="form-group">
-              <input type="text" name='reject_reason' class='reject_reason form-control'>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">请输入拒绝理由（非必填）</label>
+          <input type="text" name='reject_reason' class='reject_reason form-control'>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -222,7 +220,7 @@
           <% if w.status == 'pending' %>
             <%= link_to '通过', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
             <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
-			<%= link_to '没收', "javascript:void(0)", :class => "confiscate btn-danger", "data-url" => marketing_dashboard_withdraw_confiscate_path(w.id)  %> /
+      <%= link_to '没收', "javascript:void(0)", :class => "confiscate btn-danger", "data-url" => marketing_dashboard_withdraw_confiscate_path(w.id)  %> /
           <% elsif w.status == 'checked' %>
           <%= link_to '同意', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> /
           <%= link_to '拒绝', "javascript:void(0)", :class => "reject_withdraw", "data-url" => marketing_dashboard_withdraw_reject_path(w.id)  %> /
@@ -312,11 +310,11 @@
     event.stopPropagation();
     event.preventDefault();
     var cb = $(event.target).children(":checkbox");
-	if (cb.is(':checked') ){
-		cb.prop('checked', false);
-	} else{
-		cb.prop('checked', true);
-	}
+  if (cb.is(':checked') ){
+    cb.prop('checked', false);
+  } else{
+    cb.prop('checked', true);
+  }
   });
 
   $(".expandCheck").on('click', function (event) {
@@ -355,13 +353,7 @@
       data: { "reject_reason":  $('.reject_reason').val()}
     })
       .done(function(data) {
-        console.log(data);
-        if(data.status == "error"){
-          alert(data.text);
-        }else if (data.status == 'ok'){
-          alert('操作成功');
-          location.reload();
-        }
+        location.reload();
       });
   });
 
