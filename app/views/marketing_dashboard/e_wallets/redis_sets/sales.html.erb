@@ -12,6 +12,8 @@
     <tr>
       <td>开关</td>
       <td>
+        当前状态： <%= $redis.get('put_switch') == '1' ? '已开启' : '已关闭' %> 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input class='data-value' type="hidden" value="<%= $redis.get('put_switch') == '1' ? '0' : '1' %>">
         <%= link_to $redis.get('put_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'put_switch' %>
       </td>
