@@ -297,6 +297,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :kols, only: [:index]
+
     end
 
 

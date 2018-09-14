@@ -1,0 +1,25 @@
+<h1>PUT 钱包列表</h1>
+
+<%= "共有#{@e_wallet_accounts.count}个搜索结果" %>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>kol ID</th>
+      <th>name</th>
+      <th>put address</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @e_wallet_accounts.each do |ele| %>
+      <tr>
+        <td><%= ele.kol_id %></td>
+        <td><%= ele.kol.name %></td>
+        <td><%= ele.token %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @e_wallet_accounts, renderer: BootstrapPagination::Rails  %>
