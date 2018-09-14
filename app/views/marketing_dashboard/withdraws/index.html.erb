@@ -162,7 +162,9 @@
       <th>平均点击</th>
       <th>最高点击</th>
       <th>拒绝理由</th>
-      <th>拒绝理由是否已读</th>
+      <% if action_name == "rejected" or action_name == "index" %>
+        <th>拒绝理由是否已读</th>
+      <% end %>
       <th>操作</th>
     </tr>
   </thead>
@@ -211,7 +213,11 @@
         <td> <%= w.kol.average_click_of_campaigns rescue "" %></td>
         <td> <%= w.kol.maximum_click_of_campaigns rescue "" %></td>
         <td><%= w.reject_reason %></td>
-        <td><%= w.is_read ? '已读' :  '未读' %></td>
+        <% if action_name == "rejected" or action_name == "index" %>
+          <td>
+            <%= w.is_read == true ? '已读' :  '未读' %>
+          </td>
+        <% end %>
         <td>
           <% if w.status == 'pending' %>
             <%= link_to '通过', marketing_dashboard_withdraw_check_path(w.id), method: :post %> /
