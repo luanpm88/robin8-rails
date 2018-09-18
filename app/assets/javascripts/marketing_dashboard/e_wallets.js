@@ -246,6 +246,7 @@ $(document).ready(function() {
             if (!!data.wallets) {
               var wallets_data = JSON.parse(data.wallets);
               console.log(wallets_data);
+              $('#wallet_detail_container').empty();
               $.each(wallets_data, function(index, el) {
                 $('#wallet_detail_container').append(createWalletTab(el));
               });
