@@ -46,32 +46,30 @@
   </tbody>
 </table>
 
-<% unless params[:status] == 'successful' %>
-  <div class="modal fade" id="token_input_modal" tabindex="-1" role="dialog" aria-labelledby="token_input_modal_label">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="token_input_modal_label">请输入您的Token和密码</h4>
+<div class="modal fade" id="token_input_modal" tabindex="-1" role="dialog" aria-labelledby="token_input_modal_label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="token_input_modal_label">请输入您的Token和密码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="password_input">Password:</label>
+          <input type="password" minlength="6" maxlength="6" class="form-control" id="password_input" placeholder="Password">
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="password_input">Password:</label>
-            <input type="password" minlength="6" maxlength="6" class="form-control" id="password_input" placeholder="Password">
-          </div>
-          <div class="form-group">
-            <label for="token_input">Token:</label>
-            <textarea class="form-control" rows="6" id="token_input" placeholder="Token"></textarea>
-          </div>
+        <div class="form-group">
+          <label for="token_input">Token:</label>
+          <textarea class="form-control" rows="6" id="token_input" placeholder="Token"></textarea>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="token_confirm">确定</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="token_confirm">确定</button>
       </div>
     </div>
   </div>
-<% end %>
+</div>
 
 <div class="modal fade" id="wallet_detail_modal" tabindex="-1" role="dialog" aria-labelledby="wallet_detail_modal_label">
   <div class="modal-dialog" role="document">
