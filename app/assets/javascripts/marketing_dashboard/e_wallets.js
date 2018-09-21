@@ -203,27 +203,30 @@ $(document).ready(function() {
             success: function(data) {
               console.log(data);
               $token_input_modal.modal('hide');
+              put_tx_id = data.txid;
 
-            //   $.ajax({
-            //     url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
-            //     type: 'POST',
-            //     data: {
-            //       tr_id: put_tr_id,
-            //       tx_id: put_tx_id
-            //     },
-            //     success: function(data) {
-            //       console.log(data);
-            //       $put_tx_id.html(put_tx_id);
-            //     },
-            //     error: function(xhr, type) {
-            //       console.log('error');
-            //     }
-            //   });
+              $.ajax({
+                url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
+                type: 'POST',
+                data: {
+                  tr_id: put_tr_id,
+                  tx_id: put_tx_id
+                },
+                success: function(data) {
+                  console.log(data);
+                  // $put_tx_id.html(put_tx_id);
+                  location.reload();
+                },
+                error: function(xhr, type) {
+                  alert('server error!');
+                  console.log('server error!');
+                }
+              });
             },
             error: function(xhr, type) {
-              alert('error');
+              alert('pmes error!');
               $token_input_modal.modal('hide');
-              console.log('error');
+              console.log('pmes error!');
             }
           });
         });
@@ -261,6 +264,8 @@ $(document).ready(function() {
 
     $token_input_modal.on('hidden.bs.modal', function (e) {
       $('#token_confirm').attr('disabled', false);
+      $('#password_input').val('');
+      $('#token_input').val('');
     });
   }
 });
