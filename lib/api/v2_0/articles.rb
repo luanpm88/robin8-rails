@@ -113,7 +113,7 @@ module API
         end
         post 'split_red' do 
           return error_403!({error: 1, detail: '超出每日红包限制'}) if current_kol.transactions.recent(Time.now, Time.now).subjects('red_money').count >= 10
-
+          return error_403!({error: 1, detail: '红包金额有误'})  if params[:red_money].to_f > 0.1
           current_kol.income(params[:red_money].to_f, 'red_money')
 
           $redis.incrby 'elastic_article_red_money', (params[:red_money].to_f * 100).to_i

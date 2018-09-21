@@ -97,15 +97,6 @@ $(document).ready(function() {
               $('#pmestoken_modal').on('hidden.bs.modal', function (e) {
                 $btn.attr('disabled', false);
               });
-              // var wallets_data = JSON.parse(data.wallets);
-              // var put_put = '';
-              // $.each(wallets_data, function(index, el) {
-              //   if (el.coinid === 'PUT') {
-              //     put_put = el;
-              //   }
-              // });
-
-              // console.log(put_put.address);
             },
             error: function(xhr, type) {
               alert('pmes post error');
@@ -124,16 +115,17 @@ $(document).ready(function() {
   if ($('body').attr('id') === 'admin_transactions_index') {
     var btn_type = '';
     var campaign_id = $('#campaign_id').val();
+    var $token_input_modal = $('#token_input_modal');
     // 批量付款
     $('#put_remit_btn').click(function(event) {
       btn_type = 'pay';
-      $('#token_input_modal').modal('show');
+      $token_input_modal.modal('show');
     });
 
     // 钱包详情
     $('#wallet_detail_btn').click(function(event) {
       btn_type = 'wallet';
-      $('#token_input_modal').modal('show');
+      $token_input_modal.modal('show');
     });
 
     $('#token_confirm').click(function(event) {
@@ -177,7 +169,8 @@ $(document).ready(function() {
         $.each($table_tr, function(index, el) {
           var $item = $(el);
           var put_address = $item.find('.put-remit-token').html();
-          var put_amount = parseFloat($item.find('.put-remit-amount').html());
+          var put_amount = $item.find('.put-remit-amount').html();
+          put_amount = put_amount * Math.pow(10, 8);
           var put_tr_id = $item.find('.put-tr-id').html();
           var put_tx_id = '';
           var $put_tx_id = $item.find('.put-tx-id');
@@ -209,29 +202,31 @@ $(document).ready(function() {
             data: post_data,
             success: function(data) {
               console.log(data);
-              $('#token_input_modal').modal('hide');
-              $('#token_input_modal').on('hidden.bs.modal', function (e) {
-                $btn.attr('disabled', false);
-              });
+              $token_input_modal.modal('hide');
+              put_tx_id = data.txid;
 
-            //   $.ajax({
-            //     url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
-            //     type: 'POST',
-            //     data: {
-            //       tr_id: put_tr_id,
-            //       tx_id: put_tx_id
-            //     },
-            //     success: function(data) {
-            //       console.log(data);
-            //       $put_tx_id.html(put_tx_id);
-            //     },
-            //     error: function(xhr, type) {
-            //       console.log('error');
-            //     }
-            //   });
+              $.ajax({
+                url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
+                type: 'POST',
+                data: {
+                  tr_id: put_tr_id,
+                  tx_id: put_tx_id
+                },
+                success: function(data) {
+                  console.log(data);
+                  // $put_tx_id.html(put_tx_id);
+                  location.reload();
+                },
+                error: function(xhr, type) {
+                  alert('server error!');
+                  console.log('server error!');
+                }
+              });
             },
             error: function(xhr, type) {
-              console.log('error');
+              alert('pmes error!');
+              $token_input_modal.modal('hide');
+              console.log('pmes error!');
             }
           });
         });
@@ -246,25 +241,31 @@ $(document).ready(function() {
             if (!!data.wallets) {
               var wallets_data = JSON.parse(data.wallets);
               console.log(wallets_data);
+              $('#wallet_detail_container').empty();
               $.each(wallets_data, function(index, el) {
                 $('#wallet_detail_container').append(createWalletTab(el));
               });
 
               $('#wallet_detail_publickey').html(pmes_sign.public_key);
-              $('#token_input_modal').modal('hide');
-              $('#token_input_modal').on('hidden.bs.modal', function (e) {
-                $btn.attr('disabled', false);
-              });
+              $token_input_modal.modal('hide');
               $('#wallet_detail_modal').modal('show');
             } else {
               alert('没有钱包数据');
             }
           },
           error: function(xhr, type) {
+            alert('error');
+            $token_input_modal.modal('hide');
             console.log('error');
           }
         });
       }
+    });
+
+    $token_input_modal.on('hidden.bs.modal', function (e) {
+      $('#token_confirm').attr('disabled', false);
+      $('#password_input').val('');
+      $('#token_input').val('');
     });
   }
 });
@@ -272,8 +273,8 @@ $(document).ready(function() {
 function createWalletTab(data) {
   var coinid = data.coinid,
       address = data.address,
-      amount_active = data.amount_active,
-      amount_frozen = data.amount_frozen;
+      amount_active = (data.amount_active * 1) / Math.pow(10, 8),
+      amount_frozen = (data.amount_frozen * 1) / Math.pow(10, 8);
 
   var _ui = '<table class="table table-striped">' +
               '<thead>' +

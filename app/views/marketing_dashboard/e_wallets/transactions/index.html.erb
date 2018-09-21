@@ -1,13 +1,26 @@
 <%= javascript_include_tag 'https://cdn.robin8.net/pmes.min.js', 'data-turbolinks-track' => true %>
-
 <%= hidden_field_tag 'campaign_id', @campaign.id %>
 
 <h3>
   PUT活动奖励列表
-  <button type="button" class="btn btn-primary pull-right" id="put_remit_btn">批量付款</button>
-  <button type="button" class="btn btn-info pull-right mr-10" id="wallet_detail_btn">钱包详情</button>
+  <% unless params[:status] == 'successful' %>
+    <button type="button" class="btn btn-primary pull-right ml-10" id="put_remit_btn">批量付款</button>
+  <% end %>
+  <button type="button" class="btn btn-info pull-right" id="wallet_detail_btn">钱包详情</button>
 </h3>
 <hr>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="<%= params[:status] == 'pending' ? 'active' : '' %>">
+    <%= link_to '待支付', marketing_dashboard_e_wallets_campaign_transactions_path(status: 'pending') %>
+  </li>
+  <li role="presentation" class="<%= params[:status] == 'failed' ? 'active' : '' %>">
+    <%= link_to '支付失败', marketing_dashboard_e_wallets_campaign_transactions_path(status: 'failed') %>
+  </li>
+  <li role="presentation" class="<%= params[:status] == 'successful' ? 'active' : '' %>">
+    <%= link_to '支付成功', marketing_dashboard_e_wallets_campaign_transactions_path(status: 'successful') %>
+  </li>
+</ul>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -65,11 +78,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="wallet_detail_modal_label">钱包详情</h4>
       </div>
-      <div class="modal-body" id="wallet_detail_container">
+      <div class="modal-body">
         <div class="wallet-detail-publickey">
           <p><strong>public_key:</strong></p>
           <p id="wallet_detail_publickey"></p>
         </div>
+        <div id="wallet_detail_container"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

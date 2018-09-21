@@ -54,7 +54,7 @@ module API
         put 'update_is_read' do 
           present :error, 0
           withdraw = current_kol.withdraws.rejected.first
-          withdraw.update_column(is_read: true) if withdraw.present?
+          withdraw.update_attributes(is_read: true) if withdraw.present?
           present :detail, "已读"
         end
 

@@ -6,6 +6,8 @@ class Announcement < ActiveRecord::Base
   mount_uploader :logo, ImageUploader
   mount_uploader :banner, ImageUploader
 
+  DetailTypes = %i(invite_friend check_in open_puts_wallet web)
+
   validates_presence_of :title, :url, :banner
 
   has_many :announcement_shows
