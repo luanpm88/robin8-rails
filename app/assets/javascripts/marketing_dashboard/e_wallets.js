@@ -1,5 +1,6 @@
-var SERVERHOST = $('#host_url').val();
+// var SERVERHOST = $('#host_url').val();
 // var SERVERHOST = 'http://192.168.51.170:3000/';
+var SERVERHOST = 'https://robin8.net';
 // var URLHOST = 'http://pdms2.robin8.io';
 var URLHOST = 'https://pmes.robin8.io';
 
@@ -351,7 +352,8 @@ function postWithdraw(token, password, timestamp, amount, address, trid, modal) 
   post_data = JSON.stringify(post_data);
   console.log(post_data);
 
-  var server_post_url = SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ _campaign_id +'/transactions/update_txid';
+  var server_post_url = 'https://robin8.net/marketing_dashboard/e_wallets/campaigns/'+ _campaign_id +'/transactions/update_txid';
+  server_post_url.toString();
   console.log(server_post_url);
   $.ajax({
     url: URLHOST + '/api/accounts/withdraw/',
