@@ -1,9 +1,9 @@
-$(document).ready(function() {
-  var SERVERHOST = $('#host_url').val();
-  // var SERVERHOST = 'http://192.168.51.170:3000/';
-  // var URLHOST = 'http://pdms2.robin8.io';
-  var URLHOST = 'https://pmes.robin8.io';
+var SERVERHOST = $('#host_url').val();
+// var SERVERHOST = 'http://192.168.51.170:3000/';
+// var URLHOST = 'http://pdms2.robin8.io';
+var URLHOST = 'https://pmes.robin8.io';
 
+$(document).ready(function() {
   if ($('body').attr('id') === 'admin_campaigns_index') {
     var current_admin_user_id = $('#current_admin_user_id').val();
 
