@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  var SERVERHOST = $('#host_url').val();
+  // var SERVERHOST = 'http://192.168.51.170:3000/';
+  // var URLHOST = 'http://pdms2.robin8.io';
+  var URLHOST = 'https://pmes.robin8.io';
+
   if ($('body').attr('id') === 'admin_campaigns_index') {
     var current_admin_user_id = $('#current_admin_user_id').val();
 
@@ -114,7 +119,6 @@ $(document).ready(function() {
 
   if ($('body').attr('id') === 'admin_transactions_index') {
     var btn_type = '';
-    var campaign_id = $('#campaign_id').val();
     var $token_input_modal = $('#token_input_modal');
     var single_put_address = '';
     var single_put_amount = 0;
@@ -329,6 +333,7 @@ function createWalletTab(data) {
 }
 
 function postWithdraw(token, password, timestamp, amount, address, trid, modal) {
+  var _campaign_id = $('#campaign_id').val();
   var post_data = {};
   var post_data_message = {
     'timestamp': timestamp,
@@ -346,7 +351,7 @@ function postWithdraw(token, password, timestamp, amount, address, trid, modal) 
   post_data = JSON.stringify(post_data);
   console.log(post_data);
 
-  var server_post_url = SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid';
+  var server_post_url = SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ _campaign_id +'/transactions/update_txid';
   console.log(server_post_url);
   $.ajax({
     url: URLHOST + '/api/accounts/withdraw/',

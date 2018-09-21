@@ -2,11 +2,6 @@ var verify_phone = /^(0|86|17951)?(13[0-9]|15[012356789]|17[0-9]|18[0-9]|14[57])
 var verify_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // email校验
 var verify_pw = /^\d{6}$/; //密码校验，6位数字
 
-var SERVERHOST = $('#host_url').val();
-// var SERVERHOST = 'http://192.168.51.170:3000/';
-// var URLHOST = 'http://pdms2.robin8.io';
-var URLHOST = 'https://pmes.robin8.io';
-
 // 判断复选框是否被选中，改变button状态
 function judgeChecked(checkbox, button) {
   if (!checkbox.is(':checked')) {
