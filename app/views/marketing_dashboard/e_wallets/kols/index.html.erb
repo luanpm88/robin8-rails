@@ -14,8 +14,8 @@
   <tbody>
     <% @e_wallet_accounts.each do |ele| %>
       <tr>
-        <td><%= ele.kol_id %></td>
-        <td><%= ele.kol.name %></td>
+        <td><%= link_to ele.kol_id, marketing_dashboard_kol_path(ele.kol) %></td>
+        <td><%= link_to ele.kol.name, marketing_dashboard_kol_path(ele.kol) %></td>
         <td><%= ele.token %></td>
       </tr>
     <% end %>
