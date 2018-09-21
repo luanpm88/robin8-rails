@@ -116,6 +116,10 @@ $(document).ready(function() {
     var btn_type = '';
     var campaign_id = $('#campaign_id').val();
     var $token_input_modal = $('#token_input_modal');
+    var single_put_address = '';
+    var single_put_amount = 0;
+    var single_put_trid = '';
+
     // 批量付款
     $('#put_remit_btn').click(function(event) {
       btn_type = 'pay';
@@ -126,6 +130,24 @@ $(document).ready(function() {
     $('#wallet_detail_btn').click(function(event) {
       btn_type = 'wallet';
       $token_input_modal.modal('show');
+    });
+
+    // 单独付款
+    $('#put_remit_table').find('tr').each(function(index, el) {
+      var $tr = $(el);
+      var $pay_btn = $tr.find('.put-remit-btn');
+      var put_address = $tr.find('.put-remit-token').html();
+      var put_amount = $tr.find('.put-remit-amount').html();
+      put_amount = put_amount * Math.pow(10, 8);
+      var put_trid = $tr.find('.put-tr-id').html();
+
+      $pay_btn.click(function(event) {
+        btn_type = 'single_pay';
+        single_put_address = put_address;
+        single_put_amount = put_amount;
+        single_put_trid = put_trid;
+        $token_input_modal.modal('show');
+      });
     });
 
     $('#token_confirm').click(function(event) {
@@ -178,58 +200,69 @@ $(document).ready(function() {
           console.log(put_amount);
           var cur_date = new Date();
           cur_date = cur_date.customFormat('#YYYY##MM##DD##hhh##mm#');
-          var post_data = {};
 
-          var post_data_message = {
-            'timestamp': cur_date,
-            'coinid': 'PUT',
-            'amount': put_amount,
-            'address': put_address,
-            'recvWindow': 5000
-          };
+          postWithdraw(token, password, cur_date, put_amount, put_address, put_tr_id, $token_input_modal);
 
-          var signed = PMES.sign(token, post_data_message, password);
-          post_data.message = post_data_message;
-          post_data.signature = signed.signature;
-          post_data.public_key = signed.public_key;
+        //   var post_data = {};
 
-          post_data = JSON.stringify(post_data);
-          console.log(post_data);
+        //   var post_data_message = {
+        //     'timestamp': cur_date,
+        //     'coinid': 'PUT',
+        //     'amount': put_amount,
+        //     'address': put_address,
+        //     'recvWindow': 5000
+        //   };
 
-          $.ajax({
-            url: URLHOST + '/api/accounts/withdraw/',
-            type: 'POST',
-            data: post_data,
-            success: function(data) {
-              console.log(data);
-              $token_input_modal.modal('hide');
-              put_tx_id = data.txid;
+        //   var signed = PMES.sign(token, post_data_message, password);
+        //   post_data.message = post_data_message;
+        //   post_data.signature = signed.signature;
+        //   post_data.public_key = signed.public_key;
 
-              $.ajax({
-                url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
-                type: 'POST',
-                data: {
-                  tr_id: put_tr_id,
-                  tx_id: put_tx_id
-                },
-                success: function(data) {
-                  console.log(data);
-                  // $put_tx_id.html(put_tx_id);
-                  location.reload();
-                },
-                error: function(xhr, type) {
-                  alert('server error!');
-                  console.log('server error!');
-                }
-              });
-            },
-            error: function(xhr, type) {
-              alert('pmes error!');
-              $token_input_modal.modal('hide');
-              console.log('pmes error!');
-            }
-          });
+        //   post_data = JSON.stringify(post_data);
+        //   console.log(post_data);
+
+        //   $.ajax({
+        //     url: URLHOST + '/api/accounts/withdraw/',
+        //     type: 'POST',
+        //     data: post_data,
+        //     success: function(data) {
+        //       console.log(data);
+        //       $token_input_modal.modal('hide');
+        //       put_tx_id = data.txid;
+
+        //       $.ajax({
+        //         url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
+        //         type: 'POST',
+        //         data: {
+        //           tr_id: put_tr_id,
+        //           tx_id: put_tx_id
+        //         },
+        //         success: function(data) {
+        //           console.log(data);
+        //           // $put_tx_id.html(put_tx_id);
+        //           location.reload();
+        //         },
+        //         error: function(xhr, type) {
+        //           alert('server error!');
+        //           console.log('server error!');
+        //         }
+        //       });
+        //     },
+        //     error: function(xhr, type) {
+        //       alert('pmes error!');
+        //       $token_input_modal.modal('hide');
+        //       console.log('pmes error!');
+        //     }
+        //   });
         });
+      }
+
+      if (btn_type === 'single_pay') {
+        console.log('单独付款');
+        var cur_date = new Date();
+        cur_date = cur_date.customFormat('#YYYY##MM##DD##hhh##mm#');
+
+        postWithdraw(token, password, cur_date, single_put_amount, single_put_address, single_put_trid, $token_input_modal);
       }
 
       if (btn_type === 'wallet') {
@@ -293,4 +326,55 @@ function createWalletTab(data) {
               '</tbody>' +
             '</table>';
   return _ui;
+}
+
+function postWithdraw(token, password, timestamp, amount, address, trid, modal) {
+  var post_data = {};
+  var post_data_message = {
+    'timestamp': timestamp,
+    'coinid': 'PUT',
+    'amount': amount,
+    'address': address,
+    'recvWindow': 5000
+  };
+
+  var signed = PMES.sign(token, post_data_message, password);
+  post_data.message = post_data_message;
+  post_data.signature = signed.signature;
+  post_data.public_key = signed.public_key;
+
+  post_data = JSON.stringify(post_data);
+  console.log(post_data);
+
+  $.ajax({
+    url: URLHOST + '/api/accounts/withdraw/',
+    type: 'POST',
+    data: post_data,
+    success: function(data) {
+      console.log(data);
+      modal.modal('hide');
+
+      $.ajax({
+        url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
+        type: 'POST',
+        data: {
+          tr_id: trid,
+          tx_id: data.txid
+        },
+        success: function(data) {
+          console.log(data);
+          location.reload();
+        },
+        error: function(xhr, type) {
+          alert('server error!');
+          console.log('server error!');
+        }
+      });
+    },
+    error: function(xhr, type) {
+      alert('pmes error!');
+      modal.modal('hide');
+      console.log('pmes error!');
+    }
+  });
 }

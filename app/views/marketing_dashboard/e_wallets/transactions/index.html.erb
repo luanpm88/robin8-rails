@@ -1,5 +1,6 @@
 <%= javascript_include_tag 'https://cdn.robin8.net/pmes.min.js', 'data-turbolinks-track' => true %>
 <%= hidden_field_tag 'campaign_id', @campaign.id %>
+<%= hidden_field_tag 'host_url', Rails.application.secrets.domain %>
 
 <h3>
   PUT活动奖励列表
@@ -30,6 +31,9 @@
       <th>奖励数量</th>
       <th>tx_id</th>
       <th>状态</th>
+      <% unless params[:status] == 'successful' %>
+        <th>付款</th>
+      <% end %>
     </tr>
   </thead>
   <tbody id="put_remit_table">
@@ -41,6 +45,11 @@
         <td class="put-remit-amount"><%= tr.amount %></td>
         <td class="put-tx-id"><%= tr.txid %></td>
         <td><%= tr.status %></td>
+        <% unless params[:status] == 'successful' %>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm put-remit-btn">付款</button>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
