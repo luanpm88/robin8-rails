@@ -17,11 +17,6 @@ class MarketingDashboard::EWallets::TransactionsController < MarketingDashboard:
     return render json: {result: 'success'}
   end
 
-  def list
-    kol = Kol.find params[:kol_id]
-    @transtions = kol.e_wallet_transtions.paginate(paginate_params)
-  end
-
   private
 
   def get_campaign

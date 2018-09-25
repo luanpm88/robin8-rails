@@ -299,9 +299,9 @@ Rails.application.routes.draw do
 
       resources :kols, only: [:index] do
         resources 'transactions', only:[] do 
-          collection do 
-            get :list
-          end
+        end
+        member do
+          get :transactions
         end
       end
 

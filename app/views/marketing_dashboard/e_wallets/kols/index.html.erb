@@ -18,7 +18,7 @@
         <td><%= link_to ele.kol_id, marketing_dashboard_kol_path(ele.kol) %></td>
         <td><%= link_to ele.kol.name, marketing_dashboard_kol_path(ele.kol) %></td>
         <td><%= ele.token %></td>
-        <td><%= link_to "流水", list_marketing_dashboard_e_wallets_kol_transactions_path(ele.kol_id)%></td>
+        <td><%= link_to "查看流水", transactions_marketing_dashboard_e_wallets_kol_path(ele.kol)%></td>
       </tr>
     <% end %>
   </tbody>
