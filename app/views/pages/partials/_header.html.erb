@@ -10,7 +10,6 @@
         <li>
           <a href="#signinupModal" class="quick-login" show-after-loading="<%= params[:landing_at] == 'brand' ? true : false %>" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
         </li>
-        <% end %>
         <li>
           <a href="/ranking" target="_top"><i class="icon-ranking"></i> 排行榜</a>
         </li>
@@ -28,6 +27,10 @@
             <li><a href="/brands/moments" target="_top">朋友圈推广</a></li>
             <li><a href="http://store.robin8.net" target="_top">寻找大V</a></li>
           </ul>
+        </li>
+        <% end %>
+        <li>
+          <a href="/brands/moments" target="_top"><i class="icon-user"></i>朋友圈推广</a>
         </li>
         <% if current_kol %>
           <li class="dropdown profile">
