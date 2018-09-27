@@ -290,6 +290,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :bills, only: [:index]
+
       resources :redis_sets, only: [] do
         collection do
           get :sales
