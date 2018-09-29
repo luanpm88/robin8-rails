@@ -26,7 +26,7 @@ module API
           present :invitees,        campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
           present :put_switch,      $redis.get('put_switch') # 1:显示， 0:隐藏
           present :put_count,       $redis.get('put_count')
-          present :leader_club,     current_kol.club.club_name
+          present :leader_club,     current_kol.club.try(:club_name)
           present :is_bind_wechat,  !current_kol.social_accounts.wechat.empty?
         end
 
