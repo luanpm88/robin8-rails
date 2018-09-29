@@ -4,6 +4,15 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
+
+    resources :tags, only: [:index] do 
+      match '/add_circle' => 'tags#add_circle', via: [:post, :get]
+      match '/remove_circle' => 'tags#remove_circle', via: [:post]
+    end
+
+    resources :circles, only: [:index]
+
+    
     resources :article_contents do
       member do
         get :sync
