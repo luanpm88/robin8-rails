@@ -1,0 +1,9 @@
+
+<div style="margin-left: 20px">
+<p>Add circle</p>
+<%= form_tag marketing_dashboard_tag_add_circle_path do %>
+ <label style= "width: 60px">name: </label> <%= text_field_tag :name %><br/>
+ <label style= "width: 60px">label:</label> <%= text_field_tag :label %><br/>
+  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+<% end %>
+</div>
