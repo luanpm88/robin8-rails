@@ -1,7 +1,7 @@
 module API
   module V2_0
     class Campaigns < Grape::API
-      resources :campaigns
+      resources :campaigns do
         before do
           action_name =  @options[:path].join("")
           authenticate! if action_name != ':id'
@@ -27,12 +27,7 @@ module API
           present :put_switch,      $redis.get('put_switch') # 1:显示， 0:隐藏
           present :put_count,       $redis.get('put_count')
           present :leader_club,     current_kol.club.club_name
-          # big_v
-          present :big_v,           current_kol, with: API::V1_6::Entities::BigVEntities::Detail
-          present :kol_shows,       current_kol.kol_shows, with: API::V1_6::Entities::KolShowEntities::Summary
-          present :kol_keywords,    current_kol.kol_keywords, with: API::V1_6::Entities::KolKeywordEntities::Summary
-          present :social_accounts, current_kol.social_accounts, with: API::V1_6::Entities::SocialAccountEntities::Summary
-          present :is_follow,       current_kol.is_follow?(current_kol)
+          present :is_bind_wechat,  !current_kol.social_accounts.wechat.empty?
         end
 
       end
