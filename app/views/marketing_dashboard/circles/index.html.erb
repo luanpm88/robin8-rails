@@ -1,0 +1,30 @@
+<h1>Circel列表</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Circle ID</th>
+      <th>label</th>
+      <th>name</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @circles.each do |c| %>
+      <tr>
+        <td>
+          <%= c.id  %>
+        </td>
+        <td><%= c.label %></td>
+        <td><%= c.name %></td>
+        <td>
+          <%= link_to "+", marketing_dashboard_circle_add_tag_path(c.id), style: "float: right;" %>
+          <%= render partial: "tag", collection: c.tags, locals: {circle_id: c.id} %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @tags, renderer: BootstrapPagination::Rails  %>
