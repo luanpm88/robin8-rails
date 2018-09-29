@@ -12,6 +12,7 @@ module API
       mount API::V2_0::Announcements
       mount API::V2_0::Promotions
       mount API::V2_0::Credits
+      mount API::V2_0::Campaigns
     end
   end
 end
