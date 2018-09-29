@@ -10,7 +10,10 @@ Rails.application.routes.draw do
       match '/remove_circle' => 'tags#remove_circle', via: [:post]
     end
 
-    resources :circles, only: [:index]
+    resources :circles, only: [:index] do 
+      match '/add_tag' => 'circles#add_tag', via: [:post, :get]
+      match '/remove_tag' => 'circles#remove_tag', via: [:post]
+    end
 
     
     resources :article_contents do
