@@ -1,0 +1,27 @@
+<h3>流水信息</h3>
+
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>日期</th>
+      <th>流动方向</th>
+      <th>活动ID</th>
+      <th>交易金额</th>
+      <th>订单号</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transtions.each do |t| %>
+      <tr>
+        <td><%=t.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%=t.direct %></td>
+        <td><%=t.resource_id %></td>
+        <td><%=t.amount.to_f %></td>
+        <td><%=t.txid %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @transtions, renderer: BootstrapPagination::Rails  %>

@@ -1,0 +1,47 @@
+<h3>PUT流水列表</h3>
+
+<hr>
+
+<ul class="nav nav-tabs" role="tablist">
+  <% EWallet::Transtion::STATUS_HASH.each do |k, v| %>
+    <li role="presentation" class="<%= params[:status] == k.to_s ? 'active' : '' %>">
+      <%= link_to v, marketing_dashboard_e_wallets_bills_path(status: k) %>
+    </li>
+  <% end %>
+</ul>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>流水ID</th>
+      <th>用户</th>
+      <th>PUT address</th>
+      <th>奖励数量</th>
+      <th>tx_id</th>
+      <th>状态</th>
+      <th>来源<th>
+    </tr>
+  </thead>
+  <tbody id="put_remit_table">
+    <% @transtions.each do |tr|%>
+      <tr>
+        <td class="put-tr-id"><%= tr.id %></td>
+        <td><%= link_to tr.kol.name, marketing_dashboard_kol_path(tr.kol), target: "_blank" %></td>
+        <td class="put-remit-token"><%= tr.kol.e_wallet_account.token %></td>
+        <td class="put-remit-amount"><%= tr.amount %></td>
+        <td class="put-tx-id"><%= tr.txid %></td>
+        <td><%= tr.status %></td>
+        <td><%= link_to "#{tr.resource_type}_#{tr.resource_id}", marketing_dashboard_campaign_path(tr.resource), target: "_blank" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+
+<%= link_to '导出put流水.CSV', csv_url, :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
+
+<%= will_paginate @transtions, renderer: BootstrapPagination::Rails  %>
+

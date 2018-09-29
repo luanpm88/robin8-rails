@@ -1,0 +1,8 @@
+<%=
+  CSV.generate do |csv|
+    csv << %w(流水ID 用户 put_address 奖励数量 tx_id 状态 来源)
+    @transtions.each do |tr|
+      csv << [tr.id, tr.kol.name, tr.kol.e_wallet_account.token, tr.amount, tr.txid, tr.status, "#{tr.resource_type}_#{tr.resource_id}"]
+    end
+  end.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => "?")
+-%>

@@ -185,7 +185,8 @@ Rails.application.routes.draw do
   # 点击”我是广告主——朋友圈推广"
   get 'brands/moments', to: 'pages#moments'
 
-  root 'pages#home'
+  # root 'pages#home'
+  root 'pages#moments'
 
   get '/pages/check_used_to_signed_in', to: 'pages#check_used_to_signed_in'
   get '/pages/scan_qr_code_and_login', to: 'pages#scan_qr_code_and_login'

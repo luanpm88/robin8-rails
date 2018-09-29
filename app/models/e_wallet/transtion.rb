@@ -3,6 +3,12 @@ class EWallet::Transtion < ActiveRecord::Base
   STATUS = %w(pending successful failed)
   DIRECTS = %w(income)
 
+  STATUS_HASH = {
+    pending:    '待支付',
+    successful: '支付成功',
+    failed:     '支付失败'
+  }
+
   belongs_to :resource, polymorphic: true
   belongs_to :kol
 

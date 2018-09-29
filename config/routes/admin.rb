@@ -290,6 +290,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :bills, only: [:index]
+
       resources :redis_sets, only: [] do
         collection do
           get :sales
@@ -297,7 +299,13 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :kols, only: [:index]
+      resources :kols, only: [:index] do
+        resources 'transactions', only:[] do 
+        end
+        member do
+          get :transactions
+        end
+      end
 
     end
 
