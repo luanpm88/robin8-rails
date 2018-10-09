@@ -28,4 +28,22 @@ namespace :evan do
 		end
 	end
 
+	# RAILS_ENV=production bundle exec rake evan:ban_campaign_invites
+	task :ban_campaign_invites => :environment do
+		c = Campaign.find(5774)
+
+		c.valid_invites.each do |ci|
+			if ci.kol.name == '🙄'
+				p "*" * 100
+				ci.update_columns(status: 'rejected')
+				tr = Transaction.where(account: ci.kol, item: c).first
+				if tr
+					tr.account.confiscate(tr.credits, 'confiscate', nil, nil)
+					p tr.credits.to_f
+					tr.account.update_attributes(forbid_campaign_time: 10.years.since)
+				end
+			end
+		end
+	end
+
 end

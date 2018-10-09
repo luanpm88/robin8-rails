@@ -207,58 +207,6 @@ $(document).ready(function() {
           cur_date = cur_date.customFormat('#YYYY##MM##DD##hhh##mm#');
 
           postWithdraw(token, password, cur_date, put_amount, put_address, put_tr_id, $token_input_modal);
-
-        //   var post_data = {};
-
-        //   var post_data_message = {
-        //     'timestamp': cur_date,
-        //     'coinid': 'PUT',
-        //     'amount': put_amount,
-        //     'address': put_address,
-        //     'recvWindow': 5000
-        //   };
-
-        //   var signed = PMES.sign(token, post_data_message, password);
-        //   post_data.message = post_data_message;
-        //   post_data.signature = signed.signature;
-        //   post_data.public_key = signed.public_key;
-
-        //   post_data = JSON.stringify(post_data);
-        //   console.log(post_data);
-
-        //   $.ajax({
-        //     url: URLHOST + '/api/accounts/withdraw/',
-        //     type: 'POST',
-        //     data: post_data,
-        //     success: function(data) {
-        //       console.log(data);
-        //       $token_input_modal.modal('hide');
-        //       put_tx_id = data.txid;
-
-        //       $.ajax({
-        //         url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
-        //         type: 'POST',
-        //         data: {
-        //           tr_id: put_tr_id,
-        //           tx_id: put_tx_id
-        //         },
-        //         success: function(data) {
-        //           console.log(data);
-        //           // $put_tx_id.html(put_tx_id);
-        //           location.reload();
-        //         },
-        //         error: function(xhr, type) {
-        //           alert('server error!');
-        //           console.log('server error!');
-        //         }
-        //       });
-        //     },
-        //     error: function(xhr, type) {
-        //       alert('pmes error!');
-        //       $token_input_modal.modal('hide');
-        //       console.log('pmes error!');
-        //     }
-        //   });
         });
       }
 

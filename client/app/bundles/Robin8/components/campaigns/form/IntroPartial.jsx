@@ -10,7 +10,7 @@ const getUploader = function() {
     browse_button: 'foo',       //上传选择的点选按钮，**必需**
     uptoken_url: '/brand_api/v1/util/qiniu_token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
     unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
-    domain: '7xozqe.com1.z0.glb.clouddn.com',   //bucket 域名，下载资源时用到，**必需**
+    domain: 'img.robin8.net',   //bucket 域名，下载资源时用到，**必需**
     get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token
     container: 'form_control_file',           //上传区域DOM ID，默认是browser_button的父元素，
     max_file_size: '4mb',           //最大文件体积限制
