@@ -113,5 +113,12 @@ namespace :campaign  do
       end
     end
   end
+
+  task :none do
+    str = '7xozqe.com2.z0.glb.qiniucdn.com'
+      User.where(User.arel_table[:avatar_url].matches("%#{str}%")).each do |u|
+      u.update_columns(avatar_url: u.avatar_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net'))
+    end
+  end
   
 end
