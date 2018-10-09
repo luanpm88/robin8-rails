@@ -20,10 +20,10 @@ server '47.100.60.3',
   port:  40111,
   roles: %w{web app db master prod_server}
 # prod_2
-server '47.100.60.3',
-  user:  'deployer',
-  port:  40211,
-  roles: %w{web app db master prod_server}
+# server '47.100.60.3',
+#   user:  'deployer',
+#   port:  40211,
+#   roles: %w{web app db master prod_server}
 
 set :branch,           'master_cn'
 
