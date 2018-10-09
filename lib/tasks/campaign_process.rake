@@ -105,10 +105,11 @@ namespace :campaign  do
   # RAILS_ENV=development bundle exec rake campaign:update_qiniu
   task :update_qiniu => :environment do
     Campaign.where(id: [5000..5808], status: %w(settled finished executed executing)).each do |c|
-      c.update_column(img_url: c.img_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if c.img_url.include?('7xozqe.com2.z0.glb.qiniucdn.com')
+      c.update_columns(img_url: c.img_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if c.img_url.include?('7xozqe.com2.z0.glb.qiniucdn.com')
 
-      c.campaign_invites.each do |ci|
-        ci.update_column('screenshot', ci.screenshot.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if ci.screenshot.include?('7xozqe.com2.z0.glb.qiniucdn.com')
+      c.campaign_invites.where.not(status: 'rejected').each do |ci|
+        p ci.id
+        ci.update_columns(screenshot: ci.screenshot.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if ci.screenshot.include?('7xozqe.com2.z0.glb.qiniucdn.com')
       end
     end
   end
