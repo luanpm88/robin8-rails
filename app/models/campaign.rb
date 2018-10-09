@@ -32,14 +32,14 @@ class Campaign < ActiveRecord::Base
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = Hash.new
   ExampleScreenshots.default={
-    weibo:  "http://7xozqe.com1.z0.glb.clouddn.com/weibo_example.jpg",
-    qq:     "http://7xozqe.com1.z0.glb.clouddn.com/qq_example.jpg",
-    wechat: 'http://7xozqe.com1.z0.glb.clouddn.com/wechat_example.jpg',
+    weibo:  "http://img.robin8.net/weibo_example.jpg",
+    qq:     "http://img.robin8.net/qq_example.jpg",
+    wechat: 'http://img.robin8.net/wechat_example.jpg',
   }
   ExampleScreenshots[16344] = {
-    weibo:  "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
-    qq:     "http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png",
-    wechat: 'http://7xozqe.com1.z0.glb.clouddn.com/Bayer.png',
+    weibo:  "http://img.robin8.net/Bayer.png",
+    qq:     "http://img.robin8.net/Bayer.png",
+    wechat: 'http://img.robin8.net/Bayer.png',
   }
 
   validates_presence_of :name, :description, :per_budget_type, :start_time, :deadline
