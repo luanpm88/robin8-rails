@@ -1,14 +1,18 @@
-<% if @circles.present? %>
-  <div style="margin-left: 20px">
-  <p>Add circle</p>
+
+<div style="margin-left: 20px">
+  <h4><%= "Tag_#{@tag.label}包含圈子：" %></h4>
   <%= form_tag marketing_dashboard_tag_add_circle_path do %>
-    <% @circles.each do |circle| %>
-      <%= check_box_tag 'circle_ids[]', circle.id,  @tag.circles.find_by_id(circle.id)? true : false -%>
-      <%= h circle.name -%>
-    <% end %><br/>
-    <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+    <div class="label-list clearfix">
+      <% @circles.each do |circle| %>
+        <label class="label-item">
+          <%= check_box_tag 'circle_ids[]', circle.id,  @tag.circles.find_by_id(circle.id)? true : false -%>
+          <%= h circle.label -%>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="text-left">
+      <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+    </div>
   <% end %>
-  </div>
-<% else %>
-  <%= link_to "添加圈子", "#"%>
-<% end %>
+</div>

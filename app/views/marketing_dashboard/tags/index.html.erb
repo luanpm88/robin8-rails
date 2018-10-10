@@ -7,8 +7,8 @@
   <thead>
     <tr>
       <th>Tag ID</th>
-      <th>label</th>
-      <th>name</th>
+      <th>标签</th>
+      <th>关联圈子</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -19,17 +19,10 @@
         <td>
           <%= t.id  %>
         </td>
-        <td><%= t.label %></td>
-        <td><%= t.name %></td>
-        <td>
-          <%= link_to "+", marketing_dashboard_tag_add_circle_path(t.id), style: "float: right;" %>
-          <% t.circles.each do |c|%>
-            <%= c.name %><br/>
-          <% end %>
-        </td>
+        <td><%= "#{t.label}(#{t.name})" %></td>
+        <td><%= t.circles.map(&:label).join('、') %></td>
+        <td><%= link_to "关联圈子", marketing_dashboard_tag_add_circle_path(t.id) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<%= will_paginate @tags, renderer: BootstrapPagination::Rails  %>

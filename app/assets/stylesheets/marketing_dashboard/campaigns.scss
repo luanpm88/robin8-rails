@@ -65,3 +65,19 @@
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.label-list {
+  padding: 20px;
+}
+
+.label-item {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  text-algin: center;
+  font-size: 16px;
+}
+
+.label-item input[type="checkbox"] {
+  margin-right: 10px;
+}
