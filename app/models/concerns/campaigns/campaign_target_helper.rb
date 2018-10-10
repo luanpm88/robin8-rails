@@ -28,6 +28,12 @@ module Campaigns
       kols = kols.where.not(id: get_unmatched_kol_ids)
     end
 
+    def tags
+      return [] unless tag_target
+
+      %w(overall 全部).include?(tag_target.target_content) ? Tag.all : Tag.where(name: tag_target.target_content.split(',')) 
+    end
+
     # 获取 不匹配的kol_ids
     def get_unmatched_kol_ids
       # (接过指定campaign 的kols +
