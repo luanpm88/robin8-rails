@@ -5,12 +5,12 @@ Rails.application.routes.draw do
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
 
-    resources :tags, only: [:index] do 
+    resources :tags, only: [:index, :new, :create] do 
       match '/add_circle' => 'tags#add_circle', via: [:post, :get]
       match '/remove_circle' => 'tags#remove_circle', via: [:post]
     end
 
-    resources :circles, only: [:index] do 
+    resources :circles, only: [:index, :new, :create] do 
       match '/add_tag' => 'circles#add_tag', via: [:post, :get]
       match '/remove_tag' => 'circles#remove_tag', via: [:post]
     end

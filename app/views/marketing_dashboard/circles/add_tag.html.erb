@@ -1,9 +1,15 @@
-
-<div style="margin-left: 20px">
-<p>Add tag</p>
-<%= form_tag marketing_dashboard_circle_add_tag_path do %>
- <label style= "width: 60px">name: </label> <%= text_field_tag :name %><br/>
- <label style= "width: 60px">label:</label> <%= text_field_tag :label %><br/>
-  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+<% if @tags.present? %>
+  <div style="margin-left: 20px">
+  <p>Add tag</p>
+  <%= form_tag marketing_dashboard_circle_add_tag_path do %>
+    <% @tags.each do |tag| %>
+      <%= check_box_tag 'tag_ids[]', tag.id,  @circle.tags.find_by_id(tag.id)? true : false -%>
+      <%= h tag.name -%>
+    <% end %><br/>
+    <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+  <% end %>
+  </div>
+<% else %>
+  <%= link_to "添加Tag", "#"%>
 <% end %>
-</div>
+

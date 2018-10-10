@@ -1,4 +1,7 @@
-<h1>Circel列表</h1>
+<h1>
+  Circel列表
+  <%= link_to "创建新的圈子", new_marketing_dashboard_circle_path, class: "btn btn-primary pull-right" %>
+</h1>
 
 <table class='table table-bordered'>
   <thead>
@@ -20,11 +23,13 @@
         <td><%= c.name %></td>
         <td>
           <%= link_to "+", marketing_dashboard_circle_add_tag_path(c.id), style: "float: right;" %>
-          <%= render partial: "tag", collection: c.tags, locals: {circle_id: c.id} %>
+          <% c.tags.each do |t|%>
+            <%= t.name %>
+          <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= will_paginate @tags, renderer: BootstrapPagination::Rails  %>
+<%= will_paginate @circles, renderer: BootstrapPagination::Rails  %>
