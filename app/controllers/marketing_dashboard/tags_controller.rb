@@ -5,18 +5,32 @@ class MarketingDashboard::TagsController < MarketingDashboard::BaseController
     load_tags
   end
 
+  def new
+    @tag = Tag.new
+  end
+
+  def create
+    @tag = Tag.new(params.require(:tag).permit(:name, :label))
+    if @tag.save
+      flash[:notice] = "创建成功"
+      redirect_to action: :index
+    else
+      flash[:alert] = "创建失败"
+      render 'new'
+    end
+  end
+
   def add_circle
+    @circles = Circle.all
+    @tag = Tag.find params[:tag_id]
     render 'add_circle' and return if request.method.eql? 'GET'
 
-    @tag = Tag.find params[:tag_id]
-    name = params[:name]
-    lable = params[:lable]
+    @select_circles = Circle.where(id: params[:circle_ids])
 
-    # Add Admintag if it doesn't already exist. If it does already exist, then just reuse the original.
-    if !Circle.find_by(name: name).present?
-      @tag.circles.create(name: name)
-    else
-      @tag.circles<< Circle.find_by(name: name)
+    @tag.circles.delete_all
+
+    if @select_circles.present?
+      @tag.circles << @select_circles
     end
 
     redirect_to marketing_dashboard_tags_path
@@ -26,11 +40,6 @@ class MarketingDashboard::TagsController < MarketingDashboard::BaseController
     @tag = Tag.find params[:tag_id]
     @circle = Circle.find params[:circle_id]
     @tag.circles.delete(@circle)
-
-    # If the Admintag no longer has any Kols, then destroy the Admintag also
-    if !@circle.tags.present?
-      @circle.destroy
-    end
 
     redirect_to marketing_dashboard_tags_path
   end
