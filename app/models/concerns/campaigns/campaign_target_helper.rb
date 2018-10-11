@@ -34,6 +34,12 @@ module Campaigns
       %w(overall 全部).include?(tag_target.target_content) ? Tag.all : Tag.where(name: tag_target.target_content.split(',')) 
     end
 
+    # 通过campaign选中的标签，找到标签下所有圈子的kols
+    def get_kol_ids_by_circles
+      KolsCircle.find_by_sql("select distinct(kc.kol_id) from kols_circles kc, tags_circles tc where 
+        kc.circle_id=tc.circle_id and tc.tag_id in (#{tags.map(&:id).join(',')})").map(&:kol_id)
+    end
+
     # 获取 不匹配的kol_ids
     def get_unmatched_kol_ids
       # (接过指定campaign 的kols +
