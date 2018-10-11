@@ -111,6 +111,10 @@ class Kol < ActiveRecord::Base
   has_one :e_wallet_account, class_name: "EWallet::Account"
   has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
 
+  #cirlces 
+  has_many :kols_circles, class_name: "KolsCircle"
+  has_many :circles, through: :kols_circles
+
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
   end
