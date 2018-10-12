@@ -7,7 +7,8 @@
   <% unless params[:status] == 'successful' %>
     <button type="button" class="btn btn-primary pull-right ml-10" id="put_remit_btn">批量付款</button>
   <% end %>
-  <button type="button" class="btn btn-info pull-right" id="wallet_detail_btn">钱包详情</button>
+  <button type="button" class="btn btn-info pull-right ml-10" id="wallet_detail_btn">钱包详情</button>
+  <!-- <button type="button" class="btn btn-success pull-right" id="wallet_transactions_btn">钱包流水</button> -->
 </h3>
 <hr>
 
@@ -75,6 +76,7 @@
         </div>
       </div>
       <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-link pull-left" id="forget_pw_btn">忘记密码</button> -->
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" id="token_confirm">确定</button>
       </div>
@@ -95,6 +97,63 @@
           <p id="wallet_detail_publickey"></p>
         </div>
         <div id="wallet_detail_container"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="password_modal" tabindex="-1" role="dialog" aria-labelledby="password_modal_label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="password_modal_label">重置密码</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="reset_password_input">Password:</label>
+          <input type="password" minlength="6" maxlength="6" class="form-control" id="reset_password_input" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="password_confirm_input">Password Confirm:</label>
+          <input type="password" minlength="6" maxlength="6" class="form-control" id="password_confirm_input" placeholder="Password Confirm">
+        </div>
+        <div class="form-group">
+          <label for="mnemonic_input">Mnemonic:</label>
+          <textarea class="form-control" rows="6" id="mnemonic_input" placeholder="Mnemonic"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="reset_password_confirm">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="wallet_transactions_modal" tabindex="-1" role="dialog" aria-labelledby="wallet_transactions_modal_label">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="wallet_transactions_modal_label">钱包流水详情</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
