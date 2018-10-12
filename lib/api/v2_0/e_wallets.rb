@@ -8,31 +8,15 @@ module API
           authenticate!
         end
 
-        EWalletTransfer = "url" #TODO接口调用地址
-
-        params do 
-          requires :public_key, type: String
-          requires :amount, type: Float
-          requires :token, type: String
-          requires :signature, type: String
-        end
-        post 'transaction' do
-          params = {
-            "public_key": public_key,
-            "message":{
-                "timestamp": Time.now.to_i,
-                "coinid": 'PUTTEST',         
-                "amount": amount,         
-                "address": token,        
-                "recvWindow": 5000
-            }
-             "signature": signature
-          }
-          res = RestClient.post(EWalletTransfer, params.to_json, {content_type: :json, accept: :json})
-          res.code == 200 ? JSON.parse(res.body)['txid'] : ''
+        get 'unpaid' do
+          present :error,  0
+          present :amount, current_kol.e_wallet_transtions.unpaid.map(&:amount).sum.to_f
         end
 
-
+        get 'unpaid_list' do
+          present :error, 0
+          present :list,  current_kol.e_wallet_transtions.unpaid.map(&:to_hash)
+        end
       end
     end
   end
