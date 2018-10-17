@@ -161,15 +161,13 @@ module Concerns
       self.campaign_invites.settled.order("avail_click desc").first.avail_click rescue nil
     end
 
+    # app my show 单比最高收益
     def max_campaign_earn_money
-      campaign_ids = self.campaign_invites.settled.collect{|t| t.campaign_id}
-      self.income_transactions.where(:item_type => 'Campaign', :item_id => campaign_ids).group("item_id").
-        order("sum(credits) desc").select("sum(credits) as item_credits, item_id").first.item_credits    rescue 0
+      Transaction.select(:credits).where(item_type: 'Campaign', account: self).order(credits: :desc).first.try(:credits).to_f
     end
 
     def campaign_total_income
-      campaign_ids = self.campaign_invites.settled.collect{|t| t.campaign_id}
-      self.income_transactions.where(:item_type => 'Campaign', :item_id => campaign_ids).sum(:credits)
+      Transaction.select(:credits).where(item_type: 'Campaign', account: self).sum(:credits)
     end
 
     def avg_campaign_credit
