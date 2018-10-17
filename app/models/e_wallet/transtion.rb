@@ -18,9 +18,26 @@ class EWallet::Transtion < ActiveRecord::Base
   scope :pending,    -> {where(status: 'pending').order('created_at desc')}
   scope :successful, -> {where(status: 'successful').order('created_at desc')}
   scope :failed,     -> {where(status: 'failed').order('created_at desc')}
+  scope :unpaid,     -> {where("status<>'successful'").order('created_at desc')}
 
   def pending?
   	self.status == "pending"
+  end
+
+  def title
+    case resource_type
+    when 'Campaign'
+      "活动奖励：#{resource.name}"
+    end
+  end
+
+  def to_hash
+    {
+      time: created_at.to_s(:db),
+      title: title,
+      amount: amount.to_f,
+      status: STATUS_HASH[status.to_sym]
+    }
   end
 
 end

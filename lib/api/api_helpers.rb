@@ -155,7 +155,7 @@ module API
                     when "admintags"
                       [:admintags, :first, :tag]
                     end
-                    
+
             filter_result = if target[:target_type] == "admintags"
                               target[:target_content].split(",") & current_kol.admintags.map(&:tag)
                             else
@@ -240,7 +240,7 @@ module API
       unless $redis.get("elastic_articles_newest_post_id")
         $redis.setex("elastic_articles_newest_post_id", 43200, ElasticArticleExtend.get_new)
       end
-      
+
       $redis.get("elastic_articles_newest_post_id")
     end
 
