@@ -77,13 +77,13 @@ module API
           if params[:_action] == 'add'
             if eaa.new_record?
               eaa.save
-              eaa.elastic_article.send("redis_#{params[:_type]}s_count").increment if eaa.elastic_article
+              ea.send("redis_#{params[:_type]}s_count").increment
               current_kol.send("redis_elastic_#{params[:_type]}s_count").increment
             end
           else
             if eaa
               eaa.destroy
-              eaa.elastic_article.send("redis_#{params[:_type]}s_count").decrement if eaa.elastic_article
+              ea.send("redis_#{params[:_type]}s_count").decrement
               current_kol.send("redis_elastic_#{params[:_type]}s_count").decrement
             end
           end
@@ -113,10 +113,8 @@ module API
 
           eaa.save
 
-          if eaa.elastic_article
-            eaa.elastic_article.redis_reads_count.increment
-            eaa.elastic_article.redis_stay_time.incr(eaa.stay_time)
-          end
+          ea.redis_reads_count.increment
+          ea.redis_stay_time.incr(eaa.stay_time)
 
           $redis.incr 'elastic_article_show_count'
           $redis.incrby 'elastic_article_show_time', params[:stay_time].to_i
