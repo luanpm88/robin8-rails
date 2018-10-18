@@ -29,7 +29,7 @@ module API
             $redis.set("elastic_articles_#{current_kol.id}", res[-1]['post_id'])
           end
 
-          ElasticArticleWorker.perform(res)
+          # ElasticArticleWorker.perform(res)
 
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
@@ -59,8 +59,19 @@ module API
           requires :_type,   type: String, values: ['like', 'collect', 'forward']
           requires :post_id, type: String
           requires :_action, type: String, values: ['add', 'cancel']
+          optional :tag,     type: String
+          optional :title,   type: String
         end
         post 'set' do
+
+          ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
+          
+          if ea.new_record?
+            ea.title = params[:title][0,100]         if params[:title]
+            ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
+            ea.save
+          end
+
           eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_type], post_id: params[:post_id])
 
           if params[:_action] == 'add'
@@ -83,9 +94,19 @@ module API
         params do
           requires :post_id,   type: String
           requires :stay_time, type: Integer
+          optional :tag,       type: String
+          optional :title,     type: String
         end
         post 'read' do
           return error_403!({error: 1, detail: '停留时长太短，不予保留'}) if params[:stay_time].to_i <= 1
+
+          ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
+
+          if ea.new_record?
+            ea.title = params[:title][0,100]         if params[:title]
+            ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
+            ea.save
+          end
 
           eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: 'read', post_id: params[:post_id])
           eaa.stay_time = params[:stay_time]
