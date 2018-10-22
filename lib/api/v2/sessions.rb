@@ -54,7 +54,7 @@ module API
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
           
             # HSBC 注册奖励
-            alert = "恭喜您获得NIIT免费课程门票！其中包括：\n价值1000元\n超过120门课程\n1个月免费学习时间" if params[:invite_code] == '666888'
+            alert = "恭喜您获得NIIT免费课程门票！涵盖：\n价值1000元\n 超过120门课程\n1个月免费学习时间" if params[:invite_code] == '666888'
           end
 
           present :error, 0

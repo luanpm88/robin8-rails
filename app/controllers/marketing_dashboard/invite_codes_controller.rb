@@ -18,9 +18,7 @@ class MarketingDashboard::InviteCodesController < MarketingDashboard::BaseContro
   end
 
   def create
-	  params.permit!
-
-	  @invite_code = InviteCode.new(code: params[:invite_code][:code] , invite_type: InviteCode::InviteType.invert[params[:invite_code][:invite_type]] , invite_value: params[:invite_code][:invite_value])
+	  @invite_code = InviteCode.new(params[:invite_code].permit!)
 	  
     if @invite_code.save
       redirect_to :action => :index
@@ -34,13 +32,9 @@ class MarketingDashboard::InviteCodesController < MarketingDashboard::BaseContro
   end
 
   def update
-  	params.permit!
-
   	@invite_code = InviteCode.find params[:id]
 
-  	@invite_code.update(code: params[:invite_code][:code].to_i , invite_type: InviteCode::InviteType.invert[params[:invite_code][:invite_type]] , invite_value: params[:invite_code][:invite_value])
-  	
-    if @invite_code.save
+  	if @invite_code.update(params[:invite_code].permit!)
       redirect_to :action => :index
   	else
   	  render :action => :edit
