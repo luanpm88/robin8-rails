@@ -2,7 +2,7 @@ class InviteCode < ActiveRecord::Base
 
   validates :code , presence: true
   validates :code , presence: {message: "邀请码不能为空"},length: {is: 6 , message: "邀请码长度必须为6位"} , uniqueness: {message: "邀请码已存在"}
-  validates :invite_type ,  inclusion: {in: ["admintag" ,"club_leader","club_member"]}
+  validates :invite_type ,  inclusion: {in: ["admintag" ,"club_leader","club_member", "invite_friend"]}
   validates :invite_value , presence: {message: "标签名/社团名不能为空"} ,uniqueness: {message: "标签名/社团名已存在"} 
 
   InviteType = {
