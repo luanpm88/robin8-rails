@@ -203,7 +203,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :invite_code
+    resources :invite_codes, except: [:destroy]
     resources :talking_data
     resources :kol_data
     resources :campaign_data
