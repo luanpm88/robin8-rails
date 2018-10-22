@@ -29,7 +29,7 @@ module API
             $redis.set("elastic_articles_#{current_kol.id}", res[-1]['post_id'])
           end
 
-          ElasticArticleWorker.perform(res)
+          # ElasticArticleWorker.perform(res)
 
         	present :error,  0
           present :labels, [[:common, '新鲜事'], [:hot, '今日热点']]
@@ -59,20 +59,31 @@ module API
           requires :_type,   type: String, values: ['like', 'collect', 'forward']
           requires :post_id, type: String
           requires :_action, type: String, values: ['add', 'cancel']
+          optional :tag,     type: String
+          optional :title,   type: String
         end
         post 'set' do
+
+          ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
+          
+          if ea.new_record?
+            ea.title = params[:title][0,100]         if params[:title]
+            ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
+            ea.save
+          end
+
           eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: params[:_type], post_id: params[:post_id])
 
           if params[:_action] == 'add'
             if eaa.new_record?
               eaa.save
-              eaa.elastic_article.send("redis_#{params[:_type]}s_count").increment if eaa.elastic_article
+              ea.send("redis_#{params[:_type]}s_count").increment
               current_kol.send("redis_elastic_#{params[:_type]}s_count").increment
             end
           else
             if eaa
               eaa.destroy
-              eaa.elastic_article.send("redis_#{params[:_type]}s_count").decrement if eaa.elastic_article
+              ea.send("redis_#{params[:_type]}s_count").decrement
               current_kol.send("redis_elastic_#{params[:_type]}s_count").decrement
             end
           end
@@ -83,19 +94,27 @@ module API
         params do
           requires :post_id,   type: String
           requires :stay_time, type: Integer
+          optional :tag,       type: String
+          optional :title,     type: String
         end
         post 'read' do
           return error_403!({error: 1, detail: '停留时长太短，不予保留'}) if params[:stay_time].to_i <= 1
+
+          ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
+
+          if ea.new_record?
+            ea.title = params[:title][0,100]         if params[:title]
+            ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
+            ea.save
+          end
 
           eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: 'read', post_id: params[:post_id])
           eaa.stay_time = params[:stay_time]
 
           eaa.save
 
-          if eaa.elastic_article
-            eaa.elastic_article.redis_reads_count.increment
-            eaa.elastic_article.redis_stay_time.incr(eaa.stay_time)
-          end
+          ea.redis_reads_count.increment
+          ea.redis_stay_time.incr(eaa.stay_time)
 
           $redis.incr 'elastic_article_show_count'
           $redis.incrby 'elastic_article_show_time', params[:stay_time].to_i
