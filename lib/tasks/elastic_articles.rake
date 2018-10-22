@@ -15,5 +15,14 @@ namespace :elastic_articles do
 			ea.save
 		end
 	end
+
+	task :dels => :environment do
+		ElasticArticle.where(id: (220000..225000)).each do |ea|
+			if ElasticArticleAction.where(post_id: ea.post_id).empty?
+				p ea.id
+				ea.delete
+			end
+		end
+	end
 			
 end

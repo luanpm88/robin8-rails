@@ -52,6 +52,9 @@ module API
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+          
+            # HSBC 注册奖励
+            alert = 'HSBC' if params[:invite_code] == '666888'
           end
 
           present :error, 0
@@ -126,7 +129,6 @@ module API
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
-
           else
             kol = Kol.reg_or_sign_in(params, kol)
           end
