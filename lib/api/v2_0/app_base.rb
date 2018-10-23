@@ -13,6 +13,7 @@ module API
       mount API::V2_0::Promotions
       mount API::V2_0::Credits
       mount API::V2_0::Campaigns
+      mount API::V2_0::EWallets
     end
   end
 end

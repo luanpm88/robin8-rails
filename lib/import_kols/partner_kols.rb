@@ -32,7 +32,7 @@ module ImportKols
       kol.kol_role = 'big_v'
       kol.role_apply_status = 'passed'
       kol.job_info = row[2]
-      kol.avatar_url = "http://7xozqe.com1.z0.glb.clouddn.com/partner_#{row[3].to_i}.png"   if row[3].present?  &&  kol.avatar_url.blank?
+      kol.avatar_url = "http://img.robin8.net/partner_#{row[3].to_i}.png"   if row[3].present?  &&  kol.avatar_url.blank?
       kol.desc = row[4]                                                                     if kol.desc.blank?
       tag_labels = row[5].split(/[,,、\s]/).compact   rescue []
       kol.tags = Tag.where(:label => tag_labels) if tag_labels.size > 0

@@ -121,6 +121,7 @@ $(document).ready(function() {
   if ($('body').attr('id') === 'admin_transactions_index') {
     var btn_type = '';
     var $token_input_modal = $('#token_input_modal');
+    var $password_modal = $('#password_modal');
     var single_put_address = '';
     var single_put_amount = 0;
     var single_put_trid = '';
@@ -137,6 +138,90 @@ $(document).ready(function() {
       $token_input_modal.modal('show');
     });
 
+    // 钱包流水
+    $('#wallet_transactions_btn').click(function(event) {
+      btn_type = 'transactions';
+      $token_input_modal.modal('show');
+    });
+
+    // 忘记密码
+    $('#forget_pw_btn').click(function(event) {
+      $token_input_modal.modal('hide');
+      $password_modal.modal('show');
+    });
+
+    // 重置密码
+    // $('#reset_password_confirm').click(function(event) {
+    //   var current_date = new Date();
+    //   current_date = current_date.customFormat('#YYYY##MM##DD##hhh##mm#');
+    //   var password = $('#reset_password_input').val();
+    //   var password_confirm = $('#password_confirm_input').val();
+    //   var mnemonic = $('#mnemonic_input').val();
+
+    //   if (password == '') {
+    //     alert('请输入密码');
+    //     return false;
+    //   } else if (password != '' && !verify_pw.test(password)) {
+    //     alert('请输入6位数字作为密码');
+    //     return false;
+    //   }
+    //   if (password_confirm == '') {
+    //     alert('请确认密码');
+    //     return false;
+    //   }
+    //   if (password != password_confirm) {
+    //     alert('两次密码输入不一致');
+    //     return false;
+    //   }
+    //   if (mnemonic == '') {
+    //     alert('请输入您的安全码');
+    //     return false;
+    //   }
+
+    //   native_put_address = jwPut.put_put_address();
+
+    //   var pmes_recover = PMES.recover(mnemonic, password);
+    //   var post_public_key = pmes_recover.public_key;
+    //   console.log('public_key:'+ pmes_recover.public_key);
+
+    //   $.ajax({
+    //     url: URLHOST + '/api/accounts/'+ post_public_key +'/',
+    //     type: 'GET',
+    //     success: function(data) {
+    //       if (!!data.wallets) {
+    //         var wallets_data = JSON.parse(data.wallets);
+    //         var put_put = '';
+    //         $.each(wallets_data, function(index, el) {
+    //           if (el.coinid === 'PUT') {
+    //             put_put = el;
+    //           }
+    //         });
+    //         var put_address = put_put.address;
+
+    //         if (put_address === native_put_address) {
+    //           var post_native_data = {
+    //             token: pmes_recover.token,
+    //             public_key: post_public_key
+    //           };
+    //           post_native_data = JSON.stringify(post_native_data);
+    //           if (typeof jwPut != 'undefined') {
+    //             jwPut.put_recover(post_native_data);
+    //           }
+    //         } else {
+    //           alert('mnemonic error');
+    //         }
+    //       } else {
+    //         alert('没有钱包数据');
+    //       }
+    //     },
+    //     error: function(xhr, type) {
+    //       loading.destroy();
+    //       alert('mnemonic error');
+    //       console.log('mnemonic error');
+    //     }
+    //   });
+    // });
+
     // 单独付款
     $('#put_remit_table').find('tr').each(function(index, el) {
       var $tr = $(el);
@@ -152,6 +237,7 @@ $(document).ready(function() {
         single_put_amount = put_amount;
         single_put_trid = put_trid;
         $token_input_modal.modal('show');
+        $pay_btn.attr('disabled', true);
       });
     });
 
@@ -207,58 +293,6 @@ $(document).ready(function() {
           cur_date = cur_date.customFormat('#YYYY##MM##DD##hhh##mm#');
 
           postWithdraw(token, password, cur_date, put_amount, put_address, put_tr_id, $token_input_modal);
-
-        //   var post_data = {};
-
-        //   var post_data_message = {
-        //     'timestamp': cur_date,
-        //     'coinid': 'PUT',
-        //     'amount': put_amount,
-        //     'address': put_address,
-        //     'recvWindow': 5000
-        //   };
-
-        //   var signed = PMES.sign(token, post_data_message, password);
-        //   post_data.message = post_data_message;
-        //   post_data.signature = signed.signature;
-        //   post_data.public_key = signed.public_key;
-
-        //   post_data = JSON.stringify(post_data);
-        //   console.log(post_data);
-
-        //   $.ajax({
-        //     url: URLHOST + '/api/accounts/withdraw/',
-        //     type: 'POST',
-        //     data: post_data,
-        //     success: function(data) {
-        //       console.log(data);
-        //       $token_input_modal.modal('hide');
-        //       put_tx_id = data.txid;
-
-        //       $.ajax({
-        //         url: SERVERHOST + '/marketing_dashboard/e_wallets/campaigns/'+ campaign_id +'/transactions/update_txid',
-        //         type: 'POST',
-        //         data: {
-        //           tr_id: put_tr_id,
-        //           tx_id: put_tx_id
-        //         },
-        //         success: function(data) {
-        //           console.log(data);
-        //           // $put_tx_id.html(put_tx_id);
-        //           location.reload();
-        //         },
-        //         error: function(xhr, type) {
-        //           alert('server error!');
-        //           console.log('server error!');
-        //         }
-        //       });
-        //     },
-        //     error: function(xhr, type) {
-        //       alert('pmes error!');
-        //       $token_input_modal.modal('hide');
-        //       console.log('pmes error!');
-        //     }
-        //   });
         });
       }
 
@@ -298,10 +332,56 @@ $(document).ready(function() {
           }
         });
       }
+
+      if (btn_type === 'transactions') {
+        console.log('钱包流水');
+        $.ajax({
+          url: URLHOST + '/api/accounts/'+ pmes_sign.public_key +'/',
+          type: 'GET',
+          success: function(data) {
+            if (!!data.wallets) {
+              var wallets_data = JSON.parse(data.wallets);
+              console.log(wallets_data);
+              $.each(wallets_data, function(index, el) {
+                if (el.coinid === 'PUT') {
+                  console.log(el.coinid)
+                  console.log(el.address)
+                  $.ajax({
+                    url: URLHOST + '/api/accounts/withdraw/',
+                    type: 'GET',
+                    data: {
+                      address: el.address,
+                      coinid: el.coinid
+                    },
+                    success: function(data) {
+                      console.log(data);
+
+                      // $token_input_modal.modal('hide');
+                      // $('#wallet_transactions_modal').modal('show');
+                    },
+                    error: function(xhr, type) {
+                      alert('error');
+                      $token_input_modal.modal('hide');
+                      console.log('error');
+                    }
+                  });
+                }
+              });
+            } else {
+              alert('没有钱包数据');
+            }
+          },
+          error: function(xhr, type) {
+            alert('accounts error');
+            console.log('accounts error');
+          }
+        });
+      }
     });
 
     $token_input_modal.on('hidden.bs.modal', function (e) {
       $('#token_confirm').attr('disabled', false);
+      $('.put-remit-btn').attr('disabled', false);
       $('#password_input').val('');
       $('#token_input').val('');
     });

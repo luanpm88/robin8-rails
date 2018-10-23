@@ -100,5 +100,25 @@ namespace :campaign  do
       c.update_attributes(avail_click: c.redis_avail_click.value, total_click: c.redis_total_click.value)
     end
   end
+
+  # 更新活动封面截图的地址
+  # RAILS_ENV=development bundle exec rake campaign:update_qiniu
+  task :update_qiniu => :environment do
+    Campaign.where(id: [5000..5808], status: %w(settled finished executed executing)).each do |c|
+      c.update_columns(img_url: c.img_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if c.img_url.include?('7xozqe.com2.z0.glb.qiniucdn.com')
+
+      c.campaign_invites.where.not(status: 'rejected').each do |ci|
+        p ci.id
+        ci.update_columns(screenshot: ci.screenshot.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net')) if ci.screenshot.include?('7xozqe.com2.z0.glb.qiniucdn.com')
+      end
+    end
+  end
+
+  task :none do
+    str = '7xozqe.com2.z0.glb.qiniucdn.com'
+      User.where(User.arel_table[:avatar_url].matches("%#{str}%")).each do |u|
+      u.update_columns(avatar_url: u.avatar_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net'))
+    end
+  end
   
 end
