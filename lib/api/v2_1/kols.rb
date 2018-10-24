@@ -21,6 +21,7 @@ module API
         	current_kol.age    								= params[:age]    							if params[:age]
         	current_kol.industry 							= params[:industry] 						if params[:industry]
         	current_kol.wechat_firends_count 	= params[:wechat_firends_count] if params[:wechat_firends_count]
+        	current_kol.kol_role              = params[:kol_role]             if params[:kol_role]
         	current_kol.role_apply_status     = 'applying'                    if params[:kol_role] != 'public'
  
         	current_kol.save
@@ -47,7 +48,7 @@ module API
         	requires :gender, 			type: Integer, values: [1, 2]
         	requires :age_egt, 			type: Integer
         	requires :age_elt, 			type: Integer
-        	requires :city_ids, 		type: Array[Integer]
+        	requires :cities, 		  type: Array[String]
         	requires :content_show, type: String
         	optional :remark, 			type: String
         end
@@ -80,8 +81,8 @@ module API
 	        	end
 	        end
 
-	        if creator.city_ids - params[:city_ids] != []
-	        	select_cities = City.where(id: params[:city_ids])
+	        if creator.cities.map(&:name) - params[:cities] != []
+	        	select_cities = City.where(name: params[:cities])
 	        	if select_cities.present?
 	        		creator.cities.delete_all
 	        		creator.cities << select_cities
