@@ -1,4 +1,6 @@
 class Creator < ActiveRecord::Base
+
+  after_save :update_kol_role_status, :on => [:create, :update]
   
   belongs_to :kol
   #cirlces 自媒体圈子
@@ -13,5 +15,19 @@ class Creator < ActiveRecord::Base
   #城市
   has_many :creators_cities, class_name: "CreatorsCity"
   has_many :cities, through: :creators_cities
+
+
+  validates_presence_of :kol_id
+
+
+  private 
+
+  def update_kol_role_status
+    self.kol.update_attributes(role_apply_status: 'applying') if self.kol and self.kol.role_apply_status != 'applying'
+  end
+
+
+
+
 
 end
