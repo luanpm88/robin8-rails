@@ -27,9 +27,7 @@ module API
         	current_kol.save
 
         	if current_kol.circle_ids - Array(params[:circle_ids]) != []
-
 	        	select_circles = Circle.where(id: params[:circle_ids])
-
 	        	if select_circles.present?
 	        		current_kol.circles.delete_all
 	        		current_kol.circles << select_circles
@@ -46,8 +44,7 @@ module API
         	requires :price, 				type: Float
         	requires :fans_count, 	type: Integer
         	requires :gender, 			type: Integer, values: [1, 2]
-        	requires :age_egt, 			type: Integer
-        	requires :age_elt, 			type: Integer
+        	requires :age_range, 	  type: Integer
         	requires :cities, 		  type: Array[String]
         	requires :content_show, type: String
         	optional :remark, 			type: String
@@ -58,8 +55,7 @@ module API
         	creator.price 				= params[:price]
         	creator.fans_count 		= params[:fans_count]
         	creator.gender 				= params[:gender]
-        	creator.age_egt 			= params[:age_egt]
-        	creator.age_elt 			= params[:age_elt]
+        	creator.age_range 		= params[:age_range]
         	creator.content_show 	= params[:content_show]
         	creator.remark 				= params[:remark]
 
