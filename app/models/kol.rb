@@ -104,6 +104,8 @@ class Kol < ActiveRecord::Base
   # belongs_to :club_member
   has_one :club_member
   # has_and_belongs_to_many :clubs
+  #内容创造者
+  has_one :creator 
 
   # PK's
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger

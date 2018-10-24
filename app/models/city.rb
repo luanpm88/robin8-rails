@@ -5,6 +5,10 @@ class City < ActiveRecord::Base
   belongs_to :province
   has_many :districts, dependent: :destroy
 
+  #creator
+  has_many :creators_cities, class_name: "CreatorsCity"
+  has_many :creators, through: :creators_cities
+
   scope :with_province, ->(province) { where(province_id: province) }
 
   def short_name
