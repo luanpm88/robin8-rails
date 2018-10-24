@@ -4,8 +4,7 @@ class CreateCreators < ActiveRecord::Migration
       t.float :price, default: 0.0
       t.integer :fans_count
       t.integer :gender
-      t.integer :age_egt
-      t.integer :age_elt
+      t.integer :age_range
       t.string :content_show
       t.string :remark
       t.integer :status, default: 0

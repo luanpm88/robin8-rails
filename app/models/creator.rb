@@ -20,6 +20,18 @@ class Creator < ActiveRecord::Base
   validates_presence_of :kol_id
 
 
+  AgeRange = {
+    "1":    '0-17',
+    "2":    '18-24',
+    "3":    '25-29',
+    "4":    '30-34',
+    "5":    '35-39',
+    "6":    '40-49',
+    "7":    '50-59',
+    "8":    '60-'
+  }
+
+
   private 
 
   def update_kol_role_status

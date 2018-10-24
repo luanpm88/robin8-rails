@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       match '/add_tag' => 'circles#add_tag', via: [:post, :get]
     end
 
+    resources :terraces
     
     resources :article_contents do
       member do
