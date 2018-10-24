@@ -3,6 +3,11 @@ class Kol < ActiveRecord::Base
   include Redis::Objects
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
+  # since 2018-10-24
+  # kol_role: [public, big_v, creator]
+  # default: pending, when kol apply big_v, creator, role_apply_status = 'applying'
+
+
   # counter :redis_new_income      #unit is cent
 
   counter :registered_invitation_count
