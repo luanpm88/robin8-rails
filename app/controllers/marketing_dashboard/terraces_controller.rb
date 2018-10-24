@@ -16,7 +16,7 @@ class MarketingDashboard::TerracesController < MarketingDashboard::BaseControlle
       flash[:notice] = "创建成功"
       redirect_to action: :index
     else
-      flash[:alert] = "创建失败#{@terrace.errors.messages.values.flatten.join("\n")}"
+      flash[:alert] = "创建失败#{@terrace.errors.messages}"
       render 'new'
     end
   end
@@ -29,7 +29,7 @@ class MarketingDashboard::TerracesController < MarketingDashboard::BaseControlle
       flash[:notice] = "修改成功"
       redirect_to :action => :index
     else
-      flash[:alert] = "修改失败#{@terrace.errors.messages.values.flatten.join("\n")}"
+      flash[:alert] = "修改失败#{@terrace.errors.messages}"
       render 'edit'
     end
   end

@@ -24,9 +24,9 @@
 
 
   <div class="form-group">
-    <label for="inputPassword3" class="col-sm-3 control-label">头像</label>
+    <label for="inputPassword3" class="col-sm-3 control-label">图标</label>
     <div class="col-sm-8">
-      <%= f.file_field :avatar, :placeholder => '请输入头像', :class => "form-control" %>
+      <%= f.file_field :avatar, :placeholder => '请上传图标', :class => "form-control" %>
       <% if @terrace.avatar_url.present? %>
         <%= image_tag @terrace.avatar_url, :width => 100, :height => 100 %>
       <% end %>
