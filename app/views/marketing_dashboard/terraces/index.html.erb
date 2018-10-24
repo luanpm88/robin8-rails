@@ -1,0 +1,31 @@
+<h1>
+  Tag列表
+  <%= link_to "创建新平台", new_marketing_dashboard_terrace_path, class: "btn btn-primary pull-right" %>
+</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>平台 ID</th>
+      <th>名称</th>
+      <th>英文名</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @terraces.each do |t| %>
+      <tr>
+        <td>
+          <%= t.id  %>
+        </td>
+        <td><%= t.name %></td>
+        <td><%= t.short_name %></td>
+        <td>
+          <%= link_to "编辑", edit_marketing_dashboard_terrace_path(t) %>
+          <%= link_to "删除", marketing_dashboard_terrace_path(t), method: :delete, action: "destroy", data: { confirm: '确定要删除吗?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

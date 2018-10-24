@@ -2,6 +2,7 @@ class CreateCreators < ActiveRecord::Migration
   def change
     create_table :creators do |t|
       t.float :price, default: 0.0
+      t.float :video_price, default: 0.0
       t.integer :fans_count
       t.integer :gender
       t.integer :age_range
