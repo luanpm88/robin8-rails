@@ -9,6 +9,14 @@ class City < ActiveRecord::Base
   has_many :creators_cities, class_name: "CreatorsCity"
   has_many :creators, through: :creators_cities
 
+  #weiboaccount
+  has_many :weibo_accounts_cities, class_name: "WeiboAccountsCity"
+  has_many :weibo_accounts, through: :weibao_accounts_cities
+
+  #publicwechataccount
+  has_many :public_wechat_accounts_cities, class_name: "PublicWechatAccountsCity"
+  has_many :public_wechat_accounts, through: :public_wechat_accounts_cities
+
   scope :with_province, ->(province) { where(province_id: province) }
 
   def short_name

@@ -100,7 +100,16 @@ class Kol < ActiveRecord::Base
   has_one :club_member
   # has_and_belongs_to_many :clubs
   #内容创造者
-  has_one :creator 
+  has_one :creator
+  #big_v
+  has_one :weibo_account
+  has_one :public_wechat_account
+
+
+  def big_v
+    self.weibo_account.present? ? weibo_account : public_wechat_account
+  end
+
 
   # PK's
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
