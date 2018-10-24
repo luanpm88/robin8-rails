@@ -42,6 +42,7 @@ module API
         	requires :circle_ids,   type: Array[Integer]
         	requires :terrace_ids, 	type: Array[Integer]
         	requires :price, 				type: Float
+          requires :video_price,  type: Float
         	requires :fans_count, 	type: Integer
         	requires :gender, 			type: Integer, values: [1, 2]
         	requires :age_range, 	  type: Integer
@@ -50,16 +51,17 @@ module API
         	optional :remark, 			type: String
         end
         post 'applying_creator' do
-        	creator = current_kol.creator ? current_kol.creator : current_kol.creator.new
+        	creator = current_kol.creator ? current_kol.creator : Creator.new(kol_id: current_kol.id)
 
         	creator.price 				= params[:price]
+          creator.video_price   = params[:video_price]
         	creator.fans_count 		= params[:fans_count]
         	creator.gender 				= params[:gender]
         	creator.age_range 		= params[:age_range]
         	creator.content_show 	= params[:content_show]
         	creator.remark 				= params[:remark]
 
-        	creator.save
+        	error_403!(detail: '请重新输入正确的信息。') unless creator.save
 
         	if creator.circle_ids - params[:circle_ids] != []
 	        	select_circles = Circle.where(id: params[:circle_ids])
