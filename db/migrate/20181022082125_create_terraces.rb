@@ -4,6 +4,7 @@ class CreateTerraces < ActiveRecord::Migration
       t.string :name
       t.string :avatar
       t.string :address
+      t.string :short_name
       t.timestamps null: false
     end
   end
