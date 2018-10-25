@@ -16,7 +16,7 @@ module YunPian
       ChinaSMS.use :yunpian, password: @api_key
       begin
         res = ChinaSMS.to @phone_number, @content
-        res = ChinaSMS.to @phone_number, {url: 'http://www.niitcloudcampus.com.cn/', code: 'NIITSUB201810FM'}, tpl_id: 2549808
+        res = ChinaSMS.to @phone_number, {}, tpl_id: 2551120
       rescue Exception => ex
         Rails.logger.error ex
         return nil
