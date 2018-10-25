@@ -10,8 +10,20 @@ class Creator < ActiveRecord::Base
     7 => '50-59',
     8 => '60-'
   }
+
+  STATUS = {
+    0 => '未审核',
+    1 => '审核通过', 
+    -1 => '审核拒绝'
+  }
+
+  GENDER = {
+    1 => '男',
+    2 => '女'
+  }
   
-  validates_presence_of :kol_id
+  validates :kol_id, presence:   {message: '不能为空'}
+  validates :kol_id, uniqueness: {message: '已被占用'}
 
   belongs_to :kol
 
@@ -29,11 +41,11 @@ class Creator < ActiveRecord::Base
   
   after_save :update_kol_role_status, on: [:create, :update]
 
-
   private 
 
   def update_kol_role_status
     kol.update_attributes(role_apply_status: 'applying') if kol.role_apply_status != 'applying'
+    self.update_column(:status, 0)
   end
 
 end

@@ -12,7 +12,7 @@ class CreateWeiboAccounts < ActiveRecord::Migration
       t.integer :gender
       t.string :content_show
       t.string :remark
-      t.integer :stauts, default: 0 
+      t.integer :status, default: 0 
       t.timestamps null: false
     end
   end
