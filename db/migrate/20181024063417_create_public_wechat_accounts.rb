@@ -12,7 +12,7 @@ class CreatePublicWechatAccounts < ActiveRecord::Migration
       t.integer :gender
       t.string :content_show
       t.string :remark
-      t.integer :stauts
+      t.integer :status, default: 0
       t.timestamps null: false
     end
   end

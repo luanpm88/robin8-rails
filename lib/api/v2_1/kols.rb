@@ -60,6 +60,7 @@ module API
           creator.age_range     = params[:age_range]
           creator.content_show  = params[:content_show]
           creator.remark        = params[:remark]
+          creator.status        = 0
 
           error_403!(detail: '请重新输入正确的信息。') unless creator.save
 
@@ -119,6 +120,7 @@ module API
           weibo_account.gender            = params[:gender]
           weibo_account.content_show      = params[:content_show]
           weibo_account.remark            = params[:remark]
+          weibo_account.status            = 0
 
 
           error_403!(detail: '请重新输入正确的信息。') unless weibo_account.save
@@ -171,6 +173,7 @@ module API
           public_wechat_account.gender            = params[:gender]
           public_wechat_account.content_show      = params[:content_show]
           public_wechat_account.remark            = params[:remark]
+          public_wechat_account.status            = 0
 
           error_403!(detail: '请重新输入正确的信息。') unless public_wechat_account.save
 

@@ -1,0 +1,61 @@
+<h3>
+  微博用户基本信息
+  <%= link_to "通过", marketing_dashboard_weibo_account_path(@weibo_account, status: 'passed'), method: :put, class: 'btn btn-warning pull-right' if @weibo_account.status == 0 %>
+  <%= link_to "拒绝", marketing_dashboard_weibo_account_path(@weibo_account, status: 'rejected'), method: :put, class: 'btn btn-warning pull-right' if @weibo_account.status == 0%>
+</h3>
+<table class="table table-bordered table-striped" style="margin-top: 15px;">
+  <col width="200px" />
+  <tr>
+    <td> ID</td>
+    <td><%= @weibo_account.id %></td>
+  </tr>
+  <tr>
+    <td>昵称</td>
+    <td><%= @weibo_account.nickname %></td>
+  </tr>
+  <tr>
+    <td>KOL圈子</td>
+    <td><%= (@circles.map &:label).join(',')%></td>
+  </tr>
+  <tr>
+  <td>认证类型</td>
+    <td><%= WeiboAccount::AuthTypes[@weibo_account.auth_type] %></td>
+  </tr>
+  <tr>
+  <td>转发价格</td>
+    <td><%= @weibo_account.fwd_price.to_f %></td>
+  </tr>
+  <td>直发价格</td>
+    <td><%= @weibo_account.price %></td>
+  </tr>
+  <td>直播价格</td>
+    <td><%= @weibo_account.live_price %></td>
+  </tr>
+  <td>报价有效期</td>
+    <td><%= @weibo_account.quote_expired_at.strftime("%Y%m%d %H:%M:%D")  if @weibo_account.quote_expired_at.present? %></td>
+  </tr>
+  <tr>
+    <td>粉丝数量</td>
+    <td><%= @weibo_account.fans_count %></td>
+  </tr>
+  <tr>
+    <td>主要粉丝性别</td>
+    <td><%= WeiboAccount::GENDER[@weibo_account.gender] %></td>
+  </tr>
+  <tr>
+    <td>地域集中城市</td>
+    <td><%= (@cities.map &:name).join(',') %></td>
+  </tr>
+  <tr>
+    <td>作品链接</td>
+    <td><%= @weibo_account.content_show %></td>
+  </tr>
+  <tr>
+    <td>备注</td>
+    <td><%= @weibo_account.remark %></td>
+  </tr>
+</table>
+
+
+
+

@@ -1,0 +1,43 @@
+<h3>
+  内容创造者基本信息
+  <%= link_to "通过", marketing_dashboard_creator_path(@creator, status: 'passed'), method: :put, class: 'btn btn-warning pull-right' if @creator.status == 0 %>
+  <%= link_to "拒绝", marketing_dashboard_creator_path(@creator, status: 'rejected'), method: :put, class: 'btn btn-warning pull-right' if @creator.status == 0%>
+</h3>
+<table class="table table-bordered table-striped" style="margin-top: 15px;">
+  <col width="200px" />
+  <tr>
+    <td> ID</td>
+    <td><%= @creator.id %></td>
+  </tr>
+  <tr>
+  <td>报价</td>
+    <td><%= @creator.price %></td>
+  </tr>
+  <tr>
+  <td>视频报价</td>
+    <td><%= @creator.video_price %></td>
+  </tr>
+  <tr>
+    <td>粉丝数量</td>
+    <td><%= @creator.fans_count %></td>
+  </tr>
+  <tr>
+    <td>主要粉丝性别</td>
+    <td><%= Creator::GENDER[@creator.gender] %></td>
+  </tr>
+  <tr>
+    <td>年龄区间</td>
+    <td><%= Creator::AgeRanges[@creator.age_range] %></td>
+  </tr>
+  <tr>
+    <td>作品链接</td>
+    <td><%= @creator.content_show %></td>
+  </tr>
+  <tr>
+    <td>备注</td>
+    <td><%= @creator.remark %></td>
+  </tr>
+</table>
+
+
+

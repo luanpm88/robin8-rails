@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     end
 
     resources :terraces
+
+    resources :creators
+    resources :weibo_accounts
+    resources :public_wechat_accounts
     
     resources :article_contents do
       member do
