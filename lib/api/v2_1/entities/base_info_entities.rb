@@ -7,7 +7,7 @@ module API
         end
 
         class Circle < Grape::Entity
-        	expose :id, :name
+        	expose :id, :label
         end
       end
     end
