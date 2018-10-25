@@ -10,7 +10,7 @@ class CreateWeiboAccounts < ActiveRecord::Migration
       t.datetime :quote_expired_at
       t.integer :fans_count, defalut: 0 
       t.integer :gender
-      t.string :countent_show
+      t.string :content_show
       t.string :remark
       t.integer :stauts, default: 0 
       t.timestamps null: false
