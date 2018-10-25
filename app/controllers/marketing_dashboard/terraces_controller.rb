@@ -47,6 +47,6 @@ class MarketingDashboard::TerracesController < MarketingDashboard::BaseControlle
   end
 
   def terrace_params
-    params.require(:terrace).permit(:name, :short_name, :avatar, :address)
+    params.require(:terrace).permit(:name, :short_name, :address)
   end
 end

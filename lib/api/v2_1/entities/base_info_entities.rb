@@ -3,7 +3,7 @@ module API
     module Entities
       module BaseInfoEntities
         class Terrace < Grape::Entity
-          expose :id, :name, :avatar_url
+          expose :id, :name, :address
         end
 
         class Circle < Grape::Entity
