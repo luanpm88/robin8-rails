@@ -64,7 +64,7 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless creator.save
 
-          if creator.circle_ids != params[:circle_ids]
+          if (creator.circle_ids & params[:circle_ids]) != params[:circle_ids]
             select_circles = Circle.where(id: params[:circle_ids])
             if select_circles.present?
               creator.circles.delete_all
@@ -72,7 +72,7 @@ module API
             end
           end
 
-          if creator.terrace_ids != params[:terrace_ids]
+          if (creator.terrace_ids & params[:terrace_ids]) != params[:terrace_ids]
             select_terraces = Terrace.where(id: params[:terrace_ids])
             if select_terraces.present?
               creator.terraces.delete_all
@@ -80,7 +80,7 @@ module API
             end
           end
 
-          if creator.cities.map(&:name) != params[:cities]
+          if (creator.cities.map(&:name) & params[:cities]) != params[:cities]
             select_cities = City.where(name: params[:cities])
             if select_cities.present?
               creator.cities.delete_all
@@ -125,7 +125,7 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless weibo_account.save
 
-          if weibo_account.circle_ids != params[:circle_ids]
+          if (weibo_account.circle_ids & params[:circle_ids]) != params[:circle_ids]
             select_circles = Circle.where(id: params[:circle_ids])
             if select_circles.present?
               weibo_account.circles.delete_all
@@ -133,7 +133,7 @@ module API
             end
           end
 
-          if weibo_account.cities.map(&:name) != params[:cities]
+          if (weibo_account.cities.map(&:name) & params[:cities]) != params[:cities]
             select_cities = City.where(name: params[:cities])
             if select_cities.present?
               weibo_account.cities.delete_all
@@ -177,7 +177,7 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless public_wechat_account.save
 
-          if public_wechat_account.circle_ids != params[:circle_ids]
+          if (public_wechat_account.circle_ids & params[:circle_ids]) != params[:circle_ids]
             select_circles = Circle.where(id: params[:circle_ids])
             if select_circles.present?
               public_wechat_account.circles.delete_all
@@ -185,7 +185,7 @@ module API
             end
           end
 
-          if public_wechat_account.cities.map(&:name) != params[:cities]
+          if (public_wechat_account.cities.map(&:name) & params[:cities]) != params[:cities]
             select_cities = City.where(name: params[:cities])
             if select_cities.present?
               public_wechat_account.cities.delete_all
