@@ -19,6 +19,7 @@ module API
           present :vest_bag_detail, $redis.get('vest_bag_detail')
           present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
           present :put_count, $redis.get('put_count')
+          present :completed_rate, current_kol.completed_rate
         end
 
         params do

@@ -111,6 +111,10 @@ class Kol < ActiveRecord::Base
   has_one :public_wechat_account
 
 
+  def is_big_v?
+    weibo_account.try(:status) == 1 || public_wechat_account.try(:status) == 1
+  end
+
   def big_v
     self.weibo_account.present? ? weibo_account : public_wechat_account
   end
@@ -916,5 +920,14 @@ class Kol < ActiveRecord::Base
   def qr_invite
     qr_url = "#{Rails.application.secrets.domain}/invite?inviter_id=#{id}"
     RQRCode::QRCode.new(qr_url, size: 12, level: :h).as_svg(module_size: 3)
+  end
+
+  def age_show
+    age.to_s.size == 4 ? Date.current.year - age : age
+  end
+
+  # 基本信息完成度
+  def completed_rate
+    ([avatar_url.present?, name.present?, gender.to_i > 0, age.to_i > 0, job_info.present?, circles.present?, wechat_friends_count > 0, social_accounts.present?, true].count(true).to_f / 9).round(2)
   end
 end
