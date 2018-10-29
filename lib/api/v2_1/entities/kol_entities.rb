@@ -9,7 +9,7 @@ module API
             kol.avatar.url(200)
           end
           expose :circles do |kol|
-            API::V2_1::Entities::BaseInfoEntities::Circle.represent kol.social_accounts kol.circles
+            API::V2_1::Entities::BaseInfoEntities::Circle.represent kol.circles
           end
           expose :is_big_v do |kol|
             kol.is_big_v?
@@ -39,6 +39,9 @@ module API
           end
           expose :terraces do |creator|
             API::V2_1::Entities::BaseInfoEntities::Terrace.represent creator.terraces
+          end
+          expose :cities do |creator|
+            creator.cities.map(&:show_name)
           end
         end
 
