@@ -27,8 +27,4 @@ class City < ActiveRecord::Base
     @siblings ||= where(nil).with_province(self.province_id)
   end
 
-  def show_name
-    name.gsub(/市/, '')
-  end
-
 end

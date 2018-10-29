@@ -41,7 +41,7 @@ module API
             API::V2_1::Entities::BaseInfoEntities::Terrace.represent creator.terraces
           end
           expose :cities do |creator|
-            creator.cities.map(&:show_name)
+            creator.cities.map(&:name)
           end
         end
 
