@@ -158,7 +158,7 @@ module Concerns
     end
 
     def max_campaign_click
-      self.campaign_invites.settled.order("avail_click desc").first.avail_click rescue nil
+      self.campaign_invites.settled.order("avail_click desc").first.avail_click rescue 0
     end
 
     # app my show 单比最高收益
