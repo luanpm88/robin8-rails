@@ -1,7 +1,7 @@
 class MarketingDashboard::CirclesController < MarketingDashboard::BaseController
 
   def index
-    @circles = Circle.all
+    @circles = Circle.all.order(position: :asc)
   end
 
   def new 

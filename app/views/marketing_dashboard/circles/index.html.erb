@@ -1,6 +1,6 @@
 <h1>
   Circel列表
-  <%= link_to "创建新的圈子", new_marketing_dashboard_circle_path, class: "btn btn-primary pull-right" %>
+  <!--<%= link_to "创建新的圈子", new_marketing_dashboard_circle_path, class: "btn btn-primary pull-right" %>-->
 </h1>
 
 <table class='table table-bordered'>
@@ -8,7 +8,9 @@
     <tr>
       <th>Circle ID</th>
       <th>圈子</th>
+      <th>底色</th>
       <th>所属标签</th>
+      <th>排序</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -18,7 +20,9 @@
       <tr>
         <td><%= c.id  %></td>
         <td><%= "#{c.label}(#{c.name})"%></td>
+        <td><%= c.color %></td>
         <td><%= c.tags.map(&:label).join('、') %></td>
+        <td><%= c.position %></td>
         <td><%= link_to "关联标签", marketing_dashboard_circle_add_tag_path(c.id) %></td>
       </tr>
     <% end %>
