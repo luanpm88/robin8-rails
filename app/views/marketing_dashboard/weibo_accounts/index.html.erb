@@ -8,6 +8,17 @@
       <th>ID</th>
       <th>kol ID</th>
       <th>审核状态</th>
+      <th>认证类型</th>
+      <th>转发价格</th>
+      <th>直发价格</th>
+      <th>直播价格</th>
+      <th>报价有效期至</th>
+      <th>圈子</th>
+      <th>粉丝数</th>
+      <th>男女偏重值</th>
+      <th>粉丝所在城市</th>
+      <th>作品</th>
+      <th>备注</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -16,13 +27,24 @@
     <% @weibo_accounts.each do |t| %>
       <tr>
         <td><%= link_to t.id, marketing_dashboard_weibo_account_path(t) %></td>
-        <td>
-          <%= t.kol_id %>
-        </td>
+        <td><%= t.kol_id %></td>
         <td><%= WeiboAccount::STATUS[t.status] %></td>
+        <td><%= WeiboAccount::AuthTypes[t.auth_type] %></td>
+        <td><%= t.fwd_price %></td>
+        <td><%= t.price %></td>
+        <td><%= t.live_price %></td>
+        <td><%= t.quote_expired_at.to_s(:db) %></td>
+        <td><%= t.circles.map(&:label).join(',') %></td>
+        <td><%= t.fans_count %></td>
+        <td><%= WeiboAccount::GENDER[t.gender] %></td>
+        <td><%= t.cities.map(&:name).join(',') %></td>
+        <td><%= t.content_show %></td>
+        <td><%= t.remark %></td>
         <td>
-          <%= link_to "通过", marketing_dashboard_weibo_account_path(t, status: 'passed'), method: :put  if t.status == 0 %>
-          <%= link_to "拒绝", marketing_dashboard_weibo_account_path(t, status: 'rejected'), method: :put if t.status == 0 %>
+          <% if t.status == 0 %>
+            <%= link_to "通过", marketing_dashboard_weibo_account_path(t, status: 'passed'), method: :put %>
+            <%= link_to "拒绝", marketing_dashboard_weibo_account_path(t, status: 'rejected'), method: :put %>
+          <% end %>
         </td>
       </tr>
     <% end %>

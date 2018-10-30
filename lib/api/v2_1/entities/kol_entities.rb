@@ -12,7 +12,7 @@ module API
             API::V2_1::Entities::BaseInfoEntities::Circle.represent kol.circles
           end
           expose :is_big_v do |kol|
-            kol.is_big_v?
+            kol.is_new_big_v?
           end
           expose :is_creator do |kol|
             kol.creator.try(:status) == 1
@@ -32,7 +32,7 @@ module API
         end
 
         class Creator < Grape::Entity
-          expose :id, :price, :video_price, :fans_count, :gender, :age_range, :content_show, :remark
+          expose :id, :price, :video_price, :fans_count, :gender, :age_range, :content_show, :remark, :status
 
           expose :circles do |creator|
             API::V2_1::Entities::BaseInfoEntities::Circle.represent creator.circles
@@ -47,16 +47,19 @@ module API
 
         class WeiboAccount < Grape::Entity
           expose :id, :nickname, :auth_type, :fwd_price, :price, :live_price, :quote_expired_at,
-                 :fans_count, :gender, :countent_show, :remark
+                 :fans_count, :gender, :content_show, :remark, :status
 
           expose :circles do |weibo_account|
             API::V2_1::Entities::BaseInfoEntities::Circle.represent weibo_account.circles
+          end
+          expose :cities do |weibo_account|
+            weibo_account.cities.map(&:name)
           end
         end
 
         class PublicWechatAccount < Grape::Entity
           expose :id, :nickname, :price, :mult_price, :sub_price, :n_price, :quote_expired_at,
-                 :fans_count, :gender, :content_show, :remark
+                 :fans_count, :gender, :content_show, :remark, :status
 
           expose :circles do |public_wechat_account|
             API::V2_1::Entities::BaseInfoEntities::Circle.represent public_wechat_account.circles

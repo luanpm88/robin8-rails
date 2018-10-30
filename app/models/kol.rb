@@ -111,7 +111,8 @@ class Kol < ActiveRecord::Base
   has_one :public_wechat_account
 
 
-  def is_big_v?
+  # evan new big_v
+  def is_new_big_v?
     weibo_account.try(:status) == 1 || public_wechat_account.try(:status) == 1
   end
 
