@@ -29,13 +29,22 @@ class PublicWechatAccount < ActiveRecord::Base
   has_many :cities, through: :public_wechat_accounts_cities
 
   after_save :update_kol_role_status, on: [:create, :update]
+  after_update :sent_message
 
   private 
 
   def update_kol_role_status
     kol.update_attributes(role_apply_status: 'applying') if kol.role_apply_status != 'applying'
     self.update_column(:status, 0)
-  end  
+  end
+  
+  def sent_message
+    if self.status_changed? && self.status == 1
+      Message.new_role_notice_message(self.kol, 'passed', 'public_wechat_account')
+    elsif self.status_changed? && self.status == -1
+      Message.new_role_notice_message(self.kol, 'rejected', 'public_wechat_account')
+    end
+  end
 
 
 end
