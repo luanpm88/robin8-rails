@@ -14,14 +14,14 @@ module API
           optional :kol_role,             type: String, values: %w(public big_v creator)
           optional :age,                  type: String
           optional :job_info,             type: String
-          optional :circle_ids,           type: Array[Integer]
+          optional :circle_ids,           type: String
           optional :wechat_firends_count, type: Integer
         end
         post 'base_info' do
           current_kol.gender                = params[:gender]               if params[:gender]
           current_kol.age                   = params[:age]                  if params[:age]
           current_kol.job_info              = params[:job_info]             if params[:job_info]
-          current_kol.wechat_firends_count  = params[:wechat_firends_count] if params[:wechat_firends_count]
+          current_kol.wechat_friends_count  = params[:wechat_friends_count] if params[:wechat_friends_count]
           current_kol.avatar                = params[:avatar]               if params[:avatar]
 
           if params[:kol_role]
@@ -31,8 +31,10 @@ module API
  
           current_kol.save
 
-          if current_kol.circle_ids - Array(params[:circle_ids]) != []
-            select_circles = Circle.where(id: params[:circle_ids])
+          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}
+
+          if (current_kol.circle_ids & circle_ids) != circle_ids
+            select_circles = Circle.where(id: circle_ids)
             if select_circles.present?
               current_kol.circles.delete_all
               current_kol.circles << select_circles

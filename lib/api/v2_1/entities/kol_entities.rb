@@ -3,7 +3,8 @@ module API
     module Entities
       module KolEntities
         class BaseInfo < Grape::Entity
-          expose :id, :name, :mobile_number, :email, :age, :age_show, :gender, :job_info, :completed_rate
+          expose :id, :name, :mobile_number, :email, :age, :age_show, :gender, :job_info, :completed_rate,
+                 :wechat_friends_count
 
           expose :avatar_url do |kol|
             kol.avatar.url(200)

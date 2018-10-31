@@ -37,7 +37,7 @@ namespace :circles do
 
 	task :add_colors => :environment do
 		colors = {
-    	'#FFBFAD' => %w(二次元),
+    	'#FFBFAD' => %w(二次元 游戏圈),
     	'#99B8FF' => %w(车友圈 宝妈圈 理财圈),
     	'#FFB8C6' => %w(旅游圈 时尚圈),
     	'#90D6FF' => %w(吃货圈 校园圈 精英俱乐部),
