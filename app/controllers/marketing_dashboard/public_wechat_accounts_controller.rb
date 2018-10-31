@@ -1,6 +1,6 @@
 class MarketingDashboard::PublicWechatAccountsController < MarketingDashboard::BaseController
   def index
-    @public_wechat_accounts = PublicWechatAccount.all
+    @public_wechat_accounts = PublicWechatAccount.all.order(created_at: :desc).paginate(paginate_params)
   end
 
   def update

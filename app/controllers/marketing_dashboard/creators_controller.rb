@@ -1,6 +1,6 @@
 class MarketingDashboard::CreatorsController < MarketingDashboard::BaseController
   def index
-    @creators = Creator.all
+    @creators = Creator.all.order(created_at: :desc).paginate(paginate_params)
   end
 
   def update

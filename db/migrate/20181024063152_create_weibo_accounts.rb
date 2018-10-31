@@ -6,9 +6,9 @@ class CreateWeiboAccounts < ActiveRecord::Migration
       t.integer :auth_type, default: 1
       t.float :fwd_price, default: 0.0
       t.float :price, default: 0.0
-      t.float :live_price, defalut: 0.0
+      t.float :live_price, default: 0.0
       t.datetime :quote_expired_at
-      t.integer :fans_count, defalut: 0 
+      t.integer :fans_count, default: 0 
       t.integer :gender
       t.string :content_show
       t.string :remark
