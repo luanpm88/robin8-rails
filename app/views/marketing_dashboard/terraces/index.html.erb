@@ -6,25 +6,25 @@
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>平台 ID</th>
+      <th class="text-center">平台 ID</th>
       <th>名称</th>
       <th>英文名</th>
-      <th>图标</th>
-      <th>操作</th>
+      <th class="text-center">图标</th>
+      <th class="text-center">操作</th>
     </tr>
   </thead>
 
   <tbody>
     <% @terraces.each do |t| %>
       <tr>
-        <td>
+        <td class="text-center" style="vertical-align: middle;">
           <%= t.id  %>
         </td>
-        <td><%= t.name %></td>
-        <td><%= t.short_name %></td>
-        <td><%= image_tag t.address %></td>
-        <td>
-          <%= link_to "编辑", edit_marketing_dashboard_terrace_path(t) %>
+        <td style="vertical-align: middle;"><%= t.name %></td>
+        <td style="vertical-align: middle;"><%= t.short_name %></td>
+        <td class="text-center" style="vertical-align: middle;"><%= image_tag t.address, widht: '40', height: '40' %></td>
+        <td class="text-center" style="vertical-align: middle;">
+          <%= link_to "编辑", edit_marketing_dashboard_terrace_path(t), class: "btn btn-info" %>
         </td>
       </tr>
     <% end %>
