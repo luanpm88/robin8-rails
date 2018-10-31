@@ -64,6 +64,9 @@ module API
           expose :circles do |public_wechat_account|
             API::V2_1::Entities::BaseInfoEntities::Circle.represent public_wechat_account.circles
           end
+          expose :cities do |public_wechat_account|
+            public_wechat_account.cities.map(&:name)
+          end
         end
 
       end

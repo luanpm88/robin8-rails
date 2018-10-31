@@ -175,7 +175,7 @@ module API
           requires :content_show,     type: String
           optional :remark,           type: String
         end
-        post 'applying_public_wehchat_account' do
+        post 'applying_public_wechat_account' do
           public_wechat_account = current_kol.public_wechat_account ? current_kol.public_wechat_account : PublicWechatAccount.new(kol_id: current_kol.id)
 
           public_wechat_account.nickname          = params[:nickname]
