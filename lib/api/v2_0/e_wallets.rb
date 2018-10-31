@@ -13,9 +13,15 @@ module API
           present :amount, current_kol.e_wallet_transtions.unpaid.map(&:amount).sum.to_f
         end
 
+        params do
+          requires :page,     type: Integer
+          requires :per_page, type: Integer
+        end
         get 'unpaid_list' do
+          trs = current_kol.e_wallet_transtions.unpaid.order('created_at DESC').page(params[:page]).per_page(params[:per_page])
+
           present :error, 0
-          present :list,  current_kol.e_wallet_transtions.unpaid.map(&:to_hash)
+          present :list,  trs.map(&:to_hash)
         end
       end
     end
