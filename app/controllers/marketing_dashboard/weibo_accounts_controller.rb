@@ -1,6 +1,6 @@
 class MarketingDashboard::WeiboAccountsController < MarketingDashboard::BaseController
   def index
-    @weibo_accounts= WeiboAccount.all
+    @weibo_accounts= WeiboAccount.all.order(created_at: :desc).paginate(paginate_params)
   end
 
   def update
