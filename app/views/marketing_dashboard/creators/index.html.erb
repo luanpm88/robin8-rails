@@ -7,6 +7,7 @@
     <tr>
       <th>ID</th>
       <th>kol ID</th>
+      <th>联系方式</th>
       <th>审核状态</th>
       <th>图文报价</th>
       <th>原创视频报价</th>
@@ -24,6 +25,7 @@
       <tr>
         <td><%= link_to t.id, marketing_dashboard_creator_path(t) %></td>
         <td><%= t.kol_id %></td>
+        <td><%= t.mobile_number %></td>
         <td><%= Creator::STATUS[t.status] %></td>
         <td><%= t.price %></td>
         <td><%= t.video_price %></td>

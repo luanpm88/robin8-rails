@@ -7,6 +7,7 @@
     <tr>
       <th>ID</th>
       <th>kol ID</th>
+      <th>联系方式</th>
       <th>审核状态</th>
       <th>单图文报价</th>
       <th>多图文头条报价</th>
@@ -27,9 +28,8 @@
     <% @public_wechat_accounts.each do |t| %>
       <tr>
         <td><%= link_to t.id, marketing_dashboard_public_wechat_account_path(t) %></td>
-        <td>
-          <%= t.kol_id %>
-        </td>
+        <td><%= t.kol_id %></td>
+        <td><%= t.mobile_number %></td>
         <td><%= PublicWechatAccount::STATUS[t.status] %></td>
         <td><%= t.price %></td>
         <td><%= t.mult_price %></td>

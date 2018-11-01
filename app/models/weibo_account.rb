@@ -37,6 +37,8 @@ class WeiboAccount < ActiveRecord::Base
   after_save :update_kol_role_status, on: [:create, :update]
   after_update :sent_message
 
+  delegate :mobile_number, to: :kol
+
   private 
 
   def update_kol_role_status
