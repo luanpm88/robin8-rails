@@ -35,7 +35,7 @@
         <td><%= t.mult_price %></td>
         <td><%= t.sub_price %></td>
         <td><%= t.n_price %></td>
-        <td><%= t.quote_expired_at.strftime("%Y%m%d %H:%M:%S") if t.quote_expired_at.present? %></td>
+        <td><%= t.quote_expired_at.strftime("%Y%m%d %H:%M:%S") %></td>
         <td><%= t.circles.map(&:label).join(',') %></td>
         <td><%= t.fans_count %></td>
         <td><%= PublicWechatAccount::GENDER[t.gender] %></td>
@@ -43,8 +43,10 @@
         <td><%= t.content_show %></td>
         <td><%= t.remark %></td>
         <td>
-          <%= link_to "通过", marketing_dashboard_public_wechat_account_path(t, status: 'passed'), method: :put  if t.status == 0 %>
-          <%= link_to "拒绝", marketing_dashboard_public_wechat_account_path(t, status: 'rejected'), method: :put if t.status == 0 %>
+          <% if t.status == 0 %>
+            <%= link_to "通过", marketing_dashboard_public_wechat_account_path(t, status: 'passed'), method: :put %>
+            <%= link_to "拒绝", marketing_dashboard_public_wechat_account_path(t, status: 'rejected'), method: :put %>
+          <% end %>
         </td>
       </tr>
     <% end %>

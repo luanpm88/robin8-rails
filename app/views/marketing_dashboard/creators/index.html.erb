@@ -36,8 +36,8 @@
         <td><%= t.remark %></td>
         <td>
           <% if t.status == 0 %>
-          <%= link_to "通过", marketing_dashboard_creator_path(t, status: 'passed'), method: :put %>
-          <%= link_to "拒绝", marketing_dashboard_creator_path(t, status: 'rejected'), method: :put %>
+            <%= link_to "通过", marketing_dashboard_creator_path(t, status: 'passed'), method: :put %>
+            <%= link_to "拒绝", marketing_dashboard_creator_path(t, status: 'rejected'), method: :put %>
           <% end %>
         </td>
       </tr>

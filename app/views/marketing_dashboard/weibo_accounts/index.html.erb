@@ -35,7 +35,7 @@
         <td><%= t.fwd_price %></td>
         <td><%= t.price %></td>
         <td><%= t.live_price %></td>
-        <td><%= t.quote_expired_at.strftime("%Y%m%d %H:%M:%S") if t.quote_expired_at.present? %></td>
+        <td><%= t.quote_expired_at.strftime("%Y%m%d %H:%M:%S") %></td>
         <td><%= t.circles.map(&:label).join(',') %></td>
         <td><%= t.fans_count %></td>
         <td><%= WeiboAccount::GENDER[t.gender] %></td>
