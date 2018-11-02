@@ -15,7 +15,7 @@ module API
           optional :age,                  type: String
           optional :job_info,             type: String
           optional :circle_ids,           type: String, default: ''
-          optional :wechat_firends_count, type: Integer
+          optional :wechat_friends_count, type: Integer
         end
         post 'base_info' do
           current_kol.name                  = params[:name]                 if params[:name]
