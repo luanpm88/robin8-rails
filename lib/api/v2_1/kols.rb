@@ -59,11 +59,6 @@ module API
           optional :remark,       type: String
         end
         post 'applying_creator' do
-          Rails.logger.info "*" * 100
-          Rails.logger.info params[:circle_ids]
-          Rails.logger.info params[:terrace_ids]
-          Rails.logger.info params[:cities]
-          Rails.logger.info "*" * 100
           creator = current_kol.creator ? current_kol.creator : Creator.new(kol_id: current_kol.id)
 
           creator.price         = params[:price]
@@ -137,7 +132,6 @@ module API
           weibo_account.content_show      = params[:content_show]
           weibo_account.remark            = params[:remark]
           weibo_account.status            = 0
-
 
           error_403!(detail: '请重新输入正确的信息。') unless weibo_account.save
 
