@@ -43,6 +43,7 @@ module API
           end
 
           present :error, 0
+          present :kol,   current_kol.reload, with: API::V2_1::Entities::KolEntities::BaseInfo
         end
 
         desc 'applying creator'
@@ -100,6 +101,7 @@ module API
           end
 
           present :error, 0
+          present :kol,   current_kol.reload, with: API::V2_1::Entities::KolEntities::BaseInfo
         end
 
 
@@ -154,6 +156,7 @@ module API
           end
 
           present :error, 0
+          present :kol,   current_kol.reload, with: API::V2_1::Entities::KolEntities::BaseInfo
         end
 
 
