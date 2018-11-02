@@ -18,6 +18,7 @@ module API
           optional :wechat_firends_count, type: Integer
         end
         post 'base_info' do
+          current_kol.name                  = params[:name]                 if params[:name]
           current_kol.gender                = params[:gender]               if params[:gender]
           current_kol.age                   = params[:age]                  if params[:age]
           current_kol.job_info              = params[:job_info]             if params[:job_info]
