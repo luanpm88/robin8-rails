@@ -211,7 +211,7 @@ module API
           end
 
           present :error, 0
-          present :kol,   current_kol, with: API::V2_1::Entities::KolEntities::BaseInfo
+          present :kol,   current_kol.reload, with: API::V2_1::Entities::KolEntities::BaseInfo
         end
 
         desc 'get kol base info'
