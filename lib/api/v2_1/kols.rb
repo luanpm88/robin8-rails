@@ -12,7 +12,7 @@ module API
           optional :name,                 type: String
           optional :gender,               type: Integer, values: [1, 2]
           optional :kol_role,             type: String, values: %w(public big_v creator)
-          optional :age,                  type: String
+          optional :birthday,             type: DateTime
           optional :job_info,             type: String
           optional :circle_ids,           type: String, default: ''
           optional :wechat_friends_count, type: Integer
@@ -20,7 +20,7 @@ module API
         post 'base_info' do
           current_kol.name                  = params[:name]                 if params[:name]
           current_kol.gender                = params[:gender]               if params[:gender]
-          current_kol.age                   = params[:age]                  if params[:age]
+          current_kol.birthday              = params[:birthday].to_time     if params[:birthday]
           current_kol.job_info              = params[:job_info]             if params[:job_info]
           current_kol.wechat_friends_count  = params[:wechat_friends_count] if params[:wechat_friends_count]
           current_kol.avatar                = params[:avatar]               if params[:avatar]
