@@ -19,25 +19,25 @@ module API
 
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
-          if params[:kol_uuid].present?
-            retries = true
-            begin
-              kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-              if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
-                kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-                KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
-              end
-              SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
-            rescue ActiveRecord::StaleObjectError => e
-              if retries == true
-                retries = false
-                kol.reload
-                retry
-              else
-                ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
-              end
-            end
-          end
+          # if params[:kol_uuid].present?
+          #   retries = true
+          #   begin
+          #     kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          #     if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
+          #       kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
+          #       KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
+          #     end
+          #     SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+          #   rescue ActiveRecord::StaleObjectError => e
+          #     if retries == true
+          #       retries = false
+          #       kol.reload
+          #       retry
+          #     else
+          #       ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+          #     end
+          #   end
+          # end
 
           alert = nil
           unless kol_exist
