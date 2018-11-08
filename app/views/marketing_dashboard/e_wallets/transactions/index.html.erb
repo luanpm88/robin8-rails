@@ -42,7 +42,7 @@
       <tr>
         <td class="put-tr-id"><%= tr.id %></td>
         <td><%= tr.kol.name %></td>
-        <td class="put-remit-token"><%= tr.kol.e_wallet_account.token %></td>
+        <td class="put-remit-token"><%= tr.kol.e_wallet_account.try(:token) %></td>
         <td class="put-remit-amount"><%= tr.amount %></td>
         <td class="put-tx-id"><%= tr.txid %></td>
         <td><%= tr.status %></td>
