@@ -14,7 +14,7 @@ module API
             present :circles_list,    Circle.all.order(position: :asc), with: API::V2_1::Entities::BaseInfoEntities::Circle
             present :terraces_list,   Terrace.all, with: API::V2_1::Entities::BaseInfoEntities::Terrace
             present :ages_list,       Creator::AgeRanges.values
-            present :weibo_auth_list, WeiboAccount::AuthTypes.values
+            present :weibo_auth_list, WeiboAccount::AuthTypes.values.reverse
           end
         end
       end
