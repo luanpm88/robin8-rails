@@ -610,7 +610,9 @@ class Campaign < ActiveRecord::Base
     amount = $redis.get('put_count').to_f
     
     if is_present_put && $redis.get('put_switch') == '1' && amount > 0
-      self.kols.joins(:e_wallet_account).each do |kol|
+      # self.kols.joins(:e_wallet_account).each do |kol|
+      # 没有put钱包的也给
+      self.kols.each do |kol|
         kol.e_wallet_transtions.find_or_create_by(resource: self, amount: amount)
       end
     end
