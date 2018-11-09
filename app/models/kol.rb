@@ -933,6 +933,6 @@ class Kol < ActiveRecord::Base
       _ary[1]  << {state: 1,  dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == 1
       _ary[-1] << {state: -1, dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == -1
     end
-    _ary.flatten
+    _ary.values.flatten
   end
 end
