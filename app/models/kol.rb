@@ -930,8 +930,10 @@ class Kol < ActiveRecord::Base
     _ary= { 1 => [], -1 => [] }
 
     %w(weibo_account public_wechat_account creator).each do |ele|
-      _ary[1]  << {state: 1,  dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == 1
-      _ary[-1] << {state: -1, dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == -1
+      unless self.send(ele).try(:is_read).try(:value) == 0
+        _ary[1]  << {state: 1,  dsp: self.send(ele).get_dsp } if self.send(ele).try(:status) == 1
+        _ary[-1] << {state: -1, dsp: self.send(ele).get_dsp } if self.send(ele).try(:status) == -1
+      end
     end
     _ary.values.flatten
   end
