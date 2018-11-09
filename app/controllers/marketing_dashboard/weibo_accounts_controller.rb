@@ -1,6 +1,7 @@
 class MarketingDashboard::WeiboAccountsController < MarketingDashboard::BaseController
   def index
-    @weibo_accounts= WeiboAccount.all.order(created_at: :desc).paginate(paginate_params)
+    @q = WeiboAccount.ransack(params[:q])
+    @weibo_accounts= @q.result.order(created_at: :desc).paginate(paginate_params)
   end
 
   def update

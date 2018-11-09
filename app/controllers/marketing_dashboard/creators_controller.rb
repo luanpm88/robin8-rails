@@ -1,6 +1,7 @@
 class MarketingDashboard::CreatorsController < MarketingDashboard::BaseController
   def index
-    @creators = Creator.all.order(created_at: :desc).paginate(paginate_params)
+    @q    = Creator.ransack(params[:q])
+    @creators = @q.result.order(created_at: :desc).paginate(paginate_params)
   end
 
   def update
