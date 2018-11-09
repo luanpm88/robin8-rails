@@ -2,6 +2,45 @@
   微信公众号用户列表
 </h1>
 
+<h5><%= devise_error_messages! %></h5>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>联系方式</label>
+            <%= f.search_field :kol_mobile_number_cont, class: "form-control", placeholder: "联系方式" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>审核状态</label>
+            <%= f.select :status_eq, options_for_select([['未审核',0],['审核通过',1],['审核拒绝',-1]], @q.status_eq), { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <table class='table table-bordered'>
   <thead>
     <tr>
