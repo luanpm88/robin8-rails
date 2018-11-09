@@ -222,19 +222,11 @@ module API
 
 
 
-        desc 'set account is read'
-        params do
-          requires :role, type: String
-        end
+        desc 'set account have read'
         post 'set_account_is_read' do 
-          case params['role']
-          when 'creator'
-            current_kol.creator.is_read.set 0
-          when 'public_wechat_account'
-            current_kol.public_wechat_account.is_read.set 0 
-          when 'weibo_account'
-            current_kol.weibo_account.is_read.set 0
-          end
+          current_kol.creator.is_read.set 0               if current_kol.creator
+          current_kol.public_wechat_account.is_read.set 0 if current_kol.public_wechat_account
+          current_kol.weibo_account.is_read.set 0         if current_kol.weibo_account
 
           present :error, 0
         end
