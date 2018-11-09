@@ -4,6 +4,10 @@ class PublicWechatAccount < ActiveRecord::Base
   # sub_price  次条
   # n_price    n条
 
+  include Redis::Objects
+  
+  counter :is_read
+
   STATUS = {
     0 => '未审核',
     1 => '审核通过', 

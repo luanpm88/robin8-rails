@@ -4,6 +4,10 @@ class WeiboAccount < ActiveRecord::Base
   # live_price:       直播价格
   # quote_expired_at: 报价有效期
 
+  include Redis::Objects
+  
+  counter :is_read
+
   AuthTypes = {
     1 => '未认证',
     2 => '个人认证', 

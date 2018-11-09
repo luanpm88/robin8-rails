@@ -219,6 +219,25 @@ module API
           present :error, 0
           present :kol, current_kol, with: API::V2_1::Entities::KolEntities::BaseInfo
         end
+
+
+
+        desc 'set account is read'
+        params do
+          requires :role, type: String
+        end
+        post 'set_account_is_read' do 
+          case params['role']
+          when 'creator'
+            current_kol.creator.is_read.set 0
+          when 'public_wechat_account'
+            current_kol.public_wechat_account.is_read.set 0 
+          when 'weibo_account'
+            current_kol.weibo_account.is_read.set 0
+          end
+
+          present :error, 0
+        end
       end
     end
   end

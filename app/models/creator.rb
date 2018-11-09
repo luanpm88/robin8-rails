@@ -1,5 +1,9 @@
 class Creator < ActiveRecord::Base
 
+  include Redis::Objects
+
+  counter :is_read
+
   AgeRanges = {
     1 => '0-17',
     2 => '18-24',

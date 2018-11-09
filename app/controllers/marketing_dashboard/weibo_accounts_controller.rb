@@ -8,9 +8,11 @@ class MarketingDashboard::WeiboAccountsController < MarketingDashboard::BaseCont
     status = params['status']
     if params['status'] == "passed"
       @weibo_account.update_column(:status, 1)
+      @weibo_account.is_read.set 1
       @weibo_account.kol.update_column(:role_apply_status, 'passed')
     elsif params['status'] == "rejected"
       @weibo_account.update_column(:status, -1)
+      @weibo_account.is_read.set -1
       @weibo_account.kol.update_column(:role_apply_status, 'rejected')
     end
 

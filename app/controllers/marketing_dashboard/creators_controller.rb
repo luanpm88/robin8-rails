@@ -8,9 +8,11 @@ class MarketingDashboard::CreatorsController < MarketingDashboard::BaseControlle
     status = params['status']
     if params['status'] == "passed"
       @creator.update_column(:status, 1)
+      @creator.is_read.set 1
       @creator.kol.update_column(:role_apply_status, 'passed')
     elsif params['status'] == "rejected"
       @creator.update_column(:status, -1)
+      @creator.is_read.set -1
       @creator.kol.update_column(:role_apply_status, 'rejected')
     end
 

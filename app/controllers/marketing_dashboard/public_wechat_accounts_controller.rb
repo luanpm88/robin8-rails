@@ -8,9 +8,11 @@ class MarketingDashboard::PublicWechatAccountsController < MarketingDashboard::B
     status = params['status']
     if params['status'] == "passed"
       @public_wechat_account.update_column(:status, 1)
+      @public_wechat_account.is_read.set 1
       @public_wechat_account.kol.update_column(:role_apply_status, 'passed')
     elsif params['status'] == "rejected"
       @public_wechat_account.update_column(:status, -1)
+      @public_wechat_account.is_read.set -1
       @public_wechat_account.kol.update_column(:role_apply_status, 'rejected')
     end
 
