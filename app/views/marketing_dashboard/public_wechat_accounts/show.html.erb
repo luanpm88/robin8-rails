@@ -1,0 +1,61 @@
+<h3>
+  微博用户基本信息
+  <%= link_to "通过", marketing_dashboard_public_wechat_account_path(@public_wechat_account, status: 'passed'), method: :put, class: 'btn btn-warning pull-right' if @public_wechat_account.status == 0 %>
+  <%= link_to "拒绝", marketing_dashboard_public_wechat_account_path(@public_wechat_account, status: 'rejected'), method: :put, class: 'btn btn-warning pull-right' if @public_wechat_account.status == 0%>
+</h3>
+<table class="table table-bordered table-striped" style="margin-top: 15px;">
+  <col width="200px" />
+  <tr>
+    <td> ID</td>
+    <td><%= @public_wechat_account.id %></td>
+  </tr>
+  <tr>
+    <td>昵称</td>
+    <td><%= @public_wechat_account.nickname %></td>
+  </tr>
+  <tr>
+    <td>KOL圈子</td>
+    <td><%= (@circles.map &:label).join(',')%></td>
+  </tr>
+  <tr>
+  <td>单图文价格</td>
+    <td><%= @public_wechat_account.price %></td>
+  </tr>
+  <td>多图文头条价格</td>
+    <td><%= @public_wechat_account.mult_price %></td>
+  </tr>
+  <td>次条价格</td>
+    <td><%= @public_wechat_account.sub_price %></td>
+  </tr>
+  <td>3-n条价格</td>
+    <td><%= @public_wechat_account.n_price %></td>
+  </tr>
+  <td>报价有效期</td>
+    <td><%= @public_wechat_account.quote_expired_at.strftime("%Y%m%d %H:%M:%D")  if @public_wechat_account.quote_expired_at.present? %></td>
+  </tr>
+  <tr>
+    <td>粉丝数量</td>
+    <td><%= @public_wechat_account.fans_count %></td>
+  </tr>
+  <tr>
+    <td>主要粉丝性别</td>
+    <td><%= PublicWechatAccount::GENDER[@public_wechat_account.gender] %></td>
+  </tr>
+  <tr>
+    <td>地域集中城市</td>
+    <td><%= (@cities.map &:name).join(',') %></td>
+  </tr>
+  <tr>
+    <td>作品链接</td>
+    <td><%= @public_wechat_account.content_show %></td>
+  </tr>
+  <tr>
+    <td>备注</td>
+    <td><%= @public_wechat_account.remark %></td>
+  </tr>
+</table>
+
+
+
+
+

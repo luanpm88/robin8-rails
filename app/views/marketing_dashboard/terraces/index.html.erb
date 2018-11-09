@@ -1,0 +1,32 @@
+<h1>
+  Tag列表
+  <%= link_to "创建新平台", new_marketing_dashboard_terrace_path, class: "btn btn-primary pull-right" %>
+</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th class="text-center">平台 ID</th>
+      <th>名称</th>
+      <th>英文名</th>
+      <th class="text-center">图标</th>
+      <th class="text-center">操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @terraces.each do |t| %>
+      <tr>
+        <td class="text-center" style="vertical-align: middle;">
+          <%= t.id  %>
+        </td>
+        <td style="vertical-align: middle;"><%= t.name %></td>
+        <td style="vertical-align: middle;"><%= t.short_name %></td>
+        <td class="text-center" style="vertical-align: middle;"><%= image_tag t.address, widht: '40', height: '40' %></td>
+        <td class="text-center" style="vertical-align: middle;">
+          <%= link_to "编辑", edit_marketing_dashboard_terrace_path(t), class: "btn btn-info" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

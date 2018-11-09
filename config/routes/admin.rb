@@ -4,6 +4,21 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
+
+    resources :tags, only: [:index, :new, :create] do 
+      match '/add_circle' => 'tags#add_circle', via: [:post, :get]
+    end
+
+    resources :circles, only: [:index, :new, :create] do 
+      match '/add_tag' => 'circles#add_tag', via: [:post, :get]
+    end
+
+    resources :terraces
+
+    resources :creators
+    resources :weibo_accounts
+    resources :public_wechat_accounts
+    
     resources :article_contents do
       member do
         get :sync
@@ -203,7 +218,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :invite_code
+    resources :invite_codes, except: [:destroy] do
+      member do
+        patch :update
+      end
+    end
     resources :talking_data
     resources :kol_data
     resources :campaign_data

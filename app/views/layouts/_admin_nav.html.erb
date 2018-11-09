@@ -149,6 +149,15 @@
             <li>
               <%= link_to t('kol_management.app_kols_rejected'), rejected_marketing_dashboard_kols_path %>
             </li>
+            <li>
+              <%= link_to '内容创作者管理', marketing_dashboard_creators_path %>
+            </li>
+            <li>
+              <%= link_to '微博用户管理', marketing_dashboard_weibo_accounts_path %>
+            </li>
+            <li>
+              <%= link_to '微信公众号用户管理', marketing_dashboard_public_wechat_accounts_path %>
+            </li>
           </ul>
         </li>
         <% end %>
@@ -369,7 +378,7 @@
 
      
         <li>
-          <%= link_to t('menu.invite_code_management'), marketing_dashboard_invite_code_path %>
+          <%= link_to t('menu.invite_code_management'), marketing_dashboard_invite_codes_path %>
         </li>
 
         <li>
@@ -422,6 +431,27 @@
           </ul>
         </li>
         <% end %>
+
+        <li>
+          <a href="#">标签&圈子管理<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '标签管理', marketing_dashboard_tags_path %>
+            </li>
+            <li>
+              <%= link_to '圈子管理', marketing_dashboard_circles_path %>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#">平台管理<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '平台管理', marketing_dashboard_terraces_path %>
+            </li>
+          </ul>
+        </li>
 
         <li>
           <a href="#">"发现"管理<span class="fa arrow"></span></a>

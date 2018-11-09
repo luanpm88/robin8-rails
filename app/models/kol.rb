@@ -3,6 +3,11 @@ class Kol < ActiveRecord::Base
   include Redis::Objects
   # kol_role:  %w{public big_v mcn_big_v mcn}
   # role_apply_status %w{pending applying passed rejected}
+  # since 2018-10-24
+  # kol_role: [public, big_v, creator]
+  # default: pending, when kol apply big_v, creator, role_apply_status = 'applying'
+
+
   # counter :redis_new_income      #unit is cent
 
   counter :registered_invitation_count
@@ -99,6 +104,22 @@ class Kol < ActiveRecord::Base
   # belongs_to :club_member
   has_one :club_member
   # has_and_belongs_to_many :clubs
+  #内容创造者
+  has_one :creator
+  #big_v
+  has_one :weibo_account
+  has_one :public_wechat_account
+
+
+  # evan new big_v
+  def is_new_big_v?
+    weibo_account.try(:status) == 1 || public_wechat_account.try(:status) == 1
+  end
+
+  def big_v
+    self.weibo_account.present? ? weibo_account : public_wechat_account
+  end
+
 
   # PK's
   has_many :received_challenges, class_name: "KolPk", foreign_key: "challengee_id", inverse_of: :challenger
@@ -110,6 +131,10 @@ class Kol < ActiveRecord::Base
   has_many :announcement_shows
   has_one :e_wallet_account, class_name: "EWallet::Account"
   has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
+
+  #cirlces 
+  has_many :kols_circles, class_name: "KolsCircle"
+  has_many :circles, through: :kols_circles
 
   def challenges
     KolPk.where("challenger_id = ? or challengee_id = ?", id, id)
@@ -550,11 +575,9 @@ class Kol < ActiveRecord::Base
     Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
     kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     # app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-    app_city = TaobaoIps.get_detail(params[:current_sign_in_ip])["data"]['city']
+    # app_city = TaobaoIps.get_detail(params[:current_sign_in_ip])["data"]['city']
+    app_city = nil
     if kol.present?
-      # Rails.logger.geometry.info "---params:#{params}---" if kol.admintags.include? Admintag.find(429)
-      GeometryLog.create(mobile: kol.mobile_number, _action: 'register', opts: params) if kol.admintags.include? Admintag.find(429)
-
       retries = true
       begin
         kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
@@ -896,5 +919,22 @@ class Kol < ActiveRecord::Base
   def qr_invite
     qr_url = "#{Rails.application.secrets.domain}/invite?inviter_id=#{id}"
     RQRCode::QRCode.new(qr_url, size: 12, level: :h).as_svg(module_size: 3)
+  end
+
+  # 基本信息完成度
+  def completed_rate
+    ([avatar_url.present?, name.present?, gender.to_i > 0, birthday.present?, job_info.present?, circles.present?, wechat_friends_count > 0, social_accounts.present?, true].count(true).to_f / 9).round(2)
+  end
+
+  def set_account_have_read
+    _ary= { 1 => [], -1 => [] }
+
+    %w(weibo_account public_wechat_account creator).each do |ele|
+      unless self.send(ele).try(:is_read).try(:value) == 0
+        _ary[1]  << {state: 1,  dsp: self.send(ele).get_dsp } if self.send(ele).try(:status) == 1
+        _ary[-1] << {state: -1, dsp: self.send(ele).get_dsp } if self.send(ele).try(:status) == -1
+      end
+    end
+    _ary.values.flatten
   end
 end

@@ -4,10 +4,6 @@ module API
       resources :kols do
         # 用户登录
         post 'sign_in' do
-          # remark geometry
-          # Rails.logger.geometry.info "---params:#{params}---" if params[:invite_code] == "778888"
-          GeometryLog.create(mobile: params[:mobile_number], _action: 'sign_in', opts: params.to_json) if params[:invite_code] == "778888"
-
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
@@ -23,25 +19,25 @@ module API
 
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
-          if params[:kol_uuid].present?
-            retries = true
-            begin
-              kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-              if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
-                kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-                KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
-              end
-              SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
-            rescue ActiveRecord::StaleObjectError => e
-              if retries == true
-                retries = false
-                kol.reload
-                retry
-              else
-                ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
-              end
-            end
-          end
+          # if params[:kol_uuid].present?
+          #   retries = true
+          #   begin
+          #     kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          #     if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
+          #       kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
+          #       KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
+          #     end
+          #     SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+          #   rescue ActiveRecord::StaleObjectError => e
+          #     if retries == true
+          #       retries = false
+          #       kol.reload
+          #       retry
+          #     else
+          #       ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+          #     end
+          #   end
+          # end
 
           alert = nil
           unless kol_exist
@@ -52,6 +48,12 @@ module API
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
+          
+            # HSBC 注册奖励
+            if params[:invite_code] == '666888'
+              alert = "恭喜您获得NIIT免费课程门票！涵盖：\n价值1000元\n超过120门课程\n1个月免费学习时间\n领取方法稍后短信通知"
+              YunPian::Hsbc.new(params[:mobile_number]).send_sms
+            end
           end
 
           present :error, 0
@@ -126,7 +128,6 @@ module API
             end
             # kol.admin奖励
             kol.admin.income(kol.strategy[:invite_bounty_for_admin], 'invite_bounty_for_admin', kol) if kol.admin && kol.strategy[:invite_bounty_for_admin] > 0
-
           else
             kol = Kol.reg_or_sign_in(params, kol)
           end

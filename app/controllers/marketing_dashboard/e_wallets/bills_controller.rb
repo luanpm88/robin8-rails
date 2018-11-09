@@ -3,7 +3,7 @@ class MarketingDashboard::EWallets::BillsController < MarketingDashboard::BaseCo
   def index
     params[:status] = 'successful' unless params[:status]
 
-    @transtions = EWallet::Transtion.includes(:kol).where(status: params[:status])
+    @transtions = EWallet::Transtion.includes(:kol).where(status: params[:status]).order(created_at: :desc)
 
     respond_to do |format|
       format.html do

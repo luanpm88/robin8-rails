@@ -120,6 +120,38 @@ class Message < ActiveRecord::Base
   end
 
 
+  def self.new_role_notice_message(kol, status, role)
+    if status == "passed"
+       message = Message.new(:message_type => 'campaign', :receiver => kol,:sender => 'Robin8')
+       case role
+       when 'creator'
+        message.name = '内容创作人申请通过'
+        message.title = '恭喜您,您在Robin8申请的内容创造者身份已通过～' 
+       when 'weibo_account'
+        message.name = "大'V'申请通过"
+        message.title = '恭喜您,您在Robin8申请的微博账号已通过～'
+      when 'public_wechat_account'
+        message.name = "大'V'申请通过"
+        message.title = '恭喜您,您在Robin8申请的微信公众号已通过～'
+      end
+    elsif status == "rejected"
+       message = Message.new(:message_type => 'campaign', :receiver => kol,:sender => 'Robin8')
+       case role
+       when 'creator'
+        message.name = '内容创作人申请未通过'
+        message.title = '抱歉的通知您,您在Robin8申请的内容创造者身份未通过～具体原因请APP内查看'
+      when 'weibo_account'
+        message.name = "大'V'申请未通过"
+        message.title = '抱歉的通知您,您在Robin8申请的微博账号未通过～具体原因请APP内查'
+      when 'public_wechat_account'
+        message.title = '抱歉的通知您,您在Robin8申请的微信公众号未通过～具体原因请APP内查'
+      end
+    end
+    message.save
+
+    generate_push_message(message)
+  end
+
   def self.generate_push_message(message , device_tokens = nil)
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"

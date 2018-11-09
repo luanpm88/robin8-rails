@@ -1,0 +1,95 @@
+<h1>
+  微信公众号用户列表
+</h1>
+
+<h5><%= devise_error_messages! %></h5>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :kol_id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>联系方式</label>
+            <%= f.search_field :kol_mobile_number_cont, class: "form-control", placeholder: "联系方式" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>审核状态</label>
+            <%= f.select :status_eq, options_for_select([['未审核',0],['审核通过',1],['审核拒绝',-1]], @q.status_eq), { include_blank: true }, class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>kol ID</th>
+      <th>联系方式</th>
+      <th>审核状态</th>
+      <th>单图文报价</th>
+      <th>多图文头条报价</th>
+      <th>次条报价</th>
+      <th>3-n条报价</th>
+      <th>报价有效期至</th>
+      <th>圈子</th>
+      <th>粉丝数</th>
+      <th>男女偏重值</th>
+      <th>粉丝所在城市</th>
+      <th>作品</th>
+      <th>备注</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @public_wechat_accounts.each do |t| %>
+      <tr>
+        <td><%= link_to t.id, marketing_dashboard_public_wechat_account_path(t) %></td>
+        <td><%= t.kol_id %></td>
+        <td><%= t.mobile_number %></td>
+        <td><%= PublicWechatAccount::STATUS[t.status] %></td>
+        <td><%= t.price %></td>
+        <td><%= t.mult_price %></td>
+        <td><%= t.sub_price %></td>
+        <td><%= t.n_price %></td>
+        <td><%= t.quote_expired_at.strftime("%Y%m%d %H:%M:%S") %></td>
+        <td><%= t.circles.map(&:label).join(',') %></td>
+        <td><%= t.fans_count %></td>
+        <td><%= PublicWechatAccount::GENDER[t.gender] %></td>
+        <td><%= t.cities.map(&:name).join(',') %></td>
+        <td><%= t.content_show %></td>
+        <td><%= t.remark %></td>
+        <td>
+          <% if t.status == 0 %>
+            <%= link_to "通过", marketing_dashboard_public_wechat_account_path(t, status: 'passed'), method: :put %>
+            <%= link_to "拒绝", marketing_dashboard_public_wechat_account_path(t, status: 'rejected'), method: :put %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @public_wechat_accounts, renderer: BootstrapPagination::Rails  %>

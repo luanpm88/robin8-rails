@@ -1,0 +1,32 @@
+<%= form_for(@terrace, url: url, html: { class: "form-horizontal"}) do |f| %>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">平台名称</label>
+    <div class="col-sm-8">
+      <%= f.text_field :name, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">平台英文名</label>
+    <div class="col-sm-8">
+      <%= f.text_field :short_name, :class => "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">图标链接地址</label>
+    <div class="col-sm-8">
+      <%= f.text_field :address, :class => "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit '提交', :class => 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>

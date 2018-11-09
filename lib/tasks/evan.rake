@@ -46,4 +46,12 @@ namespace :evan do
 		end
 	end
 
+	task :gen_circles => :environment do
+		# Circle.delete_all
+		%w(时尚圈 数码发烧友 理财圈 白领圈 电影爱好者 体育圈 读书爱好者 单身圈 二次元 
+			车友圈 旅游圈 吃货圈 房产圈 游戏圈 宝妈圈 网红圈 健身圈 投资圈 精英俱乐部 网购达人 企业家 宠物圈 校园圈).each do |ele|
+				Circle.create(label: ele)
+		end
+	end
+
 end

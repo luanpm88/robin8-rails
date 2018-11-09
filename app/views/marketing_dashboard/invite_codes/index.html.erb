@@ -67,8 +67,7 @@
       	  <td><%= t.invite_type %></td>
       	  <td><%= t.invite_value %></td>
       	  <td>
-      	  	<%= link_to '修改' , edit_marketing_dashboard_invite_code_path(id: t.id) %> /
-      	  	<%= link_to '删除' ,"/marketing_dashboard/invite_code/#{t.id}", method: :delete, action: "destroy", data: { confirm: '确定要删除吗?' } %>
+      	  	<%= link_to '修改' , edit_marketing_dashboard_invite_code_path(t) %>
       	  </td>
       	</tr>
       	<% end %>

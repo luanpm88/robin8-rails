@@ -1,0 +1,18 @@
+
+<div style="margin-left: 20px">
+  <h4><%= "Tag_#{@tag.label}包含圈子：" %></h4>
+  <%= form_tag marketing_dashboard_tag_add_circle_path do %>
+    <div class="label-list clearfix">
+      <% @circles.each do |circle| %>
+        <label class="label-item">
+          <%= check_box_tag 'circle_ids[]', circle.id,  @tag.circles.find_by_id(circle.id)? true : false -%>
+          <%= h circle.label -%>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="text-left">
+      <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

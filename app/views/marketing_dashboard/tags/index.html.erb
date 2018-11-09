@@ -1,0 +1,28 @@
+<h1>
+  Tag列表
+  <!--<%= link_to "创建新的Tag", new_marketing_dashboard_tag_path, class: "btn btn-primary pull-right" %>-->
+</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>Tag ID</th>
+      <th>标签</th>
+      <th>关联圈子</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tags.each do |t| %>
+      <tr>
+        <td>
+          <%= t.id  %>
+        </td>
+        <td><%= "#{t.label}(#{t.name})" %></td>
+        <td><%= t.circles.map(&:label).join('、') %></td>
+        <td><%= link_to "关联圈子", marketing_dashboard_tag_add_circle_path(t.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

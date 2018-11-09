@@ -14,6 +14,8 @@ class SocialAccount < ActiveRecord::Base
                "huajiao" => "花椒", "nice" => "NICE", "douban" => "豆瓣", "xiaohongshu" => "小红书", "yizhibo" => '一直播',
                "meila" => "美啦", "other" => "其它" }
 
+  scope :wechat, -> {where(provider: 'wechat')}
+
   def get_weibo_homepage
     return if self.homepage.blank?
     uid = self.homepage.split("/").last.split("?").first

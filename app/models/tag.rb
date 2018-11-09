@@ -19,6 +19,9 @@ class Tag < ActiveRecord::Base
   has_many :kol_tags
   has_many :elastic_articles
 
+  has_many :tags_circles, class_name: "TagsCircle"
+  has_many :circles, through: :tags_circles
+
   def self.get_lable_by_name(name)
     return "全部" if(name == "全部")
     Tag.where(name: name).take.label    rescue nil

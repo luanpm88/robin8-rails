@@ -19,6 +19,11 @@ module API
           present :vest_bag_detail, $redis.get('vest_bag_detail')
           present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
           present :put_count, $redis.get('put_count')
+          present :completed_rate, current_kol.completed_rate
+          present :creator_is_read, current_kol.creator.try(:is_read).try(:value)
+          present :public_wechat_account_is_read, current_kol.public_wechat_account.try(:is_read).try(:value)
+          present :weibo_account_is_read, current_kol.weibo_account.try(:is_read).try(:value)
+          present :read_list, current_kol.set_account_have_read
         end
 
         params do
