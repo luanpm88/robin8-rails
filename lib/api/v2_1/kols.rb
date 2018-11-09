@@ -32,9 +32,9 @@ module API
  
           current_kol.save
 
-          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}
+          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}.sort
 
-          if (current_kol.circle_ids & circle_ids) != circle_ids
+          if current_kol.circle_ids.sort != circle_ids
             select_circles = Circle.where(id: circle_ids)
             if select_circles.present?
               current_kol.circles.delete_all
@@ -73,8 +73,8 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless creator.save
 
-          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}
-          if (creator.circle_ids & circle_ids) != circle_ids
+          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}.sort
+          if creator.circle_ids.sort != circle_ids
             select_circles = Circle.where(id: circle_ids)
             if select_circles.present?
               creator.circles.delete_all
@@ -82,8 +82,8 @@ module API
             end
           end
 
-          terrace_ids = params[:terrace_ids].split(',').collect{|ele| ele.to_i}
-          if (creator.terrace_ids.collect{|ele| ele.to_s} & terrace_ids) != terrace_ids
+          terrace_ids = params[:terrace_ids].split(',').collect{|ele| ele.to_i}.sort
+          if creator.terrace_ids.sort != terrace_ids
             select_terraces = Terrace.where(id: terrace_ids)
             if select_terraces.present?
               creator.terraces.delete_all
@@ -91,8 +91,8 @@ module API
             end
           end
 
-          cities = params[:cities].split(',')
-          if (creator.cities.map(&:name) & cities) != cities
+          cities = params[:cities].split(',').sort
+          if creator.cities.map(&:name).sort != cities
             select_cities = City.where(name: cities)
             if select_cities.present?
               creator.cities.delete_all
@@ -137,8 +137,8 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless weibo_account.save
 
-          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}
-          if (weibo_account.circle_ids & circle_ids) != circle_ids
+          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}.sort
+          if weibo_account.circle_ids.sort != circle_ids
             select_circles = Circle.where(id: circle_ids)
             if select_circles.present?
               weibo_account.circles.delete_all
@@ -146,8 +146,8 @@ module API
             end
           end
 
-          cities = params[:cities].split(',')
-          if (weibo_account.cities.map(&:name) & cities) != cities
+          cities = params[:cities].split(',').sort
+          if weibo_account.cities.map(&:name).sort != cities
             select_cities = City.where(name: cities)
             if select_cities.present?
               weibo_account.cities.delete_all
@@ -192,8 +192,8 @@ module API
 
           error_403!(detail: '请重新输入正确的信息。') unless public_wechat_account.save
 
-          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}
-          if (public_wechat_account.circle_ids & circle_ids) != circle_ids
+          circle_ids = params[:circle_ids].split(',').collect{|ele| ele.to_i}.sort
+          if public_wechat_account.circle_ids.sort != circle_ids
             select_circles = Circle.where(id: circle_ids)
             if select_circles.present?
               public_wechat_account.circles.delete_all
@@ -201,8 +201,8 @@ module API
             end
           end
 
-          cities = params[:cities].split(',')
-          if (public_wechat_account.cities.map(&:name) & cities) != cities
+          cities = params[:cities].split(',').sort
+          if public_wechat_account.cities.map(&:name).sort != cities
             select_cities = City.where(name: cities)
             if select_cities.present?
               public_wechat_account.cities.delete_all
