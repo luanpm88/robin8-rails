@@ -48,6 +48,10 @@ class Creator < ActiveRecord::Base
 
   delegate :mobile_number, to: :kol
 
+  def get_dsp
+    {1 => '内容创作者身份认证已通过', -1 => '内容创作者身份认证未通过，请联系客服处理'}[status]
+  end
+
   private 
 
   def update_kol_role_status

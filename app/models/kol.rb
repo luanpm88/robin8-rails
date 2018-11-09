@@ -925,4 +925,14 @@ class Kol < ActiveRecord::Base
   def completed_rate
     ([avatar_url.present?, name.present?, gender.to_i > 0, birthday.present?, job_info.present?, circles.present?, wechat_friends_count > 0, social_accounts.present?, true].count(true).to_f / 9).round(2)
   end
+
+  def set_account_have_read
+    _ary= { 1 => [], -1 => [] }
+
+    %w(weibo_account public_wechat_account creator).each do |ele|
+      _ary[1]  << {state: 1,  dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == 1
+      _ary[-1] << {state: -1, dsp: self.send(ele).get_dsp }   if self.send(ele).try(:status) == -1
+    end
+    _ary.flatten
+  end
 end

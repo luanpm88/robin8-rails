@@ -43,6 +43,10 @@ class WeiboAccount < ActiveRecord::Base
 
   delegate :mobile_number, to: :kol
 
+  def get_dsp
+    {1 => '微博大V身份认证已通过', -1 => '微博大V身份认证未通过，请联系客服处理'}[status]
+  end
+
   private 
 
   def update_kol_role_status
@@ -57,7 +61,5 @@ class WeiboAccount < ActiveRecord::Base
       Message.new_role_notice_message(self.kol, 'rejected', 'weibo_account')
     end
   end
-
-
 
 end
