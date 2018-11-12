@@ -38,7 +38,7 @@ class PublicWechatAccount < ActiveRecord::Base
   delegate :mobile_number, to: :kol
 
   def get_dsp
-    {1 => '微信公众号大V认证已通过', -1 => '微信公众号身份认证未通过，请联系客服处理'}[status]
+    {1 => '微信公众号大V身份认证已通过', -1 => '微信公众号大V身份认证未通过，请联系客服处理'}[status]
   end
 
   private 
