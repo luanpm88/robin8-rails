@@ -47,9 +47,9 @@ every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
 
-every 1.day, :at => '2:30 am' do
-  rake 'influence_score:refresh', environment: 'production'
-end
+# every 1.day, :at => '2:30 am' do
+#   rake 'influence_score:refresh', environment: 'production'
+# end
 
 #keep with secret
 # every :tuesday, :at => '0:10 am' do
