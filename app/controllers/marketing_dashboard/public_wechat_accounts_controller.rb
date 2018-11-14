@@ -1,6 +1,6 @@
 class MarketingDashboard::PublicWechatAccountsController < MarketingDashboard::BaseController
   def index
-    @q    = PublicWechatAccount.ransack(params[:q])
+    @q    = PublicWechatAccount.includes(:kol, :cities, :circles).ransack(params[:q])
     @public_wechat_accounts = @q.result.order(created_at: :desc).paginate(paginate_params)
   end
 

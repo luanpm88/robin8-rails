@@ -1,6 +1,6 @@
 class MarketingDashboard::CreatorsController < MarketingDashboard::BaseController
   def index
-    @q    = Creator.ransack(params[:q])
+    @q    = Creator.includes(:kol, :circles, :terraces).ransack(params[:q])
     @creators = @q.result.order(created_at: :desc).paginate(paginate_params)
   end
 
