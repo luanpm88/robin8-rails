@@ -110,7 +110,6 @@ Rails.application.routes.draw do
 
       collection do
         get 'banned'
-        get 'hot'
         get 'from_mcn'
         get 'from_app'
         get 'applying'

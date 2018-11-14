@@ -11,11 +11,6 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     load_kols
   end
 
-  def hot
-    @kols = Kol.where("is_hot > 0")
-    load_kols
-  end
-
   def from_mcn
     @kols = Kol.where(kol_role: "mcn_big_v")
     load_kols
@@ -132,7 +127,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     params[:kol][:mobile_number] = nil  if params[:kol][:mobile_number].blank?
     params[:kol][:email] = nil          if params[:kol][:email].blank?
 
-    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
+    @kol.update_attributes(params.require(:kol).permit(:role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
     update_tag_ids
     update_keywords
     @kol.reload
