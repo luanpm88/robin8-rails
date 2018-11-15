@@ -111,7 +111,7 @@ class Kol < ActiveRecord::Base
   has_one :public_wechat_account
 
   # vote
-  has_many :voter_ships
+  has_many :voter_ships, ->{order('count desc')}
   has_many :voters, through: :voter_ships, source: :voter
   has_many :votes
 

@@ -75,6 +75,14 @@ module API
           end
         end
 
+        class Brief < Grape::Entity
+          expose :id, :name, :is_hot
+          
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)
+          end
+        end
+
       end
     end
   end

@@ -4,6 +4,7 @@ module API
       version 'v2_1', using: :path
       mount API::V2_1::BaseInfos
       mount API::V2_1::Kols
+      mount API::V2_1::Votes
     end
   end
 end
