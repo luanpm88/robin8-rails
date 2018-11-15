@@ -110,6 +110,11 @@ class Kol < ActiveRecord::Base
   has_one :weibo_account
   has_one :public_wechat_account
 
+  # vote
+  has_many :voter_ships
+  has_many :voters, through: :voter_ships, source: :voter
+  has_many :votes
+
 
   # evan new big_v
   def is_new_big_v?
