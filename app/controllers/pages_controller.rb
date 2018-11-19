@@ -238,4 +238,8 @@ class PagesController < ApplicationController
     render :layout => "mobile"
   end
 
+  def vote
+
+  end
+
 end
