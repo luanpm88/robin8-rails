@@ -106,14 +106,14 @@ end
 #   runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'qa'
 # end
 
-every 1.day, :at => '02:00 am' do
-  runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'production'
-end
+# every 1.day, :at => '02:00 am' do
+#   runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'production'
+# end
 
-# 
-every 1.day, :at => '02:00 am' do
-  runner "Statistics::CampaignSettledTakeBudget.calculate_campaign_settled_take_budget_daily", environment: 'production'
-end
+# # 
+# every 1.day, :at => '02:00 am' do
+#   runner "Statistics::CampaignSettledTakeBudget.calculate_campaign_settled_take_budget_daily", environment: 'production'
+# end
 
 # every 12.hours do
 #   runner "KolStatus.schedule_update_status"
