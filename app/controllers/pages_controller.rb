@@ -239,7 +239,15 @@ class PagesController < ApplicationController
   end
 
   def vote
+    render :layout => "mobile"
+  end
 
+  def vote_detail
+    render :layout => "mobile"
+  end
+
+  def vote_share
+    render :layout => "mobile"
   end
 
 end

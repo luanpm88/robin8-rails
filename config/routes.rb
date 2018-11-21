@@ -219,6 +219,8 @@ Rails.application.routes.draw do
 
   # 我是网红投票活动
   get 'vote', to: 'pages#vote'
+  get 'vote_detail', to: 'pages#vote_detail'
+  get 'vote_share', to: 'pages#vote_share'
 
 
 

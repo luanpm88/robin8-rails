@@ -41,6 +41,39 @@ input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, i
   &.overflow-hidden { overflow-x: hidden; overflow-y: hidden; }
 }
 
+/*media styles*/
+.media { $gap: 10px; @include display-flex; position: relative; width: 100%;
+  .media-left, .media-right, .media-body { @include display-flex; align-items: flex-start;
+    &.media-middle { align-items: center; }
+  }
+  .media-body { @include display-flex; @include flex(1); -webkit-flex-wrap: wrap; flex-wrap: wrap; -webkit-align-content: space-between; align-content: space-between; font-size: $font-sm;
+    .title { font-size: $font-sm; font-weight: bold; }
+    &.media-middle { -webkit-align-content: center; align-content: center; }
+    & > * { width: 100%; }
+  }
+  .media-left + .media-body, .media-body + .media-right { padding-left: $gap; }
+  &.with-gap { padding: $gap; }
+}
+
+/*title bar styles*/
+.title-bar { $gap: 10px; @include display-flex; position: relative; padding: $gap; align-items: center; background-color: #f7f7f7;
+  .tail-area { margin-top: - $gap; margin-right: - $gap; margin-bottom: - $gap;
+    .text { font-size: $font-sm; color: #808080;
+      &.blue { color: nth($blue, 1); }
+      &.green { color: nth($green, 1); }
+    }
+    &.with-gap { margin: 0; }
+  }
+  & > .icon { display: inline-block; font-size: $font-nm-l; color: nth($green, 1);
+    & + * { margin-left: 6px; }
+  }
+  & > .title { @include flex(1);
+    & + * { margin-left: 10px; }
+    &.green { color: nth($green, 1); }
+  }
+}
+a.title-bar:active { background-color: $btn-active; }
+
 /*content panel styles*/
 .content-panel { padding-top: 8px; }
 .content-title { padding: 10px; font-size: 1.3rem; color: #6D6D72; }
@@ -183,6 +216,9 @@ input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, i
 .mt10 { margin-top: 10px; }
 .mt20 { margin-top: 20px; }
 .mt30 { margin-top: 30px; }
+.mt40 { margin-top: 40px; }
+.mt50 { margin-top: 50px; }
+.mt60 { margin-top: 60px; }
 .mt100 { margin-top: 100px; }
 .mr20 { margin-right: 20px; }
 .mb1 { margin-bottom: 1px; }
