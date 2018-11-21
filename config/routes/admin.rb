@@ -128,6 +128,10 @@ Rails.application.routes.draw do
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
     end
+
+
+    resources :voter_ships, only: [:index]
+
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
       match '/withdraw' => 'users#withdraw' , via: [:post, :get]

@@ -75,7 +75,7 @@
         <td><%= k.name %></td>
         <td><%= k.mobile_number %></td>
         <td><%= k.is_hot %></td>
-        <td><%= k.voter_ships.count %></td>
+        <td><%= link_to k.voter_ships.count, marketing_dashboard_voter_ships_path(kol_id: k.id) %></td>
       </tr>
     <% end %>
   </tbody>
