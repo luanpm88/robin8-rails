@@ -931,4 +931,9 @@ class Kol < ActiveRecord::Base
     end
     _ary.values.flatten
   end
+
+  def vote_ranking
+    Kol.count("is_hot > #{is_hot.to_i}").succ
+  end
+
 end

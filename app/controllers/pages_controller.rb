@@ -3,6 +3,7 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   # before_action :authenticate_kol!, only: [:withdraw_apply]
   skip_before_action :verify_authenticity_token, only: [:bind_e_wallet]
+  before_action :current_kol_valid_v2_1, only: [:vote, :vote_detail]
 
   def index
     render :layout => false
@@ -239,15 +240,32 @@ class PagesController < ApplicationController
   end
 
   def vote
-    render :layout => "mobile"
+    @kols_ranking = Kol.select(:id, :name, :is_hot).order(is_hot: :desc).limit(3)
+
+    render layout: "mobile"
   end
 
   def vote_detail
-    render :layout => "mobile"
+    render layout: "mobile"
   end
 
   def vote_share
-    render :layout => "mobile"
+    render layout: "mobile"
+  end
+
+  private
+
+  def current_kol_valid_v2_1
+    access_token = request.headers["Authorization"] || params[:access_token]
+
+    result, private_token = AuthToken.valid?(access_token)
+
+    if result
+      @kol = Kol.app_auth(private_token)
+    else
+      flash[:error] = "您还没有登录，请您先登录或注册"
+      return redirect_to login_url(params.permit(:ok_url))
+    end
   end
 
 end
