@@ -24,9 +24,9 @@ module API
         	requires :page, type: Integer
         end
         get 'my_voters' do
-        	list = paginate(Kaminari.paginate_array(current_kol.voters))
+        	list = paginate(Kaminari.paginate_array(current_kol.voter_ships.includes(:voter)))
           present :error, 0
-          present :list, list, with: API::V2_1::Entities::KolEntities::Brief
+          present :list, list, with: API::V2_1::Entities::KolEntities::Voter
         end
 
 			end

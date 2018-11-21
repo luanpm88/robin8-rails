@@ -3,12 +3,12 @@
     <div class="item">
       <%= image_tag 'mobile/vote/icon_user.png', alt: '', class: 'icon-img' %>
       粉丝数：
-      <span class="num">999</span>
+      <span class="num"><%= @kol.voter_ships.count %></span>
     </div>
     <div class="item">
       <%= image_tag 'mobile/vote/icon_like.png', alt: '', class: 'icon-img' %>
       当前票数：
-      <span class="num">999</span>
+      <span class="num"><%= @kol.is_hot %></span>
     </div>
   </div>
 
