@@ -115,6 +115,7 @@ Rails.application.routes.draw do
         get 'applying'
         get 'passed'
         get 'rejected'
+        get 'hot_kols'
       end
       member do
         match 'campaign_compensation', via: [:post, :get]
