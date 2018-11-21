@@ -186,3 +186,11 @@ end
 every :thursday , :at => '12:05 pm' do
   runner "Message.thursday_push", environment: 'production'
 end
+
+every 5.minutes do 
+  rake "votes:update_kol", environment: 'qa'
+end
+
+every :hour do 
+  rake "votes:update_kol", environment: 'production'
+end
