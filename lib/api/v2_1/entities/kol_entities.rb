@@ -4,7 +4,7 @@ module API
       module KolEntities
         class BaseInfo < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          
+
           expose :id, :name, :mobile_number, :email, :gender, :job_info, :completed_rate,
                  :wechat_friends_count
 
@@ -76,8 +76,8 @@ module API
         end
 
         class Brief < Grape::Entity
-          expose :id, :name, :is_hot
-          
+          expose :id, :name, :is_hot, :vote_ranking
+
           expose :avatar_url do |kol|
             kol.avatar.url(200)
           end

@@ -1,4 +1,5 @@
 <div class="page vote-page">
+  <%= hidden_field_tag :kol_token, @kol.get_issue_token %>
   <div class="banner">
     <%= image_tag 'mobile/vote/banner.jpg', alt: '2019我是网红，发现最闪亮的你', class: 'banner-img' %>
   </div>
@@ -99,65 +100,10 @@
         <div class="circle circle-b"></div>
 
         <div class="user-liked-content">
-          <ul class="idols-list">
-            <li class="media item">
-              <div class="media-left media-middle">
-                <div class="avatar">
-                  <img src="" alt="" class="avatar-img" />
-                </div>
-              </div>
-              <div class="media-body media-middle idol-info">
-                <h5 class="name">裴嘟嘟</h5>
-                <p>票数：13000</p>
-                <p>排名：1</p>
-              </div>
-              <div class="media-right media-middle">
-                <div class="btn-area">
-                  <button type="button" class="btn">投票</button>
-                  <button type="button" class="btn">拉票</button>
-                </div>
-              </div>
-            </li>
-            <li class="media item">
-              <div class="media-left media-middle">
-                <div class="avatar">
-                  <img src="" alt="" class="avatar-img" />
-                </div>
-              </div>
-              <div class="media-body media-middle idol-info">
-                <h5 class="name">裴嘟嘟</h5>
-                <p>票数：13000</p>
-                <p>排名：1</p>
-              </div>
-              <div class="media-right media-middle">
-                <div class="btn-area">
-                  <button type="button" class="btn">投票</button>
-                  <button type="button" class="btn">拉票</button>
-                </div>
-              </div>
-            </li>
-            <li class="media item">
-              <div class="media-left media-middle">
-                <div class="avatar">
-                  <img src="" alt="" class="avatar-img" />
-                </div>
-              </div>
-              <div class="media-body media-middle idol-info">
-                <h5 class="name">裴嘟嘟</h5>
-                <p>票数：13000</p>
-                <p>排名：1</p>
-              </div>
-              <div class="media-right media-middle">
-                <div class="btn-area">
-                  <button type="button" disabled="" class="btn btn-vote">已投</button>
-                  <button type="button" class="btn btn-share">拉票</button>
-                </div>
-              </div>
-            </li>
-          </ul>
+          <ul class="idols-list" id="idols_list"></ul>
           <div class="page-btn">
-            <button type="button" class="btn">上一页</button>
-            <button type="button" class="btn">下一页</button>
+            <button type="button" class="btn" id="idols_list_prev">上一页</button>
+            <button type="button" class="btn" id="idols_list_next">下一页</button>
           </div>
         </div>
       </div>
