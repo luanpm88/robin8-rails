@@ -83,6 +83,16 @@ module API
           end
         end
 
+        class Voter < Grape::Entity
+          expose :voter_id, :count, :updated_at
+          expose :voter_name do |voter|
+            voter.voter.name
+          end
+          expose :voter_avatar do |voter|
+            voter.voter.avatar_url
+          end
+        end
+
       end
     end
   end
