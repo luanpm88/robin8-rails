@@ -23,6 +23,9 @@ class Kol < ActiveRecord::Base
   counter :redis_elastic_likes_count
   counter :redis_elastic_stay_time
 
+  # vote is_hot
+  counter :redis_votes_count
+
   # announcement click counter
   counter :redis_announcement_clicks_count
 
@@ -214,6 +217,7 @@ class Kol < ActiveRecord::Base
   # scope :sort_by_total_income, ->(dir) { total_income_of_transactions.order("total_income #{dir}") }
 
   before_save :set_kol_kol_role
+  before_create :set_some_attrs
 
   def set_kol_kol_role
     #role_apply_status %w{pending applying passed rejected}
@@ -229,6 +233,10 @@ class Kol < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def set_some_attrs
+    self.is_hot = nil
   end
 
   # 师徒弟关系 evan 2018.3.16
