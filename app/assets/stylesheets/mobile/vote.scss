@@ -874,6 +874,7 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
 }
 
 .vote-success-alert {
+  display: none;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -900,6 +901,10 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
     border-radius: 5px;
     background-color: #fff;
     align-items: center;
+    -webkit-transition-property: -webkit-transform, opacity;
+    transition-property: transform, opacity;
+    @include transform(translate3d(-50%, -50%, 0) scale(1.185));
+    opacity: 0;
 
     .inner {
       width: 100%;
@@ -933,6 +938,13 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
 
     }
 
+  }
+
+  &.active .alert-container {
+    -webkit-transition-duration: 400ms;
+    transition-duration: 400ms;
+    @include transform(translate3d(-50%, -50%, 0) scale(1));
+    opacity: 1;
   }
 
 }

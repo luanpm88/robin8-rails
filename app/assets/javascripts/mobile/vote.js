@@ -70,6 +70,10 @@ $(document).ready(function() {
       }
     });
 
+    // 弹窗关闭
+    $('#vote_success_alert').find('.mask').click(function(event) {
+      $('#vote_success_alert').removeClass('active').fadeOut();
+    });
   }
 });
 
@@ -120,6 +124,8 @@ function renderIdolsList(token, page) {
               console.log(data);
               $vote_count.html(data.count);
               $vote_ranking.html(data.vote_ranking);
+              $vote_btn.attr('disabled', true);
+              $('#vote_success_alert').fadeIn().addClass('active');
             },
             error: function(xhr, type) {
               console.log(xhr);
