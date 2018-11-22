@@ -148,7 +148,9 @@ function createIdolItem(data) {
       is_hot = _data.is_hot,
       name = _data.name,
       vote_ranking = _data.vote_ranking,
-      avatar_url = _data.avatar_url;
+      avatar_url = _data.avatar_url,
+      is_voted = _data.has_voted,
+      can_vote = !!is_voted && is_voted == 1 ? 'disabled' : '';
 
   var $item = $('<li class="media item">' +
                   '<div class="media-left media-middle">' +
@@ -167,7 +169,7 @@ function createIdolItem(data) {
                 '</li>');
 
   var $share_btn = $('<button type="button" data-id="'+ id +'" class="btn share-btn">拉票</button>');
-  var $vote_btn = $('<button type="button" data-id="'+ id +'" class="btn vote-btn">投票</button>');
+  var $vote_btn = $('<button type="button" data-id="'+ id +'" '+ can_vote +' class="btn vote-btn">投票</button>');
 
   $item.find('.btn-area').append($vote_btn, $share_btn);
 

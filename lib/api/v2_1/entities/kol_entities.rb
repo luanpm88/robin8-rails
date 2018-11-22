@@ -85,6 +85,10 @@ module API
           expose :is_hot do |kol|
             kol.redis_votes_count.value
           end
+
+          expose :has_voted do |kol, options|
+            $redis.get("#{options[:mobile_number]}_vote_kol_#{kol.id}")
+          end
         end
 
         class Voter < Grape::Entity

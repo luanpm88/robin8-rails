@@ -15,8 +15,9 @@ module API
         	my_idois = Kol.joins(:voter_ships).where('voter_ships.voter_id=?', current_kol.id).order(is_hot: :desc)
 
         	list = paginate(Kaminari.paginate_array(my_idois))
+
           present :error, 0
-          present :list, list, with: API::V2_1::Entities::KolEntities::Brief
+          present :list, list, with: API::V2_1::Entities::KolEntities::Brief, mobile_number: current_kol.mobile_number
         end
 
         desc '我的粉丝列表'
@@ -25,6 +26,7 @@ module API
         end
         get 'my_voters' do
         	list = paginate(Kaminari.paginate_array(current_kol.voter_ships.includes(:voter)))
+
           present :error, 0
           present :list, list, with: API::V2_1::Entities::KolEntities::Voter
         end
@@ -36,7 +38,7 @@ module API
           present :error, 0
         end
 
-        desc 'tou piao by app'
+        desc 'vote in app'
         params do
           requires :kol_id,  type: Integer
         end
@@ -45,18 +47,13 @@ module API
 
           error_403!(detail: '支持的信息有误') unless _kol.try(:is_hot)
 
-
-          _key = "#{current_kol.mobile_number}_vote_kol_#{_kol.id}"
-
-          # error_403!(detail: '24小时内针对一个kol只能投一次票') if $redis.get(_key) == '1'
+          error_403!(detail: '24小时内针对一个kol只能投一次票') if $redis.get("#{current_kol.mobile_number}_vote_kol_#{_kol.id}")
 
           voter_ship = VoterShip.find_or_initialize_by(kol_id: _kol.id, voter_id: current_kol.id)
           voter_ship.count += 1
           voter_ship.save
 
-          Vote.create(tender_id: current_kol.id, kol_id: _kol.id, date_show: Time.now.strftime('%F'))
-
-          $redis.setex(_key, 24.hours, '1')
+          Vote.create(tender_id: current_kol.id, kol_id: _kol.id)
 
           present :error,        0
           present :count,        _kol.redis_votes_count.value
@@ -93,9 +90,6 @@ module API
           error_403!(detail:  '验证码错误')   unless code_right
           error_403!(detail: '支持的信息有误') unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
 
-          _key = "#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}"
-
-          $redis.setex(_key, 24.hours, '1')
 
           k = Kol.find_or_initialize_by(mobile_number: params[:mobile_number])
           k.save if k.new_record?
