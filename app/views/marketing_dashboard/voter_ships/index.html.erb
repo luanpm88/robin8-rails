@@ -1,10 +1,10 @@
-<h1>投票列表</h1>
+<h1>粉丝列表</h1>
 
 <table class='table table-bordered'>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>kol昵称</th>
+      <th>KOL_ID</th>
+      <th>KOL昵称</th>
       <th>投票数</th>
     </tr>
   </thead>
@@ -13,9 +13,9 @@
     <% @voter_ships.each do |k| %>
       <tr>
         <td>
-          <%= k.id  %>
+          <%= k.voter_id  %>
         </td>
-        <td><%= k.kol.name %></td>
+        <td><%= k.voter.name %></td>
         <td><%= k.count %></td>
       </tr>
     <% end %>

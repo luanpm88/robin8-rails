@@ -61,8 +61,9 @@
       <th>KOL ID</th>
       <th>昵称</th>
       <th>手机</th>
-      <th>投票数</th>
       <th>粉丝数</th>
+      <th>投票数</th>
+      <th>实时投票数</th>
     </tr>
   </thead>
 
@@ -74,8 +75,9 @@
         </td>
         <td><%= k.name %></td>
         <td><%= k.mobile_number %></td>
+        <td><%= link_to k.voters.count, marketing_dashboard_voter_ships_path(kol_id: k.id) %></td>
         <td><%= k.is_hot %></td>
-        <td><%= link_to k.voter_ships.count, marketing_dashboard_voter_ships_path(kol_id: k.id) %></td>
+        <td><%= k.redis_votes_count %></td>
       </tr>
     <% end %>
   </tbody>
