@@ -29,6 +29,13 @@ module API
           present :list, list, with: API::V2_1::Entities::KolEntities::Voter
         end
 
+        desc '我要报名，我要当网红'
+        post 'be_kol' do
+          current_kol.update_columns(is_hot: 0) unless current_kol.is_hot
+
+          present :error, 0
+        end
+
         desc '获取投票验证码'
         params do
           requires :mobile_number, type: String
