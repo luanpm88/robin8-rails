@@ -104,33 +104,8 @@ function formatDate(timestamp) {
   let current_date = current_day.getDate()
   let d = new Date(timestamp * 1000)
   let date = {}
-  let weekday = ''
-  switch (d.getDay()) {
-    case 1:
-      weekday = '周一'
-      break;
-    case 2:
-      weekday = '周二'
-      break;
-    case 3:
-      weekday = '周三'
-      break;
-    case 4:
-      weekday = '周四'
-      break;
-    case 5:
-      weekday = '周五'
-      break;
-    case 6:
-      weekday = '周六'
-      break;
-    case 0:
-      weekday = '周日'
-      break;
-    default:
-      weekday = ''
-  }
-  date.year = d.getFullYear() + '年'
+  let textday = ''
+  date.year = d.getFullYear()
   date.month = d.getMonth() + 1
   date.day = d.getDate()
   date.date = date.month + '月' + date.day + '日'
@@ -138,21 +113,29 @@ function formatDate(timestamp) {
   date.hours = d.getHours()
   date.minutes = formatNumber(d.getMinutes())
   date.seconds = formatNumber(d.getMilliseconds())
+
   if (date.year == current_year && date.month == current_month) {
     if (date.day == current_date) {
-      date.weekday = '今天'
-    } else if (date.day == (current_date + 1)) {
-      date.weekday = '明天'
-    } else if (date.day == (current_date + 2)) {
-      date.weekday = '后天'
+      date.textday = '今天'
+    } else if (date.day == (current_date - 1)) {
+      date.textday = '昨天'
+    } else if (date.day == (current_date - 2)) {
+      date.textday = '前天'
+    } else if (date.day == (current_date - 3)) {
+      date.textday = '3天前'
     } else {
-      date.weekday = weekday
+      date.textday = textday
     }
   } else {
-    date.weekday = weekday
+    date.textday = textday
   }
 
   return date;
+}
+
+function formatNumber (n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
 }
 
 // 获取URL参数

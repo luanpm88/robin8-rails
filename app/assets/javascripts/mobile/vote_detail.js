@@ -28,7 +28,10 @@ function createVoterItem(data, index) {
       avatar_url = _data.voter_avatar,
       updated_at = _data.updated_at,
       rank_icon = '';
-  var assets_url = ''
+
+  console.log(formatDate(updated_at))
+  var date = formatDate(updated_at).textday
+
   switch (index) {
     case 0:
       rank_icon = '<div class="rank-icon first"></div>';
@@ -53,7 +56,7 @@ function createVoterItem(data, index) {
                 '</div>' +
                 '<div class="media-body media-middle">' +
                   '<p class="name">'+ name +'</p>' +
-                  '<p>3天前</p>' +
+                  '<p>'+ date +'</p>' +
                 '</div>' +
                 '<div class="media-right media-middle">' +
                   '<p class="statistics">'+ count +'票</p>' +
