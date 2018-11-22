@@ -21,13 +21,14 @@
                 <p>排名：<%= @kol.vote_ranking %></p>
               </div>
               <div class="btn-area">
-                <div class="btn">票数详情</div>
-                <div class="btn">我要拉票</div>
+                <%= link_to '票数详情', vote_detail_path(access_token: @kol.get_issue_token), class: 'btn'%>
+                <%= link_to '我要拉票', vote_share_path(kol_id: @kol.id), class: 'btn'%>
               </div>
             </div>
           <% else %>
             <div class="inner sign-tips">
               <div class="tips">你还没有报名参加“明日之星” 网红评选大赛哦</div>
+              <!--post api/v2_1/kols/be_kol-->
               <button type="button" class="btn sign-btn">我要报名</button>
             </div>
           <% end %>
