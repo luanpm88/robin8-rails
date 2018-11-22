@@ -1,8 +1,7 @@
 $vote_bg: #020202;
 $gold: #ffca81;
 
-body.mobile-pages-vote,
-body.mobile-pages-vote_share {
+body.mobile-pages-vote, body.mobile-pages-vote_share {
   background-color: $vote_bg;
   color: #e4e4e4;
 }
@@ -788,16 +787,28 @@ body.mobile-pages-vote_share {
         align-items: center;
 
         .rank-icon {
-          width: 48px;
-          padding-right: 24px;
+          display: inline-block;
+          width: 21px;
+          height: 26px;
+          margin-right: 24px;
           text-align: center;
           font-size: 1.5rem;
           font-weight: bold;
           color: #777;
 
-          .icon-img {
-            width: 21px;
-            vertical-align: top;
+          &.first {
+            background: image_url('mobile/vote/first.png') no-repeat center;
+            background-size: cover;
+          }
+
+          &.second {
+            background: image_url('mobile/vote/second.png') no-repeat center;
+            background-size: cover;
+          }
+
+          &.third {
+            background: image_url('mobile/vote/third.png') no-repeat center;
+            background-size: cover;
           }
 
         }

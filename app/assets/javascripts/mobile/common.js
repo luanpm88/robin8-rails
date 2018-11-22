@@ -96,6 +96,65 @@ Date.prototype.customFormat = function(formatString) {
         .replace('#AMPM#', AMPM);
 }
 
+// 格式化日期
+function formatDate(timestamp) {
+  let current_day = new Date()
+  let current_year = current_day.getFullYear()
+  let current_month = current_day.getMonth() + 1
+  let current_date = current_day.getDate()
+  let d = new Date(timestamp * 1000)
+  let date = {}
+  let weekday = ''
+  switch (d.getDay()) {
+    case 1:
+      weekday = '周一'
+      break;
+    case 2:
+      weekday = '周二'
+      break;
+    case 3:
+      weekday = '周三'
+      break;
+    case 4:
+      weekday = '周四'
+      break;
+    case 5:
+      weekday = '周五'
+      break;
+    case 6:
+      weekday = '周六'
+      break;
+    case 0:
+      weekday = '周日'
+      break;
+    default:
+      weekday = ''
+  }
+  date.year = d.getFullYear() + '年'
+  date.month = d.getMonth() + 1
+  date.day = d.getDate()
+  date.date = date.month + '月' + date.day + '日'
+  date.hours = d.getHours()
+  date.hours = d.getHours()
+  date.minutes = formatNumber(d.getMinutes())
+  date.seconds = formatNumber(d.getMilliseconds())
+  if (date.year == current_year && date.month == current_month) {
+    if (date.day == current_date) {
+      date.weekday = '今天'
+    } else if (date.day == (current_date + 1)) {
+      date.weekday = '明天'
+    } else if (date.day == (current_date + 2)) {
+      date.weekday = '后天'
+    } else {
+      date.weekday = weekday
+    }
+  } else {
+    date.weekday = weekday
+  }
+
+  return date;
+}
+
 // 获取URL参数
 function GetRequest() {
   var url = window.location.search; //获取url中"?"符后的字串
@@ -425,4 +484,125 @@ function countDownTimer(countObj, intDiff, callback){
       }
     };
   }, 1000);
+}
+
+// 拖动刷新加载方法
+function DropLoadCtrl(container, list, url, params, token, data_name, create_item, empty_icon) {
+  var that = this;
+  // that.page = params.page;
+  that.dropload = $(container).dropload({
+    scrollArea: window,
+    refreshFn: function(me) {
+      params.page = 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          console.log(_data[data_name]);
+          $(container).find(list).empty();
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            me.lock();
+            if (params.page == 1) {
+              me.emptyData();
+              $(container).find(list).append(
+                createEmptyContent(empty_icon)
+              );
+            } else {
+              me.noData();
+            }
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    },
+    loadUpFn: function(me) {
+      params.page = 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $(container).find(list).empty();
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            params.page = 1;
+            me.unlock();
+            me.noData(false);
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    },
+    loadDownFn: function (me) {
+      params.page = params.page += 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          console.log(_data);
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            me.lock();
+            if (params.page == 1) {
+              me.emptyData();
+              $(container).find(list).append(
+                createEmptyContent(empty_icon)
+              );
+            } else {
+              me.noData();
+            }
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    }
+  });
 }
