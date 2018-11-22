@@ -51,6 +51,7 @@ $(document).ready(function() {
   }
 });
 
+// /api/v2_1/kols/my_voters
 function renderIdolsList(token, page) {
   $.ajax({
     url: '/api/v2_1/kols/my_idois',

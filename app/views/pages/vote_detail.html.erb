@@ -1,4 +1,5 @@
 <div class="page vote-page">
+  <%= hidden_field_tag :kol_token, @kol.get_issue_token %>
   <div class="user-statistics-tag">
     <div class="item">
       <%= image_tag 'mobile/vote/icon_user.png', alt: '', class: 'icon-img' %>
@@ -19,79 +20,7 @@
     <h5 class="title">粉丝排行榜</h5>
   </div>
 
-  <div class="vote-detail-list">
-    <ul class="rank-list">
-      <li class="item">
-        <div class="rank-icon">
-          <%= image_tag 'mobile/vote/first.png', alt: '', class: 'icon-img' %>
-        </div>
-        <div class="media rank-body">
-          <div class="media-left media-middle">
-            <div class="avatar">
-              <%= image_tag '', alt: '', class: 'avatar-img' %>
-            </div>
-          </div>
-          <div class="media-body media-middle">
-            <p class="name">裴嘟嘟</p>
-            <p>3天前</p>
-          </div>
-          <div class="media-right media-middle">
-            <p class="statistics">138948票</p>
-          </div>
-        </div>
-      </li>
-      <li class="item">
-        <div class="rank-icon">
-          <%= image_tag 'mobile/vote/second.png', alt: '', class: 'icon-img' %>
-        </div>
-        <div class="media rank-body">
-          <div class="media-left media-middle">
-            <div class="avatar">
-              <%= image_tag '', alt: '', class: 'avatar-img' %>
-            </div>
-          </div>
-          <div class="media-body media-middle">
-            <p class="name">裴嘟嘟</p>
-          </div>
-          <div class="media-right media-middle">
-            <p class="statistics">138948票</p>
-          </div>
-        </div>
-      </li>
-      <li class="item">
-        <div class="rank-icon">
-          <%= image_tag 'mobile/vote/third.png', alt: '', class: 'icon-img' %>
-        </div>
-        <div class="media rank-body">
-          <div class="media-left media-middle">
-            <div class="avatar">
-              <%= image_tag '', alt: '', class: 'avatar-img' %>
-            </div>
-          </div>
-          <div class="media-body media-middle">
-            <p class="name">裴嘟嘟</p>
-          </div>
-          <div class="media-right media-middle">
-            <p class="statistics">138948票</p>
-          </div>
-        </div>
-      </li>
-      <li class="item">
-        <div class="rank-icon">4</div>
-        <div class="media rank-body">
-          <div class="media-left media-middle">
-            <div class="avatar">
-              <%= image_tag '', alt: '', class: 'avatar-img' %>
-            </div>
-          </div>
-          <div class="media-body media-middle">
-            <p class="name">裴嘟嘟</p>
-          </div>
-          <div class="media-right media-middle">
-            <p class="statistics">138948票</p>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <div class="vote-detail-list" id="voter_list">
+    <ul class="rank-list"></ul>
   </div>
 </div>
