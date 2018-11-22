@@ -199,6 +199,9 @@ a.title-bar:active { background-color: $btn-active; }
 .modal-footer .btn-confirm { font-weight: bold; color: #fff; background-color: nth($cyan, 1); }
 .alert-modal.active .modal-content { -webkit-transition-duration: 400ms; transition-duration: 400ms; @include transform(translate3d(-50%, -50%, 0) scale(1)); opacity: 1; }
 
+/*empty content styles*/
+.empty-content { padding: 40px; text-align: center; }
+
 /*
 **page styles end && class reset begin**
 */

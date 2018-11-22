@@ -1,5 +1,5 @@
 class Vote < ActiveRecord::Base
-	
+
 	belongs_to :kol
 
 	after_create :counter_attrs

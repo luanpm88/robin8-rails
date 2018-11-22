@@ -3,10 +3,31 @@ $(document).ready(function() {
     var kol_token = $('#kol_token').val();
     var init_page = 1;
 
+    // 我要报名
+    $('#sign_btn').click(function(event) {
+      $.ajax({
+        url: '/api/v2_1/kols/be_kol',
+        type: 'POST',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          console.log(data);
+          location.reload();
+        },
+        error: function(xhr, type) {
+          console.log(xhr);
+          console.log(type);
+        }
+      });
+    });
+
+    // 倒计时
     var $vote_countdown = $('#vote_countdown');
     var countdown_datetime = $vote_countdown.data('datetime');
     countDownTimer($vote_countdown, countdown_datetime);
 
+    // tab切换
     var $tab_control = $('.user-info-panel');
     $tab_control.find('.tab-ctrl').on('click', '.item', function(){
       var $that = $(this),
@@ -48,10 +69,10 @@ $(document).ready(function() {
         $('#idols_list_prev').show()
       }
     });
+
   }
 });
 
-// /api/v2_1/kols/my_voters
 function renderIdolsList(token, page) {
   $.ajax({
     url: '/api/v2_1/kols/my_idois',
@@ -76,6 +97,37 @@ function renderIdolsList(token, page) {
       } else {
         $('#idols_list_next').hide()
       }
+
+      $('#idols_list').find('.item').each(function(index, el) {
+        var $item = $(el);
+        var $vote_btn = $item.find('.vote-btn');
+        var $share_btn = $item.find('.share-btn');
+        var $vote_count = $item.find('.vote-count');
+        var $vote_ranking = $item.find('.vote-ranking');
+
+        $vote_btn.click(function(event) {
+          var _id = $(this).data('id');
+          $.ajax({
+            url: '/api/v2_1/kols/vote',
+            type: 'POST',
+            data: {
+              kol_id: _id
+            },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('Authorization', token);
+            },
+            success: function(data) {
+              console.log(data);
+              $vote_count.html(data.count);
+              $vote_ranking.html(data.vote_ranking);
+            },
+            error: function(xhr, type) {
+              console.log(xhr);
+              console.log(type);
+            }
+          });
+        });
+      });
     },
     error: function(xhr, type) {
       console.log(xhr);
@@ -100,16 +152,16 @@ function createIdolItem(data) {
                   '</div>' +
                   '<div class="media-body media-middle idol-info">' +
                     '<h5 class="name">'+ name +'</h5>' +
-                    '<p>票数：'+ is_hot +'</p>' +
-                    '<p>排名：'+ vote_ranking +'</p>' +
+                    '<p>票数：<span class="vote-count">'+ is_hot +'</span></p>' +
+                    '<p>排名：<span class="vote-ranking">'+ vote_ranking +'</span></p>' +
                   '</div>' +
                   '<div class="media-right media-middle">' +
                     '<div class="btn-area"></div>' +
                   '</div>' +
                 '</li>');
 
-  var $share_btn = $('<button type="button" class="btn">拉票</button>');
-  var $vote_btn = $('<button type="button" class="btn">投票</button>');
+  var $share_btn = $('<button type="button" data-id="'+ id +'" class="btn share-btn">拉票</button>');
+  var $vote_btn = $('<button type="button" data-id="'+ id +'" class="btn vote-btn">投票</button>');
 
   $item.find('.btn-area').append($vote_btn, $share_btn);
 
