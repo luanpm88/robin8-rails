@@ -1,0 +1,128 @@
+<div class="">
+    <div class="user-info-panel mt40">
+      <div class="tab-ctrl">
+        <div class="item active">我的信息</div>
+        <div class="item">我的“爱豆”</div>
+      </div>
+      <div class="tab-content active">
+        <div class="circle circle-s"></div>
+        <div class="circle circle-m"></div>
+        <div class="circle circle-b"></div>
+
+        <div class="user-info-content">
+          <% if @kol.is_hot %>
+            <div class="inner">
+              <div class="avatar">
+                <img src="" alt="" class="avatar-img" />
+              </div>
+              <div class="name"><%= @kol.name %></div>
+              <div class="status">
+                <p>票数：<%= @kol.is_hot %></p>
+                <p>排名：<%= @kol.vote_ranking %></p>
+              </div>
+              <div class="btn-area">
+                <div class="btn">票数详情</div>
+                <div class="btn">我要拉票</div>
+              </div>
+            </div>
+          <% else %>
+            <div class="inner sign-tips">
+              <div class="tips">你还没有报名参加“明日之星” 网红评选大赛哦</div>
+              <button type="button" class="btn sign-btn">我要报名</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="circle circle-s"></div>
+        <div class="circle circle-m"></div>
+        <div class="circle circle-b"></div>
+
+        <div class="user-liked-content">
+          <ul class="idols-list" id="idols_list"></ul>
+          <div class="page-btn">
+            <button type="button" class="btn" id="idols_list_prev">上一页</button>
+            <button type="button" class="btn" id="idols_list_next">下一页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-panel mt60">
+      <h5 class="rank-title">
+        <%= image_tag 'mobile/vote/rank_title.png', alt: '', class: 'bg-img' %>
+        <div class="title">
+          排行榜
+          <%= image_tag 'mobile/vote/star.png', alt: '', class: 'star-img before' %>
+          <%= image_tag 'mobile/vote/star.png', alt: '', class: 'star-img after' %>
+        </div>
+      </h5>
+      <ul class="rank-list">
+        <% rank_ary = %w(first second third) %>
+        <% @kols_ranking.each_with_index do |ele, index|%>
+          <li class="item">
+            <div class="rank-icon">
+              <%= image_tag "mobile/vote/#{rank_ary[index]}.png", alt: '', class: 'icon-img' %>
+            </div>
+            <div class="media rank-body">
+              <div class="media-left media-middle">
+                <div class="avatar">
+                  <%= image_tag ele.avatar_url, alt: '', class: 'avatar-img' %>
+                  <%= image_tag 'mobile/vote/top.png', alt: '', class: 'top-icon' if index == 0 %>
+                </div>
+              </div>
+              <div class="media-body media-middle">
+                <p class="name"><%= ele.name %></p>
+              </div>
+              <div class="media-right media-middle">
+                <p class="statistics"><%= ele.is_hot %>票</p>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="event-intro-panel mt50">
+      <div class="intro-box">
+        <h5 class="sub-title">
+          <span class="text">活动规则:</span>
+        </h5>
+        <div class="intro">
+          <p>1.下载Robin8 APP并完成注册（APP中点击我要报名）</p>
+          <p>2.邀请您的好友为您拉票（好友注册并下载就可以为您拉到一票）</p>
+          <p>3.关注Robin8的微博/微信公众号，获得最新的活动消息</p>
+        </div>
+      </div>
+
+      <div class="intro-box">
+        <h5 class="sub-title">
+          <span class="text">活动详情:</span>
+        </h5>
+        <div class="intro">
+          <p>1.每人每天可以点赞一次，拉票不限次数；</p>
+          <p>2.Robin8会在2019年2月X日电话通知各获奖者，同时请密切关注ROBIN8公众号信息；</p>
+          <p>3.前三名获奖者将被邀请与顶尖网红见面，一同参加Robin8举办的颁奖礼；</p>
+          <p>4.获奖名单发布在Robin8微信公众号，获奖者在收到通知后7天未确认将被视为放弃名额；</p>
+          <p>5.通过非法手段获得的票将被报废同时取消活动资格；</p>
+          <p>6.Robin8拥有对此活动的唯一解释权。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="vote-success-alert">
+  <div class="mask"></div>
+  <div class="alert-container">
+    <div class="inner">
+      <div class="icon">
+        <%= image_tag 'mobile/vote/icon_vote_success.png', alt: '投票成功', class: 'icon-img' %>
+      </div>
+      <div class="info">
+        <h5 class="title">投票成功</h5>
+        <p>今日投票机会已用完</p>
+        <p>继续为你的“爱豆”拉票助力吧</p>
+      </div>
+    </div>
+  </div>
+</div> -->

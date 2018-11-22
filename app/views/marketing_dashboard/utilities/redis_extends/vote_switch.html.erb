@@ -1,0 +1,33 @@
+<h1>Vote Switch</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>值</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>活动开始时间</td>
+      <td><%= date_field_tag :vote_start_at, $redis.get('vote_start_at'), class: "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vote_start_at', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'PUT',
+        url: '/marketing_dashboard/utilities/redis_extends/update_redis_value',
+        data: {key: $(this).attr("data-key"), value: $(this).closest("td").find(".data-value").val()},
+      })
+
+    })
+  })
+</script>

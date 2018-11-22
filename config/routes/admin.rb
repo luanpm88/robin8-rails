@@ -354,6 +354,7 @@ Rails.application.routes.draw do
           get :ios_detail
           get :invite_switch
           get :vest_bag_detail
+          get :vote_switch
           put :update_redis_value
         end
       end
