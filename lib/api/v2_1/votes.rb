@@ -31,8 +31,8 @@ module API
 
         desc '获取投票验证码'
         params do
-          requires :mobile_number
-          requires :kol_id
+          requires :mobile_number, type: String
+          requires :kol_id,        type: Integer
         end
         get 'vote_sms' do
           error_403!(detail: '手机号格式错误') unless params[:mobile_number].match(API::ApiHelpers::MOBILE_NUMBER_REGEXP)
@@ -49,9 +49,9 @@ module API
 
         desc '投票'
         params do
-          requires :mobile_number
-          requires :kol_id
-          requires :code
+          requires :mobile_number, type: String
+          requires :kol_id,        type: Integer
+          requires :code,          type: String
         end
         post 'vote_sms' do
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])

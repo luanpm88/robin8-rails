@@ -6,6 +6,13 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     load_kols
   end
 
+  def hot_kols
+    @kols = Kol.where("is_hot is not null")
+    @q    = @kols.ransack(params[:q])
+    @kols = @q.result.order('is_hot DESC')
+    @kols = @kols.paginate(paginate_params)
+  end
+
   def banned
     @kols = Kol.where("forbid_campaign_time is not null")
     load_kols
