@@ -99,13 +99,13 @@ Date.prototype.customFormat = function(formatString) {
 
 // 格式化日期
 function formatDate(timestamp) {
-  let current_day = new Date()
-  let current_year = current_day.getFullYear()
-  let current_month = current_day.getMonth() + 1
-  let current_date = current_day.getDate()
-  let d = new Date(timestamp * 1000)
-  let date = {}
-  let textday = ''
+  var current_day = new Date()
+  var current_year = current_day.getFullYear()
+  var current_month = current_day.getMonth() + 1
+  var current_date = current_day.getDate()
+  var d = new Date(timestamp * 1000)
+  var date = {}
+  var textday = ''
   date.year = d.getFullYear()
   date.month = d.getMonth() + 1
   date.day = d.getDate()
