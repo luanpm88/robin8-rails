@@ -1,10 +1,30 @@
 $(document).ready(function() {
   if ($('body').attr('id') === 'mobile_pages_vote') {
     var kol_token = $('#kol_token').val();
+    var kol_is_hot = $('#kol_is_hot').val();
     var init_page = 1;
 
     // 我要报名
     $('#sign_btn').click(function(event) {
+      $.ajax({
+        url: '/api/v2_1/kols/be_kol',
+        type: 'POST',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', kol_token);
+        },
+        success: function(data) {
+          console.log(data);
+          location.reload();
+        },
+        error: function(xhr, type) {
+          console.log(xhr);
+          console.log(type);
+        }
+      });
+    });
+
+    // 新用户报名
+    $('#new_sign_btn').click(function(event) {
       $.ajax({
         url: '/api/v2_1/kols/be_kol',
         type: 'POST',
@@ -39,6 +59,10 @@ $(document).ready(function() {
       $content.eq(index).siblings('.tab-content').removeClass('active');
       $content.eq(index).addClass('active');
     });
+
+    if (!kol_is_hot || kol_is_hot == '') {
+      $tab_control.find('.tab-ctrl').find('.item').eq(1).click();
+    }
 
     if (init_page < 2) {
       $('#idols_list_prev').hide()
@@ -154,6 +178,7 @@ function createIdolItem(data) {
       vote_ranking = _data.vote_ranking,
       avatar_url = _data.avatar_url,
       is_voted = _data.has_voted,
+      share_url = _data.vote_share_url,
       can_vote = !!is_voted && is_voted == 1 ? 'disabled' : '';
 
   var $item = $('<li class="media item">' +
@@ -172,7 +197,7 @@ function createIdolItem(data) {
                   '</div>' +
                 '</li>');
 
-  var $share_btn = $('<button type="button" data-id="'+ id +'" class="btn share-btn">拉票</button>');
+  var $share_btn = $('<a href="'+ share_url +'" class="btn share-btn">拉票</a>');
   var $vote_btn = $('<button type="button" data-id="'+ id +'" '+ can_vote +' class="btn vote-btn">投票</button>');
 
   $item.find('.btn-area').append($vote_btn, $share_btn);

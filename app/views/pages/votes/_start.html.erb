@@ -5,8 +5,8 @@
   </div>
 
   <div class="event-countdown">
-    <h3 class="countdown-title">距离活动开始还有</h3>
-    <div class="countdown-datetime" id="vote_countdown" data-datetime="<%= $redis.get('vote_start_at').to_time.to_i - Time.now.to_i %>">
+    <h3 class="countdown-title">距离报名结束还有</h3>
+    <div class="countdown-datetime" id="vote_countdown" data-datetime="<%= $redis.get('vote_end_at').to_time.to_i - Time.now.to_i %>">
       <div class="item">
         <div class="num day-show">99</div>
         <div class="text">天</div>
@@ -27,7 +27,7 @@
   </div>
 
   <div class="event-intro-panel panel-box">
-    <button type="button" class="button sign-btn" disabled>敬请期待</button>
+    <button type="button" class="button sign-btn" id="sign_btn">我要报名</button>
     <div class="intro-box">
       <h5 class="sub-title">
         <span class="text">活动规则:</span>

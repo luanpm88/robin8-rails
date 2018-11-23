@@ -76,7 +76,7 @@ module API
         end
 
         class Brief < Grape::Entity
-          expose :id, :name, :vote_ranking
+          expose :id, :name, :vote_ranking, :vote_share_url
 
           expose :avatar_url do |kol|
             kol.avatar.url(200)

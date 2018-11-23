@@ -15,6 +15,12 @@
           <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vote_start_at', confirm: "确定更改吗？" %>
       </td>
     </tr>
+    <tr>
+      <td>活动结束时间</td>
+      <td><%= date_field_tag :vote_end_at, $redis.get('vote_end_at'), class: "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vote_end_at', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
 </table>
 
 

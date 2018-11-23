@@ -15,7 +15,7 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
-  
+
   # elastic_article_kol_detail
   counter :redis_elastic_reads_count
   counter :redis_elastic_collects_count
@@ -140,7 +140,7 @@ class Kol < ActiveRecord::Base
   has_one :e_wallet_account, class_name: "EWallet::Account"
   has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
 
-  #cirlces 
+  #cirlces
   has_many :kols_circles, class_name: "KolsCircle"
   has_many :circles, through: :kols_circles
 
@@ -203,7 +203,7 @@ class Kol < ActiveRecord::Base
   scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
 
   scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
-  
+
   scope :admintag, ->(admintag) { joins(:admintags).where("admintags.tag=?", admintag) }
 
   AdminKolIds = [79,48587]
@@ -451,7 +451,7 @@ class Kol < ActiveRecord::Base
     end
     [income, count]
   end
-  
+
   # 計算邀請朋有收入
   def inv_frd_income(date)
     [
@@ -614,7 +614,7 @@ class Kol < ActiveRecord::Base
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
-           
+
       _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
       kol = Kol.create!(_hash)
     end
@@ -880,7 +880,7 @@ class Kol < ActiveRecord::Base
   end
 
   def desc_percentage_on_friend
-    (desc_friend_gains + children.map(&:id)).uniq   
+    (desc_friend_gains + children.map(&:id)).uniq
   end
 
   def create_invite_code
@@ -942,10 +942,18 @@ class Kol < ActiveRecord::Base
 
   def vote_infos
     {
-      is_show:    $redis.get('vote_start_at'), 
-      banner_url: 'http://img.robin8.net/kol_banner.png', 
+      is_show:    $redis.get('vote_start_at'),
+      banner_url: 'http://img.robin8.net/kol_banner.png',
       url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}"
     }
+  end
+
+  def vote_share_url
+    "#{Rails.application.secrets.domain}/vote_share?kol_id=#{self.id}"
+  end
+
+  def has_not_voted?
+    VoterShip.where(voter_id: id).empty?
   end
 
   def vote_ranking
