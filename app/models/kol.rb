@@ -944,7 +944,10 @@ class Kol < ActiveRecord::Base
     {
       is_show:    $redis.get('vote_start_at'),
       banner_url: 'http://img.robin8.net/kol_banner.png',
-      url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}"
+      url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}",
+      icon_url:   'http://img.robin8.net/robin8_icon.png',
+      title:      '快来Robin8给我助力吧',
+      desc:       '注册Robin8，为自己喜欢的爱豆投票吧！'
     }
   end
 
