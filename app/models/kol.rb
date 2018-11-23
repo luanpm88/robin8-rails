@@ -944,7 +944,7 @@ class Kol < ActiveRecord::Base
     {
       is_show:    $redis.get('vote_start_at'), 
       banner_url: 'http://img.robin8.net/kol_banner.png', 
-      url:        "#{Rails.application.secrets.domain}vote?access_token=#{self.get_issue_token}"
+      url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}"
     }
   end
 
