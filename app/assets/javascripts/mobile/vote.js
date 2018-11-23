@@ -9,7 +9,7 @@ $(document).ready(function() {
         url: '/api/v2_1/kols/be_kol',
         type: 'POST',
         beforeSend: function(xhr) {
-          xhr.setRequestHeader('Authorization', token);
+          xhr.setRequestHeader('Authorization', kol_token);
         },
         success: function(data) {
           console.log(data);
