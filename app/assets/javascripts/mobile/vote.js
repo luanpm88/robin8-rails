@@ -121,6 +121,10 @@ function renderIdolsList(token, page) {
               xhr.setRequestHeader('Authorization', token);
             },
             success: function(data) {
+              if (data.error == 1) {
+                alert(data.detail);
+                return false;
+              }
               console.log(data);
               $vote_count.html(data.count);
               $vote_ranking.html(data.vote_ranking);
