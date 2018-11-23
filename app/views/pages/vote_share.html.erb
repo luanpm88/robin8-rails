@@ -1,46 +1,51 @@
 <div class="page vote-page">
+  <%= hidden_field_tag :kol_id, @kol.id %>
   <div class="banner">
     <%= image_tag 'mobile/vote/banner.jpg', alt: '2019我是网红，发现最闪亮的你', class: 'banner-img' %>
   </div>
 
-  <div class="new-user-panel mt20">
+  <div class="new-user-panel mt20" id="new_user_panel">
     <div class="circle circle-s"></div>
     <div class="circle circle-m"></div>
     <div class="circle circle-b"></div>
 
-    <div class="panel-inner">
-      <h5 class="new-user-title">为“爱吃草莓的子木”投票吧</h5>
-      <div class="default-form mt30">
-        <label class="form-group">
-          <div class="form-input">
-            <input type="tel" class="form-control" id="" placeholder="输入手机号" />
+    <div class="panel-box">
+      <div class="panel-inner">
+        <h5 class="new-user-title">为“<%= @kol.name %>”投票吧</h5>
+        <div class="default-form mt30">
+          <label class="form-group">
+            <div class="form-input">
+              <input type="tel" class="form-control" id="voter_phone" placeholder="输入手机号" />
+            </div>
+          </label>
+          <div class="form-group">
+            <div class="form-input">
+              <input type="text" class="form-control" id="voter_code" placeholder="输入验证码" />
+            </div>
+            <div class="form-tail-btn">
+              <button type="button" class="button btn-code" id="voter_code_btn">发送验证码</button>
+            </div>
           </div>
-        </label>
-        <label class="form-group">
-          <div class="form-input">
-            <input type="text" class="form-control" id="" placeholder="输入验证码" />
-          </div>
-          <div class="form-tail-btn">
-            <button type="button" class="button btn-code">发送验证码</button>
-          </div>
-        </label>
-      </div>
+        </div>
 
-      <div class="btn-area">
-        <button type="button" class="button btn-block btn-submit">为他投票</button>
+        <div class="btn-area">
+          <button type="button" class="button btn-block btn-submit" id="voter_submit_btn">为他投票</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="liked-success-panel mt20">
+  <div class="liked-success-panel mt20" id="liked_success_panel">
     <div class="circle circle-s"></div>
     <div class="circle circle-m"></div>
     <div class="circle circle-b"></div>
 
-    <div class="panel-inner">
-      <div class="success-title">投票成功！</div>
-      <div class="success-desc mt10">下载Robin8 APP，继续为你的爱豆</div>
-      <button type="button" class="button btn-block download-btn mt30">下载APP</button>
+    <div class="panel-box">
+      <div class="panel-inner">
+        <div class="success-title">投票成功！</div>
+        <div class="success-desc mt10">下载Robin8 APP，继续为你的爱豆</div>
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="button btn-block download-btn mt30">下载APP</a>
+      </div>
     </div>
   </div>
 

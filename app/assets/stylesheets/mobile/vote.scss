@@ -547,7 +547,6 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
   }
 
   .new-user-panel {
-    @include display-flex;
     position: relative;
     height: 300px;
     padding: 20px;
@@ -556,7 +555,6 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
     border-radius: 10px;
     background-color: #ffca81;
     overflow: hidden;
-    align-items: center;
 
     .circle {
       position: absolute;
@@ -591,6 +589,12 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
         opacity: .3;
       }
 
+    }
+
+    .panel-box {
+      @include display-flex;
+      height: 100%;
+      align-items: center;
     }
 
     .panel-inner {
@@ -647,7 +651,7 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
   }
 
   .liked-success-panel {
-    @include display-flex;
+    display: none;
     position: relative;
     height: 230px;
     padding: 26px 20px;
@@ -656,7 +660,6 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
     border-radius: 10px;
     background-color: #ffca81;
     overflow: hidden;
-    align-items: center;
 
     .circle {
       position: absolute;
@@ -693,6 +696,12 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
 
     }
 
+    .panel-box {
+      @include display-flex;
+      height: 100%;
+      align-items: center;
+    }
+
     .panel-inner {
       width: 100%;
       text-align: center;
@@ -712,6 +721,7 @@ body.mobile-pages-vote, body.mobile-pages-vote_share {
 
     .download-btn {
       height: 60px;
+      line-height: 40px;
       border: 1px solid #fff;
       border-radius: 10px;
       font-size: 2rem;

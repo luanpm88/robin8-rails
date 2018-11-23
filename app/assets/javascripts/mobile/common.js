@@ -1,6 +1,7 @@
-var verify_phone = /^(0|86|17951)?(13[0-9]|15[012356789]|17[0-9]|18[0-9]|14[57])[0-9]{8}$/;  // 手机号码验证
+var verify_phone = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;  // 手机号码验证
 var verify_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // email校验
 var verify_pw = /^.*(?=.{6,20})(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?\(\)]).*$/; //密码校验，密码需要包含符号，英文大小写字母，6-20位字符
+var countdown_count = 120; // 倒计时默认时间
 
 $(document).ready(function() {
   // 标签切换
@@ -584,4 +585,22 @@ function DropLoadCtrl(container, list, url, params, token, data_name, create_ite
       });
     }
   });
+}
+
+// 验证码按钮倒计时
+function countdownCode(btn) {
+  btn.attr('disabled', true);
+  btn.addClass('disabled');
+  btn.html(countdown_count + '秒后重新获取');
+  var default_countdown = window.setInterval(function () {
+    countdown_count --;
+    btn.html(countdown_count + '秒后重新获取');
+    if (countdown_count === 0) {
+      btn.attr('disabled', false);
+      btn.removeClass('disabled');
+      btn.html('获取验证码');
+      window.clearInterval(default_countdown);
+      countdown_count = 120;
+    }
+  }, 1000);
 }

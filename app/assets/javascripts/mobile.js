@@ -7,3 +7,4 @@
 //= require mobile/blockchain_pmes
 //= require mobile/vote
 //= require mobile/vote_detail
+//= require mobile/vote_share

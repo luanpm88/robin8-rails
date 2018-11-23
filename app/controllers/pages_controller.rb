@@ -250,7 +250,13 @@ class PagesController < ApplicationController
   end
 
   def vote_share
-    render layout: "mobile"
+    @kol = Kol.find_by_id(params[:kol_id])
+
+    if @kol
+      render layout: "mobile"
+    else
+      render text: 'not_found'
+    end
   end
 
   private
