@@ -66,11 +66,15 @@ module API
           requires :kol_id,        type: Integer
         end
         get 'vote_sms' do
+          return {error: 1, detail: '请求频繁，请稍后再试'}  if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}_sms")
           return {error: 1, detail: '今天对当前KOL已投过票'} if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}")
-          return {error: 1, detail: '手机号格式错误'}              unless params[:mobile_number].match(API::ApiHelpers::MOBILE_NUMBER_REGEXP)
-          return {error: 1, detail: '支持的信息有误'}              unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
+          return {error: 1, detail: '手机号格式错误'}       unless params[:mobile_number].match(API::ApiHelpers::MOBILE_NUMBER_REGEXP)
+          return {error: 1, detail: '支持的信息有误'}       unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
 
           YunPian::SendRegisterSms.new(params[:mobile_number]).send_sms
+
+          # 60秒内不能重复发
+          $redis.setex("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}_sms", 120, '1')
 
           present :error, 0
         end
