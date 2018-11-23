@@ -1,6 +1,6 @@
 class Vote < ActiveRecord::Base
 
-	WaitTime = Rails.env.production? ? 24.hours : 5.minutes
+	WaitTime = Rails.env.production? ? Time.now.end_of_day.to_i - Time.now.to_i : 5.minutes.to_i
 
 	belongs_to :kol
 	belongs_to :tender, class_name: Kol, foreign_key: :tender_id

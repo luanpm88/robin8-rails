@@ -43,11 +43,11 @@ module API
           requires :kol_id,  type: Integer
         end
         post 'vote' do
-          error_403!(detail: '24小时内对每个kol不能重复投票') if $redis.get("#{current_kol.mobile_number}_vote_kol_#{params[:kol_id]}")
+          return {error: 1, detail: '今天对当前KOL已投过票'} if $redis.get("#{current_kol.mobile_number}_vote_kol_#{params[:kol_id]}")
 
           _kol = Kol.find_by_id(params[:kol_id])
           
-          error_403!(detail: '支持的信息有误') unless _kol.try(:is_hot)
+          return {error: 1, detail: '支持的信息有误'} unless _kol.try(:is_hot)
 
           voter_ship = VoterShip.find_or_initialize_by(kol_id: _kol.id, voter_id: current_kol.id)
           voter_ship.count += 1
@@ -66,9 +66,9 @@ module API
           requires :kol_id,        type: Integer
         end
         get 'vote_sms' do
-          error_403!(detail: '24小时内对每个kol不能重复投票')  if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}")
-          error_403!(detail: '手机号格式错误')               unless params[:mobile_number].match(API::ApiHelpers::MOBILE_NUMBER_REGEXP)
-          error_403!(detail: '支持的信息有误')               unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
+          return {error: 1, detail: '今天对当前KOL已投过票'} if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}")
+          return {error: 1, detail: '手机号格式错误'}              unless params[:mobile_number].match(API::ApiHelpers::MOBILE_NUMBER_REGEXP)
+          return {error: 1, detail: '支持的信息有误'}              unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
 
           YunPian::SendRegisterSms.new(params[:mobile_number]).send_sms
 
@@ -82,12 +82,12 @@ module API
           requires :code,          type: String
         end
         post 'vote_sms' do
-          error_403!(detail: '24小时内对每个kol不能重复投票') if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}")
+          return {error: 1, detail: '今天对当前KOL已投过票'} if $redis.get("#{params[:mobile_number]}_vote_kol_#{params[:kol_id]}")
           
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
 
-          error_403!(detail: '验证码错误')    unless code_right
-          error_403!(detail: '支持的信息有误') unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
+          return {error: 1, detail: '验证码错误'}    unless code_right
+          return {error: 1, detail: '支持的信息有误'} unless Kol.find_by_id(params[:kol_id]).try(:is_hot)
 
 
           k = Kol.find_or_initialize_by(mobile_number: params[:mobile_number])
