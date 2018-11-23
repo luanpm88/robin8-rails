@@ -24,6 +24,7 @@ module API
           present :public_wechat_account_is_read, current_kol.public_wechat_account.try(:is_read).try(:value)
           present :weibo_account_is_read, current_kol.weibo_account.try(:is_read).try(:value)
           present :read_list, current_kol.set_account_have_read
+          present :vote_infos, [current_kol.vote_infos]
         end
 
         params do
