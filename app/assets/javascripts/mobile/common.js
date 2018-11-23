@@ -99,44 +99,44 @@ Date.prototype.customFormat = function(formatString) {
 
 // 格式化日期
 function formatDate(timestamp) {
-  var current_day = new Date()
-  var current_year = current_day.getFullYear()
-  var current_month = current_day.getMonth() + 1
-  var current_date = current_day.getDate()
-  var d = new Date(timestamp * 1000)
-  var date = {}
-  var textday = ''
-  date.year = d.getFullYear()
-  date.month = d.getMonth() + 1
-  date.day = d.getDate()
-  date.date = date.month + '月' + date.day + '日'
-  date.hours = d.getHours()
-  date.hours = d.getHours()
-  date.minutes = formatNumber(d.getMinutes())
-  date.seconds = formatNumber(d.getMilliseconds())
+  var current_day = new Date();
+  var current_year = current_day.getFullYear();
+  var current_month = current_day.getMonth() + 1;
+  var current_date = current_day.getDate();
+  var d = new Date(timestamp * 1000);
+  var date = {};
+  var textday = '';
+  date.year = d.getFullYear();
+  date.month = d.getMonth() + 1;
+  date.day = d.getDate();
+  date.date = date.month + '月' + date.day + '日';
+  date.hours = d.getHours();
+  date.hours = d.getHours();
+  date.minutes = formatNumber(d.getMinutes());
+  date.seconds = formatNumber(d.getMilliseconds());
 
   if (date.year == current_year && date.month == current_month) {
     if (date.day == current_date) {
-      date.textday = '今天'
+      date.textday = '今天';
     } else if (date.day == (current_date - 1)) {
-      date.textday = '昨天'
+      date.textday = '昨天';
     } else if (date.day == (current_date - 2)) {
-      date.textday = '前天'
+      date.textday = '前天';
     } else if (date.day == (current_date - 3)) {
-      date.textday = '3天前'
+      date.textday = '3天前';
     } else {
-      date.textday = textday
+      date.textday = textday;
     }
   } else {
-    date.textday = textday
+    date.textday = textday;
   }
 
   return date;
 }
 
 function formatNumber (n) {
-  n = n.toString()
-  return n[1] ? n : '0' + n
+  n = n.toString();
+  return n[1] ? n : '0' + n;
 }
 
 // 获取URL参数
