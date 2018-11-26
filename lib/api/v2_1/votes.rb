@@ -95,7 +95,10 @@ module API
 
 
           k = Kol.find_or_initialize_by(mobile_number: params[:mobile_number])
-          k.save if k.new_record?
+          if k.new_record?
+            k.name = params[:mobile_number]
+            k.save
+          end
 
           voter_ship = VoterShip.find_or_initialize_by(kol_id: params[:kol_id], voter_id: k.id)
           voter_ship.count += 1
