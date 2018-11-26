@@ -96,7 +96,7 @@ module API
 
           k = Kol.find_or_initialize_by(mobile_number: params[:mobile_number])
           if k.new_record?
-            k.name = params[:mobile_number]
+            k.name = Kol.hide_real_mobile_number(params[:mobile_number])
             k.save
           end
 
