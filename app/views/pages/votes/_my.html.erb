@@ -13,7 +13,7 @@
         <% if @kol.is_hot %>
           <div class="inner">
             <div class="avatar">
-              <img src="" alt="" class="avatar-img" />
+              <%= image_tag @kol.avatar_url, class: "avatar-img" %>
             </div>
             <div class="name"><%= @kol.name %></div>
             <div class="status">
@@ -67,7 +67,7 @@
           <div class="media rank-body">
             <div class="media-left media-middle">
               <div class="avatar">
-                <%= image_tag ele.avatar_url, alt: '', class: 'avatar-img' %>
+                <%= image_tag ele.avatar_url, class: 'avatar-img' %>
                 <%= image_tag 'mobile/vote/top.png', alt: '', class: 'top-icon' if index == 0 %>
               </div>
             </div>

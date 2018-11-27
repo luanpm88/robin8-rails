@@ -10,6 +10,15 @@
 
   <tbody>
     <tr>
+      <td>活动开关</td>
+      <td>
+          <input class='data-value' type="hidden" value="<%= $redis.get('vote_switch') == '1' ? '0' : '1' %>">
+          <%= $redis.get('vote_switch') == '1' ? '已开启' : '已关闭' %>
+          <%= link_to $redis.get('vote_switch') == '1' ? '关闭' : '开启',  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vote_switch' %>
+      </td>
+    </tr>
+
+    <tr>
       <td>活动开始时间</td>
       <td><%= date_field_tag :vote_start_at, $redis.get('vote_start_at'), class: "data-value"  %>
           <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'vote_start_at', confirm: "确定更改吗？" %>
