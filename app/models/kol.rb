@@ -940,7 +940,7 @@ class Kol < ActiveRecord::Base
 
   def vote_infos
     {
-      is_show:    $redis.get('vote_start_at'),
+      is_show:    $redis.get('vote_switch') == '1' ? '1' : nil,
       banner_url: 'http://img.robin8.net/kol_banner.png',
       url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}",
       icon_url:   'http://img.robin8.net/robin8_icon.png',
