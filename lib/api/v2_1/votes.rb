@@ -5,6 +5,12 @@ module API
       resources :kols do
         before do
           authenticate! unless @options[:path].join("").match('sms')
+
+          if %w(be_kol vote vote_sms).include?(@options[:path].join(""))
+            return {error: 1, detail: '暂无该活动'} unless $redis.get('vote_switch') == '1'
+            return {error: 1, detail: '活动未开始'} if Time.now < $redis.get('vote_start_at').to_time
+            return {error: 1, detail: '活动已结束'} if Time.now > $redis.get('vote_end_at').to_time
+          end
         end
 
         desc 'my idois list'
