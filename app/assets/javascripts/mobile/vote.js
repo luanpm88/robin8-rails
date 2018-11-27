@@ -33,6 +33,10 @@ $(document).ready(function() {
         },
         success: function(data) {
           console.log(data);
+          if (data.error == 1) {
+            alert(data.detail);
+            return false;
+          }
           location.reload();
         },
         error: function(xhr, type) {
