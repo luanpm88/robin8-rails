@@ -1,6 +1,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require mobile/plugins/jquery.pwd
+//= require mobile/plugins/dropload
 //= require mobile/common
 //= require mobile/blockchain_intro
 //= require mobile/blockchain_pmes
+//= require mobile/vote
+//= require mobile/vote_detail
+//= require mobile/vote_share

@@ -1,6 +1,7 @@
-var verify_phone = /^(0|86|17951)?(13[0-9]|15[012356789]|17[0-9]|18[0-9]|14[57])[0-9]{8}$/;  // 手机号码验证
+var verify_phone = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;  // 手机号码验证
 var verify_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // email校验
 var verify_pw = /^.*(?=.{6,20})(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?\(\)]).*$/; //密码校验，密码需要包含符号，英文大小写字母，6-20位字符
+var countdown_count = 120; // 倒计时默认时间
 
 $(document).ready(function() {
   // 标签切换
@@ -94,6 +95,48 @@ Date.prototype.customFormat = function(formatString) {
         .replace('#s#', s)
         .replace('#ampm#', ampm)
         .replace('#AMPM#', AMPM);
+}
+
+// 格式化日期
+function formatDate(timestamp) {
+  var current_day = new Date();
+  var current_year = current_day.getFullYear();
+  var current_month = current_day.getMonth() + 1;
+  var current_date = current_day.getDate();
+  var d = new Date(timestamp * 1000);
+  var date = {};
+  var textday = '';
+  date.year = d.getFullYear();
+  date.month = d.getMonth() + 1;
+  date.day = d.getDate();
+  date.date = date.month + '月' + date.day + '日';
+  date.hours = d.getHours();
+  date.hours = d.getHours();
+  date.minutes = formatNumber(d.getMinutes());
+  date.seconds = formatNumber(d.getMilliseconds());
+
+  if (date.year == current_year && date.month == current_month) {
+    if (date.day == current_date) {
+      date.textday = '今天';
+    } else if (date.day == (current_date - 1)) {
+      date.textday = '昨天';
+    } else if (date.day == (current_date - 2)) {
+      date.textday = '前天';
+    } else if (date.day == (current_date - 3)) {
+      date.textday = '3天前';
+    } else {
+      date.textday = textday;
+    }
+  } else {
+    date.textday = textday;
+  }
+
+  return date;
+}
+
+function formatNumber (n) {
+  n = n.toString();
+  return n[1] ? n : '0' + n;
 }
 
 // 获取URL参数
@@ -397,4 +440,169 @@ function keyGetData(data, key) {
     result.content = data.content;
   }
   return result;
+}
+
+// 倒计时函数
+function countDownTimer(countObj, intDiff, callback){
+  window.setInterval(function(){
+    var day = 0,
+        hour = 0,
+        minute = 0,
+        second = 0;//时间默认值
+    if(intDiff > 0){
+      day = Math.floor(intDiff / (60 * 60 * 24));
+      hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+      minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+      second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+    }
+    if (day <= 9) day = '0' + day;
+    if (hour <= 9) hour = '0' + hour;
+    if (minute <= 9) minute = '0' + minute;
+    if (second <= 9) second = '0' + second;
+    countObj.find('.day-show').html(day);
+    countObj.find('.hour-show').html(hour);
+    countObj.find('.minute-show').html(minute);
+    countObj.find('.second-show').html(second);
+    intDiff --;
+    if (typeof callback === 'function'){
+      if (intDiff == 0) {
+        callback();
+      }
+    };
+  }, 1000);
+}
+
+// 拖动刷新加载方法
+function DropLoadCtrl(container, list, url, params, token, data_name, create_item, empty_icon) {
+  var that = this;
+  // that.page = params.page;
+  that.dropload = $(container).dropload({
+    scrollArea: window,
+    refreshFn: function(me) {
+      params.page = 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          console.log(_data[data_name]);
+          $(container).find(list).empty();
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            me.lock();
+            if (params.page == 1) {
+              me.emptyData();
+              $(container).find(list).append('<div class="empty-content">暂无数据</div>');
+            } else {
+              me.noData();
+            }
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    },
+    loadUpFn: function(me) {
+      params.page = 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $(container).find(list).empty();
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            params.page = 1;
+            me.unlock();
+            me.noData(false);
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    },
+    loadDownFn: function (me) {
+      params.page = params.page += 1;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: params,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', token);
+        },
+        success: function(data) {
+          var _data = data;
+          console.log(_data);
+          if (!!_data[data_name] && _data[data_name].length > 0) {
+            $.each(_data[data_name], function(index, el) {
+              $(container).find(list).append(create_item(el, index));
+            });
+          } else {
+            me.lock();
+            if (params.page == 1) {
+              me.emptyData();
+              $(container).find(list).append('<div class="empty-content">暂无数据</div>');
+            } else {
+              me.noData();
+            }
+            console.log('no data');
+          }
+          setTimeout(function () {
+            me.resetload();
+            console.log('reset load');
+          }, 1000);
+        },
+        error: function(xhr, type) {
+          console.log('error');
+          me.resetload();
+        }
+      });
+    }
+  });
+}
+
+// 验证码按钮倒计时
+function countdownCode(btn) {
+  btn.attr('disabled', true);
+  btn.addClass('disabled');
+  btn.html(countdown_count + '秒后重新获取');
+  var default_countdown = window.setInterval(function () {
+    countdown_count --;
+    btn.html(countdown_count + '秒后重新获取');
+    if (countdown_count === 0) {
+      btn.attr('disabled', false);
+      btn.removeClass('disabled');
+      btn.html('获取验证码');
+      window.clearInterval(default_countdown);
+      countdown_count = 120;
+    }
+  }, 1000);
 }

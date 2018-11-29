@@ -34,7 +34,7 @@ module ImportKols
           end
           ## notice 当前 一个社交账号只有个分类
           kol.tags << social_account.tags[0] unless kol.tags.include?(social_account.tags[0])
-          kol.is_hot = true
+          # kol.is_hot = true
           kol.save!    rescue nil
         end
       end

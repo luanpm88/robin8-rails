@@ -6,13 +6,15 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     load_kols
   end
 
-  def banned
-    @kols = Kol.where("forbid_campaign_time is not null")
-    load_kols
+  def hot_kols
+    @kols = Kol.where("is_hot is not null")
+    @q    = @kols.ransack(params[:q])
+    @kols = @q.result.order('is_hot DESC')
+    @kols = @kols.paginate(paginate_params)
   end
 
-  def hot
-    @kols = Kol.where("is_hot > 0")
+  def banned
+    @kols = Kol.where("forbid_campaign_time is not null")
     load_kols
   end
 
@@ -132,7 +134,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     params[:kol][:mobile_number] = nil  if params[:kol][:mobile_number].blank?
     params[:kol][:email] = nil          if params[:kol][:email].blank?
 
-    @kol.update_attributes(params.require(:kol).permit(:is_hot, :role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
+    @kol.update_attributes(params.require(:kol).permit(:role_check_remark, :avatar, :mobile_number, :name, :job_info, :age, :gender, :role_apply_status, :desc, :memo, :show_count, :email))
     update_tag_ids
     update_keywords
     @kol.reload

@@ -50,6 +50,8 @@
       <th>审核状态</th>
       <th>图文报价</th>
       <th>原创视频报价</th>
+      <th>自媒体圈子</th>
+      <th>自媒体平台</th>
       <th>粉丝数</th>
       <th>男女比例偏重</th>
       <th>年龄段偏重</th>
@@ -68,6 +70,8 @@
         <td><%= Creator::STATUS[t.status] %></td>
         <td><%= t.price %></td>
         <td><%= t.video_price %></td>
+        <td><%= t.circles.map(&:label).join(',') %></td>
+        <td><%= t.terraces.map(&:name).join(',') %></td>
         <td><%= t.fans_count %></td>
         <td><%= Creator::GENDER[t.gender] %></td>
         <td><%= Creator::AgeRanges[t.age_range] %></td>

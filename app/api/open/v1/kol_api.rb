@@ -30,7 +30,7 @@ module Open
           end
 
           order = params[:order] == "hot" ? "is_hot" : "created_at"
-          @kols = @kols.order("#{order} DESC").page(params[:page]).per_page(20)
+          @kols = @kols.order("is_hot DESC").page(params[:page]).per_page(20)
 
           present :success,      true
           present :kols,         @kols, with: Open::V1::Entities::Kol::Summary

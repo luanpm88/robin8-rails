@@ -1,0 +1,19 @@
+<div class="page vote-page">
+  <%= hidden_field_tag :kol_token, @kol.get_issue_token %>
+  <%= hidden_field_tag :kol_is_hot, @kol.is_hot %>
+  <div class="banner">
+    <%= image_tag 'mobile/vote/banner.jpg', alt: '2019我是网红，发现最闪亮的你', class: 'banner-img' %>
+  </div>
+
+  <% if Time.now.to_i < $redis.get('vote_start_at').try(:to_time).to_i %>
+    <%= render 'pages/votes/unstart' %>
+  <% elsif Time.now.to_i < $redis.get('vote_end_at').try(:to_time).to_i && !@kol.is_hot && @kol.has_not_voted? %>
+    <%= render 'pages/votes/start' %>
+  <% else %>
+    <%= render 'pages/votes/my' %>
+  <% end %>
+
+  <div class="foot-logo">
+    <%= image_tag 'mobile/vote/logo.png', alt: 'logo', class: 'logo-img' %>
+  </div>
+</div>

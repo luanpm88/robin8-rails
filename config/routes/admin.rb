@@ -110,12 +110,12 @@ Rails.application.routes.draw do
 
       collection do
         get 'banned'
-        get 'hot'
         get 'from_mcn'
         get 'from_app'
         get 'applying'
         get 'passed'
         get 'rejected'
+        get 'hot_kols'
       end
       member do
         match 'campaign_compensation', via: [:post, :get]
@@ -128,6 +128,10 @@ Rails.application.routes.draw do
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
     end
+
+
+    resources :voter_ships, only: [:index]
+
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
       match '/withdraw' => 'users#withdraw' , via: [:post, :get]
@@ -350,6 +354,7 @@ Rails.application.routes.draw do
           get :ios_detail
           get :invite_switch
           get :vest_bag_detail
+          get :vote_switch
           put :update_redis_value
         end
       end

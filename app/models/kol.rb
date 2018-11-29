@@ -15,13 +15,16 @@ class Kol < ActiveRecord::Base
   list :list_message_ids, :maxlength => 200             # 所有发送给部分人消息ids
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   set :invited_users
-  
+
   # elastic_article_kol_detail
   counter :redis_elastic_reads_count
   counter :redis_elastic_collects_count
   counter :redis_elastic_forwards_count
   counter :redis_elastic_likes_count
   counter :redis_elastic_stay_time
+
+  # vote is_hot
+  counter :redis_votes_count
 
   # announcement click counter
   counter :redis_announcement_clicks_count
@@ -110,6 +113,11 @@ class Kol < ActiveRecord::Base
   has_one :weibo_account
   has_one :public_wechat_account
 
+  # vote
+  has_many :voter_ships, ->{order('count desc', 'updated_at desc')}
+  has_many :voters, through: :voter_ships, source: :voter
+  has_many :votes
+
 
   # evan new big_v
   def is_new_big_v?
@@ -132,7 +140,7 @@ class Kol < ActiveRecord::Base
   has_one :e_wallet_account, class_name: "EWallet::Account"
   has_many :e_wallet_transtions, class_name: "EWallet::Transtion"
 
-  #cirlces 
+  #cirlces
   has_many :kols_circles, class_name: "KolsCircle"
   has_many :circles, through: :kols_circles
 
@@ -195,7 +203,7 @@ class Kol < ActiveRecord::Base
   scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
 
   scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
-  
+
   scope :admintag, ->(admintag) { joins(:admintags).where("admintags.tag=?", admintag) }
 
   AdminKolIds = [79,48587]
@@ -209,6 +217,7 @@ class Kol < ActiveRecord::Base
   # scope :sort_by_total_income, ->(dir) { total_income_of_transactions.order("total_income #{dir}") }
 
   before_save :set_kol_kol_role
+  before_create :set_some_attrs
 
   def set_kol_kol_role
     #role_apply_status %w{pending applying passed rejected}
@@ -224,6 +233,10 @@ class Kol < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def set_some_attrs
+    self.is_hot = nil
   end
 
   # 师徒弟关系 evan 2018.3.16
@@ -438,7 +451,7 @@ class Kol < ActiveRecord::Base
     end
     [income, count]
   end
-  
+
   # 計算邀請朋有收入
   def inv_frd_income(date)
     [
@@ -601,8 +614,6 @@ class Kol < ActiveRecord::Base
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
                         device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
                         longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
-           
-      _hash.merge!({kol_level: 'S', channel: 'geometry'}) if params[:invite_code] == "778888"
       kol = Kol.create!(_hash)
     end
     kol
@@ -759,17 +770,6 @@ class Kol < ActiveRecord::Base
     big_v.followships.collect{|t| t.follower_id}.include?(self.id)
   end
 
-  def is_hot_text
-    case self.is_hot
-      when 1
-        "热门"
-      when 0
-        "普通"
-      when -1
-        "不热门"
-    end
-  end
-
   def gender_text
     case self.gender
       when 1
@@ -878,7 +878,7 @@ class Kol < ActiveRecord::Base
   end
 
   def desc_percentage_on_friend
-    (desc_friend_gains + children.map(&:id)).uniq   
+    (desc_friend_gains + children.map(&:id)).uniq
   end
 
   def create_invite_code
@@ -937,4 +937,28 @@ class Kol < ActiveRecord::Base
     end
     _ary.values.flatten
   end
+
+  def vote_infos
+    {
+      is_show:    $redis.get('vote_switch') == '1' ? '1' : nil,
+      banner_url: 'http://img.robin8.net/kol_banner.png',
+      url:        "#{Rails.application.secrets.domain}/vote?access_token=#{self.get_issue_token}",
+      icon_url:   'http://img.robin8.net/robin8_icon.png',
+      title:      '快来Robin8给我助力吧',
+      desc:       '注册Robin8，为自己喜欢的爱豆投票吧！'
+    }
+  end
+
+  def vote_share_url
+    "#{Rails.application.secrets.domain}/vote_share?kol_id=#{self.id}"
+  end
+
+  def has_not_voted?
+    VoterShip.where(voter_id: id).empty?
+  end
+
+  def vote_ranking
+    Kol.count("is_hot > #{is_hot.to_i}").succ
+  end
+
 end

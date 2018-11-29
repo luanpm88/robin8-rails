@@ -1,0 +1,86 @@
+<h1>KOL列表</h1>
+
+<h5><%= devise_error_messages! %></h5>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    搜索过滤
+  </div>
+  <div id="searchPanel" class="panel-body">
+    <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL ID</label>
+            <%= f.search_field :id_eq, class: "form-control", placeholder: "KOL ID" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL手机</label>
+            <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL邮箱</label>
+            <%= f.search_field :email_cont, class: "form-control", placeholder: "KOL邮箱" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>KOL昵称</label>
+            <%= f.search_field :name_cont, class: "form-control", placeholder: "KOL昵称" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>&nbsp;</label>
+          <div>
+            <%= f.submit "搜索", class: "btn btn-primary" %>
+            <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%
+  csv_url = request.path + ".csv"
+  csv_url += "?" + request.query_string if request.query_string
+%>
+<%= link_to '导出列表CSV', csv_url, :class => 'btn btn-default', "data-confirm" => "关于打开csv文件中文乱码？\r\n 1. 打开Excel并新建一个空白表 \r\n 2. 顶部工具栏选择  数据 -> 自文本，选择csv文件 \r\n 3. 在弹出框中，字符集选择 UTF-8，分割符号为逗号 \r\n\r\n 确认要下载码？" %>
+<br>
+<br>
+
+<%= "共有#{@kols.count}个搜索结果" %>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>KOL ID</th>
+      <th>昵称</th>
+      <th>手机</th>
+      <th>粉丝数</th>
+      <th>投票数</th>
+      <th>实时投票数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr>
+        <td>
+          <%= link_to k.id, marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
+        </td>
+        <td><%= k.name %></td>
+        <td><%= k.mobile_number %></td>
+        <td><%= link_to k.voters.count, marketing_dashboard_voter_ships_path(kol_id: k.id) %></td>
+        <td><%= k.is_hot %></td>
+        <td><%= k.redis_votes_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @kols, renderer: BootstrapPagination::Rails  %>

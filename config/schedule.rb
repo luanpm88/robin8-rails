@@ -47,9 +47,9 @@ every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
 
-every 1.day, :at => '2:30 am' do
-  rake 'influence_score:refresh', environment: 'production'
-end
+# every 1.day, :at => '2:30 am' do
+#   rake 'influence_score:refresh', environment: 'production'
+# end
 
 #keep with secret
 # every :tuesday, :at => '0:10 am' do
@@ -106,14 +106,14 @@ end
 #   runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'qa'
 # end
 
-every 1.day, :at => '02:00 am' do
-  runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'production'
-end
+# every 1.day, :at => '02:00 am' do
+#   runner "Statistics::KolIncome.job_for_kol_dashboard_income_data", environment: 'production'
+# end
 
-# 
-every 1.day, :at => '02:00 am' do
-  runner "Statistics::CampaignSettledTakeBudget.calculate_campaign_settled_take_budget_daily", environment: 'production'
-end
+# # 
+# every 1.day, :at => '02:00 am' do
+#   runner "Statistics::CampaignSettledTakeBudget.calculate_campaign_settled_take_budget_daily", environment: 'production'
+# end
 
 # every 12.hours do
 #   runner "KolStatus.schedule_update_status"
@@ -185,4 +185,12 @@ end
 
 every :thursday , :at => '12:05 pm' do
   runner "Message.thursday_push", environment: 'production'
+end
+
+every 5.minutes do 
+  rake "votes:update_kol", environment: 'qa'
+end
+
+every :hour do 
+  rake "votes:update_kol", environment: 'production'
 end

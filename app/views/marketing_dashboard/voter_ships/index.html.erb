@@ -1,0 +1,25 @@
+<h1>粉丝列表</h1>
+
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>KOL_ID</th>
+      <th>KOL昵称</th>
+      <th>投票数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @voter_ships.each do |k| %>
+      <tr>
+        <td>
+          <%= k.voter_id  %>
+        </td>
+        <td><%= k.voter.name %></td>
+        <td><%= k.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @voter_ships, renderer: BootstrapPagination::Rails  %>

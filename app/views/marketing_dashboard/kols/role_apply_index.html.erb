@@ -13,7 +13,6 @@
       <th>昵称</th>
       <th>手机号</th>
       <th>kol 角色</th>
-      <th>是否是热门</th>
       <th>审核状态</th>
       <th>所属MCN</th>
       <th>操作</th>
@@ -23,7 +22,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name mobile_number kol_role is_hot_text role_apply_status).each do |v| %>
+        <% %w(id name mobile_number kol_role role_apply_status).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <% if k.agent.present? %>

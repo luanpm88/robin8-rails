@@ -1,0 +1,26 @@
+<div class="page vote-page">
+  <%= hidden_field_tag :kol_token, @kol.get_issue_token %>
+  <div class="user-statistics-tag">
+    <div class="item">
+      <%= image_tag 'mobile/vote/icon_user.png', alt: '', class: 'icon-img' %>
+      粉丝数：
+      <span class="num"><%= @kol.voter_ships.count %></span>
+    </div>
+    <div class="item">
+      <%= image_tag 'mobile/vote/icon_like.png', alt: '', class: 'icon-img' %>
+      当前票数：
+      <span class="num"><%= @kol.is_hot %></span>
+    </div>
+  </div>
+
+  <div class="title-bar vote-list-title">
+    <div class="icon">
+      <%= image_tag 'mobile/vote/icon_rank.png', alt: '', class: 'icon-img' %>
+    </div>
+    <h5 class="title">粉丝排行榜</h5>
+  </div>
+
+  <div class="vote-detail-list" id="voter_list">
+    <ul class="rank-list"></ul>
+  </div>
+</div>

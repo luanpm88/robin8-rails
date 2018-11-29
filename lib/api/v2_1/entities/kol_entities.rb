@@ -4,7 +4,7 @@ module API
       module KolEntities
         class BaseInfo < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          
+
           expose :id, :name, :mobile_number, :email, :gender, :job_info, :completed_rate,
                  :wechat_friends_count
 
@@ -72,6 +72,35 @@ module API
           end
           expose :cities do |public_wechat_account|
             public_wechat_account.cities.map(&:name)
+          end
+        end
+
+        class Brief < Grape::Entity
+          expose :id, :name, :vote_ranking, :vote_share_url
+
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)
+          end
+
+          expose :is_hot do |kol|
+            kol.redis_votes_count.value
+          end
+
+          expose :has_voted do |kol, options|
+            $redis.get("#{options[:mobile_number]}_vote_kol_#{kol.id}")
+          end
+        end
+
+        class Voter < Grape::Entity
+          expose :voter_id, :count
+          expose :updated_at do |voter|
+            voter.updated_at.to_i
+          end
+          expose :voter_name do |voter|
+            voter.voter.name
+          end
+          expose :voter_avatar do |voter|
+            voter.voter.avatar_url
           end
         end
 

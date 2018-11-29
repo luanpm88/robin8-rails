@@ -1,0 +1,56 @@
+<div class="cooming-soon">
+  <div class="event-description">
+    <p>“明日之星”网红评选大赛报名开始啦</p>
+    <p>无论你是素人还是网红都可以参加，也可以在ROBIN8 APP中为你喜欢的爱豆加油投票哦</p>
+  </div>
+
+  <div class="event-countdown">
+    <h3 class="countdown-title">距离报名结束还有</h3>
+    <div class="countdown-datetime" id="vote_countdown" data-datetime="<%= $redis.get('vote_end_at').to_time.to_i - Time.now.to_i %>">
+      <div class="item">
+        <div class="num day-show">99</div>
+        <div class="text">天</div>
+      </div>
+      <div class="item">
+        <div class="num hour-show">99</div>
+        <div class="text">时</div>
+      </div>
+      <div class="item">
+        <div class="num minute-show">99</div>
+        <div class="text">分</div>
+      </div>
+      <div class="item">
+        <div class="num second-show">99</div>
+        <div class="text">秒</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-intro-panel panel-box">
+    <button type="button" class="button sign-btn" id="sign_btn">我要报名</button>
+    <div class="intro-box">
+      <h5 class="sub-title">
+        <span class="text">活动规则:</span>
+      </h5>
+      <div class="intro">
+        <p>1.下载Robin8 APP并完成注册（APP中点击我要报名）</p>
+        <p>2.邀请您的好友为您拉票（好友注册并下载就可以为您拉到一票）</p>
+        <p>3.关注Robin8的微博/微信公众号，获得最新的活动消息</p>
+      </div>
+    </div>
+
+    <div class="intro-box">
+      <h5 class="sub-title">
+        <span class="text">活动详情:</span>
+      </h5>
+      <div class="intro">
+        <p>1.每人每天可以点赞一次，拉票不限次数；</p>
+        <p>2.Robin8会在2019年2月X日电话通知各获奖者，同时请密切关注ROBIN8公众号信息；</p>
+        <p>3.前三名获奖者将被邀请与顶尖网红见面，一同参加Robin8举办的颁奖礼；</p>
+        <p>4.获奖名单发布在Robin8微信公众号，获奖者在收到通知后7天未确认将被视为放弃名额；</p>
+        <p>5.通过非法手段获得的票将被报废同时取消活动资格；</p>
+        <p>6.Robin8拥有对此活动的唯一解释权。</p>
+      </div>
+    </div>
+  </div>
+</div>

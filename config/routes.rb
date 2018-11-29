@@ -217,6 +217,13 @@ Rails.application.routes.draw do
   get '/pages/pmes_demo', to: 'pages#pmes_demo'
   post 'pages/bind_e_wallet', to: 'pages#bind_e_wallet'
 
+  # 我是网红投票活动
+  get 'vote', to: 'pages#vote'
+  get 'vote_detail', to: 'pages#vote_detail'
+  get 'vote_share', to: 'pages#vote_share'
+
+
+
   #无法访问
   resources :campaign, only: [:index, :create, :update, :show]
 

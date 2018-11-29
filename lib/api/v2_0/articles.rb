@@ -100,27 +100,27 @@ module API
         post 'read' do
           return error_403!({error: 1, detail: '停留时长太短，不予保留'}) if params[:stay_time].to_i <= 1
 
-          ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
+          # ea = ElasticArticle.find_or_initialize_by(post_id: params[:post_id])
 
-          if ea.new_record?
-            ea.title = params[:title][0,100]         if params[:title]
-            ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
-            ea.save
-          end
+          # if ea.new_record?
+          #   ea.title = params[:title][0,100]         if params[:title]
+          #   ea.tag = Tag.find_by_name(params[:tag])  if params[:tag]
+          #   ea.save
+          # end
 
-          eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: 'read', post_id: params[:post_id])
-          eaa.stay_time = params[:stay_time]
+          # eaa = current_kol.elastic_article_actions.find_or_initialize_by(_action: 'read', post_id: params[:post_id])
+          # eaa.stay_time = params[:stay_time]
 
-          eaa.save
+          # eaa.save
 
-          ea.redis_reads_count.increment
-          ea.redis_stay_time.incr(eaa.stay_time)
+          # ea.redis_reads_count.increment
+          # ea.redis_stay_time.incr(eaa.stay_time)
 
           $redis.incr 'elastic_article_show_count'
           $redis.incrby 'elastic_article_show_time', params[:stay_time].to_i
 
           current_kol.redis_elastic_reads_count.increment
-          current_kol.redis_elastic_stay_time.incr(eaa.stay_time)
+          current_kol.redis_elastic_stay_time.incr(params[:stay_time].to_i)
 
           present :error, 0
           present :alert, '操作成功'
