@@ -191,6 +191,6 @@ every 5.minutes do
   rake "votes:update_kol", environment: 'qa'
 end
 
-every :hour do 
+every 20.minutes do 
   rake "votes:update_kol", environment: 'production'
 end
