@@ -240,7 +240,7 @@ class PagesController < ApplicationController
   end
 
   def vote
-    @kols_ranking = Kol.select(:id, :name, :is_hot, :avatar).order(is_hot: :desc).limit(3)
+    @kols_ranking = Kol.select(:id, :name, :is_hot, :avatar).where('is_hot > 0').order(is_hot: :desc).limit(3)
 
     render layout: "mobile"
   end
