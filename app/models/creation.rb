@@ -2,7 +2,7 @@ class Creation < ActiveRecord::Base
 
   include Redis::Objects
 
-  hash_key :targets # search condition
+  hash_key :targets_hash # search condition
 
   STATUS = {
     pending:           '待审核',
