@@ -8,4 +8,9 @@ class Terrace < ActiveRecord::Base
   has_many :creators_terraces, class_name: "CreatorsTerrace"
   has_many :creators, through: :creators_terraces
 
+
+  # creations
+  has_many :creations_terraces, class_name: "CreationsTerrace"
+  has_many :creations, through: :creations_terraces
+
 end

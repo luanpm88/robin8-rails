@@ -4,6 +4,7 @@ class CreateCreations < ActiveRecord::Migration
       t.belongs_to :user
       t.string :name
       t.text :description
+      t.belongs_to :trademark
       t.datetime :start_at
       t.datetime :end_at
       t.integer :pre_kols_count
@@ -13,6 +14,7 @@ class CreateCreations < ActiveRecord::Migration
       t.float :fee_rate, default: 0.0
       t.float :fee, default: 0.0
       t.text :notice
+      t.stirng :status
       t.timestamps null: false
     end
   end
