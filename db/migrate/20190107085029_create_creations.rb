@@ -1,16 +1,17 @@
 class CreateCreations < ActiveRecord::Migration
   def change
     create_table :creations do |t|
+      t.belongs_to :user
       t.string :name
       t.text :description
-      t.integer :terrace_id
-      t.string :terrace_name
-      t.string :image
-      t.text :required
-      t.datetime :start_time
-      t.datetime :end_time
-      t.integer :kol_number
-      t.float :budget, default: 0.0
+      t.datetime :start_at
+      t.datetime :end_at
+      t.integer :pre_kols_count
+      t.integer :kols_count
+      t.float :pre_amount, default: 0.0
+      t.float :amount, default: 0.0
+      t.float :fee_rate, default: 0.0
+      t.float :fee, default: 0.0
       t.text :notice
       t.timestamps null: false
     end
