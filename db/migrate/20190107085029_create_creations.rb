@@ -14,7 +14,7 @@ class CreateCreations < ActiveRecord::Migration
       t.float :fee_rate, default: 0.0
       t.float :fee, default: 0.0
       t.text :notice
-      t.stirng :status
+      t.string :status
       t.timestamps null: false
     end
   end
