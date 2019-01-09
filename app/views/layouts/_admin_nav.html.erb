@@ -74,6 +74,15 @@
           </li>
         <% end %>
 
+        <li>
+          <a href="#">创作活动管理<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '所有的活动', marketing_dashboard_creations_path %>
+            </li>
+          </ul>
+        </li>
+
         <% if can?(:read, CampaignInvite) %>
         <li>
           <a href="#"><%= t('menu.screenshot_management') %> <span class="fa arrow"></span></a>

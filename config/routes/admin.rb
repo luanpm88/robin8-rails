@@ -5,6 +5,13 @@ Rails.application.routes.draw do
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
 
+
+    resources :creations do
+      member do 
+        put :agree
+      end
+    end
+
     resources :tags, only: [:index, :new, :create] do 
       match '/add_circle' => 'tags#add_circle', via: [:post, :get]
     end

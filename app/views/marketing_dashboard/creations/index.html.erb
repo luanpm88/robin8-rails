@@ -1,0 +1,51 @@
+<div class="container-fluid" style="padding: 20px 0;">
+    <div>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>活动ID</th>
+          <th>活动名称</th>
+          <th>创建人ID</th>
+          <th>创建人名称</th>
+          <th>活动状态</th>
+          <th><%= sort_link(@q, :start_at, "活动开始时间") %></th>
+          <th><%= sort_link(@q, :end_at, "活动结束时间") %></th>
+          <th>需要KOL数量</th>
+          <th>实际KOL数量</th>>
+          <th>活动预算</th>
+          <th>实际支付</th>
+          <th>手续费%</th>
+          <th>实际支付手续费</th>
+          <th>注意事项</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @creations.each do |c| %>
+        <tr>
+          <td><%= link_to c.id, marketing_dashboard_creation_path(c), target: "_blank" %></td>
+          <td><%= c.name %></td>
+          <td><%= link_to c.user_id, marketing_dashboard_user_path(c.user_id), target: "_blank" rescue "未知" %></td>
+          <td><%= c.user.smart_name rescue "未知" %></td>
+          <td><%= c.status %></td>
+          <td><%= c.start_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+          <td><%= c.end_at.strftime("%Y-%m-%d %H:%M") rescue "未知" %></td>
+          <td><%= c.pre_kols_count %></td>
+          <td><%= c.kols_count %></td>
+          <td><%= c.pre_amount %>元</td>
+          <td><%= c.amount %>元</td>
+          <td><%= c.fee_rate * 100 %>%</td>
+          <td><%= c.fee %>元</td>
+          <td><%= c.notice %></td>
+          <td>
+            <%= link_to "详情", marketing_dashboard_creation_path(c), target: "_blank" %>
+            <% if c.is_pending_status? %>
+              <%= link_to '审核', agree_marketing_dashboard_creation_path(c),  method: "PUT", class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

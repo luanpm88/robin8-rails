@@ -1,0 +1,39 @@
+<table class="table table-striped">
+  <tr>
+    <td>ID</td>
+    <td><%= @creation.id %> </td>
+  </tr>
+  <tr>
+    <td>活动名称</td>
+    <td><%= @creation.name %> </td>
+  </tr>
+  <tr>
+    <td>活动介绍</td>
+    <td><%= @creation.description %> </td>
+  </tr>
+  <tr>
+    <td>活动开始时间</td>
+    <td><%= @creation.start_at.strftime("%Y-%m-%d %H:%M") %> </td>
+  </tr>
+  <tr>
+    <td>活动结束时间</td>
+    <td><%= @creation.end_at.strftime("%Y-%m-%d %H:%M") %> </td>
+  </tr>
+  <tr>
+    <td>KOL数量</td>
+    <td><%= @creation.pre_kols_count %> </td>
+  </tr>
+  <tr>
+    <td>活动预算</td>
+    <td><%= @creation.pre_amount %>元</td>
+  </tr>
+  <tr>
+    <td>手续费%</td>
+    <td><%= @creation.fee_rate * 100 %>%</td>
+  </tr>
+  <tr>
+    <td>注意事项</td>
+    <td><%= @creation.notice %> </td>
+  </tr>
+
+</table>
