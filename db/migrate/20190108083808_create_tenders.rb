@@ -3,6 +3,7 @@ class CreateTenders < ActiveRecord::Migration
     create_table :tenders do |t|
       t.belongs_to :creation
       t.belongs_to :kol
+      t.belongs_to :creation_selected_kol
       t.string :from_terrace
       t.float :price
       t.float :fee, default: 0.0

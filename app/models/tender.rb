@@ -1,6 +1,4 @@
 class Tender < ActiveRecord::Base
-  belongs_to :creation 
-  belongs_to :kol_id
 
   STATUS = {
     pending:          '待合作',
@@ -11,4 +9,10 @@ class Tender < ActiveRecord::Base
     approved:         '验收满意，待结款',
     finished:         '结款成功，合作完成'
   }
+
+
+  belongs_to :creation 
+  belongs_to :kol_id
+  belongs_to :creation_selected_kol
+  
 end
