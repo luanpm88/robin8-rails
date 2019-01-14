@@ -25,7 +25,7 @@ class Creation < ActiveRecord::Base
   belongs_to :user
 
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
-    define_method "is_#{value}_status?" do
+    define_method "is_#{value}？" do
       self.status == value
     end
   end

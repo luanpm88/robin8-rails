@@ -10,7 +10,7 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
 
   def agree
     @creation = Creation.find params[:id]
-    if @creation.is_pending_status? 
+    if @creation.is_pending? 
       @creation.update(status: 'passed')
       flash[:alert] = "审核通过"
     else

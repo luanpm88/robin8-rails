@@ -39,7 +39,7 @@
           <td><%= c.notice %></td>
           <td>
             <%= link_to "详情", marketing_dashboard_creation_path(c), target: "_blank" %>
-            <% if c.is_pending_status? %>
+            <% if c.is_pending? %>
               <%= link_to '审核', agree_marketing_dashboard_creation_path(c),  method: "PUT", class: "btn btn-primary btn-sm" %>
             <% end %>
           </td>
