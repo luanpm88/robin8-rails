@@ -16,7 +16,10 @@ class Creation < ActiveRecord::Base
   # mount_uploader :image, ImageUploader
 
   validates :status, :inclusion => { :in => ["pending", "unpassed", "passed" , "ended", "finished", "closed"] }
-  validates_presence_of :name 
+  validates_presence_of :name
+  validates_length_of :name, maximum: 60, too_long: "输入的值太长"
+  validates_length_of :description, maximum: 500, too_long: "输入的值太长"
+
 
   has_many :creations_terraces, class_name: "CreationsTerrace"
   has_many :terraces, through: :creations_terraces
