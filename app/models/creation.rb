@@ -27,6 +27,8 @@ class Creation < ActiveRecord::Base
 
   belongs_to :user
 
+  scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
+
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
     define_method "is_#{value}？" do
       self.status == value

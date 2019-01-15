@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   has_many :credits, as: :owner
 
   has_many :creations
+  has_many :trademarks
 
 
   delegate :e_wallet_account , to: :kol
