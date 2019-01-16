@@ -45,7 +45,7 @@ module Brand
                        end_at:         creation[:end_at],
                        pre_kols_count: creation[:pre_kols_count],
                        pre_amount:     creation[:pre_amount],
-                       status:         'pending'
+                       status:         'pending',
                        img_url:        creation[:img_url]
             )
 
