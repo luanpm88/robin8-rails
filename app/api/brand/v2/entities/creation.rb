@@ -5,7 +5,7 @@ module Brand
         expose :name
         expose :description
         expose :trademark_name do |object, opts|
-          (current_user.trademarks.find_by_id(object.trademark_id)).try(:name)
+          (Trademark.find_by_id(object.trademark_id)).try(:name)
         end
         
       end
