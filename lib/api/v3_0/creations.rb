@@ -13,12 +13,14 @@ module API
           optional :page,   type: Integer
         end
         get '/' do
-        	list = 	if %w(unpassed passed ended finished).include?(params[:status])
-        						Creation.by_status(params[:status]).page(params[:page]).per_page(10)
+        	list = 	if %w(passed ended finished).include?(params[:status])
+        						Creation.by_status(params[:status])
         					else
-        						Creation.alive.order(updated_at: :desc).page(params[:page]).per_page(10)
+        						Creation.alive
         					end
 
+        	list =  list.page(params[:page]).per_page(10)
+        	
         	present :errors, 0
         	present :list, list, with: API::V3_0::Entities::CreationEntities::BaseInfo
         end
