@@ -13,8 +13,6 @@ class Creation < ActiveRecord::Base
     closed:            '关闭'
   }
 
-  # mount_uploader :image, ImageUploader
-
   validates :status, :inclusion => { :in => ["pending", "unpassed", "passed" , "ended", "finished", "closed"] }
   validates_presence_of :name
   validates_length_of :name, maximum: 60, too_long: "输入的值太长"
@@ -27,10 +25,17 @@ class Creation < ActiveRecord::Base
 
   belongs_to :user
 
+  scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(updated_at: :desc)}
+  scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
+
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
     define_method "is_#{value}？" do
       self.status == value
     end
+  end
+
+  def is_alive?
+    %w(pending unpassed closed).exclude? status
   end
 
 end
