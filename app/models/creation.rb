@@ -25,6 +25,7 @@ class Creation < ActiveRecord::Base
 
   belongs_to :user
 
+  scope :alive,     ->{where.not(status: %w(pending alive)).order(updated_at: :desc)}
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
