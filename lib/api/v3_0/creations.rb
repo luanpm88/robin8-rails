@@ -21,7 +21,7 @@ module API
 
         	list =  list.page(params[:page]).per_page(10)
 
-        	present :errors, 0
+        	present :error, 0
         	present :list,   list, with: API::V3_0::Entities::CreationEntities::BaseInfo
         end
 
@@ -33,7 +33,7 @@ module API
         	creation = Creation.find_by params[:id]
 
         	error_403!(detail: 'not found') unless creation.try(:is_alive?)
-        	present :errors, 0
+        	present :error, 0
         	present :creation, creation
         end
 

@@ -12,7 +12,7 @@ class Tender < ActiveRecord::Base
 
 
   belongs_to :creation 
-  belongs_to :kol_id
+  belongs_to :kol
   belongs_to :creation_selected_kol
 
   after_create :update_quoted
@@ -22,8 +22,7 @@ class Tender < ActiveRecord::Base
   private 
 
   def update_quoted
-    csk = CreationSelectedKol.where(creation_id: self.creation_id, kol_id: self.kol_id)
-    csk.update(:quoted => true) if csk.present?
+    csk.update_columns(quoted: true)
   end
 
   
