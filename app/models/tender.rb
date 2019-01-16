@@ -14,5 +14,17 @@ class Tender < ActiveRecord::Base
   belongs_to :creation 
   belongs_to :kol_id
   belongs_to :creation_selected_kol
+
+  after_create :update_quoted
+
+
+
+  private 
+
+  def update_quoted
+    csk = CreationSelectedKol.where(creation_id: self.creation_id, kol_id: self.kol_id)
+    csk.update(:quoted => true) if csk.present?
+  end
+
   
 end
