@@ -25,10 +25,14 @@ namespace :creations do
 		}
 
 		c = Creation.create(attrs)
+
+		# select plateform
+		t = Terrace.find_by_name '微信'
+		CreationsTerrace.create(creation_id: c.id, terrace_id: t.id, exposure_value: 200000000)
+
 		c.targets_hash[:category] = 'beauty'
 		c.targets_hash[:price_from] = 2000
 		c.targets_hash[:price_to] = 100000
-		c = Creation.first
 		# select kol(BigV)
 		kol_ary = [
 			['iiiher', '她刊', 'http://wx.qlogo.cn/mmhead/Q3auHgzwzM5EWnemquKXZm1P9NXfWbhYDmiaYWAqLH8muUuB1ABNQXw/132', '青岛视觉志文化传媒有限公司'],
@@ -46,6 +50,30 @@ namespace :creations do
 				desc: ele[3]
 			)
 		end
+
+		c.reload
+
+		# kol_116045绑定一个creation_selected_kol
+		k = c.creation_selected_kols.sample
+		k.kol_id = 116045
+		k.save
+
+		# valid pass
+		c.update_attributes(status: 'passed', fee_rate: '0.2')
+	end
+
+	task :tender => :environment do
+		c = Creation.first
+		_select_kol = c.creation_selected_kols.find_by_kol_id 116045
+
+		Tender.create(
+			creation_id: c.id,
+			kol_id: _select_kol.kol_id,
+			creation_selected_kol_id: _select_kol.id,
+			from_terrace: 'wechat_public_account',
+			price: 30000,
+			fee: 30000 * c.fee_rate
+		)
 	end
 
 end

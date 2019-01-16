@@ -9,7 +9,7 @@ class CreateCreationSelectedKols < ActiveRecord::Migration
       t.string :avatar_url
       t.string :desc
       t.string :remark
-      t.boolean :quoted
+      t.boolean :quoted, default: false
       t.timestamps null: false
     end
   end
