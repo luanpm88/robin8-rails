@@ -15,6 +15,7 @@ namespace :creations do
 			user_id: u.id,
 			name: '寻找大V',
 			description: '推荐YSL黑鸦片',
+			img_url: 'https://cdn.robin8.net/ysl.jpeg',
 			trademark_id: u.trademarks.first.id,
 			start_at: Time.now,
 			end_at: 20.days.since,

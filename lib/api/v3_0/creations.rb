@@ -9,20 +9,27 @@ module API
 
         #get creations list
         params do
-          optional :page, type: Integer
+        	optional :status, type: String
+          optional :page,   type: Integer
         end
         get '/' do
 
-        	present errors: 0
-        	present list: {}
+        	list = Creation.all
+
+        	present :errors, 0
+        	present :list, list, with: API::V3_0::Entities::CreationEntities::BaseInfo
         end
 
         params do
         	requires :id, type: Integer
         end
+
         get ':id' do
-        	present errors: 0
-        	present creation: {}
+        	creation = Creation.find_by params[:id]
+
+        	error_403!(detail: 'not found') unless creation
+        	present :errors, 0
+        	present :creation, creation
         end
 
       end

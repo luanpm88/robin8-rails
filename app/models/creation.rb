@@ -13,8 +13,6 @@ class Creation < ActiveRecord::Base
     closed:            '关闭'
   }
 
-  # mount_uploader :image, ImageUploader
-
   validates :status, :inclusion => { :in => ["pending", "unpassed", "passed" , "ended", "finished", "closed"] }
   validates_presence_of :name
   validates_length_of :name, maximum: 60, too_long: "输入的值太长"

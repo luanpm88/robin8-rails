@@ -4,6 +4,7 @@ class CreateCreations < ActiveRecord::Migration
       t.belongs_to :user
       t.string :name
       t.text :description
+      t.string :img_url
       t.belongs_to :trademark
       t.datetime :start_at
       t.datetime :end_at
