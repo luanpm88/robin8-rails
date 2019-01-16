@@ -24,7 +24,28 @@ namespace :creations do
 			notice: '你牛，你上'
 		}
 
-		Creation.create(attrs)
+		c = Creation.create(attrs)
+		c.targets_hash[:category] = 'beauty'
+		c.targets_hash[:price_from] = 2000
+		c.targets_hash[:price_to] = 100000
+		c = Creation.first
+		# select kol(BigV)
+		kol_ary = [
+			['iiiher', '她刊', 'http://wx.qlogo.cn/mmhead/Q3auHgzwzM5EWnemquKXZm1P9NXfWbhYDmiaYWAqLH8muUuB1ABNQXw/132', '青岛视觉志文化传媒有限公司'],
+			['GQZHIZU', 'GQ实验室', 'http://wx.qlogo.cn/mmhead/Q3auHgzwzM5CnVukVdDnTIMWNEPIdRhjaLxdKnCfPBPXLV0fpm87Zw/132', '北京风华创想网络有限公司'],
+			['weikagirl', '卡妞范儿', 'http://wx.qlogo.cn/mmhead/Q3auHgzwzM7ot5ItQtkQMM1nrb5nnQ7iaNdlQAV4w8aibKsPcibVg203g/132', '深圳量子云科技有限公司']
+		]
+
+		kol_ary.each do |ele|
+			CreationSelectedKol.create(
+				creation_id: c.id,
+				platefrom_name: 'wechat_public_account',
+				platefrom_uuid: ele[0],
+				name: ele[1],
+				avatar_url: ele[2],
+				desc: ele[3]
+			)
+		end
 	end
 
 end

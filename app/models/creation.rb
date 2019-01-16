@@ -34,6 +34,10 @@ class Creation < ActiveRecord::Base
     end
   end
 
+  def is_alive?
+    %w(pending unpassed closed).exclude? status
+  end
+
 end
 
 

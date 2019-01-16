@@ -20,19 +20,19 @@ module API
         					end
 
         	list =  list.page(params[:page]).per_page(10)
-        	
+
         	present :errors, 0
-        	present :list, list, with: API::V3_0::Entities::CreationEntities::BaseInfo
+        	present :list,   list, with: API::V3_0::Entities::CreationEntities::BaseInfo
         end
 
+        # get simple creation detail
         params do
         	requires :id, type: Integer
         end
-
         get ':id' do
         	creation = Creation.find_by params[:id]
 
-        	error_403!(detail: 'not found') unless creation
+        	error_403!(detail: 'not found') unless creation.try(:is_alive?)
         	present :errors, 0
         	present :creation, creation
         end
