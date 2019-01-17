@@ -22,7 +22,7 @@ class Tender < ActiveRecord::Base
   private 
 
   def update_quoted
-    csk.update_columns(quoted: true)
+    self.creation_selected_kol.update_columns(quoted: true)
   end
 
   

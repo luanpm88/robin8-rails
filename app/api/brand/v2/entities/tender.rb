@@ -1,5 +1,5 @@
 module Brand
-  module V1
+  module V2
     module Entities
       class Tender < Entities::Base
         expose :from_terrace
