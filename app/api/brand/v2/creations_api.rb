@@ -3,7 +3,7 @@ module Brand
     class CreationsAPI < Base
       group do
         before do
-          # authenticate!
+          authenticate!
         end
 
         resource :creations do
