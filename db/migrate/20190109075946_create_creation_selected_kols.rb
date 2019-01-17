@@ -3,8 +3,9 @@ class CreateCreationSelectedKols < ActiveRecord::Migration
     create_table :creation_selected_kols do |t|
       t.belongs_to :creation
       t.belongs_to :kol
-      t.string :platefrom_name
-      t.string :platefrom_uuid
+      t.string :from_by, default: 'select'
+      t.string :plateform_name
+      t.string :plateform_uuid
       t.string :name
       t.string :avatar_url
       t.string :desc
