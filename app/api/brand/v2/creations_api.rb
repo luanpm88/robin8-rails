@@ -3,7 +3,7 @@ module Brand
     class CreationsAPI < Base
       group do
         before do
-          authenticate!
+          # authenticate!
         end
 
         resource :creations do
@@ -86,6 +86,19 @@ module Brand
               present creation.errors.messages
             end
           end
+
+
+        params do
+          requires :id, type: Integer
+        end
+        get ':id' do
+          creation = Creation.find_by(params[:id])
+
+          # error_403!(detail: 'not found') unless creation.try(:is_alive?)
+          error_403!(detail: 'not found') unless creation
+
+          present creation
+        end
         end
       end
     end
