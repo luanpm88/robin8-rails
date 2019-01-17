@@ -7,7 +7,7 @@ module Brand
         expose :trademark_name do |object, opts|
           (Trademark.find_by_id(object.trademark_id)).try(:name)
         end
-        expose :creations_terraces, using: Entities::CreationsTerrace do |object, opts|
+        expose :terraces, using: Entities::CreationsTerrace do |object, opts|
           object.creations_terraces
         end
         expose :img_url

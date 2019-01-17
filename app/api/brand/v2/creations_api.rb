@@ -29,24 +29,33 @@ module Brand
                 requires :terrace_id, type: Integer
                 optional :exposure_value, type: Integer
               end
+              optional :selected_kols, type: Array do
+                requires :platefrom_name, type: String
+                requires :platefrom_uuid, type: String 
+                requires :name,           type: String
+                requires :avatar_url,     type: String 
+                requires :desc,           type: String
+              end
+
               optional :notice, type: String
             end
           end
           post do
-            current_user = User.first
-            target   = params[:creation].delete "target"
-            terraces = params[:creation].delete "terraces"
-            creation = params[:creation]
-            creation = current_user.creations.new(
-                       name:           creation[:name],
-                       description:    creation[:description],
-                       trademark_id:   creation[:trademark_id],
-                       start_at:       creation[:start_at],
-                       end_at:         creation[:end_at],
-                       pre_kols_count: creation[:pre_kols_count],
-                       pre_amount:     creation[:pre_amount],
-                       status:         'pending',
-                       img_url:        creation[:img_url]
+            current_user  = User.first
+            target        = params[:creation].delete "target"
+            terraces      = params[:creation].delete "terraces"
+            selected_kols = params[:creation].delete 'selected_kols'
+            creation      = params[:creation]
+            creation      = current_user.creations.new(
+                            name:           creation[:name],
+                            description:    creation[:description],
+                            trademark_id:   creation[:trademark_id],
+                            start_at:       creation[:start_at],
+                            end_at:         creation[:end_at],
+                            pre_kols_count: creation[:pre_kols_count],
+                            pre_amount:     creation[:pre_amount],
+                            status:         'pending',
+                            img_url:        creation[:img_url]
             )
 
             if creation.save
@@ -62,6 +71,18 @@ module Brand
                 ct.save
               end
 
+              #selected_kol
+              if selected_kols
+                selected_kols.each do |attributes|
+                  creation.creation_selected_kols.create(
+                    platefrom_name: attributes[:platefrom_name],
+                    platefrom_uuid: attributes[:platefrom_uuid],
+                    name:           attributes[:name],
+                    avatar_url:     attributes[:avatar_url],
+                    desc:           attributes[:desc]
+                  )
+                end
+              end
               present creation
             else
               present creation.errors.messages
