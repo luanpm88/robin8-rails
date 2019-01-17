@@ -2,8 +2,8 @@ module Brand
   module V2
     module Entities
       class CreationSelectedKol < Entities::Base
-        expose :platefrom_name
-        expose :platefrom_uuid
+        expose :plateform_name
+        expose :plateform_uuid
         expose :name 
         expose :avatar_url
         expose :desc

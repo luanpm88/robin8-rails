@@ -2,10 +2,9 @@ module Brand
   module V2
     class CreationsAPI < Base
       group do
-        # before do
-        #   authenticate!
-        #   current_ability
-        # end
+        before do
+          authenticate!
+        end
 
         resource :creations do
 
@@ -30,8 +29,8 @@ module Brand
                 optional :exposure_value, type: Integer
               end
               optional :selected_kols, type: Array do
-                requires :platefrom_name, type: String
-                requires :platefrom_uuid, type: String 
+                requires :plateform_name, type: String
+                requires :plateform_uuid, type: String 
                 requires :name,           type: String
                 requires :avatar_url,     type: String 
                 requires :desc,           type: String
@@ -41,7 +40,6 @@ module Brand
             end
           end
           post do
-            current_user  = User.first
             target        = params[:creation].delete "target"
             terraces      = params[:creation].delete "terraces"
             selected_kols = params[:creation].delete 'selected_kols'
@@ -75,8 +73,8 @@ module Brand
               if selected_kols
                 selected_kols.each do |attributes|
                   creation.creation_selected_kols.create(
-                    platefrom_name: attributes[:platefrom_name],
-                    platefrom_uuid: attributes[:platefrom_uuid],
+                    plateform_name: attributes[:plateform_name],
+                    plateform_uuid: attributes[:plateform_uuid],
                     name:           attributes[:name],
                     avatar_url:     attributes[:avatar_url],
                     desc:           attributes[:desc]

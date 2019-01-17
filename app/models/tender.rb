@@ -15,9 +15,11 @@ class Tender < ActiveRecord::Base
   belongs_to :kol
   belongs_to :creation_selected_kol
 
+  scope :pending, -> {where("status = 'pending'")}
+  scope :unpay,   -> {where("status = 'unpay'")}
+  scope :paid,    -> {where("status = 'paid'")}
+
   after_create :update_quoted
-
-
 
   private 
 

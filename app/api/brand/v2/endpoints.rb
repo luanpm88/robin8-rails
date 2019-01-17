@@ -32,6 +32,7 @@ module Brand
 
       mount CreationsAPI
       mount KolsAPI
+      mount UsersAPI
     end
   end
 end

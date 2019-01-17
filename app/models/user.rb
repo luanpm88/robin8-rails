@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
   has_many :creations
   has_many :trademarks
 
+  has_many :collected_kols, class_name: 'UserCollectedKol'
+
 
   delegate :e_wallet_account , to: :kol
 

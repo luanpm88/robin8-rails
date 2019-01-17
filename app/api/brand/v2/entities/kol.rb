@@ -6,7 +6,7 @@ module Brand
           object
         end
         expose :tenders, using: Entities::Tender do |object, opts|
-          ::Tender.where(creation_id: object.creation_id, kol_id: object.kol_id)
+          object.tenders.send(opts[:status])
         end
       end
     end

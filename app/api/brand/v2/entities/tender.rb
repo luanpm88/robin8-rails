@@ -11,7 +11,7 @@ module Brand
         expose :description
         expose :remark
         expose :status do |object, opts|
-          ::Tender::STATUS["#{object.status}"]
+          ::Tender::STATUS[object.status.to_sym]
         end
       end
     end
