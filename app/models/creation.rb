@@ -24,6 +24,7 @@ class Creation < ActiveRecord::Base
   has_many :creation_selected_kols
 
   belongs_to :user
+  belongs_to :trademark
 
   scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(updated_at: :desc)}
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}

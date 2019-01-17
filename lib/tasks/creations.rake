@@ -42,9 +42,10 @@ namespace :creations do
 
 		kol_ary.each do |ele|
 			CreationSelectedKol.create(
+				from_by: 'select',
 				creation_id: c.id,
-				platefrom_name: 'wechat_public_account',
-				platefrom_uuid: ele[0],
+				plateform_name: 'wechat_public_account',
+				plateform_uuid: ele[0],
 				name: ele[1],
 				avatar_url: ele[2],
 				desc: ele[3]
