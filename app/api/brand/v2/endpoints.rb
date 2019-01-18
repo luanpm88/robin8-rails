@@ -23,12 +23,16 @@ module Brand
 
       # representations
       #
-      represent Creation,         with: Entities::Creation
+      represent Creation,            with: Entities::Creation
+      represent CreationSelectedKol, with: Entities::Kol
+      represent Tender,              with: Entities::Tender
 
       # namespaces
       #
 
       mount CreationsAPI
+      mount KolsAPI
+      mount UsersAPI
     end
   end
 end

@@ -1,5 +1,5 @@
 module Brand
-  module V1
+  module V2
     module Entities
       class Tender < Entities::Base
         expose :from_terrace
@@ -11,7 +11,7 @@ module Brand
         expose :description
         expose :remark
         expose :status do |object, opts|
-          ::Tender::STATUS["#{object.status}"]
+          ::Tender::STATUS[object.status.to_sym]
         end
       end
     end

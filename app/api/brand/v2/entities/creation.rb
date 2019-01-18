@@ -29,9 +29,11 @@ module Brand
         expose :price_to do |object, opts|
           object.targets_hash[:price_to]
         end
-
         expose :selected_kols, using: Entities::CreationSelectedKol do |object, opts|
           object.creation_selected_kols
+        end
+        expose :status do |object, opts|
+          ::Creation::STATUS[object.status.to_sym]
         end
       end
     end
