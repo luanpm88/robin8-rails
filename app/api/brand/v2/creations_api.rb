@@ -87,18 +87,30 @@ module Brand
             end
           end
 
+          desc 'creation show'
+          params do
+            requires :id, type: Integer
+          end
+          get ':id' do
+            creation = Creation.find_by(params[:id])
 
-        params do
-          requires :id, type: Integer
-        end
-        get ':id' do
-          creation = Creation.find_by(params[:id])
+            # error_403!(detail: 'not found') unless creation.try(:is_alive?)
+            error_403!(detail: 'not found') unless creation
 
-          # error_403!(detail: 'not found') unless creation.try(:is_alive?)
-          error_403!(detail: 'not found') unless creation
+            present creation
+          end
 
-          present creation
-        end
+
+          desc 'creation list'
+          get '/' do 
+            creations = current_user.creations
+
+            present creations, with: Entities::Creation
+          end
+
+
+
+
         end
       end
     end

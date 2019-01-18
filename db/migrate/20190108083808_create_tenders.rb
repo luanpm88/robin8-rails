@@ -13,6 +13,8 @@ class CreateTenders < ActiveRecord::Migration
       t.text :description
       t.string :remark
       t.string :status
+      t.integer :parent_id
+      t.boolean :head, default: false
       t.timestamps null: false
     end
   end

@@ -14,6 +14,7 @@ class Tender < ActiveRecord::Base
   belongs_to :creation 
   belongs_to :kol
   belongs_to :creation_selected_kol
+  has_many   :tenders, class_name: "Tender", foreign_key: :parent_id
 
   scope :pending, -> {where("status = 'pending'")}
   scope :unpay,   -> {where("status = 'unpay'")}
