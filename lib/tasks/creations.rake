@@ -27,7 +27,7 @@ namespace :creations do
 		c = Creation.create(attrs)
 
 		# select plateform
-		t = Terrace.find_by_name '微信'
+		t = Terrace.find_by_name '公众号'
 		CreationsTerrace.create(creation_id: c.id, terrace_id: t.id, exposure_value: 200000000)
 
 		c.targets_hash[:category] = 'beauty'
@@ -44,7 +44,7 @@ namespace :creations do
 			CreationSelectedKol.create(
 				from_by: 'select',
 				creation_id: c.id,
-				plateform_name: 'wechat_public_account',
+				plateform_name: 'public_wechat_account',
 				plateform_uuid: ele[0],
 				name: ele[1],
 				avatar_url: ele[2],
