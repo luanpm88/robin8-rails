@@ -39,6 +39,10 @@ class Creation < ActiveRecord::Base
     %w(pending unpassed closed).exclude? status
   end
 
+  def price_range
+    "#{targets_hash[:price_from]}--#{targets_hash[:price_to]}"
+  end
+
 end
 
 

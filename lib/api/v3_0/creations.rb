@@ -71,9 +71,35 @@ module API
         			t.delete unless t.new_record?
         		else
         			t.price 										= _hash[:price]
-        			t.fee.  										= _hash[:price] * creation.fee_rate
+        			t.fee 										  = _hash[:price] * creation.fee_rate
         			t.creation_selected_kol_id 	= selected_kol.try(:id)
         			t.save
+        		end
+        	end
+
+        	present :error, 0
+        end
+
+        # upload links
+        params do
+        	requires :creation_id, type: Integer
+        	requires :links_ary,   type: Array[JSON] do
+            requires :from_terrace, type: String
+            requires :link, 				type: String
+          end
+        end
+        post ':creation_id/upload_links' do
+        	creation = Creation.find_by(params[:creation_id])
+
+        	params[:links_ary].each do |_hash|
+        		t = Tender.find_by(
+        					creation_id:   creation.id,
+        					kol_id: 		   current_kol.id,
+        					from_terrace:  _hash[:from_terrace],
+        				)
+        		if %w(paid uploaded).include?(t.status)
+        			t.update_attributes(link: _hash[:link], status: 'uploaded')
+        			t.climb_info # 上传链接后抓一遍数据
         		end
         	end
 
