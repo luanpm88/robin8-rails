@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         get :auditing
         put :pass
         put :unpass
+
+        get :tenders
       end
     end
 

@@ -12,6 +12,10 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
   def auditing
   end
 
+  def tenders
+    @tender_kols = @creation.creation_selected_kols.is_quoted
+  end
+
   def pass
     if @creation.is_pending? 
       @creation.update(status: 'passed')

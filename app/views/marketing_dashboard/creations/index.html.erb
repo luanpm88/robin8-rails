@@ -70,8 +70,11 @@
           <td><%= c.fee %>元</td>
           <td>
             <%= link_to "详情", marketing_dashboard_creation_path(c), target: "_blank" %>
-            <% if c.is_pending? %>
+            <% case c.status %>
+            <% when 'pending' %>
               <%= link_to '审核', auditing_marketing_dashboard_creation_path(c) %>
+            <% when 'passed' %>
+              <%= link_to '查看报价', tenders_marketing_dashboard_creation_path(c) %>
             <% end %>
           </td>
         </tr>

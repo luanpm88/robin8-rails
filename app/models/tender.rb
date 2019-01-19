@@ -26,6 +26,10 @@ class Tender < ActiveRecord::Base
     %w(paid uploaded).include? status
   end
 
+  def show_info
+    "平台：#{from_terrace} | 报价：¥#{price} | 作品链接：#{link}"
+  end
+
   private 
 
   def update_quoted

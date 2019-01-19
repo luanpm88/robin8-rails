@@ -78,7 +78,22 @@
           <a href="#">创作活动管理<span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li>
-              <%= link_to '所有的活动', marketing_dashboard_creations_path %>
+              <%= link_to '全部', marketing_dashboard_creations_path %>
+            </li>
+            <li>
+              <%= link_to '待审核', marketing_dashboard_creations_path(q: {status_eq: :pending}) %>
+            </li>
+            <li>
+              <%= link_to '正在进行中', marketing_dashboard_creations_path(q: {status_in: [:passed, :ended]}) %>
+            </li>
+            <li>
+              <%= link_to '已完成', marketing_dashboard_creations_path(q: {status_eq: :finished}) %>
+            </li>
+            <li>
+              <%= link_to '已拒绝', marketing_dashboard_creations_path(q: {status_eq: :unpassed}) %>
+            </li>
+            <li>
+              <%= link_to '已关闭', marketing_dashboard_creations_path(q: {status_eq: :closed}) %>
             </li>
           </ul>
         </li>
