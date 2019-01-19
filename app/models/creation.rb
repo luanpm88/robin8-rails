@@ -30,7 +30,7 @@ class Creation < ActiveRecord::Base
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
-    define_method "is_#{value}？" do
+    define_method "is_#{value}?" do
       self.status == value
     end
   end
