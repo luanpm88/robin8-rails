@@ -39,6 +39,14 @@ class Creation < ActiveRecord::Base
     %w(pending unpassed closed).exclude? status
   end
 
+  def brand_name
+    "#{user_id}_#{user.smart_name}"
+  end
+
+  def time_range
+    "#{start_at.strftime('%D')}--#{end_at.strftime('%D')}"
+  end
+
   def price_range
     "#{targets_hash[:price_from]}--#{targets_hash[:price_to]}"
   end
