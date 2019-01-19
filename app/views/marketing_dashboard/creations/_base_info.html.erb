@@ -1,0 +1,66 @@
+<h4>创作型活动基本信息</h4>
+<table class="table table-bordered table-striped">
+  <col width="200px" />
+  <tr>
+    <td>标题</td>
+    <td><strong><%= @creation.name %></strong></td>
+  </tr>
+  <tr>
+    <td>介绍</td>
+    <td><%= @creation.description %></td>
+  </tr>
+  <tr>
+    <td>预算</td>
+    <td><%= @creation.pre_amount %></td>
+  </tr>
+  <tr>
+    <td>预计招募人数</td>
+    <td><%= @creation.pre_kols_count %></td>
+  </tr>
+  <tr>
+    <td>招募条件</td>
+    <td>
+    	<table>
+        <tr>
+          <td width="60px;">标签：</td>
+					<td><%= @creation.targets_hash[:category] %></td>
+				</tr>
+      	<tr>
+          <td width="60px;">价格：</td>
+          <td><%= @creation.price_range %><td>
+        </tr>
+      	<tr>
+          <td width="60px;">时间: </td>
+          <td><%= @creation.time_range %></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+  	<td>已选择</td>
+  	<td>
+  		<div class="row">
+  			<% @creation.creation_selected_kols.each do |kol|%>
+				  <div class="col-sm-6 col-md-3">
+				    <div class="thumbnail" style="border:none;">
+				      <%= image_tag kol.avatar_url, class: "img-circle", width: "100", height: "100" %>
+				      <div class="caption text-center">
+				        <h5><%= kol.name %></h5>
+				        <p><%= kol.desc %></p>
+				      </div>
+				    </div>
+				  </div>
+			  <% end %>
+			</div>
+  	</td>
+  </tr>
+  <tr>
+  	<td>品牌介绍</td>
+  	<td>
+  		<ul>
+  			<li><strong><%= @creation.trademark_name %></strong></li>
+    		<li style="overflow:hidden;"><%= @creation.trademark_description %></li>
+    	</ul>
+  	</td>
+  </tr>
+</table>
