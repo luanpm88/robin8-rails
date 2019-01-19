@@ -22,6 +22,10 @@ class Tender < ActiveRecord::Base
 
   after_create :update_quoted
 
+  def can_upload?
+    %w(paid uploaded).include? status
+  end
+
   private 
 
   def update_quoted
