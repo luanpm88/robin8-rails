@@ -12,7 +12,7 @@ class CreateTenders < ActiveRecord::Migration
       t.string :image_url
       t.text :description
       t.string :remark
-      t.string :status
+      t.string :status, default: 'pending'
       t.integer :parent_id
       t.boolean :head, default: false
       t.timestamps null: false

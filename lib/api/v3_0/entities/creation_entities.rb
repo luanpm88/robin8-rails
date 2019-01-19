@@ -5,7 +5,7 @@ module API
         class BaseInfo < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
 
-          expose :id, :name, :description, :img_url, :user_id, :pre_kols_count, :pre_amount
+          expose :id, :name, :description, :img_url, :user_id, :pre_kols_count, :pre_amount, :notice
 
           expose :price do |creation|
             creation.price_range

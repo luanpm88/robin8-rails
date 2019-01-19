@@ -27,7 +27,7 @@ class Tender < ActiveRecord::Base
   end
 
   def show_info
-    "平台：#{from_terrace} | 报价：¥#{price} | 作品链接：#{link}"
+    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{STATUS[status.to_sym]} | 作品链接：#{link}"
   end
 
   private 
