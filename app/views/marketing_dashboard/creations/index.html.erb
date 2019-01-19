@@ -71,7 +71,7 @@
           <td>
             <%= link_to "详情", marketing_dashboard_creation_path(c), target: "_blank" %>
             <% if c.is_pending? %>
-              <%= link_to '审核', agree_marketing_dashboard_creation_path(c),  method: "PUT", class: "btn btn-primary btn-sm" %>
+              <%= link_to '审核', auditing_marketing_dashboard_creation_path(c) %>
             <% end %>
           </td>
         </tr>

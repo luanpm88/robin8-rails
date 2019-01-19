@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
     resources :creations do
       member do 
-        put :agree
+        get :auditing
+        put :pass
+        put :unpass
       end
     end
 
