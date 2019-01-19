@@ -26,6 +26,8 @@ class Creation < ActiveRecord::Base
   belongs_to :user
   belongs_to :trademark
 
+  delegate :name, :description, to: :trademark, prefix: :trademark
+
   scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(updated_at: :desc)}
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 
@@ -48,7 +50,7 @@ class Creation < ActiveRecord::Base
   end
 
   def price_range
-    "#{targets_hash[:price_from]}--#{targets_hash[:price_to]}"
+    "¥#{targets_hash[:price_from]}--¥#{targets_hash[:price_to]}"
   end
 
 end
