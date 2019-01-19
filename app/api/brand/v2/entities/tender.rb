@@ -13,6 +13,9 @@ module Brand
         expose :status do |object, opts|
           ::Tender::STATUS[object.status.to_sym]
         end
+        expose :kols_count do |object, opts|
+          object.sub_tenders.count
+        end
       end
     end
   end

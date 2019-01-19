@@ -33,6 +33,7 @@ module Brand
       mount CreationsAPI
       mount KolsAPI
       mount UsersAPI
+      mount TendersAPI
     end
   end
 end
