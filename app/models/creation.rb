@@ -30,13 +30,21 @@ class Creation < ActiveRecord::Base
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 
   ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
-    define_method "is_#{value}？" do
+    define_method "is_#{value}?" do
       self.status == value
     end
   end
 
   def is_alive?
     %w(pending unpassed closed).exclude? status
+  end
+
+  def brand_name
+    "#{user_id}_#{user.smart_name}"
+  end
+
+  def time_range
+    "#{start_at.strftime('%D')}--#{end_at.strftime('%D')}"
   end
 
   def price_range

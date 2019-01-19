@@ -58,7 +58,10 @@ namespace :creations do
 		k = c.creation_selected_kols.sample
 		k.kol_id = 116045
 		k.save
+	end
 
+	task :pass => :environment do
+		c = Creation.first
 		# valid pass
 		c.update_attributes(status: 'passed', fee_rate: '0.2')
 	end
