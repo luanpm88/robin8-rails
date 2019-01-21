@@ -22,6 +22,10 @@
     <td>
     	<table>
         <tr>
+          <td width="60px;">平台：</td>
+          <td><%= @creation.terraces.map(&:short_name).join(', ') %></td>
+        </tr>
+        <tr>
           <td width="60px;">标签：</td>
 					<td><%= @creation.targets_hash[:industries] %></td>
 				</tr>

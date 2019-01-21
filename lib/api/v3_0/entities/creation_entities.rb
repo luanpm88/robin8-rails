@@ -11,6 +11,10 @@ module API
             creation.price_range
           end
 
+          expose :terraces_ary do |creation|
+            creation.terraces
+          end
+
           with_options(format_with: :iso_timestamp) do
             expose :start_at
             expose :end_at
