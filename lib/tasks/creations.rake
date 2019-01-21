@@ -30,7 +30,7 @@ namespace :creations do
 		t = Terrace.find_by_name '公众号'
 		CreationsTerrace.create(creation_id: c.id, terrace_id: t.id, exposure_value: 200000000)
 
-		c.targets_hash[:category] = 'beauty'
+		c.targets_hash[:industries] = 'beauty'
 		c.targets_hash[:price_from] = 2000
 		c.targets_hash[:price_to] = 100000
 		# select kol(BigV)
