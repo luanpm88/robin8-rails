@@ -16,6 +16,10 @@ class Creation < ActiveRecord::Base
     closed:            '关闭'
   }
 
+  ALERTS              = Hash.new('无效的操作')
+  ALERTS['passed']    = '审核已通过'
+  ALERTS['unpassed']  = '审核已拒绝'
+
   validates :status, :inclusion => { :in => ["pending", "unpassed", "passed" , "ended", "finished", "closed"] }
   validates_presence_of :name
   validates_length_of :name, maximum: 60, too_long: "输入的值太长"
@@ -54,6 +58,13 @@ class Creation < ActiveRecord::Base
 
   def price_range
     "¥#{targets_hash[:price_from]}--¥#{targets_hash[:price_to]}"
+  end
+
+  def brand_info
+    {
+      name:       user.smart_name,
+      avatar_url: user.avatar_url
+    }
   end
 
 end
