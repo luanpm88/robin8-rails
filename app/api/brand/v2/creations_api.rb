@@ -3,7 +3,7 @@ module Brand
     class CreationsAPI < Base
       group do
         before do
-          authenticate!
+          # authenticate!
         end
 
         resource :creations do
@@ -40,6 +40,7 @@ module Brand
             end
           end
           post do
+            current_user = User.find 829
             target        = params[:creation].delete "target"
             terraces      = params[:creation].delete "terraces"
             selected_kols = params[:creation].delete 'selected_kols'

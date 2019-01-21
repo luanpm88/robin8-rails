@@ -49,7 +49,7 @@ class Transaction < ActiveRecord::Base
                         campaign_revoke campaign_pay_by_alipay campaign_used_voucher_and_revoke campaign_refund campaign_compensation
                         limited_discount lottery_reward
                         cps_share_commission cps_tax cps_writing_commission campaign_income_revoke confiscate percentage_on_friend first_share_campaign first_check_example first_upload_invite red_money percentage_on_admin register_bounty
-                        invite_bounty_for_admin first_task_bounty)
+                        invite_bounty_for_admin first_task_bounty creation)
 
 
 
@@ -132,6 +132,8 @@ class Transaction < ActiveRecord::Base
         "#{account.strategy[:tag]}用户的额外首单奖励"
       when 'confiscate'
         '扣除同一活动重复奖励'
+      when 'creation'
+        '创作活动订单'
     end
   end
 
@@ -209,6 +211,8 @@ class Transaction < ActiveRecord::Base
         "#{account.strategy[:tag]}用户的额外首单奖励"
       when 'confiscate'
         '扣除同一活动重复奖励'
+      when 'creation'
+        '创作活动订单'
     end
   end
 

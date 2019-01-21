@@ -23,6 +23,7 @@ class Tender < ActiveRecord::Base
   scope :paid,    -> {where("status = 'paid'")}
 
   after_create :update_quoted
+  before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
   def can_upload?
     %w(paid uploaded).include? status
@@ -58,6 +59,10 @@ class Tender < ActiveRecord::Base
         # todo 去大数据中完善creation_selectd_kol
       end
     end
+  end
+
+  def update_status
+    self.sub_tenders.update_all(status: 'paid')
   end
   
 end
