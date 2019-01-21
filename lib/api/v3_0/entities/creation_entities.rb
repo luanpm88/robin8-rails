@@ -11,8 +11,8 @@ module API
             creation.price_range
           end
 
-          expose :terraces_ary do |creation|
-            creation.terraces
+          expose :terrace_names do |creation|
+            creation.terraces.map(&:name).join('，')
           end
 
           expose :brand_info do |creation|

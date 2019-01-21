@@ -30,14 +30,28 @@ class Tender < ActiveRecord::Base
     "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{STATUS[status.to_sym]} | 作品链接：#{link}"
   end
 
+  # 抓数据
+  def climb_info
+
+  end
+
   private 
 
   def update_quoted
-    unless self.head
+    unless self.head # head true 父订单
       if self.creation_selected_kol.present?
         self.creation_selected_kol.update_columns(quoted: true)
       else
-        self.creation_selected_kol = CreationSelectedKol.create(creation_id: self.creation_id, kol_id: self.kol_id, from_by: 'volunteered', quoted: true)
+        # 生成自主报价的creation_selected_koo
+        self.creation_selected_kol = CreationSelectedKol.create(
+          plateform_name: self.from_terrace, 
+          creation_id:    self.creation_id, 
+          kol_id:         self.kol_id, 
+          from_by:        'volunteered', 
+          quoted:         true
+        )
+        self.update_columns(creation_selected_kol: self.creation_selected_kol.id)
+        # todo 去大数据中完善creation_selectd_kol
       end
     end
   end
