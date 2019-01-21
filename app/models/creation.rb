@@ -56,6 +56,13 @@ class Creation < ActiveRecord::Base
     "¥#{targets_hash[:price_from]}--¥#{targets_hash[:price_to]}"
   end
 
+  def brand_info
+    {
+      name:       user.smart_name,
+      avatar_url: user.avatar_url
+    }
+  end
+
 end
 
 
