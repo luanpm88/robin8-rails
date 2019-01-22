@@ -34,6 +34,7 @@ module Brand
       mount KolsAPI
       mount UsersAPI
       mount TendersAPI
+      mount BaseInfosAPI
     end
   end
 end

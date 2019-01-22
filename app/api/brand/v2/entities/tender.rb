@@ -2,6 +2,7 @@ module Brand
   module V2
     module Entities
       class Tender < Entities::Base
+        expose :id
         expose :from_terrace
         expose :price
         expose :fee 

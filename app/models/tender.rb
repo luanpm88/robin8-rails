@@ -15,12 +15,15 @@ class Tender < ActiveRecord::Base
   belongs_to :kol
   belongs_to :creation_selected_kol
   has_many   :sub_tenders, class_name: "Tender", foreign_key: :parent_id
+  has_many   :transactions, -> {where(item_type: 'Tender')}, class_name: "Transaction", foreign_key: :item_id
+
 
   scope :pending, -> {where("status = 'pending'")}
   scope :unpay,   -> {where("status = 'unpay'")}
   scope :paid,    -> {where("status = 'paid'")}
 
   after_create :update_quoted
+  before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
   def can_upload?
     %w(paid uploaded).include? status
@@ -29,10 +32,12 @@ class Tender < ActiveRecord::Base
   def show_info
     "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{STATUS[status.to_sym]} | 作品链接：#{link}"
   end
+  
+  def amount
+    self.price + self.fee
+  end
 
-  # 抓数据
   def climb_info
-
   end
 
   private 
@@ -54,6 +59,10 @@ class Tender < ActiveRecord::Base
         # todo 去大数据中完善creation_selectd_kol
       end
     end
+  end
+
+  def update_status
+    self.sub_tenders.update_all(status: 'paid')
   end
   
 end
