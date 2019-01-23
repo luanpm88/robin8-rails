@@ -20,8 +20,8 @@ module Brand
         expose :pre_kols_count
         expose :pre_amount
         expose :notice
-        expose :category do |object, opts|
-          object.targets_hash[:category]
+        expose :industries do |object, opts|
+          object.targets_hash[:industries].split(",").join("/")
         end
         expose :price_from do |object, opts|
           object.targets_hash[:price_from]

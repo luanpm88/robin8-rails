@@ -8,6 +8,12 @@ module Brand
 
         resource :creations do
 
+          desc 'upload image'
+          post 'upload_image' do 
+            res = Uploader::FileUploader.image_uploader params[:image]
+            present res
+          end
+
           desc 'create creation'
           params do
             requires :creation, type: Hash do
@@ -20,7 +26,7 @@ module Brand
               requires :pre_amount,     type: Float
               requires :img_url,        type: String
               requires :target, type: Hash do
-                requires :category  ,   type: String
+                requires :industries,   type: String # 'a,b,c,d'
                 requires :price_from,   type: Float
                 requires :price_to,     type: Float
               end
@@ -59,7 +65,7 @@ module Brand
 
             if creation.save
               #target
-              creation.targets_hash[:category]   = target[:category]
+              creation.targets_hash[:industries]   = target[:industries]
               creation.targets_hash[:price_from] = target[:price_from]
               creation.targets_hash[:price_to]   = target[:price_to]
 

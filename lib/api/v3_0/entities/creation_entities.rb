@@ -15,6 +15,10 @@ module API
             creation.terraces.map(&:name).join('，')
           end
 
+          expose :terrace_infos do |creation|
+            API::V3_0::Entities::CreationEntities::Terrace.represent creation.terraces
+          end
+
           expose :brand_info do |creation|
             creation.brand_info
           end
@@ -54,6 +58,10 @@ module API
 
         class Tender < Grape::Entity
           expose :id, :kol_id, :creation_id, :from_terrace, :price, :title, :link, :image_url, :description
+        end
+
+        class Terrace < Grape::Entity
+          expose :id, :name, :short_name, :avatar
         end
 
       end
