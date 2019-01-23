@@ -10,6 +10,11 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
   end
 
   def auditing
+    unless @creation.is_pending?
+      respond_to do |format|
+        format.html { redirect_to :back, alert: Creation::ALERTS[@creation.status] }
+      end
+    end
   end
 
   def tenders
