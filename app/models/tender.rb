@@ -1,26 +1,10 @@
 class Tender < ActiveRecord::Base
 
-  STATUS = {
-    pending:          '待合作',
-    rejected:         '不合作',
-    unpay:            '确认合作，待付款',
-    paid:             '确认合作，已付款',
-    uploaded:         '作品上传，待验收',
-    approved:         '验收满意，待结款',
-    finished:         '结款成功，合作完成'
-  }
-
-
   belongs_to :creation 
   belongs_to :kol
   belongs_to :creation_selected_kol
   has_many   :sub_tenders, class_name: "Tender", foreign_key: :parent_id
   has_many   :transactions, -> {where(item_type: 'Tender')}, class_name: "Transaction", foreign_key: :item_id
-
-
-  scope :pending, -> {where("status = 'pending'")}
-  scope :unpay,   -> {where("status = 'unpay'")}
-  scope :paid,    -> {where("status = 'paid'")}
 
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
@@ -30,7 +14,11 @@ class Tender < ActiveRecord::Base
   end
 
   def show_info
-    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{STATUS[status.to_sym]} | 作品链接：#{link}"
+    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{status_zh} | 作品链接：#{link}"
+  end
+
+  def status_zh
+    CreationSelectedKol::STATUS[creation_selected_kol.status.to_sym]
   end
   
   def amount
@@ -45,7 +33,7 @@ class Tender < ActiveRecord::Base
   def update_quoted
     unless self.head # head true 父订单
       if self.creation_selected_kol.present?
-        self.creation_selected_kol.update_columns(quoted: true)
+        self.creation_selected_kol.update_columns(status: :quoted)
       else
         # 生成自主报价的creation_selected_koo
         self.creation_selected_kol = CreationSelectedKol.create(
@@ -53,7 +41,7 @@ class Tender < ActiveRecord::Base
           creation_id:    self.creation_id, 
           kol_id:         self.kol_id, 
           from_by:        'volunteered', 
-          quoted:         true
+          status:         'quoted'
         )
         self.update_columns(creation_selected_kol_id: self.creation_selected_kol.id)
         # todo 去大数据中完善creation_selectd_kol

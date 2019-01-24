@@ -42,7 +42,6 @@ namespace :creations do
 
 		kol_ary.each do |ele|
 			CreationSelectedKol.create(
-				from_by: 'select',
 				creation_id: c.id,
 				plateform_name: 'public_wechat_account',
 				plateform_uuid: ele[0],
