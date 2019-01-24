@@ -1,8 +1,20 @@
 class CreationSelectedKol < ActiveRecord::Base
 
+	STATUS = {
+		preelect: '预选', # brand选择或admin推荐的初始值
+		quoted:   '报价', # （自主）报名的初始值
+		unpay:    '确认合作，未支付',
+		paid:     '确认合作，已支付，等待上传作品',
+		uploaded: '已上传作品，等侍验收',
+		approved: '验收成功，等待付款',
+		finished: '付款成功，合作完成',
+		rejected: '已拒绝合作'
+	}
+
 
 	# select: 品牌主选择的, recommend: 平台推荐的, volunteered :kol自主报名的
 	validates_inclusion_of :from_by, in: %w(select recommend volunteered)
+	validates_inclusion_of :status,  in: STATUS.keys.collect{|ele| ele.to_s}
 
   belongs_to :creation
   belongs_to :kol
@@ -10,6 +22,6 @@ class CreationSelectedKol < ActiveRecord::Base
   has_many :tenders
 
 
-  scope :is_quoted, ->{ where(quoted: true)}
+  scope :is_quoted, ->{ where.not(status: 'preelect')}
   
 end

@@ -46,6 +46,10 @@ module API
             API::V3_0::Entities::CreationEntities::SelectedKol.represent creation.creation_selected_kols.is_quoted
           end
 
+          expose :my_tender_status do |creation, options|
+            options[:selected_kol_status]
+          end
+
           expose :my_tenders do |creation, options|
             API::V3_0::Entities::CreationEntities::Tender.represent options[:selected_kol].tenders
           end
@@ -57,7 +61,7 @@ module API
         end
 
         class SelectedKol < Grape::Entity
-          expose :kol_id, :plateform_name, :plateform_uuid, :name, :avatar_url, :desc, :quoted
+          expose :kol_id, :plateform_name, :plateform_uuid, :name, :avatar_url, :desc, :status
 
           expose :tenders do |selected_kol|
             API::V3_0::Entities::CreationEntities::Tender.represent selected_kol.tenders

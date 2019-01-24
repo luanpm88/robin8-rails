@@ -10,7 +10,7 @@ class CreateCreationSelectedKols < ActiveRecord::Migration
       t.string :avatar_url
       t.string :desc
       t.string :remark
-      t.boolean :quoted, default: false
+      t.string :status, default: 'preelect'
       t.timestamps null: false
     end
   end
