@@ -55,7 +55,7 @@ class Tender < ActiveRecord::Base
           from_by:        'volunteered', 
           quoted:         true
         )
-        self.update_columns(creation_selected_kol: self.creation_selected_kol.id)
+        self.update_columns(creation_selected_kol_id: self.creation_selected_kol.id)
         # todo 去大数据中完善creation_selectd_kol
       end
     end
