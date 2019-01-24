@@ -35,6 +35,7 @@ module Brand
       mount UsersAPI
       mount TendersAPI
       mount BaseInfosAPI
+      mount SessionsAPI
     end
   end
 end
