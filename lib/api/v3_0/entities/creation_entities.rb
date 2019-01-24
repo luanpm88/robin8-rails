@@ -46,6 +46,10 @@ module API
             API::V3_0::Entities::CreationEntities::SelectedKol.represent creation.creation_selected_kols.is_quoted
           end
 
+          expose :my_tenders do |creation, options|
+            API::V3_0::Entities::CreationEntities::Tender.represent options[:selected_kol].tenders
+          end
+
         end
 
         class Trademark < Grape::Entity
