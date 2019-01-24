@@ -32,9 +32,9 @@ module API
         get ':id' do
         	creation = Creation.find_by(params[:id])
 
-            selected_kol = CreationSelectedKol.find_by(creation_id: creation.id, kol_id: current_kol.id)
+          error_403!(detail: '查无此活动，请规范使用APP') unless creation.try(:is_alive?)
 
-        	error_403!(detail: '查无此活动，请规范使用APP') unless creation.try(:is_alive?)
+          selected_kol = CreationSelectedKol.find_by(creation_id: creation.id, kol_id: current_kol.id)
 
         	present :error,    0
         	present :creation, creation, with: API::V3_0::Entities::CreationEntities::Detail, selected_kol: selected_kol
@@ -56,7 +56,12 @@ module API
 
         	selected_kol = CreationSelectedKol.find_by(creation_id: creation.id, kol_id: current_kol.id)
 
-          error_403!(detail: '您的报价已无法修改') if %(preelect quoted).exclude?(selected_kol.try(:status))
+          if selected_kol
+            if %w(preelect pending).include?(selected_kol.status)
+            else
+              error_403!(detail: '您的报价已无法修改')
+            end
+          end
 
         	JSON(params[:tenders_ary]).each do |_hash|
         		t = Tender.find_or_initialize_by(
@@ -92,7 +97,8 @@ module API
         					from_terrace:  _hash['from_terrace'],
         				)
         		if t.can_upload?
-        			t.update_attributes(link: _hash['link'], status: 'uploaded')
+        			t.update_attributes(link: _hash['link'])
+              t.creation_selected_kol.update_attributes(status: :uploaded)
         			t.climb_info # 上传链接后抓一遍数据
         		end
         	end
