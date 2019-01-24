@@ -23,6 +23,13 @@ module Concerns
         return unless user
         user.valid_password?(conditions["password"]) ? user : nil
       end
+
+      def authenticate_login(conditions)
+        user = where([
+          "mobile_number = :value OR lower(email) = :value",
+          { :value => conditions.downcase }
+        ]).take
+      end
     end
   end
 end
