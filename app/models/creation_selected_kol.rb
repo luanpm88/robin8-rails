@@ -2,7 +2,7 @@ class CreationSelectedKol < ActiveRecord::Base
 
 	STATUS = {
 		preelect: '预选', # brand选择或admin推荐的初始值
-		quoted:   '报价', # （自主）报名的初始值
+		pending:  '已报价，待品牌主确认', # （自主）报名的初始值
 		unpay:    '确认合作，未支付',
 		paid:     '确认合作，已支付，等待上传作品',
 		uploaded: '已上传作品，等侍验收',
@@ -22,6 +22,12 @@ class CreationSelectedKol < ActiveRecord::Base
   has_many :tenders
 
 
+  scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
   scope :is_quoted, ->{ where.not(status: 'preelect')}
+
+
+  def can_upload?
+    %w(paid uploaded).include? status
+  end
   
 end

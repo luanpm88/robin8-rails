@@ -47,11 +47,11 @@ module API
           end
 
           expose :my_tender_status do |creation, options|
-            options[:selected_kol_status]
+            options[:selected_kol].try(:status)
           end
 
           expose :my_tenders do |creation, options|
-            API::V3_0::Entities::CreationEntities::Tender.represent options[:selected_kol].tenders
+            API::V3_0::Entities::CreationEntities::Tender.represent options[:selected_kol].try(:tenders)
           end
 
         end

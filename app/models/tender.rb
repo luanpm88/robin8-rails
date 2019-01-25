@@ -9,10 +9,6 @@ class Tender < ActiveRecord::Base
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
-  def can_upload?
-    %w(paid uploaded).include? status
-  end
-
   def show_info
     "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{status_zh} | 作品链接：#{link}"
   end
@@ -33,15 +29,15 @@ class Tender < ActiveRecord::Base
   def update_quoted
     unless self.head # head true 父订单
       if self.creation_selected_kol.present?
-        self.creation_selected_kol.update_columns(status: :quoted)
+        self.creation_selected_kol.update_columns(status: 'pending')
       else
-        # 生成自主报价的creation_selected_koo
+        # 生成自主报价的creation_selected_kol
         self.creation_selected_kol = CreationSelectedKol.create(
           plateform_name: self.from_terrace, 
           creation_id:    self.creation_id, 
           kol_id:         self.kol_id, 
           from_by:        'volunteered', 
-          status:         'quoted'
+          status:         'pending'
         )
         self.update_columns(creation_selected_kol_id: self.creation_selected_kol.id)
         # todo 去大数据中完善creation_selectd_kol
