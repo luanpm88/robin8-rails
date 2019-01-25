@@ -16,7 +16,7 @@ module Brand
             tender = Tender.find_by_id params[:tender_id]
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             tender.trade_no = trade_no
-            tender.transactions.build(account: current_user, amount: tender.amount, direct: 'creation', subject: 'creation') unless tender.transactions
+            tender.transactions.build(account: current_user, amount: tender.amount, direct: 'creation', subject: 'creation')
 
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"

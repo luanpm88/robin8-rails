@@ -24,7 +24,7 @@ module Brand
               requires :end_at,         type: DateTime
               requires :pre_kols_count, type: Integer
               requires :pre_amount,     type: Float
-              requires :img_url,        type: String
+              # requires :img_url,        type: String
               requires :target, type: Hash do
                 requires :industries,   type: String # 'a,b,c,d'
                 requires :price_from,   type: Float
@@ -59,8 +59,8 @@ module Brand
                             end_at:         creation[:end_at],
                             pre_kols_count: creation[:pre_kols_count],
                             pre_amount:     creation[:pre_amount],
-                            status:         'pending',
-                            img_url:        creation[:img_url]
+                            status:         'pending'
+                            # img_url:        creation[:img_url]
             )
 
             if creation.save
@@ -71,9 +71,11 @@ module Brand
 
               #terraces
               terraces.each do |attributes|
-                ct = creation.creations_terraces.build(terrace_id: attributes[:terrace_id])
-                ct.exposure_value = attributes[:exposure_value] if attributes[:exposure_value].present?
-                ct.save
+                if Terrace.find_by_id(attributes[:terrace_id])
+                  ct = creation.creations_terraces.build(terrace_id: attributes[:terrace_id])
+                  ct.exposure_value = attributes[:exposure_value] if attributes[:exposure_value].present?
+                  ct.save
+                end
               end
 
               #selected_kol

@@ -2,10 +2,11 @@ module Brand
   module V2
     module Entities
       class Creation < Entities::Base
+        expose :id
         expose :name
         expose :description
         expose :trademark_name do |object, opts|
-          (Trademark.find_by_id(object.trademark_id)).try(:name)
+          (::Trademark.find_by_id(object.trademark_id)).try(:name)
         end
         expose :terraces, using: Entities::CreationsTerrace do |object, opts|
           object.creations_terraces
