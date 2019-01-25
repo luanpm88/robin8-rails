@@ -18,9 +18,9 @@ module Brand
             tender = Tender.new(head: true, creation_id: params[:creation_id])
             tender.price = tenders.sum(:price)
             tender.fee = tenders.sum(:fee)
-            tender.status = "unpay"
             tender.sub_tenders << tenders
-            tenders.update_all(status: 'unpay')
+            # tender.status = "pending" 默认值
+            tenders.update_all(status: 'pending')
 
             if tender.save
               present tender

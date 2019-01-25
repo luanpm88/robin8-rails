@@ -55,6 +55,31 @@ module Brand
 					end
 
 
+					desc 'update password'
+	        params do
+	          requires :login,                      type: String
+	          requires :new_password,               type: String
+	          requires :new_password_confirmation,  type: String
+	          requires :type,                       type: String, desc: 'value in (email or mobile_number)'
+	        end
+	        post 'update_password' do
+	        	if type == "email"
+	          	kol = Kol.find_by_email params[:login]
+	          elsif type == "mobile_number"
+	          	kol = Kol.find_by_mobile_number params[:login]
+	          end
+	          error_403!(detail: '该用户不存在') unless kol
+
+	          if kol.reset_password params[:new_password], params[:new_password_confirmation]
+	          	current_user = kol.user
+	            present current_user, with: Entities::User
+	          else
+	            error_unprocessable! "密码修改失败，请重试"
+	          end
+	        end
+
+
+
 				end
 			end
 		end

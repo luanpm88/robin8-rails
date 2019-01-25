@@ -27,7 +27,7 @@ module Brand
             @creation = Creation.find params[:creation_id]
             @selected_kols = @creation.creation_selected_kols.is_quoted
 
-            present @selected_kols, with: Entities::Kol, status: 'unpay'
+            present @selected_kols, with: Entities::Kol, status: 'rejected'
           end
 
           desc 'paid tender'

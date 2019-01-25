@@ -15,22 +15,6 @@ module Brand::V2::APIHelpers
       end
   end
 
-  def is_super_user?
-    warden.authenticate(:scope => :admin_user).present?
-  end
-
-  def can?(*args)
-    current_ability.can?(*args)
-  end
-
-  def authorize!(*args)
-    current_ability.authorize!(*args)
-  end
-
-  def current_ability
-    @current_ability ||= ::Ability.new(current_user)
-  end
-
   def authenticate!
     error!('Access Denied', 401) unless current_user
   end
