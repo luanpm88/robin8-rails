@@ -7,6 +7,7 @@ class CreateTenders < ActiveRecord::Migration
       t.string :from_terrace
       t.float :price
       t.float :fee, default: 0.0
+      t.string :status, default: 'pending'
       t.string :link
       t.string :title
       t.string :image_url

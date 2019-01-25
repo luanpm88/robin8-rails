@@ -1,5 +1,11 @@
 class Tender < ActiveRecord::Base
 
+  STATUS = {
+    pending:   '待合作',
+    rejected:  '已拒绝',
+    paid:      '已支付',
+  }
+
   belongs_to :creation 
   belongs_to :kol
   belongs_to :creation_selected_kol
@@ -45,8 +51,12 @@ class Tender < ActiveRecord::Base
     end
   end
 
+  # 品牌主批量支付报价，对应的creation_selected_kol设为已付款.
   def update_status
     self.sub_tenders.update_all(status: 'paid')
+    self.sub_tenders.each do |t|
+      t.creation_selected_kol.update_attributes(status: 'paid')
+    end
   end
   
 end
