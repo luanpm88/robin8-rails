@@ -28,8 +28,7 @@ module API
           end
 
           with_options(format_with: :iso_timestamp) do
-            expose :start_at
-            expose :end_at
+            expose :start_at, :end_at
           end
 
           expose :trademark do |creation|

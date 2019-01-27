@@ -2,7 +2,7 @@ module Brand
   module V2
     module Entities
       class Creation < Entities::Base
-        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice
+        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice, :status
 
         expose :trademark_name do |object|
           object.trademark.name
@@ -28,7 +28,7 @@ module Brand
           object.creation_selected_kols
         end
 
-        expose :status do |object, opts|
+        expose :status_zh do |object, opts|
           ::Creation::STATUS[object.status.to_sym]
         end
       end
