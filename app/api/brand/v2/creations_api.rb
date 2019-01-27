@@ -102,7 +102,7 @@ module Brand
           get ':id' do
             creation = Creation.find_by(id: params[:id])
 
-            error_403!(detail: 'not found') unless creation
+            return {error: 1, detail: 'not found'} unless creation
 
             present creation
           end

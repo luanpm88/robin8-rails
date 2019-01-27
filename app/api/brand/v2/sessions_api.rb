@@ -11,47 +11,39 @@ module Brand
 					end
 					post 'sign_in' do
 						if @kol = Kol.authenticate_password(params)
-							current_user = @kol.user
 
-							present current_user, with: Entities::User
+							present @kol.user, with: Entities::User
 						else
-			        error! 'Access Denied', 401
+			        return {error: 1, detail: '请输入正确的帐号密码。'}
 			      end
 					end
 
 					desc "sign up"
 					params do 
-						requires :type,      type: String  # 'email or mobile_number'
+						requires :type,      type: String, values: %w(email mobile_number)
 						requires :login,     type: String
 						requires :code,      type: String
 						requires :password,  type: String
 					end
 					post 'sign_up' do
-						error!('您已是我们的用户，请登录', 403) if Kol.authenticate_login(params[:login])
+						return {error: 1, detail: '帐号格式不正确。'}        if params[:login].blank?
+						return {error: 1, detail: '您已是我们的用户，请登录'} if Kol.authenticate_login(params[:login])
 						
 						result = 	case params[:type]
 											when "mobile_number"
 												YunPian::SendRegisterSms.verify_code(params[:login], params[:code])
 											when "email"
-												if $redis.get("valid_#{params[:login]}") == params[:code]
-													$redis.del("valid_#{params[:email]}")
-													true
-												else
-													false
-												end
+												$redis.get("valid_#{params[:login]}") == params[:code]
 											end
+						return {error: 1, detail: '验证码错误'} unless result
 
-						if result
-							kol = Kol.create("#{params[:type]}": params[:login], password: params[:password])
+						kol = Kol.create("#{params[:type]}": params[:login], password: params[:password])
 
-							user = kol.build_user("#{params[:type]}": params[:login])
-							user.mobile_number = user.email if params[:type] == 'email'
-							user.save
+						user = kol.build_user("#{params[:type]}": params[:login])
+						user.mobile_number = user.email if params[:type] == 'email'
+						user.save
 
-							present user.reload, with: Entities::User
-						else
-							error! '验证码错误', 403
-						end
+						present user.reload, with: Entities::User
 					end
 
 					desc 'update password'
@@ -64,11 +56,10 @@ module Brand
 	        post 'update_password' do
 	        	kol = Kol.authenticate_login(params[:login])
 
-	          error_403!(detail: '该用户不存在') unless kol
+	          return {error: 1, detail: '该用户不存在'} unless kol
 
 	          if kol.reset_password(params[:new_password], params[:new_password_confirmation])
-	          	current_user = kol.user
-	            present current_user, with: Entities::User
+	            present kol.user, with: Entities::User
 	          else
 	            error_unprocessable! "密码修改失败，请重试"
 	          end

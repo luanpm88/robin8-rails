@@ -2,7 +2,17 @@ module Brand
   module V2
     module Entities
       class Creation < Entities::Base
-        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice, :status
+        format_with(:iso_timestamp) { |dt| dt.strftime('%F')}
+        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice, :status, :start_at, :end_at,
+          :trademark_id
+
+        with_options(format_with: :iso_timestamp) do
+          expose :start_at, :end_at
+        end
+
+        expose :targets_hash do |object|
+          object.targets_hash.all
+        end
 
         expose :trademark_name do |object|
           object.trademark.name

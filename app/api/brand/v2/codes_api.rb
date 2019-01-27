@@ -8,15 +8,15 @@ module Brand
             requires :mobile_number, type: String 
           end
           get 'get_phone_code' do
-            error_403!(detail: '手机号码格式错误')   unless params[:mobile_number].match(Brand::V2::APIHelpers::MOBILE_NUMBER_REGEXP)
-            error_403!(detail: '帐号已存在，请登录') if Kol.authenticate_login(params[:mobile_number])
+            return {error: 1, detail: '手机号码格式错误'}   unless params[:mobile_number].match(Brand::V2::APIHelpers::MOBILE_NUMBER_REGEXP)
+            return {error: 1, detail: '帐号已存在，请登录'} if Kol.authenticate_login(params[:mobile_number])
             
             sms_client = YunPian::SendRegisterSms.new(params[:mobile_number])
             res = sms_client.send_sms  rescue {}
             if res["code"] == 0
               present error: 0, alert: '验证码发送成功'
             else
-              error_403!({error: 1, detail: '调用第三方接口错误，请联系客服'})
+              return {error: 1, detail: '调用第三方接口错误，请联系客服'}
             end
           end
 
@@ -25,8 +25,8 @@ module Brand
             requires :email, type: String 
           end
           get 'get_email_code' do
-            error_403!(detail: '邮箱格式错误')      unless params[:email].match(Brand::V2::APIHelpers::EMAIL_REGEXP)
-            error_403!(detail: '帐号已存在，请登录') if Kol.authenticate_login(params[:email])
+            return {error: 1, detail: '邮箱格式错误'}      unless params[:email].match(Brand::V2::APIHelpers::EMAIL_REGEXP)
+            return {error: 1, detail: '帐号已存在，请登录'} if Kol.authenticate_login(params[:email])
             
             valid_code = SecureRandom.random_number(1000000)
             $redis.setex("valid_#{params[:email]}", 6000, valid_code)
