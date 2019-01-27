@@ -2,13 +2,16 @@ module Brand
   module V2
     module Entities
       class CreationsTerrace < Entities::Base
-        expose :name do |object, opts|
+        expose :terrace_id, :exposure_value
+
+        expose :name do |object|
           object.terrace.name
         end
-        expose :exposure_value do |object, opts|
-          object.terrace.exposure_value
+        
+        expose :short_name do |object|
+          object.terrace.short_name
         end
-        expose :exposure_value 
+
       end
     end
   end

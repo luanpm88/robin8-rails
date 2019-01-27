@@ -1,18 +1,13 @@
 module Brand::V2::APIHelpers
-
   EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-
-  def warden
-    env['warden']
-  end
+  MOBILE_NUMBER_REGEXP = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
 
   def current_user
-    @current_user ||=
-      if user = warden.authenticate(:scope => :user)
-        user
-      else
-        error! 'Access Denied', 401
-      end
+    result , private_token = AuthToken.valid?(headers["Authorization"])
+    if result
+      kol = Kol.app_auth(private_token)
+      @current_user = kol.user
+    end
   end
 
   def authenticate!
@@ -26,4 +21,5 @@ module Brand::V2::APIHelpers
   def error_403! detail = nil
     error!({error: 'Access Denied', detail: detail}, 403)
   end
+  
 end

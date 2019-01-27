@@ -2,37 +2,32 @@ module Brand
   module V2
     module Entities
       class Creation < Entities::Base
-        expose :id
-        expose :name
-        expose :description
-        expose :trademark_name do |object, opts|
-          (::Trademark.find_by_id(object.trademark_id)).try(:name)
+        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice
+
+        expose :trademark_name do |object|
+          object.trademark.name
         end
+
         expose :terraces, using: Entities::CreationsTerrace do |object, opts|
           object.creations_terraces
         end
-        expose :img_url
-        expose :start_at do |object, opts|
-          object.start_at.strftime('%Y-%m-%d %H:%M') if object.start_at
+
+        expose :time_range do |object|
+          object.time_range
         end
-        expose :end_at do |object, opts|
-          object.end_at.strftime('%Y-%m-%d %H:%M') if object.end_at
+ 
+        expose :industries do |object|
+          ::Tag.where(name: object.targets_hash[:industries].split(",")).map(&:label).join('/')
         end
-        expose :pre_kols_count
-        expose :pre_amount
-        expose :notice
-        expose :industries do |object, opts|
-          object.targets_hash[:industries].split(",").join("/")
+
+        expose :price_range do |object, opts|
+          object.price_range
         end
-        expose :price_from do |object, opts|
-          object.targets_hash[:price_from]
-        end
-        expose :price_to do |object, opts|
-          object.targets_hash[:price_to]
-        end
+
         expose :selected_kols, using: Entities::CreationSelectedKol do |object, opts|
           object.creation_selected_kols
         end
+
         expose :status do |object, opts|
           ::Creation::STATUS[object.status.to_sym]
         end
