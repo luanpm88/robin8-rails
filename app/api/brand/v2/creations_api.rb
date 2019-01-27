@@ -101,9 +101,8 @@ module Brand
             requires :id, type: Integer
           end
           get ':id' do
-            creation = Creation.find_by(params[:id])
+            creation = Creation.find_by(id: params[:id])
 
-            # error_403!(detail: 'not found') unless creation.try(:is_alive?)
             error_403!(detail: 'not found') unless creation
 
             present creation
@@ -112,7 +111,7 @@ module Brand
 
           desc 'creation list'
           get '/' do 
-            creations = current_user.creations
+            creations = current_user.creations.order(updated_at: :desc)
 
             present creations, with: Entities::Creation
           end

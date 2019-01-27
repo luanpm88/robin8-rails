@@ -73,7 +73,7 @@ module API
         end
 
         class Terrace < Grape::Entity
-          expose :id, :name, :short_name, :avatar
+          expose :id, :name, :short_name, :avatar, :address
         end
 
       end
