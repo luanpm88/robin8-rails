@@ -47,6 +47,7 @@
       <th>ID</th>
       <th>kol ID</th>
       <th>联系方式</th>
+      <th>微博昵称</th>
       <th>审核状态</th>
       <th>认证类型</th>
       <th>转发价格</th>
@@ -69,6 +70,7 @@
         <td><%= link_to t.id, marketing_dashboard_weibo_account_path(t) %></td>
         <td><%= t.kol_id %></td>
         <td><%= t.mobile_number %></td>
+        <td><%= t.nickname %></td>
         <td><%= WeiboAccount::STATUS[t.status] %></td>
         <td><%= WeiboAccount::AuthTypes[t.auth_type] %></td>
         <td><%= t.fwd_price %></td>
