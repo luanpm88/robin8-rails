@@ -958,7 +958,7 @@ class Kol < ActiveRecord::Base
   end
 
   def vote_ranking
-    Kol.count("is_hot > #{is_hot.to_i}").succ
+    Kol.where("is_hot > 2").count.succ
   end
 
 end

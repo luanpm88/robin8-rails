@@ -24,4 +24,15 @@ namespace :votes do
 
 	end
 
+	task :inits => :environment do
+		Vote.delete_all
+		VoterShip.delete_all
+		Kol.where('is_hot is not null').each do |kol|
+			kol.update_columns(is_hot: nil)
+			kol.redis_votes_count.set nil
+		end
+
+		p Kol.count('is_hot > 0')
+	end
+
 end
