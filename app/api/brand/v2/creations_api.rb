@@ -17,6 +17,7 @@ module Brand
           desc 'create creation'
           params do
             requires :creation, type: Hash do
+              optional :id,             type: Integer
               requires :name,           type: String
               requires :description,    type: String
               requires :trademark_id,   type: Integer
@@ -47,52 +48,44 @@ module Brand
           end
           post do
             current_user = User.find 829
-            target        = params[:creation].delete "target"
-            terraces      = params[:creation].delete "terraces"
-            selected_kols = params[:creation].delete 'selected_kols'
-            creation      = params[:creation]
-            creation      = current_user.creations.new(
-                            name:           creation[:name],
-                            description:    creation[:description],
-                            trademark_id:   creation[:trademark_id],
-                            start_at:       creation[:start_at],
-                            end_at:         creation[:end_at],
-                            pre_kols_count: creation[:pre_kols_count],
-                            pre_amount:     creation[:pre_amount],
-                            # img_url:        creation[:img_url]
-            )
 
-            if creation.save
-              #target
-              creation.targets_hash[:industries]   = target[:industries]
-              creation.targets_hash[:price_from] = target[:price_from]
-              creation.targets_hash[:price_to]   = target[:price_to]
+            c = current_user.creations.find_or_initialize_by(id: params[:id])
 
-              #terraces
-              terraces.each do |attributes|
-                if Terrace.find_by_id(attributes[:terrace_id])
-                  ct = creation.creations_terraces.build(terrace_id: attributes[:terrace_id])
-                  ct.exposure_value = attributes[:exposure_value] if attributes[:exposure_value].present?
-                  ct.save
-                end
-              end
+            c.name            = params[:creation][:name]
+            c.description     = params[:creation][:description]
+            c.trademark_id    = params[:creation][:trademark_id]
+            c.start_at        = params[:creation][:start_at]
+            c.end_at          = params[:creation][:end_at]
+            c.pre_kols_count  = params[:creation][:pre_kols_count]
+            c.pre_amount      = params[:creation][:pre_amount]
+            # c.img_url         = params[:creation][:img_url]
+            c.save
 
-              #selected_kol
-              if selected_kols
-                selected_kols.each do |attributes|
-                  creation.creation_selected_kols.create(
-                    plateform_name: attributes[:plateform_name],
-                    plateform_uuid: attributes[:plateform_uuid],
-                    name:           attributes[:name],
-                    avatar_url:     attributes[:avatar_url],
-                    desc:           attributes[:desc]
-                  )
-                end
-              end
-              present creation
-            else
-              present creation.errors.messages
+            c.reload
+            # binding.pry
+            c.targets_hash[:industries] = params[:creation][:target][:industries]
+            c.targets_hash[:price_from] = params[:creation][:target][:price_from]
+            c.targets_hash[:price_to]   = params[:creation][:target][:price_to]
+
+            c.creations_terraces.delete_all # 平台必选，直接清空
+            params[:creation][:terraces].each do |_hash|
+              c.creations_terraces.create(
+                terrace_id:     _hash[:terrace_id],
+                exposure_value: _hash[:exposure_value]
+              ) if Terrace.find_by_id(_hash[:terrace_id])
             end
+            
+            params[:creation][:selected_kols] = []
+            params[:creation][:selected_kols].each do |_hash|
+              kol = c.creation_selected_kols.find_or_initialize_by(plateform_name: _hash[:plateform_name], plateform_uuid: _hash[:plateform_uuid])
+              kol.name        = _hash[:name]
+              kol.avatar_url  = _hash[:avatar_url]
+              kol.desc        = _hash[:desc]
+              kol.kol_id      = _hash[:kol_id]
+              kol.save
+            end
+
+            present c.reload
           end
 
           desc 'creation show'
