@@ -14,7 +14,7 @@ module Brand
           end
           get 'pending_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.pending
+            @selected_kols = @creation.creation_selected_kols.by_status('pending')
 
             present @selected_kols, with: Entities::Kol
           end
