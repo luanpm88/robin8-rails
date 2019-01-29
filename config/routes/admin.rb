@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
         get :tenders
       end
+      collection do
+        get :search_kols
+      end
     end
 
     resources :tags, only: [:index, :new, :create] do 

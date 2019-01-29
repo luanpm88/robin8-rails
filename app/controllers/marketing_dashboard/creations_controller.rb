@@ -1,5 +1,5 @@
 class MarketingDashboard::CreationsController < MarketingDashboard::BaseController
-  before_filter :get_creation, except: [:index]
+  before_filter :get_creation, except: [:index, :search_kols]
 
   def index
     @q    = Creation.ransack(params[:q])
@@ -57,6 +57,16 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
       flash[:alert] = "该活动不是待审核状态，不能审核通过"
     end
     redirect_to  marketing_dashboard_creations_path
+  end
+
+  def search_kols
+    if params[:type] == 'weibo'
+      res = BigV::Weibo.search(params[:profile_name], params[:page_no])
+    else
+      res = BigV::PublicWechatAccount.search(params[:profile_name], params[:page_no])
+    end
+
+    render json: {data: JSON(res)}
   end
 
   private
