@@ -30,11 +30,11 @@ module Brand
             present @selected_kols, with: Entities::Kol
           end
 
-          desc ' tender'
+          desc 'finished tender'
           params do
             requires :creation_id, type: Integer
           end
-          get 'paid_tenders' do
+          get 'finished_tenders' do
             @creation = Creation.find params[:creation_id]
             @selected_kols = @creation.creation_selected_kols.by_status('finished')
 
