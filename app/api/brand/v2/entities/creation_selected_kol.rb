@@ -9,6 +9,9 @@ module Brand
         expose :status do |object, opts|
           ::CreationSelectedKol::STATUS[object.status.to_sym]
         end
+        expose :price_total do |object, opts|
+          object.tenders.sum(:price)
+        end
       end
     end
   end
