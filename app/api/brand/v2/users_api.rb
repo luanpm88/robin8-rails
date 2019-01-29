@@ -22,6 +22,31 @@ module Brand
             end
           end
 
+
+          desc 'create Competitor'
+          params do
+            requires :competitors, type: Array do 
+              requires :name,       type: String
+              requires :short_name,  type: String
+            end
+          end
+
+          post 'competitor' do
+            params[:competitors].each do |attributes|
+              current_user.competitors.find_or_create_by(name: attributes[:name], short_name: attributes[:short_name])
+            end
+
+            present current_user.competitors, with: Entities::Competitor
+          end
+
+
+
+          desc 'brand Competitors'
+
+          get 'competitors' do
+            present current_user.competitors, with: Entities::Competitor
+          end
+
         end
       end
     end

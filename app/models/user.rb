@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
 
   has_many :creations
   has_many :trademarks
+  has_many :competitors
 
   has_many :collected_kols, class_name: 'UserCollectedKol'
 
