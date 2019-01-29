@@ -2,7 +2,7 @@
 <div class="recommend">
 	<div class="row">	
 	  <h5>佣金(%):</h5>
-	  <div class="col-md-1"><input class="form-control"></div>
+	  <div class="col-md-1"><input id="fee_rate" class="form-control"></div>
 	</div>
   <div class="row">
     <h5>推荐搜索:</h5>
@@ -13,7 +13,7 @@
       </select>
     </div>
     <div class="col-md-3">
-      <input class="form-control" placeholder="请输入内容">
+      <input class="form-control" id= "profile_name" placeholder="请输入mingzi">
     </div>
     <input type="submit" value="搜索" class="btn btn-primary col-md-1 search-btn">
   </div>
@@ -32,7 +32,7 @@
 <div class="row search-list"></div>
 <input type="submit" value="提交" class="btn btn-primary col-md-1 search-submit">
 <style>
-    .recommend{
+  .recommend{
     padding: 10px 30px;
   }
   .s-part{
@@ -104,27 +104,18 @@
     var weiboList = [];
     var weiboWeixin = [];
     var formType = document.getElementById('form-type');
-    let param = {
-      start_date: "2018-08-09",
-      end_date: "2018-08-29",
-      industries: ["beauty", "fashion"],
-      page_no: 0,
-      page_size: 5,
-      price_from: 0,
-      price_to: 10000
-    };
+    var searchType = 'weixin';
     // 默认调用微博接口
     // 调用微博接口
-    weiboJog(param);
+    // weiboJog(param);
     // searchbtn
     $('.search-btn').on("click", function () {
       if (formType.options[formType.selectedIndex].value === "1") {
-        // 调用微博接口
-        weiboJog(param);
+        searchType = 'weibo';
       } else {
-        // 调用微信接口
-        weixinJog(param);
+        searchType = 'weixin';
       }
+      Jog({type: searchType, profile_name: $('#profile_name').val(), page_no: 0});
     });
     // top input 点击
     $('.search-selectbox').on('click','input', function () {
@@ -208,27 +199,26 @@
     alert(check_val);
   }
   // 微博接口
-  function weiboJog(params) {
+  function Jog(params) {
     $.ajax({
-      url: 'http://api_beta.robin8.net:8080/api/v1/r1/price/weibo/price/kol_search?application_id=local-001&application_key=vue-001',
+      url: '/marketing_dashboard/creations/search_kols',
       // contentType: "application/json;charset=utf-8",
-      type: 'POST',
+      type: 'GET',
       dataType: 'json',
       data: params,
       success: function (data) {
-        // console.log('我是微博', data);
-        weiboList = data.data;
+        weiboList = data.data.data;
         var html = "";
         $('.search-selectbox').html('');
-        for (var i = 0; i < data.data.length; i++) {
+        for (var i = 0; i < data.data.total_record_count; i++) {
           html +=
             '<div class="col-md-4 s-part">' +
-            '<input type="checkbox" name="test" value="' + data.data[i].profile_id + '" />' +
+            '<input type="checkbox" name="test" value="' + data.data.data[i].profile_id + '" />' +
             '<div class="s-part-right">' +
-            '<img src="' + data.data[i].avatar_url + '" alt="">' +
+            '<img src="' + data.data.data[i].avatar_url + '" alt="">' +
             '<div>' +
-            '<p>' + data.data[i].profile_name + '</p>' +
-            '<p>' + data.data[i].description_raw + '</p>' +
+            '<p>' + data.data.data[i].profile_name + '</p>' +
+            '<p>' + data.data.data[i].description_raw + '</p>' +
             '</div>' +
             '</div>' +
             '</div>'
@@ -240,35 +230,4 @@
       }
     })
   };
-  // 微信接口
-  function weixinJog(params) {
-    $.ajax({
-      url: 'http://api_beta.robin8.net:8080/api/v1/r1/price/price/kol_search?application_id=local-001&application_key=vue-001',
-      type: 'POST',
-      dataType: 'json',
-      data: params,
-      success: function (data) {
-        console.log('我是微信', data);
-        var html = "";
-        $('.search-selectbox').html('');
-        for (var i = 0; i < data.data.length; i++) {
-          html +=
-            '<div class="col-md-4 s-part">' +
-            '<input type="checkbox" name="test" value="' + data.data[i].profile_id + '" />' +
-            '<div class="s-part-right">' +
-            '<img src="' + data.data[i].avatar_url + '" alt="">' +
-            '<div>' +
-            '<p>' + data.data[i].profile_name + '</p>' +
-            '<p>' + data.data[i].description_raw + '</p>' +
-            '</div>' +
-            '</div>' +
-            '</div>'
-        }
-        $('.search-selectbox').append(html);
-      },
-      error: function (error) {
-        console.log(error);
-      }
-    })
-  }
 </script>
