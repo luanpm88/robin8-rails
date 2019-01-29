@@ -9,12 +9,12 @@ module API
 
         # get my tenders
         params do
-        	requires :status, type: String, values: %w(pending passed rejected)
+        	requires :status, type: String, values: %w(pending valid rejected)
           requires :page,   type: Integer
         end
         get ':id/tenders' do
           # current_user = Kol.find 109050
-          list =  if params[:status] == 'passed'
+          list =  if params[:status] == 'valid'
                     current_user.creation_selected_kols.valid
                   else
                     current_user.creation_selected_kols.by_status(params[:status])

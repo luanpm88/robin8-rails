@@ -8,6 +8,10 @@ module API
         	expose :creation_name do |selected_kol|
         		selected_kol.creation.name
         	end
+
+          expose :status_zh do |selected_kol|
+            CreationSelectedKol::STATUS[selected_kol.status.to_sym]
+          end
         end
       end
     end

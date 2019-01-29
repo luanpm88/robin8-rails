@@ -25,7 +25,7 @@ module Brand
               requires :end_at,         type: DateTime
               requires :pre_kols_count, type: Integer
               requires :pre_amount,     type: Float
-              # requires :img_url,        type: String
+              requires :img_url,        type: String
               requires :target, type: Hash do
                 requires :industries,   type: String # 'a,b,c,d'
                 requires :price_from,   type: Float
@@ -58,7 +58,7 @@ module Brand
             c.end_at          = params[:creation][:end_at]
             c.pre_kols_count  = params[:creation][:pre_kols_count]
             c.pre_amount      = params[:creation][:pre_amount]
-            # c.img_url         = params[:creation][:img_url]
+            c.img_url         = params[:creation][:img_url]
             c.save
 
             c.reload
@@ -75,7 +75,6 @@ module Brand
               ) if Terrace.find_by_id(_hash[:terrace_id])
             end
             
-            params[:creation][:selected_kols] = []
             params[:creation][:selected_kols].each do |_hash|
               kol = c.creation_selected_kols.find_or_initialize_by(plateform_name: _hash[:plateform_name], plateform_uuid: _hash[:plateform_uuid])
               kol.name        = _hash[:name]
