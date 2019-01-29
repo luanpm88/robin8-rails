@@ -15,9 +15,7 @@ class Tender < ActiveRecord::Base
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
-  scope :pending,  -> { where(status: 'pending').order(updated_at: :desc) }
-  scope :rejected, -> { where(status: 'rejected').order(updated_at: :desc) }
-  scope :paid,     -> { where(status: 'paid').order(updated_at: :desc) }
+  scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
   
 
   def show_info
