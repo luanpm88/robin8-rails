@@ -1,9 +1,6 @@
 module Brand
   module V2
     class Base < Grape::API
-
-    	protect_from_forgery with: :exception
-
 		  skip_before_filter :verify_authenticity_token
 
 		  before_filter :add_allow_credentials_headers, :cors_preflight_check
