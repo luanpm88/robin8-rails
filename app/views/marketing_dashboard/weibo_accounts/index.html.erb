@@ -207,7 +207,7 @@ $(function(){
       if(data['result'] == 'passed' || data['result'] == 'rejected') {
         location.reload();
       } else {
-        $(".error-flash").css("display", "block");
+        location.reload();
       }
     });
   }

@@ -2,6 +2,8 @@
   微信公众号用户列表
 </h1>
 
+<div class = "error-flash"></div>
+
 <!-- <h5><%= devise_error_messages! %></h5> -->
 
 <div class="panel panel-default">
@@ -209,7 +211,7 @@ $(function(){
       if(data['result'] == 'passed' || data['result'] == 'rejected') {
         location.reload();
       } else {
-        $(".error-flash").css("display", "block");
+        location.reload();
       }
     });
   }
