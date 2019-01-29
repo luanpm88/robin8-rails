@@ -8,14 +8,13 @@ class MarketingDashboard::PublicWechatAccountsController < MarketingDashboard::B
     @public_wechat_account = PublicWechatAccount.find params[:id]
     status = params['status']
     if params['status'] == "passed"
+      @public_wechat_account.update_column(:profile_id, params[:profile_id])
       result = BigV::PublicWechatAccount.bind(@public_wechat_account.kol_id, params[:profile_id])
       if JSON(result)['result'] == "success"
         @public_wechat_account.update_column(:status, 1)
-        @public_wechat_account.update_column(:profile_id, params[:profile_id])
         @public_wechat_account.is_read.set 1
         @public_wechat_account.kol.update_column(:role_apply_status, 'passed')
       else
-        @public_wechat_account.update_column(:profile_id, params[:profile_id])
         flash[:notice] = JSON(result)['error_msg']
         return render json: { error:  JSON(result)['error_msg']}
       end
