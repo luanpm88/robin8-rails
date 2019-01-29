@@ -13,11 +13,10 @@ module API
           requires :page,   type: Integer
         end
         get ':id/tenders' do
-          # current_user = Kol.find 109050
           list =  if params[:status] == 'valid'
-                    current_user.creation_selected_kols.valid
+                    current_kol.creation_selected_kols.valid
                   else
-                    current_user.creation_selected_kols.by_status(params[:status])
+                    current_kol.creation_selected_kols.by_status(params[:status])
                   end
 
         	list = list.page(params[:page]).per_page(10)

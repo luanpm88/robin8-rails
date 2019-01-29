@@ -95,6 +95,12 @@
             <li>
               <%= link_to '已关闭', marketing_dashboard_creations_path(q: {status_eq: :closed}) %>
             </li>
+            <li>
+              <%= link_to '待支付', marketing_dashboard_creation_selected_kols_path(q: {status_eq: :approved}) %>
+            </li>
+            <li>
+              <%= link_to '已支付', marketing_dashboard_creation_selected_kols_path(q: {status_eq: :finished}) %>
+            </li>
           </ul>
         </li>
 

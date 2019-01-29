@@ -15,6 +15,8 @@ class Tender < ActiveRecord::Base
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
+  scope :paid, -> { where(status: :paid) }
+
   def show_info
     "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{status_zh} | 作品链接：#{link}"
   end
@@ -51,7 +53,8 @@ class Tender < ActiveRecord::Base
     end
   end
 
-  # 品牌主批量支付报价，对应的creation_selected_kol设为已付款.
+  # 品牌主批量支付报价，对应的creation_selected_kol设为已付款， 接下来的所有交互都是跟creation_selected_kol有关
+  # 直到平台付款给大V时，拿对应的selected_kol下面tender状态为paid去支付.
   def update_status
     self.sub_tenders.update_all(status: 'paid')
     self.sub_tenders.each do |t|
