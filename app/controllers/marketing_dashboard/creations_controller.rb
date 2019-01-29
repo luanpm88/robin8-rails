@@ -59,6 +59,10 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
     redirect_to  marketing_dashboard_creations_path
   end
 
+  def search_kols
+    render json: {aa: 'dsfs'}
+  end
+
   private
 
   def get_creation
