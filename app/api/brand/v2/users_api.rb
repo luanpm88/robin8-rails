@@ -40,12 +40,22 @@ module Brand
           end
 
 
-
-          desc 'brand Competitors'
-
-          get 'competitors' do
-            present current_user.competitors, with: Entities::Competitor
+          desc 'create trademark'
+          params do
+            requires :trademarks, type: Array do 
+              requires :name,       type: String
+              requires :description,  type: String
+            end
           end
+
+          post 'trademark' do
+            params[:trademarks].each do |attributes|
+              current_user.trademarks.find_or_create_by(name: attributes[:name], description: attributes[:description])
+            end
+
+            present current_user.trademarks, with: Entities::Trademark
+          end
+
 
         end
       end

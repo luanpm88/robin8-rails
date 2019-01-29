@@ -8,7 +8,7 @@ module Brand
 
         resource :tenders do
 
-          desc 'create tender for the head'
+          desc 'create tender for the head' #创建总报价
           params do
             requires :tenders_ary, type: Array
           end
@@ -28,6 +28,24 @@ module Brand
               present tender.errors.messages
             end
           end
+
+
+          #验收作品成功
+          params do 
+            requires :creation_selected_kol_id,  type: String
+          end
+          put "/update_status" do 
+            csk = CreationSelectedKol.find_by_id params[:creation_selected_kol_id]
+            if csk
+              csk.update_column(:status, "approved")
+              present csk, with: Entities::CreationSelectedKol
+            else
+              return {error: 1, detail: '数据错误，请确认'}
+            end
+
+            
+          end
+
 
         end
       end
