@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :creation_selected_kols, only: [:index]
+
     resources :tags, only: [:index, :new, :create] do 
       match '/add_circle' => 'tags#add_circle', via: [:post, :get]
     end
