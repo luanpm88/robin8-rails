@@ -119,6 +119,7 @@ class Kol < ActiveRecord::Base
   has_many :votes
 
   has_many :tenders
+  has_many :creation_selected_kols
 
 
   # evan new big_v
