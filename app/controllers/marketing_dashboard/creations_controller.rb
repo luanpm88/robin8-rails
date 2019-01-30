@@ -3,7 +3,7 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
 
   def index
     @q    = Creation.ransack(params[:q])
-    @creations = @q.result.order(created_at: :desc).paginate(paginate_params)
+    @creations = @q.result.order(updated_at: :desc).paginate(paginate_params)
   end
 
   def show
@@ -22,9 +22,10 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
   end
 
   def update_auditing
+    alert = '无效的操作'
     if @creation.is_pending?
-      if params[:status] = 'passed'
-        params[:recommend_kols].each do |_kol|
+      if params[:status] == 'passed'
+        params[:recommend_kols] && params[:recommend_kols].each do |_kol|
           CreationSelectedKol.create(
             from_by:        'recommend',
             creation_id:    @creation.id,
@@ -39,24 +40,11 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
         @creation.update_attributes(status: 'passed', fee_rate: params[:fee_rate])
       else
         @creation.update_attributes(status: 'unpassed')
+        @creation.reject_reason.set(params[:reject_reason])
       end
+      alert = Creation::ALERTS[@creation.status]   
     end
-
-    @creation.reload
-
-    respond_to do |format|
-      format.html { redirect_to :back, alert: Creation::ALERTS[@creation.status] }
-    end
-  end
-
-  def pass
-    if @creation.is_pending? 
-      @creation.update(status: 'passed')
-      flash[:alert] = "审核通过"
-    else
-      flash[:alert] = "该活动不是待审核状态，不能审核通过"
-    end
-    redirect_to  marketing_dashboard_creations_path
+    render json: {status: :success, href: marketing_dashboard_creations_path(q: {status_eq: :pending}), alert: alert}
   end
 
   def search_kols

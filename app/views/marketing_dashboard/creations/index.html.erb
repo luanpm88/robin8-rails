@@ -64,7 +64,7 @@
           <td><%= c.price_range %></td>
           <td><%= c.pre_amount %>元</td>
           <td><%= c.pre_kols_count %></td>
-          <td><%= c.fee_rate * 100 %>%</td>
+          <td><%= c.fee_rate.to_f * 100 %>%</td>
           <td><%= c.amount %>元</td>
           <td><%= c.kols_count %></td>
           <td><%= c.fee %>元</td>
