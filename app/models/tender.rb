@@ -44,15 +44,14 @@ class Tender < ActiveRecord::Base
       if self.creation_selected_kol.present?
         self.creation_selected_kol.update_columns(status: 'pending')
       else
-        # 生成自主报价的creation_selected_kol
-        self.creation_selected_kol = CreationSelectedKol.create(
-          plateform_name: self.from_terrace, 
-          creation_id:    self.creation_id, 
-          kol_id:         self.kol_id, 
-          from_by:        'volunteered', 
-          status:         'pending'
-        )
-        self.update_columns(creation_selected_kol_id: self.creation_selected_kol.id)
+        _selected_kol = CreationSelectedKol.find_or_initialize_by(creation_id: self.creation_id, kol_id: self.kol_id)
+
+        _selected_kol.plateform_name = self.from_terrace
+        _selected_kol.from_by        = 'volunteered'
+        _selected_kol.status         = 'pending'
+        _selected_kol.save
+
+        self.update_columns(creation_selected_kol_id: _selected_kol.id)
         # todo 去大数据中完善creation_selectd_kol
       end
     end
