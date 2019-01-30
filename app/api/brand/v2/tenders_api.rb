@@ -11,9 +11,10 @@ module Brand
           desc 'create tender for the head' #创建总报价
           params do
             requires :tenders_ary, type: Array
+            requires :creation_id, type: Integer
           end
 
-          post ':creation_id/tender' do
+          post "/create" do
             tenders = Tender.where(id: params[:tenders_ary])
             tender = Tender.new(head: true, creation_id: params[:creation_id])
             tender.price = tenders.sum(:price)
