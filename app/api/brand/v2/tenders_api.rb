@@ -20,7 +20,6 @@ module Brand
             csks.each do |csk|
               tenders_ary += csk.tenders.map &:id
             end
-            binding.pry
             tenders = Tender.where(id: tenders_ary)
             tender = Tender.new(head: true, creation_id: params[:creation_id])
             tender.price = tenders.sum(:price)
