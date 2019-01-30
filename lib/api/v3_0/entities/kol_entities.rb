@@ -12,6 +12,10 @@ module API
           expose :status_zh do |selected_kol|
             CreationSelectedKol::STATUS[selected_kol.status.to_sym]
           end
+
+          expose :tender_info do |selected_kol|
+            selected_kol.tenders.map(&:show_list).join("\n")
+          end
         end
       end
     end

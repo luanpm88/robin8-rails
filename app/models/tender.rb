@@ -24,6 +24,10 @@ class Tender < ActiveRecord::Base
     "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{status_zh} | 作品链接：#{link}"
   end
 
+  def show_list
+    "#{from_terrace}：¥#{price}"
+  end
+
   def status_zh
     CreationSelectedKol::STATUS[creation_selected_kol.status.to_sym]
   end
