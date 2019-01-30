@@ -12,8 +12,10 @@ module Brand
             requires :tender_id, type: Integer
             optional :pay_type, type: String
           end
-          post do
+          post "" do
             tender = Tender.find_by_id params[:tender_id]
+            return {error: 1, detail: '数据错误，请确认'} unless tender
+
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             tender.trade_no = trade_no
             tender.transactions.build(account: current_user, amount: tender.amount, direct: 'creation', subject: 'creation')

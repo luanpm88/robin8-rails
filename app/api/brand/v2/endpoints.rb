@@ -37,6 +37,7 @@ module Brand
       mount BaseInfosAPI
       mount SessionsAPI
       mount CodesAPI
+      mount TransactionsAPI
     end
   end
 end
