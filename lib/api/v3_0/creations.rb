@@ -30,7 +30,7 @@ module API
         	requires :id, type: Integer
         end
         get ':id' do
-        	creation = Creation.find_by(params[:id])
+        	creation = Creation.find_by(id: params[:id])
 
           error_403!(detail: '查无此活动，请规范使用APP') unless creation.try(:is_alive?)
 
