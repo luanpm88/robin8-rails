@@ -35,9 +35,6 @@ module Brand
             end
           end
 
-
-
-
           #验收作品成功
           params do 
             requires :creation_selected_kol_id,  type: String
@@ -52,6 +49,19 @@ module Brand
             end
           end
 
+          #show
+          desc "show tender"
+          params do
+            requires :id
+          end
+          get "/show" do
+            tender = Tender.find_by_id params[:id]
+            if tender
+              present tender
+            else
+              return {error: 1, detail: '数据错误，请确认'}
+            end
+          end
 
         end
       end
