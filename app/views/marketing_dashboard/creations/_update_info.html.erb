@@ -1,101 +1,75 @@
-<h4>审核</h4>
-<div class="recommend">
-	<div class="row">	
-	  <h5>佣金(%):</h5>
-	  <div class="col-md-1"><input id="fee_rate" class="form-control"></div>
-	</div>
-  <div class="row">
-    <h5>推荐搜索:</h5>
-    <div class="col-md-3">
-      <select class="form-control" id='form-type'>
+<h3>审核</h3>
+<hr>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">佣金(%):</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" id="fee_rate">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">推荐搜索:</label>
+    <div class="col-sm-2">
+      <select class="form-control" id='form_type'>
         <option value="1">微博</option>
         <option value="2">微信</option>
       </select>
     </div>
-    <div class="col-md-3">
-      <input class="form-control" id= "profile_name" placeholder="请输入mingzi">
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="profile_name" placeholder="请输入名字" value="mimeng">
     </div>
-    <input type="submit" value="搜索" class="btn btn-primary col-md-1 search-btn">
+    <div class="col-sm-2">
+      <input type="button" value="搜索" class="btn btn-primary search-btn">
+    </div>
   </div>
-  <div class="row search-select search-selectbox"></div>
-  <ul class="pagination">
-    <li><a href="#">&laquo;</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
-  </ul>
+
+  <hr>
+  <div class="panel panel-info" id="search_container">
+    <div class="panel-heading">搜索结果</div>
+    <div class="panel-body">
+      <div class="row search-select search-selectbox"></div>
+    </div>
+  </div>
+
+  <!-- <div class="text-center">
+    <ul class="pagination">
+      <li><a href="#">&laquo;</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">&raquo;</a></li>
+    </ul>
+  </div> -->
 </div>
-<h5>已选择:</h5>
-<div class="row search-list"></div>
-<input type="submit" value="提交" class="btn btn-primary col-md-1 search-submit">
+
+<div class="panel panel-primary" id="result_container">
+  <div class="panel-heading">
+    <h3 class="panel-title">已选择KOL:</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row" id="result_list"></div>
+  </div>
+</div>
+<hr>
+<div class="text-center">
+  <input type="submit" value="提交" class="btn btn-primary search-submit">
+</div>
+
 <style>
-  .recommend{
-    padding: 10px 30px;
-  }
-  .s-part{
-      margin-bottom: 20px;
-  }
-  .s-part input {
-      float: left;
-      margin-top: 40px;
-      margin-right: 1%;
-  }
-  .s-part  .s-part-right{
-      float: left;
-      width: 90%;
-  }
-  .s-part  .s-part-right img{
-      float: left;
-      width: 80px;
-      margin-right: 2%;
-  }
-  .s-part  .s-part-right div{
-      padding-top: 20px;
-      float: left;
-      width: 70%;
-  }
-  .s-part  .s-part-right div p{
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     overflow: hidden;
-    -webkit-line-clamp: 1;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
   }
-  .search-select{
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 20px;
-    min-height: 100px;
-    max-height: 340px;
-    overflow-y: scroll;
+  .avatar > img {
+    width: 100%;
+    height: 100%;
   }
-  .search-list .s-part{
-    position: relative;
-    padding-right: 0px;
-  }
-  .search-list .s-part .s-part-right{
-      /* padding-left: 0px; */
-      width:100%;
-      border-top: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      border: 1px solid #ddd;
-  }
-  .search-list .s-part i{
-    position: absolute;
-    color: #ef8989;
-    right: 5px;
-    top: 2px;
+  .remove-btn {
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    font-style: normal;
-  }
-  .search-submit{
-    margin-top: 20px;
   }
 </style>
 
@@ -103,7 +77,7 @@
   $(function () {
     var weiboList = [];
     var weiboWeixin = [];
-    var formType = document.getElementById('form-type');
+    var formType = document.getElementById('form_type');
     var searchType = 'weixin';
     // 默认调用微博接口
     // 调用微博接口
@@ -119,61 +93,94 @@
     });
     // top input 点击
     $('.search-selectbox').on('click','input', function () {
+      var $that = $(this);
       if(formType.options[formType.selectedIndex].value === '1') {
-        if($(this).is(':checked')) {
-          let listDiv = '<div class="col-md-4 s-part" data="'+ $(this).val() +'">'+
-          '<i data-id="1" data="'+ $(this).val() +'" >X</i>'+
-          '<div class="s-part-right">'+
-            $(this).next().html()
-          '</div>'+
-          '</div>';
-          $('.search-list').append(listDiv);
-          weiboList.push($(this).val());
+        if ($that.is(':checked')) {
+          var $parent = $that.parents('.media')
+          var $avatar = $parent.find('.avatar-area')
+          var $info = $parent.find('.info-area')
+
+          var listItem =
+          '<div class="col-sm-4 list-item" data-id="'+ $that.val() +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<div class="glyphicon glyphicon-remove-sign remove-btn" data-type="weibo" data-id="'+ $that.val() +'"></div>' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                $avatar.html() +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                $info.html() +
+              '</div>' +
+            '</div>' +
+          '</div>'
+
+          // console.log(listItem)
+          $('#result_list').append(listItem);
+          weiboList.push($that.val());
         } else {
-          let selectLi = $('.search-list .s-part');
-          for (var i = 0; i < selectLi.length; i++) {
-            if (selectLi[i].getAttribute('data') === $(this).val()){
-              selectLi[i].remove();
+          var $selectItem = $('#result_list').find('.list-item');
+          for (var i = 0; i < $selectItem.length; i++) {
+            if ($selectItem.eq(i).data('id') == $that.val()){
+              $selectItem.eq(i).remove();
             }
           }
           checkout($(this).val(), weiboList);
         }
       } else {
-        if($(this).is(':checked')) {
-          let listDiv = '<div class="col-md-4 s-part" data="'+ $(this).val() +'">'+
-          '<i data-id="2" data="'+ $(this).val() +'" >X</i>'+
-          '<div class="s-part-right">'+
-            $(this).next().html()
-          '</div>'+
-          '</div>';
-          $('.search-list').append(listDiv);
-          weiboWeixin.push($(this).val());
+        if($that.is(':checked')) {
+          var $parent = $that.parents('.media')
+          var $avatar = $parent.find('.avatar-area')
+          var $info = $parent.find('.info-area')
+
+          var listItem =
+          '<div class="col-sm-4 list-item" data-id="'+ $that.val() +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<div class="glyphicon glyphicon-remove-sign remove-btn" data-id="'+ $that.val() +'"></div>' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                $avatar.html() +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                $info.html() +
+              '</div>' +
+            '</div>' +
+          '</div>'
+
+          // console.log(listItem)
+          $('#result_list').append(listItem);
+          weiboWeixin.push($that.val());
         } else {
-          let selectLi = $('.search-list .s-part');
-          for (var i = 0; i < selectLi.length; i++) {
-            if (selectLi[i].getAttribute('data') === $(this).val()){
-              selectLi[i].remove();
+          var $selectItem = $('#result_list').find('.list-item');
+          for (var i = 0; i < $selectItem.length; i++) {
+            if ($selectItem.eq(i).data('id') == $that.val()){
+              $selectItem.eq(i).remove();
             }
           }
           checkout($(this).val(), weiboWeixin);
         }
       }
     });
-    
+
     // 已选中close
-    $('.search-list').on('click','i', function () {
-      $(this).parents('.s-part').remove();
-      let inputList = $('.search-selectbox input');
-      for (var i = 0; i < inputList.length; i++) {
-        if (inputList[i].value === $(this).attr('data')){
-          $('.search-selectbox input').eq(i).prop('checked',false);
+    $('#result_list').on('click', '.remove-btn', function () {
+      var $that = $(this);
+      $that.parents('.list-item').remove();
+      let checkedInput = $('.search-selectbox').find('input[type="checkbox"]');
+      for (var i = 0; i < checkedInput.length; i++) {
+        if (checkedInput.eq(i).val() == $that.data('id')){
+          checkedInput.eq(i).prop('checked', false);
         }
       }
-      if ($(this).attr('data-id') === '1') {
-        checkout($(this).attr('data'), weiboList);
+      if ($that.data('type') == 'weibo') {
+        checkout($that.data('id'), weiboList);
       } else {
-        checkout($(this).attr('data'), weiboWeixin);
+        checkout($that.data('id'), weiboWeixin);
       }
+
+      console.log(weiboList);
+      console.log(weiboWeixin);
     })
     // 提交按钮
     $('.search-submit').on('click', function(){
@@ -182,21 +189,11 @@
     });
   })
   function checkout(val, type) {
-    for(var i = 0; i < type.length; i++) {
-      if (val === type[i]) {
+    for (var i = 0; i < type.length; i++) {
+      if (val == type[i]) {
         type.splice(i, 1);
-        // console.log(type);
       }
     }
-  }
-  function SelectBox(name) {
-    let obj = document.getElementsByName(name);
-    let check_val = [];
-    for (k in obj) {
-      if (obj[k].checked)
-        check_val.push(obj[k].value);
-    }
-    alert(check_val);
   }
   // 微博接口
   function Jog(params) {
@@ -212,16 +209,22 @@
         $('.search-selectbox').html('');
         for (var i = 0; i < data.data.total_record_count; i++) {
           html +=
-            '<div class="col-md-4 s-part">' +
-            '<input type="checkbox" name="test" value="' + data.data.data[i].profile_id + '" />' +
-            '<div class="s-part-right">' +
-            '<img src="' + data.data.data[i].avatar_url + '" alt="">' +
-            '<div>' +
-            '<p>' + data.data.data[i].profile_name + '</p>' +
-            '<p>' + data.data.data[i].description_raw + '</p>' +
+          '<div class="col-sm-6 list-item" data-id="'+ data.data.data[i].profile_id +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<input type="checkbox" name="test" value="' + data.data.data[i].profile_id + '" />' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                '<div class="avatar">' +
+                  '<img class="media-object" src="'+ data.data.data[i].avatar_url +'" alt="'+ data.data.data[i].profile_name +'">' +
+                '</div>' +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                '<h4 class="media-heading">'+ data.data.data[i].profile_name +'</h4>' +
+                '<p>'+ data.data.data[i].description_raw +'</p>' +
+              '</div>' +
             '</div>' +
-            '</div>' +
-            '</div>'
+          '</div>'
         }
         $('.search-selectbox').append(html);
       },
