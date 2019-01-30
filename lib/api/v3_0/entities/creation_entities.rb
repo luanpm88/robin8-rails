@@ -42,7 +42,7 @@ module API
           end
 
           expose :selected_kols do |creation|
-            API::V3_0::Entities::CreationEntities::SelectedKol.represent creation.creation_selected_kols.is_quoted
+            API::V3_0::Entities::CreationEntities::SelectedKol.represent creation.creation_selected_kols.quoted
           end
 
           expose :my_tender_status do |creation, options|

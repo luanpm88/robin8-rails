@@ -18,7 +18,7 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
   end
 
   def tenders
-    @tender_kols = @creation.creation_selected_kols.where.not(status: "preelect").order(updated_at: :desc)
+    @tender_kols = @creation.creation_selected_kols.quoted
   end
 
   def update_auditing
