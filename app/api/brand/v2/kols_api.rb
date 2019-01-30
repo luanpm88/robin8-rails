@@ -25,7 +25,7 @@ module Brand
           end
           get 'cooperation_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.valid
+            @selected_kols = @creation.creation_selected_kols.cooperation
 
             present @selected_kols, with: Entities::Kol
           end
