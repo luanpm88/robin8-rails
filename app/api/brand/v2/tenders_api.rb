@@ -34,7 +34,7 @@ module Brand
           params do 
             requires :creation_selected_kol_id,  type: String
           end
-          put "/update_status" do 
+          post "/update_status" do 
             csk = CreationSelectedKol.find_by_id params[:creation_selected_kol_id]
             if csk
               csk.update_column(:status, "approved")
