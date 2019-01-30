@@ -13,7 +13,6 @@ module Brand
             requires :plateform_uuid, type: String
           end
           post 'collect_kol' do
-            current_user = User.first
             ck = current_user.collected_kols.build(plateform_uuid: params[:plateform_uuid])
             if ck.save
               present current_user
