@@ -3,7 +3,7 @@ module Brand
     class CreationsAPI < Base
       group do
         before do
-          # authenticate!
+          authenticate!
         end
 
         resource :creations do
@@ -47,8 +47,6 @@ module Brand
             end
           end
           post do
-            current_user = User.find 829
-
             c = current_user.creations.find_or_initialize_by(id: params[:id])
 
             c.name            = params[:creation][:name]
@@ -107,8 +105,6 @@ module Brand
 
             present creations, with: Entities::Creation
           end
-
-
 
 
         end

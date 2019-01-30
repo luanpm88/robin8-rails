@@ -9,12 +9,12 @@ module API
 
         # get my tenders
         params do
-        	requires :status, type: String, values: %w(pending valid rejected)
+        	requires :status, type: String, values: %w(pending valid finished rejected)
           requires :page,   type: Integer
         end
         get ':id/tenders' do
           list =  if params[:status] == 'valid'
-                    current_kol.creation_selected_kols.valid
+                    current_kol.creation_selected_kols.cooperation
                   else
                     current_kol.creation_selected_kols.by_status(params[:status])
                   end
