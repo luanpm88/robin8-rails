@@ -8,37 +8,37 @@ module Brand
 
         resource :kols do
 
-          desc 'pending tender'
+          desc 'pending tenders' #待合作
           params do
             requires :creation_id, type: Integer
           end
           get 'pending_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.is_quoted
+            @selected_kols = @creation.creation_selected_kols.by_status('pending')
 
-            present @selected_kols, with: Entities::Kol, status: 'pending'
+            present @selected_kols, with: Entities::Kol
           end
 
-          desc 'unpay tender'
+          desc 'valid tenders' #合作中
           params do
             requires :creation_id, type: Integer
           end
-          get 'unpay_tenders' do
+          get 'cooperation_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.is_quoted
+            @selected_kols = @creation.creation_selected_kols.cooperation
 
-            present @selected_kols, with: Entities::Kol, status: 'rejected'
+            present @selected_kols, with: Entities::Kol
           end
 
-          desc 'paid tender'
+          desc 'finished tender' #已完成
           params do
             requires :creation_id, type: Integer
           end
-          get 'paid_tenders' do
+          get 'finished_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.is_quoted
+            @selected_kols = @creation.creation_selected_kols.by_status('finished')
 
-            present @selected_kols, with: Entities::Kol, status: 'paid'
+            present @selected_kols, with: Entities::Kol
           end
         end
       end

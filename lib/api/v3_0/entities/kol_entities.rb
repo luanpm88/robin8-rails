@@ -10,7 +10,7 @@ module API
         	end
 
           expose :status_zh do |selected_kol|
-            CreationSelectedKol::STATUS[selected_kol.status.to_sym]
+            selected_kol.status_zh
           end
 
           expose :tender_info do |selected_kol|

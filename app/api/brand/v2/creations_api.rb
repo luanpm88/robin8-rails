@@ -75,6 +75,7 @@ module Brand
               ) if Terrace.find_by_id(_hash[:terrace_id])
             end
             
+            c.creation_selected_kols.delete_all # kol可选，直接清空
             params[:creation][:selected_kols].each do |_hash|
               kol = c.creation_selected_kols.find_or_initialize_by(plateform_name: _hash[:plateform_name], plateform_uuid: _hash[:plateform_uuid])
               kol.name        = _hash[:name]

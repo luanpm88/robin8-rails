@@ -15,21 +15,19 @@ class Tender < ActiveRecord::Base
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
-  scope :pending,  -> { where(status: 'pending').order(updated_at: :desc) }
-  scope :rejected, -> { where(status: 'rejected').order(updated_at: :desc) }
-  scope :paid,     -> { where(status: 'paid').order(updated_at: :desc) }
+  scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
   
 
   def show_info
-    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{status_zh} | 作品链接：#{link}"
+    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{creation_selected_kol.status_zh} | 作品链接：#{link}"
   end
 
   def show_list
     "#{from_terrace}：¥#{price}"
   end
 
-  def status_zh
-    CreationSelectedKol::STATUS[creation_selected_kol.status.to_sym]
+  def brand_show_info
+    "#{from_terrace} | 发帖数：0 | 报价：¥#{price} | 曝光值：0"
   end
   
   def amount

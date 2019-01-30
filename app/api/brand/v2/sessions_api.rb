@@ -49,7 +49,7 @@ module Brand
 					desc 'update password'
 	        params do
 	          requires :login,                      type: String
-	          requires :new_password,               type: String
+	          requires :new_password,              type: String
 	          requires :new_password_confirmation,  type: String
 	          requires :type,                       type: String, desc: 'value in (email or mobile_number)'
 	        end

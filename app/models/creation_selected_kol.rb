@@ -22,12 +22,16 @@ class CreationSelectedKol < ActiveRecord::Base
   has_many :tenders
 
 
-  scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
-  scope :is_quoted, ->{ where.not(status: 'preelect')}
-  scope :valid,     ->{ where.not(status: %w(preelect pending rejected)).order(updated_at: :desc)}
+  scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
+  scope :cooperation, ->{ where(status: %w(unpay paid uploaded approved)).order(updated_at: :desc)}
+  scope :valid,       ->{ where.not(status: %w(preelect pending rejected)).order(updated_at: :desc)}
 
   def can_upload?
     %w(paid uploaded).include? status
+  end
+
+  def status_zh
+  	STATUS[status.to_sym]
   end
   
 end

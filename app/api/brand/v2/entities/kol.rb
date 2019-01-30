@@ -6,7 +6,7 @@ module Brand
           object
         end
         expose :tenders, using: Entities::Tender do |object, opts|
-          object.tenders.send(opts[:status])
+          object.tenders
         end
       end
     end
