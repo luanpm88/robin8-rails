@@ -6,6 +6,7 @@ class Creation < ActiveRecord::Base
     # industries
     # price_from
     # price_to
+  value :reject_reason
 
   STATUS = {
     pending:           '待审核',

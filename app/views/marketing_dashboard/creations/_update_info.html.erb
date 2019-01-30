@@ -53,8 +53,15 @@
   </div>
 </div>
 <hr>
-<div class="text-center">
-  <input type="submit" value="提交" class="btn btn-primary search-submit">
+<div class="form-group">
+  <label for="exampleInputEmail1">拒绝理由：</label>
+  <input type="email" class="form-control" id="reject-reason" placeholder="请输入拒绝理由">
+</div>
+<div class="form-group">
+  <div class="col-sm-12 text-center">
+    <input type="button" value="通过" class="btn btn-success search-submit">
+    <input type="button" value="拒绝" class="btn btn-primary search-cancel">
+  </div>
 </div>
 
 <style>
@@ -182,10 +189,24 @@
       console.log(weiboList);
       console.log(weiboWeixin);
     })
-    // 提交按钮
+    // 通过
     $('.search-submit').on('click', function(){
       console.log(weiboList);
       console.log(weiboWeixin);
+      UpdateAuditing({
+        status: 'passed',
+        fee_rate: $('#fee_rate').val(),
+      });
+    });
+    // 拒绝
+    $('.search-cancel').on('click', function(){
+      console.log(weiboList);
+      console.log(weiboWeixin);
+      UpdateAuditing({
+        status: 'unpassed',
+        reject_reason: $("#reject-reason").val()
+
+      });
     });
   })
   function checkout(val, type) {
@@ -231,6 +252,23 @@
       error: function (error) {
         console.log(error);
       }
+    })
+  };
+
+  // submit
+  function UpdateAuditing(params) {
+    $.ajax({
+      url: "/marketing_dashboard/creations/" + $("#creation_id").val() + "/update_auditing",
+      type: 'PUT',
+      dataType: 'json',
+      data: params,
+      success: function (data) {
+        if (data.status == 'success') {
+          alert(data.alert);
+          window.location.href = data.href;
+        }
+      },
+      error: function (error) {}
     })
   };
 </script>
