@@ -8,7 +8,7 @@ module Brand
 
         resource :kols do
 
-          desc 'pending tenders'
+          desc 'pending tenders' #待合作
           params do
             requires :creation_id, type: Integer
           end
@@ -19,18 +19,18 @@ module Brand
             present @selected_kols, with: Entities::Kol
           end
 
-          desc 'cooperation tenders'
+          desc 'valid tenders' #合作中
           params do
             requires :creation_id, type: Integer
           end
           get 'cooperation_tenders' do
             @creation = Creation.find params[:creation_id]
-            @selected_kols = @creation.creation_selected_kols.cooperation
+            @selected_kols = @creation.creation_selected_kols.valid
 
             present @selected_kols, with: Entities::Kol
           end
 
-          desc 'finished tender'
+          desc 'finished tender' #已完成
           params do
             requires :creation_id, type: Integer
           end

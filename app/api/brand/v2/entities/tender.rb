@@ -6,6 +6,9 @@ module Brand
         expose :status do |object, opts|
           ::Tender::STATUS[object.status.to_sym]
         end
+        expose :brand_show_info do |object, opts|
+          object.brand_show_info
+        end
         expose :kols_count do |object, opts|
           object.sub_tenders.count
         end

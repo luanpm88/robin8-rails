@@ -23,9 +23,6 @@ class CreationSelectedKol < ActiveRecord::Base
 
 
   scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
-  scope :is_quoted,   ->{ where.not(status: 'preelect')}
-  scope :pending,     ->{ where(status: %w(preelect pending)).order(updated_at: :desc)}
-  scope :cooperation, ->{ where(status: %w(unpay paid uploaded approved)).order(updated_at: :desc)}
   scope :valid,       ->{ where.not(status: %w(preelect pending rejected)).order(updated_at: :desc)}
 
   def can_upload?
