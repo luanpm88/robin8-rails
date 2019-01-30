@@ -9,6 +9,12 @@ namespace :creations do
 			)
 	end
 
+	task :clear => :environment do
+		Creation.delete_all
+		CreationSelectedKol.delete_all
+		Tender.delete_all
+	end
+
 	task :gen => :environment do
 		u = User.find 829
 		attrs = {
