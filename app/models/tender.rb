@@ -23,7 +23,7 @@ class Tender < ActiveRecord::Base
   end
 
   def brand_show_info
-    "#{from_terrace} | 发帖数：0 | 报价：#{price} | 曝光值：0"
+    "#{from_terrace} | 发帖数：0 | 报价：¥#{price} | 曝光值：0"
   end
 
 
