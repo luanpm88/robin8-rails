@@ -91,7 +91,7 @@ module Brand
             requires :id, type: Integer
           end
           get ':id' do
-            creation = Creation.find_by(id: params[:id])
+            creation = current_user.creations.find_by(id: params[:id])
 
             return {error: 1, detail: 'not found'} unless creation
 
