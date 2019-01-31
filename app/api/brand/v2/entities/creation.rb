@@ -41,6 +41,17 @@ module Brand
         expose :status_zh do |object, opts|
           ::Creation::STATUS[object.status.to_sym]
         end
+
+        # 已招募人数
+        expose :quote_count do |object|
+          object.creation_selected_kols.cooperation.count
+        end
+
+        # 已消耗金额
+        expose :actual_amount do |object|
+          # object.tenders.sub.sum(:price)
+          '20000'
+        end
       end
     end
   end
