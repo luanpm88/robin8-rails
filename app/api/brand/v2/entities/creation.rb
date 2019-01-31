@@ -49,8 +49,8 @@ module Brand
 
         # 已消耗金额
         expose :actual_amount do |object|
-          # object.tenders.sub.sum(:price)
-          '20000'
+          tenders = Tender.where(creation_id: object.id, head: true, status: 'paid' )
+          tenders.sum(:price) + tendrs.sum(:fee)
         end
       end
     end
