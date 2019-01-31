@@ -10,17 +10,19 @@ module Brand
           desc "create transaction"
           params do
             requires :tender_id, type: Integer
-            requires :pay_type, type: String  
+            optional :pay_type, type: String
           end
-          post do
+          post "" do
             tender = Tender.find_by_id params[:tender_id]
+            return {error: 1, detail: '数据错误，请确认'} unless tender
+
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             tender.trade_no = trade_no
             tender.transactions.build(account: current_user, amount: tender.amount, direct: 'creation', subject: 'creation')
 
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
-            notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v1/alipay_orders/alipay_notify"
+            notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v2/alipay_orders/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v2/transactions/alipay_notify"
 
             if tender.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(

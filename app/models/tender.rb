@@ -34,6 +34,10 @@ class Tender < ActiveRecord::Base
     self.price + self.fee
   end
 
+  def kols_count
+    (self.sub_tenders.map &:creation_selected_kol_id).uniq.count
+  end
+
   def climb_info
   end
 
