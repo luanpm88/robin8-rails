@@ -53,6 +53,7 @@ class Tender < ActiveRecord::Base
         _selected_kol.plateform_name = self.from_terrace
         _selected_kol.from_by        = 'volunteered'
         _selected_kol.status         = 'pending'
+        _selected_kol.avatar_url     = self.kol.avatar_url
         _selected_kol.save
 
         self.update_columns(creation_selected_kol_id: _selected_kol.id)
