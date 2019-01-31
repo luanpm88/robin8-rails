@@ -12,6 +12,19 @@ class MarketingDashboard::Utilities::RedisExtendsController < MarketingDashboard
   end
 
   def reg_code
+    if request.get?
+    else
+      if params[:login].match(Brand::V2::APIHelpers::EMAIL_REGEXP)
+        code = $redis.get("valid_#{params[:login]}")
+      elsif params[:login].match(Brand::V2::APIHelpers::MOBILE_NUMBER_REGEXP)
+        code = YunPian::SendRegisterSms.get_code(params[:login])
+      end
+      if code.present?
+        render js: "alert(#{code});window.location.reload();"
+      else
+        render js: "alert('数据有误');window.location.reload();"
+      end
+    end
   end
 
   def update_redis_value
