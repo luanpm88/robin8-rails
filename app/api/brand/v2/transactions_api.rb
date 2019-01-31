@@ -3,7 +3,7 @@ module Brand
     class TransactionsAPI < Base
       group do
         before do
-          authenticate! unless @options[:path].first == 'alipay_notify'
+          authenticate! unless @options[:path].first == '/alipay_notify'
         end
         resource :transactions do
 
