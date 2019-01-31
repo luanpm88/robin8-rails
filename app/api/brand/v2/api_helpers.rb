@@ -6,6 +6,7 @@ module Brand::V2::APIHelpers
     result , private_token = AuthToken.valid?(headers["Authorization"])
     if result
       kol = Kol.app_auth(private_token)
+      return {error: 1, detail: 'Access Denied'} unless kol
       @current_user = kol.user
     end
   end
