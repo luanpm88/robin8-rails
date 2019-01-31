@@ -37,7 +37,7 @@ module Brand
                                           key: ALIPAY_RSA_PRIVATE_KEY
                                         }
                                       )
-              return { alipay_recharge_url: alipay_recharge_url }
+              return { alipay_recharge_url: alipay_recharge_url, return_url:  return_url, notify_url: notify_url}
             else
               return error_unprocessable! tender.errors.messages
             end
