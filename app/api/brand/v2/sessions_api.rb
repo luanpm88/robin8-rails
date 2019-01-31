@@ -20,7 +20,7 @@ module Brand
 
 					desc "sign up"
 					params do 
-						requires :type,      type: String, values: %w(email mobile_number)
+						requires :type,      type: String
 						requires :login,     type: String
 						requires :code,      type: String
 						requires :password,  type: String
