@@ -37,7 +37,7 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
             kol_id:         _kol[:kol_id]
           )
         end
-        @creation.update_attributes(status: 'passed', fee_rate: params[:fee_rate])
+        @creation.update_attributes(status: 'passed', fee_rate: params[:fee_rate].to_f/100)
       else
         @creation.update_attributes(status: 'unpassed')
         @creation.reject_reason.set(params[:reject_reason])
