@@ -3,7 +3,7 @@ module Brand
     class TransactionsAPI < Base
       group do
         before do
-          authenticate!
+          authenticate! unless @options[:path].first == 'alipay_notify'
         end
         resource :transactions do
 
@@ -28,7 +28,7 @@ module Brand
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                         { out_trade_no: trade_no,
                                           subject: 'creation 订单支付',
-                                          total_fee: (ENV["total_fee"] || tender.amount).to_f,
+                                          total_fee: (tender.amount).to_f,
                                           return_url: return_url,
                                           notify_url: notify_url
                                         },
