@@ -21,7 +21,7 @@ module Brand
             tender.transactions.build(account: current_user, amount: tender.amount, direct: 'creation', subject: 'creation')
 
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
-            return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:domain]}/brand"
+            return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:vue_brand_domain]}/creations/#{tender.creation_id}/kols"
             notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v2/alipay_orders/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v2/transactions/alipay_notify"
 
             if tender.save
