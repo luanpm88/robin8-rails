@@ -32,7 +32,7 @@ module Brand
             
             valid_code = SecureRandom.random_number(1000000)
             $redis.setex("valid_#{params[:email]}", 6000, valid_code)
-            # NewMemberWorker.perform_async(params[:email], valid_code)
+            NewMemberWorker.perform_async(params[:email], valid_code)
 
             present error: 0, alert: '验证码已发送您的邮箱，请在10分钟内进行验证，过期请重新获取'
           end
