@@ -30,6 +30,7 @@ class Creation < ActiveRecord::Base
   has_many :creations_terraces, class_name: "CreationsTerrace"
   has_many :terraces, through: :creations_terraces
   has_many :creation_selected_kols
+  has_many :tenders
 
   belongs_to :user
   belongs_to :trademark

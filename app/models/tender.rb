@@ -16,6 +16,7 @@ class Tender < ActiveRecord::Base
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
   scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
+  scope :brand_paid,  -> {where(head: true, status: 'paid')}
   
 
   def show_info

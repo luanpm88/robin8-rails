@@ -3,7 +3,7 @@ module Brand
     class CreationsAPI < Base
       group do
         before do
-          authenticate!
+          authenticate! unless @options[:path].first == 'upload_image'
         end
 
         resource :creations do

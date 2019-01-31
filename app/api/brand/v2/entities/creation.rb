@@ -49,8 +49,7 @@ module Brand
 
         # 已消耗金额
         expose :actual_amount do |object|
-          tenders = Tender.where(creation_id: object.id, head: true, status: 'paid' )
-          tenders.sum(:price) + tendrs.sum(:fee)
+          object.tenders.brand_paid.map(&:amount).sum
         end
       end
     end
