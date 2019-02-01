@@ -49,6 +49,10 @@ module Brand
           post do
             c = current_user.creations.find_or_initialize_by(id: params[:id])
 
+            if c.valid? && c.is_unpassed?
+              c.status = "pending"
+            end
+
             c.name            = params[:creation][:name]
             c.description     = params[:creation][:description]
             c.trademark_id    = params[:creation][:trademark_id]
