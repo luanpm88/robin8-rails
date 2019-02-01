@@ -26,6 +26,7 @@ class CreationSelectedKol < ActiveRecord::Base
   scope :cooperation, ->{ where(status: %w(unpay paid uploaded approved)).order(updated_at: :desc)}
   scope :valid,       ->{ where.not(status: %w(preelect pending rejected)).order(updated_at: :desc)}
   scope :quoted,      ->{ where.not(status: "preelect").order(updated_at: :desc)}
+  scope :last_days,   ->(num){where("updated_at > ?", num.days.ago)}
 
   def can_upload?
     %w(paid uploaded).include? status

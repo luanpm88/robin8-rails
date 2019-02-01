@@ -38,6 +38,7 @@ module Brand
       mount SessionsAPI
       mount CodesAPI
       mount TransactionsAPI
+      mount CreationSelectedKolsAPI
     end
   end
 end
