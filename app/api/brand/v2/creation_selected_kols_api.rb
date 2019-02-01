@@ -5,7 +5,7 @@ module Brand
         resources :creation_selected_kols do
 
 	        params do
-	        	requires :id, type: Integer
+	        	requires :id, type: String
 	        end
 	        get ":id/big_v_details" do
 	        	selected_kols = CreationSelectedKol.where(plateform_uuid: params[:id])#.by_status(:finished)
@@ -26,6 +26,7 @@ module Brand
 		        	last_30_days_info = ["#{last_cis.count}/#{last_per}%", "#{last_avg}/#{last_avg_per}%", selected_kols.last_days(30).count]
 		        end
 
+		        present :data,              kol, with: Entities::BigVBaseInfoVue
 	        	present :creations_list,    selected_kols, with: Entities::BigVCreationVue
 	        	present :total_info,        total_info
 	        	present :last_30_days_info, last_30_days_info
