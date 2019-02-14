@@ -38,6 +38,8 @@ class WeiboAccount < ActiveRecord::Base
   has_many :weibo_accounts_cities, class_name: "WeiboAccountsCity"
   has_many :cities, through: :weibo_accounts_cities
 
+  scope :valid, ->{where(status: 1)}
+
   after_save :update_kol_role_status, on: [:create, :update]
   after_update :sent_message
 
