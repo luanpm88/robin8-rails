@@ -6,5 +6,5 @@ class Competitor < ActiveRecord::Base
     -1 => '删除'
   }
   
-  default_scope ->{where(status: 1)}
+  default_scope ->{where.not(status: -1)}
 end
