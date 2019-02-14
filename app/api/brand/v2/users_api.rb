@@ -40,16 +40,23 @@ module Brand
 
           desc 'update competitor status'
           params do
-            requires :status,    type: Integer
-            requires :id,        type: Integer
+            optional :status,       type: Integer
+            optional :name,         type: String
+            optional :short_name,   type: String
+            requires :id,           type: Integer
           end
           post 'competitor/:id' do
             competitor = current_user.competitors.find_by_id params[:id]
-            if competitor
-              competitor.update_column(:status, params[:status])
-            else
-              return {error: 1, detail: '数据错误，请确认'}
-            end
+
+            return {error: 1, detail: '数据错误，请确认'} unless competitor
+
+            competitor.name       = params[:name]       if params[:name]
+            competitor.short_name = params[:short_name] if params[:short_name]
+            competitor.status     = params[:status]     if params[:status]
+            
+            competitor.save
+
+            present error: 0, alert: '更新成功'
           end
 
 
@@ -67,16 +74,22 @@ module Brand
 
           desc 'update trademark status'
           params do
-            requires :status,    type: Integer
-            requires :id,        type: Integer
+            optional :status,       type: Integer
+            optional :name,         type: String
+            optional :description,  type: String
+            requires :id,           type: Integer
           end
           post 'trademark/:id' do
             trademark = current_user.trademarks.find_by_id params[:id]
-            if trademark
-              trademark.update_column(:status, params[:status])
-            else
-              return {error: 1, detail: '数据错误，请确认'}
-            end
+
+            return {error: 1, detail: '数据错误，请确认'} unless trademark
+            trademark.name        = params[:name]        if params[:name]
+            trademark.description = params[:description] if params[:description]
+            trademark.status      = params[:status]      if params[:status]
+
+            trademark.save
+
+            present error: 0, alert: '更新成功'
           end
 
         end
