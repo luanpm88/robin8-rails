@@ -38,6 +38,20 @@ module Brand
             present current_user.competitors, with: Entities::Competitor
           end
 
+          desc 'update competitor status'
+          params do
+            requires :status,    type: Integer
+            requires :id,        type: Integer
+          end
+          post 'competitor/:id' do
+            competitor = current_user.competitors.find_by_id params[:id]
+            if competitor
+              competitor.update_column(:status, params[:status])
+            else
+              return {error: 1, detail: '数据错误，请确认'}
+            end
+          end
+
 
           desc 'create trademark'
           params do
@@ -51,6 +65,19 @@ module Brand
             present current_user.trademarks, with: Entities::Trademark
           end
 
+          desc 'update trademark status'
+          params do
+            requires :status,    type: Integer
+            requires :id,        type: Integer
+          end
+          post 'trademark/:id' do
+            trademark = current_user.trademarks.find_by_id params[:id]
+            if trademark
+              trademark.update_column(:status, params[:status])
+            else
+              return {error: 1, detail: '数据错误，请确认'}
+            end
+          end
 
         end
       end
