@@ -83,6 +83,9 @@ module Brand
             trademark = current_user.trademarks.find_by_id params[:id]
 
             return {error: 1, detail: '数据错误，请确认'} unless trademark
+
+            current_user.trademarks.update_all(status: 0) if params[:status] && params[:status].to_i == 1
+
             trademark.name        = params[:name]        if params[:name]
             trademark.description = params[:description] if params[:description]
             trademark.status      = params[:status]      if params[:status]
