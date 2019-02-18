@@ -67,9 +67,12 @@ module Brand
           end
 
           post 'trademark' do
-            current_user.trademarks.find_or_create_by(name: params[:name], description: params[:description])
+            current_user.trademarks.where(status: 1).update_all(status: 0)
+            trademark = current_user.trademarks.find_or_initialize_by(name: params[:name], description: params[:description])
+            trademark.status = 1 if trademark.valid?
+            trademark.save
 
-            present current_user.trademarks, with: Entities::Trademark
+            present current_user.trademarks.active, with: Entities::Trademark
           end
 
           desc 'update trademark status'
@@ -80,7 +83,7 @@ module Brand
             requires :id,           type: Integer
           end
           post 'trademark/:id' do
-            trademark = current_user.trademarks.find_by_id params[:id]
+            trademark = current_user.trademarks.active.find_by_id params[:id]
 
             return {error: 1, detail: '数据错误，请确认'} unless trademark
 

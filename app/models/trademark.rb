@@ -11,5 +11,5 @@ class Trademark < ActiveRecord::Base
 	belongs_to :user
 	has_many :creations
 
-  default_scope ->{where.not(status: -1)}
+  scope :active, ->{where.not(status: -1)}.order(updated_at: :desc)}
 end
