@@ -39,6 +39,7 @@ module Brand
       mount CodesAPI
       mount TransactionsAPI
       mount CreationSelectedKolsAPI
+      mount CampaignsAPI
     end
   end
 end
