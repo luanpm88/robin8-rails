@@ -11,7 +11,7 @@ module Brand
           desc 'base info'
           get '/' do
             present :tags_list,         Tag.all.order(position: :asc), with: Entities::Tag
-            present :trademarks_list,   current_user.trademarks, with: Entities::Trademark
+            present :trademarks_list,   current_user.trademarks.active, with: Entities::Trademark
             present :competitors,       current_user.competitors, with: Entities::Competitor
             present :terraces_list,     Terrace.now_use, with: Entities::Terrace
           end
