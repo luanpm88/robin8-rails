@@ -57,7 +57,9 @@
               </ul>
             <% end %>
           </td>
-          <td></td>
+          <td>
+            <%= link_to "支付", finished_marketing_dashboard_creation_selected_kol_path(_kol), method: 'put', "data-confirm" => "你确定支付吗" if _kol.status == "approved" %>
+          </td>
         </tr>
       <% end %>
     </tbody>

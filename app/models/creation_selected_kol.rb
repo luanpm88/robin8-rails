@@ -28,12 +28,23 @@ class CreationSelectedKol < ActiveRecord::Base
   scope :quoted,      ->{ where.not(status: "preelect").order(updated_at: :desc)}
   scope :last_days,   ->(num){where("updated_at > ?", num.days.ago)}
 
+
+  after_save :check_creation_status
+
   def can_upload?
     %w(paid uploaded).include? status
   end
 
   def status_zh
   	STATUS[status.to_sym]
+  end
+
+  private 
+
+  def check_creation_status
+    result = (self.creation.creation_selected_kols.map &:status).uniq
+    result.delete "finished" and result.delete "rejected"
+    self.creation.update_column(:status, "finished") if result.blank?
   end
   
 end
