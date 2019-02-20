@@ -98,6 +98,41 @@ module Brand
             present error: 0, alert: '更新成功'
           end
 
+          desc 'when new brand login, update his all base info'
+          params do
+            requires :base_info, type: Hash do 
+              requires :name,          type: String
+              requires :campany_name,  type: String
+              optional :email,         type: String
+              optional :mobile_number, type: String
+            end
+            requires :my_brand, type: Hash do 
+              requires :name,         type: String
+              optional :description,  type: String
+            end
+            requires :competitors, type: Array do 
+              requires :name,        type: String
+              requires :short_name,  type: String
+            end
+          end
+          post 'update_base_infos' do
+            Rails.logger.info "*" * 100
+            Rails.logger.info params[:base_info]
+            Rails.logger.info params[:my_brand]
+            Rails.logger.info params[:competitors]
+
+            current_user.update_attributes(params[:base_info].compact)
+
+            trademark = current_user.trademarks.find_or_initialize_by(name: params[:my_brand][:name], description: params[:my_brand][:description])
+            trademark.status = 1 if trademark.valid?
+            trademark.save
+
+            params[:competitors].each do |attributes|
+              current_user.competitors.find_or_create_by(name: attributes[:name], short_name: attributes[:short_name])
+            end
+
+            present error: 0, alert: '更新成功'
+          end
         end
       end
     end
