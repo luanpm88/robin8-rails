@@ -43,7 +43,8 @@ class CreationSelectedKol < ActiveRecord::Base
 
   def check_creation_status
     result = (self.creation.creation_selected_kols.map &:status).uniq
-    result.delete "finished" and result.delete "rejected"
+    result.delete_if {|r| r == "finished" or r == "rejected" or r == "preelect"}  
+
     self.creation.update_column(:status, "finished") if result.blank?
   end
   
