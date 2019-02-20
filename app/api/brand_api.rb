@@ -6,4 +6,5 @@ class BrandAPI < Grape::API
   # end
 
   mount Brand::V1::Endpoints
+  mount Brand::V2::Endpoints
 end

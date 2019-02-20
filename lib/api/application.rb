@@ -65,6 +65,7 @@ module API
     mount API::V1_8::AppBase
     mount API::V2_0::AppBase
     mount API::V2_1::AppBase
+    mount API::V3_0::AppBase
     mount API::SearchEngine::AppBase
   end
 end

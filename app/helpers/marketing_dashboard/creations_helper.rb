@@ -1,0 +1,2 @@
+module MarketingDashboard::CreationsHelper
+end

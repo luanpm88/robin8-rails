@@ -1,0 +1,26 @@
+<h1>查看验证码</h1>
+
+<div class="form-group">
+  <label>手机号/邮箱:</label>
+  <div><%= text_field_tag :login, nil, :class => "data-value form-control form-group search_input"  %></div>
+  <%= link_to "提交修改",  "#" , class: 'btn btn-primary update-value', 'data-key': 'recharge_min_budget', confirm: "确定更改吗？" %>
+</div>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".update-value").click(function(e){
+      e.preventDefault();
+      $.ajax({
+        method: 'POST',
+        url: '/marketing_dashboard/utilities/redis_extends/reg_code',
+        data: {key: $(this).attr("data-key"), login: $(this).closest("div").find(".data-value").val()},
+//        success: function(){
+//          alert("修改成功");
+//          window.location.reload();
+//        }
+      })
+
+    })
+  })
+</script>
