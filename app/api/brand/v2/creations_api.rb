@@ -42,7 +42,6 @@ module Brand
                 requires :avatar_url,     type: String 
                 requires :desc,           type: String
               end
-
               optional :notice, type: String
             end
           end
@@ -57,6 +56,7 @@ module Brand
             c.pre_kols_count  = params[:creation][:pre_kols_count]
             c.pre_amount      = params[:creation][:pre_amount]
             c.img_url         = params[:creation][:img_url]
+            c.notice          = params[:creation][:notice]
             c.status          = "pending"
             c.save
 
