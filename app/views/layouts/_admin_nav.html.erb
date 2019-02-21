@@ -84,10 +84,10 @@
               <%= link_to '待审核', marketing_dashboard_creations_path(q: {status_eq: :pending}) %>
             </li>
             <li>
-              <%= link_to '正在进行中', marketing_dashboard_creations_path(q: {status_in: [:passed, :ended]}) %>
+              <%= link_to '正在进行中', marketing_dashboard_creations_path(q: {status_eq: :passed}) %>
             </li>
             <li>
-              <%= link_to '已完成', marketing_dashboard_creations_path(q: {status_eq: :finished}) %>
+              <%= link_to '已结束', marketing_dashboard_creations_path(q: {status_eq: :ended}) %>
             </li>
             <li>
               <%= link_to '已拒绝', marketing_dashboard_creations_path(q: {status_eq: :unpassed}) %>
