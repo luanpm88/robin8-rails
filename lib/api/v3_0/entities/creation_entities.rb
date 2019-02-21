@@ -71,6 +71,10 @@ module API
 
         class Tender < Grape::Entity
           expose :id, :kol_id, :creation_id, :from_terrace, :price, :title, :link, :image_url, :description
+
+          expose :price do |tender|
+            tender.price.to_f
+          end
         end
 
         class Terrace < Grape::Entity

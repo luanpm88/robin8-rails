@@ -62,10 +62,10 @@
           <td><%= Creation::STATUS[c.status.to_sym] %></td>
           <td><%= c.time_range %></td>
           <td><%= c.price_range %></td>
-          <td><%= c.pre_amount %>元</td>
+          <td><%= c.pre_amount.to_f %>元</td>
           <td><%= c.pre_kols_count %></td>
           <td><%= c.fee_rate.to_f * 100 %>%</td>
-          <td><%= c.amount %>元</td>
+          <td><%= c.amount.to_f %>元</td>
           <td><%= c.kols_count %></td>
           <td><%= c.fee %>元</td>
           <td>

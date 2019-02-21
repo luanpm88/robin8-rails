@@ -20,7 +20,7 @@ class Tender < ActiveRecord::Base
   
 
   def show_info
-    "平台：#{from_terrace} | 报价：¥#{price} | 状态：#{creation_selected_kol.status_zh} | 作品链接：#{link}"
+    "平台：#{from_terrace} | 报价：¥#{price.to_f} | 状态：#{creation_selected_kol.status_zh} | 作品链接：#{link}"
   end
 
   def show_list
@@ -28,7 +28,7 @@ class Tender < ActiveRecord::Base
   end
 
   def brand_show_info
-    "#{from_terrace} | 发帖数：0 | 报价：¥#{price} | 曝光值：0"
+    "#{from_terrace} | 发帖数：0 | 报价：¥#{price.to_f} | 曝光值：0"
   end
   
   def amount
