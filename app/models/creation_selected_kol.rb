@@ -8,7 +8,7 @@ class CreationSelectedKol < ActiveRecord::Base
 		uploaded: '已上传作品，等侍验收',
 		approved: '验收成功，等待付款',
 		finished: '付款成功，合作完成',
-		rejected: '已拒绝合作'
+		rejected: '已拒绝合作' # 只用于后台统计，当preelet, pending, unpay，这三种状态并未得到brand支付确认时，我们会将此条记录在15天后置为拒绝
 	}
 
 

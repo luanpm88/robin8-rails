@@ -22,7 +22,7 @@ module API
         	list =  list.page(params[:page]).per_page(10)
 
         	present :error, 0
-        	present :list,  list, with: API::V3_0::Entities::CreationEntities::BaseInfo
+        	present :list,  list, with: API::V3_0::Entities::CreationEntities::BaseInfo, ckol_id: current_kol.id
         end
 
         # get simple creation detail

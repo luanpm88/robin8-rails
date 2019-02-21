@@ -7,8 +7,12 @@ module API
 
           expose :id, :name, :description, :img_url, :user_id, :pre_kols_count, :notice, :status
 
-          expose :status_zh do |creation|
-            Creation::STATUS[creation.status.to_sym]
+          expose :status_zh do |creation, options|
+            if creation.status == 'finished' && creation.creation_selected_kols.where(kol_id: options[:ckol_id]).valid.count == 0
+              '已结束'
+            else
+              Creation::STATUS[creation.status.to_sym]
+            end
           end
 
           expose :price_range do |creation|
