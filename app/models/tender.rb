@@ -32,7 +32,7 @@ class Tender < ActiveRecord::Base
   end
   
   def amount
-    self.price + self.fee
+    "%.2f" % (self.price + self.fee)
   end
 
   def kols_count
