@@ -10,7 +10,7 @@ module Brand
         	obj.updated_at.strftime('%F')
         end
         expose :amount do |obj|
-        	"#{obj.tenders.sum(:price)}RMB"
+        	"#{obj.tenders.sum(:price).to_f}RMB"
         end
       end
     end
