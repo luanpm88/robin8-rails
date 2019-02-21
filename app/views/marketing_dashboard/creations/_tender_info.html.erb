@@ -1,0 +1,21 @@
+<h4>报价列表</h4>
+<table class="table table-bordered table-striped">
+  <col width="200px" />
+  <% @tender_kols.each do |_kol| %>
+	  <tr>
+	    <td>
+	    	<div class="thumbnail" style="border:none;">
+		      <%= image_tag _kol.avatar_url, class: "img-circle", width: "50", height: "50" %>
+		      <div class="caption text-center">
+		        <h5><%= _kol.name %></h5>
+		      </div>
+		    </div>
+	    </td>
+	    <td style="vertical-align:middle;">
+	    	<% _kol.tenders.each do |tender| %>
+	    		<p><%= tender.show_info %></p>
+	    	<% end %>
+	    </td>
+	  </tr>
+	<% end %>
+</table>

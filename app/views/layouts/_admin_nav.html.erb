@@ -74,6 +74,36 @@
           </li>
         <% end %>
 
+        <li>
+          <a href="#">创作活动管理<span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '全部', marketing_dashboard_creations_path %>
+            </li>
+            <li>
+              <%= link_to '待审核', marketing_dashboard_creations_path(q: {status_eq: :pending}) %>
+            </li>
+            <li>
+              <%= link_to '正在进行中', marketing_dashboard_creations_path(q: {status_eq: :passed}) %>
+            </li>
+            <li>
+              <%= link_to '已结束', marketing_dashboard_creations_path(q: {status_eq: :ended}) %>
+            </li>
+            <li>
+              <%= link_to '已拒绝', marketing_dashboard_creations_path(q: {status_eq: :unpassed}) %>
+            </li>
+            <li>
+              <%= link_to '已关闭', marketing_dashboard_creations_path(q: {status_eq: :closed}) %>
+            </li>
+            <li>
+              <%= link_to '待支付', marketing_dashboard_creation_selected_kols_path(q: {status_eq: :approved}) %>
+            </li>
+            <li>
+              <%= link_to '已支付', marketing_dashboard_creation_selected_kols_path(q: {status_eq: :finished}) %>
+            </li>
+          </ul>
+        </li>
+
         <% if can?(:read, CampaignInvite) %>
         <li>
           <a href="#"><%= t('menu.screenshot_management') %> <span class="fa arrow"></span></a>
@@ -430,6 +460,9 @@
             </li>
             <li>
               <%= link_to "网红投票活动开关", vote_switch_marketing_dashboard_utilities_redis_extends_path %>
+            </li>
+            <li>
+              <%= link_to "查看验证码", reg_code_marketing_dashboard_utilities_redis_extends_path %>
             </li>
           </ul>
         </li>

@@ -5,6 +5,25 @@ Rails.application.routes.draw do
     get 'edit_password' => 'dashboard#edit_password'
     patch 'update_password' => 'dashboard#update_password'
 
+
+    resources :creations do
+      member do 
+        get :auditing
+        put :update_auditing
+
+        get :tenders
+      end
+      collection do
+        get :search_kols
+      end
+    end
+
+    resources :creation_selected_kols, only: [:index] do
+      member do
+        put :finished
+      end
+    end
+
     resources :tags, only: [:index, :new, :create] do 
       match '/add_circle' => 'tags#add_circle', via: [:post, :get]
     end
@@ -356,6 +375,8 @@ Rails.application.routes.draw do
           get :vest_bag_detail
           get :vote_switch
           put :update_redis_value
+          match 'reg_code', via: [:post, :get]
+          get :get_reg_code
         end
       end
       resources :admintag_strategies

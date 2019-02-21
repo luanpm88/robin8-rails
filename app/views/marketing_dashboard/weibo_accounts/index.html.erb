@@ -2,7 +2,7 @@
   微博用户列表
 </h1>
 
-<h5><%= devise_error_messages! %></h5>
+<!-- <h5><%= devise_error_messages! %></h5> -->
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -46,7 +46,9 @@
     <tr>
       <th>ID</th>
       <th>kol ID</th>
+      <th>profile_id</th>
       <th>联系方式</th>
+      <th>微博昵称</th>
       <th>审核状态</th>
       <th>认证类型</th>
       <th>转发价格</th>
@@ -68,7 +70,9 @@
       <tr>
         <td><%= link_to t.id, marketing_dashboard_weibo_account_path(t) %></td>
         <td><%= t.kol_id %></td>
+        <td><%= t.profile_id %></td>
         <td><%= t.mobile_number %></td>
+        <td><%= t.nickname %></td>
         <td><%= WeiboAccount::STATUS[t.status] %></td>
         <td><%= WeiboAccount::AuthTypes[t.auth_type] %></td>
         <td><%= t.fwd_price %></td>
@@ -83,8 +87,8 @@
         <td><%= t.remark %></td>
         <td>
           <% if t.status == 0 %>
-            <%= link_to "通过", marketing_dashboard_weibo_account_path(t, status: 'passed'), method: :put %>
-            <%= link_to "拒绝", marketing_dashboard_weibo_account_path(t, status: 'rejected'), method: :put %>
+            <button class="passed-modal-one btn btn-success btn-block" data-weibo-account-id="<%= t.id %>">通过</button>
+            <button class="reject-modal-one btn btn-danger btn-block" data-weibo-account-id="<%= t.id %>">拒绝</button>
           <% end %>
         </td>
       </tr>
@@ -93,3 +97,130 @@
 </table>
 
 <%= will_paginate @weibo_account, renderer: BootstrapPagination::Rails  %>
+
+<div class="modal admin-weibo-account-modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写profile_id</h4>
+      </div>
+      <div class="modal-body admin-passed-modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                <input type="text" name='profile_id' class='profile_id form-control', placeholder="profile_id">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn passed-one btn-danger">确认同意</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal admin-weibo-account-modal-reject fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                <input type="text" name='reject_reason' class='reject_reason form-control', placeholder="请输入拒绝理由">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject-one btn-danger">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+$(function(){
+  $(".passed-modal-one").click(function(){
+    var model = $('.admin-weibo-account-modal');
+
+    model.attr("data-weibo-account-id", $(this).attr("data-weibo-account-id"));
+    model.find(".reject").hide();
+    model.find(".passed-one").show();
+    model.modal("show");
+  });
+
+  $(".reject-modal-one").click(function(){
+    var model = $('.admin-weibo-account-modal-reject');
+
+    model.attr("data-weibo-account-id", $(this).attr("data-weibo-account-id"));
+    model.find(".reject").hide();
+    model.find(".reject-one").show();
+    model.modal("show");
+  });
+
+
+  $(".passed-one").click(function(){
+    var passed_id = $(".admin-weibo-account-modal").attr("data-weibo-account-id");
+
+    var status = 'passed';
+    var profile_id = $('.profile_id').val();
+
+    doReject(passed_id, status, profile_id);
+  });
+
+  $(".reject-one").click(function(){
+    var reject_id = $(".admin-weibo-account-modal-reject").attr("data-weibo-account-id");
+
+    var status = 'rejected';
+    var profile_id = $('.profile_id').val();
+    var remark = $('.reject_reason').val();
+
+    doReject(reject_id, status, profile_id, remark);
+  });
+
+
+  function doReject(result_id, status, profile_id, remark) {
+    var data = {
+      "status": status,
+      "id": result_id,
+      "profile_id": profile_id,
+      "remark": remark
+    };
+
+    doAjaxRequest(data, function(data) {
+      if(data['result'] == 'passed' || data['result'] == 'rejected') {
+        location.reload();
+      } else {
+        location.reload();
+      }
+    });
+  }
+
+  function doAjaxRequest(data, callback) {
+    $.ajax({
+      method: "PUT",
+      url: "/marketing_dashboard/weibo_accounts/" + data['id'] + '/',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: data,
+    }).done(callback);
+  }
+})
+</script>

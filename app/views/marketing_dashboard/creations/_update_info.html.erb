@@ -1,0 +1,274 @@
+<h3>审核</h3>
+<hr>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">佣金(%):</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" id="fee_rate">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">推荐搜索:</label>
+    <div class="col-sm-2">
+      <select class="form-control" id='form_type'>
+        <option value="1">微博</option>
+        <option value="2">微信</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="profile_name" placeholder="请输入名字" value="mimeng">
+    </div>
+    <div class="col-sm-2">
+      <input type="button" value="搜索" class="btn btn-primary search-btn">
+    </div>
+  </div>
+
+  <hr>
+  <div class="panel panel-info" id="search_container">
+    <div class="panel-heading">搜索结果</div>
+    <div class="panel-body">
+      <div class="row search-select search-selectbox"></div>
+    </div>
+  </div>
+
+  <!-- <div class="text-center">
+    <ul class="pagination">
+      <li><a href="#">&laquo;</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">&raquo;</a></li>
+    </ul>
+  </div> -->
+</div>
+
+<div class="panel panel-primary" id="result_container">
+  <div class="panel-heading">
+    <h3 class="panel-title">已选择KOL:</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row" id="result_list"></div>
+  </div>
+</div>
+<hr>
+<div class="form-group">
+  <label for="exampleInputEmail1">拒绝理由：</label>
+  <input type="email" class="form-control" id="reject-reason" placeholder="请输入拒绝理由">
+</div>
+<div class="form-group">
+  <div class="col-sm-12 text-center">
+    <input type="button" value="通过" class="btn btn-success search-submit">
+    <input type="button" value="拒绝" class="btn btn-primary search-cancel">
+  </div>
+</div>
+
+<style>
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .avatar > img {
+    width: 100%;
+    height: 100%;
+  }
+  .remove-btn {
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  $(function () {
+    var weiboList = [];
+    var weiboWeixin = [];
+    var formType = document.getElementById('form_type');
+    var searchType = 'weixin';
+    // 默认调用微博接口
+    // 调用微博接口
+    // weiboJog(param);
+    // searchbtn
+    $('.search-btn').on("click", function () {
+      if (formType.options[formType.selectedIndex].value === "1") {
+        searchType = 'weibo';
+      } else {
+        searchType = 'weixin';
+      }
+      Jog({type: searchType, profile_name: $('#profile_name').val(), page_no: 0});
+    });
+    // top input 点击
+    $('.search-selectbox').on('click','input', function () {
+      var $that = $(this);
+      if(formType.options[formType.selectedIndex].value === '1') {
+        if ($that.is(':checked')) {
+          var $parent = $that.parents('.media')
+          var $avatar = $parent.find('.avatar-area')
+          var $info = $parent.find('.info-area')
+
+          var listItem =
+          '<div class="col-sm-4 list-item" data-id="'+ $that.val() +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<div class="glyphicon glyphicon-remove-sign remove-btn" data-type="weibo" data-id="'+ $that.val() +'"></div>' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                $avatar.html() +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                $info.html() +
+              '</div>' +
+            '</div>' +
+          '</div>'
+
+          // console.log(listItem)
+          $('#result_list').append(listItem);
+          weiboList.push($that.val());
+        } else {
+          var $selectItem = $('#result_list').find('.list-item');
+          for (var i = 0; i < $selectItem.length; i++) {
+            if ($selectItem.eq(i).data('id') == $that.val()){
+              $selectItem.eq(i).remove();
+            }
+          }
+          checkout($(this).val(), weiboList);
+        }
+      } else {
+        if($that.is(':checked')) {
+          var $parent = $that.parents('.media')
+          var $avatar = $parent.find('.avatar-area')
+          var $info = $parent.find('.info-area')
+
+          var listItem =
+          '<div class="col-sm-4 list-item" data-id="'+ $that.val() +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<div class="glyphicon glyphicon-remove-sign remove-btn" data-id="'+ $that.val() +'"></div>' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                $avatar.html() +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                $info.html() +
+              '</div>' +
+            '</div>' +
+          '</div>'
+
+          // console.log(listItem)
+          $('#result_list').append(listItem);
+          weiboWeixin.push($that.val());
+        } else {
+          var $selectItem = $('#result_list').find('.list-item');
+          for (var i = 0; i < $selectItem.length; i++) {
+            if ($selectItem.eq(i).data('id') == $that.val()){
+              $selectItem.eq(i).remove();
+            }
+          }
+          checkout($(this).val(), weiboWeixin);
+        }
+      }
+    });
+
+    // 已选中close
+    $('#result_list').on('click', '.remove-btn', function () {
+      var $that = $(this);
+      $that.parents('.list-item').remove();
+      let checkedInput = $('.search-selectbox').find('input[type="checkbox"]');
+      for (var i = 0; i < checkedInput.length; i++) {
+        if (checkedInput.eq(i).val() == $that.data('id')){
+          checkedInput.eq(i).prop('checked', false);
+        }
+      }
+      if ($that.data('type') == 'weibo') {
+        checkout($that.data('id'), weiboList);
+      } else {
+        checkout($that.data('id'), weiboWeixin);
+      }
+
+      console.log(weiboList);
+      console.log(weiboWeixin);
+    })
+    // 通过
+    $('.search-submit').on('click', function(){
+      console.log(weiboList);
+      console.log(weiboWeixin);
+      UpdateAuditing({
+        status: 'passed',
+        fee_rate: $('#fee_rate').val(),
+      });
+    });
+    // 拒绝
+    $('.search-cancel').on('click', function(){
+      console.log(weiboList);
+      console.log(weiboWeixin);
+      UpdateAuditing({
+        status: 'unpassed',
+        reject_reason: $("#reject-reason").val()
+
+      });
+    });
+  })
+  function checkout(val, type) {
+    for (var i = 0; i < type.length; i++) {
+      if (val == type[i]) {
+        type.splice(i, 1);
+      }
+    }
+  }
+  // 微博接口
+  function Jog(params) {
+    $.ajax({
+      url: '/marketing_dashboard/creations/search_kols',
+      // contentType: "application/json;charset=utf-8",
+      type: 'GET',
+      dataType: 'json',
+      data: params,
+      success: function (data) {
+        weiboList = data.data.data;
+        var html = "";
+        $('.search-selectbox').html('');
+        for (var i = 0; i < data.data.total_record_count; i++) {
+          html +=
+          '<div class="col-sm-6 list-item" data-id="'+ data.data.data[i].profile_id +'">' +
+            '<div class="media">' +
+              '<div class="media-left media-middle">' +
+                '<input type="checkbox" name="test" value="' + data.data.data[i].profile_id + '" />' +
+              '</div>' +
+              '<div class="media-left media-middle avatar-area">' +
+                '<div class="avatar">' +
+                  '<img class="media-object" src="'+ data.data.data[i].avatar_url +'" alt="'+ data.data.data[i].profile_name +'">' +
+                '</div>' +
+              '</div>' +
+              '<div class="media-body media-middle info-area">' +
+                '<h4 class="media-heading">'+ data.data.data[i].profile_name +'</h4>' +
+                '<p>'+ data.data.data[i].description_raw +'</p>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        }
+        $('.search-selectbox').append(html);
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    })
+  };
+
+  // submit
+  function UpdateAuditing(params) {
+    $.ajax({
+      url: "/marketing_dashboard/creations/" + $("#creation_id").val() + "/update_auditing",
+      type: 'PUT',
+      dataType: 'json',
+      data: params,
+      success: function (data) {
+        if (data.status == 'success') {
+          alert(data.alert);
+          window.location.href = data.href;
+        }
+      },
+      error: function (error) {}
+    })
+  };
+</script>

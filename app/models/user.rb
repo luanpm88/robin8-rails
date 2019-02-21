@@ -41,6 +41,12 @@ class User < ActiveRecord::Base
   belongs_to :kol, inverse_of: :user
   has_many :credits, as: :owner
 
+  has_many :creations
+  has_many :trademarks
+  has_many :competitors
+
+  has_many :collected_kols, class_name: 'UserCollectedKol'
+
 
   delegate :e_wallet_account , to: :kol
 

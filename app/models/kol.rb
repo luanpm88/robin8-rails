@@ -118,6 +118,9 @@ class Kol < ActiveRecord::Base
   has_many :voters, through: :voter_ships, source: :voter
   has_many :votes
 
+  has_many :tenders
+  has_many :creation_selected_kols
+
 
   # evan new big_v
   def is_new_big_v?

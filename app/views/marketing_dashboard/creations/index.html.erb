@@ -1,0 +1,85 @@
+<div class="container-fluid" style="padding: 20px 0;">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="padding: 0;">
+      <a data-toggle="collapse" href="#searchPanel" style="display: block; padding: 10px">
+        搜索过滤 <span class="pull-right">(单击展开或隐藏)</span>
+      </a>
+    </div>
+    <div id="searchPanel" class="panel-body <%= 'collapse' unless params[:q] %>">
+      <%= search_form_for @q, url: request.path, class: "form" do |f| %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>活动状态</label>
+              <%= f.select :status_eq, Creation::STATUS.collect{|ele| ele.reverse}, { include_blank: true }, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div>
+                <%= f.submit "搜索", class: "btn btn-primary" %>
+                <%= link_to "清除全部", request.path, class: "btn btn-default" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid" style="padding: 20px 0;">
+    <div>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>活动名称</th>
+          <th>创建人</th>
+          <th>状态</th>
+          <th>时间</th>
+          <th>单价</th>
+          <th>预算</th>
+          <th>预计招募</th>
+          <th>佣金百分比</th>
+          <th>实际支付</th>
+          <th>实际招募</th>
+          <th>佣金</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @creations.each do |c| %>
+        <tr>
+          <td><%= link_to c.id, marketing_dashboard_creation_path(c), target: "_blank" %></td>
+          <td><%= c.name %></td>
+          <td><%= link_to c.brand_name, marketing_dashboard_user_path(c.user_id), target: "_blank" %></td>
+          <td><%= Creation::STATUS[c.status.to_sym] %></td>
+          <td><%= c.time_range %></td>
+          <td><%= c.price_range %></td>
+          <td><%= c.pre_amount.to_f %>元</td>
+          <td><%= c.pre_kols_count %></td>
+          <td><%= c.fee_rate.to_f * 100 %>%</td>
+          <td><%= c.amount.to_f %>元</td>
+          <td><%= c.kols_count %></td>
+          <td><%= c.fee %>元</td>
+          <td>
+            <%= link_to "详情", marketing_dashboard_creation_path(c), target: "_blank" %>
+            <% case c.status %>
+            <% when 'pending' %>
+              <%= link_to '审核', auditing_marketing_dashboard_creation_path(c) %>
+            <% when 'passed' %>
+              <%= link_to '查看报价', tenders_marketing_dashboard_creation_path(c) %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
