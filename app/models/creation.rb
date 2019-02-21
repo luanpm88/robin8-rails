@@ -13,7 +13,6 @@ class Creation < ActiveRecord::Base
     unpassed:          '未通过审核',
     passed:            '通过审核',
     ended:             '活动结束',
-    finished:          '活动完成',
     closed:            '关闭'
   }
 
@@ -21,7 +20,7 @@ class Creation < ActiveRecord::Base
   ALERTS['passed']    = '审核已通过'
   ALERTS['unpassed']  = '审核已拒绝'
 
-  validates :status, :inclusion => { :in => ["pending", "unpassed", "passed" , "ended", "finished", "closed"] }
+  validates :status, :inclusion => { :in => STATUS.keys.collect{|ele| ele.to_s} }
   validates_presence_of :name
   validates_length_of :name, maximum: 60, too_long: "输入的值太长"
   validates_length_of :description, maximum: 500, too_long: "输入的值太长"
@@ -40,9 +39,9 @@ class Creation < ActiveRecord::Base
   scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(updated_at: :desc)}
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 
-  ['pending','unpassed','passed','ended','settled','finished','closed'].each do |value|
+  STATUS.keys.each do |value|
     define_method "is_#{value}?" do
-      self.status == value
+      self.status == value.to_s
     end
   end
 

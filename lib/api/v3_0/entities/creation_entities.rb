@@ -8,11 +8,9 @@ module API
           expose :id, :name, :description, :img_url, :user_id, :pre_kols_count, :notice, :status
 
           expose :status_zh do |creation, options|
-            if creation.status == 'finished' && creation.creation_selected_kols.where(kol_id: options[:ckol_id]).valid.count == 0
-              '已结束'
-            else
-              Creation::STATUS[creation.status.to_sym]
-            end
+            selected_kol = creation.creation_selected_kols.where(kol_id: options[:kol_id]).valid.first
+
+            selected_kol ? CreationSelectedKol::STATUS[selected_kol.status.to_sym] : Creation::STATUS[creation.status.to_sym] 
           end
 
           expose :price_range do |creation|
@@ -42,7 +40,7 @@ module API
 
         class Detail < Grape::Entity
           expose :base_info do |creation|
-            API::V3_0::Entities::CreationEntities::BaseInfo.represent creation
+            API::V3_0::Entities::CreationEntities::BaseInfo.represent creation, kol_id: options[:selected_kol].try(:kol_id)
           end
 
           expose :selected_kols do |creation|
