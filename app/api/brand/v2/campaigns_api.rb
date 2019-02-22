@@ -17,8 +17,9 @@ module Brand
             present campaigns, with: Entities::Campaign
           end
 
-          desc "Create a campaign"
+          desc "Create or Update a campaign"
           params do
+            optional :id, type: Integer
             requires :name, type: String
             requires :description, type: String
             requires :url, type: String
@@ -44,14 +45,18 @@ module Brand
             end
             requires :enable_append_push, type: String
           end
-          post do
+          post "" do
             if params[:budget].to_i < MySettings.campaign_min_budget.to_i
               error_unprocessable! "活动总预算不能低于#{MySettings.campaign_min_budget}元!"
               return
             end
 
-            service = CreateCampaignService.new current_user, declared(params)
-            Rails.logger.campaign_create.info "------user: #{current_user.id}------request_information: #{request.headers}"
+            if params[:id] && current_user.campaigns.find_by_id(params[:id])
+              service = CreateCampaignService.new current_user, declared(params)
+              Rails.logger.campaign_create.info "------user: #{current_user.id}------request_information: #{request.headers}"
+            else
+              service = UpdateInviteCampaignService.new current_user, params[:id], declared(params)
+            end
 
             if service.perform
               present service.campaign
