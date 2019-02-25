@@ -27,17 +27,17 @@
                 <td>
                   <strong>Weibo</strong>
                 </td>
-                <td>pending: <%= @r8_infos[:weibo][:pending]%></td>
-                <td>passed: <%= @r8_infos[:weibo][:passed]%></td>
-                <td>rejected: <%= @r8_infos[:weibo][:rejected]%></td>
+                <td>pending: <%= link_to @r8_infos[:weibo][:pending], marketing_dashboard_weibo_accounts_path(q: {status_eq: 0})%></td>
+                <td>passed: <%= link_to @r8_infos[:weibo][:passed], marketing_dashboard_weibo_accounts_path(q: {status_eq: 1})%></td>
+                <td>rejected: <%= link_to @r8_infos[:weibo][:rejected], marketing_dashboard_weibo_accounts_path(q: {status_eq: -1})%></td>
               </tr>
               <tr>
                 <td>
                   <strong>Wechat</strong>
                 </td>
-                <td>pending: <%= @r8_infos[:wechat][:pending]%></td>
-                <td>passed: <%= @r8_infos[:wechat][:passed]%></td>
-                <td>rejected: <%= @r8_infos[:wechat][:rejected]%></td>
+                <td>pending: <%=link_to @r8_infos[:wechat][:pending], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 0})%></td>
+                <td>passed: <%=link_to @r8_infos[:wechat][:passed], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 1})%></td>
+                <td>rejected: <%=link_to @r8_infos[:wechat][:rejected], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: -1})%></td>
               </tr>
             </tbody>
           </table>
@@ -54,7 +54,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Registered Count</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%= @r8_infos[:user][:register_count] %></p>
+          <p class="form-control-static"><%=link_to @r8_infos[:user][:register_count], marketing_dashboard_users_path %></p>
         </div>
       </div>
     </div>
