@@ -38,7 +38,9 @@ class WeiboAccount < ActiveRecord::Base
   has_many :weibo_accounts_cities, class_name: "WeiboAccountsCity"
   has_many :cities, through: :weibo_accounts_cities
 
-  scope :valid, ->{where(status: 1)}
+  scope :recent,    ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
+  scope :by_status, ->(status){where(status: status)}
+  scope :valid,     ->{where(status: 1)}
 
   after_save :update_kol_role_status, on: [:create, :update]
   after_update :sent_message

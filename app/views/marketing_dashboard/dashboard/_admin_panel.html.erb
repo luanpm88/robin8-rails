@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h3 class="page-header">Yesterday Report ( <%= Time.now.strftime('%F') %> )</h3>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">KOL</div>
+  <div class="panel-body">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Registered Count</label>
+        <div class="col-sm-4">
+          <p class="form-control-static"><%= @r8_infos[:kol][:register_count] %></p>
+        </div>
+        <label class="col-sm-2 control-label">DUA</label>
+        <div class="col-sm-4">
+          <p class="form-control-static"><%= @r8_infos[:kol][:active_count] %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Apply for bigv</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Weibo</strong>
+                </td>
+                <td>pending: <%= @r8_infos[:weibo][:pending]%></td>
+                <td>passed: <%= @r8_infos[:weibo][:passed]%></td>
+                <td>rejected: <%= @r8_infos[:weibo][:rejected]%></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Wechat</strong>
+                </td>
+                <td>pending: <%= @r8_infos[:wechat][:pending]%></td>
+                <td>passed: <%= @r8_infos[:wechat][:passed]%></td>
+                <td>rejected: <%= @r8_infos[:wechat][:rejected]%></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Brand</div>
+  <div class="panel-body">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Registered Count</label>
+        <div class="col-sm-4">
+          <p class="form-control-static"><%= @r8_infos[:user][:register_count] %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Campaign(small V)</div>
+  <div class="panel-body">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Created Count</label>
+        <div class="col-sm-2">
+          <p class="form-control-static"><%= @r8_infos[:campaign][:created_count] %></p>
+        </div>
+        <label class="col-sm-2 control-label">Total Budget</label>
+        <div class="col-sm-2">
+          <p class="form-control-static"><%= @r8_infos[:campaign][:total_budget] %></p>
+        </div>
+        <label class="col-sm-2 control-label">Total Revenue</label>
+        <div class="col-sm-2">
+          <p class="form-control-static"><%= @r8_infos[:campaign][:total_revenue] %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Top 3 KOLS</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <% 3.times do %>
+                  <td>
+                    <div class="media">
+                      <div class="media-left">
+                        <a href="#">
+                          <img class="media-object" src="..." alt="...">
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <h4 class="media-heading">Media heading</h4>
+                        ...
+                      </div>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Creation(Big V)</div>
+  <div class="panel-body">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Created Count</label>
+        <div class="col-sm-2">
+          <p class="form-control-static">2</p>
+        </div>
+        <label class="col-sm-2 control-label">Total Budget</label>
+        <div class="col-sm-2">
+          <p class="form-control-static">50000</p>
+        </div>
+        <label class="col-sm-2 control-label">Total Revenue</label>
+        <div class="col-sm-2">
+          <p class="form-control-static">20000</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">KOLS</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <% 3.times do %>
+                  <td>
+                    <div class="media">
+                      <div class="media-left">
+                        <a href="#">
+                          <img class="media-object" src="..." alt="...">
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <h4 class="media-heading">Media heading</h4>
+                        ...
+                      </div>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
