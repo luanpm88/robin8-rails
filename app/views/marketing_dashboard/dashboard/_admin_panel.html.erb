@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">Yesterday Report ( <%= Time.now.strftime('%F') %> )</h3>
+    <h3 class="page-header">Today's Reports ( <%= "#{@ending - 1.days} -- #{@ending}" %> )</h3>
   </div>
 </div>
 
@@ -11,7 +11,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Registered Count</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%= @r8_infos[:kol][:register_count] %></p>
+          <p class="form-control-static"><%= link_to @r8_infos[:kol][:register_count], marketing_dashboard_kols_path %></p>
         </div>
         <label class="col-sm-2 control-label">DUA</label>
         <div class="col-sm-4">

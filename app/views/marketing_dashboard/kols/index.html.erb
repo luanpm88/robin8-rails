@@ -17,31 +17,31 @@
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL手机</label>
+            <label>KOL Mobile</label>
             <%= f.search_field :mobile_number_cont, class: "form-control", placeholder: "KOL手机" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL邮箱</label>
+            <label>KOL Email</label>
             <%= f.search_field :email_cont, class: "form-control", placeholder: "KOL邮箱" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL昵称</label>
+            <label>KOL Name</label>
             <%= f.search_field :name_cont, class: "form-control", placeholder: "KOL昵称" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>KOL等级</label>
+            <label>KOL Level</label>
             <%= f.select :kol_level_eq, [ "A", "B", "C", "S" ], { include_blank: true }, class: "form-control" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>社交账号名称</label>
+            <label>Social Accounts</label>
             <%= f.search_field :social_accounts_username_cont, class: "form-control", placeholder: "社交账号名称" %>
           </div>
         </div>
@@ -97,17 +97,19 @@
   <thead>
     <tr>
       <th>KOL ID</th>
-      <th>昵称</th>
-      <th>手机</th>
-      <th>邮箱</th>
-      <th>来源</th>
-      <th>等级</th>
-      <th>角色</th>
-      <th>审核状态</th>
-      <th><%= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>
-      <th><%= sort_link(@q, :avail_amount, "可提现金额") %></th>
-      <th><%= sort_link(@q, :historical_income, "历史净收益") %></th>
-      <th><%= sort_link(@q, :show_count, "TalkingData 渠道") %></th>
+      <th>Name</th>
+      <th>Mobile Number</th>
+      <th>Email</th>
+      <th>Resource</th>
+      <th>Created At</th>
+      <th>Level</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Social Account</th>
+      <!--<th><%#= sort_link(@q, :forbid_campaign_time, "拉黑时间") %></th>-->
+      <th><%= sort_link(@q, :avail_amount, "Avail Amount") %></th>
+      <th><%= sort_link(@q, :historical_income, "Historical Income") %></th>
+      <!--<th><%#= sort_link(@q, :show_count, "TalkingData 渠道") %></th>-->
       <th><%= sort_link(@q, :show_count, "AdminTag") %></th>
       <th>徒弟数</th>
       <th>徒弟收益</th>
@@ -125,13 +127,18 @@
         <td><%= k.mobile_number %></td>
         <td><%= k.email %></td>
         <td><%= k.utm_source %></td>
+        <td><%= k.created_at.strftime("%F %T")%></td>
         <td><%= k.kol_level %></td>
         <td><%= k.kol_role %></td>
         <td><%= k.role_apply_status %></td>
-        <td><%= color_time(k.forbid_campaign_time) %></td>
+        <td>
+          <%= link_to "Weibo: #{k.weibo_account.nickname}", marketing_dashboard_weibo_account_path(k.weibo_account), target: "_blank" if k.weibo_account%>
+          <%= link_to "Wechat: #{k.public_wechat_account.nickname}", marketing_dashboard_public_wechat_account_path(k.public_wechat_account), target: "_blank" if k.public_wechat_account%>
+        </td>
+        <!--<td><%#= color_time(k.forbid_campaign_time) %></td>-->
         <td><%= k.avail_amount %></td>
         <td><%= k.historical_income %></td>
-        <td><%= k.talkingdata_promotion_name %></td>
+        <!--<td><%#= k.talkingdata_promotion_name %></td>-->
         <td>
           <!-- Add an Admintag -->
           <%= link_to "+", marketing_dashboard_kol_add_admintag_path(k.id), style: "float: right;" %>
