@@ -1,13 +1,17 @@
+
 module Brand
   module V2
     module Entities
       class Creation < Entities::Base
         format_with(:iso_timestamp) { |dt| dt.strftime('%F')}
-        expose :id, :name, :description, :img_url, :pre_kols_count, :pre_amount, :notice, :status, :start_at, :end_at,
-          :trademark_id
+        expose :id, :name, :description, :img_url, :pre_kols_count,:notice, :status, :start_at, :end_at, :trademark_id
 
         with_options(format_with: :iso_timestamp) do
           expose :start_at, :end_at
+        end
+
+        expose :pre_amount do |object|
+          object.pre_amount.to_f
         end
 
         expose :targets_hash do |object|
@@ -49,7 +53,7 @@ module Brand
 
         # 已消耗金额
         expose :actual_amount do |object|
-          object.tenders.brand_paid.map(&:amount).sum
+          object.tenders.brand_paid.map(&:amount).sum.to_f
         end
       end
     end

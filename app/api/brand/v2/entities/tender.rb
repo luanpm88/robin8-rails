@@ -2,12 +2,15 @@ module Brand
   module V2
     module Entities
       class Tender < Entities::Base
-        expose :id, :from_terrace, :price, :fee, :link, :title, :image_url, :description, :remark
+        expose :id, :from_terrace, :fee, :link, :title, :image_url, :description, :remark
+        expose :price do |object|
+          object.price.to_f
+        end
         expose :status do |object, opts|
           ::Tender::STATUS[object.status.to_sym]
         end
         expose :amount do |object, opts|
-          object.amount
+          object.amount.to_f
         end
         expose :brand_show_info do |object, opts|
           object.brand_show_info

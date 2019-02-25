@@ -10,7 +10,7 @@ module Brand
           object.status_zh
         end
         expose :price_total do |object, opts|
-          object.tenders.sum(:price)
+          object.tenders.sum(:price).to_f
         end
       end
     end

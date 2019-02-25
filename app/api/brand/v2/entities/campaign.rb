@@ -9,7 +9,7 @@ module Brand
                :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,
                :example_screenshot_count, :enable_append_push, :exposures_count
 
-        expose :user, using: Entities::UserInfo
+        expose :user, using: Entities::User
 
         expose :enable_append_push do |object|
           object.enable_append_push.to_s
