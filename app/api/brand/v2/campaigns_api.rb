@@ -27,7 +27,7 @@ module Brand
             requires :budget, type: Float                     #活动总预算
             requires :per_budget_type, type: String           #奖励模式选择(click:按照点击奖励KOL, post:按照转发奖励KOL, cpt:按照完成任务奖励KOL)
             requires :per_action_budget, type: Float          #单次预算
-            optional :message, type: String。                 #备注信息
+            optional :message, type: String                   #备注信息
             requires :start_time, type: DateTime              #活动开始时间
             requires :deadline, type: DateTime                #活动结束时间
             requires :sub_type, type: String                  #推广平台(wechat,weibo)
