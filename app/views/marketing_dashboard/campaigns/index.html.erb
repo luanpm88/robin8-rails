@@ -152,29 +152,29 @@
     <table class='table'>
       <thead>
         <tr>
-          <th>活动ID</th>
-          <th>活动名称</th>
+          <th>ID</th>
+          <th>Campaign Name</th>
           <th>筛选条件</th>
-          <th>创建人ID</th>
-          <th>创建人名称</th>
-          <th>活动状态</th>
-          <th>活动平台</th>
+          <th>Brand ID</th>
+          <th>Brand Admin's Name</th>
+          <th>Status</th>
+          <th>Social Platform</th>
           <th>活动类型</th>
-          <th><%= sort_link(@q, :per_action_budget, "活动单价") %></th>
-          <th><%= sort_link(@q, :budget, "活动预算") %></th>
-          <th>剩余预算</th>
-          <th>实际消耗预算</th>
-          <th><%= sort_link(@q, :start_time, "活动开始时间") %></th>
-          <th><%= sort_link(@q, :deadline, "活动结束时间") %></th>
-          <th><%= sort_link(@q, :valid_invite_count, "有效接单人数") %></th>
-          <th><%= sort_link(@q, :total_invite_count, "总接单人数") %></th>
-          <th><%= sort_link(@q, :total_click, "总点击数") %></th>
-          <th><%= sort_link(@q, :avail_click, "有效点击") %></th>
-          <th>结算点击</th>
+          <th><%= sort_link(@q, :per_action_budget, "Per Budget") %></th>
+          <th><%= sort_link(@q, :budget, "Budget") %></th>
+          <th>Remain Budget</th>
+          <th>Take Budget</th>
+          <th><%= sort_link(@q, :start_time, "Start At") %></th>
+          <th><%= sort_link(@q, :deadline, "End At") %></th>
+          <th><%= sort_link(@q, :valid_invite_count, "Valid Shared Count") %></th>
+          <th><%= sort_link(@q, :total_invite_count, "Total Shared Count") %></th>
+          <th><%= sort_link(@q, :total_click, "Total Clicks") %></th>
+          <th><%= sort_link(@q, :avail_click, "Avail Clicks") %></th>
+          <th>Paid Clicks</th>
           <th>补推</th>
           <th>销售人员</th>
           <th>是否限制点击数</th>
-          <th>操作</th>
+          <th>Options</th>
         </tr>
       </thead>
       <tbody>

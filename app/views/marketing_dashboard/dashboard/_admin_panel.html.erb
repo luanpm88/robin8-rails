@@ -68,7 +68,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Created Count</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:campaign][:created_count] %></p>
+          <p class="form-control-static"><%=link_to @r8_infos[:campaign][:created_count], agreed_marketing_dashboard_campaigns_path %></p>
         </div>
         <label class="col-sm-2 control-label">Total Budget</label>
         <div class="col-sm-2">
