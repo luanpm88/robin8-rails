@@ -1,6 +1,8 @@
 module Brand
   module V2
     class TransactionsAPI < Base
+      include Grape::Kaminari
+      
       group do
         before do
           authenticate! unless @options[:path].first == '/alipay_notify'
@@ -54,8 +56,15 @@ module Brand
               env['api.format'] = :txt
               body "success"
             else
-              return error_unprocessable! "充值失败，请重试"
+              return error_unprocessable! "订单支付失败，请重试"
             end
+          end
+
+
+          paginate per_page: 8
+          get "/" do
+            transactions = paginate(Kaminari.paginate_array(current_user.paid_transactions.includes(:item).order('created_at DESC')))
+            present transactions
           end
 
         end

@@ -20,28 +20,23 @@ module Brand
           desc "Create or Update a campaign"
           params do
             optional :id, type: Integer
-            requires :name, type: String
-            requires :description, type: String
-            requires :url, type: String
-            requires :img_url, type: String
-            requires :budget, type: Float
-            requires :per_budget_type, type: String
-            requires :per_action_budget, type: Float
-            optional :message, type: String
-            requires :start_time, type: DateTime
-            requires :deadline, type: DateTime
-            requires :sub_type, type: String      #推广平台
-            requires :example_screenshot_count, type: Integer
+            requires :name, type: String                      #活动标题
+            requires :description, type: String               #活动简介
+            requires :url, type: String                       #活动链接
+            requires :img_url, type: String                   #活动图片
+            requires :budget, type: Float                     #活动总预算
+            requires :per_budget_type, type: String           #奖励模式选择(click:按照点击奖励KOL, post:按照转发奖励KOL, cpt:按照完成任务奖励KOL)
+            requires :per_action_budget, type: Float          #单次预算
+            optional :message, type: String。                 #备注信息
+            requires :start_time, type: DateTime              #活动开始时间
+            requires :deadline, type: DateTime                #活动结束时间
+            requires :sub_type, type: String                  #推广平台(wechat,weibo)
+            requires :example_screenshot_count, type: Integer #示例图片数量
             requires :target, type: Hash do
               requires :age    , type:String
               requires :region , type:String
               requires :gender , type:String
               requires :tags   , type:String
-            end
-            optional :campaign_action_url, type: Hash do
-              optional :action_url            , type: String
-              optional :short_url             , type: String
-              optional :action_url_identifier , type: String
             end
             requires :enable_append_push, type: String
           end
