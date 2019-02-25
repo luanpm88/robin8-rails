@@ -19,13 +19,13 @@
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>联系方式</label>
+            <label>Mobile Number</label>
             <%= f.search_field :kol_mobile_number_cont, class: "form-control", placeholder: "联系方式" %>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>审核状态</label>
+            <label>Status</label>
             <%= f.select :status_eq, options_for_select([['未审核',0],['审核通过',1],['审核拒绝',-1]], @q.status_eq), { include_blank: true }, class: "form-control" %>
           </div>
         </div>
@@ -47,21 +47,22 @@
       <th>ID</th>
       <th>kol ID</th>
       <th>profile_id</th>
-      <th>联系方式</th>
-      <th>微博昵称</th>
-      <th>审核状态</th>
-      <th>认证类型</th>
-      <th>转发价格</th>
-      <th>直发价格</th>
-      <th>直播价格</th>
-      <th>报价有效期至</th>
-      <th>圈子</th>
-      <th>粉丝数</th>
-      <th>男女偏重值</th>
-      <th>粉丝所在城市</th>
-      <th>作品</th>
-      <th>备注</th>
-      <th>操作</th>
+      <th>Mobile Number</th>
+      <th>Weibo Nickname</th>
+      <th>Status</th>
+      <th>Application Time</th>
+      <th>Auth Type</th>
+      <th>Forward Price</th>
+      <th>Price</th>
+      <th>Live Price</th>
+      <th>Expired At</th>
+      <th>Circles</th>
+      <th>Followers Count</th>
+      <th>Follower's Gender</th>
+      <th>Follower's Location</th>
+      <th>Work's Links</th>
+      <th>Remark</th>
+      <th>Options</th>
     </tr>
   </thead>
 
@@ -74,6 +75,7 @@
         <td><%= t.mobile_number %></td>
         <td><%= t.nickname %></td>
         <td><%= WeiboAccount::STATUS[t.status] %></td>
+        <td><%= t.created_at.strftime("%F %T") %></td>
         <td><%= WeiboAccount::AuthTypes[t.auth_type] %></td>
         <td><%= t.fwd_price %></td>
         <td><%= t.price %></td>

@@ -28,8 +28,8 @@ module Brand
               requires :img_url,        type: String
               requires :target, type: Hash do
                 requires :industries,   type: String # 'a,b,c,d'
-                requires :price_from,   type: Float
-                requires :price_to,     type: Float
+                requires :price_from,   type: Integer
+                requires :price_to,     type: Integer
               end
               requires :terraces, type: Array do
                 requires :terrace_id, type: Integer
