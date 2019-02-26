@@ -47,14 +47,14 @@ module Brand
             end
 
             if params[:id] && current_user.campaigns.find_by_id(params[:id])
+              service = UpdateCampaignService.new current_user, params[:id], declared(params)
+            else
               service = CreateCampaignService.new current_user, declared(params)
               Rails.logger.campaign_create.info "------user: #{current_user.id}------request_information: #{request.headers}"
-            else
-              service = UpdateInviteCampaignService.new current_user, params[:id], declared(params)
             end
 
             if service.perform
-              present service.campaign
+              present service.campaign, with: Entities::Campaign
             else
               error_unprocessable! service.first_error_message
             end

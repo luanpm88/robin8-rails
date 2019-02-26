@@ -11,6 +11,17 @@ module Brand
 
         expose :user, using: Entities::User
 
+        expose :status_zh do |object|
+          object.status_zh
+        end
+
+        expose :time_range do |object|
+          object.time_range
+        end
+
+        expose :sub_type_zh do |object|
+          object.sub_type_zh
+        end
         expose :enable_append_push do |object|
           object.enable_append_push.to_s
         end
@@ -84,9 +95,17 @@ module Brand
           target.target_content if target
         end
 
+        expose :age_zh do |object, opts|
+          object.age_zh
+        end
+
         expose :gender do |object, opts|
           target = object.gender_target
           target.target_content if target
+        end
+
+        expose :gender_zh do |object, opts|
+          object.gender_zh
         end
 
         expose :region do |object, opts|
@@ -118,7 +137,7 @@ module Brand
         expose :tag_labels do |object, opts|
           target = object.tag_target
           if target
-            target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
+            (target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }).join("/")
           end
         end
 

@@ -120,7 +120,7 @@ class Campaign < ActiveRecord::Base
   before_create :generate_campaign_number, :deal_wechat_auth_type
   before_create :change_present_put, if: ->{$redis.get('put_switch') == '1'}
   after_create :update_user_status
-  after_save :deal_with_campaign_img_url
+  # after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
   # after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1'}
 
@@ -142,6 +142,53 @@ class Campaign < ActiveRecord::Base
 
   def can_apply
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
+  end
+
+  def time_range
+    "#{start_time.strftime('%Y-%m-%d %H:%M')} -- #{deadline.strftime('%Y-%m-%d %H:%M')}"
+  end
+
+  def sub_type_zh
+    case self.sub_type
+    when 'wechat'
+      '朋友圈'
+    when 'weibo'
+      '微博'
+    end
+  end
+
+  def age_zh
+    case self.age_target.target_content
+    when '全部'
+      "全部"
+    when '10,20'
+      "10-20 岁"
+    when '20,30'
+      "20-30 岁"
+    when '30,40'
+      "30-40 岁"
+    when '40,50'
+      "40-50 岁"
+    when '50,60'
+      "50-60 岁"
+    when '60,100'
+      "60岁以上"
+    end
+  end
+
+  def gender_zh
+    case self.gender_target.target_content
+    when '全部'
+      "全部"
+    when '1'
+      "男"
+    when '2'
+      "女"
+    end
+  end
+
+  def status_zh
+    Campaign::STATUS[self.status.to_sym]
   end
 
   def get_stats api_from="brand"
