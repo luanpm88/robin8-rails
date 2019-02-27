@@ -160,11 +160,11 @@ module Brand
         end
 
         expose :valid_applies_count do |object, opts|
-          object.valid_applies.count if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.valid_applies.count : 0
         end
 
         expose :brand_passed_count do |object, opts|
-          object.brand_passed_applies.count if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.brand_passed_applies.count : 0
         end
 
         expose :take_budget do |object, opts|
@@ -176,7 +176,8 @@ module Brand
         end
 
         expose :recruit_status do |object, opts|
-            object.recruit_status if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.recruit_status : 0
+
         end
 
         expose :invalid_reasons do |object, opts|
@@ -184,11 +185,11 @@ module Brand
         end
 
         expose :total_invite_kols_count do |object, opts| # 邀请活动: 总邀请人数
-          object.campaign_invites.count if object.per_budget_type == "invite"
+          object.per_budget_type == "invite" ? object.campaign_invites.count : 0
         end
 
         expose :total_agreed_invite_kols_count do |object, opts| #邀请活动: 接受活动的人数
-          object.campaign_invites.verifying_or_approved.count if object.per_budget_type == "invite"
+          object.per_budget_type == "invite" ? object.campaign_invites.verifying_or_approved.count : 0 
         end
 
         expose :per_budget_type_show do |object|
@@ -199,6 +200,11 @@ module Brand
           else
             "有效点击"
           end
+        end
+
+        #TODo
+        expose :per_push_kols_count do |object|
+          100
         end
 
         with_options(format_with: :iso_timestamp) do

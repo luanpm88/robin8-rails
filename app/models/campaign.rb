@@ -158,7 +158,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def age_zh
-    case self.age_target.target_content
+    case self.age_target.try(:target_content)
     when '全部'
       "全部"
     when '10,20'
@@ -173,17 +173,21 @@ class Campaign < ActiveRecord::Base
       "50-60 岁"
     when '60,100'
       "60岁以上"
+    else
+      "无"
     end
   end
 
   def gender_zh
-    case self.gender_target.target_content
+    case self.gender_target.try(:target_content)
     when '全部'
       "全部"
     when '1'
       "男"
     when '2'
       "女"
+    else
+      "无"
     end
   end
 

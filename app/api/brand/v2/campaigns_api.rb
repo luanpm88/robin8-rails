@@ -9,7 +9,7 @@ module Brand
         end
         resource :campaigns do
 
-          paginate per_page: 4
+          # paginate per_page: 10
           desc 'Get campaigns current user owns'
           get '/' do
             campaigns = paginate(Kaminari.paginate_array(current_user.campaigns.order('created_at DESC')))
