@@ -62,13 +62,15 @@ module Brand
 
           desc 'create trademark'
           params do
-            requires :name,       type: String
+            requires :name,         type: String
+            requires :keywords,     type: String
             requires :description,  type: String
           end
 
           post 'trademark' do
             current_user.trademarks.where(status: 1).update_all(status: 0)
-            trademark = current_user.trademarks.find_or_initialize_by(name: params[:name], description: params[:description])
+            keywords = params[:keywords].split(/[,，]/).delete_if{|ele| ele==""}.join(',')
+            trademark = current_user.trademarks.find_or_initialize_by(name: params[:name], keywords: keywords, description: params[:description])
             trademark.status = 1 if trademark.valid?
             trademark.save
 
@@ -79,6 +81,7 @@ module Brand
           params do
             optional :status,       type: Integer
             optional :name,         type: String
+            optional :keywords,     type: String
             optional :description,  type: String
             requires :id,           type: Integer
           end
@@ -92,6 +95,8 @@ module Brand
             trademark.name        = params[:name]        if params[:name]
             trademark.description = params[:description] if params[:description]
             trademark.status      = params[:status]      if params[:status]
+
+            trademark.keywords = params[:keywords].split(/[,，]/).delete_if{|ele| ele==""}.join(',') if params[:keywords]
 
             trademark.save
 
@@ -108,6 +113,7 @@ module Brand
             end
             requires :my_brand, type: Hash do 
               requires :name,         type: String
+              requires :keywords,     type: String
               optional :description,  type: String
             end
             requires :competitors, type: Array do 
@@ -116,14 +122,11 @@ module Brand
             end
           end
           post 'update_base_infos' do
-            Rails.logger.info "*" * 100
-            Rails.logger.info params[:base_info]
-            Rails.logger.info params[:my_brand]
-            Rails.logger.info params[:competitors]
-
             current_user.update_attributes(params[:base_info].compact)
 
-            trademark = current_user.trademarks.find_or_initialize_by(name: params[:my_brand][:name], description: params[:my_brand][:description])
+            keywords = params[:my_brand][:keywords].split(/[,，]/).delete_if{|ele| ele==""}.join(',')
+            
+            trademark = current_user.trademarks.find_or_initialize_by(name: params[:my_brand][:name], keywords: keywords, description: params[:my_brand][:description])
             trademark.status = 1 if trademark.valid?
             trademark.save
 
