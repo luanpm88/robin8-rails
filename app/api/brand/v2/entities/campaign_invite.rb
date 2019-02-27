@@ -7,7 +7,7 @@ module Brand
 
         #奖励
         expose :total_rewards do |object|
-          object.get_avail_click * per_action_budget
+          object.get_avail_click * object.campaign.per_action_budget
         end
         expose :kol, using: Entities::KolInfo
         expose :campaign, using: Entities::Campaign
