@@ -24,6 +24,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         rejected: wechat.by_status(-1).count
       }
 
+      @r8_infos[:big_v_count] = weibo.count + wechat.count
       @r8_infos[:user] = {
         register_count: User.recent(@ending - 1.day, @ending).count
       }
