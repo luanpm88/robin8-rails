@@ -191,6 +191,37 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def per_push_kols_count
+    @kols = Kol.active.personal_big_v
+
+    if self.region_target and self.region_target.target_content != "全部"
+      regions = self.region_target.target_content.split(",").reject(&:blank?)
+      cities = City.where(name: regions).map(&:name_en)
+
+      @kols = @kols.where(app_city: cities)
+    end
+
+    if self.tag_target and self.tag_target.target_content != "全部"
+      tag_params = self.tag_target.target_content.split(",").reject(&:blank?)
+      tags = Tag.where(name: tag_params).map(&:id)
+
+      join_table(:kol_tags)
+      @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
+    end
+
+    if self.age_target && self.age_target.target_content != '全部'
+      min_age = self.age_target.target_content.split(',').map(&:to_i).first
+      max_age = self.age_target.target_content.split(',').map(&:to_i).last
+      @kols = @kols.ransack({age_in: Range.new(min_age, max_age)}).result
+    end
+
+    if self.gender_target && self.gender_target.target_content != '全部'
+      @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
+    end
+
+    @kols.distinct.count
+  end
+
   def status_zh
     Campaign::STATUS[self.status.to_sym]
   end
