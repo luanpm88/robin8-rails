@@ -36,6 +36,7 @@ class Creation < ActiveRecord::Base
 
   delegate :name, :description, to: :trademark, prefix: :trademark
 
+  scope :recent,    ->(_start,_end){ where(created_at: _start.._end) }
   scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(updated_at: :desc)}
   scope :by_status, ->(status){where(status: status).order(updated_at: :desc)}
 

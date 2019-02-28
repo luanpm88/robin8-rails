@@ -38,7 +38,7 @@ class WeiboAccount < ActiveRecord::Base
   has_many :weibo_accounts_cities, class_name: "WeiboAccountsCity"
   has_many :cities, through: :weibo_accounts_cities
 
-  scope :recent,    ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
+  scope :recent,    ->(_start,_end){ where(created_at: _start.._end) }
   scope :by_status, ->(status){where(status: status)}
   scope :valid,     ->{where(status: 1)}
 
