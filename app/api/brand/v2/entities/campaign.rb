@@ -202,14 +202,31 @@ module Brand
           end
         end
 
-        #TODo
+        #预计推送KOL人数
         expose :per_push_kols_count do |object|
-          100
+          object.per_push_kols_count
         end
 
         #评价详情
         expose :evaluate do |object|
           object.evaluate
+        end
+
+        #统计饼图数据
+        expose :gender_analysis do |object|
+          object.gender_analysis_of_invitee
+        end
+
+        expose :age_analysis do |object|
+          object.age_analysis_of_invitee
+        end
+
+        expose :tag_analysis do |object|
+          object.tag_analysis_of_invitee
+        end
+
+        expose :region_analysis do |object|
+          object.region_analysis_of_invitee
         end
 
         with_options(format_with: :iso_timestamp) do
