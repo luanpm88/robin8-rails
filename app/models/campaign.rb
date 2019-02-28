@@ -195,6 +195,14 @@ class Campaign < ActiveRecord::Base
     Campaign::STATUS[self.status.to_sym]
   end
 
+  def evaluate
+    if self.evaluation_status == "evaluated"
+      {score: self.effect_evaluation.score, content: self.review_evaluation.content}
+    else
+      {}
+    end
+  end
+
   def get_stats api_from="brand"
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
@@ -211,7 +219,7 @@ class Campaign < ActiveRecord::Base
       total_clicks.unshift 0
       avail_clicks.unshift 0
     end
-    [self.per_budget_type, labels, total_clicks, avail_clicks]
+    {per_budget_type: self.per_budget_type, labels: labels, total_clicks: total_clicks, avail_clicks: avail_clicks}
   end
 
   def get_stats_for_app

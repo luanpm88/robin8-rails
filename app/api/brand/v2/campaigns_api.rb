@@ -9,6 +9,14 @@ module Brand
         end
         resource :campaigns do
 
+          params do
+            requires :campaign_id, type: Integer
+          end
+          get "statistics_clicks" do
+            campaign = Campaign.find params[:campaign_id]
+            present campaign.get_stats
+          end
+
           # paginate per_page: 10
           desc 'Get campaigns current user owns'
           get '/' do
@@ -69,7 +77,21 @@ module Brand
             return {error: 1, detail: '数据错误，请确认'} unless campaign
 
             present campaign, with: Entities::Campaign
-          end 
+          end
+
+          desc 'evaluate  campaign  info'
+          params do
+            requires :review_content, type: String
+            requires :effect_score, type: Integer
+          end
+          post ':id/evaluate' do
+            @campaign = Campaign.find params[:id]
+            if @campaign.evaluation_status != "evaluating"
+              return {error: 1, detail: '该活动你已评价,或暂时不能评价!'}
+            end
+            CampaignEvaluation.evaluate(@campaign, params[:effect_score], params[:experience_score], params[:review_content])
+            present @campaign, with: Entities::Campaign
+          end
 
         end
       end

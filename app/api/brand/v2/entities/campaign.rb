@@ -6,7 +6,7 @@ module Brand
         expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
-               :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,
+               :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,#是否评价状态
                :example_screenshot_count, :enable_append_push, :exposures_count
 
         expose :user, using: Entities::User
@@ -205,6 +205,11 @@ module Brand
         #TODo
         expose :per_push_kols_count do |object|
           100
+        end
+
+        #评价详情
+        expose :evaluate do |object|
+          object.evaluate
         end
 
         with_options(format_with: :iso_timestamp) do

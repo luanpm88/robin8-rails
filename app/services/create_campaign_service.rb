@@ -30,8 +30,8 @@ class CreateCampaignService
     end
 
     @campaign_params.merge!({:status => :unpay, :need_pay_amount => @campaign_params[:budget]})
-    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
-    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:start_time] = @campaign_params[:start_time]
+    @campaign_params[:deadline] = @campaign_params[:deadline]
     @campaign_params[:enable_append_push] = @campaign_params[:enable_append_push] == 'false' ? false : true
 
     if @errors.size > 0

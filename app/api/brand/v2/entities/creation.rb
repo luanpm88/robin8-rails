@@ -3,7 +3,7 @@ module Brand
   module V2
     module Entities
       class Creation < Entities::Base
-        format_with(:iso_timestamp) { |dt| dt.strftime('%F')}
+        format_with(:iso_timestamp) { |dt| dt.strftime('%F %T')}
         expose :id, :name, :description, :img_url, :pre_kols_count,:notice, :status, :start_at, :end_at, :trademark_id
 
         with_options(format_with: :iso_timestamp) do

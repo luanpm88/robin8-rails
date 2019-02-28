@@ -48,8 +48,8 @@ class UpdateCampaignService
     #   return false
     # end
 
-    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
-    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:start_time] = @campaign_params[:start_time]
+    @campaign_params[:deadline] = @campaign_params[:deadline]
 
     if @errors.size > 0
       return false
