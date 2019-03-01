@@ -77,29 +77,27 @@ module Campaigns
       provinces = []
       cities = []
       result = []
+
       city_counts.map do |cc|
         city = City.where(name_en: cc[0]).take
         next unless city
         province = city.province
         next unless province
 
-        province_name = province.name
-        city_name = city.short_name
-        unless provinces.include? province_name
-          cities = []
-          provinces << province_name
-          cities << {city_code: city.name_en, city_name: city.short_name}
-          result << {province_name: province_name, province_code: province.name_en, province_short_name:province.short_name, city: cities}
+        provinces = result.map{|r| r[:province_name]}
+
+        if provinces.include? province.name
+          index = provinces.index(province.name)
+          result[index][:city] << {city_code: city.name_en, city_name: city.short_name, kols_count: cc[1]}
+          result[index][:province_kols_count] = result[index][:city].map{|city| city[:kols_count]}.sum
         else
-          result.map do |r|
-            if r[:province_name] == province_name
-              unless r[:city].include?({city_code: city.name_en, city_name: city.short_name})
-                r[:city] << {city_code: city.name_en, city_name: city.short_name}
-              end
-            end
-          end
+          cities = []
+          cities << {city_code: city.name_en, city_name: city.short_name, kols_count: cc[1]}
+          province_kols_count = cities.map{|city| city[:kols_count]}.sum
+          result << {province_name: province.name, province_code: province.name_en, province_short_name:province.short_name, province_kols_count: province_kols_count, city: cities}
         end
       end
+
       result
     end
 

@@ -9,6 +9,111 @@ module Brand
         end
         resource :campaigns do
 
+          desc 'pay campaign use balance'  #使用余额支付 campaign
+          params do
+            requires :campaign_id, type: Integer
+            requires :pay_way, type: String
+            # requires :use_credit, type: Boolean
+          end
+          post "/pay_by_balance" do
+            @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
+
+            return {error: 1, detail: '数据错误，请确认'} unless @campaign
+
+            if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
+
+              # 积分抵扣
+              used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
+
+
+              if current_user.avail_amount >= pay_amount
+                if credit_amount > 0
+                  Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
+                  @campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount, pay_way: declared(params)[:pay_way])
+                else
+                  @campaign.update_attributes(pay_way: declared(params)[:pay_way])
+                end
+                @campaign.reload
+                @campaign.pay
+
+                present @campaign, with: Entities::Campaign
+              else
+                return {error: 1, detail: '账号余额不足, 请充值!'}
+              end
+            else
+              return {error: 1, detail: "已经支付成功, 请勿重复支付!" }
+            end
+          end
+
+          desc 'pay campaign use alipay'  #使用支付宝支付 campaign
+          params do
+            requires :campaign_id, type: Integer
+            # requires :use_credit,  type: Boolean
+          end
+          post "/pay_by_alipay" do
+            @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
+
+            return {error: 1, detail: "已经支付成功, 请勿重复支付!" } unless @campaign.status == 'unpay'
+
+            # 积分抵扣
+            used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
+
+            @campaign.update_attributes(
+              used_credit:      used_credit, 
+              credit_amount:    credit_amount, 
+              need_pay_amount:  pay_amount, 
+              pay_way:          'alipay'
+            )
+
+            if pay_amount > 0
+
+              ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
+              return_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand' : "#{Rails.application.secrets[:vue_brand_domain]}"
+              notify_url = Rails.env.development? ? 'http://aabbcc.ngrok.cc/brand_api/v2/campaigns/alipay_notify' : "#{Rails.application.secrets[:domain]}/brand_api/v2/campaigns/alipay_notify"
+
+              alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
+                {
+                  out_trade_no: @campaign.trade_number,
+                  subject: 'Robin8活动付款',
+                  total_fee: (ENV["total_fee"] || @campaign.need_pay_amount).to_f,
+                  return_url: return_url,
+                  notify_url: notify_url
+                },
+                {
+                  sign_type: 'RSA',
+                  key: ALIPAY_RSA_PRIVATE_KEY
+                }
+              )
+              return { alipay_recharge_url: alipay_recharge_url }
+            else
+              Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
+              @campaign.update_attributes(status: 'unexecute')
+              @campaign.reload
+
+              present @campaign, with: Entities::Campaign
+            end
+          end
+
+          desc 'revoke campaign'  #撤销 campaign
+          params do
+            requires :campaign_id, type: Integer
+          end
+          post "/revoke_campaign" do
+            @campaign = current_user.campaigns.find_by_id params[:campaign_id]
+
+            return {error: 1, detail: '数据错误，请确认'} unless @campaign
+
+            if @campaign.status == "revoked"
+              return {error: 1, detail: '活动已经撤销, 不能重复撤销!'}
+            end
+            unless %w(unpay unexecute rejected).include? @campaign.status
+              return {error: 1, detail: '活动已经开始, 不能撤销!'}
+            end
+            @campaign.revoke
+
+            present @campaign, with: Entities::Campaign
+          end
+
           params do
             requires :campaign_id, type: Integer
           end
@@ -68,6 +173,7 @@ module Brand
             end
           end
 
+          #详情
           desc "show a campaign"
           params do 
           end
@@ -79,6 +185,7 @@ module Brand
             present campaign, with: Entities::Campaign
           end
 
+          #评价
           desc 'evaluate  campaign  info'
           params do
             requires :campaign_id, type: Integer
@@ -94,6 +201,34 @@ module Brand
             present @campaign, with: Entities::Campaign
           end
 
+
+        end
+      end
+
+
+      group do
+        post 'campaigns/alipay_notify' do
+          params.delete 'route_info'
+          Rails.logger.alipay.info "-------- web端单笔支付，进入'campaigns/alipay_notify'路由  --------------"
+          if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params) && params[:trade_status] == 'TRADE_SUCCESS'
+            Rails.logger.alipay.info "-------- web端单笔支付，验证 支付宝签名 成功  --------------"
+            @campaign = Campaign.find_by trade_number: params[:out_trade_no]
+            Rails.logger.alipay.info "-------- web端单笔支付，查找 @campaign 成功,  --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} ---need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
+            if @campaign.alipay_status == 0
+              @campaign.with_lock do
+                @campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
+                @campaign.pay
+                # 支付成功，扣除积分
+                Credit.gen_record('expend', 1, -@campaign.credit_amount, @campaign.user, campaign, @campaign.user.credit_expired_at,
+                  '支付宝抵扣 活动 #{campaign.id}') if @campaign.used_credit && @campaign.credit_amount > 0
+              end
+            end
+            Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
+            env['api.format'] = :txt
+            body "success"
+          else
+            return {error: 1, detail: '支付失败，请重试'}
+          end
         end
       end
     end
