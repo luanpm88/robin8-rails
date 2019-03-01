@@ -80,9 +80,9 @@ every 1.day, :at => '0:30 am' do
   runner "CampaignInvite.remove_old_invitations", environment: 'production'
 end
 
-every 5.minutes do
-  runner "CampaignInvite.schedule_day_settle", environment: 'staging'
-end
+# every 5.minutes do
+#   runner "CampaignInvite.schedule_day_settle", environment: 'staging'
+# end
 
 every 1.day, :at => '0:05 am' do
   runner "CampaignInvite.schedule_day_settle", environment: 'qa'
@@ -92,9 +92,9 @@ every 1.day, :at => '17:01 pm' do
   runner "CampaignObserver.notify_operational_staff", environment: 'production'
 end
 
-every 1.day, :at => '1:00 am' do
-  rake "kol_amount_statistic:export"
-end
+# every 1.day, :at => '1:00 am' do
+#   rake "kol_amount_statistic:export"
+# end
 
 every 1.day, :at => '0:30 am', :roles => [:prod_server] do
   rake "schedule:sidekiq_restart"
@@ -155,17 +155,17 @@ end
 # Auto report system
 # This one will report each day at 7pm to Miranda about the small-V campaings from the last 24 hoours
 
-every 1.day, :at => '7:00 pm' do
-  rake "daily_report:daily_send", environment: 'production'
-end
+# every 1.day, :at => '7:00 pm' do
+#   rake "daily_report:daily_send", environment: 'production'
+# end
 
-every :friday, :at => '7:05pm' do
-  rake "daily_report:weekly_send", environment: 'production'
-end
+# every :friday, :at => '7:05pm' do
+#   rake "daily_report:weekly_send", environment: 'production'
+# end
 
-every '10 19 1 * *' do
-  rake "daily_report:monthly_send", environment: 'production'
-end
+# every '10 19 1 * *' do
+#   rake "daily_report:monthly_send", environment: 'production'
+# end
 
 every '00 10 1 1 *' do
   rake "daily_report:pinyou_send", environment: 'production'
@@ -187,9 +187,9 @@ every :thursday , :at => '12:05 pm' do
   runner "Message.thursday_push", environment: 'production'
 end
 
-every 5.minutes do 
-  rake "votes:update_kol", environment: 'qa'
-end
+# every 5.minutes do 
+#   rake "votes:update_kol", environment: 'qa'
+# end
 
 every 20.minutes do 
   rake "votes:update_kol", environment: 'production'
