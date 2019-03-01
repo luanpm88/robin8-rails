@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
 
   scope :last_campaigns, -> { joins("LEFT JOIN (SELECT `campaigns`.`user_id` AS user_id, MAX(`campaigns`.`created_at`) AS last_campaign_at FROM `campaigns` WHERE `campaigns`.`status` <> 'revoked' GROUP BY `campaigns`.`user_id`) AS `cte_tables` ON `users`.`id` = `cte_tables`.`user_id`").distinct("user_id") }
   scope :sort_by_last_campaign_at, ->(dir) { last_campaigns.order("last_campaign_at #{dir}") }
+  scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
 
   # class EmailValidator < ActiveModel::Validator
   #   def validate(record)

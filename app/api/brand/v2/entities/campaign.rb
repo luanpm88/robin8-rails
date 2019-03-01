@@ -6,11 +6,22 @@ module Brand
         expose :id, :name, :description, :short_description,
                :img_url, :status, :message, :url, :address, :budget,
                :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check,
-               :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,
+               :budget_editable, :pay_way, :need_pay_amount, :sub_type, :effect_score, :review_content, :evaluation_status,#是否评价状态
                :example_screenshot_count, :enable_append_push, :exposures_count
 
-        expose :user, using: Entities::UserInfo
+        expose :user, using: Entities::User
 
+        expose :status_zh do |object|
+          object.status_zh
+        end
+
+        expose :time_range do |object|
+          object.time_range
+        end
+
+        expose :sub_type_zh do |object|
+          object.sub_type_zh
+        end
         expose :enable_append_push do |object|
           object.enable_append_push.to_s
         end
@@ -84,9 +95,17 @@ module Brand
           target.target_content if target
         end
 
+        expose :age_zh do |object, opts|
+          object.age_zh
+        end
+
         expose :gender do |object, opts|
           target = object.gender_target
           target.target_content if target
+        end
+
+        expose :gender_zh do |object, opts|
+          object.gender_zh
         end
 
         expose :region do |object, opts|
@@ -118,7 +137,7 @@ module Brand
         expose :tag_labels do |object, opts|
           target = object.tag_target
           if target
-            target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }
+            (target.target_content.split(',').collect { |name| ::Tag.get_lable_by_name(name) }).join("/")
           end
         end
 
@@ -141,11 +160,11 @@ module Brand
         end
 
         expose :valid_applies_count do |object, opts|
-          object.valid_applies.count if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.valid_applies.count : 0
         end
 
         expose :brand_passed_count do |object, opts|
-          object.brand_passed_applies.count if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.brand_passed_applies.count : 0
         end
 
         expose :take_budget do |object, opts|
@@ -157,7 +176,8 @@ module Brand
         end
 
         expose :recruit_status do |object, opts|
-            object.recruit_status if object.per_budget_type == 'recruit'
+          object.per_budget_type == 'recruit' ? object.recruit_status : 0
+
         end
 
         expose :invalid_reasons do |object, opts|
@@ -165,11 +185,11 @@ module Brand
         end
 
         expose :total_invite_kols_count do |object, opts| # 邀请活动: 总邀请人数
-          object.campaign_invites.count if object.per_budget_type == "invite"
+          object.per_budget_type == "invite" ? object.campaign_invites.count : 0
         end
 
         expose :total_agreed_invite_kols_count do |object, opts| #邀请活动: 接受活动的人数
-          object.campaign_invites.verifying_or_approved.count if object.per_budget_type == "invite"
+          object.per_budget_type == "invite" ? object.campaign_invites.verifying_or_approved.count : 0 
         end
 
         expose :per_budget_type_show do |object|
@@ -180,6 +200,35 @@ module Brand
           else
             "有效点击"
           end
+        end
+
+        #预计推送KOL人数
+        expose :per_push_kols_count do |object|
+          100
+          # object.per_push_kols_count
+        end
+
+        #评价详情
+        expose :evaluate do |object|
+          object.evaluate
+        end
+
+        #统计饼图数据
+        expose :gender_analysis do |object|
+          object.gender_analysis_of_invitee
+        end
+
+        expose :age_analysis do |object|
+          object.age_analysis_of_invitee
+        end
+
+        expose :tag_analysis do |object|
+          object.tag_analysis_of_invitee
+        end
+
+        expose :region_analysis do |object|
+          # object.region_analysis_of_inviteen old 
+          object.region_analysis_of_invitee_v2
         end
 
         with_options(format_with: :iso_timestamp) do

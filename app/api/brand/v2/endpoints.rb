@@ -40,6 +40,10 @@ module Brand
       mount TransactionsAPI
       mount CreationSelectedKolsAPI
       mount CampaignsAPI
+      mount InvoicesAPI
+      mount InvoiceReceiverAPI
+      mount InvoiceHistoriesAPI
+      mount CampaignInvitesAPI
     end
   end
 end

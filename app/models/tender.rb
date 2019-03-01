@@ -15,6 +15,7 @@ class Tender < ActiveRecord::Base
   after_create :update_quoted
   before_save  :update_status, if: ->{self.head && self.status_changed? && self.status == "paid"}
 
+  scope :recent,      ->(_start,_end){ where(created_at: _start.._end) }
   scope :by_status,   ->(status){where(status: status).order(updated_at: :desc)}
   scope :brand_paid,  -> {where(head: true, status: 'paid')}
   

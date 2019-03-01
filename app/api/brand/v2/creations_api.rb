@@ -2,6 +2,8 @@ module Brand
   module V2
     class CreationsAPI < Base
       group do
+        include Grape::Kaminari
+
         before do
           authenticate! unless @options[:path].first == 'upload_image'
         end
@@ -28,8 +30,8 @@ module Brand
               requires :img_url,        type: String
               requires :target, type: Hash do
                 requires :industries,   type: String # 'a,b,c,d'
-                requires :price_from,   type: Float
-                requires :price_to,     type: Float
+                requires :price_from,   type: Integer
+                requires :price_to,     type: Integer
               end
               requires :terraces, type: Array do
                 requires :terrace_id, type: Integer
@@ -99,10 +101,10 @@ module Brand
             present creation
           end
 
-
+          # paginate per_page: 10
           desc 'creation list'
-          get '/' do 
-            creations = current_user.creations.order(updated_at: :desc)
+          get '/' do
+            creations = paginate(Kaminari.paginate_array(current_user.creations.order(updated_at: :desc)))
 
             present creations, with: Entities::Creation
           end

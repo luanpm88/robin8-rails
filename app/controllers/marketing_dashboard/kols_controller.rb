@@ -2,7 +2,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   before_action :set_kol, only: [:ban, :disban, :withdraw, :tracks]
 
   def index
-    @kols = Kol.all
+    @kols = Kol.includes(:weibo_account, :public_wechat_account).all
     load_kols
   end
 

@@ -120,7 +120,7 @@ class Campaign < ActiveRecord::Base
   before_create :generate_campaign_number, :deal_wechat_auth_type
   before_create :change_present_put, if: ->{$redis.get('put_switch') == '1'}
   after_create :update_user_status
-  after_save :deal_with_campaign_img_url
+  # after_save :deal_with_campaign_img_url
   after_create :valid_owner_credit # 验证当前用户的积分是否有效
   # after_save :generate_campaign_e_wattle_transactions, if: ->{$redis.get('put_switch') == '1'}
 
@@ -144,6 +144,96 @@ class Campaign < ActiveRecord::Base
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
+  def time_range
+    "#{start_time.strftime('%Y-%m-%d %H:%M')} -- #{deadline.strftime('%Y-%m-%d %H:%M')}"
+  end
+
+  def sub_type_zh
+    case self.sub_type
+    when 'wechat'
+      '朋友圈'
+    when 'weibo'
+      '微博'
+    end
+  end
+
+  def age_zh
+    case self.age_target.try(:target_content)
+    when '全部'
+      "全部"
+    when '10,20'
+      "10-20 岁"
+    when '20,30'
+      "20-30 岁"
+    when '30,40'
+      "30-40 岁"
+    when '40,50'
+      "40-50 岁"
+    when '50,60'
+      "50-60 岁"
+    when '60,100'
+      "60岁以上"
+    else
+      "无"
+    end
+  end
+
+  def gender_zh
+    case self.gender_target.try(:target_content)
+    when '全部'
+      "全部"
+    when '1'
+      "男"
+    when '2'
+      "女"
+    else
+      "无"
+    end
+  end
+
+  def per_push_kols_count
+    @kols = Kol.active.personal_big_v
+
+    if self.region_target and self.region_target.target_content != "全部"
+      regions = self.region_target.target_content.split(",").reject(&:blank?)
+      cities = City.where(name: regions).map(&:name_en)
+
+      @kols = @kols.where(app_city: cities)
+    end
+
+    if self.tag_target and self.tag_target.target_content != "全部"
+      tag_params = self.tag_target.target_content.split(",").reject(&:blank?)
+      tags = Tag.where(name: tag_params).map(&:id)
+
+      join_table(:kol_tags)
+      @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
+    end
+
+    if self.age_target && self.age_target.target_content != '全部'
+      min_age = self.age_target.target_content.split(',').map(&:to_i).first
+      max_age = self.age_target.target_content.split(',').map(&:to_i).last
+      @kols = @kols.ransack({age_in: Range.new(min_age, max_age)}).result
+    end
+
+    if self.gender_target && self.gender_target.target_content != '全部'
+      @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
+    end
+
+    @kols.distinct.count
+  end
+
+  def status_zh
+    Campaign::STATUS[self.status.to_sym]
+  end
+
+  def evaluate
+    if self.evaluation_status == "evaluated"
+      {score: self.effect_evaluation.score, content: self.review_evaluation.content}
+    else
+      {}
+    end
+  end
+
   def get_stats api_from="brand"
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
@@ -160,7 +250,7 @@ class Campaign < ActiveRecord::Base
       total_clicks.unshift 0
       avail_clicks.unshift 0
     end
-    [self.per_budget_type, labels, total_clicks, avail_clicks]
+    {per_budget_type: self.per_budget_type, labels: labels, total_clicks: total_clicks, avail_clicks: avail_clicks}
   end
 
   def get_stats_for_app

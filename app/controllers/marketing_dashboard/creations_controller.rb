@@ -2,7 +2,7 @@ class MarketingDashboard::CreationsController < MarketingDashboard::BaseControll
   before_filter :get_creation, except: [:index, :search_kols]
 
   def index
-    @q    = Creation.ransack(params[:q])
+    @q    = Creation.includes(:user).ransack(params[:q])
     @creations = @q.result.order(updated_at: :desc).paginate(paginate_params)
   end
 

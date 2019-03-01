@@ -15,13 +15,13 @@
           </div>
           <div class="col-xs-9 text-right">
             <div class="huge"><%= Kol.where("created_at > ?", Date.today.to_time).count %></div>
-            <div>今日新增Kol 数量</div>
+            <div>Today Kol registered count</div>
           </div>
         </div>
       </div>
       <a href="/marketing_dashboard/kols">
         <div class="panel-footer">
-          <span class="pull-left">查看详情</span>
+          <span class="pull-left">detail</span>
           <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
           <div class="clearfix"></div>
         </div>
@@ -37,13 +37,13 @@
           </div>
           <div class="col-xs-9 text-right">
             <div class="huge"><%= Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count %></div>
-            <div>待审核的活动个数</div>
+            <div>Pending campaign records</div>
           </div>
         </div>
       </div>
       <a href="/marketing_dashboard/campaigns/pending">
         <div class="panel-footer">
-          <span class="pull-left">查看详情</span>
+          <span class="pull-left">detail</span>
           <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
           <div class="clearfix"></div>
         </div>
@@ -58,14 +58,14 @@
             <i class="fa fa-shopping-cart fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= CampaignInvite.where(:img_status => :pending).where("screenshot is not NULL").count %></div>
-            <div>待审核的截图个数</div>
+            <div class="huge"><%= CampaignInvite.where(img_status: :pending).where("screenshot is not NULL").count %></div>
+            <div>Pending screenshot records</div>
           </div>
         </div>
       </div>
       <a href="/marketing_dashboard/campaign_invites/pending">
         <div class="panel-footer">
-          <span class="pull-left">查看详情</span>
+          <span class="pull-left">detail</span>
           <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
           <div class="clearfix"></div>
         </div>
@@ -81,13 +81,13 @@
           </div>
           <div class="col-xs-9 text-right">
             <div class="huge"><%= Withdraw.all.where(status: 'pending').count %></div>
-            <div>待处理的提现记录</div>
+            <div>Pending withdrawal records</div>
           </div>
         </div>
       </div>
       <a href="/marketing_dashboard/withdraws/pending">
         <div class="panel-footer">
-          <span class="pull-left">查看详情</span>
+          <span class="pull-left">detail</span>
           <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
           <div class="clearfix"></div>
         </div>
@@ -100,13 +100,13 @@
   <table class='table table-bordered'>
     <thead>
       <tr>
-        <th>Brand总人数</th>
-        <th>发过单的Brand总人数</th>
-        <th>Kol总人数</th>
-        <th>接过单Kol人数</th>
-        <th>已结算的Campaign总数</th>
-        <th>已结算的Campaign总价</th>
-        <th>Kol总共提现多少钱</th>
+        <th>Total Count Of Brands</th>
+        <th>Total Count Of Traded Brands</th>
+        <th>Total Count Of Kols</th>
+        <th>Total Count Of Active Kols</th>
+        <th>Total Count Of Settled Campaigns</th>
+        <th>Total Amount Of Settled Campaign</th>
+        <th>Total Amount Of Kol Withdrawn</th>
       </tr>
     </thead>
     <tbody>
@@ -118,12 +118,13 @@
         <td><%= Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count %></td>
         <td><%=  Campaign.where(:status => "settled").count%></td>
         <td><%=  Campaign.where(:status => "settled").sum(:budget) %></td>
-        <td><%= Withdraw.where(:status => "paid").sum(:credits) %></td>
+        <td><%= Withdraw.where(:status => "paid").sum(:credits).round %></td>
       </tr>
     </tbody>
   </table>
-  ```
+<!--   ```
   备注: 活动ID 337, 旅游城市推广招募KOL budget 是 350000
-  ```
+  ``` -->
 </div>
+<%= render 'admin_panel' %>
 <!-- /.row -->
