@@ -32,7 +32,7 @@ class PublicWechatAccount < ActiveRecord::Base
   has_many :public_wechat_accounts_cities, class_name: "PublicWechatAccountsCity"
   has_many :cities, through: :public_wechat_accounts_cities
 
-  scope :recent,    ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
+  scope :recent,    ->(_start,_end){ where(created_at: _start.._end) }
   scope :by_status, ->(status){where(status: status)}
   scope :valid,     ->{where(status: 1)}
 
