@@ -204,7 +204,8 @@ module Brand
 
         #预计推送KOL人数
         expose :per_push_kols_count do |object|
-          object.per_push_kols_count
+          100
+          # object.per_push_kols_count
         end
 
         #评价详情
@@ -226,7 +227,8 @@ module Brand
         end
 
         expose :region_analysis do |object|
-          object.region_analysis_of_invitee
+          # object.region_analysis_of_inviteen old 
+          object.region_analysis_of_invitee_v2
         end
 
         with_options(format_with: :iso_timestamp) do

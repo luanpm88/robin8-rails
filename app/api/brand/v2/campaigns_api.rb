@@ -81,11 +81,12 @@ module Brand
 
           desc 'evaluate  campaign  info'
           params do
+            requires :campaign_id, type: Integer
             requires :review_content, type: String
             requires :effect_score, type: Integer
           end
-          post ':id/evaluate' do
-            @campaign = Campaign.find params[:id]
+          post 'evaluate' do
+            @campaign = Campaign.find params[:campaign_id]
             if @campaign.evaluation_status != "evaluating"
               return {error: 1, detail: '该活动你已评价,或暂时不能评价!'}
             end
