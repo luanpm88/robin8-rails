@@ -205,8 +205,7 @@ class Campaign < ActiveRecord::Base
       tag_params = self.tag_target.target_content.split(",").reject(&:blank?)
       tags = Tag.where(name: tag_params).map(&:id)
 
-      join_table(:kol_tags)
-      @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
+      @kols = @kols.joins(:kol_tags).where("`kol_tags`.`tag_id` IN (?)", tags)
     end
 
     if self.age_target && self.age_target.target_content != '全部'
@@ -216,7 +215,7 @@ class Campaign < ActiveRecord::Base
     end
 
     if self.gender_target && self.gender_target.target_content != '全部'
-      @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
+      @kols = @kols.ransack({gender_eq: gender_target.target_content.to_i}).result
     end
 
     @kols.distinct.count
