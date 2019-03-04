@@ -89,7 +89,9 @@
                   <td>
                     <a href="/marketing_dashboard/kols/<%= ele[:id] %>" target='_blank' class="media">
                       <div class="media-left">
-                        <%= image_tag ele[:avatar_url] %>
+                        <div style="width:110px;">
+                          <%= image_tag ele[:avatar_url], class: 'media-object', size: '100x100'%>
+                        </div>
                       </div>
                       <div class="media-body">
                         <h4 class="media-heading"><%= ele[:name] %></h4>
@@ -135,7 +137,9 @@
                   <td>
                     <a href="/marketing_dashboard/kols/<%= ele[:id] %>" target='_blank' class="media">
                       <div class="media-left">
-                        <%= image_tag ele[:avatar_url] %>
+                        <div style="width:110px;">
+                          <%= image_tag ele[:avatar_url], class: 'media-object', size: '100x100'%>
+                        </div>
                       </div>
                       <div class="media-body">
                         <h4 class="media-heading"><%= ele[:name] %></h4>
