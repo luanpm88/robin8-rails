@@ -13,7 +13,6 @@ module Brand
           params do
             requires :campaign_id, type: Integer
             requires :pay_way, type: String
-            # requires :use_credit, type: Boolean
           end
           post "/pay_by_balance" do
             @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
@@ -21,18 +20,8 @@ module Brand
             return {error: 1, detail: '数据错误，请确认'} unless @campaign
 
             if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
-
-              # 积分抵扣
-              used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
-
-
-              if current_user.avail_amount >= pay_amount
-                if credit_amount > 0
-                  Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
-                  @campaign.update_attributes(used_credit: used_credit, credit_amount: credit_amount, need_pay_amount: pay_amount, pay_way: declared(params)[:pay_way])
-                else
-                  @campaign.update_attributes(pay_way: declared(params)[:pay_way])
-                end
+              if current_user.avail_amount >= @campaign.need_pay_amount
+                @campaign.update_attributes(pay_way: declared(params)[:pay_way])
                 @campaign.reload
                 @campaign.pay
 
@@ -48,7 +37,6 @@ module Brand
           desc 'pay campaign use alipay'  #使用支付宝支付 campaign
           params do
             requires :campaign_id, type: Integer
-            # requires :use_credit,  type: Boolean
           end
           post "/pay_by_alipay" do
             @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
@@ -86,11 +74,7 @@ module Brand
               )
               return { alipay_recharge_url: alipay_recharge_url }
             else
-              Credit.gen_record('expend', 1, -credit_amount, current_user, @campaign, current_user.credit_expired_at)
-              @campaign.update_attributes(status: 'unexecute')
-              @campaign.reload
-
-              present @campaign, with: Entities::Campaign
+              return { error: 1, detail: "支付金额有误，请确认!" }
             end
           end
 
