@@ -127,22 +127,10 @@
               <%= link_to t('screenshot_management.cpc_to_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :click }) %>
             </li>
             <li>
-              <%= link_to t('screenshot_management.cpa_to_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :cpa }) %>
-            </li>
-            <li>
-              <%= link_to t('screenshot_management.cpi_bo_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :simple_cpi }) %>
-            </li>
-            <li>
               <%= link_to t('screenshot_management.cpt_to_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :cpt }) %>
             </li>
             <li>
               <%= link_to t('screenshot_management.cpp_to_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: {campaign_per_budget_type_eq: :post }) %>
-            </li>
-            <li>
-              <%= link_to t('screenshot_management.recruited_to_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'recruit' }) %>
-            </li>
-            <li>
-              <%= link_to t('screenshot_management.invitation_bo_be_approved'), pending_marketing_dashboard_campaign_invites_path(q: { campaign_per_budget_type_eq: 'invite' }) %>
             </li>
             <li>
               <%= link_to t('screenshot_management.suspected_cheating'), pending_marketing_dashboard_campaign_invites_path(q: { observer_status_eq: 2 }) %>
