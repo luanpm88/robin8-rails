@@ -146,8 +146,8 @@ module Brand
           params do
             requires :name        , type: String
             requires :real_name   , type: String
-            requires :description , type: String
-            requires :keywords    , type: String
+            optional :description , type: String
+            # requires :keywords    , type: String
             requires :campany_name, type: String
             optional :url         , type: String
           end
