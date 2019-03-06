@@ -29,7 +29,8 @@ class Campaign < ActiveRecord::Base
   }
 
 
- #  撤销，编辑：unpay pending rejected
+ #  撤销，unexecute unpay pending rejected
+ #. 编辑：unpay pending rejected
  #             支付：unpay
  #             评价：settled
  # 再次发布: agreed
@@ -699,7 +700,7 @@ class Campaign < ActiveRecord::Base
 
   #撤销
   def can_revoke?
-    ['unpay', 'pending', 'rejected'].include?(self.status) ? true : false
+    ['unpay', 'pending', 'rejected', 'unexecute'].include?(self.status) ? true : false
   end
 
   #支付
