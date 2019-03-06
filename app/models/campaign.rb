@@ -29,6 +29,12 @@ class Campaign < ActiveRecord::Base
   }
 
 
+ #  撤销，编辑：unpay pending rejected
+ #             支付：unpay
+ #             评价：settled
+ # 再次发布: agreed
+
+
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
   ExampleScreenshots = Hash.new
   ExampleScreenshots.default={
@@ -710,6 +716,33 @@ class Campaign < ActiveRecord::Base
   def change_present_put
     self.is_present_put = true
   end
+
+  #编辑
+  def can_edit?
+    ['unpay', 'pending', 'rejected'].include?(self.status) ? true : false
+  end
+
+  #撤销
+  def can_revoke?
+    ['unpay', 'pending', 'rejected'].include?(self.status) ? true : false
+  end
+
+  #支付
+  def can_pay?
+    ['unpay'].include?(self.status) ? true : false
+  end
+
+  #评价
+  def can_evaluate?
+    ['settled'].include?(self.status) ? true : false
+  end
+
+  # 再次发布
+  def can_again_issuance?
+    ['agreed'].include?(self.status) ? true : false
+  end
+
+
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

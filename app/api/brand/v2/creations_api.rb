@@ -50,6 +50,8 @@ module Brand
           post do
             c = current_user.creations.find_or_initialize_by(id: params[:id])
 
+            return {error: 1, detail: '活动不能修改'} if c.valid? && !c.can_edit?
+
             c.name            = params[:creation][:name]
             c.description     = params[:creation][:description]
             c.trademark_id    = params[:creation][:trademark_id]

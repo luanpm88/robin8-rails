@@ -69,6 +69,10 @@ class Creation < ActiveRecord::Base
     }
   end
 
+  def can_edit?
+    ['pending', 'unpassed'].include?(self.status) ? true : false
+  end
+
 end
 
 

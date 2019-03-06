@@ -19,7 +19,7 @@ module Brand
 
             return {error: 1, detail: '数据错误，请确认'} unless @campaign
 
-            if declared(params)[:pay_way] == 'balance' && @campaign.status == 'unpay'
+            if declared(params)[:pay_way] == 'balance' && @campaign.can_pay?
               if current_user.avail_amount >= @campaign.need_pay_amount
                 @campaign.update_attributes(pay_way: declared(params)[:pay_way])
                 @campaign.reload
@@ -41,7 +41,7 @@ module Brand
           post "/pay_by_alipay" do
             @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
 
-            return {error: 1, detail: "已经支付成功, 请勿重复支付!" } unless @campaign.status == 'unpay'
+            return {error: 1, detail: "已经支付成功, 请勿重复支付!" } unless @campaign.can_pay?
 
             # 积分抵扣
             used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
@@ -90,7 +90,7 @@ module Brand
             if @campaign.status == "revoked"
               return {error: 1, detail: '活动已经撤销, 不能重复撤销!'}
             end
-            unless %w(unpay unexecute rejected).include? @campaign.status
+            unless @campaign.can_revoke?
               return {error: 1, detail: '活动已经开始, 不能撤销!'}
             end
             @campaign.revoke
@@ -106,7 +106,7 @@ module Brand
             present campaign.get_stats
           end
 
-          # paginate per_page: 10
+          
           desc 'Get campaigns current user owns'
           get '/' do
             campaigns = paginate(Kaminari.paginate_array(current_user.campaigns.order('created_at DESC')))
@@ -144,6 +144,8 @@ module Brand
             end
 
             if params[:id] && current_user.campaigns.find_by_id(params[:id])
+              return {error: 1, detail: '活动已经开始, 不能编辑'} unless current_user.campaigns.find_by_id(params[:id]).can_edit?
+
               service = UpdateCampaignService.new current_user, params[:id], declared(params)
             else
               service = CreateCampaignService.new current_user, declared(params)
@@ -178,10 +180,14 @@ module Brand
           end
           post 'evaluate' do
             @campaign = Campaign.find params[:campaign_id]
+
+            return {error: 1, detail: '该活动暂时不能评价!'} unless @campaign.can_evaluate?
+
             if @campaign.evaluation_status != "evaluating"
               return {error: 1, detail: '该活动你已评价,或暂时不能评价!'}
             end
             CampaignEvaluation.evaluate(@campaign, params[:effect_score], params[:experience_score], params[:review_content])
+
             present @campaign, with: Entities::Campaign
           end
 
