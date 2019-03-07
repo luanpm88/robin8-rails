@@ -18,10 +18,10 @@ class Campaign < ActiveRecord::Base
 
   STATUS = {
     unpay:      '未支付',
-    pending:    '已支付，待审核',
+    pending:    '待审核', #已支付，待审核
     agreed:     '审核通过',
     executing:  '执行中',
-    executed:   '已完成，未结算',
+    executed:   '结算中', #已完成，未结算
     settled:    '已结算',
     finished:   '已结束',
     unexecute:  '未执行',
@@ -715,7 +715,7 @@ class Campaign < ActiveRecord::Base
 
   # 再次发布
   def can_again_issuance?
-    ['agreed'].include?(self.status) ? true : false
+    ['unpay', 'pending', 'rejected'].include?(self.status) ? false : true
   end
 
 
