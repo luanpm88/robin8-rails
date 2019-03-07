@@ -57,6 +57,7 @@ class Campaign < ActiveRecord::Base
   # validates :wechat_auth_type, :inclusion => { :in => AuthTypes.keys }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa simple_cpi cpi recruit invite
+  #post：按照转发付费；click：按照点击付费；cpt：按照任务付费 常用类型
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
