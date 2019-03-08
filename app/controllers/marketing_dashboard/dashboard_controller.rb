@@ -7,6 +7,8 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
     if @r8_infos
       @r8_infos = JSON @r8_infos
     else
+      @r8_infos = {}
+      
       @r8_infos['first_overall'] = {
         'today_kols_count':           Kol.where("created_at > ?", Date.today.to_time).count,
         'pending_campaigns_count':    Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count,
