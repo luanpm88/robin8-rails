@@ -120,5 +120,13 @@ namespace :campaign  do
       u.update_columns(avatar_url: u.avatar_url.gsub('7xozqe.com2.z0.glb.qiniucdn.com', 'img.robin8.net'))
     end
   end
+
+  task :clear_older_useless => :environment do
+    Campaign.where(status: ['unpay', 'rejected']).where("created_at < ?", Time.new('2017')).each do |c|
+      p "----delete---#{c.id}----"
+      c.campaign_targets.delete_all
+      c.delete
+    end
+  end
   
 end

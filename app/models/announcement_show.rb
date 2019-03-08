@@ -6,7 +6,7 @@ class AnnouncementShow < ActiveRecord::Base
 	after_create :counter_add
 
 	def counter_add
-		kol.redis_announcement_clicks_count.increment
+		# kol.redis_announcement_clicks_count.increment
     announcement.redis_clicks_count.increment
 	end
 	

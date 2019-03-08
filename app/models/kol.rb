@@ -27,7 +27,7 @@ class Kol < ActiveRecord::Base
   counter :redis_votes_count
 
   # announcement click counter
-  counter :redis_announcement_clicks_count
+  # counter :redis_announcement_clicks_count
 
   include Concerns::PayTransaction
   include Concerns::Unionability

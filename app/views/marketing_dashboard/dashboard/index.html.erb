@@ -14,7 +14,7 @@
             <i class="fa fa-comments fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= Kol.where("created_at > ?", Date.today.to_time).count %></div>
+            <div class="huge"><%= @r8_infos['first_overall']['today_kols_count'] %></div>
             <div>Today Kol registered count</div>
           </div>
         </div>
@@ -36,7 +36,7 @@
             <i class="fa fa-tasks fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count %></div>
+            <div class="huge"><%= @r8_infos['first_overall']['pending_campaigns_count'] %></div>
             <div>Pending campaign records</div>
           </div>
         </div>
@@ -58,7 +58,7 @@
             <i class="fa fa-shopping-cart fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= CampaignInvite.where(img_status: :pending).where("screenshot is not NULL").count %></div>
+            <div class="huge"><%= @r8_infos['first_overall']['pending_screenshots_count'] %></div>
             <div>Pending screenshot records</div>
           </div>
         </div>
@@ -80,7 +80,7 @@
             <i class="fa fa-support fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= Withdraw.all.where(status: 'pending').count %></div>
+            <div class="huge"><%= @r8_infos['first_overall']['pending_tixians_count'] %></div>
             <div>Pending withdrawal records</div>
           </div>
         </div>
@@ -112,13 +112,13 @@
     <tbody>
       <tr>
       CampaignInvite.count
-        <td><%= User.count %></td>
-        <td><%= User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count %></td>
-        <td><%= Kol.count %></td>
-        <td><%= Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count %></td>
-        <td><%=  Campaign.where(:status => "settled").count%></td>
-        <td><%=  Campaign.where(:status => "settled").sum(:budget) %></td>
-        <td><%= Withdraw.where(:status => "paid").sum(:credits).round %></td>
+        <td><%= @r8_infos['table']['users_count'] %></td>
+        <td><%= @r8_infos['table']['traded_users_count'] %></td>
+        <td><%= @r8_infos['table']['kols_count'] %></td>
+        <td><%= @r8_infos['table']['active_kols_count'] %></td>
+        <td><%= @r8_infos['table']['settled_campaigns_count'] %></td>
+        <td><%= @r8_infos['table']['settled_campaigns_amount'] %></td>
+        <td><%= @r8_infos['table']['withdrawn_total_amount'] %></td>
       </tr>
     </tbody>
   </table>
