@@ -149,6 +149,7 @@ module Brand
             optional :description , type: String
             # requires :keywords    , type: String
             requires :campany_name, type: String
+            requires :avatar_url  ,   type: String
             optional :url         , type: String
           end
           post '/' do
