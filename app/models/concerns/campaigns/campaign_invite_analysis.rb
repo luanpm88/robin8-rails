@@ -22,7 +22,7 @@ module Campaigns
 
       [[0, 20], [20, 30],[30, 40], [40, 50], [50, 60], [60, 100]].map do |min, max|
 
-        age_count = _ary.count{|ele| ele > min and ele < max }
+        age_count = _ary.count{|ele| ele > min and ele <= max }
 
         ratio = _ary.count > 0 ? 1.0 * age_count / _ary.count : 0
         {
