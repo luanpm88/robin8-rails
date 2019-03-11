@@ -28,10 +28,11 @@ module Brand
         end
         post "special" do
           @invoice = current_user.invoices.find_or_initialize_by(id: params[:id])
-          if @invoice.valid?
-            @invoice.update_attributes(declared(params))
-          else
+
+          if @invoice.new_record?
             @invoice = current_user.invoices.new(declared(params))
+          else
+             @invoice.update_attributes(declared(params))
           end
           if @invoice.save
             present @invoice, with: Entities::Invoice

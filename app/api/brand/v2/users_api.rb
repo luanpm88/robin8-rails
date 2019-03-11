@@ -7,17 +7,23 @@ module Brand
         end
 
         resource :users do
-
           desc 'collect kols'
           params do
-            requires :plateform_uuid, type: String
+            requires :plateform_name, type: String #来自什么平台微博，微信
+            requires :plateform_uuid, type: String #uuid
+            requires :name,           type: String #用户名称
+            requires :avatar_url,     type: String #用户的头像地址
+            requires :desc,           type: String #用户的简介
           end
           post 'collect_kol' do
-            ck = current_user.collected_kols.build(plateform_uuid: params[:plateform_uuid])
+            ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: declared(params)[:plateform_uuid])
+
+            return {error: 1, detail: "请不要重复收藏" } unless ck.new_record?
+              
             if ck.save
-              present current_user
+              present current_user.collected_kols, with: Entities::UserCollectedKol
             else
-              present ck.errors.messages
+              return {error: 1, detail: ck.errors.messages }
             end
           end
 
