@@ -11,15 +11,15 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Registered Count</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%= link_to @r8_infos[:kol][:register_count], marketing_dashboard_kols_path %></p>
+          <p class="form-control-static"><%= link_to @r8_infos['kol']['register_count'], marketing_dashboard_kols_path %></p>
         </div>
         <label class="col-sm-2 control-label">DUA</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%= @r8_infos[:kol][:active_count] %></p>
+          <p class="form-control-static"><%= @r8_infos['kol']['active_count'] %></p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Apply for bigv(<%= @r8_infos[:big_v_count] %>)</label>
+        <label class="col-sm-2 control-label">Apply for bigv(<%= @r8_infos['big_v_count'] %>)</label>
         <div class="col-sm-10">
           <table class="table table-striped">
             <tbody>
@@ -27,17 +27,17 @@
                 <td>
                   <strong>Weibo</strong>
                 </td>
-                <td>pending: <%= link_to @r8_infos[:weibo][:pending], marketing_dashboard_weibo_accounts_path(q: {status_eq: 0})%></td>
-                <td>passed: <%= link_to @r8_infos[:weibo][:passed], marketing_dashboard_weibo_accounts_path(q: {status_eq: 1})%></td>
-                <td>rejected: <%= link_to @r8_infos[:weibo][:rejected], marketing_dashboard_weibo_accounts_path(q: {status_eq: -1})%></td>
+                <td>pending: <%= link_to @r8_infos['weibo']['pending'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 0})%></td>
+                <td>passed: <%= link_to @r8_infos['weibo']['passed'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 1})%></td>
+                <td>rejected: <%= link_to @r8_infos['weibo']['rejected'], marketing_dashboard_weibo_accounts_path(q: {status_eq: -1})%></td>
               </tr>
               <tr>
                 <td>
                   <strong>Wechat</strong>
                 </td>
-                <td>pending: <%=link_to @r8_infos[:wechat][:pending], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 0})%></td>
-                <td>passed: <%=link_to @r8_infos[:wechat][:passed], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 1})%></td>
-                <td>rejected: <%=link_to @r8_infos[:wechat][:rejected], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: -1})%></td>
+                <td>pending: <%=link_to @r8_infos['wechat']['pending'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 0})%></td>
+                <td>passed: <%=link_to @r8_infos['wechat']['passed'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 1})%></td>
+                <td>rejected: <%=link_to @r8_infos['wechat']['rejected'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: -1})%></td>
               </tr>
             </tbody>
           </table>
@@ -54,7 +54,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Registered Count</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%=link_to @r8_infos[:user][:register_count], marketing_dashboard_users_path %></p>
+          <p class="form-control-static"><%=link_to @r8_infos['user']['register_count'], marketing_dashboard_users_path %></p>
         </div>
       </div>
     </div>
@@ -68,15 +68,15 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Created Count</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%=link_to @r8_infos[:campaign][:created_count], agreed_marketing_dashboard_campaigns_path %></p>
+          <p class="form-control-static"><%=link_to @r8_infos['campaign']['created_count'], agreed_marketing_dashboard_campaigns_path %></p>
         </div>
         <label class="col-sm-2 control-label">Total Budget</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:campaign][:total_budget] %></p>
+          <p class="form-control-static"><%= @r8_infos['campaign']['total_budget'] %></p>
         </div>
         <label class="col-sm-2 control-label">Total Revenue</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:campaign][:total_revenue] %></p>
+          <p class="form-control-static"><%= @r8_infos['campaign']['total_revenue'] %></p>
         </div>
       </div>
       <div class="form-group">
@@ -85,15 +85,17 @@
           <table class="table table-striped">
             <tbody>
               <tr>
-                <% @r8_infos[:campaign][:top_3].each do |ele| %>
+                <% @r8_infos['campaign']['top_3'].each do |ele| %>
                   <td>
-                    <a href="/marketing_dashboard/kols/<%= ele[:id] %>" target='_blank' class="media">
+                    <a href="/marketing_dashboard/kols/<%= ele['id'] %>" target='_blank' class="media">
                       <div class="media-left">
-                        <%= image_tag ele[:avatar_url] %>
+                        <div style="width:110px;">
+                          <%= image_tag ele['avatar_url'], class: 'media-object', size: '100x100'%>
+                        </div>
                       </div>
                       <div class="media-body">
-                        <h4 class="media-heading"><%= ele[:name] %></h4>
-                        avail click counts: <%= ele[:count] %>
+                        <h4 class="media-heading"><%= ele['name'] %></h4>
+                        avail click counts: <%= ele['count'] %>
                       </div>
                     </a>
                   </td>
@@ -114,15 +116,15 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Created Count</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:creation][:created_count] %></p>
+          <p class="form-control-static"><%= @r8_infos['creation']['created_count'] %></p>
         </div>
         <label class="col-sm-2 control-label">Total Budget</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:creation][:total_budget] %></p>
+          <p class="form-control-static"><%= @r8_infos['creation']['total_budget'] %></p>
         </div>
         <label class="col-sm-2 control-label">Total Revenue</label>
         <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos[:creation][:total_revenue] %></p>
+          <p class="form-control-static"><%= @r8_infos['creation']['total_revenue'] %></p>
         </div>
       </div>
       <div class="form-group">
@@ -131,15 +133,17 @@
           <table class="table table-striped">
             <tbody>
               <tr>
-                <% @r8_infos[:creation][:kols].each do |ele| %>
+                <% @r8_infos['creation']['kols'].each do |ele| %>
                   <td>
-                    <a href="/marketing_dashboard/kols/<%= ele[:id] %>" target='_blank' class="media">
+                    <a href="/marketing_dashboard/kols/<%= ele['id'] %>" target='_blank' class="media">
                       <div class="media-left">
-                        <%= image_tag ele[:avatar_url] %>
+                        <div style="width:110px;">
+                          <%= image_tag ele['avatar_url'], class: 'media-object', size: '100x100'%>
+                        </div>
                       </div>
                       <div class="media-body">
-                        <h4 class="media-heading"><%= ele[:name] %></h4>
-                        total amount: <%= ele[:amount] %>
+                        <h4 class="media-heading"><%= ele['name'] %></h4>
+                        total amount: <%= ele['amount'] %>
                       </div>
                     </a>
                   </td>

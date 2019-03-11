@@ -61,10 +61,11 @@ module Brand
           end
 
 
-          paginate per_page: 8
+          
           get "/" do
             transactions = paginate(Kaminari.paginate_array(current_user.paid_transactions.includes(:item).order('created_at DESC')))
-            present transactions
+
+            present transactions, with: Entities::Transaction
           end
 
         end

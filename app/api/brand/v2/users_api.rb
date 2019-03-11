@@ -137,26 +137,22 @@ module Brand
             present error: 0, alert: '更新成功'
           end
 
+          desc "show current user profile"
+          get '/profile' do
+            present current_user, with: Entities::User
+          end
+
           desc 'Update current user profile'
           params do
             requires :name        , type: String
             requires :real_name   , type: String
-            requires :description , type: String
-            requires :keywords    , type: String
+            optional :description , type: String
+            # requires :keywords    , type: String
             requires :campany_name, type: String
+            requires :avatar_url  ,   type: String
             optional :url         , type: String
           end
           post '/' do
-            current_user.update_attributes declared(params)
-
-            present current_user, with: Entities::User
-          end
-
-          desc 'Update current user avatar'
-          params do
-            requires :avatar_url, type: String
-          end
-          post '/avatar' do
             current_user.update_attributes declared(params)
 
             present current_user, with: Entities::User
@@ -203,7 +199,7 @@ module Brand
 
 
       group do
-        post '/alipay_notify' do
+        post 'users/alipay_notify' do
           params.delete 'route_info'
           if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
             @alipay_order = AlipayOrder.find_by trade_no: params[:out_trade_no]

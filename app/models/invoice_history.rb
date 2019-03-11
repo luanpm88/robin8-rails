@@ -14,4 +14,15 @@ class InvoiceHistory < ActiveRecord::Base
   def bank_info
     [bank_name, bank_account].join(' ')
   end
+
+  def status_zh
+    case self.status
+    when 'pending'
+      '等待邮寄'
+    when 'sent'
+      '已经邮寄'
+    else
+      '等待邮寄'
+    end
+  end
 end

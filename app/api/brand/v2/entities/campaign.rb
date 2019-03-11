@@ -53,12 +53,14 @@ module Brand
         expose :start_time do |object, opts|
           object.start_time.strftime('%Y-%m-%d %H:%M')
         end
+
+        #计费点击
         expose :avail_click do |object, opts|
           object.get_avail_click
         end
-        expose :post_count
+        expose :post_count #转发量
 
-        expose :join_count
+        expose :join_count #参与人数
 
         expose :total_click do |object, opts|
           object.get_total_click
@@ -194,18 +196,20 @@ module Brand
 
         expose :per_budget_type_show do |object|
           if object.per_budget_type == 'post'
-            "转发量"
+            "转发"
           elsif object.per_budget_type == 'click'
-            "计费点击"
+            "点击"
+          elsif object.per_budget_type == 'cpt'
+            "任务"
           else
-            "有效点击"
+            '暂不支持'
           end
         end
 
         #预计推送KOL人数
         expose :per_push_kols_count do |object|
-          100
-          # object.per_push_kols_count
+          
+          object.per_push_kols_count
         end
 
         #评价详情

@@ -179,8 +179,6 @@ Rails.application.routes.draw do
         get 'rejected'
         post 'change_multi_img_status'
       end
-      match '/pass' => 'campaign_invites#pass', via: [:post]
-      match '/reject' => 'campaign_invites#reject', via: [:post, :get]
       resources :campaign_shows, only: [:index]
     end
     resources :stastic_datas do

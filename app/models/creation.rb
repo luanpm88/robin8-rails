@@ -69,6 +69,18 @@ class Creation < ActiveRecord::Base
     }
   end
 
+  def can_edit?
+    ['pending', 'unpassed'].include?(self.status) ? true : false
+  end
+
+  def can_finish?
+    self.creation_selected_kols.map(&:status) - %w(preelect pending finished rejected) == []
+  end
+
+  def can_ended?
+    self.update_attributes(status: :ended) if self.end_at < Time.now && self.can_finish?
+  end
+
 end
 
 

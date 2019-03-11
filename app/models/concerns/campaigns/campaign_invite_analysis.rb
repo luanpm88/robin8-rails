@@ -3,29 +3,28 @@ module Campaigns
     extend ActiveSupport::Concern
 
     def gender_analysis_of_invitee
-      male_count   = self.kols.where(gender: 1).count
-      female_count = self.kols.where(gender: 2).count
-      total_count = male_count + female_count
+      _ary = self.valid_invites.includes(:kol).collect{|ele| ele.kol.gender}
 
       [
         {
           name: "男性",
-          ratio: (total_count > 0 ? 1.0 * male_count / total_count : 0)
+          ratio: (_ary.count > 0 ? 1.0 * _ary.count(1) / _ary.count : 0)
         },
         {
           name: "女性",
-          ratio: (total_count > 0 ? 1.0 * female_count / total_count : 0)
+          ratio: (_ary.count > 0 ? 1.0 * _ary.count(2) / _ary.count : 0)
         }
       ]
     end
 
     def age_analysis_of_invitee
-      total_count = self.kols.where.not(age: nil).count
+      _ary = self.valid_invites.includes(:kol).collect{|ele| ele.kol.age}.compact
 
-      [[0, 20], [20, 40], [40, 60], [60, 100]].map do |min, max|
-        age_count = self.kols.where("age > ? AND age <= ?", min, max).count
+      [[0, 20], [20, 30],[30, 40], [40, 50], [50, 60], [60, 100]].map do |min, max|
 
-        ratio = total_count > 0 ? 1.0 * age_count / total_count : 0
+        age_count = _ary.count{|ele| ele > min and ele <= max }
+
+        ratio = _ary.count > 0 ? 1.0 * age_count / _ary.count : 0
         {
           name: "#{min}岁-#{max}岁",
           count: age_count,
@@ -77,29 +76,27 @@ module Campaigns
       provinces = []
       cities = []
       result = []
+
       city_counts.map do |cc|
         city = City.where(name_en: cc[0]).take
         next unless city
         province = city.province
         next unless province
 
-        province_name = province.name
-        city_name = city.short_name
-        unless provinces.include? province_name
-          cities = []
-          provinces << province_name
-          cities << {city_code: city.name_en, city_name: city.short_name}
-          result << {province_name: province_name, province_code: province.name_en, province_short_name:province.short_name, city: cities}
+        provinces = result.map{|r| r[:province_name]}
+
+        if provinces.include? province.name
+          index = provinces.index(province.name)
+          result[index][:city] << {city_code: city.name_en, city_name: city.short_name, kols_count: cc[1]}
+          result[index][:province_kols_count] = result[index][:city].map{|city| city[:kols_count]}.sum
         else
-          result.map do |r|
-            if r[:province_name] == province_name
-              unless r[:city].include?({city_code: city.name_en, city_name: city.short_name})
-                r[:city] << {city_code: city.name_en, city_name: city.short_name}
-              end
-            end
-          end
+          cities = []
+          cities << {city_code: city.name_en, city_name: city.short_name, kols_count: cc[1]}
+          province_kols_count = cities.map{|city| city[:kols_count]}.sum
+          result << {province_name: province.name, province_code: province.name_en, province_short_name:province.short_name, province_kols_count: province_kols_count, city: cities}
         end
       end
+
       result
     end
 

@@ -30,6 +30,10 @@ module Brand
           object.trademark.name
         end
 
+        expose :trademark_keywords do |boject|
+          object.trademark.keywords
+        end
+
         expose :terraces, using: Entities::CreationsTerrace do |object, opts|
           object.creations_terraces
         end

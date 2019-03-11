@@ -18,15 +18,22 @@ class Campaign < ActiveRecord::Base
 
   STATUS = {
     unpay:      '未支付',
-    pending:    '已支付，待审核',
+    pending:    '待审核', #已支付，待审核
     agreed:     '审核通过',
     executing:  '执行中',
-    executed:   '已完成，未结算',
+    executed:   '结算中', #已完成，未结算
     settled:    '已结算',
     finished:   '已结束',
     unexecute:  '未执行',
     rejected:   '已拒绝'
   }
+
+
+ #  撤销，unexecute unpay pending rejected
+ #. 编辑：unpay pending rejected
+ #             支付：unpay
+ #             评价：settled
+ # 再次发布: agreed
 
 
   AuthTypes = {'no' => '无需授权', 'base' => '获取基本信息(openid)', 'self_info' => "获取详细信息(只获取自己)", 'friends_info' => "获取详细信息(获取好友)"}
@@ -50,6 +57,7 @@ class Campaign < ActiveRecord::Base
   # validates :wechat_auth_type, :inclusion => { :in => AuthTypes.keys }
   #Status : unpay unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa simple_cpi cpi recruit invite
+  #post：按照转发付费；click：按照点击付费；cpt：按照任务付费 常用类型
   # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled', "revoked"]
   belongs_to :user
   has_many :campaign_invites
@@ -192,34 +200,8 @@ class Campaign < ActiveRecord::Base
   end
 
   def per_push_kols_count
-    @kols = Kol.active.personal_big_v
-
-    if self.region_target and self.region_target.target_content != "全部"
-      regions = self.region_target.target_content.split(",").reject(&:blank?)
-      cities = City.where(name: regions).map(&:name_en)
-
-      @kols = @kols.where(app_city: cities)
-    end
-
-    if self.tag_target and self.tag_target.target_content != "全部"
-      tag_params = self.tag_target.target_content.split(",").reject(&:blank?)
-      tags = Tag.where(name: tag_params).map(&:id)
-
-      join_table(:kol_tags)
-      @kols = @kols.where("`kol_tags`.`tag_id` IN (?)", tags)
-    end
-
-    if self.age_target && self.age_target.target_content != '全部'
-      min_age = self.age_target.target_content.split(',').map(&:to_i).first
-      max_age = self.age_target.target_content.split(',').map(&:to_i).last
-      @kols = @kols.ransack({age_in: Range.new(min_age, max_age)}).result
-    end
-
-    if self.gender_target && self.gender_target.target_content != '全部'
-      @kols = @kols.ransack({gender_eq: params[:gender].to_i}).result
-    end
-
-    @kols.distinct.count
+    @kols = Kol.where(:id => self.get_kol_ids)
+    @kols.count
   end
 
   def status_zh
@@ -711,6 +693,33 @@ class Campaign < ActiveRecord::Base
   def change_present_put
     self.is_present_put = true
   end
+
+  #编辑
+  def can_edit?
+    ['unpay', 'pending', 'rejected'].include?(self.status) ? true : false
+  end
+
+  #撤销
+  def can_revoke?
+    ['unpay', 'pending', 'rejected', 'unexecute'].include?(self.status) ? true : false
+  end
+
+  #支付
+  def can_pay?
+    ['unpay'].include?(self.status) ? true : false
+  end
+
+  #评价
+  def can_evaluate?
+    ['settled'].include?(self.status) ? true : false
+  end
+
+  # 再次发布
+  def can_again_issuance?
+    ['unpay', 'pending', 'rejected'].include?(self.status) ? false : true
+  end
+
+
   #在点击审核通过前，再次判断该活动的状态，防止这期间品牌主取消此活动。
   # def can_check?
   #   authorize! :manage, Campaign

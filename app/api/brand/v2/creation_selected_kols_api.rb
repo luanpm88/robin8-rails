@@ -16,13 +16,17 @@ module Brand
 	        	if kol
 		        	total_cis   = kol.campaign_invites.passed
 		        	last_cis    = kol.campaign_invites.passed.last_days(30)
-		        	last_per    = total_cis.count == 0 ? 0 : last_cis.count*100/total_cis.count
 
-		        	total_avg    = total_cis.count == 0 ? 0 : total_cis.sum(:total_click)/total_cis.count
-		        	last_avg     = last_cis.count == 0 ? 0 : last_cis.sum(:total_click)/last_cis.count
-		        	last_avg_per = total_avg == 0 ? 0 : last_avg*100/total_avg
+		        	last_per, total_avg, last_avg, last_avg_per = 0, 0, 0, 0
 
-		        	total_info = [total_cis.count, total_avg, selected_kols.count]
+		        	if total_cis.count > 0
+		        		last_per    = last_cis.count*100/total_cis.count
+		        		total_avg   = total_cis.sum(:total_click)/total_cis.count
+		        		last_avg    = last_cis.sum(:total_click)/last_cis.count
+		        	end
+
+		        	last_avg_per 			= total_avg == 0 ? 0 : last_avg*100/total_avg
+		        	total_info 				= [total_cis.count, total_avg, selected_kols.count]
 		        	last_30_days_info = ["#{last_cis.count}/#{last_per}%", "#{last_avg}/#{last_avg_per}%", selected_kols.last_days(30).count]
 		        end
 
