@@ -8,7 +8,7 @@ module Brand
 	        	requires :id, type: String
 	        end
 	        get ":id/big_v_details" do
-	        	selected_kols = CreationSelectedKol.where(plateform_uuid: params[:id])#.by_status(:finished)
+	        	selected_kols = CreationSelectedKol.where(plateform_uuid: params[:id]).by_status(:finished)
 	        	kol 					= selected_kols.first.try(:kol)
 
 	        	total_info, last_30_days_info = [0, 0, 0], ["0/0%", "0/0%", 0]
