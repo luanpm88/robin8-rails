@@ -60,7 +60,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'created_count': c.count,
         'total_budget':  c.sum(:budget),
         'total_revenue': c.sum(:budget) * 0.4,
-        'top_3':         []
+        'top_3' =>       []
       }
 
       # top 3 有效点击最多的kol
@@ -79,7 +79,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'created_count': Creation.recent(@ending - 1.day, @ending).count,
         'total_budget':  Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:price).to_f,
         'total_revenue': Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:fee),
-        'kols':          []
+        'kols' =>        []
       }
 
       # 所有的bigV按大V活动所赚的降序
