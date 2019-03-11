@@ -6,8 +6,10 @@ class MarketingDashboard::CreationSelectedKolsController < MarketingDashboard::B
   end
 
   def finished
-    @kol = CreationSelectedKol.find params[:id]
-    @kol.update_attributes(status: "finished") if @kol.status == "approved"
+    selected_kol = CreationSelectedKol.find params[:id]
+    selected_kol.update_attributes(status: "finished") if selected_kol.status == "approved"
+
+    selected_kol.creation.can_ended? # update creation.status==ended by conds
 
     flash[:alert] = "支付成功"
 
