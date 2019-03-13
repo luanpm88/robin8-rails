@@ -133,7 +133,10 @@ module Brand
 
         expose :tags do |object, opts|
           target = object.tag_target
-          target.target_content.split(',') if target
+          # target.target_content.split(',') if target
+          if target
+            target.target_content == "全部" ? [] : target.target_content.split(",") 
+          end
         end
 
         expose :tag_labels do |object, opts|
