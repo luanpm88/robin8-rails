@@ -1,30 +1,63 @@
 module Brand
   module V2
     class UsersAPI < Base
+      include Grape::Kaminari
+
       group do
         before do
           authenticate!
         end
 
         resource :users do
-          desc 'collect kols'
+          desc 'collect kols' #添加收藏
           params do
-            requires :plateform_name, type: String #来自什么平台微博，微信
-            requires :plateform_uuid, type: String #uuid
-            requires :name,           type: String #用户名称
+            requires :profile_id,     type: String #plateform_uuid, uuid
+            requires :profile_name,   type: String #name 用户名称
             requires :avatar_url,     type: String #用户的头像地址
             requires :desc,           type: String #用户的简介
+            # requires :plateform_name, type: String #来自什么平台微博，微信
           end
           post 'collect_kol' do
-            ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: declared(params)[:plateform_uuid])
+            params[:plateform_name] = params[:profile_id].to_i.to_s == params[:profile_id] ? 'weibo' : 'wechat'
 
-            return {error: 1, detail: "请不要重复收藏" } unless ck.new_record?
-              
+            ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: params[:profile_id])
+
+            return {error: 1, detail: "请不要重复添加" } unless ck.new_record?
+
+            ck.plateform_name = params[:plateform_name]
+            ck.plateform_uuid = params[:profile_id]
+            ck.name = params[:profile_name]
+            ck.avatar_url = params[:avatar_url]
+            ck.desc = params[:desc]
+
             if ck.save
               present current_user.collected_kols, with: Entities::UserCollectedKol
             else
               return {error: 1, detail: ck.errors.messages }
             end
+          end
+
+          desc 'cancel collect'
+          params do
+            requires :plateform_uuid, type: String
+          end
+          post 'cancel_collect' do
+            ck = current_user.collected_kols.find_by_plateform_uuid params[:plateform_uuid]
+
+            return {error: 1, detail: "数据错误，请确认" } unless ck
+
+            if ck.destroy
+              present current_user.collected_kols, with: Entities::UserCollectedKol
+            else
+              return {error: 1, detail: "删除失败" }
+            end
+          end
+
+          desc 'list collect kol'
+          get 'collected_kols' do
+            @collected_kols = paginate(Kaminari.paginate_array(current_user.collected_kols.order('created_at DESC')))
+
+            present @collected_kols, with: Entities::UserCollectedKol
           end
 
 
