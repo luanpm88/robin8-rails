@@ -14,7 +14,7 @@ module Brand
             requires :profile_id,     type: String #plateform_uuid, uuid
             requires :profile_name,   type: String #name 用户名称
             requires :avatar_url,     type: String #用户的头像地址
-            requires :desc,           type: String #用户的简介
+            requires :description_raw,           type: String #用户的简介 desc
             # requires :plateform_name, type: String #来自什么平台微博，微信
           end
           post 'collect_kol' do
@@ -28,7 +28,7 @@ module Brand
             ck.plateform_uuid = params[:profile_id]
             ck.name = params[:profile_name]
             ck.avatar_url = params[:avatar_url]
-            ck.desc = params[:desc]
+            ck.desc = params[:description_raw]
 
             if ck.save
               present current_user.collected_kols, with: Entities::UserCollectedKol
@@ -39,10 +39,10 @@ module Brand
 
           desc 'cancel collect'
           params do
-            requires :plateform_uuid, type: String
+            requires :profile_id, type: String
           end
           post 'cancel_collect' do
-            ck = current_user.collected_kols.find_by_plateform_uuid params[:plateform_uuid]
+            ck = current_user.collected_kols.find_by_plateform_uuid params[:profile_id]
 
             return {error: 1, detail: "数据错误，请确认" } unless ck
 

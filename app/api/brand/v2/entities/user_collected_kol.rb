@@ -12,6 +12,10 @@ module Brand
           object.name
         end
 
+        expose :description_raw do |object|
+          object.desc
+        end
+
       end
     end
   end
