@@ -18,7 +18,7 @@ module Brand
             # requires :plateform_name, type: String #来自什么平台微博，微信
           end
           post 'collect_kol' do
-            params[:plateform_name] = params[:profile_id].to_i.to_s == params[:profile_id] ? 'weibo' : 'wechat'
+            params[:plateform_name] = params[:profile_id].to_i.to_s == params[:profile_id] ? 'public_weibo_account' : 'public_wechat_account'
 
             ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: params[:profile_id])
 

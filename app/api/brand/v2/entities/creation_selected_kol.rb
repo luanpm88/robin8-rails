@@ -25,6 +25,15 @@ module Brand
         expose :description_raw do |object|
           object.desc
         end
+
+        expose :plateform_name_type do |object|
+          object.plateform_name_type.to_s
+        end
+
+        expose :bigv_url do |object|
+          object.bigV_url
+        end
+        
       end
     end
   end
