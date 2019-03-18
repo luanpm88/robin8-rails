@@ -587,39 +587,71 @@ class Kol < ActiveRecord::Base
   end
 
 
+  # def self.reg_or_sign_in(params, kol = nil)
+  #   Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
+  #   kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
+  #   # app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+  #   # app_city = TaobaoIps.get_detail(params[:current_sign_in_ip])["data"]['city']
+  #   app_city = nil
+  #   if kol.present?
+  #     retries = true
+  #     begin
+  #       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+  #                             device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
+  #                             os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
+  #                             longitude: params[:longitude], latitude: params[:latitude])
+  #     rescue ActiveRecord::StaleObjectError => e
+  #       if retries == true
+  #         retries = false
+  #         kol.reload
+  #         retry
+  #       else
+  #         ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+  #       end
+  #     end
+  #   else
+  #     _hash = {mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+  #                       app_version: params[:app_version], device_token: params[:device_token],
+  #                       IMEI: params[:IMEI], IDFA: params[:IDFA],
+  #                       name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
+  #                       utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
+  #                       device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
+  #                       longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
+  #     kol = Kol.create!(_hash)
+  #   end
+  #   kol
+  # end
+
   def self.reg_or_sign_in(params, kol = nil)
     Rails.logger.info "---reg_or_sign_in --- kol: #{kol} --- params: #{params}"
-    kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
-    # app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-    # app_city = TaobaoIps.get_detail(params[:current_sign_in_ip])["data"]['city']
-    app_city = nil
-    if kol.present?
-      retries = true
-      begin
-        kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                              device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
-                              os_version: params[:os_version], device_model: params[:device_model], app_city: app_city,
-                              longitude: params[:longitude], latitude: params[:latitude])
-      rescue ActiveRecord::StaleObjectError => e
-        if retries == true
-          retries = false
-          kol.reload
-          retry
-        else
-          ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
-        end
-      end
+    kol = Kol.find_by_mobile_number(params[:mobile_number]) if      params[:mobile_number].present?
+    kol = Kol.new                                           unless  kol
+
+    _hash = {
+        app_platform: params[:app_platform],
+        app_version:  params[:app_version],
+        device_token: params[:device_token],
+        IMEI:         params[:IMEI],
+        IDFA:         params[:IDFA],
+        os_version:   params[:os_version],
+        device_model: params[:device_model],
+        longitude:    params[:longitude], 
+        latitude:     params[:latitude]
+      }
+
+    if kol.new_record?
+      _new_hash = {
+        mobile_number:      params[:mobile_number],
+        name:               params[:name] || Kol.hide_real_mobile_number(params[:mobile_number]),
+        utm_source:         params[:utm_source],
+        current_sign_in_ip: params[:current_sign_in_ip],
+        avatar_url:         params[:avatar_url]
+      }
+      kol = Kol.create!(_hash.merge(_new_hash))
     else
-      _hash = {mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
-                        app_version: params[:app_version], device_token: params[:device_token],
-                        IMEI: params[:IMEI], IDFA: params[:IDFA],
-                        name: (params[:name] || Kol.hide_real_mobile_number(params[:mobile_number])),
-                        utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
-                        device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip],
-                        longitude: params[:longitude], latitude: params[:latitude], avatar_url: params[:avatar_url]}
-      kol = Kol.create!(_hash)
+      kol.update_attributes(_hash)
     end
-    kol
+    kol.reload
   end
 
   def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
