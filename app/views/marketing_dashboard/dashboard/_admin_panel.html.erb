@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-12">
-    <h3 class="page-header">Today's Reports ( <%= "#{@ending - 1.days} -- #{@ending}" %> )</h3>
+    <h3 class="page-header">Today's Reports ( <%= "#{(@ending - 1.days).strftime('%F %T')} -- #{@ending.strftime('%F %T')}" %> )</h3>
   </div>
 </div>
 

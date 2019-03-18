@@ -6,6 +6,7 @@ module Brand
 
         before do
           authenticate! unless @options[:path].first == 'upload_image'
+          set_locale
         end
 
         resource :creations do
@@ -38,11 +39,11 @@ module Brand
                 optional :exposure_value, type: Integer
               end
               optional :selected_kols, type: Array do
-                requires :plateform_name, type: String
-                requires :plateform_uuid, type: String 
-                requires :name,           type: String
-                requires :avatar_url,     type: String 
-                requires :desc,           type: String
+                requires :plateform_name,  type: String
+                requires :profile_id,      type: String
+                requires :profile_name,    type: String
+                requires :avatar_url,      type: String 
+                requires :description_raw, type: String
               end
               optional :notice, type: String
             end
@@ -50,7 +51,7 @@ module Brand
           post do
             c = current_user.creations.find_or_initialize_by(id: params[:id])
 
-            return {error: 1, detail: '活动不能修改'} if c.new_record? && !c.can_edit?
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_edit')} if c.new_record? && !c.can_edit?
 
             c.name            = params[:creation][:name]
             c.description     = params[:creation][:description]
@@ -65,7 +66,6 @@ module Brand
             c.save
 
             c.reload
-            # binding.pry
             c.targets_hash[:industries] = params[:creation][:target][:industries]
             c.targets_hash[:price_from] = params[:creation][:target][:price_from]
             c.targets_hash[:price_to]   = params[:creation][:target][:price_to]
@@ -80,10 +80,10 @@ module Brand
             
             c.creation_selected_kols.delete_all # kol可选，直接清空
             params[:creation][:selected_kols].each do |_hash|
-              kol = c.creation_selected_kols.find_or_initialize_by(plateform_name: _hash[:plateform_name], plateform_uuid: _hash[:plateform_uuid])
-              kol.name        = _hash[:name]
+              kol = c.creation_selected_kols.find_or_initialize_by(plateform_name: _hash[:plateform_name], plateform_uuid: _hash[:profile_id])
+              kol.name        = _hash[:profile_name]
               kol.avatar_url  = _hash[:avatar_url]
-              kol.desc        = _hash[:desc]
+              kol.desc        = _hash[:description_raw]
               kol.kol_id      = _hash[:kol_id]
               kol.save
             end
@@ -98,7 +98,7 @@ module Brand
           get ':id' do
             creation = current_user.creations.find_by(id: params[:id])
 
-            return {error: 1, detail: 'not found'} unless creation
+            return {error: 1, detail:  I18n.t("brand_api.errors.messages.not_found")} unless creation
 
             present creation
           end

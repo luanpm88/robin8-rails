@@ -28,11 +28,11 @@ module Brand
         end
         post '/' do
           if !current_user.special_invoice
-            return {error: 1, detail: '请完善发票信息，然后重试'}
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.invoice_information_error')}
           elsif !current_user.invoice_receiver
-            return {error: 1, detail: '请完善发票邮寄地址信息，然后重试'}
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.mailing_address_error')}
           elsif current_user.appliable_credits < params[:credits].to_i
-            return {error: 1, detail: '输入金额超出可申请金额'}
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.excess_amount')}
           end
 
           invoice_history_params = current_user.special_invoice.slice(:title, :taxpayer_id, :company_address, :company_mobile, :bank_name, :bank_account).merge(

@@ -11,6 +11,11 @@ module Brand::V2::APIHelpers
     end
   end
 
+  def set_locale
+    locale = params[:locale]  if  params[:locale].present?
+    I18n.locale = locale || I18n.default_locale
+  end
+
   def authenticate!
     error!('Access Denied', 401) unless current_user
   end

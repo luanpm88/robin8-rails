@@ -37,7 +37,7 @@ module Brand
           if @invoice.save
             present @invoice, with: Entities::Invoice
           else
-            return {error: 1, detail: '保存失败，请重试'}
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.save_error')}
           end
         end
 

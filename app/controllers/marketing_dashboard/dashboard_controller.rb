@@ -22,7 +22,8 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'users_count':              User.count,
         'traded_users_count':       User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count,
         'kols_count':               Kol.count,
-        'active_kols_count':        Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count,
+        # 'active_kols_count':        Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count,
+        'active_kols_count':        CampaignInvite.settled.group(:kol_id).count.count,
         'settled_campaigns_count':  _ary.first.c_count,
         'settled_campaigns_amount': _ary.first.c_budget.to_f,
         'withdrawn_total_amount':   Withdraw.approved.sum(:credits).round

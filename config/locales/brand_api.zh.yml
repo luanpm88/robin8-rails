@@ -1,0 +1,37 @@
+zh:
+  brand_api:
+    errors:
+      messages:
+        not_found: "数据错误，请确认"
+        not_edit: "不能修改"
+        not_repeat: "请不要重复添加"
+        delete_failed: "删除失败"
+        update_failed: "更新失败，请重试"
+        recharge_failed: "充值失败，请重试"
+        recharge_mix_amount: "充值最低金额为:%{count}"
+        order_pay_failed: "订单支付失败，请重试"
+        account_password_error: "请输入正确的帐号密码"
+        account_format_error: "帐号格式不正确"
+        user_have_exist: "您已是我们的用户，请登录"
+        code_error: "验证码错误"
+        save_error: "保存失败，请重试"
+        invoice_information_error: "请完善发票信息，然后重试"
+        mailing_address_error: "请完善发票邮寄地址信息，然后重试"
+        excess_amount: "输入金额超出可申请金额"
+        account_balance_insufficient: "账号余额不足, 请充值!"
+        pay_succeed: "已经支付成功, 请勿重复支付!"
+        haved_revoke_campaign: '活动已经撤销, 不能重复撤销!'
+        haved_start_campaign: "活动已经开始, 不能撤销!"
+        campaign_mix_amount: "活动总预算不能低于%{amount}元!"
+        campaign_not_edit: "活动已经开始, 不能编辑"
+        campaign_not_evaluate: '该活动暂时不能评价!'
+        campaign_have_evaluate: "该活动你已评价,或暂时不能评价!"
+        mobile_number_error: "手机号码格式错误"
+        third_party_error: "调用第三方接口错误，请联系客服"
+        email_format_error: "邮箱格式错误"
+    success:
+      messages:
+        code_succeed: '验证码发送成功'
+        code_succeed_message: "验证码已发送您的邮箱，请在10分钟内进行验证，过期请重新获取"
+        update_succeed: "更新成功"
+        

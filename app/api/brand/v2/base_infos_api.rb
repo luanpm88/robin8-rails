@@ -14,7 +14,6 @@ module Brand
             present :trademarks_list,    current_user.trademarks.active, with: Entities::Trademark #我的代理的品牌
             present :competitors,        current_user.competitors, with: Entities::Competitor #竞争品牌
             present :terraces_list,      Terrace.now_use, with: Entities::Terrace # 支持平台
-            present :collected_kols_list, current_user.collected_kols, with: Entities::UserCollectedKol #收藏的KOL
           end
 
           get 'r8_kols' do

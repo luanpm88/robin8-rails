@@ -1,0 +1,36 @@
+en:
+  brand_api:
+    errors:
+      messages:
+        not_found: "Not found"
+        not_edit: "Not edit"
+        delete_failed: 'Delete failed'
+        update_failed: "Update failed, please try again"
+        recharge_failed: "Recharge failed, please try again"
+        recharge_mix_amount: "The minimum recharge amount is:%{count}"
+        order_pay_failed: "Order payment failed, please try again"
+        account_password_error: "Please enter the correct account password"
+        account_format_error: "Account format is incorrect"
+        user_have_exist: "You are already a user of ours, please login"
+        code_error: "Code error"
+        save_error: "Save failed, please try again"
+        invoice_information_error: "Please refine the invoice information and try again"
+        mailing_address_error: "Please improve the invoice mailing address information, and then try again"
+        excess_amount: "The input amount exceeds the amount that can be requested"
+        account_balance_insufficient: "Account balance is insufficient, please recharge!"
+        pay_succeed: "has been paid successfully, do not repeat payment"
+        haved_revoke_campaign: 'The campaign has been withdrawn and cannot be revoked repeatedly!'
+        haved_start_campaign: "The campaign has begun and cannot be revoked!"
+        campaign_mix_amount: "The total budget for activities cannot be lower than%{amount}yuan!"
+        campaign_not_edit: "Campaign has started and cannot be edited"
+        campaign_not_evaluate: "The campaign could not be evaluated for the time being"
+        campaign_have_evaluate: "This campaign you have evaluated, or temporarily can not evaluate!"
+        mobile_number_error: "Phone Number format error"
+        third_party_error: "Call a third-party interface error, please contact customer service"
+        email_format_error: "Email format error"
+  success:
+    messages:
+      code_succeed: 'Verification code sent successfully'
+      code_succeed_message: "The verification code has been sent to your mailbox, please verify it within 10 minutes, please re-obtain the expiration"
+      update_succeed: "Update succeed"
+
