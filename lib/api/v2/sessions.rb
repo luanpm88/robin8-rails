@@ -19,25 +19,6 @@ module API
 
           kol.invite_code_dispose(params[:invite_code]) if params[:invite_code].present?
           kol.remove_same_device_token(params[:device_token])
-          # if params[:kol_uuid].present?
-          #   retries = true
-          #   begin
-          #     kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          #     if kol_value.present?  && (kol.influence_score.blank? || kol_value.influence_score.to_i > kol.influence_score.to_i  )
-          #       kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
-          #       KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
-          #     end
-          #     SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
-          #   rescue ActiveRecord::StaleObjectError => e
-          #     if retries == true
-          #       retries = false
-          #       kol.reload
-          #       retry
-          #     else
-          #       ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
-          #     end
-          #   end
-          # end
 
           alert = nil
           unless kol_exist
@@ -113,12 +94,12 @@ module API
               return error!({error: 1, detail: 'Invalid oauth login data'}, 403)
             end
             
-            ActiveRecord::Base.transaction do
+            # ActiveRecord::Base.transaction do
               params[:current_sign_in_ip] = request.ip
               kol = Kol.reg_or_sign_in(params)
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
               social = update_social(params.merge(:from_type => 'app', :kol_id => kol.id))
-            end
+            # end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
 
             # 注册奖励
@@ -137,7 +118,7 @@ module API
               kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)
               KolInfluenceValueHistory.where(:kol_uuid => kol_value.kol_uuid ).last.update_column(:kol_id, kol.id )   rescue nil
             end
-            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+            # SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           kol.remove_same_device_token(params[:device_token])
           present :error, 0
