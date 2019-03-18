@@ -18,6 +18,11 @@ class PublicWechatAccount < ActiveRecord::Base
     1 => '男',
     2 => '女'
   }
+
+  BIGV_GENDER = {
+    1 => 'M',
+    2 => 'F'
+  }
   
   validates :kol_id, presence:   {message: '不能为空'}
   validates :kol_id, uniqueness: {message: '已被占用'}
@@ -43,6 +48,30 @@ class PublicWechatAccount < ActiveRecord::Base
 
   def get_dsp
     {1 => '微信公众号大V身份认证已通过', -1 => '微信公众号大V身份认证未通过，请联系客服处理'}[status]
+  end
+
+  def bind_bigV(profile_id)
+    url = "http://api_admin.robin8.net:8080/api/v1/r1/price/weixin/kol_bind/bind_kol?application_id=local-001&application_key=admin-001&kol_id=#{kol_id}&profile_id=#{profile_id}"
+    res = RestClient.post(url, bigV_hash.to_json, :content_type => :json, :accept => :json, :timeout => 30)
+
+    if JSON(res)['result'] == "success"
+      self.update_attributes(status: 1, profile_id: profile_id)
+      self.is_read.set 1
+      self.kol.update_column(:role_apply_status, 'passed')
+    else
+      JSON(res)['error_msg']
+    end
+  end
+
+  def bigV_hash
+    {
+      kol_id:       kol_id,
+      price:        price,
+      cities:       cities.map(&:name),
+      tags:         circles.map(&:tags).flatten.uniq.map(&:name),
+      fans_count:   fans_count,
+      fans_gender:  BIGV_GENDER[gender]
+    }
   end
 
   private 
