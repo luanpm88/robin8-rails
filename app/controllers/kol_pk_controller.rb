@@ -19,7 +19,7 @@ class KolPkController < ApplicationController
 
     # 偷偷的开始收集KOL 的weibo influence metric
     # Preliminarily starts the process to get influence score
-    KolInfluenceMetricsWorker.perform_async([weibo_uid, challengee_weibo_uid],[])
+    # KolInfluenceMetricsWorker.perform_async([weibo_uid, challengee_weibo_uid],[])
     Rails.logger.kol_pk.info "--kol_pk new: #{request.url}"
   end
 
