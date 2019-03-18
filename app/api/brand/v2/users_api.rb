@@ -31,7 +31,7 @@ module Brand
             ck.desc = params[:description_raw]
 
             if ck.save
-              present current_user.collected_kols, with: Entities::UserCollectedKol
+              present current_user.collected_kols.order('created_at DESC'), with: Entities::UserCollectedKol
             else
               return {error: 1, detail: ck.errors.messages }
             end
@@ -47,7 +47,7 @@ module Brand
             return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found') } unless ck
 
             if ck.destroy
-              present current_user.collected_kols, with: Entities::UserCollectedKol
+              present current_user.collected_kols.order('created_at DESC'), with: Entities::UserCollectedKol
             else
               return {error: 1, detail: I18n.t('brand_api.errors.messages.delete_failed') }
             end
@@ -74,7 +74,7 @@ module Brand
               current_user.competitors.find_or_create_by(name: attributes[:name], short_name: attributes[:short_name])
             end
 
-            present current_user.competitors, with: Entities::Competitor
+            present current_user.competitors.order('created_at DESC'), with: Entities::Competitor
           end
 
           desc 'update competitor status'
@@ -113,7 +113,7 @@ module Brand
             trademark.status = 1 if trademark.valid?
             trademark.save
 
-            present current_user.trademarks.active, with: Entities::Trademark
+            present current_user.trademarks.active.order('created_at DESC'), with: Entities::Trademark
           end
 
           desc 'update trademark status'
