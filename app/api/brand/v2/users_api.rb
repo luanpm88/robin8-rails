@@ -22,7 +22,7 @@ module Brand
 
             ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: params[:profile_id])
 
-            return {error: 1, detail: "请不要重复添加" } unless ck.new_record?
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_repeat') } unless ck.new_record?
 
             ck.plateform_name = params[:plateform_name]
             ck.plateform_uuid = params[:profile_id]
@@ -44,12 +44,12 @@ module Brand
           post 'cancel_collect' do
             ck = current_user.collected_kols.find_by_plateform_uuid params[:profile_id]
 
-            return {error: 1, detail: "数据错误，请确认" } unless ck
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found') } unless ck
 
             if ck.destroy
               present current_user.collected_kols, with: Entities::UserCollectedKol
             else
-              return {error: 1, detail: "删除失败" }
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.delete_failed') }
             end
           end
 
@@ -87,7 +87,7 @@ module Brand
           post 'competitor/:id' do
             competitor = current_user.competitors.find_by_id params[:id]
 
-            return {error: 1, detail: '数据错误，请确认'} unless competitor
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless competitor
 
             competitor.name       = params[:name]       if params[:name]
             competitor.short_name = params[:short_name] if params[:short_name]
@@ -95,7 +95,7 @@ module Brand
             
             competitor.save
 
-            present error: 0, alert: '更新成功'
+            present error: 0, alert: I18n.t("brand_api.success.messages.update_succeed")
           end
 
 
@@ -127,7 +127,7 @@ module Brand
           post 'trademark/:id' do
             trademark = current_user.trademarks.active.find_by_id params[:id]
 
-            return {error: 1, detail: '数据错误，请确认'} unless trademark
+            return {error: 1, detail: I18n.t("brand_api.errors.messages.not_found")} unless trademark
 
             current_user.trademarks.where(status: 1).update_all(status: 0) if params[:status] && params[:status].to_i == 1
 
@@ -139,7 +139,7 @@ module Brand
 
             trademark.save
 
-            present error: 0, alert: '更新成功'
+            present error: 0, alert: I18n.t('brand_api.success.messages.update_succeed')
           end
 
           desc 'when new brand login, update his all base info'
@@ -173,7 +173,7 @@ module Brand
               current_user.competitors.find_or_create_by(name: attributes[:name], short_name: attributes[:short_name])
             end
 
-            present error: 0, alert: '更新成功'
+            present error: 0, alert: I18n.t('brand_api.success.messages.update_succeed')
           end
 
           desc "show current user profile"
@@ -205,7 +205,8 @@ module Brand
           post "/recharge" do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             credits = params[:credits].to_f
-            return error_unprocessable! "充值最低金额为#{MySettings.recharge_min_budget}" if MySettings.recharge_min_budget > credits
+
+            return {error: 1, detail: I18n.t("brand_api.errors.messages.recharge_mix_amount", count: MySettings.recharge_min_budget) } if MySettings.recharge_min_budget > credits
 
             invite_code = params[:invite_code]
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
@@ -230,7 +231,7 @@ module Brand
                                     )
               return { alipay_recharge_url: alipay_recharge_url }
             else
-              return error_unprocessable! @alipay_order.errors.messages.first.last.first
+              return {error: 1, detail: @alipay_order.errors.messages.first.last.first }
             end
           end
         end
@@ -265,7 +266,7 @@ module Brand
             env['api.format'] = :txt
             body "success"
           else
-            return error_unprocessable! "充值失败，请重试"
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.recharge_failed') }
           end
         end
       end

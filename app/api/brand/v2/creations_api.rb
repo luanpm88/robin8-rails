@@ -6,6 +6,7 @@ module Brand
 
         before do
           authenticate! unless @options[:path].first == 'upload_image'
+          set_locale
         end
 
         resource :creations do
@@ -50,7 +51,7 @@ module Brand
           post do
             c = current_user.creations.find_or_initialize_by(id: params[:id])
 
-            return {error: 1, detail: '活动不能修改'} if c.new_record? && !c.can_edit?
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_edit')} if c.new_record? && !c.can_edit?
 
             c.name            = params[:creation][:name]
             c.description     = params[:creation][:description]
@@ -97,7 +98,7 @@ module Brand
           get ':id' do
             creation = current_user.creations.find_by(id: params[:id])
 
-            return {error: 1, detail: 'not found'} unless creation
+            return {error: 1, detail:  I18n.t("brand_api.errors.messages.not_found")} unless creation
 
             present creation
           end

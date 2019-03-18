@@ -45,7 +45,7 @@ module Brand
               csk.update_column(:status, "approved")
               present csk, with: Entities::CreationSelectedKol
             else
-              return {error: 1, detail: '数据错误，请确认'}
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')}
             end
           end
 
@@ -59,7 +59,7 @@ module Brand
             if tender
               present tender
             else
-              return {error: 1, detail: '数据错误，请确认'}
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')}
             end
           end
 

@@ -17,7 +17,7 @@ module Brand
           post "/pay_by_balance" do
             @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
 
-            return {error: 1, detail: '数据错误，请确认'} unless @campaign
+            return {error: 1, detail: I18n.t('band_api.errors.messages.not_found')} unless @campaign
 
             if declared(params)[:pay_way] == 'balance' && @campaign.can_pay?
               if current_user.avail_amount >= @campaign.need_pay_amount
@@ -27,10 +27,10 @@ module Brand
 
                 present @campaign, with: Entities::Campaign
               else
-                return {error: 1, detail: '账号余额不足, 请充值!'}
+                return {error: 1, detail: I18n.t('brand_api.errors.messages.account_balance_insufficient')}
               end
             else
-              return {error: 1, detail: "已经支付成功, 请勿重复支付!" }
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.pay_succeed')}
             end
           end
 
@@ -41,7 +41,7 @@ module Brand
           post "/pay_by_alipay" do
             @campaign = current_user.campaigns.find_by_id declared(params)[:campaign_id]
 
-            return {error: 1, detail: "已经支付成功, 请勿重复支付!" } unless @campaign.can_pay?
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.pay_succeed') } unless @campaign.can_pay?
 
             # 积分抵扣
             used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
@@ -74,7 +74,7 @@ module Brand
               )
               return { alipay_recharge_url: alipay_recharge_url }
             else
-              return { error: 1, detail: "支付金额有误，请确认!" }
+              return { error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed') }
             end
           end
 
@@ -85,13 +85,13 @@ module Brand
           post "/revoke_campaign" do
             @campaign = current_user.campaigns.find_by_id params[:campaign_id]
 
-            return {error: 1, detail: '数据错误，请确认'} unless @campaign
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless @campaign
 
             if @campaign.status == "revoked"
-              return {error: 1, detail: '活动已经撤销, 不能重复撤销!'}
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.haved_revoke_campaign')}
             end
             unless @campaign.can_revoke?
-              return {error: 1, detail: '活动已经开始, 不能撤销!'}
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.haved_start_campaign')}
             end
             @campaign.revoke
 
@@ -139,12 +139,11 @@ module Brand
           end
           post "" do
             if params[:budget].to_i < MySettings.campaign_min_budget.to_i
-              error_unprocessable! "活动总预算不能低于#{MySettings.campaign_min_budget}元!"
-              return
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.campaign_mix_amount', amount: MySettings.campaign_min_budget)}
             end
 
             if params[:id] && current_user.campaigns.find_by_id(params[:id])
-              return {error: 1, detail: '活动已经开始, 不能编辑'} unless current_user.campaigns.find_by_id(params[:id]).can_edit?
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.campaign_not_edit')} unless current_user.campaigns.find_by_id(params[:id]).can_edit?
 
               service = UpdateCampaignService.new current_user, params[:id], declared(params)
             else
@@ -166,7 +165,7 @@ module Brand
           get "/:id" do
             campaign = current_user.campaigns.find_by_id params[:id]
             
-            return {error: 1, detail: '数据错误，请确认'} unless campaign
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless campaign
 
             present campaign, with: Entities::Campaign
           end
@@ -181,10 +180,10 @@ module Brand
           post 'evaluate' do
             @campaign = Campaign.find params[:campaign_id]
 
-            return {error: 1, detail: '该活动暂时不能评价!'} unless @campaign.can_evaluate?
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.campaign_not_evaluate')} unless @campaign.can_evaluate?
 
             if @campaign.evaluation_status != "evaluating"
-              return {error: 1, detail: '该活动你已评价,或暂时不能评价!'}
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.campaign_have_evaluate')}
             end
             CampaignEvaluation.evaluate(@campaign, params[:effect_score], params[:experience_score], params[:review_content])
 
@@ -217,7 +216,7 @@ module Brand
             env['api.format'] = :txt
             body "success"
           else
-            return {error: 1, detail: '支付失败，请重试'}
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed')}
           end
         end
       end

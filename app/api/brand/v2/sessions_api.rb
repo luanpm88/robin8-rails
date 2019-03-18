@@ -14,7 +14,7 @@ module Brand
 
 							present @kol.user, with: Entities::User
 						else
-			        return {error: 1, detail: '请输入正确的帐号密码。'}
+			        return {error: 1, detail: I18n.t('brand_api.errors.messages.account_password_error')}
 			      end
 					end
 
@@ -26,8 +26,8 @@ module Brand
 						requires :password,  type: String
 					end
 					post 'sign_up' do
-						return {error: 1, detail: '帐号格式不正确。'}        if params[:login].blank?
-						return {error: 1, detail: '您已是我们的用户，请登录'} if Kol.authenticate_login(params[:login])
+						return {error: 1, detail: I18n.t('brand_api.errors.messages.account_format_error')}        if params[:login].blank?
+						return {error: 1, detail: I18n.t('brand_api.errors.messages.user_have_exist')} if Kol.authenticate_login(params[:login])
 						
 						result = 	case params[:type]
 											when "mobile_number"
@@ -35,7 +35,7 @@ module Brand
 											when "email"
 												$redis.get("valid_#{params[:login]}") == params[:code]
 											end
-						return {error: 1, detail: '验证码错误'} unless result
+						return {error: 1, detail: I18n.t('brand_api.errors.messages.code_error')} unless result
 
 						kol = Kol.create("#{params[:type]}": params[:login], password: params[:password])
 
@@ -56,12 +56,12 @@ module Brand
 	        post 'update_password' do
 	        	kol = Kol.authenticate_login(params[:login])
 
-	          return {error: 1, detail: '该用户不存在'} unless kol
+	          return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless kol
 
 	          if kol.reset_password(params[:new_password], params[:new_password_confirmation])
 	            present kol.user, with: Entities::User
 	          else
-	            error_unprocessable! "密码修改失败，请重试"
+	          	return {error: 1, detail: I18n.t('brand_api.errors.messages.update_failed')}
 	          end
 	        end
 

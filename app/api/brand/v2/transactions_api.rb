@@ -16,7 +16,8 @@ module Brand
           end
           post "" do
             tender = Tender.find_by_id params[:tender_id]
-            return {error: 1, detail: '数据错误，请确认'} unless tender
+
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless tender
 
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             tender.trade_no = trade_no
@@ -41,7 +42,7 @@ module Brand
                                       )
               return { alipay_recharge_url: alipay_recharge_url, return_url:  return_url, notify_url: notify_url}
             else
-              return error_unprocessable! tender.errors.messages
+              return {error: 1, detail: tender.errors.messages }
             end
           end
 
@@ -56,7 +57,7 @@ module Brand
               env['api.format'] = :txt
               body "success"
             else
-              return error_unprocessable! "订单支付失败，请重试"
+              return {error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed')}
             end
           end
 
