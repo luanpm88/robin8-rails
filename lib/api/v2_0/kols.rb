@@ -26,15 +26,15 @@ module API
           requires :provider, type: String, values: ['weibo', 'wechat']
         end
         post 'calculate_influence_score' do
-          kol_identity = current_kol.identities.where(provider: params[:provider]).first rescue nil
+          # kol_identity = current_kol.identities.where(provider: params[:provider]).first rescue nil
 
-          unless current_kol.influence_metrics.any?
-            if params[:provider] == 'weibo'
-              KolInfluenceMetricsWorker.perform_async [kol_identity.uid], []
-            else
-              KolInfluenceMetricsWorker.perform_async [], [kol_identity.uid]
-            end
-          end
+          # unless current_kol.influence_metrics.any?
+          #   if params[:provider] == 'weibo'
+          #     KolInfluenceMetricsWorker.perform_async [kol_identity.uid], []
+          #   else
+          #     KolInfluenceMetricsWorker.perform_async [], [kol_identity.uid]
+          #   end
+          # end
           present :error, 0
         end
 
