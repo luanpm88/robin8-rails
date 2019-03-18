@@ -1,4 +1,4 @@
-class CreationSelecte < ActiveRecord::Base
+class CreationSelectedKol < ActiveRecord::Base
 
 	STATUS = {
 		preelect: '预选', # brand选择或admin推荐的初始值
