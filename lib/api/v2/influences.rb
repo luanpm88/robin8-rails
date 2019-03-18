@@ -117,9 +117,9 @@ module API
         end
         post 'cal_score' do
           kol_value = KolInfluenceValue.cal_and_store_score(current_kol.try(:id), params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
-          if current_kol.present?
+          # if current_kol.present?
             # SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])
-          end
+          # end
           @campaigns = Campaign.recent_7.order_by_status.limit(5)
           present :error, 0
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary, kol: current_kol
