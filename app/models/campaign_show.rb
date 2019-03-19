@@ -57,29 +57,6 @@ class CampaignShow < ActiveRecord::Base
     return [false, 'visitor_agent_is_invalid'] unless visitor_agent.include?("MicroMessenger")
     return [false, 'visitor_referer_exist']    if visitor_referer.present? and !campaign.is_cpa_type?
 
-    # cpa_first_step_key = nil
-
-    # if campaign.is_cpa_type?
-    #   cpa_first_step_key = "cookies" + visitor_cookies.to_s + campaign.id.to_s
-    #   if options[:step] != 2
-    #     if openid
-    #       expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-    #       begin
-    #         Rails.cache.write(cpa_first_step_key, openid, :expires_in => expiry_time.seconds)
-    #       rescue Redis::CommandError
-    #         Rails.cache.write(cpa_first_step_key, openid, :expires_in => 30.hours)
-    #       end
-    #     end
-    #     return [false, 'is_first_step_of_cpa_campaign']
-    #   end
-    #   if options[:step] == 2 and campaign_invite.blank?
-    #     return [false, "the_first_step_not_exist_of_cpa_campaign"]
-    #   end
-    #   if options[:step] == 2 and not (openid = Rails.cache.fetch(cpa_first_step_key))
-    #     return [false, "the_two_step_has_not_openid_of_cpa_campaign"]
-    #   end
-    # end
-
     # openid_reach_max
     store_key = "openid_max_" + openid.to_s + campaign.id.to_s
 
@@ -172,27 +149,6 @@ class CampaignShow < ActiveRecord::Base
                 end
 
     return false unless campaign
-
-    # if campaign.is_cpa_type?
-    #   if (options[:step].to_i == 2 or info["step"].to_i == 2)
-    #     campaign_invite_id = Rails.cache.fetch(visitor_cookies + ":cpa_campaign_id:#{campaign.id}")
-    #     campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
-    #   else
-    #     campaign_invite = CampaignInvite.fetch_invite_with_uuid(uuid)
-    #     if campaign.deadline > visit_time
-    #       expiry_time = (campaign.deadline.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-    #     else
-    #       expiry_time = (visit_time.to_time - DateTime.now.to_time).to_i rescue 5*3600*24
-    #     end
-    #     begin
-    #       Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_in => expiry_time.seconds) if campaign_invite
-    #     rescue Redis::CommandError
-    #       Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expires_in => 30.hours) if campaign_invite
-    #     end
-    #   end
-    # else
-    #   campaign_invite = CampaignInvite.fetch_invite_with_uuid(uuid)
-    # end
 
     campaign_invite = CampaignInvite.fetch_invite_with_uuid(uuid)
 

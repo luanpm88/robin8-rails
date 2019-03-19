@@ -145,24 +145,33 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   #审核拒绝
+  # def screenshot_reject rejected_reason=nil
+  #   campaign = self.campaign
+  #   if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
+  #     retries = true
+  #     begin
+  #       self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
+  #     rescue ActiveRecord::StaleObjectError => e
+  #       if retries == true
+  #         retries = false
+  #         self.reload
+  #         retry
+  #       else
+  #         ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
+  #       end
+  #     end
+  #     Message.new_check_message('screenshot_rejected', self, campaign)
+  #     Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
+  #   end
+  # end
   def screenshot_reject rejected_reason=nil
-    campaign = self.campaign
-    if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
-      retries = true
-      begin
-        self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason, :check_time => Time.now)
-      rescue ActiveRecord::StaleObjectError => e
-        if retries == true
-          retries = false
-          self.reload
-          retry
-        else
-          ::NewRelic::Agent.record_metric('Robin8/Errors/ActiveRecord::StaleObjectError', e)
-        end
-      end
-      Message.new_check_message('screenshot_rejected', self, campaign)
-      Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
-    end
+    self.update_attributes(
+      img_status: 'rejected',
+      reject_reason: rejected_reason,
+      check_time: Time.now
+    ) if %w(executed executing).include?(campaign.status) && self.img_status != 'passed'
+
+    Rails.logger.info "----kol_id:#{kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
   end
 
   #永久拒绝,同时把金额返回给其他用户
@@ -201,7 +210,12 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def reupload_screenshot(img_url)
-    self.update_attributes(:img_status => 'pending', :screenshot => img_url, :reject_reason => nil, :upload_time => Time.now )
+    self.update_attributes(
+      img_status:     'pending',
+      screenshot:     img_url,
+      reject_reason:  nil,
+      upload_time:    Time.now
+    )
   end
 
   def get_total_click
@@ -302,32 +316,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def campaign_type
-    case self.campaign.per_budget_type
-    when 'click'
-      return '点击'
-    when 'post'
-      return '转发'
-    when 'recruit'
-      return "招募"
-    when 'cpa'
-      return 'cpa'
-    when 'simple_cpi'
-      return '下载'
-    when 'cpt'
-      return '任务'
-    end
-    return self.campaign.per_budget_type
+    Campaign::CTYPES[campaign.per_budget_type.to_sym] rescue campaign.per_budget_type
   end
 
   def campaign_observer_status
-    case observer_status
-    when 0
-      "未统计"
-    when 1
-      "正常"
-    when 2
-      "有作弊嫌疑"
-    end
+    {0 => "未统计", 1 => "正常", 2 => "有作弊嫌疑"}[observer_status]
   end
 
   # CN: 目前只是CPC会自动审核,且会在活动结束后审核

@@ -28,6 +28,15 @@ class Campaign < ActiveRecord::Base
     rejected:   '已拒绝'
   }
 
+  CTYPES = {
+    click:      '点击',
+    post:       '转发',
+    recruit:    '招募',
+    cpa:        'cpa',
+    simple_cpi: '下载',
+    cpt:        '任务'
+  }
+
 
  #  撤销，unexecute unpay pending rejected
  #. 编辑：unpay pending rejected
@@ -157,12 +166,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def sub_type_zh
-    case self.sub_type
-    when 'wechat'
-      '朋友圈'
-    when 'weibo'
-      '微博'
-    end
+    {'wechat' => '朋友圈', 'weibo' => '微博'}[sub_type]
   end
 
   def age_zh

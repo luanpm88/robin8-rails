@@ -31,7 +31,8 @@ module API
 
           return error_403!({error: 1, detail: '该营销活动不存在' }) if campaign_invite.blank?  || campaign.blank?
 
-          campaign_invite.update_attributes(screenshot: params[:screenshot])
+          campaign_invite.reupload_screenshot(params[:screenshot])
+          
           current_kol.generate_invite_task_record
 
           present :error, 0
