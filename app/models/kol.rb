@@ -636,7 +636,8 @@ class Kol < ActiveRecord::Base
         os_version:   params[:os_version],
         device_model: params[:device_model],
         longitude:    params[:longitude], 
-        latitude:     params[:latitude]
+        latitude:     params[:latitude],
+        app_city:     params[:city_name]
       }
 
     if kol.new_record?
