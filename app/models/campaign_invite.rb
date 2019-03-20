@@ -418,14 +418,10 @@ class CampaignInvite < ActiveRecord::Base
      CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_id, :status => 1, :remark => 'from_group').count
   end
 
-  def self.get_invitees(campaign_id, page = nil)
-    campaign_invites = CampaignInvite.where(:campaign_id => campaign_id).where("status != 'running'").order("id desc").includes(:kol).limit(30)
-    if page.present?
-      campaign_invites = campaign_invites.page(page).per_page(12)
-      total_count = campaign_invites.total_entries    rescue nil
-    end
-    total_count ||= campaign_invites.count
-    [total_count, campaign_invites]
+  def self.get_invitees(campaign_id, page=1)
+    campaign_invites = CampaignInvite.where(campaign_id: campaign_id).where.not(status: 'running').order("id desc").includes(:kol).page(page).per_page(12)
+
+    [campaign_invites.total_entries, campaign_invites]
   end
 
   def self.fetch_invite_with_uuid(uuid)
