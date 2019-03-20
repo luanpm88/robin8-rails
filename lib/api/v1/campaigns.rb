@@ -127,7 +127,7 @@ module API
           return error_403!({error: 1, detail: '分享失败了,请重试!' }) if campaign_invite.try(:id).nil?
 
           present :error, 0
-          present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol
+          present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
         end
 
         #活动报名预审
