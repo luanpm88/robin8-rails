@@ -77,18 +77,18 @@ module API
           optional :invitee_page, type: Integer
         end
         get ':id' do
-          campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
-          campaign = campaign_invite.campaign  rescue nil
-          club_name = current_kol.club.club_name rescue nil
-          if campaign_invite.blank?  || campaign.blank?
+          campaign_invite = current_kol.campaign_invites.find(params[:id]) rescue nil
+          campaign        = campaign_invite.campaign rescue nil
+
+          if campaign_invite.blank? || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
             invitees_count, campaign_invites = CampaignInvite.get_invitees(campaign.id, params[:invitee_page])
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
-            present :invitees_count, invitees_count
-            present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
-            present :leader_club, club_name
+            present :invitees_count,  invitees_count
+            present :invitees,        campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
+            present :leader_club,     nil
           end
         end
 

@@ -14,6 +14,14 @@ module Brand
           object.pre_amount.to_f
         end
 
+        expose :start_at do |object|
+          object.start_at.strftime('%Y-%m-%d %H:%M:%S')
+        end
+
+        expose :end_at do |object|
+          object.end_at.strftime('%Y-%m-%d %H:%M:%S')
+        end       
+
         expose :targets_hash do |object|
           object.targets_hash.all
         end

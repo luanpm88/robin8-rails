@@ -13,7 +13,7 @@ qa:
   - [campaign, 40]
   - [campaign_show, 20]
   - [campaign_observer_worker, 10]
-  # - [kol_influence_metrics_worker, 10]
+  - [kol_influence_metrics_worker, 10]
 :limits:
   campaign_show: 1
-  # kol_influence_metrics_worker: 2
+  kol_influence_metrics_worker: 2

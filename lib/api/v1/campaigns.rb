@@ -13,8 +13,8 @@ module API
           optional :invitee_page, type: Integer
         end
         get ':id' do
-          campaign = Campaign.find(params[:id])            rescue nil
-          club_name = current_kol.club.club_name rescue nil
+          campaign = Campaign.find(params[:id]) rescue nil
+
           if campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
@@ -24,7 +24,7 @@ module API
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
             present :invitees_count, invitees_count
             present :invitees, campaign_invites.collect{|t| t.kol}, with: API::V1::Entities::KolEntities::InviteeSummary
-            present :leader_club, club_name
+            present :leader_club, nil
             present :put_switch, $redis.get('put_switch') # 1:显示， 0:隐藏
             present :put_count, $redis.get('put_count')
           end
@@ -68,37 +68,66 @@ module API
           end
         end
 
+        # #接收活动邀请
+        # params do
+        #   requires :id, type: Integer
+        # end
+        # put ':id/receive' do
+        #   campaign = Campaign.find(params[:id]) rescue nil
+        #   campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
+        #   last_approved_invite = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at is not null").order("approved_at desc").first      rescue nil
+        #   today_approved_invite_count = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at > '#{Date.today}'").count
+        #   if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
+        #     return error_403!({error: 1, detail: '该活动不存在' })
+        #   elsif ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
+        #   # elsif campaign.status != 'executing' ||  (campaign_invite && campaign_invite.status != 'running')
+        #     return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
+        #   elsif campaign.need_finish
+        #     CampaignWorker.perform_async(campaign.id, 'fee_end')
+        #     return error_403!({error: 1, detail: '该活动已经结束！' })
+        #   elsif Rails.env.production? && !Kol::AdminKolIds.include?(current_kol.id) && last_approved_invite.present? && last_approved_invite.approved_at > (Time.now - 30.minutes)
+        #     return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' })
+        #   # elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && (campaign.is_post_type? || campaign.is_cpa_type?)
+        #   #   return error_403!({error: 1, detail: '您还未申请成为KOL,不能接收转发类型活动!' })
+        #   # elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && today_approved_invite_count >= 2
+        #   #   return error_403!({error: 1, detail: '您还未申请成为KOL,每天只能接2个活动!' })
+        #   elsif !Kol::AdminKolIds.include?(current_kol.id) && current_kol.is_big_v? && today_approved_invite_count >= 4
+        #     return error_403!({error: 1, detail: '为了提高广告质量,每天只能接4个活动!' })
+        #   else
+        #     campaign_invite = current_kol.receive_campaign(params[:id])
+        #     return error_403!({error: 1, detail: '分享失败了,请重试!' })    if campaign_invite.try(:id).nil?
+        #     present :error, 0
+        #     present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
+        #   end
+        # end
+
         #接收活动邀请
         params do
           requires :id, type: Integer
         end
         put ':id/receive' do
           campaign = Campaign.find(params[:id]) rescue nil
-          campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
-          last_approved_invite = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at is not null").order("approved_at desc").first      rescue nil
-          today_approved_invite_count = CampaignInvite.where(:kol_id => current_kol.id).where("approved_at > '#{Date.today}'").count
-          if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")  || campaign.is_recruit_type?
-            return error_403!({error: 1, detail: '该活动不存在' })
-          elsif ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
-          # elsif campaign.status != 'executing' ||  (campaign_invite && campaign_invite.status != 'running')
-            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
-          elsif campaign.need_finish
+          return error_403!({error: 1, detail: '该活动不存在'}) if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}") || campaign.is_recruit_type?
+
+          campaign_invite = current_kol.campaign_invites.where(campaign_id: params[:id]).first rescue nil
+          return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！'}) if ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
+
+          if campaign.need_finish
             CampaignWorker.perform_async(campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
-          elsif Rails.env.production? && !Kol::AdminKolIds.include?(current_kol.id) && last_approved_invite.present? && last_approved_invite.approved_at > (Time.now - 30.minutes)
-            return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' })
-          # elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && (campaign.is_post_type? || campaign.is_cpa_type?)
-          #   return error_403!({error: 1, detail: '您还未申请成为KOL,不能接收转发类型活动!' })
-          # elsif !Kol::AdminKolIds.include?(current_kol.id) && !current_kol.is_big_v? && today_approved_invite_count >= 2
-          #   return error_403!({error: 1, detail: '您还未申请成为KOL,每天只能接2个活动!' })
-          elsif !Kol::AdminKolIds.include?(current_kol.id) && current_kol.is_big_v? && today_approved_invite_count >= 4
-            return error_403!({error: 1, detail: '为了提高广告质量,每天只能接4个活动!' })
-          else
-            campaign_invite = current_kol.receive_campaign(params[:id])
-            return error_403!({error: 1, detail: '分享失败了,请重试!' })    if campaign_invite.try(:id).nil?
-            present :error, 0
-            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
           end
+
+          last_approved_invite = current_kol.campaign_invites.where("approved_at is not null").order("approved_at desc").first rescue nil
+          return error_403!({error: 1, detail: '距上次接活动间隔需大于30分钟!' }) if Rails.env.production? && !Kol::AdminKolIds.include?(current_kol.id) && last_approved_invite.present? && last_approved_invite.approved_at > 30.minutes.ago.to_time
+
+          today_approved_invite_count = current_kol.campaign_invites.where("approved_at > '#{Date.today}'").count
+          return error_403!({error: 1, detail: '为了提高广告质量,每天只能接4个活动!' }) if !Kol::AdminKolIds.include?(current_kol.id) && current_kol.is_big_v? && today_approved_invite_count >= 4
+
+          campaign_invite = current_kol.receive_campaign(params[:id])
+          return error_403!({error: 1, detail: '分享失败了,请重试!' }) if campaign_invite.try(:id).nil?
+
+          present :error, 0
+          present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary, unit_price_rate_for_kol: current_kol.strategy[:unit_price_rate_for_kol]
         end
 
         #活动报名预审

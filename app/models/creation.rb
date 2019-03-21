@@ -55,7 +55,7 @@ class Creation < ActiveRecord::Base
   end
 
   def time_range
-    "#{start_at.strftime('%F')}--#{end_at.strftime('%F')}"
+    "#{start_at.strftime('%Y-%m-%d %H:%M:%S')}--#{end_at.strftime('%Y-%m-%d %H:%M:%S')}"
   end
 
   def price_range
