@@ -34,6 +34,8 @@ module API
 
           error_403!(detail: '查无此活动，请规范使用APP') unless creation.try(:is_alive?)
 
+          creation.can_ended? unless creation.is_ended?
+
           selected_kol = CreationSelectedKol.find_by(creation_id: creation.id, kol_id: current_kol.id)
 
         	present :error,    0
