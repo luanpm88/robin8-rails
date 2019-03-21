@@ -3,7 +3,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
   def index
     @r8_infos = $redis.get("r8_daily_info")
     @ending   = Time.now.change({ hour: 19 })
-    # @r8_infos = {}
+    # @r8_infos = nil
     if @r8_infos
       @r8_infos = JSON @r8_infos
     else
@@ -23,7 +23,8 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'traded_users_count':       User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count,
         'kols_count':               Kol.count,
         # 'active_kols_count':        Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count,
-        'active_kols_count':        CampaignInvite.settled.group(:kol_id).count.count,
+        # 活越用户，近6个月登录过
+        'active_kols_count':        Kol.where('current_sign_in_at > ?', 6.months.ago).count,
         'settled_campaigns_count':  _ary.first.c_count,
         'settled_campaigns_amount': _ary.first.c_budget.to_f,
         'withdrawn_total_amount':   Withdraw.approved.sum(:credits).round
