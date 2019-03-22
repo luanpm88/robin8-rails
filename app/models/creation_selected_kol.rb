@@ -51,7 +51,7 @@ class CreationSelectedKol < ActiveRecord::Base
   def bigV_url
     trademark = self.creation.user.trademarks.where(status: 1).first
 
-    "/kol/#{plateform_uuid}?type=#{plateform_name == 'public_weibo_account' ? 0 : 1}&brand_keywords=#{trademark.keywords}"
+    "/kol/#{plateform_uuid}?type=#{plateform_name == 'public_weibo_account' ? 0 : 1}&brand_keywords=#{trademark.try(:keywords)}"
   end
   
 end
