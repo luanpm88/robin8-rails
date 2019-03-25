@@ -203,7 +203,7 @@ class Kol < ActiveRecord::Base
     scope :personal_big_v, -> {where("kol_role = 'big_v'")}
   end
   # Push message will send it only to users with 'device_token' (who are also fulfilling other params set in campaign: age, etc.)
-  scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}'") }
+  scope :campaign_message_suitable, -> { where("`kols`.`updated_at` > '#{12.months.ago}' and app_version is not null") }
 
   scope :recent, ->(_start,_end){ where(created_at: _start.beginning_of_day.._end.end_of_day) }
 
@@ -649,6 +649,7 @@ class Kol < ActiveRecord::Base
         avatar_url:         params[:avatar_url]
       }
       kol = Kol.create!(_hash.merge(_new_hash))
+      kol.e_wallet_transtions.create(resource: kol, amount: $redis.get('put_sign_up_count')) if $redis.get('put_sign_up_count').to_i > 0
     else
       kol.update_attributes(_hash)
     end

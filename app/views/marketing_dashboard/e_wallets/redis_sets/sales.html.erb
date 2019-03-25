@@ -24,6 +24,12 @@
           <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'put_count', confirm: "确定更改吗？" %>
       </td>
     </tr>
+    <tr>
+      <td>KOL注册赠送</td>
+      <td><%= text_field_tag :put_sign_up_count, $redis.get('put_sign_up_count'), :class => "data-value"  %>
+          <%= link_to "提交修改",  "#" , class: 'btn btn-xs btn-primary update-value', 'data-key': 'put_sign_up_count', confirm: "确定更改吗？" %>
+      </td>
+    </tr>
 </table>
 
 
