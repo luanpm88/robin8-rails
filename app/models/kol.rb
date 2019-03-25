@@ -649,6 +649,7 @@ class Kol < ActiveRecord::Base
         avatar_url:         params[:avatar_url]
       }
       kol = Kol.create!(_hash.merge(_new_hash))
+      kol.e_wallet_transtions.create(resource: kol, amount: $redis.get('put_sign_up_count')) if $redis.get('put_sign_up_count').to_i > 0
     else
       kol.update_attributes(_hash)
     end

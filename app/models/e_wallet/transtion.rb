@@ -28,6 +28,8 @@ class EWallet::Transtion < ActiveRecord::Base
     case resource_type
     when 'Campaign'
       "活动奖励：#{resource.name}"
+    when 'Kol'
+      "注册奖励"
     end
   end
 
