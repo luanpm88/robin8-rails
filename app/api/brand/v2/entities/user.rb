@@ -18,6 +18,7 @@ module Brand
         expose :credit_amount
         expose :credit_expired_at
         expose :smart_name
+        expose :company
         expose :recharge_min_budget do |user|
           MySettings.recharge_min_budget
         end
@@ -41,6 +42,9 @@ module Brand
         end
         expose :access_token do |user|
           user.kol.get_issue_token
+        end
+        expose :partner_logo do |user|
+          user.partner_logo
         end
 
       end

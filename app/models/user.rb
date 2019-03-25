@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   include Users::InvoiceHelper
   attr_accessor :login, :open_token
 
+  # company 作为合作公司拉进来的名称 CIC
+  # campany_name 品牌主的公司名称
+
   has_many :transactions, :as => :account
   has_many :alipay_orders
   has_many :alipay_orders_from_app, -> { where(recharge_from: "app") }, class_name: "AlipayOrder"
@@ -243,6 +246,10 @@ class User < ActiveRecord::Base
     if credit_amount > 0 && credit_expired < Time.now
       Credit.gen_record('expire', 1, -credit_amount, self, nil, credit_expired, "已于 #{credit_expired} 失效")
     end
+  end
+
+  def partner_logo
+    "http://img.robin8.net/#{company}.png"
   end
 
   private

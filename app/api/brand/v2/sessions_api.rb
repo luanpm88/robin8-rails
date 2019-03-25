@@ -24,6 +24,7 @@ module Brand
 						requires :login,     type: String
 						requires :code,      type: String
 						requires :password,  type: String
+						optional :reg_tag,   type: String
 					end
 					post 'sign_up' do
 						return {error: 1, detail: I18n.t('brand_api.errors.messages.account_format_error')}        if params[:login].blank?
@@ -40,7 +41,8 @@ module Brand
 						kol = Kol.create("#{params[:type]}": params[:login], password: params[:password])
 
 						user = kol.build_user("#{params[:type]}": params[:login])
-						user.mobile_number = user.email if params[:type] == 'email'
+						user.mobile_number = user.email 			if params[:type] == 'email'
+						user.company       = params[:reg_tag] if params[:reg_tag]
 						user.save
 
 						present user.reload, with: Entities::User
