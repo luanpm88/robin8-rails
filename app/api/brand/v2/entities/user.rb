@@ -18,6 +18,9 @@ module Brand
         expose :credit_amount
         expose :credit_expired_at
         expose :smart_name
+        expose :private_mobile_number do |user|
+          user.mobile_number[0,3] + "****" + user.mobile_number[-4,4]
+        end
         expose :recharge_min_budget do |user|
           MySettings.recharge_min_budget
         end

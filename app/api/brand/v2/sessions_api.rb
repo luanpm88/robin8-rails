@@ -49,14 +49,24 @@ module Brand
 					desc 'update password'
 	        params do
 	          requires :login,                      type: String
-	          requires :new_password,              type: String
+	          requires :code,                       type: String 
+	          requires :new_password,               type: String
 	          requires :new_password_confirmation,  type: String
-	          requires :type,                       type: String, desc: 'value in (email or mobile_number)'
 	        end
 	        post 'update_password' do
 	        	kol = Kol.authenticate_login(params[:login])
 
-	          return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless kol
+	          return {error: 1, detail: I18n.t('brand_api.errors.messages.forget_not_found')} unless kol
+
+	          if params[:login].match(Brand::V2::APIHelpers::MOBILE_NUMBER_REGEXP)
+	          	result = YunPian::SendRegisterSms.verify_code(params[:login], params[:code])
+	          elsif params[:login].match(Brand::V2::APIHelpers::EMAIL_REGEXP)
+	          	result = $redis.get("valid_#{params[:login]}") == params[:code]
+	          else
+	          	result = false
+	          end
+	          
+	          return {error: 1, detail: I18n.t('brand_api.errors.messages.code_error')} unless result 
 
 	          if kol.reset_password(params[:new_password], params[:new_password_confirmation])
 	            present kol.user, with: Entities::User
@@ -64,6 +74,7 @@ module Brand
 	          	return {error: 1, detail: I18n.t('brand_api.errors.messages.update_failed')}
 	          end
 	        end
+
 
 				end
 			end

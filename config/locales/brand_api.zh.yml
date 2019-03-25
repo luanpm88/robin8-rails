@@ -29,6 +29,7 @@ zh:
         mobile_number_error: "手机号码格式错误"
         third_party_error: "调用第三方接口错误，请联系客服"
         email_format_error: "邮箱格式错误"
+        forget_not_found: "该用户尚未注册"
     success:
       messages:
         code_succeed: '验证码发送成功'
