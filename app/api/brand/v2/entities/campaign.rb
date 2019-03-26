@@ -211,7 +211,6 @@ module Brand
 
         #预计推送KOL人数
         expose :per_push_kols_count do |object|
-          
           object.per_push_kols_count
         end
 

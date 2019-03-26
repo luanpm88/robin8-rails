@@ -28,6 +28,7 @@ en:
         mobile_number_error: "Phone Number format error"
         third_party_error: "Call a third-party interface error, please contact customer service"
         email_format_error: "Email format error"
+        forget_not_found: "The user has not been registered"
   success:
     messages:
       code_succeed: 'Verification code sent successfully'

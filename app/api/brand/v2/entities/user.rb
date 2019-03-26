@@ -18,6 +18,10 @@ module Brand
         expose :credit_amount
         expose :credit_expired_at
         expose :smart_name
+        expose :company
+        expose :private_mobile_number do |user|
+          user.mobile_number[0,3] + "****" + user.mobile_number[-4,4]
+        end
         expose :recharge_min_budget do |user|
           MySettings.recharge_min_budget
         end
@@ -41,6 +45,9 @@ module Brand
         end
         expose :access_token do |user|
           user.kol.get_issue_token
+        end
+        expose :partner_logo do |user|
+          user.partner_logo
         end
 
       end
