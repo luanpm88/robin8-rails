@@ -12,7 +12,7 @@ en:
         account_password_error: "Please enter the correct account password"
         account_format_error: "Account format is incorrect"
         user_have_exist: "You are already a user of ours, please login"
-        code_error: "Code error"
+        code_error: "Authentication Code Error"
         save_error: "Save failed, please try again"
         invoice_information_error: "Please refine the invoice information and try again"
         mailing_address_error: "Please improve the invoice mailing address information, and then try again"

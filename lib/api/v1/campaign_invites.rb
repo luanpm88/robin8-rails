@@ -43,10 +43,14 @@ module API
                                 .page(params[:page]).per_page(10)
           end
 
-          if @campaigns
-            @campaigns_filter = phone_filter(@campaigns)
-            @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+          #新注册的用户推送5个已经完成的campaign的ID
+          unless @campaigns
+            @campaigns = Campaign.where(id: $redis.lrange("kol:54640:receive_campaign_ids", -20, -15)) 
           end
+
+          @campaigns_filter = phone_filter(@campaigns)
+          @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+
 
           to_paginate(@campaign_invites) unless @campaign_invites
 
