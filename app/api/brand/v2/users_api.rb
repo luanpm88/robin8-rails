@@ -24,8 +24,14 @@ module Brand
                                         'xiaohongshu'
                                       when params[:avatar_url].match('sinaimg.cn')
                                         'public_weibo_account'
-                                      when params[:avatar_url].match('wx.qlogo.cn')
+                                      when params[:avatar_url].match('qlogo.cn')
                                         'public_wechat_account'
+                                      when params[:avatar_url].match('hdslb.com')
+                                        'bilibili'
+                                      when params[:avatar_url].match('kuaishou.com')
+                                        'kuaishou'
+                                      when params[:avatar_url].match('bytecdn.cn')
+                                        'douyin'
                                       end
 
             ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: params[:profile_id])

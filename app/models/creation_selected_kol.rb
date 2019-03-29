@@ -42,6 +42,14 @@ class CreationSelectedKol < ActiveRecord::Base
       0
     when 'public_wechat_account'
       1
+    when 'xiaohongshu'
+      2
+    when 'bilibili'
+      3
+    when 'kuaishou'
+      4
+    when 'douyin'
+      5
     else
       1
     end

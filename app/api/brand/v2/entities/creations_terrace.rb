@@ -12,6 +12,10 @@ module Brand
           object.terrace.short_name
         end
 
+        expose :avatar do |object|
+          object.terrace.avatar
+        end
+
       end
     end
   end
