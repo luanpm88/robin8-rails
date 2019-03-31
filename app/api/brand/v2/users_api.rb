@@ -14,35 +14,35 @@ module Brand
             requires :profile_id,     type: String #plateform_uuid, uuid
             requires :profile_name,   type: String #name 用户名称
             requires :avatar_url,     type: String #用户的头像地址
-            requires :description_raw,           type: String #用户的简介 desc
+            requires :description_raw,type: String #用户的简介 desc
             # requires :plateform_name, type: String #来自什么平台微博，微信
           end
           post 'collect_kol' do
-            # params[:plateform_name] = params[:profile_id].to_i.to_s == params[:profile_id] ? 'public_weibo_account' : 'public_wechat_account'
-            params[:plateform_name] = case params[:avatar_url]
-                                      when params[:avatar_url].match('xiaohongshu.com')
-                                        'xiaohongshu'
+            plateform_name = case params[:avatar_url]
                                       when params[:avatar_url].match('sinaimg.cn')
-                                        'public_weibo_account'
+                                        'weibo'
                                       when params[:avatar_url].match('qlogo.cn')
                                         'public_wechat_account'
+                                      when params[:avatar_url].match('xiaohongshu.com')
+                                        'xiaohongshu'
+                                      when params[:avatar_url].match('yximgs.com')
+                                        'kuaishou'
                                       when params[:avatar_url].match('hdslb.com')
                                         'bilibili'
-                                      when params[:avatar_url].match('kuaishou.com')
-                                        'kuaishou'
                                       when params[:avatar_url].match('bytecdn.cn')
                                         'douyin'
                                       end
 
-            ck = current_user.collected_kols.find_or_initialize_by(plateform_uuid: params[:profile_id])
+            ck =  current_user.collected_kols.find_or_initialize_by(
+                    plateform_name: plateform_name,
+                    plateform_uuid: params[:profile_id]
+                  )
 
             return {error: 1, detail: I18n.t('brand_api.errors.messages.not_repeat') } unless ck.new_record?
 
-            ck.plateform_name = params[:plateform_name]
-            ck.plateform_uuid = params[:profile_id]
-            ck.name = params[:profile_name]
+            ck.name       = params[:profile_name]
             ck.avatar_url = params[:avatar_url]
-            ck.desc = params[:description_raw]
+            ck.desc       = params[:description_raw]
 
             if ck.save
               present current_user.collected_kols.order('created_at DESC'), with: Entities::UserCollectedKol

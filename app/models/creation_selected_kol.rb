@@ -11,6 +11,15 @@ class CreationSelectedKol < ActiveRecord::Base
 		rejected: '已拒绝合作' # 只用于后台统计，当preelet, pending, unpay，这三种状态并未得到brand支付确认时，我们会将此条记录在15天后置为拒绝
 	}
 
+  PLATEFORM = {
+    weibo:                  0,
+    public_wechat_account:  1,
+    xiaohongshu:            2,
+    kuaishou:               3,
+    bilibili:               4,
+    douyin:                 5
+
+  }
 
 	# select: 品牌主选择的, recommend: 平台推荐的, volunteered :kol自主报名的
 	validates_inclusion_of :from_by, in: %w(select recommend volunteered)
@@ -37,29 +46,14 @@ class CreationSelectedKol < ActiveRecord::Base
   end
 
   def plateform_name_type
-    case self.plateform_name
-    when 'public_weibo_account'
-      0
-    when 'public_wechat_account'
-      1
-    when 'xiaohongshu'
-      2
-    when 'bilibili'
-      3
-    when 'kuaishou'
-      4
-    when 'douyin'
-      5
-    else
-      1
-    end
+    PLATEFORM[plateform_name.to_sym] || 1
   end
 
 
   def bigV_url
     trademark = self.creation.user.trademarks.where(status: 1).first
 
-    "/kol/#{plateform_uuid}?type=#{plateform_name == 'public_weibo_account' ? 0 : 1}&brand_keywords=#{trademark.try(:keywords)}"
+    "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
   end
   
 end

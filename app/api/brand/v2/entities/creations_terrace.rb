@@ -13,7 +13,7 @@ module Brand
         end
 
         expose :avatar do |object|
-          object.terrace.avatar
+          object.terrace.address
         end
 
       end
