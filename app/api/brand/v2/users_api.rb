@@ -18,20 +18,21 @@ module Brand
             # requires :plateform_name, type: String #来自什么平台微博，微信
           end
           post 'collect_kol' do
-            plateform_name = case params[:avatar_url]
-                                      when params[:avatar_url].match('sinaimg.cn')
-                                        'weibo'
-                                      when params[:avatar_url].match('qlogo.cn')
-                                        'public_wechat_account'
-                                      when params[:avatar_url].match('xiaohongshu.com')
-                                        'xiaohongshu'
-                                      when params[:avatar_url].match('yximgs.com')
-                                        'kuaishou'
-                                      when params[:avatar_url].match('hdslb.com')
-                                        'bilibili'
-                                      when params[:avatar_url].match('bytecdn.cn')
-                                        'douyin'
-                                      end
+            plateform_name =  if params[:avatar_url].include?('sinaimg.cn')
+                                'weibo'
+                              elsif params[:avatar_url].include?('qlogo.cn')
+                                'public_wechat_account'
+                              elsif params[:avatar_url].include?('xiaohongshu.com')
+                                'xiaohongshu'
+                              elsif params[:avatar_url].include?('yximgs.com')
+                                'kuaishou'
+                              elsif params[:avatar_url].include?('hdslb.com')
+                                'bilibili'
+                              elsif params[:avatar_url].include?('bytecdn.cn')
+                                'douyin'
+                              end
+
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.params_error') } unless plateform_name
 
             ck =  current_user.collected_kols.find_or_initialize_by(
                     plateform_name: plateform_name,
