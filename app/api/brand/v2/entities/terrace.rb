@@ -6,6 +6,9 @@ module Brand
         expose :avatar do |object|
           object.address
         end
+        expose :name_en do |object|
+          object.name_en
+        end
       end
     end
   end

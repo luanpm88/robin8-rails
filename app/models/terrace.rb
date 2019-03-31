@@ -1,5 +1,15 @@
 #自媒体平台
 class Terrace < ActiveRecord::Base
+
+	NAME_EN = {
+    weibo:                  'Weibo',
+    public_wechat_account:  'Wechat',
+    xiaohongshu:            'Xiaohongshu',
+    kuaishou:               'Kuaishou',
+    bilibili:               'Bilibili',
+    douyin:                 'Douyin'
+
+  }
   
   validates :name, :short_name, presence:   {message: '不能为空'}
   validates :name, :short_name, uniqueness: {message: '已被占用'}
@@ -14,5 +24,9 @@ class Terrace < ActiveRecord::Base
   has_many :creations, through: :creations_terraces
 
   scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin))}
+
+  def name_en
+  	NAME_EN[short_name.to_sym]
+  end
 
 end
