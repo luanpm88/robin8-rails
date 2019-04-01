@@ -55,5 +55,9 @@ class CreationSelectedKol < ActiveRecord::Base
 
     "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
   end
+
+  def terrace_avatar
+    "http://img.robin8.net/#{plateform_name}.png"
+  end
   
 end

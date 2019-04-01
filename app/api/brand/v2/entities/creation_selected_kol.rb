@@ -33,6 +33,10 @@ module Brand
         expose :bigv_url do |object|
           object.bigV_url
         end
+
+        expose :terrace_avatar do |object|
+          object.terrace_avatar
+        end
         
       end
     end
