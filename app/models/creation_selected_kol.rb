@@ -17,8 +17,10 @@ class CreationSelectedKol < ActiveRecord::Base
     xiaohongshu:            2,
     kuaishou:               3,
     bilibili:               4,
-    douyin:                 5
-
+    douyin:                 5,
+    instagram:              6,
+    youtube:                7,
+    facebook:               8
   }
 
 	# select: 品牌主选择的, recommend: 平台推荐的, volunteered :kol自主报名的
