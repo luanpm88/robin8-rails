@@ -22,7 +22,7 @@ class UserCollectedKol < ActiveRecord::Base
   def bigV_url
     trademark = self.user.trademarks.where(status: 1).first
 
-    "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
+    "/kol/#{ERB::Util.url_encode(plateform_uuid)}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
   end
 
   def terrace_avatar

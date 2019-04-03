@@ -55,7 +55,7 @@ class CreationSelectedKol < ActiveRecord::Base
   def bigV_url
     trademark = self.creation.user.trademarks.where(status: 1).first
 
-    "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
+    URI.decode "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
   end
 
   def terrace_avatar
