@@ -30,6 +30,12 @@ module Brand
                                 'bilibili'
                               elsif params[:avatar_url].include?('bytecdn.cn')
                                 'douyin'
+                              elsif params[:avatar_url].include?('fbcdn.net')
+                                'facebook'
+                              elsif params[:avatar_url].include?('cdninstagram.com')
+                                'instagram'
+                              elsif params[:avatar_url].include?('ggpht.com')
+                                'youtube'
                               end
 
             return {error: 1, detail: I18n.t('brand_api.errors.messages.params_error') } unless plateform_name

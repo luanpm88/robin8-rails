@@ -7,8 +7,10 @@ class Terrace < ActiveRecord::Base
     xiaohongshu:            'Xiaohongshu',
     kuaishou:               'Kuaishou',
     bilibili:               'Bilibili',
-    douyin:                 'Douyin'
-
+    douyin:                 'Douyin',
+    facebook:               'Facebook',
+    instagram:              'Instagram',
+    youtube:                'YouTube'
   }
   
   validates :name, :short_name, presence:   {message: '不能为空'}
@@ -23,7 +25,7 @@ class Terrace < ActiveRecord::Base
   has_many :creations_terraces, class_name: "CreationsTerrace"
   has_many :creations, through: :creations_terraces
 
-  scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin))}
+  scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin facebook youtube instagram))}
 
   def name_en
   	NAME_EN[short_name.to_sym]

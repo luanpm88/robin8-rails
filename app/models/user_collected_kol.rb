@@ -6,8 +6,10 @@ class UserCollectedKol < ActiveRecord::Base
     xiaohongshu:            2,
     kuaishou:               3,
     bilibili:               4,
-    douyin:                 5
-
+    douyin:                 5,
+    instagram:              6,
+    youtube:                7,
+    facebook:               8
   }
 
   belongs_to :user
@@ -20,7 +22,7 @@ class UserCollectedKol < ActiveRecord::Base
   def bigV_url
     trademark = self.user.trademarks.where(status: 1).first
 
-    "/kol/#{plateform_uuid}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
+    "/kol/#{ERB::Util.url_encode(plateform_uuid)}?type=#{plateform_name_type}&brand_keywords=#{trademark.try(:keywords)}"
   end
 
   def terrace_avatar
