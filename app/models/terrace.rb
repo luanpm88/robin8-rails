@@ -25,7 +25,8 @@ class Terrace < ActiveRecord::Base
   has_many :creations_terraces, class_name: "CreationsTerrace"
   has_many :creations, through: :creations_terraces
 
-  scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin facebook youtube instagram))}
+  # scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin facebook youtube instagram))}
+  scope :now_use, -> {where(short_name: %w(weibo public_wechat_account xiaohongshu bilibili kuaishou douyin))}
 
   def name_en
   	NAME_EN[short_name.to_sym]
