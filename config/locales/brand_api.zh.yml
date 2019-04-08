@@ -31,6 +31,7 @@ zh:
         email_format_error: "邮箱格式错误"
         forget_not_found: "该用户尚未注册"
         params_error: '参数错误'
+        brand_account_not_exist: "您暂时不是我们的品牌主，请注册"
     success:
       messages:
         code_succeed: '验证码发送成功'

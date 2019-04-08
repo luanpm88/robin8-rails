@@ -30,6 +30,7 @@ en:
         email_format_error: "Email format error"
         forget_not_found: "The user has not been registered"
         params_error: 'Params error'
+        brand_account_not_exist: "You are not our brand owner for the time being, please register"
   success:
     messages:
       code_succeed: 'Verification code sent successfully'
