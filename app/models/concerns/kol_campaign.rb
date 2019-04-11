@@ -155,6 +155,11 @@ module Concerns
           self.add_campaign_id campaign.id
         end
       end
+      # 新注册的用户没有活动推送5个已经完成的campaign的ID
+      $redis.lrange("kol:54640:receive_campaign_ids", -20, -15).uniq.each do |cid|
+        self.add_campaign_id cid
+      end
+      ############################################
     end
 
     def max_campaign_click
