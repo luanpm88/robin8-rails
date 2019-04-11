@@ -43,10 +43,17 @@ module API
                                 .page(params[:page]).per_page(10)
           end
 
-          #新注册的用户推送5个已经完成的campaign的ID
-          unless @campaigns
-            @campaigns = Campaign.where(id: $redis.lrange("kol:54640:receive_campaign_ids", -20, -15)) 
+          #新注册的用户有新手活动推送5个已经完成的campaign的ID
+          if @campaigns.present? && @campaigns.map(&:per_budget_type).uniq == ["recruit"]
+            @campaigns = Campaign.where(id: @campaigns.map(&:id) + $redis.lrange("kol:54640:receive_campaign_ids", -20, -15).uniq)
           end
+
+          #新注册的用户没有活动推送5个已经完成的campaign的ID
+          unless @campaigns.present?
+            @campaigns = Campaign.where(id: $redis.lrange("kol:54640:receive_campaign_ids", -20, -15).uniq)
+          end
+
+
 
           @campaigns_filter = phone_filter(@campaigns)
           @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }

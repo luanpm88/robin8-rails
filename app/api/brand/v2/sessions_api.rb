@@ -11,7 +11,7 @@ module Brand
 					end
 					post 'sign_in' do
 						if @kol = Kol.authenticate_password(params)
-
+							return {error: 1, detail: I18n.t('brand_api.errors.messages.brand_account_not_exist')} unless @kol.user
 							present @kol.user, with: Entities::User
 						else
 			        return {error: 1, detail: I18n.t('brand_api.errors.messages.account_password_error')}
