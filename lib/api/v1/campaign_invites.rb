@@ -43,8 +43,10 @@ module API
                                 .page(params[:page]).per_page(10)
           end
 
-          @campaigns_filter = phone_filter(@campaigns)
-          @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+          if @campaigns
+            @campaigns_filter = phone_filter(@campaigns)
+            @campaign_invites = @campaigns_filter.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+          end
 
           to_paginate(@campaign_invites) unless @campaign_invites
 
