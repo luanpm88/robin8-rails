@@ -10,6 +10,7 @@ module API
           requires :credits, type: Float
         end
         post 'apply' do
+          return {:error => 1, :detail => '升级APP后方可提现'} if current_kol.app_version.to_s < '2.5.2'
           return {:error => 1, :detail => '金额满50方可提现'}  if params[:credits] < 50
           return {:error => 1, :detail => '请您先绑定支付宝'}  if current_kol.alipay_account.blank?
           return {:error => 1, :detail => '当前账号有异常,请联系客服!'}  if AlipayAccountBlacklist.all.collect{|t| t.account}.include?(current_kol.alipay_account)
