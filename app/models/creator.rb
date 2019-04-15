@@ -46,6 +46,10 @@ class Creator < ActiveRecord::Base
   after_save :update_kol_role_status, on: [:create, :update]
   after_update :sent_message
 
+  scope :recent,    ->(_start,_end){ where(created_at: _start.._end) }
+  scope :by_status, ->(status){where(status: status)}
+  scope :valid,     ->{where(status: 1)}
+
   delegate :mobile_number, to: :kol
 
   def get_dsp

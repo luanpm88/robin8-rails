@@ -10,7 +10,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
       @r8_infos = {}
       
       @r8_infos['first_overall'] = {
-        'today_kols_count':           Kol.where("created_at > ?", Date.today.to_time).count,
+        'today_kols_count':           Kol.where("created_at > ?", Date.today.to_time).from_app.count,
         'pending_campaigns_count':    Campaign.where(status: 'unexecute').realable.where("deadline >?", (Time.now-30.days)).count,
         'pending_screenshots_count':  CampaignInvite.where(img_status: :pending).where("screenshot is not NULL").count,
         'pending_tixians_count':      Withdraw.pending.count
@@ -21,7 +21,7 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
       @r8_infos['table'] = {
         'users_count':              User.count,
         'traded_users_count':       User.joins(:campaigns).group("campaigns.user_id").having("count(campaigns.id) > 0").count.keys.count,
-        'kols_count':               Kol.count,
+        'kols_count':               Kol.from_app.count,
         # 'active_kols_count':        Kol.joins(:campaign_invites).where("campaign_invites.status ='settled'").group("campaign_invites.kol_id").having("count(campaign_invites.id) > 0").count.keys.count,
         # 活越用户，近6个月登录过
         'active_kols_count':        Kol.where('current_sign_in_at > ?', 6.months.ago).count,
@@ -32,25 +32,32 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
 
 
       @r8_infos['kol'] = {
-        'register_count': Kol.recent(@ending - 1.day, @ending).count,
-        'active_count':   100
+        'register_count': Kol.recent(@ending - 1.day, @ending).from_app.count,
+        'dua':   Kol.dua.count
       }
 
-      ary = WeiboAccount.recent(@ending - 1.day, @ending).map(&:status)
       @r8_infos['weibo']  = {
-        'pending':  ary.count(0), 
-        'passed':   ary.count(1), 
-        'rejected': ary.count(-1)
+        'today_total':  WeiboAccount.recent(@ending - 1.day, @ending).count,
+        'pending':      WeiboAccount.by_status(0).count, 
+        'passed':       WeiboAccount.by_status(1).count, 
+        'rejected':     WeiboAccount.by_status(-1).count
       }
 
-      _ary = PublicWechatAccount.recent(@ending - 1.day, @ending).map(&:status)
       @r8_infos['wechat'] = {
-        'pending':  _ary.count(0), 
-        'passed':   _ary.count(1), 
-        'rejected': _ary.count(-1)
+        'today_total':  PublicWechatAccount.recent(@ending - 1.day, @ending).count,
+        'pending':      PublicWechatAccount.by_status(0).count, 
+        'passed':       PublicWechatAccount.by_status(1).count, 
+        'rejected':     PublicWechatAccount.by_status(-1).count
       }
+      # pry.binding
+      @r8_infos['big_v_count'] = @r8_infos['weibo'][:today_total] + @r8_infos['wechat'][:today_total]
 
-      @r8_infos['big_v_count'] = ary.count + _ary.count
+      @r8_infos['creator'] = {
+        'today_total':  Creator.recent(@ending - 1.day, @ending).count,
+        'pending':      Creator.by_status(0).count, 
+        'passed':       Creator.by_status(1).count, 
+        'rejected':     Creator.by_status(-1).count
+      }
 
       @r8_infos['user'] = {
         'register_count': User.recent(@ending - 1.day, @ending).count

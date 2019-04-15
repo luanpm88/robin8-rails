@@ -15,7 +15,7 @@
         </div>
         <label class="col-sm-2 control-label">DUA</label>
         <div class="col-sm-4">
-          <p class="form-control-static"><%= @r8_infos['kol']['active_count'] %></p>
+          <p class="form-control-static"><%= @r8_infos['kol']['dua'] %></p>
         </div>
       </div>
       <div class="form-group">
@@ -27,22 +27,41 @@
                 <td>
                   <strong>Weibo</strong>
                 </td>
-                <td>pending: <%= link_to @r8_infos['weibo']['pending'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 0})%></td>
-                <td>passed: <%= link_to @r8_infos['weibo']['passed'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 1})%></td>
-                <td>rejected: <%= link_to @r8_infos['weibo']['rejected'], marketing_dashboard_weibo_accounts_path(q: {status_eq: -1})%></td>
+                <td>total of today: <%= link_to @r8_infos['weibo']['today_total'], marketing_dashboard_weibo_accounts_path %></td>
+                <td>total of pending: <%= link_to @r8_infos['weibo']['pending'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 0})%></td>
+                <td>total of passed: <%= link_to @r8_infos['weibo']['passed'], marketing_dashboard_weibo_accounts_path(q: {status_eq: 1})%></td>
+                <td>total of rejected: <%= link_to @r8_infos['weibo']['rejected'], marketing_dashboard_weibo_accounts_path(q: {status_eq: -1})%></td>
               </tr>
               <tr>
                 <td>
                   <strong>Wechat</strong>
                 </td>
-                <td>pending: <%=link_to @r8_infos['wechat']['pending'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 0})%></td>
-                <td>passed: <%=link_to @r8_infos['wechat']['passed'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 1})%></td>
-                <td>rejected: <%=link_to @r8_infos['wechat']['rejected'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: -1})%></td>
+                <td>total of today: <%=link_to @r8_infos['wechat']['today_total'], marketing_dashboard_public_wechat_accounts_path %></td>
+                <td>total of pending: <%=link_to @r8_infos['wechat']['pending'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 0})%></td>
+                <td>total of passed: <%=link_to @r8_infos['wechat']['passed'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: 1})%></td>
+                <td>total of rejected: <%=link_to @r8_infos['wechat']['rejected'], marketing_dashboard_public_wechat_accounts_path(q: {status_eq: -1})%></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Apply for Content Creator</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>total of today: <%= link_to @r8_infos['creator']['today_total'], marketing_dashboard_creators_path %></td>
+                <td>total of pending: <%= link_to @r8_infos['creator']['pending'], marketing_dashboard_creators_path(q: {status_eq: 0})%></td>
+                <td>total of passed: <%= link_to @r8_infos['creator']['passed'], marketing_dashboard_creators_path(q: {status_eq: 1})%></td>
+                <td>total of rejected: <%= link_to @r8_infos['creator']['rejected'], marketing_dashboard_creators_path(q: {status_eq: -1})%></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
