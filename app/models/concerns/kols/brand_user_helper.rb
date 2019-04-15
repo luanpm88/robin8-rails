@@ -2,26 +2,18 @@ module Kols
   module BrandUserHelper
     extend ActiveSupport::Concern
     def find_or_create_brand_user
-      unless self.mobile_number
-        user = User.where(:kol_id => self.id).first
-        unless user
-          user = User.create(:kol_id => self.id, name: self.name, :is_active => false)
-        end
-        return user
+      user = User.find_or_initialize_by(kol_id: self.id)
+
+      if user.new_record?
+        user.mobile_number  = self.mobile_number if self.mobile_number
+        user.email          = self.email         if self.email
+        user.name           = self.name          
+        user.is_active      = false
+      else
+        user.is_active = true
       end
 
-      user = User.where(:mobile_number => self.mobile_number).first
-      if user and not user.kol_id
-        user.update({
-          kol_id: self.id,
-          name: user.name.presence || self.name
-        })
-      end
-
-      unless user
-        user = User.create(:mobile_number => self.mobile_number, :kol_id => self.id, name: self.name, :is_active => false)
-      end
-      user
+      user.save
     end
 
     def brand_amount
