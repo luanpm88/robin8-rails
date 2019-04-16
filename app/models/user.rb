@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Concerns::PayTransaction
+  include Redis::Objects
 
   include Users::AlipayHelper
   include Users::PromotionHelper
@@ -8,6 +9,9 @@ class User < ActiveRecord::Base
 
   # company 作为合作公司拉进来的名称 CIC
   # campany_name 品牌主的公司名称
+  
+  #记录用户搜索的关键字
+  list :search_keywords
 
   has_many :transactions, :as => :account
   has_many :alipay_orders
