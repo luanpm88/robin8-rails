@@ -71,22 +71,22 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
 
       @r8_infos['campaign'] = {
         'created_count': c.count,
-        'total_budget':  c.sum(:budget),
-        'total_revenue': c.sum(:budget) * 0.4,
+        'total_budget':  c.sum(:budget).round(2),
+        'total_revenue': (c.sum(:budget) * 0.4).round(2),
         'top_3' =>       []
       }
 
       @r8_infos['campaign_7days'] = {
         'created_count': c_7days.count,
-        'total_budget':  c_7days.sum(:budget),
-        'total_revenue': c_7days.sum(:budget) * 0.4,
+        'total_budget':  c_7days.sum(:budget).round(2),
+        'total_revenue': (c_7days.sum(:budget) * 0.4).round(2),
         'top_3' =>       []
       }
 
       @r8_infos['campaign_30days'] = {
         'created_count': c_30days.count,
-        'total_budget':  c_30days.sum(:budget),
-        'total_revenue': c_30days.sum(:budget) * 0.4,
+        'total_budget':  c_30days.sum(:budget).round(2),
+        'total_revenue': (c_30days.sum(:budget) * 0.4).round(2),
         'top_3' =>       []
       }
 
@@ -104,22 +104,22 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
 
       @r8_infos['creation'] = {
         'created_count': Creation.recent(@ending - 1.day, @ending).count,
-        'total_budget':  Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:fee).to_f,
+        'total_budget':  Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:price).to_f.round(2),
+        'total_revenue': Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:fee).to_f.round(2),
         'kols' =>        []
       }
 
       @r8_infos['creation_7days'] = {
         'created_count': Creation.recent(@ending - 7.day, @ending).count,
-        'total_budget':  Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:fee).to_f,
+        'total_budget':  Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:price).to_f.round(2),
+        'total_revenue': Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:fee).to_f.round(2),
         'kols' =>        []
       }
 
       @r8_infos['creation_30days'] = {
         'created_count': Creation.recent(@ending - 30.day, @ending).count,
-        'total_budget':  Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:fee).to_f,
+        'total_budget':  Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:price).to_f.round(2),
+        'total_revenue': Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:fee).to_f.round(2),
         'kols' =>        []
       }
 
