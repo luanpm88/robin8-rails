@@ -85,19 +85,48 @@
   <div class="panel-body">
     <div class="form-horizontal">
       <div class="form-group">
-        <label class="col-sm-2 control-label">Created Count</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%=link_to @r8_infos['campaign']['created_count'], agreed_marketing_dashboard_campaigns_path %></p>
-        </div>
-        <label class="col-sm-2 control-label">Total Budget</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos['campaign']['total_budget'] %></p>
-        </div>
-        <label class="col-sm-2 control-label">Total Revenue</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos['campaign']['total_revenue'] %></p>
+        <label class="col-sm-2 control-label">Last 1days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= link_to @r8_infos['campaign']['created_count'], agreed_marketing_dashboard_campaigns_path %></td>
+                <td>Total Budget: <%= @r8_infos['campaign']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['campaign']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Last 7days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= link_to @r8_infos['campaign_7days']['created_count'], agreed_marketing_dashboard_campaigns_path %></td>
+                <td>Total Budget: <%= @r8_infos['campaign_7days']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['campaign_7days']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Last 30days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= link_to @r8_infos['campaign_30days']['created_count'], agreed_marketing_dashboard_campaigns_path %></td>
+                <td>Total Budget: <%= @r8_infos['campaign_30days']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['campaign_30days']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--
       <div class="form-group">
         <label class="col-sm-2 control-label">Top 3 KOLS</label>
         <div class="col-sm-10">
@@ -123,7 +152,8 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </div> 
+      -->
     </div>
   </div>
 </div>
@@ -133,19 +163,48 @@
   <div class="panel-body">
     <div class="form-horizontal">
       <div class="form-group">
-        <label class="col-sm-2 control-label">Created Count</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos['creation']['created_count'] %></p>
-        </div>
-        <label class="col-sm-2 control-label">Total Budget</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos['creation']['total_budget'] %></p>
-        </div>
-        <label class="col-sm-2 control-label">Total Revenue</label>
-        <div class="col-sm-2">
-          <p class="form-control-static"><%= @r8_infos['creation']['total_revenue'] %></p>
+        <label class="col-sm-2 control-label">Last 1days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= @r8_infos['creation']['created_count'] %></td>
+                <td>Total Budget: <%= @r8_infos['creation']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['creation']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Last 7days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= @r8_infos['creation_7days']['created_count'] %></td>
+                <td>Total Budget: <%= @r8_infos['creation_7days']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['creation_7days']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Last 30days Reports</label>
+        <div class="col-sm-10">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td>Created Count: <%= @r8_infos['creation_30days']['created_count'] %></td>
+                <td>Total Budget: <%= @r8_infos['creation_30days']['total_budget'] %></td>
+                <td>Total Revenue: <%= @r8_infos['creation_30days']['total_revenue'] %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--
       <div class="form-group">
         <label class="col-sm-2 control-label">KOLS</label>
         <div class="col-sm-10">
@@ -172,6 +231,7 @@
           </table>
         </div>
       </div>
+      -->
     </div>
   </div>
 </div>

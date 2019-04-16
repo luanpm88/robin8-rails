@@ -36,4 +36,5 @@ en:
       code_succeed: 'Verification code sent successfully'
       code_succeed_message: "The verification code has been sent to your mailbox, please verify it within 10 minutes, please re-obtain the expiration"
       update_succeed: "Update succeed"
+      save_succeed: 'Save succeed'
 

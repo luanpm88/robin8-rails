@@ -37,4 +37,5 @@ zh:
         code_succeed: '验证码发送成功'
         code_succeed_message: "验证码已发送您的邮箱，请在10分钟内进行验证，过期请重新获取"
         update_succeed: "更新成功"
+        save_succeed: '记录成功'
         

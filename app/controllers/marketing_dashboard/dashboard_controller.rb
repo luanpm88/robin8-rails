@@ -1,6 +1,8 @@
 class MarketingDashboard::DashboardController < MarketingDashboard::BaseController
 
   def index
+    #如果代码中新增$redis.get("r8_daily_info")的key, 需要删除原有的$redis.del("r8_daily_info")从新进行赋值
+    
     @r8_infos = $redis.get("r8_daily_info")
     @ending   = Time.now.change({ hour: 19 })
     # @r8_infos = nil
@@ -64,6 +66,8 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
       }
 
       c = Campaign.where("start_time > ? and start_time < ?", @ending - 1.day, @ending).where(status: ['settled', 'executing', 'executed'])
+      c_7days = Campaign.where("start_time > ? and start_time < ?", @ending - 7.day, @ending).where(status: ['settled', 'executing', 'executed'])
+      c_30days = Campaign.where("start_time > ? and start_time < ?", @ending - 30.day, @ending).where(status: ['settled', 'executing', 'executed'])
 
       @r8_infos['campaign'] = {
         'created_count': c.count,
@@ -72,17 +76,31 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'top_3' =>       []
       }
 
-      # top 3 有效点击最多的kol
-      res = CampaignShow.includes(:kol).find_by_sql("select kol_id, count(kol_id) as kolidcount from campaign_shows where created_at>'#{@ending - 1.days}' and created_at<'#{@ending}' and status=1 group by kol_id order by kolidcount desc limit 3;")
+      @r8_infos['campaign_7days'] = {
+        'created_count': c_7days.count,
+        'total_budget':  c_7days.sum(:budget),
+        'total_revenue': c_7days.sum(:budget) * 0.4,
+        'top_3' =>       []
+      }
 
-      res.each do |ele|
-        @r8_infos['campaign']['top_3'] << {
-          'id':         ele.kol_id,
-          'name':       ele.kol.name,
-          'avatar_url': ele.kol.avatar_url,
-          'count':      ele.kolidcount
-        }
-      end
+      @r8_infos['campaign_30days'] = {
+        'created_count': c_30days.count,
+        'total_budget':  c_30days.sum(:budget),
+        'total_revenue': c_30days.sum(:budget) * 0.4,
+        'top_3' =>       []
+      }
+
+      # top 3 有效点击最多的kol
+      # res = CampaignShow.includes(:kol).find_by_sql("select kol_id, count(kol_id) as kolidcount from campaign_shows where created_at>'#{@ending - 1.days}' and created_at<'#{@ending}' and status=1 group by kol_id order by kolidcount desc limit 3;")
+
+      # res.each do |ele|
+      #   @r8_infos['campaign']['top_3'] << {
+      #     'id':         ele.kol_id,
+      #     'name':       ele.kol.name,
+      #     'avatar_url': ele.kol.avatar_url,
+      #     'count':      ele.kolidcount
+      #   }
+      # end
 
       @r8_infos['creation'] = {
         'created_count': Creation.recent(@ending - 1.day, @ending).count,
@@ -91,17 +109,31 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
         'kols' =>        []
       }
 
-      # 所有的bigV按大V活动所赚的降序
-      tenders = Tender.includes(:kol).find_by_sql("select kol_id, sum(price) as pricesum from tenders where updated_at>'#{@ending - 1.days}' and updated_at<'#{@ending}' and status='paid' and head=false group by kol_id order by pricesum desc;")
+      @r8_infos['creation_7days'] = {
+        'created_count': Creation.recent(@ending - 7.day, @ending).count,
+        'total_budget':  Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:price).to_f,
+        'total_revenue': Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:fee),
+        'kols' =>        []
+      }
 
-      tenders.each do |ele|
-        @r8_infos['creation']['kols'] << {
-          'id':         ele.kol_id,
-          'name':       ele.kol.name,
-          'avatar_url': ele.kol.avatar_url,
-          'amount':     ele.pricesum.to_f
-        }
-      end
+      @r8_infos['creation_30days'] = {
+        'created_count': Creation.recent(@ending - 30.day, @ending).count,
+        'total_budget':  Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:price).to_f,
+        'total_revenue': Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:fee),
+        'kols' =>        []
+      }
+
+      # 所有的bigV按大V活动所赚的降序
+      #tenders = Tender.includes(:kol).find_by_sql("select kol_id, sum(price) as pricesum from tenders where updated_at>'#{@ending - 1.days}' and updated_at<'#{@ending}' and status='paid' and head=false group by kol_id order by pricesum desc;")
+
+      # tenders.each do |ele|
+      #   @r8_infos['creation']['kols'] << {
+      #     'id':         ele.kol_id,
+      #     'name':       ele.kol.name,
+      #     'avatar_url': ele.kol.avatar_url,
+      #     'amount':     ele.pricesum.to_f
+      #   }
+      # end
 
       $redis.setex("r8_daily_info", 24.hours, @r8_infos.to_json)
     end

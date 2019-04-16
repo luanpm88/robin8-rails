@@ -20,6 +20,24 @@ module Brand
             present :weibo_kols_count,  WeiboAccount.valid.count
             present :wechat_kols_count, PublicWechatAccount.valid.count
           end
+
+          desc "brand search keyword info"
+          params do
+            requires :keywords, type: String
+          end
+          post 'search_keyword' do
+            keywords = params[:keywords].split(',' || '，')
+            keywords.each do |keyword|
+              if $redis.exists(keyword)
+                $redis.incr("es_search_#{keyword}")
+              else
+                $redis.set("es_search_#{keyword}",1)
+                current_user.search_keywords << keyword
+              end
+            end
+
+            present error: 0, alert: I18n.t('brand_api.success.messages.save_succeed')
+          end
           
         end
       end
