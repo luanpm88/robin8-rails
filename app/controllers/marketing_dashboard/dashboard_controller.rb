@@ -105,21 +105,21 @@ class MarketingDashboard::DashboardController < MarketingDashboard::BaseControll
       @r8_infos['creation'] = {
         'created_count': Creation.recent(@ending - 1.day, @ending).count,
         'total_budget':  Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:fee),
+        'total_revenue': Tender.recent(@ending - 1.day, @ending).brand_paid.sum(:fee).to_f,
         'kols' =>        []
       }
 
       @r8_infos['creation_7days'] = {
         'created_count': Creation.recent(@ending - 7.day, @ending).count,
         'total_budget':  Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:fee),
+        'total_revenue': Tender.recent(@ending - 7.day, @ending).brand_paid.sum(:fee).to_f,
         'kols' =>        []
       }
 
       @r8_infos['creation_30days'] = {
         'created_count': Creation.recent(@ending - 30.day, @ending).count,
         'total_budget':  Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:price).to_f,
-        'total_revenue': Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:fee),
+        'total_revenue': Tender.recent(@ending - 30.day, @ending).brand_paid.sum(:fee).to_f,
         'kols' =>        []
       }
 
