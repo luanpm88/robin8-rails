@@ -9,14 +9,18 @@ class MarketingDashboard::WeiboAccountsController < MarketingDashboard::BaseCont
     status = params['status']
     if params['status'] == "passed"
       @weibo_account.update_column(:profile_id, params[:profile_id])
-      result = BigV::Weibo.bind(@weibo_account.kol_id, params[:profile_id])
+      result = BigV::Weibo.bind(@weibo_account.kol_id, params[:profile_id], @weibo_account)
+      logger.info "*" * 100
+      logger.info result
+      logger.info "*" * 100
+      return render json: {result:  "此KOL暂未出现在我们的库中"} if result == ""
       if JSON(result)['result'] == "success"
         @weibo_account.update_column(:status, 1)
         @weibo_account.is_read.set 1
         @weibo_account.kol.update_column(:role_apply_status, 'passed')
       else
-        flash[:error] = JSON(result)['error_msg']
-        return render json: { error:  JSON(result)['error_msg']}
+        flash[:notice] = JSON(result)['error_msg']
+        return render json: {result:  JSON(result)['error_msg']}
       end
     elsif params['status'] == "rejected"
       @weibo_account.update_column(:status, -1)

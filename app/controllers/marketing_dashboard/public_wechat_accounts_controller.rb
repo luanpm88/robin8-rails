@@ -9,14 +9,15 @@ class MarketingDashboard::PublicWechatAccountsController < MarketingDashboard::B
     status = params['status']
     if params['status'] == "passed"
       @public_wechat_account.update_column(:profile_id, params[:profile_id])
-      result = BigV::PublicWechatAccount.bind(@public_wechat_account.kol_id, params[:profile_id])
+      result = BigV::PublicWechatAccount.bind(@public_wechat_account.kol_id, params[:profile_id], @public_wechat_account)
+      return render json: {result:  "此KOL暂未出现在我们的库中"} if result == ""
       if JSON(result)['result'] == "success"
         @public_wechat_account.update_column(:status, 1)
         @public_wechat_account.is_read.set 1
         @public_wechat_account.kol.update_column(:role_apply_status, 'passed')
       else
         flash[:notice] = JSON(result)['error_msg']
-        return render json: { error:  JSON(result)['error_msg']}
+        return render json: {result:  JSON(result)['error_msg']}
       end
     elsif params['status'] == "rejected"
       @public_wechat_account.update_column(:status, -1)
