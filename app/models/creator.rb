@@ -1,6 +1,7 @@
 class Creator < ActiveRecord::Base
 
   include Redis::Objects
+  include Creators::MessageHelper
 
   counter :is_read
 
