@@ -1,4 +1,4 @@
-module Creators
+module Creations
   module MessageHelper
     extend ActiveSupport::Concern
 

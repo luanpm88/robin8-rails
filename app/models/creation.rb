@@ -1,6 +1,7 @@
 class Creation < ActiveRecord::Base
 
   include Redis::Objects
+  include Creations::MessageHelper
 
   hash_key :targets_hash # search condition
     # industries
