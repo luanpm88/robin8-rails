@@ -28,7 +28,7 @@
         <div class="col-md-4">
           <div class="form-group">
             <label>品牌主状态</label>
-            <%= f.select :is_active_eq, [["已激活", true], ["未激活", false]], {}, class: "form-control" %>
+            <%= f.select :is_active_eq, [["已激活", true], ["未激活", false]], { include_blank: true }, class: "form-control" %>
           </div>
         </div>
         <div class="col-md-4">

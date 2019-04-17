@@ -38,14 +38,13 @@ module Brand
 											end
 						return {error: 1, detail: I18n.t('brand_api.errors.messages.code_error')} unless result
 
-						kol = Kol.create("#{params[:type]}": params[:login], password: params[:password])
+						kol.find_or_create_brand_user
 
-						user = kol.build_user("#{params[:type]}": params[:login])
-						user.mobile_number = user.email 			if params[:type] == 'email'
-						user.company       = params[:reg_tag] if params[:reg_tag]
-						user.save
+						user = kol.user
 
-						present user.reload, with: Entities::User
+						user.update_attributes(company: params[:reg_tag])if params[:reg_tag]
+
+						present user, with: Entities::User
 					end
 
 					desc 'update password'

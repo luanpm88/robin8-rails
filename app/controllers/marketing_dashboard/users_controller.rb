@@ -6,9 +6,9 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
 
     @users = User.all
 
-    if !params[:q] or params[:q][:is_active_eq].blank?
-      params[:q] = { is_active_eq: true }
-    end
+    # if !params[:q] or params[:q][:is_active_eq].blank?
+    #   params[:q] = { is_active_eq: true }
+    # end
 
     @users = @users.order('created_at DESC')
 
