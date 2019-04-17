@@ -152,6 +152,15 @@ class Message < ActiveRecord::Base
     generate_push_message(message)
   end
 
+  def self.new_quote_message(user, creation_id)
+    message = Message.new(message_type: 'quote', receiver: user, sender: 'Robin8')
+    message.name = "You have received new quote"
+    message.title = "Please check: #{Rails.application.secrets[:vue_brand_domain]}/creations/#{creation_id}/kols"
+    message.save
+
+    generate_push_message(message)
+  end
+
   def self.generate_push_message(message , device_tokens = nil)
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"

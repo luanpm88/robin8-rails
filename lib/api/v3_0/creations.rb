@@ -81,6 +81,9 @@ module API
         		end
         	end
 
+          # notice to brand take a look this tender # evan 2019-04-17
+          creation.notice_to_brand
+
         	present :error, 0
         end
 
