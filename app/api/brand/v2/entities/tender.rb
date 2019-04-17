@@ -15,6 +15,9 @@ module Brand
         expose :brand_show_info do |object, opts|
           object.brand_show_info
         end
+        expose :brand_show_info_zh do |object|
+          object.brand_show_info_zh
+        end
         expose :kols_count do |object, opts|
           object.kols_count
         end

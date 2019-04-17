@@ -20,6 +20,15 @@ class Tender < ActiveRecord::Base
   scope :brand_paid,  -> {where(head: true, status: 'paid')}
   
 
+  def from_terrace_en
+    case self.from_terrace
+    when '微博'
+      'weibo'
+    when '微信公众号','公众号'
+      'public_wechat_account'
+    end
+  end
+
   def show_info
     "平台：#{from_terrace} | 报价：¥#{price.to_f} | 状态：#{creation_selected_kol.status_zh} | 作品链接：#{link}"
   end
@@ -29,7 +38,12 @@ class Tender < ActiveRecord::Base
   end
 
   def brand_show_info
-    "#{from_terrace} | 发帖数：0 | 报价：¥#{price.to_f} | 曝光值：0"
+    # "#{from_terrace} | 发帖数：0 | 报价：¥#{price.to_f} | 曝光值：0"
+    "#{from_terrace_en} | quote：¥#{price.to_f} "
+  end
+
+  def brand_show_info_zh
+    "#{from_terrace} | 报价：¥#{price.to_f}"
   end
   
   def amount
