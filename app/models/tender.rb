@@ -85,6 +85,7 @@ class Tender < ActiveRecord::Base
     self.sub_tenders.each do |t|
       t.creation_selected_kol.update_attributes(status: 'paid')
     end
+    self.creation.notice_to_app('paid_creation')
   end
   
 end

@@ -50,4 +50,11 @@ class UserMailer < ActionMailer::Base
     mail(to: @email, subject: "You have received new quote", from: "Robin8 <system@robin8.com>")
   end
 
+  def uploaded_work(email, url)
+    @email  = email
+    @url    = url
+
+    mail(to: @email, subject: "You have received a bigV uploaded work ", from: "Robin8 <system@robin8.com>")
+  end
+
 end

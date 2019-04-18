@@ -119,6 +119,8 @@ module API
 
           selected_kol.update_attributes(status: :uploaded) unless selected_kol.tenders.map(&:link).uniq == [nil]
 
+          creation.notice_to_brand('uploaded_work') #当bigv提交作品等待确认时发信息给brand
+
         	present :error, 0
         end
 

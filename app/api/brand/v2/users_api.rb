@@ -9,6 +9,7 @@ module Brand
         end
 
         resource :users do
+          
           desc 'collect kols' #添加收藏
           params do
             requires :profile_id,     type: String #plateform_uuid, uuid

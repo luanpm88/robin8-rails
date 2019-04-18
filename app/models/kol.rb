@@ -211,6 +211,8 @@ class Kol < ActiveRecord::Base
 
   scope :admintag, ->(admintag) { joins(:admintags).where("admintags.tag=?", admintag) }
 
+  scope :robin8_big_v, ->{ where(role_apply_status: 'passed')}
+
   AdminKolIds = [79,48587]
   TouristMobileNumber = "13000000000"
 

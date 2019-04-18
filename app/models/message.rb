@@ -161,6 +161,60 @@ class Message < ActiveRecord::Base
     generate_push_message(message)
   end
 
+  def self.uploaded_work_message(user, creation_id)
+    message = Message.new(message_type: 'uploaded_work', receiver: user, sender: 'Robin8')
+    message.name = "You have received a bigV uploaded work"
+    message.title = "Please check: #{Rails.application.secrets[:vue_brand_domain]}/creations/#{creation_id}/kols"
+    message.save
+
+    generate_push_message(message)
+  end
+
+
+  def self.new_creation_message(creation)
+    message = Message.new(:message_type => 'new_creation',:name => creation.name, :sender => 'Robin8')
+    message.title = "有新的bigV活动！"
+    if Kol.robin8_big_v.count > 0 
+      message.receiver_type = "List"
+      message.receiver_ids = Kol.robin8_big_v.map(&:id)
+    end
+    message.save
+
+    generate_push_message(message)
+  end
+
+
+  def self.paid_creation_message(creation)
+    message = Message.new(:message_type => 'paid_creation',:name => creation.name, :sender => 'Robin8')
+    message.title = "您接的 #{creation.name} 已经支付成功，请及时上传作品！"
+    if creation.tenders.where(head: false).count > 0 
+      message.receiver_type = "List"
+      message.receiver_ids = creation.tenders.where(head: false).map(&:kol_id)
+    end
+    message.save
+
+    generate_push_message(message)
+  end
+
+  def self.approved_word_message(creation)
+    user = c.creation_selected_kols.by_status('approved').first
+    message = Message.new(:message_type => 'approved_work',:name => creation.name, :sender => 'Robin8', receiver: user)
+    message.title = "您接的 #{creation.name} 活动，作品已经验收成功"
+    message.save
+
+    generate_push_message(message)
+  end
+
+
+  def finished_creation_message(creation)
+    user = c.creation_selected_kols.by_status('finished').first
+    message = Message.new(:message_type => 'approved_work',:name => creation.name, :sender => 'Robin8', receiver: user)
+    message.title = "您接的 #{creation.name} 活动，已经支付成功,请查收！"
+    message.save
+
+    generate_push_message(message)
+  end
+
   def self.generate_push_message(message , device_tokens = nil)
     puts "----generate_push_message"
     if Rails.env == "staging" or Rails.env == "development" or Rails.env == "qa"

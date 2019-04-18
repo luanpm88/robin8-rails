@@ -44,6 +44,7 @@ module Brand
       mount InvoiceReceiverAPI
       mount InvoiceHistoriesAPI
       mount CampaignInvitesAPI
+      mount MessagesAPI
     end
   end
 end

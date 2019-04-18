@@ -3,6 +3,18 @@ class Creation < ActiveRecord::Base
   include Redis::Objects
   include Creations::MessageHelper
 
+
+  #message to brand
+  #1.当活动有人报价或者修改报价时发送给brand
+  #2.当bigv提交作品等待确认时
+
+  #message to  bigv
+  #1.有新活动时
+  #2.brand确认合作,并且支付成功到robin8
+  #3.作品验收成功
+  #4.管理后台付款
+
+
   hash_key :targets_hash # search condition
     # industries
     # price_from
@@ -36,6 +48,8 @@ class Creation < ActiveRecord::Base
   belongs_to :trademark
 
   delegate :name, :description, to: :trademark, prefix: :trademark
+
+  after_create :send_notice_to_app
 
   scope :recent,    ->(_start,_end){ where(created_at: _start.._end) }
   scope :alive,     ->{where.not(status: %w(pending unpassed closed)).order(id: :desc)}
@@ -80,6 +94,12 @@ class Creation < ActiveRecord::Base
 
   def can_ended?
     self.update_attributes(status: :ended) if self.end_at < Time.now && self.can_finish?
+  end
+
+  private 
+
+  def send_notice_to_app
+    self.notice_to_app
   end
 
 end

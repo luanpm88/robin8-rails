@@ -43,6 +43,7 @@ module Brand
             csk = CreationSelectedKol.find_by_id params[:creation_selected_kol_id]
             if csk
               csk.update_column(:status, "approved")
+              csk.creation.notice_to_app('approved_work')
               present csk, with: Entities::CreationSelectedKol
             else
               return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')}
