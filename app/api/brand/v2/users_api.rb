@@ -259,17 +259,16 @@ module Brand
 
           post "/onepay/recharge" do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
-            real_credits = params[:credits].to_f
-            credits = (real_credits * 100).to_i
+            credits = params[:credits].to_f
+            amount = (credits * 100).to_i
 
-            puts Rails.application.secrets[:onepay]
 
-            secret = Rails.application.secrets[:onepay][params[:onepay_type].to_sym]
 
             return {error: 1, detail: I18n.t("brand_api.errors.messages.recharge_mix_amount", count: MySettings.recharge_min_budget) } if MySettings.recharge_min_budget > credits
 
             invite_code = params[:invite_code]
-            vpc_Merchant = secret[:vpc_Merchant]
+
+            secret = Rails.application.secrets[:onepay][params[:onepay_type].to_sym]
             return_url = "#{Rails.application.secrets[:vue_brand_domain]}"
             notify_url = "#{Rails.application.secrets[:domain]}/brand_api/v2/users/onepay_notify/#{params[:onepay_type]}"
 
@@ -277,30 +276,20 @@ module Brand
 
             # 账户充值页面 (/brand/financial/recharge) 不再提供开具发票选项，
             # 所以 need_invoice 为 false，tax 为零
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: real_credits, tax: 0, need_invoice: false, invite_code: invite_code})
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: 0, need_invoice: false, invite_code: invite_code})
             if @alipay_order.save
-              data = []
-              data << "vpc_AccessCode=" + secret[:vpc_AccessCode]
-              data << "vpc_Amount=" + credits.to_s
-              data << "vpc_Command=pay"
-              data << "vpc_Currency=VND" if params[:onepay_type] == 'local'
-              data << "vpc_Locale=vn"
-              data << "vpc_MerchTxnRef=" + trade_no
-              data << "vpc_Merchant=" + secret[:vpc_Merchant]
-              data << "vpc_OrderInfo=Robin8_Recharge"
-              data << "vpc_ReturnURL=" + notify_url
-              data << "vpc_TicketNo=" + env['REMOTE_ADDR']
-              data << "vpc_Version=2"
 
-              # OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), key, data)
-              vpc_SecureHash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), [secret[:hash_key]].pack('H*'), data.join('&')).upcase
-
-              dataUrl = data
-              dataUrl << "AgainLink=" + secret[:vpc_Merchant]
-              dataUrl << "Title=" + secret[:vpc_Merchant]
-              dataUrl << "vpc_SecureHash=" + vpc_SecureHash
-
-              onepay_recharge_url = secret[:endpoint] + '?' + dataUrl.join('&')
+              onepay_recharge_url = OnepayApi.get_direct_pay_url(
+                secret,
+                {
+                  type: params[:onepay_type],
+                  amount: amount.to_s,
+                  ref: trade_no,
+                  info: "Recharge/Top-up",
+                  return_url: notify_url,
+                  ip: env['REMOTE_ADDR']
+                }
+              )
 
               return { onepay_recharge_url: onepay_recharge_url }
             else
@@ -347,22 +336,10 @@ module Brand
       group do
         get 'users/onepay_notify/:onepay_type' do
           secret = Rails.application.secrets[:onepay][params[:onepay_type].to_sym]
-          secure_hash = params[:vpc_SecureHash]
-
-          data = []
-          allParams = params.to_h.sort
-          allParams.each do |item|
-            key = item[0]
-            value = item[1]
-            if key != "vpc_SecureHash" && value.to_s.length > 0 && ((key[0,4] == "vpc_") || (key[0,4] =="user_"))
-              data << "#{key}=#{value}"
-            end
-          end
-
-          hash = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), [secret[:hash_key]].pack('H*'), data.join('&')).upcase
+          request_valid = OnepayApi.check_valid_request(secret, params)
 
           params.delete 'route_info'
-          if secure_hash == hash && params[:vpc_TxnResponseCode] == '0'
+          if request_valid && params[:vpc_TxnResponseCode] == '0'
             @alipay_order = AlipayOrder.find_by trade_no: params[:vpc_MerchTxnRef]
             if true
               @alipay_order.with_lock do
