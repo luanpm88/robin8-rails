@@ -237,7 +237,8 @@ module Brand
 
           post "/onepay/recharge" do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
-            credits = (params[:credits].to_f * 100).to_i
+            real_credits = params[:credits].to_f
+            credits = (real_credits * 100).to_i
 
             puts Rails.application.secrets[:onepay]
 
@@ -254,12 +255,13 @@ module Brand
 
             # 账户充值页面 (/brand/financial/recharge) 不再提供开具发票选项，
             # 所以 need_invoice 为 false，tax 为零
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: 0, need_invoice: false, invite_code: invite_code})
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: real_credits, tax: 0, need_invoice: false, invite_code: invite_code})
             if @alipay_order.save
               data = []
               data << "vpc_AccessCode=" + secret[:vpc_AccessCode]
               data << "vpc_Amount=" + credits.to_s
               data << "vpc_Command=pay"
+              data << "vpc_Currency=VND" if params[:onepay_type] == 'local'
               data << "vpc_Locale=vn"
               data << "vpc_MerchTxnRef=" + trade_no
               data << "vpc_Merchant=" + secret[:vpc_Merchant]
