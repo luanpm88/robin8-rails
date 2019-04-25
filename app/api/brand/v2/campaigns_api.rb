@@ -47,9 +47,9 @@ module Brand
             used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
 
             @campaign.update_attributes(
-              used_credit:      used_credit, 
-              credit_amount:    credit_amount, 
-              need_pay_amount:  pay_amount, 
+              used_credit:      used_credit,
+              credit_amount:    credit_amount,
+              need_pay_amount:  pay_amount,
               pay_way:          'alipay'
             )
 
@@ -73,6 +73,52 @@ module Brand
                 }
               )
               return { alipay_recharge_url: alipay_recharge_url }
+            else
+              return { error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed') }
+            end
+          end
+
+          post "/pay_by_onepay/:onepay_type" do
+            @campaign = current_user.campaigns.find_by_id params[:campaign_id]
+
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.pay_succeed') } unless @campaign.can_pay?
+
+            # 积分抵扣
+            used_credit, credit_amount, pay_amount = false, 0, @campaign.need_pay_amount
+
+            @campaign.update_attributes(
+              used_credit:      used_credit,
+              credit_amount:    credit_amount,
+              need_pay_amount:  pay_amount,
+              pay_way:          'alipay'
+            )
+
+            if pay_amount > 0
+
+              ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
+
+              secret = Rails.application.secrets[:onepay][params[:onepay_type].to_sym]
+              return_url = "#{Rails.application.secrets[:vue_brand_domain]}"
+              notify_url = "#{Rails.application.secrets[:domain]}/brand_api/v2/campaigns/onepay_notify/#{params[:onepay_type]}"
+
+              # amount
+              amount = (ENV["total_fee"] || @campaign.need_pay_amount).to_f
+              amount = (amount * 100).to_i
+              trade_no = @campaign.trade_number
+
+              onepay_recharge_url = OnepayApi.get_direct_pay_url(
+                secret,
+                {
+                  type: params[:onepay_type],
+                  amount: amount.to_s,
+                  ref: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join,
+                  info: trade_no,
+                  return_url: notify_url,
+                  ip: env['REMOTE_ADDR']
+                }
+              )
+
+              return { onepay_recharge_url: onepay_recharge_url }
             else
               return { error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed') }
             end
@@ -106,7 +152,7 @@ module Brand
             present campaign.get_stats
           end
 
-          
+
           desc 'Get campaigns current user owns'
           get '/' do
             campaigns = paginate(Kaminari.paginate_array(current_user.campaigns.order('created_at DESC')))
@@ -160,11 +206,11 @@ module Brand
 
           #详情
           desc "show a campaign"
-          params do 
+          params do
           end
           get "/:id" do
             campaign = current_user.campaigns.find_by_id params[:id]
-            
+
             return {error: 1, detail: I18n.t('brand_api.errors.messages.not_found')} unless campaign
 
             present campaign, with: Entities::Campaign
@@ -215,6 +261,36 @@ module Brand
             Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
             env['api.format'] = :txt
             body "success"
+          else
+            return {error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed')}
+          end
+        end
+
+        get 'campaigns/onepay_notify/:onepay_type' do
+          params.delete 'route_info'
+          Rails.logger.alipay.info "-------- web端单笔支付，进入'campaigns/onepay_notify/#{params[:onepay_type]}'路由  --------------"
+
+          secret = Rails.application.secrets[:onepay][params[:onepay_type].to_sym]
+          request_valid = OnepayApi.check_valid_request(secret, params)
+
+          if request_valid && params[:vpc_TxnResponseCode] == '0'
+            Rails.logger.alipay.info "-------- web端单笔支付，验证 支付宝签名 成功  --------------"
+            @campaign = Campaign.find_by trade_number: params[:vpc_OrderInfo]
+            Rails.logger.alipay.info "-------- web端单笔支付，查找 @campaign 成功,  --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} ---need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
+            if @campaign.alipay_status == 0
+              @campaign.with_lock do
+                @campaign.update_attributes!(alipay_notify_text: params.to_s, pay_way: 'alipay')
+                @campaign.pay
+                # 支付成功，扣除积分
+                Credit.gen_record('expend', 1, -@campaign.credit_amount, @campaign.user, campaign, @campaign.user.credit_expired_at,
+                  '支付宝抵扣 活动 #{campaign.id}') if @campaign.used_credit && @campaign.credit_amount > 0
+              end
+            end
+            Rails.logger.alipay.info "-------- web端单笔支付, --- campaign_id: #{@campaign.id}---  ---campaign_name: #{@campaign.name}--- ---campaign_budget: #{@campaign.budget} --- need_pay_amount: #{@campaign.need_pay_amount}付款成功  --------------"
+            env['api.format'] = :txt
+
+            return_url = "#{Rails.application.secrets[:vue_brand_domain]}/campaigns/#{@campaign.id}"
+            body "<script>window.location='#{return_url}'</script>"
           else
             return {error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed')}
           end
