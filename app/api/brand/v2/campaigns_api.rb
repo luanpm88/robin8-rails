@@ -292,7 +292,37 @@ module Brand
             return_url = "#{Rails.application.secrets[:vue_brand_domain]}/campaigns/#{@campaign.id}"
             body "<script>window.location='#{return_url}'</script>"
           else
-            return {error: 1, detail: I18n.t('brand_api.errors.messages.order_pay_failed')}
+            sErrors = {
+              "0": "Transaction was successful",
+              "?": "Transaction status was unknown",
+              "1": "Bank system reject",
+              "2": "Bank Declined Transaction",
+              "3": "No Reply from Bank",
+              "4": "Expired Card",
+              "5": "Insufficient funds",
+              "6": "Error Communicating with Bank",
+              "7": "Payment Server System Error",
+              "8": "Transaction Type Not Supported",
+              "9": "Bank declined transaction (Do not contact Bank)",
+              "A": "Transaction Aborted",
+              "B": "Transaction was failed. It cannot authenticated by 3D-Secure Program. Please contact the Issuer Bank for support.",
+              "C": "Transaction Cancelled",
+              "D": "Deferred transaction has been received and is awaiting processing",
+              "F": "Transaction was failed. 3D-Secure authentication was failed.",
+              "I": "Card Security Code verification was failed.",
+              "L": "Shopping Transaction Locked (Please try the transaction again later)",
+              "N": "Cardholder is not enrolled in Authentication scheme",
+              "P": "Transaction has been received by the Payment Adaptor and is being processed",
+              "R": "Transaction was not processed - Reached limit of retry attempts allowed",
+              "S": "Duplicate SessionID (OrderInfo)",
+              "T": "Address Verification Failed",
+              "U": "Card Security Code Failed",
+              "V": "Address Verification and Card Security Code Failed",
+              "99": "User Cancel",
+            }
+
+            error = sErrors[params[:vpc_TxnResponseCode].to_sym].present? ? sErrors[params[:vpc_TxnResponseCode].to_sym] : 'Unknow error!'
+            return {error: 1, detail: error }
           end
         end
       end
