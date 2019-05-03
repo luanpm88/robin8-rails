@@ -43,7 +43,7 @@ module Brand
         end
  
         expose :industries do |object|
-          ::Tag.where(name: object.targets_hash[:industries].split(",")).map(&:label).join('/')
+          ::Tag.where(name: object.targets_hash[:industries].to_s.split(",")).map(&:label).join('/')
         end
 
         expose :price_range do |object, opts|
