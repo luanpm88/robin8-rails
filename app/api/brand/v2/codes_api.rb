@@ -14,7 +14,7 @@ module Brand
             return {error: 1, detail: I18n.t('brand_api.errors.messages.forget_not_found')} if params[:login_type] == "update_password" && !Kol.find_by_mobile_number(params[:mobile_number])
 
             sms_client = YunPian::SendRegisterSms.new(params[:mobile_number])
-            res = sms_client.send_sms  rescue {}
+            res = sms_client.send_sms
             if res["code"] == 0
               present error: 0, alert: I18n.t('brand_api.success.messages.code_succeed')
             else

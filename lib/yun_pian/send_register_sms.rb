@@ -16,41 +16,73 @@ module YunPian
       return if @phone_number.blank?
       code = security_code
       write_cache_for @phone_number, code
-
-      ChinaSMS.use :yunpian, password: @api_key
+      
       tpl_params = {code: code, company: @company_sign}
-
+      
       @sms_message = SmsMessage.create(
         phone: @phone_number,
-        content: "短信验证码：#{tpl_params[:code]} #{tpl_params[:company]}",
+        content: "Mã xác minh SMS：#{tpl_params[:code]} #{tpl_params[:company]}",
         mode: "verified_code",
         status: "pending"
       )
-
-      return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?
-
+      
+      # Twilio
+      account_sid = 'ACd4c5f9e790f353cc6c0414d99fba40f9'
+      auth_token = '97513a61c4bc2521c3ade3a92de4f015'
+      client = Twilio::REST::Client.new(account_sid, auth_token)
+      
+      from = '+18067311197' # Your Twilio number
+      
       begin
-        res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
-      rescue Exception => ex
+        client.messages.create(
+          from: from,
+          to: @sms_message.phone,
+          body: @sms_message.content
+        )
+      rescue Twilio::REST::RequestError => ex
         @sms_message.update(status: "failed")
         Rails.logger.sms_spider.error ex
-        return {:message => ex.message}
-      ensure
-        if  Rails.env.staging? or Rails.env.qa?
-          @sms_message.update(status: "success")
-          return {'code' => 0 }
-        end
+        sss
+        puts ex.message
       end
+      
+      @sms_message.update(status: "success")
+      Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
 
-      if res["code"] == 0
-        @sms_message.update(status: "success")
-        Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
-      else
-        @sms_message.update(status: "failed")
-        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
-      end
-
-      return res
+      #ChinaSMS.use :yunpian, password: @api_key
+      #tpl_params = {code: code, company: @company_sign}
+      #
+      #@sms_message = SmsMessage.create(
+      #  phone: @phone_number,
+      #  content: "短信验证码：#{tpl_params[:code]} #{tpl_params[:company]}",
+      #  mode: "verified_code",
+      #  status: "pending"
+      #)
+      #
+      #return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?
+      #
+      #begin
+      #  res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
+      #rescue Exception => ex
+      #  @sms_message.update(status: "failed")
+      #  Rails.logger.sms_spider.error ex
+      #  return {:message => ex.message}
+      #ensure
+      #  if  Rails.env.staging? or Rails.env.qa?
+      #    @sms_message.update(status: "success")
+      #    return {'code' => 0 }
+      #  end
+      #end
+      #
+      #if res["code"] == 0
+      #  @sms_message.update(status: "success")
+      #  Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
+      #else
+      #  @sms_message.update(status: "failed")
+      #  Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
+      #end
+      
+      return {"code": 0}
     end
 
     def write_cache_for phone_number, code
