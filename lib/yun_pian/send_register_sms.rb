@@ -6,6 +6,16 @@ module YunPian
     def initialize(phone_number,
                    api_key = Rails.application.secrets.yunpian[:api_key],
                    company_sign = Rails.application.secrets.yunpian[:company_sign])
+      
+      # fix phone number
+      if phone_number[0] == '0'
+        phone_number = '+84' + phone_number[1..-1]
+      elsif phone_number[0..1] == '84'
+        phone_number = '+' + phone_number
+      end
+      
+      puts phone_number
+      
       @phone_number = phone_number
       @api_key = api_key
       @company_sign = company_sign
@@ -42,7 +52,6 @@ module YunPian
       rescue Twilio::REST::RequestError => ex
         @sms_message.update(status: "failed")
         Rails.logger.sms_spider.error ex
-        sss
         puts ex.message
       end
       
