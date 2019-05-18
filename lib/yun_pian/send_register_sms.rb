@@ -7,6 +7,11 @@ module YunPian
                    api_key = Rails.application.secrets.yunpian[:api_key],
                    company_sign = Rails.application.secrets.yunpian[:company_sign])
       @phone_number = phone_number
+
+      if @phone_number[0] == '0'
+        @phone_number = '+84' + @phone_number[1..-1]
+      end
+
       @api_key = api_key
       @company_sign = company_sign
     end
@@ -16,36 +21,38 @@ module YunPian
       return if @phone_number.blank?
       code = security_code
       write_cache_for @phone_number, code
-      
+
       tpl_params = {code: code, company: @company_sign}
-      
+
       @sms_message = SmsMessage.create(
         phone: @phone_number,
         content: "Mã xác minh SMS：#{tpl_params[:code]} #{tpl_params[:company]}",
         mode: "verified_code",
         status: "pending"
       )
-      
+
       # Twilio
-      account_sid = 'ACd4c5f9e790f353cc6c0414d99fba40f9'
-      auth_token = '97513a61c4bc2521c3ade3a92de4f015'
+      account_sid = Rails.application.secrets[:vn_twilio][:sid]
+      auth_token = Rails.application.secrets[:vn_twilio][:token]
       client = Twilio::REST::Client.new(account_sid, auth_token)
-      
-      from = '+18067311197' # Your Twilio number
-      
-      begin
+
+      from = Rails.application.secrets[:vn_twilio][:from] # Your Twilio number
+
+      puts '============================'
+      puts account_sid
+
+      #begin
         client.messages.create(
           from: from,
           to: @sms_message.phone,
           body: @sms_message.content
         )
-      rescue Twilio::REST::RequestError => ex
-        @sms_message.update(status: "failed")
-        Rails.logger.sms_spider.error ex
-        sss
-        puts ex.message
-      end
-      
+      #rescue Twilio::REST::RequestError => ex
+      #  @sms_message.update(status: "failed")
+      #  Rails.logger.sms_spider.error ex
+      #  puts ex.message
+      #end
+
       @sms_message.update(status: "success")
       Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
 
@@ -81,7 +88,7 @@ module YunPian
       #  @sms_message.update(status: "failed")
       #  Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
       #end
-      
+
       return {"code": 0}
     end
 
@@ -110,8 +117,16 @@ module YunPian
                         '13764211748', '15221773929', '15298670933',
                         '13817164642', '15618348706', '18221707548', '15000058089','18321878526','13915128156','15152331980','15298675346','18817774892','15606172163']
     def self.verify_code(phone, code)
+      if phone[0] == '0'
+        phone = '+84' + phone[1..-1]
+      end
+
       phone = phone.to_s        rescue ""
       code = code.to_s          rescue ""
+
+      puts "-----------------------"
+      puts phone
+
       return true if  $redis.get(phone) == code
       return code == "123456"  if Rails.env.development?  || Rails.env.staging? || Rails.env.qa? || phone.start_with?("10000")
       SkipVerifyPhones.include?(phone) && code == '123456'

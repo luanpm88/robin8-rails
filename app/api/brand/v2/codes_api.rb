@@ -4,7 +4,7 @@ module Brand
       group do
         resource :codes do
 
-          params do 
+          params do
             requires :mobile_number, type: String
             requires :login_type, values: %w(sign_up update_password)
           end
@@ -13,9 +13,14 @@ module Brand
             return {error: 1, detail: I18n.t('brand_api.errors.messages.user_have_exist')} if params[:login_type] == "sign_up" && Kol.find_by_mobile_number(params[:mobile_number])
             return {error: 1, detail: I18n.t('brand_api.errors.messages.forget_not_found')} if params[:login_type] == "update_password" && !Kol.find_by_mobile_number(params[:mobile_number])
 
-            sms_client = YunPian::SendRegisterSms.new(params[:mobile_number])
+            phone_number = params[:mobile_number]
+            if phone_number[0] == '0'
+              phone_number = '+84' + phone_number[1..-1]
+            end
+
+            sms_client = YunPian::SendRegisterSms.new(phone_number)
             res = sms_client.send_sms
-            if res["code"] == 0
+            if res[:code] == 0
               present error: 0, alert: I18n.t('brand_api.success.messages.code_succeed')
             else
               return {error: 1, detail: I18n.t('brand_api.errors.messages.third_party_error')}
@@ -23,7 +28,7 @@ module Brand
           end
 
 
-          params do 
+          params do
             requires :email, type: String
             requires :login_type, values: %w(sign_up update_password)
           end
