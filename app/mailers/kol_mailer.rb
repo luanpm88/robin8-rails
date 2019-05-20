@@ -3,7 +3,7 @@ class KolMailer < ApplicationMailer
     @user = user
     @kol = kol
     @campaign = campaign
-    mail(:to => @kol.email, :subject => "You were invited to new campaign!",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => @kol.email, :subject => "You were invited to new campaign!",:from => "Robin8 <no-reply@robin8.me>")
   end
 
   def send_invite(sender, mail, subject, text)
@@ -16,7 +16,7 @@ class KolMailer < ApplicationMailer
     @first_name = first_name
     @last_name = last_name
     @campaign_name = campaign_name
-    mail(:to => mail, :subject => "WeChat performance for " + campaign_name, :from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => mail, :subject => "WeChat performance for " + campaign_name, :from => "Robin8 <no-reply@robin8.me>")
   end
 
 end
