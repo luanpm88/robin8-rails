@@ -20,7 +20,7 @@ module Brand
 
             sms_client = YunPian::SendRegisterSms.new(phone_number)
             res = sms_client.send_sms
-            if res[:code] == 0
+            if res["code"] == 0
               present error: 0, alert: I18n.t('brand_api.success.messages.code_succeed')
             else
               return {error: 1, detail: I18n.t('brand_api.errors.messages.third_party_error')}

@@ -89,7 +89,7 @@ module YunPian
       #  Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
       #end
 
-      return {"code": 0}
+      return {'code' => 0}
     end
 
     def write_cache_for phone_number, code
