@@ -41,17 +41,18 @@ module YunPian
       puts '============================'
       puts account_sid
 
-      #begin
+      begin
         client.messages.create(
           from: from,
           to: @sms_message.phone,
           body: @sms_message.content
         )
-      #rescue Twilio::REST::RequestError => ex
-      #  @sms_message.update(status: "failed")
-      #  Rails.logger.sms_spider.error ex
-      #  puts ex.message
-      #end
+      rescue Twilio::REST::RequestError => ex
+        @sms_message.update(status: "failed")
+        Rails.logger.sms_spider.error ex
+        puts ex.message
+        return {'code' => 1, 'message' => ex.message}
+      end
 
       @sms_message.update(status: "success")
       Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"

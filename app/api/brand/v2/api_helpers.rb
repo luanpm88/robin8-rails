@@ -1,6 +1,7 @@
 module Brand::V2::APIHelpers
   EMAIL_REGEXP = /^([a-zA-Z0-9]+[_|\_|\.]+)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-  MOBILE_NUMBER_REGEXP = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89]|0|\+84|84)\d{8,10}$/
+  #MOBILE_NUMBER_REGEXP = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89]|0|\+84|84)\d{8,10}$/
+  MOBILE_NUMBER_REGEXP = /.{8,12}$/
 
   def current_user
     result , private_token = AuthToken.valid?(headers["Authorization"])
@@ -27,5 +28,5 @@ module Brand::V2::APIHelpers
   def error_403! detail = nil
     error!({error: 'Access Denied', detail: detail}, 403)
   end
-  
+
 end
