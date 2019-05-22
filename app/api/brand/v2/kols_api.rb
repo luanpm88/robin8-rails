@@ -51,7 +51,7 @@ module Brand
   "actual_total_page_count": (Kol.count/params[:page_size]).to_i + 1,
   "data": (Kol.offset(params[:page_no].to_i*params[:page_size].to_i).limit(params[:page_size].to_i).map {|kol|
                 {
-                  "profile_id": "MzUxMDAwNjIwMw==",
+                  "profile_id": kol.facebook_link.to_s,
                   "profile_name": kol.name,
                   "avatar_url": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7cUK96eziam5YQskZWVzoEO4jcabCnsISj5FOr8QfNAew/132",
                   "weixin_id": "gh_c782d11518c5",
