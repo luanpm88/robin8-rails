@@ -53,7 +53,7 @@ module Brand
                 {
                   "profile_id": kol.facebook_link.to_s,
                   "profile_name": kol.name,
-                  "avatar_url": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7cUK96eziam5YQskZWVzoEO4jcabCnsISj5FOr8QfNAew/132",
+                  "avatar_url": kol.avatar_url,
                   "weixin_id": "gh_c782d11518c5",
                   "facebook_follow_count": kol.facebook_follow_count,
                   "description_raw": "",
