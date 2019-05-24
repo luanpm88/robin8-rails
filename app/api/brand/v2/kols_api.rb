@@ -42,14 +42,15 @@ module Brand
           end
 
           post 'search' do
+            kols = Kol.where.not(facebook_link: nil)
             data = {
   "page_no": params[:page_no],
   "page_size": params[:page_size],
-  "total_record_count": Kol.count,
-  "actual_total_record_count": Kol.count,
-  "total_page_count": (Kol.count/params[:page_size]).to_i + 1,
+  "total_record_count": kols.count,
+  "actual_total_record_count": kols.count,
+  "total_page_count": (kols.count/params[:page_size]).to_i + 1,
   "actual_total_page_count": (Kol.count/params[:page_size]).to_i + 1,
-  "data": (Kol.offset(params[:page_no].to_i*params[:page_size].to_i).limit(params[:page_size].to_i).map {|kol|
+  "data": (kols.offset(params[:page_no].to_i*params[:page_size].to_i).limit(params[:page_size].to_i).map {|kol|
                 {
                   "profile_id": kol.facebook_link.to_s,
                   "profile_name": kol.name,

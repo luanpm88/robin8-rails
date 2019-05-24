@@ -635,7 +635,7 @@ class Kol < ActiveRecord::Base
         IDFA:         params[:IDFA],
         os_version:   params[:os_version],
         device_model: params[:device_model],
-        longitude:    params[:longitude], 
+        longitude:    params[:longitude],
         latitude:     params[:latitude],
         app_city:     params[:city_name]
       }
@@ -996,6 +996,19 @@ class Kol < ActiveRecord::Base
 
   def vote_ranking
     Kol.where("is_hot > 2").count.succ
+  end
+
+  def self.import_facebook_kols_from_file
+    workbook = RubyXL::Parser.parse("kols.xlsx")
+    workbook[0].each_with_index do |row, index|
+      if Kol.where(facebook_link: row[3].value).empty?
+        name = (row[0].value.strip.empty? ? row[3].value.split('/').last : row[0].value.strip)
+        follow = (row[2].value.strip.empty? ? nil : row[2].value.strip)
+        kol = Kol.new(name: name, password: '12345678', mobile_number: '+849760' + index.to_s.rjust(5, '0'), role_apply_status: 'agree', role_apply_time: Time.now, facebook_follow_count: follow, facebook_link: row[3].value, avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip), app_platform: 'Android', app_version: '2.5.2', category: row[4].value)
+        kol.save
+        puts kol.errors.to_json
+      end
+    end
   end
 
 end

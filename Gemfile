@@ -252,3 +252,4 @@ gem 'gibberish'
 gem 'i18n'
 
 gem 'chart-js-rails'
+gem 'rubyXL'
