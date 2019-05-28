@@ -19,7 +19,7 @@ class ReportMailer < ApplicationMailer
     #@day_invite = day_invite
     #@week_invite = week_invite
     #@all_invite = all_invite
-    mail(:to => 'app_report@robin8.me', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <system@robin8.me>")
+    mail(:to => 'app_report@robin8.live', :subject => "【Robin8】Small-V daily report",:from => "Robin8 <system@robin8.live>")
     puts "Daily email sent"
   end
 
@@ -31,7 +31,7 @@ class ReportMailer < ApplicationMailer
     @total_consumed = total_consumed
     @kol_count = kol_count
     @real_kol_count = real_kol_count
-    mail(:to => 'app_report@robin8.me', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <system@robin8.me>")
+    mail(:to => 'app_report@robin8.live', :subject => "【Robin8】Small-V weekly report",:from => "Robin8 <system@robin8.live>")
     puts "Weekly email sent"
   end
 
@@ -46,7 +46,7 @@ class ReportMailer < ApplicationMailer
     @kol_increase = kol_increase
     @real_kol_count = real_kol_count
     @real_kol_increase = real_kol_increase
-    mail(:to => 'monthly_report@robin8.me', :subject => "【Robin8】Small-V monthly report",:from => "Robin8 <system@robin8.me>")
+    mail(:to => 'monthly_report@robin8.live', :subject => "【Robin8】Small-V monthly report",:from => "Robin8 <system@robin8.live>")
     puts "Monthly email sent"
   end
 
@@ -54,7 +54,7 @@ class ReportMailer < ApplicationMailer
   def pinyou_report()
     puts "Prepare for Pinyou report"
     attachments['pinyou_report.csv'] = File.read('config/data_attrs/pinyou_results.csv')
-    mail(:to => 'cxie@robin8.me', :subject => "【Robin8】Pinyou report",:from => "Robin8 <system@robin8.me>")
+    mail(:to => 'cxie@robin8.live', :subject => "【Robin8】Pinyou report",:from => "Robin8 <system@robin8.live>")
     File.delete('config/data_attrs/pinyou_results.csv')
   end
 
