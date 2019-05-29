@@ -18,12 +18,12 @@ module Brand
               phone_number = '+84' + phone_number[1..-1]
             end
 
-            sms_client = YunPian::SendRegisterSms.new(phone_number)
+            sms_client = YunPian::SendInternationalSms.new(phone_number)
             res = sms_client.send_sms
             if res["code"] == 0
               present error: 0, alert: I18n.t('brand_api.success.messages.code_succeed')
             else
-              return {error: 1, detail: res["message"]}
+              return {error: 1, detail: res["msg"]}
             end
           end
 
