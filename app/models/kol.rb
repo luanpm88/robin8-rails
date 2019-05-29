@@ -1013,14 +1013,14 @@ class Kol < ActiveRecord::Base
   
   def self.mapping_row_header(row)
     hash = {"Name" => "", "Follow" => "", "Link" => "", "CAT" => "", "Platform" => "", "Username" => ""}
-    row.each do |key,value|
-      hash[key] = value.to_s.strip
+    row.each do |key,value|      
+      hash[key.gsub(/[^0-9A-Za-z_]/, '').strip.to_s] = value.to_s.strip
     end
     return hash
   end
   
   # [Name] [Follow] [Link] [CAT] [Platform] [Username]
-  def self.insert_kol(data, index)
+  def self.insert_kol(data, index)    
     #if Kol.where(facebook_link: data["Link"]).empty?
     if Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id").where('social_accounts.homepage = ?', data["Link"]).empty?
       # find name
