@@ -41,22 +41,52 @@ module Brand
             present @selected_kols, with: Entities::Kol
           end
 
-          post 'search' do
-            kols = Kol.where.not(facebook_link: nil)
+          post ':platform/search' do
+            kols = Kol.joins("LEFT JOIN kol_keywords ON kols.id = kol_keywords.kol_id")
+            
+            # flatform
+            kols = kols.joins(:social_accounts).where(social_accounts: {provider: params[:platform]})
+            
+            # keyword
+            if params[:keywords].present?
+              k = params[:keywords].gsub('"', '').strip.downcase
+              kols = kols.where('MATCH (kols.name) AGAINST (' + params[:keywords] + ') OR MATCH (kol_keywords.keyword) AGAINST (' + params[:keywords] + ')')
+            end
+            
+            if params[:industry].present?
+              k = params[:industry].gsub('"', '').strip.downcase
+              kols = kols.where(industry: k)
+            end
+            
+            if params[:follower_from].present?
+              kols = kols.where("social_accounts.followers_count >= ?", params[:follower_from].to_i)
+            end
+            
+            if params[:follower_to].present?
+              kols = kols.where("social_accounts.followers_count <= ?", params[:follower_to].to_i)
+            end
+            
+            # count
+            count = kols.count
+            
+            # kols
+            kols = kols.select("kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage")
+            
             data = {
   "page_no": params[:page_no],
   "page_size": params[:page_size],
-  "total_record_count": kols.count,
-  "actual_total_record_count": kols.count,
-  "total_page_count": (kols.count/params[:page_size]).to_i + 1,
-  "actual_total_page_count": (Kol.count/params[:page_size]).to_i + 1,
+  "total_record_count": count,
+  "actual_total_record_count": count,
+  "total_page_count": (count/params[:page_size]).to_i + 1,
+  "actual_total_page_count": (count/params[:page_size]).to_i + 1,
   "data": (kols.offset(params[:page_no].to_i*params[:page_size].to_i).limit(params[:page_size].to_i).map {|kol|
                 {
                   "profile_id": kol.facebook_link.to_s,
                   "profile_name": kol.name,
                   "avatar_url": kol.avatar_url,
                   "weixin_id": "gh_c782d11518c5",
-                  "facebook_follow_count": kol.facebook_follow_count,
+                  "facebook_follow_count": kol.followers_count,
+                  "homepage": kol.homepage,
                   "description_raw": "",
                   "fans_number": 300000,
                   "r8_id": "MzUxMDAwNjIwMw==",

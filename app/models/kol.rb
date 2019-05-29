@@ -998,17 +998,68 @@ class Kol < ActiveRecord::Base
     Kol.where("is_hot > 2").count.succ
   end
 
-  def self.import_facebook_kols_from_file
-    workbook = RubyXL::Parser.parse("kols.xlsx")
-    workbook[0].each_with_index do |row, index|
-      if Kol.where(facebook_link: row[3].value).empty?
-        name = (row[0].value.strip.empty? ? row[3].value.split('/').last : row[0].value.strip)
-        follow = (row[2].value.strip.empty? ? nil : row[2].value.strip)
-        kol = Kol.new(name: name, password: '12345678', mobile_number: '+849760' + index.to_s.rjust(5, '0'), role_apply_status: 'agree', role_apply_time: Time.now, facebook_follow_count: follow, facebook_link: row[3].value, avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip), app_platform: 'Android', app_version: '2.5.2', category: row[4].value)
-        kol.save
-        puts kol.errors.to_json
-      end
+  def self.import_facebook_kols_from_file(file_name)
+    csv_text = File.read(file_name)
+    csv = CSV.parse(csv_text, :headers => true)
+    total = csv.count
+    csv.each_with_index do |row, index|
+      data = self.mapping_row_header(row.to_hash)
+      self.insert_kol(data, index)
+      
+      printf "%-10s %s\n", "#{((index.to_f/total.to_f)*100.00).round(2)} %", "#{index} / #{total}"
     end
+    return 'DONE'
+  end
+  
+  def self.mapping_row_header(row)
+    hash = {"Name" => "", "Follow" => "", "Link" => "", "CAT" => "", "Platform" => "", "Username" => ""}
+    row.each do |key,value|
+      hash[key] = value.to_s.strip
+    end
+    return hash
+  end
+  
+  # [Name] [Follow] [Link] [CAT] [Platform] [Username]
+  def self.insert_kol(data, index)
+    #if Kol.where(facebook_link: data["Link"]).empty?
+    if Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id").where('social_accounts.homepage = ?', data["Link"]).empty?
+      # find name
+      name = (data["Name"].empty? ? data["Username"] : data["Name"])
+      name = (name.empty? ? data["Link"].split('/').last : name)
+      
+      # find username
+      username = (data["Username"].empty? ? data["Name"] : data["Username"])
+      
+      follow = (data["Follow"].empty? ? nil : data["Follow"])
+      avatar_url = 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(data["Link"])
+      kol = Kol.new(
+        name: name,
+        password: '12345678',
+        mobile_number: '+' + Time.now.to_i.to_s[4..-1] + index.to_s.rjust(5, '0'),
+        role_apply_status: 'agree',
+        role_apply_time: Time.now,
+        #facebook_follow_count: follow,
+        #facebook_link: row[3].value,
+        #avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip),
+        app_platform: 'Android',
+        app_version: '2.5.2',
+        category: data["CAT"]
+      )
+      kol.save
+      
+      # social account
+      kol.social_accounts.create(
+        provider: data["Platform"].to_s.downcase,
+        homepage: data["Link"],
+        username: username,
+        avatar_url: avatar_url,
+        followers_count: follow,
+      )
+    end
+  end
+  
+  def get_social_account_by_flatform(flatform)
+    return self.social_accounts.where(provider: flatform).first
   end
 
 end
