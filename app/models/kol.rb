@@ -939,15 +939,15 @@ class Kol < ActiveRecord::Base
 
   def invite_desc
     if strategy[:tag]
-      "每位好友有#{strategy[:invite_bounty]}元额外奖励"
+      "Each friend has #{strategy[:invite_bounty]} yuan Meta extra rewards"
     else
-      "每日前10位徒弟有#{strategy[:invite_bounty]}元额外奖励"
+      "The first 10 apprentices per day have an additional bonus of #{strategy[:invite_bounty]} yuan"
     end
   end
 
   def master_desc
     if strategy[:master_income_rate] > 0
-      "徒弟通过活动收入的#{(strategy[:master_income_rate] * 100).to_i}%(收益四舍五入精确到小数点后两位,如0.012为0.01; 0.026为0.03), 收徒越多奖励越多,徒弟总数无上限。"
+      "#{(strategy[:master_income_rate] * 100).to_i}% of The Apprentice's income through the activity,Yield rounding is accurate to two decimal places,for example 0.012 to 0.01; 0.026 to 0.03), The more rewards reception, the more apprentices there is no upper limit."
     else
       ''
     end

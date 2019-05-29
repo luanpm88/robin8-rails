@@ -9,15 +9,15 @@ module API
           optional :type,  type: String, desc: 'forget_password, default: nil'
         end
         get 'valid_code' do
-          error_403!(detail: '邮箱格式错误') unless params[:email].match(API::ApiHelpers::EMAIL_REGEXP)
+          error_403!(detail: 'Mailbox Format error') unless params[:email].match(API::ApiHelpers::EMAIL_REGEXP)
 
           email = params[:email]
           kol   = Kol.find_by(email: email)
 
           if params[:type] == 'forget_password'
-            error_403!(detail: '该用户不存在') unless kol
+            error_403!(detail: 'The user does not exist') unless kol
           else
-            error_403!(detail: '邮箱已被注册') if kol
+            error_403!(detail: 'Mailbox has been registered') if kol
           end
 
           valid_code = $redis.get("valid_#{email}")
@@ -29,7 +29,7 @@ module API
 
           NewMemberWorker.perform_async(email, valid_code)
 
-          present error: 0, alert: '验证码已发送您的邮箱，请在10分钟内进行验证，过期请重新获取'
+          present error: 0, alert: 'The verification code has been sent to your mailbox, please verify it within 10 minutes, please re-obtain the expiration'
         end
 
         desc 'email valid code'
@@ -45,9 +45,9 @@ module API
             
             $redis.setex("vtoken_#{params[:email]}", 6000, vtoken)
 
-            present error: 0, alert: '邮箱验证成功',vtoken: vtoken
+            present error: 0, alert: 'Mailbox Validation Succeeded',vtoken: vtoken
           else
-            error_403!(detail: '邮箱验证错误') 
+            error_403!(detail: 'Mailbox validation Error') 
           end
         end
 

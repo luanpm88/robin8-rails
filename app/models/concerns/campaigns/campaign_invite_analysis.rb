@@ -7,11 +7,11 @@ module Campaigns
 
       [
         {
-          name: "男性",
+          name: "man",
           ratio: (_ary.count > 0 ? 1.0 * _ary.count(1) / _ary.count : 0)
         },
         {
-          name: "女性",
+          name: "woman",
           ratio: (_ary.count > 0 ? 1.0 * _ary.count(2) / _ary.count : 0)
         }
       ]
@@ -26,7 +26,7 @@ module Campaigns
 
         ratio = _ary.count > 0 ? 1.0 * age_count / _ary.count : 0
         {
-          name: "#{min}岁-#{max}岁",
+          name: "#{min}age-#{max}age",
           count: age_count,
           ratio: ratio
         }
@@ -45,7 +45,7 @@ module Campaigns
         tag = Tag.find(tc[0])
 
         {
-          name: tag.label,
+          name: tag.name,
           code: tag.name,
           count: tc[1],
           ratio: (total_count > 0 ? 1.0 * tc[1] / total_count : 0)
