@@ -43,9 +43,11 @@ module Brand
 
           post ':platform/search' do
             kols = Kol.joins("LEFT JOIN kol_keywords ON kols.id = kol_keywords.kol_id")
+            kols = kols.joins("LEFT JOIN kol_tags ON kol_tags.id = kol_tags.kol_id")
+            kols = kols.joins("LEFT JOIN tags ON kol_tags.tag_id = tags.id")
             
             # flatform
-            kols = kols.joins(:social_accounts, :kol_tags => :tag).where(social_accounts: {provider: params[:platform]})
+            kols = kols.joins(:social_accounts).where(social_accounts: {provider: params[:platform]})
             
             # keyword
             if params[:keywords].present?
