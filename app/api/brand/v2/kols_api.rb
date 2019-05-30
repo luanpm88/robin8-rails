@@ -79,6 +79,8 @@ module Brand
             m = params[:keywords].present? ? params[:keywords] : '""'
             kols = kols.select('kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage, MATCH (kols.name) AGAINST (' + m + ') as relevance')
             
+            kols = kols.order('created_at')
+            
             data = {
   "page_no": params[:page_no],
   "page_size": params[:page_size],
