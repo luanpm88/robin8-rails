@@ -51,6 +51,7 @@ module Brand
             if params[:keywords].present?
               k = params[:keywords].gsub('"', '').strip.downcase
               kols = kols.where('MATCH (kols.name) AGAINST (' + params[:keywords] + ') OR MATCH (kol_keywords.keyword) AGAINST (' + params[:keywords] + ')')
+              .order('relevance desc')
             end
             
             if params[:industry].present?
@@ -70,7 +71,7 @@ module Brand
             count = kols.count
             
             # kols
-            kols = kols.select("kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage")
+            kols = kols.select("kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage, MATCH (kols.name) AGAINST (" + params[:keywords] + ") as relevance")
             
             data = {
   "page_no": params[:page_no],
