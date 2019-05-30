@@ -58,6 +58,10 @@ module Brand
               kols = kols.where(tags: {name: params[:industry]})
             end
             
+            if params[:country].present?
+              kols = kols.where(country: params[:country])
+            end
+            
             if params[:follower_from].present?
               kols = kols.where("social_accounts.followers_count >= ?", params[:follower_from].to_i)
             end
