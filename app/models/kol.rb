@@ -998,7 +998,7 @@ class Kol < ActiveRecord::Base
     Kol.where("is_hot > 2").count.succ
   end
 
-  def self.import_facebook_kols_from_file(file_name)
+  def self.import_kols(file_name)
     csv_text = File.read(file_name)
     csv = CSV.parse(csv_text, :headers => true)
     total = csv.count
@@ -1016,45 +1016,80 @@ class Kol < ActiveRecord::Base
     row.each do |key,value|      
       hash[key.gsub(/[^0-9A-Za-z_]/, '').strip.to_s] = value.to_s.strip
     end
+    
     return hash
   end
   
   # [Name] [Follow] [Link] [CAT] [Platform] [Username]
   def self.insert_kol(data, index)    
-    #if Kol.where(facebook_link: data["Link"]).empty?
-    if Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id").where('social_accounts.homepage = ?', data["Link"]).empty?
-      # find name
-      name = (data["Name"].empty? ? data["Username"] : data["Name"])
-      name = (name.empty? ? data["Link"].split('/').last : name)
+    kol = Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id").where('social_accounts.homepage = ?', data["Link"]).first
+    if kol.nil?
+      kol = Kol.new
+    end
+    
+    # find name
+    name = (data["Name"].empty? ? data["Username"] : data["Name"])
+    name = (name.empty? ? data["Link"].split('/').last : name)
+    
+    # find username
+    username = (data["Username"].empty? ? data["Name"] : data["Username"])
+    
+    # find follow count
+    follow = (data["Follow"].empty? ? nil : data["Follow"])
+    
+    # fin avatar
+    avatar_url = 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(data["Link"])
+    
+    # update attributes
+    kol.assign_attributes(
+      name: name,
+      password: '12345678',
+      mobile_number: '+' + Time.now.to_i.to_s[4..-1] + index.to_s.rjust(5, '0'),
+      role_apply_status: 'agree',
+      role_apply_time: Time.now,
+      #facebook_follow_count: follow,
+      #facebook_link: row[3].value,
+      #avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip),
+      app_platform: 'Android',
+      app_version: '2.5.2',
+      category: data["CAT"]
+    )
+    kol.save
+    
+    # find social account if exist
+    saccount = kol.social_accounts.where(homepage: data["Link"]).first
+    if saccount.nil?
+      saccount = kol.social_accounts.new
+    end
+    
+    # update social account
+    saccount.assign_attributes(
+      provider: data["Platform"].to_s.downcase,
+      homepage: data["Link"],
+      username: username,
+      avatar_url: avatar_url,
+      followers_count: follow,
+    )
+    saccount.save
+    
+    # find kol tags
+    if data["CAT"].present?
       
-      # find username
-      username = (data["Username"].empty? ? data["Name"] : data["Username"])
+      # find tag
+      tag_name = data["CAT"].strip.downcase.gsub(/[^(0-9a-z)]/, '_').gsub(/\_+/, '_').gsub(/^_+/, '').gsub(/_+$/, '')
+      tag = Tag.where(name: tag_name).first
+      if tag.nil?
+        tag = Tag.new(name: tag_name)
+      end
+      tag.label = data["CAT"]
+      tag.save
       
-      follow = (data["Follow"].empty? ? nil : data["Follow"])
-      avatar_url = 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(data["Link"])
-      kol = Kol.new(
-        name: name,
-        password: '12345678',
-        mobile_number: '+' + Time.now.to_i.to_s[4..-1] + index.to_s.rjust(5, '0'),
-        role_apply_status: 'agree',
-        role_apply_time: Time.now,
-        #facebook_follow_count: follow,
-        #facebook_link: row[3].value,
-        #avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip),
-        app_platform: 'Android',
-        app_version: '2.5.2',
-        category: data["CAT"]
-      )
-      kol.save
+      # find kol tag
+      ktag = kol.kol_tags.where(tag_id: tag.id).first
+      if ktag.nil?
+        ktag = kol.kol_tags.create(tag_id: tag.id)
+      end
       
-      # social account
-      kol.social_accounts.create(
-        provider: data["Platform"].to_s.downcase,
-        homepage: data["Link"],
-        username: username,
-        avatar_url: avatar_url,
-        followers_count: follow,
-      )
     end
   end
   

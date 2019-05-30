@@ -45,7 +45,7 @@ module Brand
             kols = Kol.joins("LEFT JOIN kol_keywords ON kols.id = kol_keywords.kol_id")
             
             # flatform
-            kols = kols.joins(:social_accounts).where(social_accounts: {provider: params[:platform]})
+            kols = kols.joins(:social_accounts, :kol_tags => :tag).where(social_accounts: {provider: params[:platform]})
             
             # keyword
             if params[:keywords].present?
@@ -55,8 +55,7 @@ module Brand
             end
             
             if params[:industry].present?
-              k = params[:industry].gsub('"', '').strip.downcase
-              kols = kols.where(industry: k)
+              kols = kols.where(tags: {name: params[:industry]})
             end
             
             if params[:follower_from].present?
