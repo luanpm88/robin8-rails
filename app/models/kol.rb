@@ -1012,7 +1012,7 @@ class Kol < ActiveRecord::Base
   end
   
   def self.mapping_row_header(row)
-    hash = {"Name" => "", "Follow" => "", "Link" => "", "CAT" => "", "Platform" => "", "Username" => ""}
+    hash = {"Name" => "", "Follow" => "", "Link" => "", "CAT" => "", "Platform" => "", "Username" => "", "Country" => ""}
     row.each do |key,value|      
       hash[key.gsub(/[^0-9A-Za-z_]/, '').strip.to_s] = value.to_s.strip
     end
@@ -1040,6 +1040,8 @@ class Kol < ActiveRecord::Base
     # fin avatar
     avatar_url = 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(data["Link"])
     
+    country = data["Country"].present? ? data["Country"] : 'vietnam'
+    
     # update attributes
     kol.assign_attributes(
       name: name,
@@ -1052,7 +1054,8 @@ class Kol < ActiveRecord::Base
       #avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip),
       app_platform: 'Android',
       app_version: '2.5.2',
-      category: data["CAT"]
+      category: data["CAT"],
+      country: country
     )
     kol.save
     
