@@ -1014,7 +1014,7 @@ class Kol < ActiveRecord::Base
   def self.mapping_row_header(row)
     hash = {"Name" => "", "Follow" => "", "Link" => "", "CAT" => "", "Platform" => "", "Username" => "", "Country" => ""}
     row.each do |key,value|      
-      hash[key.gsub(/[^0-9A-Za-z_]/, '').strip.to_s] = value.to_s.strip
+      hash[key.to_s.gsub(/[^0-9A-Za-z_]/, '').strip.to_s] = value.to_s.strip
     end
     
     return hash
