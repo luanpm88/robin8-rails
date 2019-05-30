@@ -71,7 +71,8 @@ module Brand
             count = kols.count
             
             # kols
-            kols = kols.select("kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage, MATCH (kols.name) AGAINST (" + params[:keywords] + ") as relevance")
+            m = params[:keywords].present? ? params[:keywords] : '""'
+            kols = kols.select('kols.*, social_accounts.avatar_url, social_accounts.followers_count, social_accounts.homepage, MATCH (kols.name) AGAINST (' + m + ') as relevance')
             
             data = {
   "page_no": params[:page_no],
