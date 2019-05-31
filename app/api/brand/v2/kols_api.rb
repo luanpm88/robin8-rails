@@ -42,7 +42,7 @@ module Brand
           end
 
           post ':platform/search' do
-            kols = Kol.joins("LEFT JOIN kol_keywords ON kols.id = kol_keywords.kol_id")
+            kols = Kol.joins("LEFT JOIN kol_keywords ON kols.id = kol_keywords.kol_id").where('kols.created_at > ?', Time.now - 2.months)
             #kols = kols.joins("LEFT JOIN kol_tags ON kol_tags.id = kol_tags.kol_id")
             #kols = kols.joins("LEFT JOIN tags ON kol_tags.tag_id = tags.id")
             
