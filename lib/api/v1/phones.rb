@@ -35,7 +35,15 @@ module API
         post 'get_code' do
           # return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code?
           required_attributes! [:mobile_number]
-          sms_client = YunPian::SendInternationalSms.new(params[:mobile_number])
+          
+          phone_number = params[:mobile_number]
+          if phone_number[0] == '0'
+            phone_number = '+84' + phone_number[1..-1]
+          elsif phone_number[0] != '+'
+            phone_number = '+' + phone_number
+          end
+          
+          sms_client = YunPian::SendInternationalSms.new(phone_number)
           res = sms_client.send_sms  rescue {}
           if res["code"] == 0
             return {error: 0, detail: '验证码发送成功' }
@@ -47,7 +55,15 @@ module API
         post 'verification_code' do
           # required_attributes! [:mobile_number]
           return error_403!({error: 1, detail: '手机号码不存在!'}) if Kol.find_by(mobile_number: params[:mobile_number]).blank?
-          sms_client = YunPian::SendInternationalSms.new(params[:mobile_number])
+          
+          phone_number = params[:mobile_number]
+          if phone_number[0] == '0'
+            phone_number = '+84' + phone_number[1..-1]
+          elsif phone_number[0] != '+'
+            phone_number = '+' + phone_number
+          end
+          
+          sms_client = YunPian::SendInternationalSms.new(phone_number)
           res = sms_client.send_sms  rescue {}
           if res['code'] == 0
             return {error: 0, detail: '验证码发送成功' }

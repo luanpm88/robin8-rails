@@ -120,6 +120,8 @@ module YunPian
     def self.verify_code(phone, code)
       if phone[0] == '0'
         phone = '+84' + phone[1..-1]
+      elsif phone[0] != '+'
+        phone = '+' + phone
       end
 
       phone = phone.to_s        rescue ""

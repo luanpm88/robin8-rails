@@ -9,10 +9,6 @@ module YunPian
                    api_key = Rails.application.secrets.yunpian[:api_key])
       @phone_number = phone_number.to_s
       
-      if @phone_number[0] == '0'
-        @phone_number = '+84' + @phone_number[1..-1]
-      end
-      
       @api_key = api_key
     end
 

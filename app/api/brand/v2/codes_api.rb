@@ -16,6 +16,8 @@ module Brand
             phone_number = params[:mobile_number]
             if phone_number[0] == '0'
               phone_number = '+84' + phone_number[1..-1]
+            elsif phone_number[0] != '+'
+              phone_number = '+' + phone_number
             end
 
             sms_client = YunPian::SendInternationalSms.new(phone_number)
