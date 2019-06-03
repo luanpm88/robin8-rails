@@ -146,6 +146,11 @@ class Identity < ActiveRecord::Base
         end
       end
       return false
+    elsif provider == 'facebook'
+        facebook_url = "https://graph.facebook.com/me/?access_token=#{client_access_token}"
+        res_fb = RestClient.get(facebook_url)
+        json_res = JSON.parse(res_fb)
+        return json_res["id"] == uid;
     end
   end
 
