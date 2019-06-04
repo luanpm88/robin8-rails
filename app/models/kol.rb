@@ -1033,6 +1033,7 @@ class Kol < ActiveRecord::Base
     
     # find username
     username = (data["Username"].empty? ? data["Name"] : data["Username"])
+    username = username[0..80]
     
     # find follow count
     follow = (data["Follow"].empty? ? nil : data["Follow"])
