@@ -1020,9 +1020,10 @@ class Kol < ActiveRecord::Base
     return hash
   end
   
-  # [Name] [Follow] [Link] [CAT] [Platform] [Username]
+  # [Name] [Follow] [Link] [CAT] [Platform] [Username] [Email] [Firstname] [Lastname]
   def self.insert_kol(data, index)    
-    kol = Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id").where('social_accounts.homepage = ?', data["Link"]).first
+    kol = Kol.joins("LEFT JOIN social_accounts ON kols.id = social_accounts.kol_id")
+      .where('social_accounts.homepage = ? OR (kols.email IS NOT NULL AND kols.email != "" AND kols.email = ?)', data["Link"], data["Email"].to_s.downcase.strip).first
     if kol.nil?
       kol = Kol.new
     end
@@ -1030,6 +1031,8 @@ class Kol < ActiveRecord::Base
     # find name
     name = (data["Name"].empty? ? data["Username"] : data["Name"])
     name = (name.empty? ? data["Link"].split('/').last : name)
+    
+    name = ((data["Firstname"].present? or data["Lastname"].present?) ? "#{data["Firstname"]} #{data["Lastname"]}" : name)
     
     # find username
     username = (data["Username"].empty? ? data["Name"] : data["Username"])
@@ -1043,9 +1046,14 @@ class Kol < ActiveRecord::Base
     
     country = data["Country"].present? ? data["Country"] : 'vietnam'
     
+    return false if !data["Link"].present?
+    
     # update attributes
     kol.assign_attributes(
       name: name,
+      first_name: (data["Firstname"].present? ? data["Firstname"] : nil),
+      last_name: (data["Lastname"].present? ? data["Lastname"] : nil),
+      email: data["Email"].to_s.downcase.strip.present? ? data["Email"].to_s.downcase.strip : nil,
       password: '12345678',
       mobile_number: '+' + Time.now.to_i.to_s[4..-1] + index.to_s.rjust(5, '0'),
       role_apply_status: 'agree',
@@ -1060,10 +1068,12 @@ class Kol < ActiveRecord::Base
     )
     kol.save
     
+    #puts kol.to_json
+    
     # find social account if exist
     saccount = kol.social_accounts.where(homepage: data["Link"]).first
     if saccount.nil?
-      saccount = kol.social_accounts.new
+      saccount = kol.social_accounts.new(kol_id: kol.id)
     end
     
     # update social account
@@ -1074,6 +1084,7 @@ class Kol < ActiveRecord::Base
       avatar_url: avatar_url,
       followers_count: follow,
     )
+    
     saccount.save
     
     # find kol tags
