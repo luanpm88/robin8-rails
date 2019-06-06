@@ -1004,9 +1004,9 @@ class Kol < ActiveRecord::Base
     total = csv.count
     csv.each_with_index do |row, index|
       data = self.mapping_row_header(row.to_hash)
-      self.insert_kol(data, index)
+      result = self.insert_kol(data, index)
       
-      printf "%-10s %s\n", "#{((index.to_f/total.to_f)*100.00).round(2)} %", "#{index} / #{total}"
+      printf "%-10s %-20s %s\n", "#{((index.to_f/total.to_f)*100.00).round(2)} %", "#{index} / #{total}", "#{result[:message]}"
     end
     return 'DONE'
   end
@@ -1046,7 +1046,9 @@ class Kol < ActiveRecord::Base
     
     country = data["Country"].present? ? data["Country"] : 'vietnam'
     
-    return false if !data["Link"].present?
+    if !data["Link"].present?
+      return {status: 'error', message: "Can not find link!"}
+    end
     
     # update attributes
     kol.assign_attributes(
@@ -1058,9 +1060,6 @@ class Kol < ActiveRecord::Base
       mobile_number: '+' + Time.now.to_i.to_s[4..-1] + index.to_s.rjust(5, '0'),
       role_apply_status: 'agree',
       role_apply_time: Time.now,
-      #facebook_follow_count: follow,
-      #facebook_link: row[3].value,
-      #avatar_url: 'https://s3-ap-southeast-1.amazonaws.com/robin8/' + Digest::MD5.hexdigest(row[3].value.strip),
       app_platform: 'Android',
       app_version: '2.5.2',
       category: data["CAT"],
@@ -1068,7 +1067,9 @@ class Kol < ActiveRecord::Base
     )
     kol.save
     
-    #puts kol.to_json
+    if kol.errors.present?
+      return {status: 'error', message: kol.errors.to_json}
+    end
     
     # find social account if exist
     saccount = kol.social_accounts.where(homepage: data["Link"]).first
@@ -1083,9 +1084,12 @@ class Kol < ActiveRecord::Base
       username: username,
       avatar_url: avatar_url,
       followers_count: follow,
-    )
-    
+    )    
     saccount.save
+    
+    if saccount.errors.present?
+      return {status: 'error', message: saccount.errors.to_json}
+    end
     
     # find kol tags
     if data["CAT"].present?
@@ -1106,6 +1110,8 @@ class Kol < ActiveRecord::Base
       end
       
     end
+    
+    return {status: 'success', message: "done!"}
   end
   
   def get_social_account_by_flatform(flatform)
