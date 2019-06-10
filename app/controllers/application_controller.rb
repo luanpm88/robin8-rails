@@ -52,15 +52,15 @@ class ApplicationController < ActionController::Base
     default_locale = china_instance? ? 'zh' : 'en'
     if  current_user.present? ||  current_kol.present?
       someone = current_user  ||  current_kol
-      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+      if params[:locale] && [:en, :zh, :vi].include?(params[:locale].to_sym)
         someone.update_column(:locale, params[:locale])
       end
       locale = someone.locale || cookies['locale']  || default_locale
     else
-      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+      if params[:locale] && [:en, :zh, :vi].include?(params[:locale].to_sym)
         cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
         I18n.locale = params[:locale].to_sym
-      elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
+      elsif cookies['locale'] && [:en, :zh, :vi].include?(cookies['locale'].to_sym)
         I18n.locale = cookies['locale'].to_sym
       else
         I18n.locale = default_locale

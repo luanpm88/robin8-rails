@@ -36,7 +36,7 @@ module Robin8
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :vi
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
@@ -52,7 +52,7 @@ module Robin8
     # config.eager_load_paths.push(*%W(#{config.root}/lib/exception_notifier))
 
     config.action_dispatch.perform_deep_munge = false
-    config.i18n.available_locales = ['en', 'zh']
+    config.i18n.available_locales = ['en', 'zh', 'vi']
     # I18n.enforce_available_locales = false
 
     #echo "export china_instance='Y'" >> ~/.bashrc

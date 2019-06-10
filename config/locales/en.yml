@@ -1,5 +1,22 @@
 ---
 en:
+  invite:
+    title: 'Robin8 - Blockchain KOL and Digital Asset Marketplace'
+    description: 'The Robin8 App is a peer-to-peer advertising platform where users and KOLs get paid for sharing content.'
+    heading:
+      line_1: 'Join Robin8 every day for earning money'
+      line_2: ''
+    enter_mobile_number: 'Enter your mobile number'
+    enter_verification_code: 'Enter verification code'
+    get_verification_code: 'Get code'
+    register_for_free: 'Register for free'
+    earning_money_phrase: "earned %{money}₫"
+    sms_code_sent: 'SMS verification code was sent successfully'
+    error_try_again: 'An error has occurred, please try again'
+    acepted_downloading: 'Successfully accepted the invitation and will start downloading Robin8'
+    mobile_number_required: 'Please enter mobile number'
+    mobile_number_registered: 'The phone number has been registered'
+    effective_amount_exceeded: 'The effective amount sent has exceeded'
   other:
     label:
       name: Others

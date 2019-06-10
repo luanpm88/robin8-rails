@@ -1,6 +1,6 @@
 <%
-  title = "我最近发现一款每天都可以赚钱的APP，您也来试试？"
-  description = "Robin8基于大数据的社交影响力平台"
+  title = t("invite.title")
+  description = t("invite.description")
   poster_url = "http://7xuw3n.com1.z0.glb.clouddn.com/logo.png?imageView2/1/w/150/h/150"
   url = request.url
   sign_package = ($weixin_client.get_jssign_package(url) rescue {})
@@ -14,51 +14,71 @@
 <%= javascript_include_tag "//res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
 <%= javascript_include_tag "//cdn.bootcss.com/Swiper/4.3.0/js/swiper.min.js" %>
 
-<div class="page full-page overflow-hidden invite-page">
-  <div class="invite-container">
-    <div class="invite-rewards">
-      <h5 class="title">
-        <p>下载APP天天做活动赚钱</p>
-        <p>现金奖励拿不停</p>
-      </h5>
-      <div class="rewards-num">0.57</div>
-    </div>
+<style>
+  .page.invite-page {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    position: relative;
+    height: 100vh;
+  }
+  .invite-container {
+    width: 400px !important;
+    display: inline-block;
+    position: inherit;
+    margin: auto;
+    width: auto;
+  }
+</style>
 
-    <div class="ft-container">
-      <div class="ft-wrapper">
-        <%= form_for RegisteredInvitation.new, url: registered_invitations_path do |f| %>
-          <div class="f-field">
-            <!-- <span class="f-icon"><%= image_tag "message.png" %></span> -->
-            <%= f.text_field :mobile_number, id: "mobileNumber", placeholder: "请输入您的手机号" %>
-          </div>
-          <div class="f-field f-with-req">
-            <!-- <span class="f-icon"><%= image_tag "email.png" %></span> -->
-            <%= f.text_field :sms_code, id: "smsCode", placeholder: "请输入验证码" %>
-            <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>">获取验证码</a>
-          </div>
-          <%= f.hidden_field :invite_code, id: "inviteCode", value: params[:inviter_id] %>
-          <div class="reg-bt">
-            <button id="submit" type="submit">免费注册即可领取红包</button>
-          </div>
-          <div class="f-error"></div>
-          <div class="f-info"></div>
-        <% end %>
+<div class="page-wrapper">
+  <div class="page full-page overflow-hidden invite-page">
+    <div class="invite-container">
+      <div class="invite-rewards">
+        <h5 class="title">
+          <p><%= t('invite.heading.line_1') %></p>
+          <p><%= t('invite.heading.line_2') %></p>
+        </h5>
+        <div class="rewards-num">1,500₫</div>
       </div>
-    </div>
-
-    <div class="invite-loops-feedback">
-      <div class="swiper-container" id="invite_loops_feedback">
-        <div class="list swiper-wrapper">
-          <div class="item swiper-slide">133****7865提现成功66元 1分钟前</div>
-          <div class="item swiper-slide">139****3334提现成功57元 1分钟前</div>
-          <div class="item swiper-slide">188****9487提现成功50元 2分钟前</div>
-          <div class="item swiper-slide">156****4395提现成功53元 4分钟前</div>
-          <div class="item swiper-slide">133****2045提现成功62元 5分钟前</div>
-          <div class="item swiper-slide">189****6803提现成功50元 7分钟前</div>
-          <div class="item swiper-slide">173****0185提现成功60元 8分钟前</div>
-          <div class="item swiper-slide">138****4892提现成功50元 11分钟前</div>
-          <div class="item swiper-slide">155****6938提现成功55元 11分钟前</div>
-          <div class="item swiper-slide">188****3242提现成功85元 12分钟前</div>
+  
+      <div class="ft-container">
+        <div class="ft-wrapper">
+          <%= form_for RegisteredInvitation.new, url: registered_invitations_path do |f| %>
+            <div class="f-field">
+              <!-- <span class="f-icon"><%= image_tag "message.png" %></span> -->
+              <%= f.text_field :mobile_number, id: "mobileNumber", placeholder: t("invite.enter_mobile_number") %>
+            </div>
+            <div class="f-field f-with-req">
+              <!-- <span class="f-icon"><%= image_tag "email.png" %></span> -->
+              <%= f.text_field :sms_code, id: "smsCode", placeholder: t("invite.enter_verification_code") %>
+              <a id="request-sms" href="javascript:void(0);" class="f-btn-req" data-remaining="<%= sms_remaining_seconds %>"><%= t('invite.get_verification_code
+  ') %></a>
+            </div>
+            <%= f.hidden_field :invite_code, id: "inviteCode", value: params[:inviter_id] %>
+            <div class="reg-bt">
+              <button id="submit" type="submit"><%= t('invite.register_for_free') %></button>
+            </div>
+            <div class="f-error"></div>
+            <div class="f-info"></div>
+          <% end %>
+        </div>
+      </div>
+  
+      <div class="invite-loops-feedback">
+        <div class="swiper-container" id="invite_loops_feedback">
+          <div class="list swiper-wrapper">
+            <div class="item swiper-slide">+843****7865 <%= t('invite.earning_money_phrase', money: '3,000') %></div>
+            <div class="item swiper-slide">+119****3334 <%= t('invite.earning_money_phrase', money: '5,000') %></div>
+            <div class="item swiper-slide">+188****9487 <%= t('invite.earning_money_phrase', money: '10,000') %></div>
+            <div class="item swiper-slide">+846****4395 <%= t('invite.earning_money_phrase', money: '12,000') %></div>
+            <div class="item swiper-slide">+843****2045 <%= t('invite.earning_money_phrase', money: '5,000') %></div>
+            <div class="item swiper-slide">+869****6803 <%= t('invite.earning_money_phrase', money: '3,000') %></div>
+            <div class="item swiper-slide">+803****0185 <%= t('invite.earning_money_phrase', money: '25,000') %></div>
+            <div class="item swiper-slide">+118****4892 <%= t('invite.earning_money_phrase', money: '8,000') %></div>
+            <div class="item swiper-slide">+115****6938 <%= t('invite.earning_money_phrase', money: '5,000') %></div>
+            <div class="item swiper-slide">+188****3242 <%= t('invite.earning_money_phrase', money: '3,000') %></div>
+          </div>
         </div>
       </div>
     </div>
@@ -179,12 +199,12 @@
           errorAlert.delay(3000).fadeOut()
           smsBtn.attr('disabled', false);
         } else {
-          infoAlert.html("短信验证码发送成功").fadeIn();
+          infoAlert.html("<%= t('invite.sms_code_sent') %>").fadeIn();
           infoAlert.delay(3000).fadeOut()
           smsTimeCounter.run();
         }
       }).fail(function(xhr, status) {
-        errorAlert.html("发生错误了，请重新尝试").fadeIn();
+        errorAlert.html("<%= t('invite.error_try_again') %>").fadeIn();
         errorAlert.delay(3000).fadeOut();
         smsBtn.attr('disabled', false);
       });
@@ -216,13 +236,13 @@
           errorAlert.html(data.error).fadeIn();
           errorAlert.delay(3000).fadeOut()
         } else {
-          infoAlert.html("成功接受邀请，即将开始下载 Robin8 ...").fadeIn();
+          infoAlert.html("<%= t('invite.acepted_downloading') %>").fadeIn();
           infoAlert.delay(3000).fadeOut();
           window.location.href = data.url;
         }
         submitBtn.attr('disabled', false);
       }).fail(function(xhr, status) {
-        errorAlert.html("发生错误了，请重新尝试").fadeIn();
+        errorAlert.html("<%= t('invite.error_try_again') %>").fadeIn();
         errorAlert.delay(3000).fadeOut();
         submitBtn.attr('disabled', false);
       });
