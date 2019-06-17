@@ -8,7 +8,7 @@ module API
           #   anno.logo.url
           # end
           expose :banner_url do |anno|
-            anno.banner.url
+            anno.banner_url
           end
         end
       end

@@ -15,4 +15,8 @@ class Announcement < ActiveRecord::Base
   #detail_type %w(invite_friend check_in complete_info url)
   scope :active, -> {where(:display => true)}
   scope :order_by_position, ->{order("position asc")}
+  
+  def banner_url
+		self['banner']
+	end
 end

@@ -3,7 +3,7 @@ module Campaigns
     extend ActiveSupport::Concern
 
     def gender_analysis_of_invitee
-      _ary = self.valid_invites.includes(:kol).collect{|ele| ele.kol.gender}
+      _ary = self.valid_invites.includes(:kol).collect{|ele| (ele.kol.present? and ele.kol.gender)}
 
       [
         {
