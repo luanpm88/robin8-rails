@@ -57,7 +57,7 @@ module API
           if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}") || campaign.is_recruit_type?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
-            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
+            return error_403!({error: 1, detail: 'The event is over or you have already received this event!' })
           elsif campaign.need_finish
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
@@ -81,7 +81,7 @@ module API
         #     return error_403!({error: 1, detail: '该活动不存在' })
         #   elsif ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
         #   # elsif campaign.status != 'executing' ||  (campaign_invite && campaign_invite.status != 'running')
-        #     return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
+        #     return error_403!({error: 1, detail: 'The event is over or you have already received this event!' })
         #   elsif campaign.need_finish
         #     CampaignWorker.perform_async(campaign.id, 'fee_end')
         #     return error_403!({error: 1, detail: '该活动已经结束！' })
@@ -110,7 +110,7 @@ module API
           return error_403!({error: 1, detail: '该活动不存在'}) if campaign.blank? || !current_kol.receive_campaign_ids.include?("#{params[:id]}") || campaign.is_recruit_type?
 
           campaign_invite = current_kol.campaign_invites.where(campaign_id: params[:id]).first rescue nil
-          return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！'}) if ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
+          return error_403!({error: 1, detail: 'The event is over or you have already received this event!'}) if ['executing', 'countdown'].exclude?(campaign.status) ||  (campaign_invite && campaign_invite.status != 'running')
 
           if campaign.need_finish
             CampaignWorker.perform_async(campaign.id, 'fee_end')
@@ -140,7 +140,7 @@ module API
           if campaign.blank? || !campaign.is_recruit_type? ||  current_kol.app_version < '1.2.0' || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif !campaign.can_apply ||  campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'applying')
-            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
+            return error_403!({error: 1, detail: 'The event is over or you have already received this event!' })
           elsif campaign.influence_score_target && current_kol.influence_score.to_i < campaign.influence_score_target.get_score_value
             return error_403!({error: 1, detail: "抱歉，本次活动不接受影响力分数低于 #{campaign.influence_score_target.get_score_value}的KOL用户报名" })
           else
