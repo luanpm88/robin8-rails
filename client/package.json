@@ -67,7 +67,7 @@
     "jquery-ujs": "^1.2.0",
     "json-loader": "^0.5.4",
     "loader-utils": "^0.2.12",
-    "lodash": "^4.3.0",
+    "lodash": "^4.17.21",
     "marked": "^0.3.5",
     "mirror-creator": "^1.1.0",
     "moment": "^2.11.2",
