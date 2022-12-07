@@ -109,7 +109,7 @@
     "eslint-config-airbnb": "^5.0.0",
     "eslint-config-shakacode": "^1.0.0",
     "eslint-plugin-react": "^3.16.1",
-    "express": "^4.13.4",
+    "express": "^4.17.3",
     "jade": "^1.11.0",
     "jscs": "^2.9.0",
     "jsdom": "^8.0.2",
